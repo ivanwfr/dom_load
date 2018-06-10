@@ -1,0 +1,34 @@
+
+/** 2html          (170420:01h) */
+
+/** 2html.css */
+/*{{{*/
+*           { font-size: 1em; }
+a           { color:red; }
+body        { font-family: monospace; color: #ffffcc; background-color: #000000; }
+body        { font-size:12px; width:100em; }
+body        { margin:0; padding:2px; border:1em solid #404060; }
+pre         { font-family: monospace; color: #ffffcc; background-color: #000000; }
+
+.Banner     { font-size:1200%; background-color:#404060; color:#101020; font-weight:bold; display:inline-block; width:50%; }
+.Comment    { color: #80a0ff; }
+.Constant   { color: #ffa0a0; }
+.Identifier { color: #40ffff; }
+.Section    { font-size:250%;  background-color:#404060; color:#000000; display:inline-block; width:50%; margin-left:1ex; }
+.Special    { color: #ffa500; }
+.Statement  { color: #dddd60; font-weight: bold; }
+.Toc        { font-size:200%;  background-color:#404060; display:inline-block; width:50%; }
+
+/*}}}*/
+
+/** style_log */
+/*{{{*/
+
+#div_log        { margin:1em; }
+.div_hist       { margin:1em; border:1px inset; }
+.span_caller    { border:1px outset; color:black; background-color:#aaaaaa; font-size:200%; }
+.span_clicked   { border:1px  inset; color:black; background-color:#ffaaaa; font-size:200%; }
+.span_log_count { border:1px outset; color:black; background-color:#ddff44; font-size:200%; }
+
+/*}}}*/
+

@@ -1,0 +1,171 @@
+define COMMIT_MESSAGE
+GIT init dom_load:\
+git init\
+git add playground.html stylesheet javascript images\
+
+endef
+default: gs
+######################## 
+################ STATUS {{{
+:make gs
+gs:
+	@echo [$@]; git status
+
+#}}}
+################ LOG {{{
+:make gl
+gl:
+	@echo [$@]; git log
+
+:make glp
+glp:
+	@echo [$@]; git log -p -2
+
+:make gg
+gg:
+	@echo [$@]; git log --pretty=format:"%hs %s %cr" --graph
+
+:make gls
+gls:
+	@echo [$@]; git log --stat
+
+#}}}
+################ COMMIT {{{
+:make gca
+gca:
+	@echo "[$@]"; git commit -a -m "$(COMMIT_MESSAGE)"
+
+#}}}
+################ DIFF {{{
+:make gdc
+gdc:
+	@echo [$@]; git diff --cached
+
+:make gd
+gd:
+	@echo [$@]; git diff
+#}}}
+################ PUSH {{{
+:make gp
+gp:
+	@echo [$@]; git push -f
+
+#}}}
+######################## 
+# ENV {{{
+# APPDIR    = RTabsExtension
+# TOP       = $(LOCAL)/DATA/ANDROID/PROJECTS/RTabsExtension
+#}}}
+# GIT init dom_load {{{
+:!start explorer "http://kbroman.org/github_tutorial/pages/init.html"
+:term git init
+:term git add playground.html stylesheet javascript
+:term git add Make*
+:term git commit -m "initial project version"
+:term git config receive.denyCurrentBranch ignore
+
+#}}}
+# GIT commands {{{
+# git_help:
+# 	git --help
+# git_help_config:
+# 	git --help config
+# git_config_list:
+#	git config --list
+
+#}}}
+#GOOGLE CLOUD: {{{
+:cd B:/Program\ Files\ (x86)/Google/Cloud\ SDK/
+:cd C:\LOCAL\DATA\ANDROID\PROJECTS\RTabsExtension
+:!start explorer "https://cloud.google.com/sdk/docs/"
+:!start explorer "https://cloud.google.com/sdk/auth_success#top_of_page"
+:!start explorer "https://console.cloud.google.com/code/develop/browse/RTabsExtension/master?project=rtabsextension"
+	# {{{
+	# Output folder: B:\Program Files (x86)\Google\Cloud SDK
+	# Downloading Google Cloud SDK core.
+	# Extracting Google Cloud SDK core.
+	# Create Google Cloud SDK bat file: B:\Program Files (x86)\Google\Cloud SDK\cloud_env.bat
+	# Installing components.
+	# find: '/i': No such file or directory
+	# Welcome to the Google Cloud SDK!
+	# Your current Cloud SDK version is: 183.0.0
+	# Installing components from version: 183.0.0
+	# +----------------------------------------------------------------------------+
+	# |                    These components will be installed.                     |
+	# +-----------------------------------------------------+------------+---------+
+	# |                         Name                        |  Version   |   Size  |
+	# +-----------------------------------------------------+------------+---------+
+	# | BigQuery Command Line Tool                          |     2.0.27 | < 1 MiB |
+	# | BigQuery Command Line Tool (Platform Specific)      |     2.0.26 | < 1 MiB |
+	# | Cloud SDK Core Libraries (Platform Specific)        | 2017.10.30 | < 1 MiB |
+	# | Cloud Storage Command Line Tool                     |       4.28 | 3.3 MiB |
+	# | Cloud Storage Command Line Tool (Platform Specific) |       4.27 | < 1 MiB |
+	# | Cloud Tools for PowerShell                          |    1.0.1.0 | 8.7 MiB |
+	# | Cloud Tools for PowerShell                          |            |         |
+	# | Default set of gcloud commands                      |            |         |
+	# | Windows command line ssh tools                      |            |         |
+	# | Windows command line ssh tools                      | 2017.09.15 | 1.8 MiB |
+	# | gcloud cli dependencies                             | 2017.10.20 | 1.0 MiB |
+	# +-----------------------------------------------------+------------+---------+
+	# For the latest full release notes, please visit:
+	#   https://cloud.google.com/sdk/release_notes
+	# #============================================================#
+	# #= Creating update staging area                             =#
+	# #============================================================#
+	# #= Installing: BigQuery Command Line Tool                   =#
+	# #============================================================#
+	# #= Installing: BigQuery Command Line Tool (Platform Spec... =#
+	# #============================================================#
+	# #= Installing: Cloud SDK Core Libraries (Platform Specific) =#
+	# #============================================================#
+	# #= Installing: Cloud Storage Command Line Tool              =#
+	# #============================================================#
+	# #= Installing: Cloud Storage Command Line Tool (Platform... =#
+	# #============================================================#
+	# #= Installing: Cloud Tools for PowerShell                   =#
+	# #============================================================#
+	# #= Installing: Cloud Tools for PowerShell                   =#
+	# #============================================================#
+	# #= Installing: Default set of gcloud commands               =#
+	# #============================================================#
+	# #= Installing: Windows command line ssh tools               =#
+	# #============================================================#
+	# #= Installing: Windows command line ssh tools               =#
+	# #============================================================#
+	# #= Installing: gcloud cli dependencies                      =#
+	# #============================================================#
+	# #= Creating backup and activating new installation          =#
+	# #============================================================#
+	# Performing post processing steps...
+	# ....................................................................................................................................................done.
+	# Update done!
+	# This will install all the core command line tools necessary for working with
+	# the Google Cloud Platform.
+	# For more information on how to get started, please visit:
+	#   https://cloud.google.com/sdk/docs/quickstarts
+	# Google Cloud SDK has been installed!
+	#}}}
+
+# git remote add google https://source.developers.google.com/p/rtabsextension/r/RTabsExtension
+# git remame     google https://source.developers.google.com/p/rtabsextension/r/RTabsExtension
+
+#}}}
+#{{{
+# :cd ~/
+# :pwd
+# :cd %:h
+# :pwd
+# :new                   ~/REPO
+# 
+# :!mkdir                ~/REPO/RTabsExtension
+# :new                   ~/REPO/RTabsExtension
+# 
+:!git remote add local ~/REPO/RTabsExtension
+# }!!git remote -v
+# local	~/REPO/RTabsExtension (fetch)
+# local	~/REPO/RTabsExtension (push)
+# local	~/REPO/RTabsExtension (push)
+#}}}
+
+# vim: noet ts=8 sw=8
+

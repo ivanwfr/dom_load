@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<span id = "dom_grid_html_tag"  style="display:none">dom_grid_html (180601:17h)</span>
+<div id="dom_grid_playground" title="dom_grid_playground" class="collapsed display_delayed">
+ <div  id="headsup_l_div"> <!-- headsup_l_div {{{-->
+
+  <div onclick='t_grid_SIZE_TOGGLE(event);'>
+   <b id="headsup_l_size">headsup_l_size</b>
+   <br>
+   <div class="box cb_slider_pin">
+    <input type="checkbox"       id="headsup_l_size_checkbox" name="check"/>
+    <label for="headsup_l_size_checkbox" onclick='t_grid_SIZE_TOGGLE(event);'></label>
+   </div>
+  </div>
+
+  <div id="headsup_l_check"  class="cc0"
+                             title="logging_grid toggle"
+                             onclick='t_grid_logging_toggle();'
+                             >...</div>
+  <br>
+  <div>activated by dom_tools.t_sync_logging_grid</div>
+
+ </div><!--}}}-->
+ <!-- traces {{{-->
+ <div  id="traces_div" class="eso_div">
+  <ul>
+   <li><em class='cc4 toolbag_button' onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
+   <li><em class='cc5 toolbag_button' onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
+   <li><em class='cc8 toolbag_button' onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
+  </ul>
+  <blockquote id='traces'>
+   traces
+  </blockquote>
+
+ </div>
+ <!--}}}-->
+</div>
