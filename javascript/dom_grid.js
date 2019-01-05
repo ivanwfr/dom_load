@@ -1,20 +1,12 @@
-/*dom_grid_js "use strict";*/
+"use strict";
+/* dom_grid_js */
 let DOM_GRID_JS_ID          = 'dom_grid_js';
-let DOM_GRID_JS_TAG         = DOM_GRID_JS_ID    +' (180521:18h)';
-/* CONSOLE TEMPLATE TO BE IMPLEMENTED BY EMBEDDING LAYER {{{*/
-      LF            = String.fromCharCode(10);
-      CR            = String.fromCharCode(13);
-      CS            = "color:yellow;background-color:navy;font-size:150%;";
-      console_clear = function(  msg=null) { try { console.clear(); if(msg) console.warn("%c=== CLEARED BY: "+msg,CS);        } catch(ex) {} };
-      console_dir   = function(o,msg=null) { try {                  if(msg) console.log (               msg); console.dir(o); } catch(ex) {} };
-      console_log   = function(  msg     ) { try {                          console.log (               msg);                 } catch(ex) {} };
-      console_warn  = function(  msg=null) { try {                          console.warn(               msg);                 } catch(ex) {} };
-/*}}}*/
+let DOM_GRID_JS_TAG         = DOM_GRID_JS_ID    +' (181229:17h)';
+
 /*_ {{{*/
 const GRID_CAPTION    = "grid_caption";
 const GRID_MARGIN_TOP = 180;
 
-let logging_grid = false; /* FIXME */
 /*}}}*/
 
 /* GRID TOOLS */
@@ -23,7 +15,7 @@ let t_grid_TOOLS_SELECT = function(e)
 {
     /* GRID_CAPTION {{{*/
     if(e.ctrlKey) return;
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 
     let caller = "t_grid_TOOLS_SELECT";
     let     el = t_get_event_target(e);
@@ -52,14 +44,17 @@ let t_grid_TOOLS_SELECT_caption = function(caption)
 {
     /*{{{*/
     let caller = "t_grid_TOOLS_SELECT_caption";
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
+
 if(log_this) log(caller+": caption=["+get_n_lbl(caption)+"]");
 if(log_this) log("...caption.id=["+caption.id+"]");
     /*}}}*/
     /* SELECTING - DESELECTING {{{*/
-    for(let [panel, map] of tools_map)
+    for(let i=0; i< tools_map.length; ++i)
     {
-        if(panel == hotspot) continue;
+        let   map = tools_map[i];
+        let panel =       map.panel;
+        if( panel == hotspot) continue;
         let caption_id  = panel.id+"_"+GRID_CAPTION;
 if(log_this) log("...caption_id=["+caption_id+"]");
         if(caption_id == caption.id) {
@@ -75,12 +70,12 @@ if(log_this) log("...caption_id=["+caption_id+"]");
 let t_grid_TOOLS_SELECT_panel = function(panel,new_state="toggle")
 {
     let caller = "t_grid_TOOLS_SELECT_panel("+get_n_lbl(panel)+", "+new_state+")";
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 
 if( log_this) log(caller);
 
     /* check current panel selection state */
-    let      map  = tools_map.get(panel);
+    let      map  = tools_map_get(panel);
 
     if(new_state == "toggle") new_state = !map.selected;
 
@@ -92,7 +87,7 @@ if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
         map.selected = new_state;
 if(log_this) log("... %c "+(map.selected ? "SELECTING" : "DESELECTING") + ": "+panel.id, lbF+(map.selected ? lb4 : lb1));
 
-        store_key_state(panel.id+".selected", map.selected);
+        store_set_state(panel.id+".selected", map.selected);
 
         t_cache_init_by(caller);
     }
@@ -105,7 +100,7 @@ let t_grid_caption_layout = function(num, panel_id, x, y, el)
 {
     /* create or get caption element {{{*/
     let caller = "t_grid_caption_layout(num="+num+", panel_id="+panel_id+", x="+x+", y="+y+", el="+el.panel_id+")";
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 if( log_this) log(caller);
 
     let           gl = t_getElement(panel_id+"_"+GRID_CAPTION);
@@ -125,6 +120,7 @@ if( log_this) log(caller);
     /*}}}*/
     /* show control ID {{{*/
     gl.innerHTML       = num+" <em>"+panel_id+"</em>";
+    gl.style.zIndex    = ZINDEX_ON_GRID;
     gl.style.position  = "fixed";
     gl.style.left      = (x      )+"px";
 
@@ -144,13 +140,15 @@ if( log_this) log(caller);
 let t_grid_caption_hide_all = function()
 {
     let caller = "t_grid_caption_hide_all";
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 if( log_this) log(caller);
 
-    for(let [panel, map] of tools_map)
+    for(let i=0; i< tools_map.length; ++i)
     {
-        if(panel == hotspot) continue;
-        let gl = t_getElement(panel.id+"_"+GRID_CAPTION);
+        let   map = tools_map[i];
+        let panel =       map.panel;
+        if( panel == hotspot) continue;
+        let    gl  = t_getElement(panel.id+"_"+GRID_CAPTION);
         if(!gl)  continue;
         gl.classList.remove("grid_caption_show");
         gl.classList.add   ("grid_caption_hide");
@@ -172,7 +170,7 @@ let t_grid_onresize_timer   = null;
 
 let t_grid_onresize  = function(caller)
 {
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 if( log_this) log("t_grid_onresize(caller "+caller+")");
 
     if(t_grid_onresize_timer) clearTimeout(t_grid_onresize_timer);
@@ -184,7 +182,7 @@ let t_grid_onresize_handle = function()
     let caller = "t_grid_onresize_handle";
 
     if( t_grid_IS_ON_GRID(caller) )
-        t_grid_MOVE_ON();
+        _t_grid_LAYOUT_ON();
 
     t_grid_onresize_timer = null;
 
@@ -200,7 +198,7 @@ let   t_grid_onWork_EL_changed_timer       = null;
 /*_ t_grid_onWork_EL_changed {{{*/
 let t_grid_onWork_EL_changed = function(caller)
 {
-if(logging_grid) log("t_grid_onWork_EL_changed(caller "+caller+")");
+if(LOG_MAP.T2_GRID) log("t_grid_onWork_EL_changed(caller "+caller+")");
     if(t_grid_onWork_EL_changed_timer) clearTimeout(t_grid_onWork_EL_changed_timer);
     t_grid_onWork_EL_changed_timer   = setTimeout  (t_grid_onWork_EL_changed_handler, T_GRID_ONWORK_EL_CHANGED_TIMER_DELAY);
 };
@@ -209,23 +207,23 @@ if(logging_grid) log("t_grid_onWork_EL_changed(caller "+caller+")");
 let t_grid_onWork_EL_changed_handler = function()
 {
     let caller = "t_grid_onWork_EL_changed_handler";
-if(logging_grid) log("%c "+caller+": logging_grid=["+logging_grid+"]",lb9+lbF);
+if(LOG_MAP.T2_GRID) log("%c "+caller+": LOG_MAP.T2_GRID=["+LOG_MAP.T2_GRID+"]",lb9+lbF);
     /* GRID LOGGING ON-OFF {{{*/
     if(typeof t_get_onWork_EL_last_used == undefined) return;
 
     let  el = t_getElement("headsup_l_check"); if(!el) return;
 
-    if(!logging_grid) el.innerHTML="GRID LOGGING IS OFF";
+    if(!LOG_MAP.T2_GRID) el.innerHTML="GRID LOGGING IS OFF";
 
     /*}}}*/
     /* [dom_grid_playground] {{{*/
     let dom_grid_playground = t_getElement("dom_grid_playground");
     if(dom_grid_playground) {
-        if(!logging_grid) dom_grid_playground.classList.add   ("collapsed");
-        else              dom_grid_playground.classList.remove("collapsed");
+        if(!LOG_MAP.T2_GRID) dom_grid_playground.classList.add   ("collapsed");
+        else                 dom_grid_playground.classList.remove("collapsed");
     }
     /*}}}*/
-    if(!logging_grid) return;
+    if(!LOG_MAP.T2_GRID) return;
     /* NOT SELECTED {{{*/
     let ol = t_get_onWork_EL_last_used();
     if(!ol) {
@@ -292,9 +290,7 @@ let t_grid_ON_OFF_CB = function(new_state)
 {
     let caller = "t_grid_ON_OFF_CB("+new_state+")";
 
-let log_this = LOG_MAP.T3_GRID;
-
-    if(has_moved) return;
+let log_this = LOG_MAP.T2_GRID;
 
     if(new_state == "toggle") new_state = !t_grid_IS_ON_GRID(caller);
 if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
@@ -302,10 +298,10 @@ if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
     if( new_state ) { if(typeof dimm_start != undefined) dimm_start(caller); }
     else            { if(typeof dimm_stop  != undefined) dimm_stop (caller); }
 
-    if( new_state )   t_tools_save_TOOLS_GEOMETRY();
+    if(!new_state )   t_update_TOOLS_MAP_GEOMETRY(caller); /* not when grid_sized */
 
-    if( new_state ) { t_grid_SIZE_ON (); t_grid_MOVE_ON (); }
-    else            { t_grid_SIZE_OFF(); t_grid_MOVE_OFF(); }
+    if( new_state ) { t_grid_SIZE_ON (); _t_grid_LAYOUT_ON (); }
+    else            { t_grid_SIZE_OFF(); _t_grid_LAYOUT_OFF(); }
 
     call_t_grid_observers(new_state);
 
@@ -317,7 +313,7 @@ let t_grid_observer_callbacks = [];
 
 let t_grid_add_observer_callback = function(observer)
 {
-if(logging_grid) console_log("t_grid_add_observer_callback("+(t_grid_observer_callbacks.length+1)+")");
+if(LOG_MAP.T2_GRID) console_log("t_grid_add_observer_callback("+(t_grid_observer_callbacks.length+1)+")");
 
     if(!t_grid_observer_callbacks.includes( observer ))
         t_grid_observer_callbacks.push    ( observer );
@@ -325,24 +321,26 @@ if(logging_grid) console_log("t_grid_add_observer_callback("+(t_grid_observer_ca
 
 let call_t_grid_observers = function(state)
 {
-if(logging_grid) console_log("call_t_grid_observers("+state+")");
+if(LOG_MAP.T2_GRID) console_log("call_t_grid_observers("+state+")");
 
-    for(i=0; i < t_grid_observer_callbacks.length; ++i)
+    for(let i=0; i < t_grid_observer_callbacks.length; ++i)
         t_grid_observer_callbacks[i]( state );
 };
 /*}}}*/
 /*_ t_grid_sized_sync {{{*/
 let t_grid_sized_sync = function(caller)
 {
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 if( log_this) log("%c t_grid_sized_sync: CALLED BY ["+caller+"] .. grid_sized=["+grid_sized+"]", lb3);
 
     let n;
-    for(let [panel, map] of tools_map)
+    for(let i=0; i< tools_map.length; ++i)
     {
-        if(panel == hotspot) continue;
+        let   map = tools_map[i];
+        let panel =       map.panel;
+        if( panel == hotspot) continue;
+        if(!panel           ) continue;
         el = panel;
-        if(!el) continue;
 /*
 log("..."+get_n_lbl(el)+": WH"
     +"  style=["+el.style.width+" x "+el.style.height+"]"
@@ -395,9 +393,9 @@ let   grid_sized     = false;
 let t_grid_SIZE_TOGGLE = function(e)
 {
     let caller = "t_grid_SIZE_TOGGLE("+get_n_lbl(e.target)+")";
-if(logging_grid) console_log(caller);
+if(LOG_MAP.T2_GRID) console_log(caller);
 
-    if(!tools_map.size) return;
+    if(!tools_map.length) return;
 
     /* GRID GEOMETRY */
     t_grid_MEASURE();
@@ -407,34 +405,29 @@ if(logging_grid) console_log(caller);
     else            t_grid_SIZE_ON ();
 
     /* TOOLS TOGGLE ON OR OFF GRID LOCATION */
-    let           el = tools_map.keys().next().value; /* MAP ITERATOR FIRST VALUE */
-    if( el.classList.contains("on_grid")) t_grid_MOVE_ON();
-    else                                  t_grid_sized_sync("t_grid_SIZE_TOGGLE");
+    let el = tools_map[0].panel;
+    if( el.classList.contains("on_grid")) _t_grid_LAYOUT_ON();
+    else                                   t_grid_sized_sync("t_grid_SIZE_TOGGLE");
 
 };
 /*}}}*/
 /*_ t_grid_IS_SIZED {{{*/
 let t_grid_IS_SIZED = function(caller)
 {
-if(logging_grid) console_log("t_grid_IS_SIZED: ...return "+grid_sized+" .. caller=["+caller+"]");
+if(LOG_MAP.T2_GRID) console_log("t_grid_IS_SIZED: ...return "+grid_sized+" .. caller=["+caller+"]");
 
     return grid_sized;
 };
 /*}}}*/
 /*_ t_grid_IS_ON_GRID {{{*/
-let t_grid_IS_ON_GRID = function(caller)
+let t_grid_IS_ON_GRID = function(_caller)
 {
-let log_this = LOG_MAP.T3_GRID;
+let log_this = LOG_MAP.T2_GRID;
 
-    if(!tools_map.size) t_tools_TOC("t_grid_IS_ON_GRID");
+    if(!tools_map.length) t_load_TOOLS_MAP("t_grid_IS_ON_GRID");
 
-    let first_tool = deployable_tools[1];
-    let   result = (first_tool)
-        ?           first_tool.classList.contains("on_grid")
-        :           false;
-
-if(log_this) log("t_grid_IS_ON_GRID: ...return "+result+" .. %c CALLED BY ["+caller+"]", lb0);
-    return result;
+if( log_this) log("%c t_grid_IS_ON_GRID %c CALLED BY "+_caller+" %c "+grid_sized, lbL, lbR, lbH+(grid_sized ? lf4 : lf8));
+    return grid_sized;
 };
 /*}}}*/
 /*_ t_grid_SIZE_[ON/OFF/SET] {{{*/
@@ -444,7 +437,7 @@ let t_grid_SIZE_OFF   = function() { t_grid_SIZE_STATE(false); };
 let t_grid_SIZE_STATE = function(state)
 {
     let caller = "t_grid_SIZE_STATE("+state+")";
-if(logging_grid) log("%c "+caller,lb5+lbF);
+if(LOG_MAP.T2_GRID) log("%c "+caller,lb5+lbF);
 
     let          checkbox         = t_getElement("headsup_l_size_checkbox");
     if(checkbox) checkbox.checked = state;
@@ -458,20 +451,22 @@ if(logging_grid) log("%c "+caller,lb5+lbF);
 /*}}}*/
 
 /* GRID LAYOUT */
-/*_ t_grid_MOVE_OFF {{{*/
-let t_grid_MOVE_OFF = function()
+/*_ _t_grid_LAYOUT_OFF {{{*/
+let _t_grid_LAYOUT_OFF = function()
 {
-    let caller = "t_grid_MOVE_OFF";
-if(logging_grid) log("%c "+caller,lb9+lbF);
+    let caller = "_t_grid_LAYOUT_OFF";
+if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
 
     if(!tools_map  ) return;
 
     let n = 1;
-    for(let [panel, map] of tools_map)
+    for(let i=0; i< tools_map.length; ++i)
     {
-        if(panel == hotspot) continue;
-        let el = panel;
-        if(!el) continue;
+        let   map = tools_map[i];
+        let panel =       map.panel;
+        if( panel == hotspot) continue;
+        if(!panel           ) continue;
+        let    el = panel;
 
         /* remove grid class */
         el.classList.remove("on_grid");
@@ -485,11 +480,12 @@ if(logging_grid) log("%c "+caller,lb9+lbF);
         /* restore top-level saved position */
         if(t_tools_loaded && is_a_tool_container(el))
         {
-            if(el != hotspot) {
-                el.style.position = map.p     ;
-                el.style.left     = map.x+"px";
-                el.style.top      = map.y+"px";
-            }
+/*{{{
+logXXX("RESTORE SAVED POSITION=["+map.x+" "+map.y+"]")
+}}}*/
+            el.style.position = map.p     ;
+            el.style.left     = map.x+"px";
+            el.style.top      = map.y+"px";
         }
         else {
             el.style.position = "initial";
@@ -509,42 +505,44 @@ if(logging_grid) log("%c "+caller,lb9+lbF);
 
 };
 /*}}}*/
-/*_ t_grid_MOVE_ON {{{*/
-let t_grid_MOVE_ON = function()
+/*_ _t_grid_LAYOUT_ON {{{*/
+let _t_grid_LAYOUT_ON = function()
 {
-    let caller  = "t_grid_MOVE_ON";
-let log_this = LOG_MAP.T3_GRID;
+    let caller  = "_t_grid_LAYOUT_ON";
+let log_this = LOG_MAP.T2_GRID;
 if(log_this) log("%c "+caller,lb9+lbF);
-
     /* UPDATE GRID LAYOUT {{{*/
-    let on_grid = t_grid_IS_ON_GRID(caller);
     t_grid_MEASURE();
 
     /*}}}*/
 
-if(log_this && !on_grid) log("%c SAVING TOOLS POSITIONS",lb9);
-
     let   x = t_mw;
     let   y = t_mh;
     let num = 1;
-    for(let [panel, map] of tools_map)
+    for(let i=0; i< tools_map.length; ++i)
     {
-        if(panel == hotspot) continue;
+        let   map = tools_map[i];
+        let panel =       map.panel;
+        if( panel == hotspot) continue;
+        if(!panel           ) continue;
         let el = panel;
-        if(!el) continue;
 
 /*if(log_this) console_log(num+" [xy_wh]=["+x+" "+y+"] ["+t_gw+"x"+t_gh+"] ["+el.id+"]");*/
 
         /* set on grid */
-        if(!on_grid ) {
-            el.style.position = "fixed";
-            el.classList.remove("hidden");
-            el.classList.add   ("on_grid");
-            el.classList.add   ("cc"+num);
-        }
+        el.style.position = "fixed";
+        el.classList.remove("hidden" );
+        el.classList.add   ("on_grid");
+        el.classList.add   ("cc"+num );
+
+        map.x = el.offsetLeft;
+        map.y = el.offsetTop;
+
+/*{{{
+logXXX("%c"+caller+"%c "+panel.id+" %c "+map.x+" "+map.y, lbH, lbC+lf3, lbH+lf8);
+}}}*/
 
         /* grid position */
-        el.style.zIndex   = 0;
         el.style.left     = x+"px";
         el.style.top      = y+"px";
 
@@ -581,22 +579,22 @@ if(log_this && !on_grid) log("%c SAVING TOOLS POSITIONS",lb9);
 
 let t_rows = 0;
 let t_cols = 0;
-let t_gw   = 0;
-let t_gh   = 0;
-let t_mw   = 0;
-let t_mh   = 0;
-let t_mg   = 0;
+let t_gw   = 0; /* grid */
+let t_gh   = 0; /* grid */
+let t_mw   = 0; /* margin */
+let t_mh   = 0; /* margin */
+let t_mg   = 0; /* margin gap */
 
 let t_grid_MEASURE = function()
 {
-    let caller = "t_grid_MEASURE"; if(logging_grid) console_log(caller);
+    let caller = "t_grid_MEASURE"; if(LOG_MAP.T2_GRID) console_log(caller);
     /* t_rows t_cols {{{*/
 
-    if(!tools_map.size) t_tools_TOC(caller);
+    if(!tools_map.length) t_load_TOOLS_MAP(caller);
 
-    t_cols  = Math.round(Math.sqrt(tools_map  .size  ));
+    t_cols  = Math.round(Math.sqrt(tools_map.length));
 
-    if((t_cols*t_cols) < tools_map  .size  ) t_cols += 1;
+    if((t_cols*t_cols) < tools_map.length  ) t_cols += 1;
 
     t_rows  = t_cols;
 
@@ -608,7 +606,7 @@ let t_grid_MEASURE = function()
     let  cw = Math.round(ww / (t_cols+1));
     let  ch = Math.round(wh / (t_rows+1));
     if((cw == t_gw) && (ch == t_gh)) {
-if(logging_grid) console_warn(caller+": GRID UNCHANGED");
+if(LOG_MAP.T2_GRID) console_warn(caller+": GRID UNCHANGED");
         return;
     }
 
@@ -618,8 +616,8 @@ if(logging_grid) console_warn(caller+": GRID UNCHANGED");
     t_mh = Math.round(ch/2);
     t_mg = Math.round(ch/8);
 
-if(logging_grid && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mw+"+ "+t_cols+"x"+t_gw+" + "+t_mw+") == "+(t_mw + t_cols*t_gw +t_mw)+" == ww= "+ww+"");
-if(logging_grid && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mh+"+ "+t_rows+"x"+t_gh+" + "+t_mh+") == "+(t_mh + t_rows*t_gh +t_mh)+" == wh= "+wh+"");
+if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mw+"+ "+t_cols+"x"+t_gw+" + "+t_mw+") == "+(t_mw + t_cols*t_gw +t_mw)+" == ww= "+ww+"");
+if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mh+"+ "+t_rows+"x"+t_gh+" + "+t_mh+") == "+(t_mh + t_rows*t_gh +t_mh)+" == wh= "+wh+"");
     /*}}}*/
     /* headsup_l_table {{{*/
 
@@ -628,7 +626,7 @@ if(logging_grid && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mh+"+ "+t_rows+
             + " <tr> <td>("+t_mh+"</td><td>+</td> <th>"+t_rows+"x<em class='cc0'>"+t_gh+"</em></th> <td>+</td> <td>"+t_mh+")</td> <td>==</td> <th class='cc4'>"+(t_mh + t_rows*t_gh +t_mh)+"</th> <td>==</td> <th class='cc5'>wh= "+wh+"</th></tr>"
             + "</table>"
         ;
-if(logging_grid) log(msg);
+if(LOG_MAP.T2_GRID) log(msg);
     let el = t_getElement("headsup_l_table");
     if(el) el.innerHTML = msg;
 
@@ -640,7 +638,7 @@ if(logging_grid) log(msg);
 /*_ t_grid_css_list {{{*/
 let t_grid_css_list = function()
 {
-    let caller = "t_grid_css_list"; if(logging_grid) console_log(caller);
+    let caller = "t_grid_css_list"; if(LOG_MAP.T2_GRID) console_log(caller);
     /* traces open {{{*/
     let s = "<div>";
     s    += " document.styleSheets.length=["+document.styleSheets.length+"]";
@@ -711,7 +709,7 @@ let t_grid_css_list = function()
 let t_grid_insertRules = function()
 {
     let caller = "t_grid_insertRules";
-if(logging_grid) console_log(caller);
+if(LOG_MAP.T2_GRID) console_log(caller);
 
     if( t_grid_css ) t_grid_deleteRules();
 
@@ -742,14 +740,14 @@ if(logging_grid) console_log(caller);
 
     t_grid_trace_add(s);
 
-if(logging_grid) console_log(caller+":");
-if(logging_grid) console_dir(t_grid_css);
+if(LOG_MAP.T2_GRID) console_log(caller+":");
+if(LOG_MAP.T2_GRID) console_dir(t_grid_css);
 };
 /*}}}*/
 /*_ t_grid_deleteRules {{{*/
 let t_grid_deleteRules = function()
 {
-    let caller = "t_grid_deleteRules"; if(logging_grid) console_log(caller);
+    let caller = "t_grid_deleteRules"; if(LOG_MAP.T2_GRID) console_log(caller);
 
     let        s  = "";
 /*
@@ -797,7 +795,7 @@ let t_grid_get_t_grid_css = function()
     if(t_grid_css) return;
 
     let caller = "t_grid_get_t_grid_css";
-if(logging_grid) console_log(caller);
+if(LOG_MAP.T2_GRID) console_log(caller);
 
     let s = caller+": CREATING <em>"+T_GRID_CSS_ID+"</em><br>";
     let el   = document.createElement("STYLE");
@@ -810,19 +808,24 @@ if(logging_grid) console_log(caller);
     t_grid_css = el.sheet;
 
     t_grid_trace(s);
-if(logging_grid) console_dir(t_grid_css);
+if(LOG_MAP.T2_GRID) console_dir(t_grid_css);
 };
 /*}}}*/
 
 /* GRID LOG */
 /*_ t_grid_logging_toggle {{{*/
-let t_grid_logging_toggle = function()
+let t_grid_logging_toggle = function(new_state="toggle")
 {
     let caller = "t_grid_logging_toggle";
-    logging_grid = !logging_grid;
-    log("%c "+caller+": logging_grid set to "+logging_grid, lb7+lbF);
+
+    LOG_MAP.T2_GRID
+    = (new_state == "toggle") ? !LOG_MAP.T2_GRID
+    :                            new_state;
+
+log("%c "+caller+": LOG_MAP.T2_GRID set to "+LOG_MAP.T2_GRID, lb7+lbF);
 
     t_grid_onWork_EL_changed(caller);
+    t_sync_tool_clones(caller);
 };
 /*}}}*/
 /*_ t_grid_trace {{{*/
@@ -844,7 +847,7 @@ let t_grid_trace_add = function(s)
 /*_ t_getElement {{{*/
 let t_getElement = function(id)
 {
-/*if(logging_grid) log("t_getElement("+id+")");*/
+/*if(LOG_MAP.T2_GRID) log("t_getElement("+id+")");*/
     let el = null;
 try {
     if(shadow_root) el = shadow_root.querySelector("#"+id);
@@ -856,3 +859,4 @@ try {
 /*
 console_log(DOM_GRID_JS_ID+": ...ready");
 */
+

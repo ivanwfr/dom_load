@@ -1,22 +1,14 @@
-javascript: (function(){
-/*dom_wording 'use strict';*/
-DOM_WORDING_JS_ID       = 'dom_wording_js';
-DOM_WORDING_JS_TAG      = DOM_WORDING_JS_ID +' (180601:17h)'; let tag = DOM_WORDING_JS_TAG;
-let DOM_WORDING_CSS_ID  = 'dom_wording_css';
-/* CONSOLE TEMPLATE TO BE IMPLEMENTED BY EMBEDDING LAYER {{{*/
-      LF            = String.fromCharCode(10);
-      CR            = String.fromCharCode(13);
-      CS            = "color:yellow;background-color:navy;font-size:150%;";
-      console_clear = function(  msg=null) { try { console.clear(); if(msg) console.warn("%c=== CLEARED BY: "+msg,CS);        } catch(ex) {} };
-      console_dir   = function(o,msg=null) { try {                  if(msg) console.log (               msg); console.dir(o); } catch(ex) {} };
-      console_log   = function(  msg     ) { try {                          console.log (               msg);                 } catch(ex) {} };
-      console_warn  = function(  msg=null) { try {                          console.warn(               msg);                 } catch(ex) {} };
-/*}}}*/
+"use strict";
+/* dom_wording */
+let DOM_WORDING_JS_ID       = 'dom_wording_js';
+let DOM_WORDING_JS_TAG      = DOM_WORDING_JS_ID +' (181229:15h)'; let tag = DOM_WORDING_JS_TAG;
+let DOM_WORDING_CSS_ID      = 'dom_wording_css';
+
 /*_ dom_wording_cycle {{{*/
-dom_wording_cycle = function(stage='OFF', anchor_freeze=true)
+let dom_wording_cycle = function(stage='OFF', anchor_freeze=true)
 {
     let caller = "dom_wording_cycle(stage=["+stage+"], anchor_freeze=["+anchor_freeze+"])";
-let log_this = LOG_MAP.EV5_CB;
+let log_this = LOG_MAP.EV5_TOOL_CB;
 if( log_this) log(caller);
 
     if(!dom_wording_css && !dom_wording_inject()) return;
@@ -38,12 +30,12 @@ if( log_this) log(caller);
 /*_ dom_wording_activate {{{*/
 let dom_wording_activate = function(anchor_freeze)
 {
-    /*{{{*/
-    let caller = "dom_wording_activate(anchor_freeze "+anchor_freeze+")";
-let log_this = LOG_MAP.EV5_CB;
-if( log_this) log(caller);
+/*{{{*/
+let   caller = "dom_wording_activate(anchor_freeze "+anchor_freeze+")";
+let log_this = LOG_MAP.EV5_TOOL_CB;
 
-    /*}}}*/
+if( log_this) log(caller);
+/*}}}*/
     /* COMPOSE .. [W]ord [A]nchor [L]ight [D]ark {{{*/
     let anchor = anchor_freeze ? "a" : "A";
 
@@ -61,17 +53,17 @@ if( log_this) log(caller);
         + wording
         + anchor
     ;
-    let el = css_map.get(key);
-    if( el) {
-        for(let [k, v] of css_map) {
-            v.disabled = (k != key);
-if(log_this && !v.disabled) log("PRELOADED WORDING CSS ENABLED: %c "+k+" %c"+ ellipsis(el.href, 64), lbF, lb7);
-        }
-    }
-    else {
-        console_warn("*** "+caller+": ["+key+"] NOT FOUND IN PRELOADED [css_map]");
+    let el = css_map[key];
+    let found = false;
+    for(let i = 0; i< css_map.length; ++i) {
+        let      id = css_map[i].id;
+        let      el = css_map[i].el;
+        found      |= (id == key);
+        el.disabled = (id != key);
+if(log_this && !el.disabled) logBIG("WORDING CSS: "+i+". id ["+css_map[i].id+"] .. el ["+get_id_or_tag(css_map[i].el)+"]");
     }
     /*}}}*/
+if(!found) console.warn("*** "+caller+": ["+key+"] NOT FOUND IN PRELOADED [css_map]");
     /* ADD-REMOVE CLICK EVENT LISTENER {{{*/
     if(anchor_freeze) document.body.addEventListener   ('click', dom_wording_capture_click, true);
     else              document.body.removeEventListener('click', dom_wording_capture_click, true);
@@ -87,7 +79,7 @@ let dom_wording_inject = function()
 };
 /*}}}*/
 /*_ dom_wording_init {{{*/
-let css_map = new Map();
+let css_map = [];
 
 let anchor_on;
 let anchor_off;
@@ -99,7 +91,7 @@ let dark_theme;
 let dom_wording_init = function()
 {
 let caller = "dom_wording_init";
-let log_this = LOG_MAP.EV5_CB;
+let log_this = LOG_MAP.EV5_TOOL_CB;
 if( log_this) log(caller+": INSERTING ["+DOM_WORDING_CSS_ID+"]");
     /* anchor on-off {{{*/
     anchor_on
@@ -117,14 +109,16 @@ if( log_this) log(caller+": INSERTING ["+DOM_WORDING_CSS_ID+"]");
 
     anchor_off
         = ''
-/*      + ' html     {                margin : 8px                     !important; }'*/
-        + ' a, a *   {                cursor : text;                               }'
-        + ' a        {                 color : #222                    !important; }'
-        + ' a        {      background-color : rgba(128,128,128,0.5)   !important; }'
+/*      + ' html            {           margin : 8px                   !important; }'*/
+        + ' a, a *          {           cursor : text;                             }'
+        + ' a               {            color : #FFF                  !important; }'
+        + ' a               {      text-shadow : 1px 1px 2px black     !important; }'
+        + ' a               { background-color : #888                  !important; }'
+        + ' a               {    border-radius : 1em                   !important; }'
         + ' .toolbag_button {           cursor : not-allowed;                      }'
         + ' .toolbag_button {            color : #222                  !important; }'
         + ' .toolbag_button { background-color : rgba(128,128,128,0.5) !important; }'
-/*      + ' a        {           font-weight : 800                     !important; }'*/
+/*      + ' a              {       font-weight : 800                   !important; }'*/
 /*{{{
         + ' a,  a *  {               pointer-events : none             !important; }'
         + '     a em {               pointer-events : none             !important; }'
@@ -191,24 +185,27 @@ if( log_this) log(caller+": INSERTING ["+DOM_WORDING_CSS_ID+"]");
     /* DOM_WORDING_JS_TAG {{{*/
     let         sig = "#"+DOM_WORDING_CSS_ID+" { content: "+DOM_WORDING_JS_TAG+"; } ";
     let          id = DOM_WORDING_CSS_ID;
-    let        data = 'data:text/css,'+escape( sig );
+    let          su = "/*# sourceURL=dom_wording.js */";
+    let        data = 'data:text/css,'+escape(su +"\\n"+ sig);
 
     dom_wording_css = dom_wording_inject_css(id, data);
     /*}}}*/
     /* DOM_WORDING CSS PRELOAD .. [W]ord [A]nchor [L]ight [D]ark {{{*/
 
-    id="DWA"; data= 'data:text/css,'+escape("/*_"+id+"_*/" +dark_theme  +wording_on  +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-    id="LWA"; data= 'data:text/css,'+escape("/*_"+id+"_*/" +light_theme +wording_on  +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-    id="DWa"; data= 'data:text/css,'+escape("/*_"+id+"_*/" +dark_theme  +wording_on  +anchor_off );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-    id="LWa"; data= 'data:text/css,'+escape("/*_"+id+"_*/" +light_theme +wording_on  +anchor_off );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-                                                                        
-    id= "wA"; data= 'data:text/css,'+escape("/*_"+id+"_*/"              +wording_off +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-    id="DwA"; data= 'data:text/css,'+escape("/*_"+id+"_*/" +dark_theme  +wording_off +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-    id="LwA"; data= 'data:text/css,'+escape("/*_"+id+"_*/" +light_theme +wording_off +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
-    id= "wa"; data= 'data:text/css,'+escape("/*_"+id+"_*/"              +wording_off +anchor_off );  el = dom_wording_inject_css(id, data);  css_map.set(id, el);
+    let el;
+    id="DWA"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */" +dark_theme  +wording_on  +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+    id="LWA"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */" +light_theme +wording_on  +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+    id="DWa"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */" +dark_theme  +wording_on  +anchor_off );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+    id="LWa"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */" +light_theme +wording_on  +anchor_off );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+
+    id= "wA"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */"              +wording_off +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+    id="DwA"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */" +dark_theme  +wording_off +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+    id="LwA"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */" +light_theme +wording_off +anchor_on  );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
+    id= "wa"; data= 'data:text/css,'+escape("/*# sourceURL="+id+" */"              +wording_off +anchor_off );  el = dom_wording_inject_css(id, data);  css_map.push({id:id , el:el});
 
 /*{{{
-for(let [k, v] of css_map) log(". k=["+k+"] v=["+ellipsis(v, 64)+"]");
+for(let [id, el] of css_map) log(". id=["+id+"] el=["+ellipsis(el, 64)+"]");
+for(let i = 0; i< css_map.length; ++i) log(i+". id ["+css_map[i].id+"] .. el ["+get_id_or_tag(css_map[i].el)+"]");
 }}}*/
     /*}}}*/
 };
@@ -218,8 +215,8 @@ let dom_wording_inject_css = function(id, link_or_data)
 {
     let el  = document.createElement("link");
     el.id   = id;
-    el.rel  = "stylesheet";
     el.type = "text/css";
+    el.rel  = "stylesheet";
     el.href = link_or_data;
     document.getElementsByTagName("head")[0].appendChild(el);
     return el;
@@ -263,4 +260,4 @@ console.dir(e);
 */
 };
 /*}}}*/
-})();
+

@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 <head><title>dom_tools_html</title></head>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (180601:15h)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (190102:19h)</span>
 
- <div  id = "seeker_PU"    title="seeker_PU"       class="seeker_P"     ><div id="seeker_CU" >seeker up    </div></div>
- <div  id = "seeker_PD"    title="seeker_PD"       class="seeker_P"     ><div id="seeker_CD" >seeker_thumbs</div></div>
-
- <div id = "seekspot_U"></div>
- <div  id = "seekspot"     title="seekspot"        class="hotspot_frame">
-  <div id = "seekspot_arrow"  >&#x2191;</div>
- </div>
- <div id = "seekspot_D"></div>
-
- <!--       HOTSPOT {{{-->
+ <!-- hotspot {{{-->
  <div   id="hotspot"       title="hotspot"         class="hotspot_frame">
   <div  id="hotwave"                               class="hotwave">
    <div id="hotring"                               class="hotring">&nbsp;</div>
@@ -19,93 +10,83 @@
   <div id="hotspot_c">&#x00BB;</div>
  </div>
  <!--}}}-->
- <!--       pivspot {{{-->
- <div   id="pivspot"       title="pivspot"         class="hidden">
-   <div id="pivspot_c">&#x00BB;</div>
+ <!-- headsup {{{ -->
+ <div id="headsup"         title="headsup"         class="transcript hidden">
+  <em  id="thumb_p"        title="thumb_p">&#x0020;</em>
+  <em  id="theme_dark"     title="theme_dark"      class="toolbag_button cc8" >LIGHT</em>
+  <em  id="wording"        title="wording"         class="toolbag_button cc3" >WORDING</em>
+  <em  id="anchor_freeze"  title="anchor_freeze"   class="toolbag_button cc9" >&#x26D4;</em>
+  <em  id="containers_hi"  title="containers_hi"   class="toolbag_button cc9" >&#x00A7;</em>
+  <em  id="overflow_visi"  title="overflow_visi"   class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="scroll_smooth"  title="scroll_smooth"   class="toolbag_button cc9" >&nbsp;</em>
+
+  <em  id="tools_extras"    title="tools_extras"    class="toolbag_button cc9">&#x2630;</em>
+
+  <em  id="show_seekzone"  title="show_seekzone"   class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="pin_seekspot"   title="pin_seekspot"    class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="log_seekspot"   title="log_seekspot"    class="toolbag_button cc9" >&nbsp;</em>
+
  </div>
- <!--}}}-->
+ <!-- }}} -->
 
  <!-- pat_bag {{{ -->
   <div id="pat_bag"        title="PAT BAG"        class="transcript hidden bag"></div>
+ <!-- }}} -->
+ <!-- headsup_w {{{ -->
+ <div    id="headsup_w"       title="headsup_w"       class="transcript hidden"  >
+  <input id="tools_filter"    title="tools_filter"    type="text"               />
+  <em    id="recycle"         title="recycle"         class="toolbag_button"     >&#x267B;</em>
+  <em    id="words_exact"     title="words_exact"     class="toolbag_button cc3" >&#x2261;</em>
+  <em    id="words_segment"   title="words_segment"   class="toolbag_button cc4" >&#x2282;</em>
+  <em    id="words_head_tail" title="words_head_tail" class="toolbag_button cc5" >&#x2208;</em>
+  <em    id="words_opcycle"   title="words_opcycle"   class="toolbag_button cc9" >&#x27F3;</em>
+  <em    id="words_drop_ing"  title="words_drop_ing"  class="toolbag_button cc8" >&nbsp;</em>
+  <em    id="words_drop_s"    title="words_drop_s"    class="toolbag_button cc8" >&nbsp;</em>
+  <div   id="words_regex"                             class="txt_log"            >words_regex</div>
+ </div>
  <!-- }}} -->
  <!-- sel_bag {{{ -->
   <div id="sel_bag"        title="sel_bag"        class="transcript hidden bag"><span class="seeker_handle"></span></div>
  <!-- }}} -->
 
- <!-- headsup {{{ -->
- <div id="headsup"         title="headsup"         class="transcript hidden">
-  <!-- thumb_p {{{-->
-  <em id="thumb_p"         title="thumb_p">&#x0020;</em>
-
-  <!--}}}-->
-  <!-- wording {{{ -->
-  <em id="wording"         title="wording"         class="toolbag_button cc3" onclick='toggle_event(event);' >WORDING</em>
-  <em id="theme_dark"      title="theme_dark"      class="toolbag_button cc8" onclick='toggle_event(event);' >LIGHT</em>
-  <!-- }}} -->
-  <!-- anchor_freeze {{{ -->
-  <em id="anchor_freeze"   title="anchor_freeze"   class="toolbag_button cc9" onclick='toggle_event(event);'>&#x26D4;</em>
-  <!-- }}} -->
-  <!-- containers_hi {{{ -->
-  <em id="containers_hi"   title="containers_hi"   class="toolbag_button cc9" onclick='toggle_event(event);'>&#x00A7;</em>
-  <!-- }}} -->
-  <!-- scroll_smooth  {{{ -->
-  <em id="scroll_smooth"   title="scroll_smooth"   class="toolbag_button cc9" onclick='toggle_event(event);'>&nbsp;</em>
-  <!-- }}} -->
-  <!-- overflow_visi  {{{ -->
-  <em id="overflow_visi"   title="overflow_visi"   class="toolbag_button cc9" onclick='toggle_event(event);'>&nbsp;</em>
-  <!-- }}} -->
-  <!-- tools_extras {{{ -->
-  <em id="tools_extras"    title="tools_extras"    class="toolbag_button cc9" onclick='toggle_event(event);'>&#x2630;</em>
-
-  <!-- }}} -->
- </div>
- <!-- }}} -->
- <!-- headsup_w {{{ -->
- <div id="headsup_w"       title="headsup_w"       class="transcript hidden"
-                                                   onkeyup    ='t_filter_CB(event);'
-  >
-  <!-- tools_filter - reset {{{ -->
-  <input id="tools_filter" title="tools_filter"    onchange   ='t_filter_CB(event);' type="text"/>
-
-  <em id="reset"           title="reset"           class="toolbag_button"     onclick='t_headsup_CB(event);'    >&#x267B;</em>
-  <!-- }}} -->
-  <em id="words_exact"     title="words_exact"     class="toolbag_button cc3" onclick='toggle_event(event);'>&#x2261;</em>
-  <em id="words_segment"   title="words_segment"   class="toolbag_button cc4" onclick='toggle_event(event);'>&#x2282;</em>
-  <em id="words_head_tail" title="words_head_tail" class="toolbag_button cc5" onclick='toggle_event(event);'>&#x2208;</em>
-  <em id="words_opcycle"   title="words_opcycle"   class="toolbag_button cc9" onclick='toggle_event(event);'>&#x27F3;</em>
- </div>
- <!-- }}} -->
  <!-- headsup_ds {{{ -->
- <div id="headsup_ds"      title="headsup_ds"      class="transcript hidden">
-  <em id="tools_drag"      title="tools_drag"      class="toolbag_button"     onclick='toggle_event(event);'>&#x00BB;</em>
-  <em id="tools_scroll"    title="tools_scroll"    class="toolbag_button"     onclick='toggle_event(event);'>&#x2693;</em>
+ <div id="headsup_ds"       title="headsup_ds"      class="transcript hidden">
+  <em  id="tools_trap"      title="tools_trap"      class="toolbag_button"    >&#x00BB;</em>
+  <em  id="tools_scroll"    title="tools_scroll"    class="toolbag_button"    >&#x2693;</em>
+  <em  id="site_or_page"    title="site_or_page"    class="toolbag_button cc9">&nbsp;</em>
+  <em  id="mask_or_hide"    title="mask_or_hide"    class="toolbag_button cc9">&nbsp;</em>
+  <em  id="edit_or_stage"   title="edit_or_stage"   class="toolbag_button cc9">&nbsp;</em>
+  <em  id="dom_hide1_reset" title="dom_hide1_reset" class="toolbag_button cc9">&nbsp;</em>
+  <em  id="deny_or_allow"   title="deny_or_allow"   class="toolbag_button cc8">&nbsp;</em>
+<!--{{{
+  <em  id="targeteer"     title="targeteer"     class="toolbag_button cc9">&nbsp;</em>
+  <em  id="target_01"     title="target_01"     class="toolbag_button cc1">&nbsp;</em>
+  <em  id="target_02"     title="target_02"     class="toolbag_button cc2">&nbsp;</em>
+  <em  id="target_03"     title="target_03"     class="toolbag_button cc3">&nbsp;</em>
+}}}-->
  </div>
  <!-- }}} -->
  <!-- headsup_bw {{{ -->
- <div id="headsup_bw"      title="headsup_bw"       class="transcript hidden" onclick='t_body_layout_CB(event);'>
-  <em id="headsup_bw_value"    class='cc10'>BODY WIDTH</em><br>
-  <em class='cc1'> 480</em><em class='cc2'> 640</em><em class='cc3'> 780</em><br>
-  <em class='cc4'> 960</em><em class='cc5'>1024</em><em class='cc6'>1200</em><br>
-  <em class='cc7'>1440</em><em class='cc8'>1600</em><em class='cc9'>1980</em><br>
+ <div id="headsup_bw"      title="headsup_bw"       class="transcript hidden">
+  <em id="headsup_bw_value"    class="cc10">BODY WIDTH</em><br>
+  <em class="cc1"> 480</em><em class="cc2"> 640</em><em class="cc3"> 780</em><br>
+  <em class="cc4"> 960</em><em class="cc5">1024</em><em class="cc6">1200</em><br>
+  <em class="cc7">1440</em><em class="cc8">1600</em><em class="cc9">1980</em><br>
  </div>
  <!-- }}} -->
  <!-- headsup_bz {{{ -->
- <div id="headsup_bz"      title="headsup_bz"       class="transcript hidden" onclick='t_body_zoom_CB(event);'>
-  <em id="headsup_bz_value"     class='cc10'>BODY ZOOM</em><br>
-  <em class='cc1'>  70%</em><em class='cc2' >  80%</em><em class='cc3'>  90%</em><br>
-  <em class='cc1'> 100%</em><em class='cc2' > 110%</em><em class='cc3'> 120%</em><br>
-  <em class='cc1'> 130%</em><em class='cc2' > 150%</em><em class='cc3'> 160%</em><br>
-  <em class='cc1'> 180%</em><em class='cc2' > 200%</em><em class='cc3'> 220%</em><br>
+ <div id="headsup_bz"      title="headsup_bz"         class="transcript hidden">
+  <em id="headsup_bz_value"     class="cc10">BODY ZOOM</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 150%</em><em class="cc3"> 160%</em><br>
+  <em class="cc1"> 180%</em><em class="cc2" > 200%</em><em class="cc3"> 220%</em><br>
  </div>
  <!-- }}} -->
 
  <!-- dom_traversal {{{ -->
- <div id="dom_traversal"   title="dom_traversal"   class="transcript hidden"
-                                                   onclick    ='t_dom_traversal_CB(event);'
-                                                   onchange   ='t_dom_traversal_CB(event);'
-                                                   onkeyup    ='t_filter_CB       (event);'
-                                                 >
-                                                 <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
+ <div id="dom_traversal"   title="dom_traversal"      class="transcript hidden" >
+ <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
   <em class = "toolbag_button cc5">NodeIterator</em>
   <em class = "toolbag_button cc6">TreeWalker</em>
   <em class = "toolbag_button cc7">childNodes</em>
@@ -116,9 +97,7 @@
    <tr>
     <th>node</th>
     <td>
-     <input id="tools_node" title="tools_node"     type="text"
-                                                   onchange   ='t_filter_CB       (event);'
-                                                />
+     <input id="tools_node" title="tools_node"        type="text" />
      <span class="cc2">html</span>
      <span class="cc3">head</span>
      <span class="cc4">body</span>
@@ -128,24 +107,33 @@
   <!-- }}} -->
  </div>
  <!-- }}} -->
- <!-- dev_log_map {{{ -->
- <div id="dev_log_map"     title="dev_log_map"     class="transcript hidden"
-                                 onclick='dom_logging_CB(event);'>
-                                 dev_log_map placeholder:<br />
-                                 <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
+ <!-- test_panel: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
+ <div id="test_panel"      title="test_panel"         class="transcript hidden">
+  <em id="RELOAD"          title="RELOAD"             class="toolbag_button cc7"> RELOAD    </em>
+  <em id="CLEAR"           title="CLEAR"              class="toolbag_button"    > CLEAR     </em>
+  <em id="REGEX"           title="REGEX"              class="toolbag_button"    > REGEX     </em>
+  <em id="BEHAVIOR"        title="BEHAVIOR"           class="toolbag_button"    > BEHAVIOR  </em>
+  <em id="HIGHLIGHT"       title="HIGHLIGHT"          class="toolbag_button cc3"> HIGHLIGHT </em>
  </div>
  <!-- }}} -->
- <!-- dev_log_calls: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
- <div id="dev_log_calls"                           class="transcript hidden"
-                                 onclick='t_onclick(event);'>
-  <em id="RELOAD"          title="RELOAD"         class="toolbag_button cc7"> RELOAD   </em>
-  <em id="CLEAR"           title="CLEAR"          class="toolbag_button"    > CLEAR    </em>
-  <em id="REGEX"           title="REGEX"          class="toolbag_button"    > REGEX    </em>
-  <em id="BEHAVIOR"        title="BEHAVIOR"       class="toolbag_button"    > BEHAVIOR </em>
- </div>
- <!-- }}} -->
+
+  <!-- dev_log_map {{{-->
+  <div
+   id      = "dev_log_map"
+   title   = "dev_log_map"
+   class   = "transcript hidden"
+   >
+   dev_log_map placeholder:<br>
+   <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
+
+  </div>
+  <!-- }}} -->
  <!-- dom_load_tags (placeholder) {{{ -->
- <div id="dom_load_tags"                           class="transcript hidden">
+ <div
+  id       = "dom_load_tags"
+  title    = "dom_load_tags"
+  class    = "transcript hidden"
+  >
   dom_load_tags placeholder:<br />
   <i class="todo">...should have been populated by <em>dom_tools.show_tags</em> with the value of DOM_LOAD_TAG</i>
 
@@ -158,7 +146,18 @@
  <!-- transcript2 {{{ -->
  <div id="transcript2"     title="transcript2"  class="transcript hidden cleardiv"></div>
  <!-- }}} -->
- <!-- fly_div {{{ -->
- <div id="fly_div"         title="fly_div"  class="pinned hidden"></div>
- <!-- }}} -->
 
+ <!-- pivspot {{{-->
+ <div   id="pivspot"       title="pivspot"         class="hidden">
+   <div id="pivspot_c">&#x00BB;</div>
+ </div>
+ <!--}}}-->
+ <!-- seeker {{{-->
+ <div  id = "seeker_PU"    title="seeker_PU"       class="seeker_P"     ><div id="seeker_CU" >seeker up    </div></div>
+ <div  id = "seeker_PD"    title="seeker_PD"       class="seeker_P"     ><div id="seeker_CD" >seeker_thumbs</div></div>
+
+ <div id = "seekspot_U"                                                 ></div>
+ <div id = "seekzone"      title="seekzone"        class="hotspot_frame"></div>
+ <div id = "seekspot_A"                                                 >&#x2191;</div>
+ <div id = "seekspot_D"                                                 ></div>
+ <!--}}}-->

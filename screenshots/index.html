@@ -1,0 +1,454 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- DESCRIPTION {{{ -->
+<pre id="description1"   style="display:none;">The popup window</pre>
+<pre id="description2"   style="display:none;">The options window</pre>
+<pre id="description3"   style="display:none;">The background window - console log
+While loading a page</pre>
+<pre id="description4"   style="display:none;">Relaxing a CSP filter protected page (collapsed)
+While applying a Relax-Filter on a Git CSP-protected page</pre>
+<pre id="description5"   style="display:none;">Relaxing a CSP filter protected page (expanded)
+While applying a Relax-Filter on a Git CSP-protected page</pre>
+<pre id="description6"   style="display:none;">Relaxing a CSP filter protected page (collapsed .. expanded)
+While synchronizing the resulting title and icon with the Popup module</pre>
+
+<!-- }}} -->
+ 
+ <head>
+  <title>RTabs Chrome Extension</title>
+   <!-- CSS {{{ -->
+   <style>
+    body {
+     font-family:"Comic sans ms";
+     font-size:12px;
+     color:#333;
+     background-color: #FFF;
+     margin:0;
+     overflow: auto; //hidden;
+      padding-bottom:8em;
+    }
+    a          { color:#822; }
+    em         { background-color:#ff0; }
+    em         { padding:0 0.2em 0 0.2em; }
+    em         { font-weight:bold; }
+
+/* note {{{*/
+.note {
+ background        : #f0f0c0;
+ border-color      : #ffff80;
+ border-left-width : 5px;
+ border-left-style : solid !important;
+ font-family       : "monospace";
+ font-weight       : 700;
+ font-size         : 100%;
+/*
+ color             : #AAA;
+*/
+ padding           : 1ex 1em 1ex 1em;
+ display           : inline-block;
+ margin            : 1ex 1ex 1ex 0;
+}
+.note em { padding    : 0.2em; }
+.note em { line-height: 2.5em; }
+.note pre { margin:0; }
+.pat_div { display:none; }
+
+/*}}}*/
+
+    .collapsed { display:none;  }
+    .expanded  { display:block; }
+/*
+    #description        { border:0; }
+*/
+    #description        { margin-left:4em; }
+    #description        { height:5em; }
+    #description        { width:100%; }
+    #description        { font-size:100%; }
+
+    #description        {  filter : alpha(opacity =  50); }
+    #description        { opacity :                0.50;  }
+/*
+    #description        { background-color:#ffa; }
+*/
+    #description:hover  {  filter : alpha(opacity =  99); }
+    #description:hover  { opacity :                0.99;  }
+
+    #page_div  { text-align:center; margin:0ex; width:100%; height:100%; }
+
+    #sshot_img { border:1px groove #300; }
+    #sshot_img { margin-top:5em; }
+
+    .fold_grip        { border-radius  : 25px; }
+    .fold_grip        {  filter : alpha(opacity =1  ); }
+    .fold_grip        { opacity :                0.3;  }
+    .fold_grip:hover  {  filter : alpha(opacity =  8); }
+    .fold_grip:hover  { opacity :                0.8;  }
+    .fold_grip        { cursor:pointer; }
+
+    #nav_div {
+     position:fixed; top:1ex; left:1ex;
+     margin-top:0;
+     margin-left:1em;
+    }
+/*
+    #nav_table	{ display:none; }
+*/
+    #nav_table	{ border-radius : 25px; }
+    #nav_table	{ padding: 1px 20px 1px 20px;  }
+    #nav_table	{ filter : alpha(opacity =  80); }
+    #nav_table	{ opacity:                0.80;  }
+    #nav_table	{ background-color:lightgray; text-align:center; white-space:nowrap; }
+    #nav_table	{ float:right; }
+
+    .fold_div   {
+     margin-right:1em;
+     margin-left:1em;
+     margin-top:40px;
+     margin-bottom:40px;
+     //border:1px solid red;
+    }
+
+    .fold_pane	     { display:none; }
+    .fold_pane	     { border-radius : 25px; }
+    .fold_pane	     { background-color:lightgray; white-space:nowrap; }
+    .fold_pane	     { float:right; }
+
+     #description     { font-family:"Comic sans ms"; font-size:22px; }
+
+     #nav_prev       { cursor:pointer; user-select:none; }
+     #nav_next       { cursor:pointer; user-select:none; }
+
+     #nav_next { font-size:200%; text-align:left;   padding:0 1em 0 1em; }
+     #nav_prev { font-size:200%; text-align:right;  padding:0 1em 0 1em; }
+
+     #nav_prev       { border:2px outset; margin:0px; }
+     #nav_next       { border:2px outset; margin:0px; }
+
+     #nav_prev       { color:#888; }
+     #nav_next       { color:#888; }
+
+     #num_div  {          color : #888;                 }
+     #num_div  {          width : 100%;                 }
+     #num_div  {         filter : alpha(opacity =  10); }
+    #num_div  {        opacity :                0.10;  }
+    #num_div  {       position : absolute;             }
+    #num_div  {      font-size : 800px;                }
+    #num_div  {     text-align : center;               }
+    #num_div  { pointer-events : none;                 }
+
+    pre {
+     width:40em;
+     white-space: pre-wrap;       /* css-3 */
+     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+     white-space: -pre-wrap;      /* Opera 4-6 */
+     white-space: -o-pre-wrap;    /* Opera 7 */
+     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+.overlay  {
+ position         : fixed;
+ top              : 4em;
+ right            : 80px;
+ width            : 50%;
+ height           : 85%;
+ background-color : transparent;
+}
+.overlayL { left :0; background-color:transparent; background:rgba(255,000,000,.01); cursor:url( left.png) 4 12, auto; }
+.overlayR { right:0; background-color:transparent; background:rgba(000,255,000,.01); cursor:url(right.png) 4 12, auto; }
+
+   </style>
+   <!-- }}} -->
+    <!-- script - Disable mouse select {{{ -->
+    <script type="text/javascript">
+     var      omitformtags     = "input;textarea;select";
+     function disableselect(e) { if(omitformtags.indexOf(e.target.tagName.toLowerCase()) == -1) return false; }
+     function reEnable()       { return true; }
+
+     if(typeof document.onselectstart != "undefined") {
+      document.onselectstart  = new Function("return false");
+     }
+     else {
+      document.onmousedown    = disableselect;
+      document.onmouseup      = reEnable;
+     }
+    </script>
+    <!-- }}} -->
+    <!-- script - collapse expand {{{ -->
+    <script type="text/javascript">
+     function toggle_frame(id) { //{{{
+
+      // frame
+      var frame         = document.getElementById("frame_"+id);
+      if( !frame ) return;
+      frame.className   = (frame.className == "expanded") ? "collapsed" : "expanded";
+
+      // div
+      var div = document.getElementById("div_"+id);
+      if( !div ) return;
+      div.style.height  = (frame.className == "expanded") ? "90%" : "2em";
+      div.style.opacity = (frame.className == "expanded") ? 0.90  :  0.20;
+      div.style.padding = (frame.className == "expanded") ? "0 1em 1em 1em" : 0;
+
+     } //}}}
+    </script>
+    <!-- }}} -->
+    <!-- script - images {{{ -->
+    <!-- 
+vim: sw=2
+
+" RENAME FILE
+j0"qy$
+0ct"!!mv y$P$F/ ct.XXXbcw
+
+:cd %:h
+}!!ls -d  *.png | sed -e 's/\(.*\)/\t, \"\1\"/'
+    -->
+    <script type="text/javascript">
+     var img_num = 0;
+     var   IMAGES = new Array( //{{{
+	  "01_chrome_ext_popup_js.png"
+	, "02_chrome_ext_options_js.png"
+	, "03_chrome_ext_background_js.png"
+	, "04_git_csp_filter_relax_collapsed.png"
+	, "05_git_csp_filter_relax_expanded.png"
+	, "06_git_csp_filter_relax_popup.png"
+
+     ); //}}}
+     function page_init() { // {{{
+      try {
+       var td_select = document.getElementById("td_select");
+       var s     = "<select id='img_select' onchange='page_select(this.selectedIndex)'>";
+       for(var i=0; i < IMAGES.length; ++i)
+       {
+	var sel = (i==0) ? "selected" : "";
+	var val = get_img_title( IMAGES[i] );
+	s      += " <option value='"+ val +"' "+ sel +">"+ val +"</option>";
+       }
+       s        += "</select>";
+       td_select.innerHTML = s;
+       page_select(0);
+      }
+      catch(ex) { alert("" +"page_init():\n" + ex); }
+     } // }}}
+     function page_turn(direction) { // {{{
+      if( (direction < 0) && (img_num <= 0)
+       || (direction > 0) && (img_num >= (IMAGES.length-1))
+      )
+       return;
+      var num     = (img_num + direction) % IMAGES.length;
+      page_select(num);
+     } // }}}
+     function page_select(num) // {{{
+     {
+      img_num = num;
+      try {
+       var img_select = document.getElementById("img_select");
+       if( img_select ) {
+	img_select.selectedIndex = img_num;
+	//alert("img_select.selectedIndex=["+img_select.selectedIndex+"]");
+	el = document.getElementById("num_div")
+	if(el) el.innerText = num+1;
+       }
+
+       var sshot_img = document.getElementById("sshot_img");
+       var nav_next  = document.getElementById("nav_next");
+       var nav_prev  = document.getElementById("nav_prev");
+
+     //nav_next.innerHTML     =  (img_num > (IMAGES.length-2)) ? "|" : get_img_title( IMAGES[img_num+1] );
+     //nav_prev.innerHTML     =  (img_num <  1               ) ? "|" : get_img_title( IMAGES[img_num-1] );
+
+       sshot_img.src           = IMAGES[img_num];
+       img_title               = get_img_title( IMAGES[img_num] );
+       sshot_img.title         = img_title;
+       document.title          = get_img_tail( img_title );
+
+       // description
+       var description = document.getElementById("description");
+       if(description) {
+	var src_div    = document.getElementById("description"+(num+1));
+	if(src_div)
+	 description.innerHTML = src_div.innerHTML;
+	else
+	 description.innerHTML = "<span>"+(num+1)+"</span";
+       }
+
+      }
+      catch(ex) { alert("" +"page_select(num="+num+"):\n" + ex); }
+     } // }}}
+     function get_img_title(img_src) { // {{{
+      var s = img_src;
+      s = s.replace(   /img\//gi , "");
+      s = s.replace(    /\.\w*$/ , "");
+      s = s.replace(         /_/g, " ");
+      s = s.replace(     /^\d* / , "");
+    //s = s.replace(        /\s/ , " (");
+    //s = s.replace(         /$/ , ")");
+    //s = s.replace(        /\//g, " -- ");
+      s = s.replace(        /\//g, "\n");
+      s = s.charAt(0).toUpperCase() + s.slice(1);
+      return s;
+     } // }}}
+     function get_img_tail(img_title) { // {{{
+      var s = img_title;
+      s = s.replace(             /.*\n/g,     " ");
+      s = s.replace( /(\b\w+)\s.*(\b\w+)\s+(\b\w+)$/g, '$1...$2 $3');
+      return s;
+     } // }}}
+     function img_onclick(event) { // {{{
+      var x=event.clientX;
+      var y=event.clientY;
+      var w=document.body.clientWidth;
+      var h=document.body.clientHeight;
+      //alert("x=["+x+"], y=["+y+"], w=["+w+"], h=["+h+"]")
+      if(x < w/2) page_turn(-1);
+      else        page_turn(+1);
+     } // }}}
+     function nav_onclick(name) { // {{{
+       var el = document.getElementById(name);
+       if(el)
+	el.style.display = (el.style.display != "block") ? "block" : "none";
+       var sshot_img = document.getElementById("sshot_img");
+       if(sshot_img)
+	sshot_img.style.marginTop = (el.style.display != "block") ? "" : "64px";
+     } // }}}
+     function fold_onclick(num, url) { // {{{
+      for(var n=1; n<=8; ++n) {
+
+       fold_div  = document.getElementById("fold_div"+n);
+       fold_pane = document.getElementById("fold_pane"+n);
+       if(!fold_div || !fold_pane)
+	continue;
+
+       if(n == num)
+	toggle_show = (fold_pane.style.display != "block");
+       else
+	toggle_show = false;
+
+       if( toggle_show ) {
+	if(url.indexOf("http") == 0)
+	 if(fold_pane.src != url) fold_pane.src = url;
+	fold_pane.style.display = "block";
+       }
+       else {
+	fold_pane.style.display = "none";
+       }
+
+       if( toggle_show ) {
+	fold_div.style.width  = "90%";
+	fold_div.style.height = fold_pane.height;
+      //fold_div.style.border = "1px dashed red";
+       } else {
+	fold_div.style.width  = "4em";
+	fold_div.style.height = "4em";
+      //fold_div.style.border = "";
+       }
+
+      }
+     } // }}}
+    </script>
+    <!-- }}} -->
+ </head>
+
+ <body onload="page_init()">
+  <div id="num_div"><!-- {{{ -->
+   -
+  </div> <!-- }}} -->
+
+   <!-- nav_div {{{ -->
+  <div  id="nav_div">
+   <img class="fold_grip" title="navbar..." draggable="false" src="gripper.png" style="background-color:red;" onclick='nav_onclick("nav_table")'/>
+   <table id="nav_table" style="display:none;"><!-- {{{ -->
+    <tr>
+     <td><a href="https://remotetabs.com"><i>RTabs page</i></a></td>
+     <th style="color:black; background-color:white;">180508</th>
+     <th id="nav_prev"  onclick='page_turn(-1);' title="you can also click on the left side of the image &#10; to move backward">&lt;</th>
+     <td                                         >    </td>
+     <th id="td_select"                          >----</td>
+     <td                                         >    </td>
+     <th id="nav_next"  onclick='page_turn(+1);' title="you can also click on the right side of the image &#10; to move forward">&gt;</th>
+     <td><a href="https://remotetabs.com/dev/chrome/screenshots/."><small>o</small></a></td>
+    </tr>
+   </table>
+   <!-- }}} -->
+  </div>
+   <!-- }}} -->
+
+    <!-- RTabs Chrome Extension{{{-->
+    <div style="
+    position  : absolute;
+    top       : 0.1em;
+    right     : 1.0em;
+    font-size : 200%;
+    ">
+     <a href="https://remotetabs.com"
+      style="color    : rgba(0,0,0,0.3);">
+      <i>RTabs Chrome Extension</i>
+      <img src="rtabs.png" style="vertical-align:middle; transform: scale(0.5);">
+     </a>
+    </div>
+    <!--}}}-->
+   <!-- perso.orange.fr {{{-->
+   <a style="
+   position:fixed;
+   top:.1em;
+   left:50%;
+   font-size:300%;
+   "
+      title="Ivan WELLESZ"
+      target="ivan_wellesz"
+      href="http://perso.orange.fr/ivanw"
+      >
+      &#x2302;
+   </a>
+    <!--}}}-->
+
+   <!-- fold_div2 {{{ -->
+   <div
+    class="fold_div"
+    id   ="fold_div2"
+    style="
+    position:fixed;
+    bottom:1em;
+    width:100%;
+    left:1em;
+    height:5%;"
+    >
+    <!-- fold_pane {{{ -->
+    <div
+     class="fold_pane"
+     id   ="fold_pane2"
+     style="
+     width:100%;
+     height:20%;
+     border:0;
+     display:block;
+     background-color:transparent;
+     "
+     >
+
+     <pre id="description"
+          class="note"
+     >
+     </pre>
+
+    </div>
+    <!-- }}} -->
+    <img class="fold_grip" title="Description..." draggable="false" src="gripper.png" style="background-color:yellow; float:left;"
+    onclick='fold_onclick(2,"");'/>
+   </div>
+   <!-- }}} -->
+
+
+
+   <div id="page_div"><!-- {{{ -->
+    <img id="sshot_img" draggable="false" src="" onclick="img_onclick(event)"/>
+   </div>
+   <!-- }}} -->
+  <div onclick='page_turn(-1);' class='overlay overlayL'></div>
+  <div onclick='page_turn( 1);' class='overlay overlayR'></div>
+ </body>
+
+</html>
+<!--
+:cd %:h
+:cd %:h:!start explorer "%":cd -
+-->

@@ -1,39 +1,547 @@
 <!DOCTYPE html>
 <html>
- <head>
+<head>
   <title>playground</title>
   <!-- META {{{ -->
-  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html; charset=utf-8">
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html; charset=latin1">
   <meta                         http-equiv="Cache-control" content="no-cache">
   <meta                         http-equiv="pragma"        content="no-cache">
   <!-- }}} -->
-  <!--  [link] CSS {{{-->
-  <link id='playground_css' type='text/css' href='stylesheet/playground.css' rel='stylesheet'/>
-  <link id='dom_host_css'   type='text/css' href='stylesheet/dom_host.css'   rel='stylesheet'/>
-  <link id='checkbox_css'   type='text/css' href='stylesheet/checkbox.css'   rel='stylesheet'/>
-  <link id='dom_grid_css'   type='text/css' href='stylesheet/dom_grid.css'   rel='stylesheet'/>
-  <link id='dom_tools_css'  type='text/css' href='stylesheet/dom_tools.css'  rel='stylesheet'/>
+  <!-- [link] CSS {{{-->
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"  rel="stylesheet"/>
   <!--}}}-->
  </head>
  <body onload='set_title();'>
-  <!-- [dom_load_tags] {{{-->
-  <h1 style="clear:right; margin:1em;">
-   PLAYGROUND:
-   <br>...should have been populated by <em>set_title</em>
-   <br>with the value of <em>DOM_LOAD_TAG</em>
-  </h1>
-  <a target="ivan_wellesz" href="http://perso.orange.fr/ivanw"           style="font-size:300%;" title="Ivan WELLESZ">&#x2302;</a>
-  <a target="rtabs"        href="https://remotetabs.com/playground.html" style="font-size:150%;font-weight:900;"     >RTabs playground</a>
-  <a target="google"       href="https://google.com"                     style="font-size:200%;font-weight:900;"     >Google</a>
-
-  <div id="checkbox_css_tag"   style="clear:right;"> checkbox_css_tag   </div><br>
-  <div id="playground_css_tag" style="clear:right;"> playground_css_tag </div><br>
+  <!-- h1 {{{--> <h1 style="clear:right; margin:1em;">My DOM playground</h1>
   <!--}}}-->
 
-  <!-- PLAYGROUND SCRIPT {{{ -->
+   <!--note .. position:absolute {{{-->
+   <div style="width:32em; position:absolute; top:1em; left:38em;"
+    >
+    <div id="about_fr"
+         style="display:block; text-align:left;"
+         class="green note"
+         title="A propos de cette page...
+         Ensemble de fichiers 'Vanilla JS' à déployer sous forme:
+         - de liens &lt;script&gt;
+         - ou Bookmarklet
+         - ou Extension Chrome"
+         >
+         <a href="#note_fr" style="float:right;"
+                            onclick="
+                            getElementById('about_en').style.display='block';
+                            getElementById('about_fr').style.display='none' ;
+                            ">en</a>
+         Cette page est faite pour moi.
+         <br>...de façon à me permettre de bricoller plein de choses bizares avant d'en jetter la plupart.
+         <p>Ce qui veut dire que vous devriez avoir beaucoup de mal à suivre ce qui se passe lorsqu'on clique
+         sur quelque chose et à quoi ça peut bien servir.
+         <p>L'essentiel des résultats consiste en des messages affichés par la console .. activés par une des
+         entrées du panneau "dev_log_map".
+    </div>
+
+    <div id="about_en" 
+         style="display:none; text-align:left;"
+         class="red note"
+         title="What this page is about...
+         'Vanilla JS' set of code files deployed either:
+         - as Embedded &lt;script&gt;
+         - or Bookmarklet
+         - or Chrome extension"
+         >
+         <a href="#note_fr" style="float:right;"
+                            onclick="
+                            getElementById('about_en').style.display='none' ;
+                            getElementById('about_fr').style.display='block';
+                            ">fr</a>
+         This page is meant for me
+         <br>...so I can tweak all kinds of weird things before trashing most of them.
+         <p>It means you'll have a hard time guesssing what's happening when you click on something and why.
+         <p>Most of the results make sense when reading some console outputs .. triggered by one of the "dev_log_map" entries.
+    </div>
+
+   </div>
+   <!--}}}-->
+   <!--note .. RTabs Bookmarklet {{{-->
+   <div style="position:absolute; top:1em; right:1em;"
+    >
+    <h2>RTabs Bookmarklet</h2>
+    <ol>
+     <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_find';document.body.appendChild(s);})();">dom_find</a></li>
+     <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_hide';document.body.appendChild(s);})();">dom_hide</a></li>
+     <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_load';document.body.appendChild(s);})();">dom_load</a></li>
+    </ol>
+    <i>can be dragged into the bookmarks bar</i>
+
+   </div>
+   <!--}}}-->
+<!-- clone of the dev_log_map panel .. position:absolute {{{-->
+<div
+ id="dev_log_map"
+ title="dev_log_map"
+ class="transcript display_delayed prop_bag "
+ style="display:grid; grid-gap:0.25em; position:absolute; top:18em; right:1em;"
+ >
+ <i>a clone of the<br>dev_log_map panel</i>
+ <em class="toolbag_button cc8" id="LOG IPC"        >LOG IPC</em>
+ <em class="toolbag_button cc8" id="LOG EVENTS"     >LOG EVENTS</em>
+ <em class="toolbag_button cc8" id="LOG HIGHLIGHT"  >LOG HIGHLIGHT</em>
+ <em class="toolbag_button cc8" id="LOG TOOLBAR"    >LOG TOOLBAR</em>
+ <em class="toolbag_button cc8" id="EV0_LISTEN"     >EV0_LISTEN</em>
+ <em class="toolbag_button cc8" id="EV1_DOWN"       >EV1_DOWN</em>
+ <em class="toolbag_button cc8" id="EV2_MOVE"       >EV2_MOVE</em>
+ <em class="toolbag_button cc8" id="EV3_UP"         >EV3_UP</em>
+ <em class="toolbag_button cc8" id="EV4_LONG_PRESS" >EV4_LONG_PRESS</em>
+ <em class="toolbag_button cc8" id="EV5_TOOL_CB"    >EV5_TOOL_CB</em>
+ <em class="toolbag_button cc8" id="EV6_CHANGED"    >EV6_CHANGED</em>
+ <em class="toolbag_button cc8" id="EV7_DISPATCH"   >EV7_DISPATCH</em>
+ <em class="toolbag_button cc8" id="EV8_FLOATLOG"   >EV8_FLOATLOG</em>
+ <em class="toolbag_button cc8" id="S1_RANGE"       >S1_RANGE</em>
+ <em class="toolbag_button cc8" id="S2_SELECT"      >S2_SELECT</em>
+ <em class="toolbag_button cc8" id="S3_SLOT"        >S3_SLOT</em>
+ <em class="toolbag_button cc8" id="T0_STORE"       >T0_STORE</em>
+ <em class="toolbag_button cc8" id="T1_DOM_LOAD"    >T1_DOM_LOAD</em>
+ <em class="toolbag_button cc8" id="T2_GRID"        >T2_GRID</em>
+ <em class="toolbag_button cc8" id="T3_LAYOUT"      >T3_LAYOUT</em>
+ <em class="toolbag_button cc8" id="T4_PIVOT"       >T4_PIVOT</em>
+ <em class="toolbag_button cc8" id="T5_SPREAD"      >T5_SPREAD</em>
+ <em class="toolbag_button cc8" id="T6_SLOT"        >T6_SLOT</em>
+</div>
+
+<!--}}}-->
+  <!-- ivan_wellesz {{{-->
+  <div class="transcript " style='display:inline-block; border:3px dotted red !important;'>
+   <a href="http://perso.orange.fr/ivanw"                     style="font-size:300%;" title="Ivan WELLESZ">&#x2302;</a>
+   <a href="https://remotetabs.com/dev/rtabs/playground.html" style="font-size:150%;font-weight:900;"     >RTabs playground</a>
+   <a href="https://google.com"                               style="font-size:200%;font-weight:900;"     >Google</a>
+  </div>
+  <!--}}}-->
+<br style="clear:both;">
+<!-- numbers affix {{{-->
+<div class='transcript '>
+ <i>numbers</i> <em>1234567890</em>
+ <br><i>affix</i> .. <em>word</em> <em>words</em> .. <em>wording</em>
+ <br><i>...accentuation &amp; quotes</i>
+ <br>Le papillon qui est la forme 'adulte' de la chenille, éclos
+ <br>durant l'été entre juin et septembre selon le climat.
+</div>
+<!--}}}-->
+<br style="clear:both;">
+<!-- blurred darkgreen {{{-->
+  <div class="blurred_frame">
+   <ol class="blurred darkgreen">
+    <li><em class='cc0'>181025</em></li>
+    <li><em class='cc1'>mask</em> on <em>t_dom_edit_or_stage_start</em></li>
+    <li><em class='cc2'>clearpin</em> turned into a working <em>closepin</em></li>
+    <li><em class='cc3'>gutter</em> viewport confinement improved</li>
+    <li><em class='cc4'>scalepin</em> layout <em class='cc2'>&#x2026;TODO</em> <em>magnification</em></li>
+   </ol>
+  </div>
+<!--}}}-->
+<!-- blurred darkred {{{-->
+  <div class="blurred_frame">
+   <div class="blurred darkred">
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+    123456789_123456789_123456<br>
+   </div>
+  </div>
+<!--}}}-->
+<!-- blurred darkblue {{{-->
+  <div class="blurred_frame">
+   <div class="blurred darkblue">
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+   ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>
+   </div>
+  </div>
+<!--}}}-->
+
+<!-- HTML   PLAYGROUND {{{-->
+ <!-- [playground_clones_panel bottom_right] {{{-->
+ <div id="playground_clones_panel" class="transcript display_delayed bottom_right squeezed_0_1">
+  <!-- squeeze_cycle_playground_clones_panel {{{-->
+  <div class="box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input type="checkbox" id="squeeze_cycle_playground_clones_panel" />
+   <label for="squeeze_cycle_playground_clones_panel"><div  class="magpin">&#x1F50D;</div></label>
+  </div>
+  <!--}}}-->
+ </div>
+ <!--}}}-->
+ <!-- div {{{-->
+ <div   id="div1"    >div1
+  <div  id="div1_1"  >div1_1
+   <div id="div1_1_1">div1_1_1
+    <pre id="pre1"    >pre1</pre>
+    <pre id="pre2"    >pre2</pre>
+    <pre id="pre3"    >pre3</pre>
+   </div>
+  </div>
+ </div>
+
+ <div   id="div2"    >div2
+  <div  id="div2_1"  >div2_1
+   <div id="div2_1_1">
+    <pre id="pre1"    >pre1</pre>
+    <pre id="pre2"    >pre2</pre>
+    <pre id="pre3"    >pre3</pre>
+   </div>
+  </div>
+ </div>
+
+ <div id="div3">div3</div>
+ <div id="div4">div4</div>
+ <div id="div5">div5</div>
+ <p id="python" class="green note" style="width:64em !important;">
+<!-- python {{{-->
+  The assignment statement (token '=', the equals sign). This operates differently than in traditional <a href="/wiki/Imperative_programming" title="Imperative programming" class="">imperative programming</a>
+  languages, and this fundamental mechanism (including the nature of Python's version of <i>variables</i>)
+  illuminates many other features of the language. Assignment
+  in <a href="/wiki/C_(programming_language)" title="C (programming language)">C</a>
+  , e.g., <code>x = 2</code>
+  , translates to "typed variable name x receives a copy of numeric value 2". The (right-hand) value is copied into an <a href="/wiki/Memory_allocation" class="mw-redirect" title="Memory allocation">allocated storage location</a>
+  for which the (left-hand) <a href="/wiki/Variable_(computer_science)" title="Variable (computer science)">variable name</a>
+  is the symbolic address. The memory allocated to the variable is large enough (potentially quite large) for the declared <a href="/wiki/Type_system" title="Type system">type</a>
+  . In the simplest case of Python assignment,
+  using the same example, <code>x = 2</code>
+  , translates to "(generic) name x receives a <a href="/wiki/Pointer_(computer_programming)" title="Pointer (computer programming)">reference</a>
+  to a separate, dynamically allocated <a href="/wiki/Object_(computer_science)" title="Object (computer science)">object</a>
+  of numeric (int) type of value 2." This is termed <i>binding</i>
+  the name to the object. Since the name's storage location doesn't <i>contain</i>
+  the indicated value, it is improper to call it a <i>variable</i>
+  . Names may be subsequently rebound at any time to objects of greatly varying types, including strings, procedures, complex
+  objects with data and methods, etc. Successive assignments
+  of a common value to multiple names, e.g., <code>x = 2</code> ; <code>y = 2</code> ; <code>z = 2</code>
+  result in allocating storage to (at most) three names and one numeric object, to which all three names are bound. Since a name is a generic reference holder it is unreasonable to associate a fixed <a href="/wiki/Type_system" title="Type system">data type</a>
+  with it. However at a given time a name will be bound to <i>some</i>
+  object, which <b>will</b>
+  have a type; thus there is <a href="/wiki/Dynamic_type" class="mw-redirect" title="Dynamic type">dynamic typing</a>.
+<!--}}}-->
+ </p>
+ 
+ </div>
+
+ <!--}}}-->
+<!-- GOOGLE KEEP {{{-->
+<!--{{{-->
+<div class="eso_div" style="float:left; background-color:black !important;">
+ <h2>Google Keep &mdash; dom_load (180906:15h)</h2>
+ <ol>
+  <li>dom_load</li>
+  <li>seeker123-OR- seekarea + lightweight seeker</li>
+  <li>glow onWork_EL</li>
+  <li>scroll-after-select issue</li>
+  <li>fade-in-css with ::before fade-out</li>
+  <li>show misclick with a glow</li>
+  <li>solve misclick+move issue</li>
+  <li>sel_bag: truncate pattern with ellipsis</li>
+  <li>add  and  copy buttons on first containers clipboard button</li>
+  <li>node_to_hide: add display:none after masked-invisible states</li>
+  <li>overlap quadrant layout while moving pannels</li>
+  <li>doc-select: discard short-lived select-unselect .. instead of…</li>
+  <li>get_word_start_end: words_drop_s "s" termination… do not mess with button press pressing</li>
+ </ol>
+</div>
+
+<!--}}}-->
+<!-- {{{-->
+<div class="eso_div" style="float:left;">
+ <h2>Google Keep &mdash; Android (180706)</h2>
+ <ol>
+  <li>postpone-toast (new node) — rephrase: node-label first</li>
+  <li>Find a substitute to e.shift for move_cooldown_short</li>
+  <li>toast .. no RTabs label when app is the active one</li>
+  <li>Cart add-del ..bacground click should exit edit-mode</li>
+  <li>allow finger lift then resume ... within some delai</li>
+  <li>edit cart red-green label: copy-paste instead of add-extract</li>
+ </ol>
+</div>
+
+<!--}}}-->
+<!--}}}-->
+<hr style="clear:left;">
+<!-- OVERFLOW {{{-->
+<div style="max-width:32em !important; overflow:hidden; border:2px ridge salmon;">
+<pre>
+<em>OVERFLOW</em> &mdash; <em>WALL OF TEXT</em>
+&bullet; However, The rules above it win, because IDs/class selectors have higher specificity than element selectors (you'll learn more about this in the next section).
+&bullet; Both elements have a class of better, but the 2nd one has an id of winning too. Since IDs have an even higher specificity than classes (you can only have one element with each unique ID on a page, but many elements with the same class — ID selectors are very specific in what they target), the red background color and the 1 pixel black border should both be applied to the 2nd element, with the first element getting the gray background color, and no border, as specified by the class.
+</pre>
+<pre>
+<em>OVERFLOW</em> &mdash; <em>LONG LINE</em>
+&bullet; The 2nd element does get the red background color, but no border. Why? Because of the !important declaration in the second rule — including this after border: none means that this declaration will win over the border value in the previous rule, even though the ID has higher specificity.
+</pre>
+</div>
+<!--}}}-->
+<!-- WALL OF TEXT 1 {{{-->
+<pre>
+
+<span>WOT_1_align_contents</span>
+        -_1_------------wall of text ------------------
+        -_1_------------wall of text ------------------
+        -_1_------------wall of text ------------------
+<span>WOT_2_align_manual</span>
+        -_2_------------wall of text ------------------
+        -_2_------------wall of text ------------------
+        -_2_------------wall of text ------------------
+        -_2_------------wall of text ------------------
+<span>WOT_3_ align_usage</span>
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+<span>WOT_4_align_maps</span>
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+        -_4_------------wall of text ------------------
+<span>WOT_5_align_history</span>
+        -_5_------------wall of text ------------------
+        -_5_------------wall of text ------------------
+        -_5_------------wall of text ------------------
+        -_5_------------wall of text ------------------
+        -_5_------------wall of text ------------------
+
+</pre>
+<!--}}}-->
+
+<!-- dom_tools {{{-->
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+<!--
+javascript/dom_tools.js
+-->
+escapeXXX(`
+`
+</pre>
+<!--}}}-->
+<!-- dom_prop {{{-->
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+<!--
+javascript/dom_prop.js
+-->
+escape(`
+/*{{{*/
+"use strict";
+/* dom_prop_js */
+let DOM_PROP_JS_ID        = "dom_prop_js";
+let DOM_PROP_JS_TAG       = DOM_PROP_JS_ID  +" (181230:00h)";
+
+
+/* Prop public */
+let prop_init    = function(id, value, onchange) { return _prop_set  (id, value, onchange)        ; }; /* returns prop (not calling onchange) */
+let prop_set     = function(id, value, onchange) { return _prop_parse(id, value, onchange)        ; }; /* returns prop     */
+let prop_get     = function(id                 ) { return _prop_get  (id                 ).value  ; }; /* returns value    */
+let prop_toggle  = function(id                 ) { return _prop_parse(id,"toggle"        ).value  ; }; /* returns value    */
+let prop_set_EL  = function(id, el             ) { return _prop_get  (id                 ).el = el; }; /* returns EL       */
+let prop_get_EL  = function(id                 ) { return _prop_get  (id                 ).el     ; }; /* returns EL       */
+let prop_get_MAP = function(                   ) { return                                 Prop_Map; }; /* returns Prop_Map */
+let prop_set_CB  = function(cb                 ) {                                    Prop_CB = cb; }; /* UI state handler */
+let prop_log_MAP = function(_caller            ) {
+/* {{{*/
+
+    Prop_Map.forEach(
+                     function(prop,index,array) {
+                         prop.log(index +" "+ _caller);
+                     });
+
+};
+/*}}}*/
+
+/* Prop private */
+/* Prop_Map Prop_CB {{{*/
+let Prop_Map = [];
+let Prop_CB;
+
+/*}}}*/
+/*_Prop new {{{*/
+let Prop = function(id, value, onchange)
+{
+    this.id        = id;
+    this.value     = (value == "toggle") ? true      : value        ;
+    this.onchange  = onchange;
+    this.el        = null;
+    /* this.toString {{{*/
+    this.toString = function() {
+        return ""
+            +  "["+                  this.id
+            +  " "+                  this.value         +"]"
+            +  "["+ (this.onchange ? this.onchange.name : "")
+            +  " "+    get_id_or_tag(this.el)           +"]"
+        ;
+
+    };
+    /*}}}*/
+    /* this.log {{{*/
+    this.log = function(prefix="") {
+
+        let lfv = (this.value ==  null) ? lf8
+            :     (this.value == false) ? lb6
+            :     (this.value ==  true) ? lb5
+            :                             lb7;
+
+        let lfe = (this.el            ) ? lf4
+            :                             lf2;
+
+        console.groupCollapsed( "%c"+ mPadEnd  (               prefix     , 42)
+                       +       " %c"+ mPadStart(               this.id    , 24)
+                       +       " %c"+ mPadStart(               this.value , 16)
+                       +       " %c"+ mPadStart( get_id_or_tag(this.el   ), 24)
+                       +       " %c"+ (this.el ? " "+this.el.className : "")
+                       ,       lbH
+                       ,       lbL+lfe
+                       ,       lbC+lfv
+                       ,       lbR+lfe
+                       ,       lbH+lf3
+                              );
+
+        log_key_val(this.id, this, lf3);
+        console.trace();
+        console.groupEnd();
+    };
+
+    /*}}}*/
+};
+/*}}}*/
+/*  _prop_set {{{*/
+let _prop_set = function(id, value="toggle", onchange)
+{
+/*{{{*/
+let   caller = "_prop_set("+id+", "+value+")"; if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log("%c"+caller, lbH+lf3);
+/*}}}*/
+
+    let    prop  =  _prop_get(id, value, onchange);
+    if(onchange &&  (prop.onchange  != onchange )) { prop.onchange       = onchange;  }
+    if(             (prop.value     != value    )) { prop.value = (value == "toggle") ? !prop.value : value ; }
+    else if( log_this) log("...unchanged");
+
+    t1_prop_id_state_CB(id, prop.value);
+
+    return prop;
+};
+/*}}}*/
+/*  _prop_get {{{*/
+let _prop_get = function(id, value, onchange)
+{
+    let prop;
+    for(let i=0; i < Prop_Map.length; ++i ) {
+        if(  id == Prop_Map[i].id  ) {
+            prop = Prop_Map[i];
+            break;
+        }
+    }
+    if(!prop ) {
+        prop = new Prop(id, value, onchange);
+        Prop_Map.push(prop);
+    }
+    return prop;
+};
+/*}}}*/
+/*  _prop_parse {{{*/
+let _prop_parse = function(id, value, onchange)
+{
+/*{{{*/
+let   caller = "_prop_parse("+id+", "+value+")";
+let log_this = LOG_MAP.T1_DOM_LOAD;
+
+if( log_this) log(caller);
+/*}}}*/
+    let prop = _prop_get(id, value, onchange);
+    if(      onchange && (onchange != prop.onchange ))
+        prop .onchange  =  onchange;
+
+    if(  prop.value != value) {
+        _prop_set(id , value);
+
+        if(Prop_CB) Prop_CB(id, prop.value);
+
+        if( prop.onchange)
+            prop.onchange(id, prop.value);
+    }
+else if( log_this) log("...unchanged");
+
+if( log_this) prop.log(caller);
+    return prop;
+};
+/*}}}*/
+
+/*}}}*/
+//# sourceURL=dom_prop.js
+`
+</pre>
+<!--}}}-->
+<!-- dom_grid {{{-->
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+<!--
+stylesheet/dom_grid.css
+-->
+escapeXXX(`
+`
+</pre>
+<!--}}}-->
+
+<div id="checkbox_css_tag"   style="clear:right;"> checkbox_css_tag   </div><br>
+<div id="playground_css_tag" style="clear:right;"> playground_css_tag </div><br>
+<!-- data_image {{{-->
+<h2> data_image </h2>
+<style>
+#data_image {
+ background       : url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsSAAALEgHS3X78AAAFeklEQVRIiYWUXYxVVxXHf2vvfe49d+6dD4YZemeqdQpTHwwxjUYSeBCwYupbQ1uLCUqqTxWSStTEYmJiVCZ+tLVvfj3IA5HUFKVgaSOVGm1rx4K0UhVIrQxgNTMwc7/m3nvO2Xv5cO7cDproyjknOTtZ67/+//VfW1gdYkE9bPkRbNgN3RsgFkFRVybOapy4cD/rzWVu/dwihaEUMg+Sp2cB3CA8MCM8+bIyUR3HAVCaKDH2ofcSUiVrQTwOvp2DEUCsYf6Vt2Roum4Fq0GUSAOipcwzLSYHCAFI0M3T6s69xZWL/5xfyAHGN21kxy9mpdsAiSBr5gDGgfqAKRouHbrn4TE5NhXe1kY31oVnh/WWe+dvsyXOaBeHoM4iSRv/+U9hM8NXv3RIvp4D+C50m+jyIgQD1gJmpXlRF/HhaGnrg0vP1zulybIpeG7MVjppyvTYliVTnkigJ5Q1QBvqDYqgPYlEQC0jQ07Hhgq0OgGASmxYbGYstLzuWxvtLzaG9jdUsQCDnvqZQdL5gk7vu6p4QHuPAWdQIAcwAiFRtm9Edm0JTI6VsASuLHR55kyXQ78t0kZUNKiYvBBBsHHAxcEsd8EGiByo5ky05xvXH04sHD/r+flzCV/+TMSgafKVH2dE4xHEBoKKGCuq5FWsJc2U4QGYOQYfvB3u+Tik/1hVPRe6Fwo4CwNFjLXgHJSKSK8tjOAbdYwIEkWE5Sb07JN4eO1vcOIkXG8BUZ7SZ0B/RNpHF1VQRVGwhrDcovLRuzE77sOhtE/9kuTkrxHjUIUXL0Aa4Aen4PjXctlvZrBKuKD52z9TxRhL11huPHWE9NWXKe/6NFkIGAHv4cGPwDe+CMbApTehHK9iICK5tj1Ua8CZFSr5R1WJCwUqd22DpIMmSV6t11A7AVJodnKX3ySRqqoIaACKhpf+skyBBOI4PzO5XIOf2M2Vx77H6JoR7J0fQEMgKJRj4ae/g5cuQnUE1m+A5m/y1lxBoFAeKDQ9+CAQKadfU6AIseCD5sO0jus/+SFjD+0nefsqi6++QlQeYKmZ8shupb4NLs/Dxg197T2A2/XJezftfviJn33sW/+iVIooFCLssAGFdqcDGugkNd79+PeJvnsf85+9H1eIMAID0SAhC+DKrF0DE+tgqQW0lbYplUBxXoqVHZtunbj4+CIiwtzcHGma4FzE1O1TRC4iTVPeVR3m4uB7aJQXsJUKXqGUNvnr8vvZ/+y3kZChCiJYK55aNPoF3vfE3533IQB6x21rpFarcdeuu6nVanS7XbZu3cqxp49TjIdBA/smvsmLd3SolAwhgIjSSSOSxmg+zb7zQqBYMWh3YsWmApBmnnY348mnjvH6Gxc4e+48T5842XOKsuxG8dE6GtE4zcI4ddZxy+Qok+MpaIIxCbLykgJk7ywaYI3gvef5U79icnIS7zPWjAznQxPBaAaaYhHStnLnBsdD21L+8Kbn0O8tqa7QkL6/bwIAMMZw+PBhrl27xoEDB9i+fXuPo6C9RFUBK9TagdfnlMg5nAmk2Tu71K+3+kdVcc5x+vRp9uzZw+zsLNZatL+FPqDeg/cE70uR9+VC8OvXdryTxKPei3qPeo9mQAhO8+ygquq9J0kSWq0WMzMzTE1NcfToUXbu3EmSdAmmYokNIcpX9M/zUD+XUm96GhpDqbfBGoSoDLYUOWutW2EyMjLCwYMHqVarVKtVjhw5grUWgEKhSOXGMy/wxqU5qRQjQr79V1PJL1Wrq1ykio1jrv/xvGzevHl67969jzSbzcg5p3Ec0263CSFQqVRIkoROp6sDpWL0nUcfe/T8ZXfWlIdNCD70RrPqElYwESz+CToLgMh/jOT/hFjzX1P8X6Eh/Bs7TJStHjqCxQAAAABJRU5ErkJggg==") !important;
+ outline          : 3px dotted pink !important;
+ width            : 150px           !important;
+ height           : 150px           !important;
+ text-align       : center          !important;
+ vertical-align   : middle          !important;
+ margin           : 1em             !important;
+ padding          : 1em             !important;
+ border           : 8px #444 groove !important;
+ background-color : #F004           !important;
+/*{{{
+:!start explorer "https://css-tricks.com/data-uris/"
+}}}*/
+}
+</style>
+
+<div id="data_image">data_image</div>
+
+<!--}}}-->
+<!--}}}-->
+  <!-- SCRIPT PLAYGROUND {{{ -->
   <script>
-DOM_LOAD_ID   ='playground'; DOM_LOAD_TAG  = DOM_LOAD_ID+' (180609:21h)';
-  document.getElementsByTagName('html')[0].id = DOM_LOAD_ID;
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (190102:19h)";
+
+  document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc6'>My DOM "+DOM_LOAD_TAG+"</em>";
+  }
+  /*}}}*/
   let CHECK_MARK           = "\u2714";
   /* CONSOLE TEMPLATE TO BE IMPLEMENTED BY EMBEDDING LAYER {{{*/
   LF            = String.fromCharCode(10);
@@ -44,39 +552,61 @@ DOM_LOAD_ID   ='playground'; DOM_LOAD_TAG  = DOM_LOAD_ID+' (180609:21h)';
   console_log   = function(  msg     ) { try {                          console.log (               msg);                 } catch(ex) {} };
   console_warn  = function(  msg=null) { try {                          console.warn(               msg);                 } catch(ex) {} };
   /*}}}*/
-  /* set_title {{{*/
-  function set_title()
-  {
-   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
-   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc0'>"+DOM_LOAD_TAG+"</em>";
-  }
-  /*}}}*/
-
   /* showToast {{{*/
   function showToast(msg) {
-   if(typeof MWebJS === 'undefined') trace('MWebJS.showToast('+msg+')');
+   if(typeof MWebJS === "undefined") trace("MWebJS.showToast("+msg+")");
      else                                   MWebJS.showToast(  msg  )  ;
      }
      /*}}}*/
      /* trace {{{*/
      function trace(msg) {
-      let el = document.getElementById('traces');
-      if( el ) el.innerHTML = '<em>'+msg+'</em>';
+      let el = document.getElementById("traces");
+      if( el ) el.innerHTML = "<em>"+msg+"</em>";
       else     alert(msg);
      }
      /*}}}*/
-
      /* load_html {{{*/
      load_html = function(id, html) {
       if( document.getElementById(id) ) return;
-      let el       = document.createElement('DIV');
+      let el       = document.createElement("DIV");
       el.id        = id;
       el.title     = id;
       el.innerHTML = unescape(html);
       document.body.appendChild(el);
      };
      /*}}}*/
+  </script>
+  <!-- }}} -->
+  <!-- SCRIPT CHECKBOX {{{ -->
+  <script>
+/*{{{
+  let SYMBOL_CHECK_MARK       = "\u2714";
+  let SYMBOL_NOT_CHECKED      = "\u237B";
+}}}*/
+  /*  checkbox_clicked {{{*/
+  let checkbox_clicked = function(el_or_id)
+  {
+logBIG("checkbox_clicked", lbH+lf3);
 
+   let input     = (typeof el_or_id == "object") ? el_or_id : document.getElementById(el_or_id);
+   input.checked = !input.checked;
+
+   let label_off = input.labels[0];
+   let label_on  = input.labels[1];
+
+console_dir(input    , input.id   )
+console_dir(label_off, get_n_lbl(label_off))
+console_dir(label_on , get_n_lbl(label_on ))
+
+   let    on_text = input.getAttribute("on" ) || SYMBOL_CHECK_MARK;
+   let   off_text = input.getAttribute("off") || SYMBOL_NOT_CHECKED;
+
+   label_off.innerHTML = input.checked ?  on_text : off_text;
+   label_on .innerHTML = input.checked ? off_text :  on_text;
+
+   set_el_class_on_off(input.parentElement, "on", input.checked);
+  };
+/*}}}*/
   </script>
   <!-- }}} -->
 
@@ -88,9 +618,22 @@ javascript/dom_grid.html
 dom_grid_html_data = escape(`
 <!--{{{-->
 <!DOCTYPE html>
-<span id = "dom_grid_html_tag"  style="display:none">dom_grid_html (180601:17h)</span>
-<div id="dom_grid_playground" title="dom_grid_playground" class="collapsed display_delayed">
- <div  id="headsup_l_div"> <!-- headsup_l_div {{{-->
+<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (181129:16h)</span>
+<div  id="dom_grid_playground" class="display_delayed collapsed" title="dom_grid_playground">
+ <div id="dom_grid_headsup"> <!-- {{{-->
+
+  <em id="dom_grid_close_em"
+   style="
+    float            : right;
+    font-size        : 200%;
+    margin-right     : .5em;
+    background-color : transparent;
+    border-color     : transparent;
+    cursor           : pointer;
+    user-select      : none;
+    ">
+    &#x2715;
+  </em>
 
   <div onclick='t_grid_SIZE_TOGGLE(event);'>
    <b id="headsup_l_size">headsup_l_size</b>
@@ -102,41 +645,73 @@ dom_grid_html_data = escape(`
   </div>
 
   <div id="headsup_l_check"  class="cc0"
-                             title="logging_grid toggle"
+                             title="LOG_MAP.T2_GRID toggle"
                              onclick='t_grid_logging_toggle();'
                              >...</div>
   <br>
-  <div>activated by dom_tools.t_sync_logging_grid</div>
 
+  <div>(activated by t5_load_grid)</div>
  </div><!--}}}-->
  <!-- traces {{{-->
  <div  id="traces_div" class="eso_div">
   <ul>
-   <li><em class='cc4 toolbag_button' onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
-   <li><em class='cc5 toolbag_button' onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
-   <li><em class='cc8 toolbag_button' onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
+   <li><em class="cc4 toolbag_button" onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
+   <li><em class="cc5 toolbag_button" onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
+   <li><em class="cc8 toolbag_button" onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
   </ul>
-  <blockquote id='traces'>
+  <blockquote id="traces">
    traces
   </blockquote>
 
  </div>
  <!--}}}-->
 </div>
+
 <!--}}}-->
 `
 );
-load_html('dom_grid_html' , dom_grid_html_data );
+load_html("dom_grid_html" , dom_grid_html_data );
 
 </script>
 <!--}}}-->
+<!-- transcript {{{-->
+<div class="transcript display_delayed" style="display:inline-grid;">
+<!--}}}-->
+<!-- doc_log_div {{{-->
+ <div id="doc_log_div" class="left_div round_el cleardiv display_delayed"></div>
+<!--}}}-->
+<!-- doc_evt_div {{{-->
+ <div id="doc_evt_div" class="left_div round_el cleardiv display_delayed"></div>
+</div>
+<!--}}}-->
 
-<div id="doc_log_div" class="left_div round_el cleardiv display_delayed"></div>
-<div id="doc_evt_div" class="left_div round_el cleardiv display_delayed"></div>
-  <!-- GRID    JS [dom_grid_js_data] {{{-->
-  <script id='dom_grid_js'    src='javascript/dom_grid.js'    defer></script>
+  <!-- LOG     JS [dom_log_js_data] {{{-->
+  <script id="dom_log_js"     src="javascript/dom_log.js"     defer></script>
+
   <!--}}}-->
+  <!-- UTIL    JS [dom_util_js_data] {{{-->
+  <script id="dom_util_js"    src="javascript/dom_util.js"    defer></script>
 
+  <!--}}}-->
+  <!-- WORDING JS [dom_wording_js_data] {{{-->
+  <script id="dom_wording_js" src="javascript/dom_wording.js" defer></script>
+
+  <!--}}}-->
+  <!-- GRID    JS [dom_grid_js_data] {{{-->
+  <script id="dom_grid_js"    src="javascript/dom_grid.js"    defer></script>
+  <!--}}}-->
+  <!-- STORE   JS [dom_store_js_data] {{{-->
+  <script id="dom_store_js"    src="javascript/dom_store.js"  defer></script>
+
+  <!--}}}-->
+  <!-- HIDE    JS [dom_hide_js_data] {{{-->
+  <script id="dom_hide_js"    src="javascript/dom_hide.js"    defer></script>
+
+  <!--}}}-->
+  <!-- SELECT  JS [dom_select_js_data] {{{-->
+  <script id="dom_select_js"  src="javascript/dom_select.js"  defer></script>
+
+  <!--}}}-->
   <!-- TOOLS HTML [dom_tools_html_data] {{{-->
   <script>
 /*
@@ -146,18 +721,9 @@ dom_tools_html_data = escape(`
 <!--{{{-->
 <!DOCTYPE html>
 <head><title>dom_tools_html</title></head>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (180601:15h)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (190102:19h)</span>
 
- <div  id = "seeker_PU"    title="seeker_PU"       class="seeker_P"     ><div id="seeker_CU" >seeker up    </div></div>
- <div  id = "seeker_PD"    title="seeker_PD"       class="seeker_P"     ><div id="seeker_CD" >seeker_thumbs</div></div>
-
- <div id = "seekspot_U"></div>
- <div  id = "seekspot"     title="seekspot"        class="hotspot_frame">
-  <div id = "seekspot_arrow"  >&#x2191;</div>
- </div>
- <div id = "seekspot_D"></div>
-
- <!--       HOTSPOT {{{-->
+ <!-- hotspot {{{-->
  <div   id="hotspot"       title="hotspot"         class="hotspot_frame">
   <div  id="hotwave"                               class="hotwave">
    <div id="hotring"                               class="hotring">&nbsp;</div>
@@ -165,93 +731,83 @@ dom_tools_html_data = escape(`
   <div id="hotspot_c">&#x00BB;</div>
  </div>
  <!--}}}-->
- <!--       pivspot {{{-->
- <div   id="pivspot"       title="pivspot"         class="hidden">
-   <div id="pivspot_c">&#x00BB;</div>
+ <!-- headsup {{{ -->
+ <div id="headsup"         title="headsup"         class="transcript hidden">
+  <em  id="thumb_p"        title="thumb_p">&#x0020;</em>
+  <em  id="theme_dark"     title="theme_dark"      class="toolbag_button cc8" >LIGHT</em>
+  <em  id="wording"        title="wording"         class="toolbag_button cc3" >WORDING</em>
+  <em  id="anchor_freeze"  title="anchor_freeze"   class="toolbag_button cc9" >&#x26D4;</em>
+  <em  id="containers_hi"  title="containers_hi"   class="toolbag_button cc9" >&#x00A7;</em>
+  <em  id="overflow_visi"  title="overflow_visi"   class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="scroll_smooth"  title="scroll_smooth"   class="toolbag_button cc9" >&nbsp;</em>
+
+  <em  id="tools_extras"    title="tools_extras"    class="toolbag_button cc9">&#x2630;</em>
+
+  <em  id="show_seekzone"  title="show_seekzone"   class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="pin_seekspot"   title="pin_seekspot"    class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="log_seekspot"   title="log_seekspot"    class="toolbag_button cc9" >&nbsp;</em>
+
  </div>
- <!--}}}-->
+ <!-- }}} -->
 
  <!-- pat_bag {{{ -->
   <div id="pat_bag"        title="PAT BAG"        class="transcript hidden bag"></div>
+ <!-- }}} -->
+ <!-- headsup_w {{{ -->
+ <div    id="headsup_w"       title="headsup_w"       class="transcript hidden"  >
+  <input id="tools_filter"    title="tools_filter"    type="text"               />
+  <em    id="recycle"         title="recycle"         class="toolbag_button"     >&#x267B;</em>
+  <em    id="words_exact"     title="words_exact"     class="toolbag_button cc3" >&#x2261;</em>
+  <em    id="words_segment"   title="words_segment"   class="toolbag_button cc4" >&#x2282;</em>
+  <em    id="words_head_tail" title="words_head_tail" class="toolbag_button cc5" >&#x2208;</em>
+  <em    id="words_opcycle"   title="words_opcycle"   class="toolbag_button cc9" >&#x27F3;</em>
+  <em    id="words_drop_ing"  title="words_drop_ing"  class="toolbag_button cc8" >&nbsp;</em>
+  <em    id="words_drop_s"    title="words_drop_s"    class="toolbag_button cc8" >&nbsp;</em>
+  <div   id="words_regex"                             class="txt_log"            >words_regex</div>
+ </div>
  <!-- }}} -->
  <!-- sel_bag {{{ -->
   <div id="sel_bag"        title="sel_bag"        class="transcript hidden bag"><span class="seeker_handle"></span></div>
  <!-- }}} -->
 
- <!-- headsup {{{ -->
- <div id="headsup"         title="headsup"         class="transcript hidden">
-  <!-- thumb_p {{{-->
-  <em id="thumb_p"         title="thumb_p">&#x0020;</em>
-
-  <!--}}}-->
-  <!-- wording {{{ -->
-  <em id="wording"         title="wording"         class="toolbag_button cc3" onclick='toggle_event(event);' >WORDING</em>
-  <em id="theme_dark"      title="theme_dark"      class="toolbag_button cc8" onclick='toggle_event(event);' >LIGHT</em>
-  <!-- }}} -->
-  <!-- anchor_freeze {{{ -->
-  <em id="anchor_freeze"   title="anchor_freeze"   class="toolbag_button cc9" onclick='toggle_event(event);'>&#x26D4;</em>
-  <!-- }}} -->
-  <!-- containers_hi {{{ -->
-  <em id="containers_hi"   title="containers_hi"   class="toolbag_button cc9" onclick='toggle_event(event);'>&#x00A7;</em>
-  <!-- }}} -->
-  <!-- scroll_smooth  {{{ -->
-  <em id="scroll_smooth"   title="scroll_smooth"   class="toolbag_button cc9" onclick='toggle_event(event);'>&nbsp;</em>
-  <!-- }}} -->
-  <!-- overflow_visi  {{{ -->
-  <em id="overflow_visi"   title="overflow_visi"   class="toolbag_button cc9" onclick='toggle_event(event);'>&nbsp;</em>
-  <!-- }}} -->
-  <!-- tools_extras {{{ -->
-  <em id="tools_extras"    title="tools_extras"    class="toolbag_button cc9" onclick='toggle_event(event);'>&#x2630;</em>
-
-  <!-- }}} -->
- </div>
- <!-- }}} -->
- <!-- headsup_w {{{ -->
- <div id="headsup_w"       title="headsup_w"       class="transcript hidden"
-                                                   onkeyup    ='t_filter_CB(event);'
-  >
-  <!-- tools_filter - reset {{{ -->
-  <input id="tools_filter" title="tools_filter"    onchange   ='t_filter_CB(event);' type="text"/>
-
-  <em id="reset"           title="reset"           class="toolbag_button"     onclick='t_headsup_CB(event);'    >&#x267B;</em>
-  <!-- }}} -->
-  <em id="words_exact"     title="words_exact"     class="toolbag_button cc3" onclick='toggle_event(event);'>&#x2261;</em>
-  <em id="words_segment"   title="words_segment"   class="toolbag_button cc4" onclick='toggle_event(event);'>&#x2282;</em>
-  <em id="words_head_tail" title="words_head_tail" class="toolbag_button cc5" onclick='toggle_event(event);'>&#x2208;</em>
-  <em id="words_opcycle"   title="words_opcycle"   class="toolbag_button cc9" onclick='toggle_event(event);'>&#x27F3;</em>
- </div>
- <!-- }}} -->
  <!-- headsup_ds {{{ -->
- <div id="headsup_ds"      title="headsup_ds"      class="transcript hidden">
-  <em id="tools_drag"      title="tools_drag"      class="toolbag_button"     onclick='toggle_event(event);'>&#x00BB;</em>
-  <em id="tools_scroll"    title="tools_scroll"    class="toolbag_button"     onclick='toggle_event(event);'>&#x2693;</em>
+ <div id="headsup_ds"       title="headsup_ds"      class="transcript hidden">
+  <em  id="tools_trap"      title="tools_trap"      class="toolbag_button"    >&#x00BB;</em>
+  <em  id="tools_scroll"    title="tools_scroll"    class="toolbag_button"    >&#x2693;</em>
+  <em  id="site_or_page"    title="site_or_page"    class="toolbag_button cc9">&nbsp;</em>
+  <em  id="mask_or_hide"    title="mask_or_hide"    class="toolbag_button cc9">&nbsp;</em>
+  <em  id="edit_or_stage"   title="edit_or_stage"   class="toolbag_button cc9">&nbsp;</em>
+  <em  id="dom_hide1_reset" title="dom_hide1_reset" class="toolbag_button cc9">&nbsp;</em>
+  <em  id="deny_or_allow"   title="deny_or_allow"   class="toolbag_button cc8">&nbsp;</em>
+<!--{{{
+  <em  id="targeteer"     title="targeteer"     class="toolbag_button cc9">&nbsp;</em>
+  <em  id="target_01"     title="target_01"     class="toolbag_button cc1">&nbsp;</em>
+  <em  id="target_02"     title="target_02"     class="toolbag_button cc2">&nbsp;</em>
+  <em  id="target_03"     title="target_03"     class="toolbag_button cc3">&nbsp;</em>
+}}}-->
  </div>
  <!-- }}} -->
  <!-- headsup_bw {{{ -->
- <div id="headsup_bw"      title="headsup_bw"       class="transcript hidden" onclick='t_body_layout_CB(event);'>
-  <em id="headsup_bw_value"    class='cc10'>BODY WIDTH</em><br>
-  <em class='cc1'> 480</em><em class='cc2'> 640</em><em class='cc3'> 780</em><br>
-  <em class='cc4'> 960</em><em class='cc5'>1024</em><em class='cc6'>1200</em><br>
-  <em class='cc7'>1440</em><em class='cc8'>1600</em><em class='cc9'>1980</em><br>
+ <div id="headsup_bw"      title="headsup_bw"       class="transcript hidden">
+  <em id="headsup_bw_value"    class="cc10">BODY WIDTH</em><br>
+  <em class="cc1"> 480</em><em class="cc2"> 640</em><em class="cc3"> 780</em><br>
+  <em class="cc4"> 960</em><em class="cc5">1024</em><em class="cc6">1200</em><br>
+  <em class="cc7">1440</em><em class="cc8">1600</em><em class="cc9">1980</em><br>
  </div>
  <!-- }}} -->
  <!-- headsup_bz {{{ -->
- <div id="headsup_bz"      title="headsup_bz"       class="transcript hidden" onclick='t_body_zoom_CB(event);'>
-  <em id="headsup_bz_value"     class='cc10'>BODY ZOOM</em><br>
-  <em class='cc1'>  70%</em><em class='cc2' >  80%</em><em class='cc3'>  90%</em><br>
-  <em class='cc1'> 100%</em><em class='cc2' > 110%</em><em class='cc3'> 120%</em><br>
-  <em class='cc1'> 130%</em><em class='cc2' > 150%</em><em class='cc3'> 160%</em><br>
-  <em class='cc1'> 180%</em><em class='cc2' > 200%</em><em class='cc3'> 220%</em><br>
+ <div id="headsup_bz"      title="headsup_bz"         class="transcript hidden">
+  <em id="headsup_bz_value"     class="cc10">BODY ZOOM</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 150%</em><em class="cc3"> 160%</em><br>
+  <em class="cc1"> 180%</em><em class="cc2" > 200%</em><em class="cc3"> 220%</em><br>
  </div>
  <!-- }}} -->
 
  <!-- dom_traversal {{{ -->
- <div id="dom_traversal"   title="dom_traversal"   class="transcript hidden"
-                                                   onclick    ='t_dom_traversal_CB(event);'
-                                                   onchange   ='t_dom_traversal_CB(event);'
-                                                   onkeyup    ='t_filter_CB       (event);'
-                                                 >
-                                                 <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
+ <div id="dom_traversal"   title="dom_traversal"      class="transcript hidden" >
+ <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
   <em class = "toolbag_button cc5">NodeIterator</em>
   <em class = "toolbag_button cc6">TreeWalker</em>
   <em class = "toolbag_button cc7">childNodes</em>
@@ -262,9 +818,7 @@ dom_tools_html_data = escape(`
    <tr>
     <th>node</th>
     <td>
-     <input id="tools_node" title="tools_node"     type="text"
-                                                   onchange   ='t_filter_CB       (event);'
-                                                />
+     <input id="tools_node" title="tools_node"        type="text" />
      <span class="cc2">html</span>
      <span class="cc3">head</span>
      <span class="cc4">body</span>
@@ -274,24 +828,33 @@ dom_tools_html_data = escape(`
   <!-- }}} -->
  </div>
  <!-- }}} -->
- <!-- dev_log_map {{{ -->
- <div id="dev_log_map"     title="dev_log_map"     class="transcript hidden"
-                                 onclick='dom_logging_CB(event);'>
-                                 dev_log_map placeholder:<br />
-                                 <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
+ <!-- test_panel: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
+ <div id="test_panel"      title="test_panel"         class="transcript hidden">
+  <em id="RELOAD"          title="RELOAD"             class="toolbag_button cc7"> RELOAD    </em>
+  <em id="CLEAR"           title="CLEAR"              class="toolbag_button"    > CLEAR     </em>
+  <em id="REGEX"           title="REGEX"              class="toolbag_button"    > REGEX     </em>
+  <em id="BEHAVIOR"        title="BEHAVIOR"           class="toolbag_button"    > BEHAVIOR  </em>
+  <em id="HIGHLIGHT"       title="HIGHLIGHT"          class="toolbag_button cc3"> HIGHLIGHT </em>
  </div>
  <!-- }}} -->
- <!-- dev_log_calls: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
- <div id="dev_log_calls"                           class="transcript hidden"
-                                 onclick='t_onclick(event);'>
-  <em id="RELOAD"          title="RELOAD"         class="toolbag_button cc7"> RELOAD   </em>
-  <em id="CLEAR"           title="CLEAR"          class="toolbag_button"    > CLEAR    </em>
-  <em id="REGEX"           title="REGEX"          class="toolbag_button"    > REGEX    </em>
-  <em id="BEHAVIOR"        title="BEHAVIOR"       class="toolbag_button"    > BEHAVIOR </em>
- </div>
- <!-- }}} -->
+
+  <!-- dev_log_map {{{-->
+  <div
+   id      = "dev_log_map"
+   title   = "dev_log_map"
+   class   = "transcript hidden"
+   >
+   dev_log_map placeholder:<br>
+   <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
+
+  </div>
+  <!-- }}} -->
  <!-- dom_load_tags (placeholder) {{{ -->
- <div id="dom_load_tags"                           class="transcript hidden">
+ <div
+  id       = "dom_load_tags"
+  title    = "dom_load_tags"
+  class    = "transcript hidden"
+  >
   dom_load_tags placeholder:<br />
   <i class="todo">...should have been populated by <em>dom_tools.show_tags</em> with the value of DOM_LOAD_TAG</i>
 
@@ -304,104 +867,59 @@ dom_tools_html_data = escape(`
  <!-- transcript2 {{{ -->
  <div id="transcript2"     title="transcript2"  class="transcript hidden cleardiv"></div>
  <!-- }}} -->
- <!-- fly_div {{{ -->
- <div id="fly_div"         title="fly_div"  class="pinned hidden"></div>
- <!-- }}} -->
 
+ <!-- pivspot {{{-->
+ <div   id="pivspot"       title="pivspot"         class="hidden">
+   <div id="pivspot_c">&#x00BB;</div>
+ </div>
+ <!--}}}-->
+ <!-- seeker {{{-->
+ <div  id = "seeker_PU"    title="seeker_PU"       class="seeker_P"     ><div id="seeker_CU" >seeker up    </div></div>
+ <div  id = "seeker_PD"    title="seeker_PD"       class="seeker_P"     ><div id="seeker_CD" >seeker_thumbs</div></div>
+
+ <div id = "seekspot_U"                                                 ></div>
+ <div id = "seekzone"      title="seekzone"        class="hotspot_frame"></div>
+ <div id = "seekspot_A"                                                 >&#x2191;</div>
+ <div id = "seekspot_D"                                                 ></div>
+ <!--}}}-->
 <!--}}}-->
 `
 );
-load_html('dom_tools_html', dom_tools_html_data);
+load_html("dom_tools_html", dom_tools_html_data);
 </script>
   <!--}}}-->
-
-  <!-- WORDING JS [dom_wording_data] {{{-->
-  <script id='dom_wording_js' src='javascript/dom_wording.js' defer></script>
-
-  <!--}}}-->
-  <!-- SELECT  JS [dom_select_data] {{{-->
-  <script id='dom_select_js'  src='javascript/dom_select.js'  defer></script>
+  <!-- PROP    JS [dom_prop_js_data] {{{-->
+  <script id="dom_prop_js"   src="javascript/dom_prop.js"   defer></script>
 
   <!--}}}-->
   <!-- TOOLS   JS [dom_tools_js_data] {{{-->
-  <script id='dom_tools_js'   src='javascript/dom_tools.js'   defer></script>
+  <script id="dom_tools_js"   src="javascript/dom_tools.js"      defer></script>
 
   <!--}}}-->
-  <!-- PLAYGROUND HTML {{{-->
+
+  <!-- playground_div HTML {{{-->
   <div id="playground_div">
 
    <!-- CHECKBOX {{{-->
-   <div class="box_div dark_div">
+   <div id="div_CHECKBOX" class="box_div dark_div">
     <!-- boxes {{{-->
-    <div  id="boxes"
-     onmousedown='/* playground.html playground_div #boxes */
-      /* INPUT knob_frame knob knob_content {{{*/
-      let log_style
-        = "border           : #444 solid 1px;"
-        + "font-size        : 200%;"
-        + "font-weight      : 900;"
-        + "color            : #010;"
-        + "background-color : #080"
-      ;
-      //console.log("%c playground.html: boxes.onmousedown", log_style);
-
-      /* [check_el] .. f(knob_frame knob knob_content) {{{*/
-      let check_el;
-      let parent = event.target.parentElement;
-
-      if(    parent.classList.contains("knob_frame")
-          || parent.classList.contains("knob")
-          || parent.classList.contains("knob_content")
-      ) {
-          check_el = parent.querySelector(".knob");
-          if( check_el.classList.contains( "checked" ) ) check_el.classList.remove( "checked" );
-          else                                           check_el.classList.add   ( "checked" );
-      }
-      /*}}}*/
-      /* [INPUT] {{{*/
-      else {
-          if(!check_el) check_el = parent              .getElementsByTagName("INPUT")[0];
-          if(!check_el) check_el = parent.parentElement.getElementsByTagName("INPUT")[0];
-          if( check_el) {
-              if(event.target.tagName != "LABEL") check_el.checked = !check_el.checked;
-          }
-      }
-      /*}}}*/
-      /*}}}*/
-      /* [traces] {{{*/
-      if(check_el) {
-          let traces_el = document.getElementById("traces");
-          if( traces_el )
-              traces_el.innerHTML
-              = " event.target=<em>"+event.target.tagName+" "+event.target.id+"</em>"
-              + "<br>"
-              + " check_el=<em>"+check_el.id+"</em>"
-          ;
-      }
-      /*}}}*/
-      /* [handler] {{{*/
-      if(check_el) {
-          console.log("%c playground.html "+check_el.tagName+"#"+check_el.id+" .. preventDefault and stopPropagation ", log_style);
-          if( event.preventDefault  ) event.preventDefault ();
-          if( event.stopPropagation ) event.stopPropagation();
-          return false; /* do not call default handler */
-      }
-      else {
-          console.log("%c playground.html [!check_el] .. CALL CHECKBOX DEFAULT HANDLER ", log_style);
-          return true; /* call checkbox default handler */
-      }
-      /*}}}*/
-     '>
+    <div  id="boxes">
      <!-- cap dot pin {{{-->
-     <div  class="box_container" title="slider cap"         ><!--cap         --><div class="box cb_slider_cap"     ><input type="checkbox" id="cb_slider_cap"  name="check" /><label for="cb_slider_cap"></label></div></div>
-     <div  class="box_container" title="slider dot"         ><!--dot         --><div class="box cb_slider_dot"     ><input type="checkbox" id="cb_slider_dot"  name="check" /><label for="cb_slider_dot"></label></div></div>
-     <div  class="box_container" title="slider pin"         ><!--pin         --><div class="box cb_slider_pin"     ><input type="checkbox" id="cb_slider_pin"  name="check" /><label for="cb_slider_pin"></label></div></div>
+
+     <div  class="box_container" title="slider cap"         >
+      <div class="box cb_slider_cap" onclick='checkbox_clicked(this.firstElementChild);'><input type="checkbox" id="cb_slider_cap1" name="check" off="OFF" on="ON"/><label for="cb_slider_cap1">OFF</label><label for="cb_slider_cap1">ON</label></div>
+      <div class="box cb_slider_cap" onclick='checkbox_clicked("cb_slider_cap2"      );'><input type="checkbox" id="cb_slider_cap2" name="check"                  /><label for="cb_slider_cap2">off</label><label for="cb_slider_cap2">on</label></div>
+     </div>
+
+     <div  class="box_container" title="slider dot"         ><!--dot         --><div class="box cb_slider_dot"      ><input type="checkbox" id="cb_slider_dot" name="check"/><label for="cb_slider_dot" ></label></div></div>
+
+     <div  class="box_container" title="slider pin"         ><!--pin         --><div class="box cb_slider_pin"      ><input type="checkbox" id="cb_slider_pin" name="check"/><label for="cb_slider_pin" ></label></div></div>
      <br>
 
-     <div  class="box_container" title="slider filled pin"  ><!--filled pin  --><div class="box cb_filled_pin"     ><input type="checkbox" id="cb_filled_pin"  name="check" /><label for="cb_filled_pin" ></label></div></div>
-     <div  class="box_container" title="slider filled pin R"><!--filled pin R--><div class="box cb_filled_pin cb_R"><input type="checkbox" id="cb_filled_pin1" name="check" /><label for="cb_filled_pin1"></label></div></div>
-     <div  class="box_container" title="slider filled pin Y"><!--filled pin Y--><div class="box cb_filled_pin cb_Y"><input type="checkbox" id="cb_filled_pin2" name="check" /><label for="cb_filled_pin2"></label></div></div>
-     <div  class="box_container" title="slider filled pin B"><!--filled pin B--><div class="box cb_filled_pin cb_B"><input type="checkbox" id="cb_filled_pin3" name="check" /><label for="cb_filled_pin3"></label></div></div>
+     <div  class="box_container" title="slider filled pin"  ><!--filled pin  --><div class="box cb_filled_pin bg2"><input type="checkbox" id="cb_filled_pin"   name="check"/><label for="cb_filled_pin" ></label></div></div>
+     <div  class="box_container" title="slider filled pin R"><!--filled pin R--><div class="box cb_filled_pin bg3"><input type="checkbox" id="cb_filled_pin1"  name="check"/><label for="cb_filled_pin1"></label></div></div>
+     <div  class="box_container" title="slider filled pin Y"><!--filled pin Y--><div class="box cb_filled_pin bg4"><input type="checkbox" id="cb_filled_pin2"  name="check"/><label for="cb_filled_pin2"></label></div></div>
+     <div  class="box_container" title="slider filled pin B"><!--filled pin B--><div class="box cb_filled_pin bg5"><input type="checkbox" id="cb_filled_pin3"  name="check"/><label for="cb_filled_pin3"></label></div></div>
 
      <!--}}}-->
      <!-- knob_B, knob_Y knob_R {{{-->
@@ -431,7 +949,7 @@ load_html('dom_tools_html', dom_tools_html_data);
      <!--}}}-->
     </div>
     <!--}}}-->
-    <!-- rotate {{{-->
+    <!-- rotate_container {{{-->
     <div id="rotate_container" class="box_container round_el" style="display:inline-grid;  align-items:start;"
      onclick=' /* playground.html playground_div #boxes rotate */
       /*_ sel_el_class {{{*/
@@ -457,11 +975,17 @@ load_html('dom_tools_html', dom_tools_html_data);
       /*}}}*/
       let button = event.path[0];
       let choice = CHOICES.includes(button.id) ? button.id : CHOICES[0];
-      let rot_el = document.getElementById("rot_el").firstChild;
-      sel_el_class(rot_el, CHOICES, choice);
+      let rotate_arrow = document.getElementById("rotate_arrow");
+      sel_el_class(rotate_arrow, CHOICES, choice);
      '>
+     <!-- numpad {{{-->
 
-      <div style="grid-row:1; grid-column:1;" id="rot_el" class="cb_filled_pin"><div class="rotate_0"><label>&#x2191;</label></div></div>
+      <div style="grid-row:1; grid-column:1;" id="rotate_disc" class="cb_filled_pin">
+       <div class="rotate_0" id='rotate_arrow' style='width:2em; height:2em;'>
+        <label>&#x2191;</label>
+       </div>
+      </div>
+
       <div style="grid-row:1; grid-column:2; display:grid;">
 
        <em style="grid-row:1; grid-column:1;" id="rotate_0" class="cb_filled_pin button">0</em>
@@ -479,17 +1003,18 @@ load_html('dom_tools_html', dom_tools_html_data);
        <em style="grid-row:4; grid-column:1;" id="rotate_9" class="cb_filled_pin button">9</em>
        <em style="grid-row:4; grid-column:2;" id="rotate_A" class="cb_filled_pin button">A</em>
        <em style="grid-row:4; grid-column:3;" id="rotate_B" class="cb_filled_pin button">B</em>
-
       </div>
-
+      <!--}}}-->
+    </div>
     <!--}}}-->
    </div>
    <!--}}}-->
+
    <em class="toolbag_button" title="pat_sort" style="cursor:pointer;" onclick='toggle_keyword("pat_sort");'>pat_sort</em>
-   <br style='clear:left;'>
+   <br style="clear:left;">
 
    <!-- NODE_BEFORE NODE_BEFORE TEXT_AFTER SPACES WORDS {{{-->
-   <div class='note pat_div'>
+   <div id="note_pat_div" class="note pat_div">
     <pre>
 <span id="NODE_BEFORE">NODE_BEFORE</span> <em id="EM_CC_0_3">cc[0-3]</em> <span id="NODE_AFTER">NODE_AFTER</span> ...TEXT_AFTER...
 <a href="#"> <em>SPACES</em>  	 CpAccountApp.app        </a>
@@ -499,22 +1024,20 @@ load_html('dom_tools_html', dom_tools_html_data);
     </pre>
    </div>
    <!--}}}-->
-   <br style='clear:left;'>
+   <br style="clear:left;">
 
-   <!-- nested div  {{{-->
-   <div id="nested_div_parent" style="font-family:monospace; font-size:200%; font-weight:900;">
-    <h2 id="h2_1">h2_1</h2>
-    div 1
-    <div>div 2<div>
-      <div>div 3 content
-       <!--empty div-->
-       <div style="padding:1em;"></div>
-      </div>
-     </div>
+   <!-- nested_div  {{{-->
+   <div     id="nested_div_parent" style="font-family:monospace; font-size:200%; font-weight:900;">
+    <h2     id="nested_div_parent_h2">h2</h2>
+    nested_div_parent_TEXT
+    <div    id="nested_div_2"></div>
+    <div    id="nested_div_3"> nested_div_3_TEXT
+     <div   id="nested_div_4_empty" style="padding:1em;"></div>
     </div>
    </div>
-   <!--end of nested div }}}-->
-   <br style='clear:left;'>
+   <!-- nested_div }}}-->
+
+   <br style="clear:left;">
 
    &ndash; <span style="border-radius:1em; box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset;  padding: 2px;  font-weight: 800; line-height:3em;color:#000; background-color:#6495ED;">100037 TOP <b>HOLD</b>-<i>0200</i></span> &mdash; <span style="border-radius:1em; box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset;  padding: 2px;  font-weight: 400;color:#000; background-color:#9ACD32;border:3px red dashed;">URF <i>0102</i></span>
    <!-- h2 sample_div {{{ -->
@@ -582,7 +1105,7 @@ load_html('dom_tools_html', dom_tools_html_data);
    ..ul li
    </pre>
    <!-- }}} -->
-   <br style='clear:left;'>
+   <br style="clear:left;">
    <!-- parent {{{ -->
    <div     id="parent">parent
     <div     id="child1"  >-child1
@@ -621,8 +1144,8 @@ and the <u>boundary point of the Range</u>.
    </pre>
    <!-- }}} -->
    <!-- div_a_href {{{-->
-   <div id='div_a_href' style=' clear:left; padding:1em; background:linear-gradient(to bottom, #010, #388);'>
-    <input type="search" style="width:100% !important;">
+   <div id="div_a_href" style=" clear:left; padding:1em; background:linear-gradient(to bottom, #010, #388);">
+    <input type="search">
     <ol>
      <li><a href=index.html>index.html</a></li>
 
@@ -637,11 +1160,16 @@ and the <u>boundary point of the Range</u>.
      <li><a href=dom_select.html>dom_select.html</a></li>
      <li><a href=dom_tools.html>dom_tools.html</a></li>
      <li><a href=dom_tools_css.html>dom_tools_css.html</a></li>
+     <li><a href=dom_dash_css.html>dom_dash_css.html</a></li>
      <li><a href=twiddler.html>twiddler.html</a><br></li>
 
      <li><a href=javascript/dom_load.js>javascript/dom_load.js</a></li>
      <li><a href=javascript/dom_wording.js>javascript/dom_wording.js</a></li>
+     <li><a href=javascript/dom_log.js>javascript/dom_log.js</a></li>
+     <li><a href=javascript/dom_util.js>javascript/dom_util.js</a></li>
      <li><a href=javascript/dom_select.js>javascript/dom_select.js</a></li>
+     <li><a href=javascript/dom_hide.js>javascript/dom_hide.js</a></li>
+     <li><a href=javascript/dom_store.js>javascript/dom_store.js</a></li>
      <li><a href=javascript/dom_tools.html>javascript/dom_tools.html</a></li>
      <li><a href=javascript/dom_tools.js>javascript/dom_tools.js</a></li>
 
@@ -670,7 +1198,11 @@ playground.html
 javascript/dom_grid.html
 |          dom_grid.js
 |          dom_load.js
+|          dom_log.js
+|          dom_util.js
 |          dom_select.js
+|          dom_hide.js
+|          dom_store.js
 |          dom_tools.html
 |          dom_tools.js
 |_________ dom_wording.js
@@ -680,7 +1212,7 @@ stylesheet/dom_host.css
 
    </pre>
    <!--}}}-->
-   <br style='clear:left;'>
+   <br style="clear:left;">
    <!-- SYMBOLS {{{-->
 
    <div class="left_div round_el"
@@ -770,120 +1302,14 @@ stylesheet/dom_host.css
   8 - If You See Her, Say Hello
   9 - Shelter From The Storm
  10 - Buckets Of Rain
-   <span class='round_el' style="display:grid; grid-gap:.5em;">
+   <span class="round_el" style="display:grid; grid-gap:.5em;">
     <span style="grid-column:1;"> &amp;comma; </span> <em style="grid-column:2; font-size:200%; font-weight:900;"> &comma; </em>
     <span style="grid-column:1;"> &amp;apos;  </span> <em style="grid-column:2; font-size:200%; font-weight:900;"> &apos;  </em>
    </span></pre>
    <!--}}}-->
   </div>
   <!--}}}-->
-<!-- ABS style {{{-->
-<style>
-/* ellipse {{{*/
-.ellipse:before {
-  content                    : "";
-  z-index                    : -1;
-  user-select                : none;
-
-  display                    : inline-block;
-  width                      : 22em;
-  height                     :  5em;
-  transform-origin           : 0 50%;
-
-  border                     : solid cyan 2px;
-  margin-top                 :           10px;
-  border-top-left-radius     : 50%;
-  border-top-right-radius    : 50%;
-  border-bottom-left-radius  : 50%;
-  border-bottom-right-radius : 50%;
-  background                 : -webkit-gradient(linear, left top, left bottom, from(rgba(0, 128, 255, 0.2)), to(rgba(224, 224, 224, 0.3)));
-}
-
-
-.rotL.ellipse:before { transform: translate(-1.5em,-50%) rotate(-7deg); }
-.rot0.ellipse:before { transform: translate(-1.5em,-40%) rotate( 0deg); height:6em; }
-.rotR.ellipse:before { transform: translate(-1.5em,-50%) rotate( 7deg); }
-
-.its                 { border:none !important; }
-
-
-
-
-/*}}}*/
-/* room {{{*/
-em.room {
- top         : .5em;
- box-shadow  : 3px 3px 6px rgba(128,128,128,.5);
- font-weight : 800;
- font-size   : 80%;
-}
-em.room:after {
- content     : "room";
- top         : -1em;
- left        :  2em;
- margin-left : -2em;
- line-height : 0px;
- font-weight : 900;
- font-size   : 70%;
- font-family : "Comic sans ms";
- text-shadow : rgba( 50, 50, 50, 0.9) 1px 1px 5px;
-}
-/*}}}*/
-</style>
-<!--}}}-->
-   <!-- ABS {{{-->
-  <div class="left_div round_el" style="display:grid;">
-  <!-- a target="abs" {{{-->
-  <ul class="round_el" style="grid-column:1; font-size:80%; font-weight:900;">
-   <li><em>ABS-\S*URF1\S*000\d*</em></li>
-   <li><em>ABS-\S*URF2\S*000\d*</em></li>
-   <li><em>ABS\S*000\d*</em></li>
-   <li><em>ABS</em> <em>CPY</em> <em>TOP</em></li>
-   <li><em>UFR</em> <em>UFR1</em> <em>UFR2</em></li>
-   <li><em>(\u)</em></li> <em>\u</em>
-  </ul>
-
-  <ul class="round_el" style="grid-column:2;">
-   <li><a target="abs" href="./ABS_ITS_duplication_process.html"             >ABS_ITS_duplication_process</a></li>
-   <li><a target="abs" href="./ABS_eRoom_settings_20170626.html"             >ABS_eRoom_settings_20170626</a></li>
-   <li><a target="abs" href="./AO-060-PG-0190-000003_Rev00_eRoom_Manual.html">AO-060-PG-0190-000003_Rev00_eRoom_Manual</a></li>
-   <li><a target="abs" href="./AZ-ABS-00-0100-010011_rev00.html"             >AZ-ABS-00-0100-010011_rev00</a></li>
-  </ul>
-
-  <br>
-
-  <!--}}}-->
-   <!-- TOP to URF? {{{-->
-   <div class="eso_div bb3" style="grid-row:2; grid-column:1/3; background-color:salmon;">
-    <p>
-    <em>In terms of ITS numbering</em>
-    <br>The ITS issued by ABS_TOP in the room ABS_TOP-URFCPY is numbered :
-    <br>- ABS-CCTOP-OTOP-TURF-ITS-000001 where CCTOP is TOP contract code and OTOP is TOP contractor code
-    <br>
-    <br>This ITS duplicated to the room ABS_URF1-TOPCPY is numbered :
-    <br>- ABS-CCTOP-OTOP-<em>URF1</em>-ITS-000001 where <em>URF1</em> is the <b>URF1</b> contractor code
-    <br>
-    <br>This ITS duplicated to the room ABS_URF2-TOPCPY is numbered :
-    <br>- ABS-CCTOP-OTOP-<em>URF2</em>-ITS-000001 where <em>URF2</em> is the <b>URF2</b> contractor code
-    </p>
-
-    <p>
-    Whoever the supplier ABS_URF1 or ABS_URF2, the sequential number of the duplicated ITS shall be the same as the initial ITS
-    </p>
-
-    <pre>
-                                                                                             <em class='room'>ABS_URF1-TOPCPY</em>
-        <em class='room'>ABS_TOP-URFCPY</em>
-                                                                                        <em>ABS_URF1</em><em class='its itsL'>ABS-CCTOP-OTOP-URF1-ITS-000001</em>
-
-        <span class='ellipse rot0'><em>ABS_TOP</em> <em>ABS_URFCPY</em></span> <span class='arrow_S'>               duplication</span>      <span class='ellipse rotL'><span class='ellipse rotR'>ABS_TOPCPY</span></span>
-         <em class='its'>ABS-CCTOP-OTOP-TURF-ITS-000001</em>
-                                                                                        <em>ABS_URF2</em><em class='its itsR'>ABS-CCTOP-OTOP-URF2-ITS-000001</em>
-                                                                                             <em class='room'>ABS_URF2-TOPCPY</em>
-    </pre>
-   </div>
-   <!--}}}-->
-  </div> <!--}}}-->
+  <!-- ABS HTML {{{-->
  <!-- [iframe] {{{-->
  <br style="clear:both">
 <!-- style {{{-->
@@ -1015,30 +1441,43 @@ let populate_div_playground = function()
  </div>
 <!--}}}-->
  <!--}}}-->
+ <!-- h_words_1 .. h_words_A {{{-->
+ <div  id="h_words"   class="left_div round_el">
+  <div id="h_words_1" style="background-color: rgba(150,  75,   0, .7) !important; "><ol><li><code>words_1</code></li></ol></div>
+  <div id="h_words_2" style="background-color: rgba(255,   0,   0, .7) !important; "><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
+  <div id="h_words_3" style="background-color: rgba(255, 165,   0, .7) !important; "><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
+  <div id="h_words_4" style="background-color: rgba(255, 255,   0, .7) !important; "><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
+  <div id="h_words_5" style="background-color: rgba(154, 205,  50, .7) !important; "><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
+  <div id="h_words_6" style="background-color: rgba(100, 149, 237, .7) !important; "><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
+  <div id="h_words_7" style="background-color: rgba(238, 130, 238, .7) !important; "><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
+  <div id="h_words_8" style="background-color: rgba(160, 160, 160, .7) !important; "><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
+  <div id="h_words_9" style="background-color: rgba(255, 255, 255, .7) !important; "><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
+  <div id="h_words_A" style="background-color: rgba(207, 181, 059, .7) !important; "><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
+ </div>
+ <!--}}}-->
  <!-- words_1 .. words_A {{{-->
- <div class="left_div round_el" style="display:grid; align-items:start;">
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_1</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
-
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
-  <div style="grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
+ <div  id="words"   class="left_div round_el" style="display:grid; align-items:start;">
+  <div id="words_1" style="background-color: rgba(150,  75,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_1</code></li></ol></div>
+  <div id="words_2" style="background-color: rgba(255,   0,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
+  <div id="words_3" style="background-color: rgba(255, 165,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
+  <div id="words_4" style="background-color: rgba(255, 255,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
+  <div id="words_5" style="background-color: rgba(154, 205,  50, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
+  <div id="words_6" style="background-color: rgba(100, 149, 237, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
+  <div id="words_7" style="background-color: rgba(238, 130, 238, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
+  <div id="words_8" style="background-color: rgba(160, 160, 160, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
+  <div id="words_9" style="background-color: rgba(255, 255, 255, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
+  <div id="words_A" style="background-color: rgba(207, 181, 059, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
  </div>
  <!--}}}-->
   <!-- div_words_[...] {{{-->
   <div class="left_div round_el"
        style="
-       border:1px solid gray;
-       margin-top : -11em;
-       border     : 1px ridge #333;
-       text-align : center;
-       font-size  : 100%;
-       font-weight: 100;
+       border      : 1px solid gray;
+       border      : 1px ridge #333;
+       text-align  : center;
+       font-size   : 100%;
+       font-weight : 100;
+       z-index     : 1;
        ">
    <em>words_[0-9]</em>
    <em>words_[0-A]</em>
@@ -1052,31 +1491,75 @@ let populate_div_playground = function()
   </div>
   <!--}}}-->
 
- <!-- p_code {{{-->
- <p class="round_el"
- style="
- float:left;
- clear:left;
- border:1px solid gray;
- margin-top : -10em;
- margin-left : 24em;
- font-size:80%;
- ">
- p start
- <br>
- <code>CODE 1 (short) not a code_container</code>
- <br>
- <code>CODE 2 (short) not a code_container</code>
- <br>
- <code>CODE 3 (long)<br>
-  is code_container<br>
-  123456789 123456789 123456789 123456789 123456789<br>
-  123456789 123456789 123456789 123456789 123456789<br>
-  123456789 123456789 123456789 123456789 123456789<br>
- </code>
- p end
- </p>
- <!--}}}-->
+<!-- pre regex {{{-->
+<pre class="round_el collapsed"
+   style="
+   float:left;
+   clear:left;
+   border:1px solid gray;
+   margin-top :  1em;
+   margin-left : 1em;
+   font-size:100%;
+   "
+   >
+   <em class="collapse_pin" title="collapse" onclick='flip_el_class(this.parentElement, "collapsed");'>&#x1F4CC;</em>
+REGEX_CHARS &Backslash; ^ $ . + * ( ) [ ] <a target="charref" src="https://dev.w3.org/html5/html-author/charref">charref</a>
+
+<b>Character classes</b>
+ .	any character except newline
+ \w\d\s	word, digit, whitespace
+ \W\D\S	not word, digit, whitespace
+ [abc]	any of a, b, or c
+ [^abc]	not a, b, or c
+ [a-g]	character between a &amp; g
+
+<b>Anchors</b>
+ ^abc$	start / end of the string
+ \b\B	word, not-word boundary
+
+<b>Escaped characters</b>
+ \.\*\\	escaped special characters
+ \t\n\r	tab, linefeed, carriage return
+
+<b>Groups & Lookaround</b>
+ (abc)	capture group
+ \1	backreference to group #1
+ (?:abc)	non-capturing group
+ (?=abc)	positive lookahead
+ (?!abc)	negative lookahead
+
+<b>Quantifiers & Alternation</b>
+ a*a+a?	0 or more, 1 or more, 0 or 1
+ a{5}a{2,}	exactly five, two or more
+ a{1,3}	between one &amp; three
+ a+?a{2,}?	match as few as possible
+ ab|cd	match ab or cd
+</pre>
+<!--}}}-->
+<!-- p_code {{{-->
+<p class="round_el"
+   style="
+   float       : left;
+   clear       : left;
+   margin-left : 1em;
+   border      : 1px solid gray;
+   font-size   : 100%;
+   z-index     : 1;
+   ">
+   <em class="collapse_pin" title="collapse" onclick='flip_el_class(this.parentElement, "collapsed");'>&#x1F4CC;</em>
+P_START                                              <br>
+<code>CODE 1 (short) not a code_container</code>     <br>
+<code>CODE 2 (short) not a code_container</code>     <br>
+<code>CODE 3 (long)                                  <br>
+ is code_container                                   <br>
+ 123456789 123456789 123456789 123456789 123456789   <br>
+ 123456789 123456789 123456789 123456789 123456789   <br>
+ 123456789 123456789 123456789 123456789 123456789   <br>
+ Operations at L3 level(Incident / Problem / Change) <br>
+</code>
+P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
+</p>
+<!--}}}-->
   <!-- cc[regex-range] .. cc1 .. cc0 {{{-->
   <div class="round_el"
    style="
@@ -1103,7 +1586,7 @@ let populate_div_playground = function()
   <!--}}}-->
   <!-- [pattern_1 .. pattern_B] {{{-->
   <div class="round_el"
-       style='
+       style="
        float:left;
        display:inline-block;
        border: 1px inset #444;
@@ -1112,7 +1595,7 @@ let populate_div_playground = function()
        font-family:cursive;
        color:black !important;
        color:#668  !important;
-       '>
+       ">
    pattern_1<br>
    pattern_2<br>
    pattern_3<br>
@@ -1133,7 +1616,7 @@ let populate_div_playground = function()
   <!--}}}-->
 <!-- [pat1 .. patB] {{{-->
 <div class="round_el"
-       style='
+       style="
    float:left;
        border: 1px inset #444;
        font-size:50%;
@@ -1141,26 +1624,85 @@ let populate_div_playground = function()
        font-family:cursive;
        color:black !important;
        color:#668  !important;
-       '
+       "
        onclick='
      /* console.log("playground.html:"); console.dir(event); */
        let span = event.path[0].previousElementSibling;
        if( span && (span.tagName == "SPAN")) span.innerText = (span.innerText) ? "" : span.title;
        '
        >
-<span id='pat1' title="pat1">pat1</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat2' title="pat2">pat2</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat3' title="pat3">pat3</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat4' title="pat4">pat4</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat5' title="pat5">pat5</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat1" title="pat1">pat1</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat2" title="pat2">pat2</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat3" title="pat3">pat3</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat4" title="pat4">pat4</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat5" title="pat5">pat5</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
 <br><br>
-<span id='pat6' title="pat6">pat6</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat7' title="pat7">pat7</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat8' title="pat8">pat8</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='pat9' title="pat9">pat9</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='patA' title="patA">patA</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
-<span id='patB' title="patB">patB</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat6" title="pat6">pat6</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat7" title="pat7">pat7</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat8" title="pat8">pat8</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="pat9" title="pat9">pat9</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="patA" title="patA">patA</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
+<span id="patB" title="patB">patB</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
 </div>
+<!--}}}-->
+  <!--}}}-->
+  <hr style="clear:left;">
+   <!-- SANDBOX UI {{{-->
+<!--{{{
+   <div
+    id="buttons"
+    class="transcript"
+    style="
+    float:left;
+    min-width:10em;
+    min-height:10em;
+    cursor:pointer;
+    user-select:none;
+    "
+    > DOM HIDE UI
+
+    <br> <em id="dom_hide1_reset"                 class="toolbag_button cc6"> dom_hide1_reset                 </em>
+    <br> <em id="dom_hide2_store_reload"          class="toolbag_button cc7"> dom_hide2_store_reload          </em>
+    <br> <em id="dom_hide2_store_save"            class="toolbag_button cc8"> dom_hide2_store_save            </em>
+    <br> <em id="dom_hide4_scroll_to_last_hidden" class="toolbag_button cc9"> dom_hide4_scroll_to_last_hidden </em>
+    <br> <em id="dom_hide5_start_history"         class="toolbag_button cc0"> dom_hide5_start_history         </em>
+
+    <br>
+
+
+    <br> <em id="dom_hide1_collect_nodes_1"       class="toolbag_button cc1"> dom_hide1_collect_nodes_1       </em>
+    <br> <em id="dom_hide1_collect_nodes_2"       class="toolbag_button cc1"> dom_hide1_collect_nodes_2       </em>
+    <br> <em id="dom_hide1_collect_nodes_3"       class="toolbag_button cc1"> dom_hide1_collect_nodes_3       </em>
+    <br> <em id="dom_hide1_collect_nodes_4"       class="toolbag_button cc1"> dom_hide1_collect_nodes_4       </em>
+    <br> <em id="dom_hide1_container_clicked"     class="toolbag_button cc1"> dom_hide1_container_clicked     </em>
+   </div>
+
+}}}-->
+   <!--div id="transcript" class="transcript" style="float:right; min-width:10em; min-height:10em;"     > TRANSCRIPT </div-->
+
+   <!--}}}-->
+  <hr style="clear:left;">
+
+<!-- NOTES {{{-->
+<div class="eso_div">
+ A <strong>positioned element</strong> is an element whose <a href="/en-US/docs/CSS/computed_value" title="CSS/computed_value">computed</a>
+   <em>position</em> value
+   is either
+   <ul>
+    <li><em>relative</em>                                           </li>
+    <li><em>absolute</em>                                           </li>
+    <li><em>fixed</em> <i>or:</i>                                   </li>
+    <li><em>sticky</em> <i>In other words, it's anything except:</i></li>
+    <li><em>static</em>                                             </li>
+   </ul>
+</div>
+
+<!--ESO patch-notes (placeholder) {{{-->
+<!--
+}:r C:/LOCAL/DATA/ANDROID/PROJECTS/BAK/HTML/ESO_patch_notes.html
+-->
+
+<!--}}}-->
 <!--}}}-->
 <!-- Page end {{{-->
 <div
@@ -1174,81 +1716,46 @@ class="round_el"
  Page end
 </div>
 <!--}}}-->
-<!-- dom_logging_CB {{{-->
-<div class="round_el"
- onclick='dom_logging_CB(event);'
- style="
- float       : left;
- font-size   : 50%;
- cursor      : pointer;
- display     : grid;
- grid-gap    : 0.5em;
- align-items : start;
- ">
- <em class="toolbag_button    " id="LOG EVENTS"      style="grid-row:1"                                                        > LOG EVENTS     </em>
- <em class="toolbag_button    " id="LOG HIGHLIGHT"   style="grid-row:1"                                                        > LOG HIGHLIGHT  </em>
- <em class="toolbag_button    " id="LOG TOOLBAR"     style="grid-row:1"                                                        > LOG TOOLBAR    </em>
-                                                                       
- <em class="toolbag_button    " id="EV0_LISTEN"      style="grid-row:2"                                                        > EV0_LISTEN     </em>
- <em class="toolbag_button    " id="EV1_DOWN"        style="grid-row:2"                                                        > EV1_DOWN       </em>
- <em class="toolbag_button    " id="EV2_MOVE"        style="grid-row:2"                                                        > EV2_MOVE       </em>
- <em class="toolbag_button    " id="EV3_UP"          style="grid-row:2"                                                        > EV3_UP         </em>
- <em class="toolbag_button    " id="EV4_LONG_PRESS"  style="grid-row:2"                                                        > EV4_LONG_PRESS </em>
- <em class="toolbag_button    " id="EV5_CB"          style="grid-row:2"                                                        > EV5_CB         </em>
- <em class="toolbag_button    " id="EV6_CHANGED"     style="grid-row:2"                                                        > EV6_CHANGED    </em>
- <em class="toolbag_button    " id="EV7_DISPATCH"    style="grid-row:2"                                                        > EV7_DISPATCH   </em>
- <em class="toolbag_button    " id="EV8_FLOATLOG"    style="grid-row:2"                                                        > EV8_FLOATLOG   </em>
-                                                                       
- <em class="toolbag_button    " id="S1_RANGE"        style="grid-row:3"                                                        > S1_RANGE       </em>
- <em class="toolbag_button    " id="S2_SELECT"       style="grid-row:3"                                                        > S2_SELECT      </em>
- <em class="toolbag_button    " id="S3_SLOT"         style="grid-row:3"                                                        > S3_SLOT        </em>
-                                                                       
- <em class="toolbag_button    " id="T0_STORE"        style="grid-row:4"                                                        > T0_STORE       </em>
- <em class="toolbag_button    " id="T1_PIVOT"        style="grid-row:4"                                                        > T1_PIVOT       </em>
- <em class="toolbag_button    " id="T2_SPREAD"       style="grid-row:4"                                                        > T2_SPREAD      </em>
- <em class="toolbag_button    " id="T3_GRID"         style="grid-row:4"                                                        > T3_GRID        </em>
- <em class="toolbag_button    " id="T4_SLOT"         style="grid-row:4"                                                        > T4_SLOT        </em>
- <em class="toolbag_button    " id="T5_LAYOUT"       style="grid-row:4"                                                        > T5_LAYOUT      </em>
-
- <em class="toolbag_button    " id="containers_hi"   style='grid-row:5' title="containers_hi"   onclick='toggle_event(event);' >&#x00A7;</em>
- <em class="toolbag_button    " id="words_exact"     style='grid-row:5' title="words_exact"     onclick='toggle_event(event);' >&#x2261;</em>
- <em class="toolbag_button    " id="words_segment"   style='grid-row:5' title="words_segment"   onclick='toggle_event(event);' >&#x2282;</em>
- <em class="toolbag_button    " id="words_head_tail" style='grid-row:5' title="words_head_tail" onclick='toggle_event(event);' >&#x2208;</em>
- <em class="toolbag_button    " id="words_opcycle"   style='grid-row:5' title="words_opcycle"   onclick='toggle_event(event);' >&#x27F3;</em>
-
- <em class="toolbag_button big" id="RELOAD"          style='grid-row:6' title="RELOAD"          onclick='toggle_event(event);' >&#x267B;</em>
- <em class="toolbag_button big" id="log_seekspot"    style='grid-row:6' title="log_seekspot"    onclick='toggle_event(event);' >&#x2191;</em>
- <em class="toolbag_button big" id="pin_seekspot"    style='grid-row:6' title="pin_seekspot"    onclick='toggle_event(event);' >&#x1F4CC;</em>
- <em class="toolbag_button big" id="theme_dark"      style='grid-row:6' title="theme_dark"      onclick='toggle_event(event);' >&#x2600; &#x263D;</em>
- <em class="toolbag_button big" id="pat_sort"        style='grid-row:6' title="pat_sort"        onclick='toggle_event(event);' >&#x2191;</em>
- <em class="toolbag_button big"                      style="grid-row:6" title="console_clear()" onclick='console_clear("DOC");'>clear</em>
-
-</div>
-<!--}}}-->
-<!--ESO patch-notes (placeholder) {{{-->
-<!--
-}:r C:/LOCAL/DATA/ANDROID/PROJECTS/BAK/HTML/ESO_patch_notes.html
--->
-
-<!--}}}-->
  </body>
 <!-- check_load_html_results {{{ -->
  <script>
   function check_load_html_results()
   {
-   let missing_ids = "";
-   let id;
-   id = "dom_grid_html_tag" ; if( !document.getElementById(id) ) missing_ids += "\n#"+id;
-   id = "dom_tools_html_tag"; if( !document.getElementById(id) ) missing_ids += "\n#"+id;
-   if(missing_ids)
-    alert("PLAYGROUND MISING IDs:\n"+missing_ids);
+   console.log(DOM_LOAD_TAG);
+   let id;                                   let missing_ids  = "";
+   if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ;
+   if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ;
+   if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ;
+   if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ;
+   if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ;
+   if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ;
+   if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ;
+   if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ;
+   if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ;
+   id =     "dom_tools_html_tag" ;               missing_ids +=     check_missing_id(id) ;
+   id =     "dom_grid_html_tag"  ;               missing_ids +=     check_missing_id(id) ;
+
+   if(missing_ids) {
+    let lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+    let lf2 = "color:#FF0000;";
+    console.log("%c MISSING IDs:%c"+missing_ids, lbb+lf2, lf2);
+    alert(         "MISSING IDs:\n"+missing_ids);
+   }
   }
 
-  check_load_html_results();
+  function check_missing_id(id)
+  {
+   let el = shadow_root.querySelector("#"+id);
+   if(!el ) return "\n#"+id;
+   console.log(SYMBOL_CHECK_MARK+" "+el.textContent);
+   return "";
+  }
+
+  setTimeout(check_load_html_results, 500);
  </script>
 <!--}}}-->
 </html>
-
 <!--
  vim: sw=1
 -->
+

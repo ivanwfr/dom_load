@@ -1,5 +1,5 @@
 
-#dom_grid_css_tag   { content: "dom_grid_css (180515:15h)"; }
+#dom_grid_css_tag   { content: "dom_grid_css (181121:15h)"; }
 
 /* dom_grid_playground {{{*/
 #dom_grid_playground {
@@ -7,18 +7,14 @@
  border-radius : 1em;
  padding       : .5em;
  background    : linear-gradient(to bottom, #333, #111) !important;
- margin        : 1em 1em 1em 10em;
- position      : fixed;
- top           : 0.5em;
- right         : 0.5em;
+ position      : fixed; top : 0.2em; right : 0.2em;
  width         : 75%;
 }
-#dom_grid_playground.collapsed             { width   :  25%;            }
-#dom_grid_playground.collapsed #traces_div { display : none !important; }
+#dom_grid_playground.collapsed                   { width   : 25%            ; }
+#dom_grid_playground.collapsed #traces_div       { display : none !important; }
+#dom_grid_playground.collapsed #dom_grid_headsup { display : none           ; }
 
-#dom_grid_playground>div { display : inline;       }
-
-#headsup_l_div      >div { display : inline-block; }
+#dom_grid_headsup>div                            { display : inline-block   ; }
 
 /*}}}*/
 /* ol li {{{*/

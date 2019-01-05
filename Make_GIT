@@ -30,6 +30,30 @@ gls:
 	@echo [$@]; git log --stat
 
 #}}}
+################ ADD (190105) {{{
+:make git_add
+ga git_add:
+	@(echo "[$@]";\
+	FILES="\
+	MWebJS.html \
+	dom_find.html \
+	dom_hide.html \
+	dom_ondown.html \
+	dom_prop.html \
+	dom_target.html \
+	index.html \
+	playdom.html \
+	playground.html \
+	images \
+	javascript \
+	screenshots \
+	stylesheet \
+	";\
+	echo git add $$FILES;\
+	     git add $$FILES;\
+	)
+
+#}}}
 ################ COMMIT {{{
 :make gca
 gca:
@@ -60,7 +84,6 @@ gp:
 :!start explorer "http://kbroman.org/github_tutorial/pages/init.html"
 :term git init
 :term git add playground.html stylesheet javascript
-:term git add Make*
 :term git commit -m "initial project version"
 :term git config receive.denyCurrentBranch ignore
 

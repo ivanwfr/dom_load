@@ -1,15 +1,20 @@
-/*dom_select_js "use strict";*/
+"use strict";
+/* dom_select_js */
 let DOM_SELECT_JS_ID        = "dom_select_js";
-let DOM_SELECT_JS_TAG       = DOM_SELECT_JS_ID  +" (180606:20h)";
+let DOM_SELECT_JS_TAG       = DOM_SELECT_JS_ID  +" (190102:14h)";
 /* CONSOLE TEMPLATE TO BE IMPLEMENTED BY EMBEDDING LAYER {{{*/
-      DOUBLE_QUOTE  = String.fromCharCode(34);
-      LF            = String.fromCharCode(10);
-      CR            = String.fromCharCode(13);
-      CS            = "color:yellow;background-color:navy;font-size:150%;";
-      console_clear = function(  msg=null) { try { console.clear(); if(msg) console.warn("%c=== CLEARED BY: "+msg,CS);        } catch(ex) {} };
-      console_dir   = function(o,msg=null) { try {                  if(msg) console.log (               msg); console.dir(o); } catch(ex) {} };
-      console_log   = function(  msg     ) { try {                          console.log (               msg);                 } catch(ex) {} };
-      console_warn  = function(  msg=null) { try {                          console.warn(               msg);                 } catch(ex) {} };
+/*{{{
+  let DOUBLE_QUOTE  = String.fromCharCode(34);
+  let LF            = String.fromCharCode(10);
+  let CR            = String.fromCharCode(13);
+}}}*/
+  let BACKSLASH     = String.fromCharCode(92);
+  let FORESLASH     = String.fromCharCode(47);
+  let CS            = "font-size:150%; font-weight:900; border:1px solid gray; color:yellow; background-color:navy; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #000 0%, #223 50%, #000 100%);";
+  let console_clear = function(  msg=null) { try { console.clear(); if(msg) console.warn("%c=== CLEARED BY: "+msg,CS);                 } catch(ex) {} };
+  let console_dir   = function(o,msg=null) { try {                  if(msg) console.log (          "%c"+msg      ,CS); console.dir(o); } catch(ex) {} };
+  let console_log   = function(  msg     ) { try {                          console.log (               msg         );                 } catch(ex) {} };
+  let console_warn  = function(  msg=null) { try {                          console.warn(               msg         );                 } catch(ex) {} };
 /*}}}*/
 /* let {{{*/
 let HORIZONTAL_ELLLIPSIS = "\u2026";
@@ -22,9 +27,8 @@ let SYMBOL_E             = "\u2026";
 let SYMBOL_LF            = "\u21B5";
 let SYMBOL_CR            = "\u2943";
 let SYMBOL_TOFU          = "\uFFFD";
-let SYMBOL_EMPTY         = "\u23D8";
 let SYMBOL_PUSH_PIN      = "\uD83D\uDCCC";
-let SYMBOL_CLEARPIN      = "\u2715";
+let SYMBOL_CLOSEPIN      = "\u2715";
 
 let mStartRange =  null;
 let mEndRange   =  null;
@@ -95,7 +99,7 @@ let s_get_slotted_pattern_count = function()
         if(!ccs[slot]                 ) continue;
         if( ccs[slot].nodes.length > 0) count += 1;
     }
-if(LOG_MAP.T4_SLOT) log("s_get_slotted_pattern_count: ...return "+count);
+if(LOG_MAP.S3_SLOT) log("s_get_slotted_pattern_count: ...return "+count);
     return count;
 };
 /*}}}*/
@@ -146,7 +150,7 @@ let get_slot_for_range = function(range)
         ;
     }
 
-if(LOG_MAP.T4_SLOT) log("get_slot_for_range("+range.toString()+"): return ["+slot+"] .. (startContainer: id=["+range.startContainer.id+"] parentNode.id=["+range.startContainer.parentNode.id+"])");
+if(LOG_MAP.S3_SLOT) log("get_slot_for_range("+range.toString()+"): return ["+slot+"] .. (startContainer: id=["+range.startContainer.id+"] parentNode.id=["+range.startContainer.parentNode.id+"])");
 
     if((slot >=0) && !ccs[slot]) ccs[slot] = new CCS();
 
@@ -157,7 +161,7 @@ if(LOG_MAP.T4_SLOT) log("get_slot_for_range("+range.toString()+"): return ["+slo
 let get_slot_matching_pattern = function(pattern)
 {
     let caller = "get_slot_matching_pattern("+pattern+")";
-let log_this = LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S3_SLOT;
 
     let slot;
     try {
@@ -191,7 +195,7 @@ if(log_this) log(caller+": ...found no pattern matching current filter");
 let get_slot_of_pattern = function(pattern)
 {
 let   caller = "get_slot_of_pattern("+pattern+")";
-let log_this = LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S3_SLOT;
 
     pattern =      unescape(pattern);
     let slot;
@@ -213,7 +217,7 @@ if(log_this) log(caller+": ...return slot=["+slot+"]");
 let set_slot_of_pattern = function(new_slot, pattern)
 {
 let   caller = "set_slot_of_pattern("+new_slot+" ,"+pattern+")";
-let log_this = LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S3_SLOT;
 
     pattern  = unescape(pattern);
 
@@ -252,7 +256,7 @@ if(log_this) log(caller+": nothing to move out from slot #"+new_slot+"");
 let get_free_slot = function()
 {
     let caller = "get_free_slot";
-let log_this = LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S3_SLOT;
 
     /* pick first available color slot */
 
@@ -289,7 +293,7 @@ let last_cleared_pattern;
 let clear_slot = function(slot)
 {
     let caller = "clear_slot("+slot+")";
-let log_this = LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S3_SLOT;
 if(log_this) log(caller);
 
     last_cleared_slot = slot;
@@ -300,7 +304,7 @@ if(log_this) log(caller);
     let sel_list  = document.querySelectorAll( selector );
 if(log_this && sel_list.length) log("...["+selector+"] sel_list.length=["+sel_list.length+"]");
 
-    if( ccs[slot].pattern )
+    if(ccs[slot] && ccs[slot].pattern)
         t_clear_slot_sync(slot, ccs[slot].pattern);
 
     let cleared_count = 0;
@@ -317,12 +321,16 @@ if(log_this && sel_list.length) log("...["+selector+"] sel_list.length=["+sel_li
 
     if(cleared_count) {
         sync_containers_hi();
-        t_seeker_PU_hide();
-        t_seeker_PD_hide();
     }
 
 if(log_this && cleared_count) log("."+selector+": "+cleared_count+" nodes cleared");
     return cleared_count;
+};
+/*}}}*/
+/*_ get_ccs_slot {{{*/
+let get_ccs_slot = function(slot)
+{
+    return ccs[slot];
 };
 /*}}}*/
 /*_ get_prev_populated_slot {{{*/
@@ -358,13 +366,29 @@ let get_next_populated_slot = function(slot)
 /*}}}*/
 
 /** EVENTS */
+/*_ [tse] object usage {{{
+    tse.s    .. word start
+    tse.e    .. word end
+    tse.t    .. word text
+    tse.drop .. dropped suffix (as of 181024)
+}}}*/
 /* SELECT {{{*/
 /*_ s_touchedWord {{{ */
+/*{{{*/
+let s_touchedWord_range_parent;
+let s_touchedWord_slot;
+
+/*}}}*/
 let s_touchedWord = function(x,y)
 {
-    /* get_range_from_XY {{{ */
+/*{{{*/
+let   caller = "s_touchedWord(x="+x+" , y="+y+")";
 let log_this = LOG_MAP.S1_RANGE;
-    let caller = "s_touchedWord(x="+x+" , y="+y+")"; if(log_this) log(caller);
+
+    if(log_this) log(caller);
+/*}}}*/
+    /* get_range_from_XY {{{ */
+    s_touchedWord_range_parent = null;
 
     let  rangeFromXY = get_range_from_XY(x, y);
 
@@ -410,49 +434,96 @@ if(log_this) log("touched_text=["+touched_text+"]");
     if( touched_text )
     {
 if(log_this) log_set_TR_SELECT("<em class='big'>SELECTION: FILTER=["+touched_text+"]</em>");
+/*{{{
+logXXX("...touched_text=["+touched_text+"]")
+}}}*/
+        if(!prop_get(WORDS_SEGMENT) ) {
+            touched_text = s_escapeREGEX(touched_text);
+/*{{{
+logXXX("...s_escapeREGEX=["+touched_text+"]")
+}}}*/
+        }
+        /* optional suffix regex */
+        if(range.drop) {
+            touched_text += "("+range.drop+")?"
+/*{{{
+logXXX("...range.drop["+range.drop+"] .. touched_text=["+touched_text+"]")
+}}}*/
+        }
+
+        s_touchedWord_range_parent = range.startContainer.parentNode;
+
         set_tools_filter( touched_text );
 
-        t_seeker_PU_hide();
-        t_seeker_PD_hide();
+        check_TreeWalker("", touched_text);
 
-        check_TreeWalker("body", touched_text);
+        return;
     }
     /*}}}*/
 };
 /*}}}*/
+/*_ s_escapeREGEX {{{*/
+/*{{{*/
+var s_escapeREGEX_chars
+    = {  "\\" : "\\\\"
+
+        ,"^"  :  "\\^"
+        ,"$"  :  "\\$"
+        ,"."  :  "\\."
+        ,"+" :  "\\+"
+        ,"*" :  "\\*"
+
+        ,"("  :  "\\("
+        ,")"  :  "\\)"
+        ,"["  :  "\\["
+        ,"]"  :  "\\]"
+    };
+
+let regexp_REGEX_CHARS = new RegExp("[\\\\"+"^$"+"\.\+\*"+"\\(\\)\\[\\]]", "g");
+/*}}}*/
+let s_escapeREGEX = function (text)
+{
+  return text.replace(regexp_REGEX_CHARS, function(character) { return s_escapeREGEX_chars[character]; });
+};
+/*}}}*/
+
 /*_ s_touchedWord_adjust {{{ */
 let s_touchedWord_adjust = function(range)
 {
-    /* 1/3 - EXPANDED TO EMBEDDING-CONTAINERS {{{*/
-    let log_this = LOG_MAP.S1_RANGE;
-    let caller = "s_touchedWord_adjust";
+/*{{{*/
+let   caller = "s_touchedWord_adjust";
+let log_this = LOG_MAP.S1_RANGE;
 
+/*}}}*/
+    /* 1/3 - EXPANDED TO EMBEDDING-CONTAINERS {{{*/
     let node = range.startContainer ? range.startContainer : range.offsetNode;
     let text = strip_CR_LF(node.textContent);
-    if((text.length > 0) && (words_options == WORDS_HEAD_TAIL)
-        && s_touchedWord_adjust_1_in_embedding_container(range)
-    ) {
+    if(    (text.length > 0)
+       &&  !prop_get(WORDS_EXACT  )
+       &&  !prop_get(WORDS_SEGMENT)
+       &&  s_touchedWord_adjust_1_in_embedding_container(range)
+      ) {
 if(log_this) log("...EXPANDED TO EMBEDDING-CONTAINERS %c["+ strip_CR_LF(range.toString()) +"]", lb6);
         return range;
     }
     /*}}}*/
     /* 2/3 - EXPANDED TO SELECTION-RANGE {{{*/
-    if(s_touchedWord_adjust_2_in_selection(range))
-    {
-        if(words_options == WORDS_EXACT)
-        {
-/*
-            if(log_this) log("%c *** WORDS_EXACT OPTION SELECTED ... CANNOT EXPANDED TO SELECTION-RANGE *** ", lbF+lb3);
+    if(s_touchedWord_adjust_2_in_selection(range)) {
+        if( prop_get(WORDS_EXACT) ) {
+/*{{{
+if(log_this) log("%c *** WORDS_EXACT OPTION SELECTED ... CANNOT BE EXPANDED TO SELECTION-RANGE *** ", lbF+lb3);
             s_selection_add_cannot_expand();
             return null;
-*/
-            t_override_USER_OPTION("words_options", WORDS_SEGMENT);
+}}}*/
+            t_override_USER_OPTION(WORDS_EXACT    , false);
+            t_override_USER_OPTION(WORDS_HEAD_TAIL, false);
+            t_override_USER_OPTION(WORDS_SEGMENT  ,  true);
         }
 if(log_this) log("...EXPANDED TO SELECTION-RANGE %c["+strip_CR_LF(range.toString())+"]", lb5);
         return range;
     }
      /*}}}*/
-    /* 2/3 - GOT WORD FROM SYNTAXIC LOOKUP {{{*/
+    /* 3/3 - GOT WORD FROM SYNTAXIC LOOKUP {{{*/
     let word_range = s_touchedWord_adjust_3_word_syntaxic_lookup(range);
     if( word_range )
     {
@@ -467,42 +538,66 @@ if(log_this) log("... GOT NO WORD FROM SYNTAXIC LOOKUP %c["+strip_CR_LF(range.to
 /*_ s_touchedWord_adjust_1_in_embedding_container {{{*/
 let s_touchedWord_adjust_1_in_embedding_container = function(range)
 {
-    /* RETURN FALSE .. NO EMBEDING CONTAINERS */
-    /* {{{*/
+/*{{{*/
+let   caller = "s_touchedWord_adjust_1_in_embedding_container";
 let log_this = LOG_MAP.S1_RANGE;
-    let caller = "s_touchedWord_adjust_1_in_embedding_container";
 
-    let node        = range.startContainer ? range.startContainer : range.offsetNode;
-    let node_parent = node.parentNode;
-    let node_before = node.previousSibling;
-    let node_after  = node.nextSibling;
+if( log_this) console_dir(range, caller+"(range)");
+/*}}}*/
+    /* INLINING CONTAINER {{{*/
+    let node          = range.startContainer ? range.startContainer : range.offsetNode;
+    let node_parent   = node.parentNode;
+    let node_before   = node.previousSibling;
+    let node_after    = node.nextSibling;
+    let node_longword = (node_parent.textContent.length > S_TOUCHED_WORD_LENGTH_MAX);
+    let node_inline
+        =  (node_parent.tagName == "A"     )
+        || (node_parent.tagName == "CITE"  )
+        || (node_parent.tagName == "CODE"  )
+        || (node_parent.tagName == "EM"    )
+        || (node_parent.tagName == "I"     )
+        || (node_parent.tagName == "LABEL" )
+        || (node_parent.tagName == "SMALL" )
+        || (node_parent.tagName == "SPAN"  )
+        || (node_parent.tagName == "SUP"   )
+        || (node_parent.tagName == "U"     )
+        || (node_parent.tagName == "VAR"   )
+    ;
 
+if( log_this) { /*{{{*/
+    log_key_val( caller
+                 , {   node          : node
+                     , node_parent   : node_parent
+                     , node_before   : node_before
+                     , node_after    : node_after
+                     , node_longword : node_longword ? "node_longword ("+node_parent.textContent.length+" > "+S_TOUCHED_WORD_LENGTH_MAX+")" : false
+                     , node_inline   : node_inline +" ("+node_parent.tagName+")"
+                 }
+                 , lf1
+               );
+}
+/*}}}*/
+    /*}}}*/
+    /* RETURN FALSE .. RANGE UNCHANGED {{{*/
     let rejected_by = "";
-    if     (  !node_parent                                               ) rejected_by = " !node_parent";
-    else if( !(node_parent.tagName            == "EM")                   ) rejected_by = "!(node_parent.tagName == 'EM')";
-    else if(   node_parent.textContent.length > S_TOUCHED_WORD_LENGTH_MAX) rejected_by = "node_parent.textContent.length > "+S_TOUCHED_WORD_LENGTH_MAX+")";
-/*
-    else if((!node_before && !node_after)  ) rejected_by = "(!node_before && !node_after)";
-*/
+    if     ( !node_parent   ) rejected_by = "!node_parent";
+    else if( !node_inline   ) rejected_by = "!node_inline ("+node_parent.tagName+")";
+    else if(  node_longword ) rejected_by = "node_longword xtContent.length > "+S_TOUCHED_WORD_LENGTH_MAX+")";
+/* else if((!node_before && !node_after)  ) rejected_by = "(!node_before && !node_after)"; */
 
-    if(rejected_by)
-    {
+    if(rejected_by) {
 if(log_this) log(caller+": %c "+ rejected_by, lb6);
         return false;
     }
     /*}}}*/
+    /* RETURN TRUE: .. RANGE EXPANDED {{{*/
+    if( node_inline)
+    {
+        let text = strip_CR_LF(node.textContent);
+        let    s = range.startOffset;
+        let    e = range.  endOffset;
 
-    /* RETURN TRUE: RANGE WITHING EMBEDDING_CONTAINER */
-    /*{{{*/
-    if(      (node_parent.tagName ==     "EM")
-          || (node_parent.tagName ==   "SPAN")
-        /*|| (node_before.tagName ==      "A")*/
-        /*|| (node_before.tagName ==      "B")*/
-        /*|| (node_before.tagName == "STRONG")*/
-    ) {
-    let text = strip_CR_LF(node.textContent);
-    let    s = range.startOffset   ;
-    let    e = range. endOffset    ;
+/*{{{*/
 if(log_this) {
     log(caller+": s=["+s+"] e=["+e+"] "+ node_toString(node));
     log("...%c node_parent=["+get_n_lbl(node_parent)+"]", lb7); if(node_parent) console.dir(node_parent);
@@ -513,45 +608,46 @@ if(log_this) {
     log("___[123456789_1234567890]");
     log("___["+node.data+"]");
 }
-/*{{{
-}}}*/
+/*}}}*/
 
-        range.setStart(node, 0);
-        range.setEnd  (node, text.length);
+            range.setStart(node, 0);
+            range.setEnd  (node, text.length);
 
-        /* TRIM LEADING spaces {{{*/
-        while(range.toString().startsWith(" ") || range.toString().startsWith("\t")) { range.setStart(node, range.startOffset+1); range.setEnd  (node, range.  endOffset+1); }
-        while(range.toString().  endsWith(" ") || range.toString().  endsWith("\t")) {                                            range.setEnd  (node, range.  endOffset-1); }
-        /*}}}*/
+            /* TRIM LEADING spaces {{{*/
+            while(range.toString().startsWith(" ") || range.toString().startsWith("\t")) { range.setStart(node, range.startOffset+1); range.setEnd  (node, range.  endOffset+1); }
+            while(range.toString().  endsWith(" ") || range.toString().  endsWith("\t")) {                                            range.setEnd  (node, range.  endOffset-1); }
+            /*}}}*/
 
-        /* TRIM SURROUNDING BRACKETS {{{*/
-        if((text[0] == "[") && (text[text.length-1] == "]"))
-        {
+            /* TRIM SURROUNDING BRACKETS {{{*/
+            if((text[0] == "[") && (text[text.length-1] == "]"))
+            {
 if(log_this) log("...TRIM SURROUNDING BRACKETS %c["+ strip_CR_LF(range.toString()) +"]", lb6);
-            range.setStart(node, 1);
-            range.setEnd  (node, text.length-1);
-        }
-        /*}}}*/
+                range.setStart(node, 1);
+                range.setEnd  (node, text.length-1);
+            }
+            /*}}}*/
 
+/*{{{*/
 if(log_this) {
     log("...........................range=%c["+strip_CR_LF( range.toString() ) +"]", lb6);
     log_range(range,caller);
 }
-/*{{{
-}}}*/
+/*}}}*/
     }
     return true;
     /*}}}*/
-
 };
 /*}}}*/
+
 /*_ s_touchedWord_adjust_2_in_selection {{{*/
 let s_touchedWord_adjust_2_in_selection = function(range)
 {
     /* RETURN FALSE .. NO CURRENT SELECTION OR NO RANGE */
     /*{{{*/
+let   caller = "s_touchedWord_adjust_2_in_selection";
 let log_this = LOG_MAP.S1_RANGE;
-    let caller = "s_touchedWord_adjust_2_in_selection";
+
+if( log_this) log(caller+": onDown_SEL_TEXT=["+onDown_SEL_TEXT+"]");
 
     let rejected_by = "";
     if((typeof onDown_SELECTION) == "undefined"                         ) rejected_by = "onDown_SELECTION...............: NOT DEFINED";
@@ -607,10 +703,33 @@ if(log_this) {
     }
 
     /* ADJUST TO WORD START-END {{{*/
-    if(words_options != WORDS_SEGMENT)
-    {
-if(log_this) log(caller+": ADJUSTING TO WORDS BOUNDARIES .. %c(words_options "+words_options+")", lbF+lb6);
+    /* s_touchedWord_adjust_2_in_selection_word_bounds(range); */
 
+    /*}}}*/
+/*{{{
+if(log_this) {
+    log("...........................range=%c["+strip_CR_LF( range.toString() ) +"]", lb6);
+    log_range(range,caller);
+}
+}}}*/
+    /*}}}*/
+    return true;
+    /*}}}*/
+
+};
+/*}}}*/
+/*_ s_touchedWord_adjust_2_in_selection_word_bounds {{{*/
+let s_touchedWord_adjust_2_in_selection_word_bounds = function(range)
+{
+let   caller = "s_touchedWord_adjust_2_in_selection";
+let log_this = LOG_MAP.S1_RANGE;
+
+    if(!prop_get(WORDS_SEGMENT) )
+    {
+if(log_this)
+        log(caller+": ADJUSTING TO WORDS BOUNDARIES");
+
+        let node = range.startContainer;
         let t = node.textContent ;
 if(log_this) log(".......t=%c["+ strip_CR_LF(escape_CR_LF(t)) +"]", lb3);
 if(log_this) log("...range=%c["+ range.toString()             +"]", lb3);
@@ -634,25 +753,14 @@ if(log_this) log("...l=["+l+"] .. s=["+s+"]=[%c"+ t.charAt(s-1) +"%c] .. e=["+e+
 
 if(log_this) log("...range=%c["+ range.toString() +"]", lb3);
     }
-    /*}}}*/
-/*{{{
-if(log_this) {
-    log("...........................range=%c["+strip_CR_LF( range.toString() ) +"]", lb6);
-    log_range(range,caller);
-}
-}}}*/
-    /*}}}*/
-    return true;
-    /*}}}*/
-
 };
 /*}}}*/
 /*_ s_touchedWord_adjust_3_word_syntaxic_lookup {{{*/
 let s_touchedWord_adjust_3_word_syntaxic_lookup = function(range)
 {
     /* WORD SEARCH LOOP {{{*/
+let   caller = "s_touchedWord_word_syntaxic_lookup";
 let log_this = LOG_MAP.S1_RANGE;
-    let caller = "s_touchedWord_word_syntaxic_lookup";
 
     let node = range.startContainer ? range.startContainer : range.offsetNode;
     let    s = range.startOffset   ;
@@ -738,111 +846,12 @@ if(log_this) log("%c FOUND NO TEXT NODE", lb2);
     /* RETURN TRUE: WORD AS A TEXT RANGE {{{*/
     range.setStart(node, s);
     range.setEnd  (node, e);
-    let word = range.toString();
+    if(tse.drop) range.drop = tse.drop;
 
+    let word = range.toString();
 if(log_this) log("SELECTED WORD s=["+s+"] e=["+e+"] l=["+word.length+"] word: <em>"+word+"</em> FROM: <em>"+ truncate(trim_node_textContent(node)) +"</em>");
     return range;
     /*}}}*/
-};
-/*}}}*/
-/*}}}*/
-/* SELECT (NOT USED) {{{*/
-/*_ setTouchPoint ...CLEAR [rangeFrom] ..CLEAR [rangeTo  ] {{{ */
-let setTouchPoint = function(x, y)
-{
-    let log_this = LOG_MAP.S1_RANGE;
-    let caller = "setTouchPoint"; if(log_this) log(caller);
-
-    try {
-        mStartRange = null;
-        mEndRange   = null;
-
-        mTouchPoint = {"x": x, "y": y};
-        if(log_this) log(caller+" OK: mTouchPoint={"+mTouchPoint.x+","+mTouchPoint.y+"}");
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-};
-/*}}}*/
-/*_ setStartXY ......  NEW [rangeFrom] CURRENT [rangeTo  ] {{{ */
-let setStartXY = function(x, y)
-{
-    let log_this = LOG_MAP.S1_RANGE;
-    let caller = "setStartXY"; if(log_this) log(caller);
-
-    try {
-        if(log_this) log(caller+"("+x+","+y+"):");
-
-        let rangeFrom = get_range_from_XY(x, y); /* NEW     [rangeFrom]*/
-        let rangeTo   = mEndRange              ; /* CURRENT [rangeTo]*/
-
-        if(rangeFrom && rangeTo)
-            setRangeFromTo(rangeFrom, rangeTo);
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-};
-/*}}}*/
-/*_ setEndXY   ......  NEW [rangeTo  ] CURRENT [rangeFrom] {{{ */
-let setEndXY = function(x, y)
-{
-    let log_this = LOG_MAP.S1_RANGE;
-    let caller = "setEndXY";
-
-    try {
-        if(log_this) log(caller+"("+x+","+y+")");
-
-        let rangeFrom = mStartRange            ; /* CURRENT [rangeFrom]*/
-        let rangeTo   = get_range_from_XY(x, y); /* NEW     [rangeTo]*/
-
-        if(rangeFrom && rangeTo)
-            setRangeFromTo(rangeFrom, rangeTo);
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-};
-/*}}}*/
-/*_ setRangeFromTo {{{ */
-let setRangeFromTo = function(rangeFrom, rangeTo)
-{
-    let log_this = LOG_MAP.S1_RANGE;
-    let caller = "setRangeFromTo";
-    try {
-        /* SET [rangeFrom] BEFORE [rangeTo  ] {{{*/
-        if(rangeFrom) mStartRange = rangeFrom;
-        if(rangeTo  ) mEndRange   = rangeTo;
-        let reversed = false;
-        if(mStartRange && mEndRange)
-        {
-            reversed = mStartRange.compareBoundaryPoints(Range.START_TO_END, mEndRange) > 0;
-            if( reversed ) {
-                let r = mStartRange; mStartRange = mEndRange  ; mEndRange   = r;
-            }
-        }
-        /*}}}*/
-        /* BUILD SELECTION RANGE {{{*/
-        if(mStartRange && mEndRange)
-        {
-            let range = document.createRange();
-            range.setStart(mStartRange.startContainer, mStartRange.startOffset);
-            range.setEnd  (mEndRange  .  endContainer, mEndRange  .  endOffset);
-if(log_this) log(caller+":"+ rangeToString(range, "selectionRange"));
-
-            window.getSelection().removeAllRanges();
-            window.getSelection().addRange( range );
-            document.execCommand("copy"); /* to clipboard */
-
-            set_tools_filter( get_first_word(range.toString(), caller) );
-
-        }
-        /* LOG ONLY*/
-        else if(mStartRange && logging_TRANSCRIPTS) log(caller+LF+"...mStartRange:"+ rangeToString(mStartRange, "mStartRange"));
-        else if(mEndRange   && logging_TRANSCRIPTS) log(caller+LF+"...mEndRange:"+   rangeToString(mEndRange  , "mEndRange"  ));
-
-        /*}}}*/
-        window.getSelection().removeAllRanges();
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-
-    let tools_filter = t_get_tool_id_value("tools_filter");
-    log_set_TR_RANGE("<em class='big'>SELECT RANGE FROM TO <em class='cc0 small'>tools_filter=["+tools_filter+"]</em></em>");
 };
 /*}}}*/
 /*}}}*/
@@ -880,6 +889,81 @@ let get_word_start_end = function(tse)
     tse.s = s;
     tse.e = e;
 
+    get_word_end_up_to_dropped_suffix(tse);
+};
+/*}}}*/
+/*_ get_word_end_up_to_dropped_suffix {{{*/
+/*{{{*/
+
+/*}}}*/
+let get_word_end_up_to_dropped_suffix = function(tse)
+{
+/*{{{*/
+let    word = tse.t.substring(tse.s, tse.e).toLowerCase();
+let  caller = "get_word_end_up_to_dropped_suffix("+word+")";
+let log_this = LOG_MAP.S1_RANGE;
+
+if(log_this) logXXX(caller);
+
+    let len = tse.e - tse.s;
+    let suffix, must_not_end_with, drop_checked, min_len;
+/*}}}*/
+/* FACTORIZATION OF AN UNDECIDED NUMBER OF SUFFIXES: {{{
+    - property name would start with "words_drop_"
+    - new suffix would be added to the end to guess the name of the correponding option the user can check
+    ...an attempt to deal with doubled consonants (WIP):
+    // {{{ C:/LOCAL/USR/ivan/DICT/linux.words
+
+            e -= (word.endsWith("tting") ? 4
+               : (word.endsWith("ssing") ? 4
+               : (word.endsWith("ssing") ? 4
+            ;
+    bbing
+    dding
+    eeing
+    ffing
+    gging
+    lling
+    mming
+    nning
+    ooing
+    pping
+    rring
+    ssing
+    tting
+    zzing
+
+    //}}}
+}}}*/
+    for(let i = 0; i  < WORDS_SUFFIXES.length; ++i) {
+        suffix        = WORDS_SUFFIXES[i];
+        let prop_name ="words_drop_"+suffix;
+
+        if(!prop_get(prop_name) ) /* whether the user has checked the option to drop this suffix */
+        {
+if(log_this) log(   "!prop_get("+prop_name+")");
+            continue
+        }
+
+        min_len           = WORDS_SUFFIXE_MIN_LEN  [suffix] || suffix.length;
+        must_not_end_with = WORDS_MUST_NOT_END_WITH[suffix];
+        if(   (len >= min_len)
+           &&  word.endsWith( suffix )
+           && (!must_not_end_with || !word.endsWith(must_not_end_with)) /* .. OK, it does not! */
+          ) {
+            tse.drop = suffix;
+            tse.e   -= suffix.length;
+            break;
+        }
+    }
+if(log_this && tse.drop) {
+    log("..............suffix=["+ suffix            +"]");
+    log(".............min_len=["+ min_len           +"]");
+    log("...must_not_end_with=["+ must_not_end_with +"]");
+}
+if( log_this)
+    log("%c"+caller+"%c return ["+tse.t.substring(tse.s, tse.e)+"] %c"+(tse.drop ? " .. drop=["+tse.drop+"]" : "")
+       , lbH        ,lbH+lf4                                      ,lbH+lf3                                        );
 };
 /*}}}*/
 /*_ clearSelection {{{ */
@@ -945,7 +1029,7 @@ if(log_this) log("SEARCHING ROOT: "+ node_toString(root));
         /*}}}*/
 
         /* TreeWalker {{{*/
-        let mTreeWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, mNodeFilter);
+        let mTreeWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, mNodeFilter_function);
         mNodeRegexP     = null;
 
         if(log_this) {
@@ -1027,32 +1111,16 @@ let pattern_toHTML = function(pattern, options) {
     }
 };
 /*}}}*/
-/*_ get_words_options_symbol {{{*/
-let WORDS_EXACT_SYMBOL       = "<em class='cc3'>&equiv;</em>";
-let WORDS_SEGMENT_SYMBOL     = "<em class='cc4'>&sub;</em>"  ;
-let WORDS_HEAD_TAIL_SYMBOL   = "<em class='cc5'>&isin;</em>" ;
-let WORDS_OPCYCLE_SYMBOL     = "<em class='cc9'>\u27F3</em>" ;
-
-let get_words_options_symbol = function(option)
-{
-    switch( option) {
-        case WORDS_EXACT     : return WORDS_EXACT_SYMBOL     ;
-        case WORDS_SEGMENT   : return WORDS_SEGMENT_SYMBOL   ;
-        case WORDS_HEAD_TAIL : return WORDS_HEAD_TAIL_SYMBOL ;
-        default              : return "*** WRONG words_options ***";
-    }
-};
-/*}}}*/
 /*}}}*/
 
 /** HIGHLIGHT */
 /*{{{*/
 /*_ scroll_to_slot_num {{{*/
-let scroll_to_slot_num = function(slot, num, onSeek_XY)
+let scroll_to_slot_num = function(slot, num, onSeekXYL)
 {
     /*{{{*/
-let caller = "scroll_to_slot_num(slot=["+slot+"] num=["+num+"], ["+onSeek_XY.x+" "+onSeek_XY.y+"])";
-let log_this = LOG_MAP.T4_SLOT;
+let caller = "scroll_to_slot_num(slot=["+slot+"] num=["+num+"], ["+onSeekXYL.x+" "+onSeekXYL.y+"])";
+let log_this = LOG_MAP.S3_SLOT;
 if( log_this ) log("%c"+caller, lbH+lf4);
 
     /*}}}*/
@@ -1073,7 +1141,7 @@ if(log_this) log(".count=["+ count +"]");
     let thumb_p = parseFloat( ccs[slot].thumbs[num-1] );
     /*}}}*/
     /* LOG geometry slot num count {{{*/
-    if(LOG_MAP.T5_LAYOUT)
+    if(LOG_MAP.T3_LAYOUT)
     {
         let page_height = get_page_height();
         let body        = document.body;
@@ -1110,15 +1178,15 @@ if(log_this) log(".count=["+ count +"]");
         }
     }
     /*}}}*/
-    /* possibly hidden  .. f(parent_with_overflow) {{{*/
+    /* possibly hidden  .. f(hidden_parent) {{{*/
     let el                   = ccs[slot].nodes[num-1];
-    let parent_with_overflow = null;/*FIXME: get_parent_with_overflow( el );*/
-    if( parent_with_overflow )
+    let hidden_parent = get_el_parent_with_class(el, MARKED_TO_HIDE);
+    if( hidden_parent )
     {
-if(log_this) log("..get_parent_with_overflow(el): %c "+ get_n_lbl(parent_with_overflow), lbb+lbH+lf7);
+if(log_this) log("..hidden_parent: %c "+ get_n_lbl(hidden_parent), lbb+lbH+lf7);
     }
     else {
-        let xy = t_get_el_into_view_scrollXY( el );
+        let xy = t_scrollIntoViewIfNeeded_get_scrollXY_with_margin( el );
         if( xy )
         {
             let dx = (xy.x - window.scrollX);
@@ -1127,19 +1195,18 @@ if(log_this) log("..get_parent_with_overflow(el): %c "+ get_n_lbl(parent_with_ov
 logXXX("xy=["+dx+" "+dy+"]")
 */
             if(dx || dy)
-                t_window_scrollTo(xy.x, xy.y, caller);
+                t_window_scrollTo(xy.x, xy.y);
         }
 /*
         else
-            scroll_thumb_p_to_onSeek_XY(thumb_p, slot, onSeek_XY);
+            scroll_thumb_p_to_onSeek_XY(thumb_p, slot, onSeekXYL);
 */
     }
     /*}}}*/
 
     highlight_thumb_p_slot_num(slot, num, thumb_p);
-
-    if((thumb_p <= 0) || parent_with_overflow) return false;
-    else                                       return  true;
+    if((thumb_p <= 0) || hidden_parent) return false;
+    else                                return  true;
 };
 /*}}}*/
 /*_ get_parent_with_overflow {{{ */
@@ -1163,10 +1230,10 @@ logXXX(get_n_lbl(parent)+" %c overflow ["+parent.style.overflow+"] %c COMPUTED [
 };
 /*}}}*/
 /*_ scroll_thumb_p_to_onSeek_XY {{{*/
-let scroll_thumb_p_to_onSeek_XY = function(thumb_p, slot, onSeek_XY)
+let scroll_thumb_p_to_onSeek_XY = function(thumb_p, slot, onSeekXYL)
 {
-let   caller = "scroll_thumb_p_to_onSeek_XY(thumb_p=["+thumb_p+"], slot=["+slot+"], onSeek_XY["+onSeek_XY.x+" "+onSeek_XY.y+"])";
-let log_this = LOG_MAP.T4_SLOT;
+let   caller = "scroll_thumb_p_to_onSeek_XY(thumb_p=["+thumb_p+"], slot=["+slot+"], onSeekXYL["+onSeekXYL.x+" "+onSeekXYL.y+"])";
+let log_this = LOG_MAP.S3_SLOT;
 if( log_this ) log(caller);
 
     let page_height
@@ -1174,19 +1241,19 @@ if( log_this ) log(caller);
 
     let scrollX
         = window.scrollX
-        - onSeek_XY.x;
+        - onSeekXYL.x;
 
     let scrollY
         = page_height * (thumb_p / 100.0)
-        - onSeek_XY.y;
+        - onSeekXYL.y;
 
     try {
-        t_window_scrollTo(scrollX, scrollY, caller);
+        t_window_scrollTo(scrollX, scrollY);
 if(log_this) log("%c PAGE "+page_height+" %c thumb_p "+thumb_p+" %c scrollY "+Math.floor(scrollY)+" "
     ,             lbL+lf9                ,lbC+lf6                ,lbR+lf7);
     }
     catch(ex) {
-        console.log(caller+": "+ex); 
+        console.log(caller+": "+ex);
     }
 };
 /*
@@ -1204,7 +1271,7 @@ let last_highlight_num     = 0;
 let highlight_thumb_p_slot_num = function(slot, num, thumb_p)
 {
     let caller = "highlight_thumb_p_slot_num(slot=["+slot+"], num=["+num+"], thumb_p=["+thumb_p+"])";
-if(LOG_MAP.T4_SLOT) log(caller);
+if(LOG_MAP.S3_SLOT) log(caller);
 
     highlight_data_thumb_p(thumb_p, slot);
 
@@ -1218,12 +1285,23 @@ logXXX("highlight_thumb_p_slot_num: last_highlight_slot=["+last_highlight_slot+"
     last_highlight_thumb_p = thumb_p;
 };
 /*}}}*/
+let s_get_last_highlight_slot = function()
+{
+    return last_highlight_slot;
+};
+/*_ s_clear_last_highlight_slot {{{*/
+let s_clear_last_highlight_slot = function()
+{
+    last_highlight_slot    = -1;
+    last_highlight_num     = -1;
+};
+/*}}}*/
 /*_ highlight_data_thumb_p {{{*/
 let highlight_data_thumb_p = function(thumb_p, slot)
 {
     /* text .. f(thumb_p) {{{*/
     let caller = "highlight_data_thumb_p(thumb_p=["+thumb_p+"] slot=["+ slot+"])";
-    let log_this = LOG_MAP.T4_SLOT;
+    let log_this = LOG_MAP.S3_SLOT;
 if(log_this) log(caller);
 /*
 console.warn(caller);
@@ -1248,10 +1326,10 @@ if(log_this) log(" "+ elements.length+" "+data_selector);
     /* unhighlight [selbag div] [ellipsis em] {{{*/
     for(let s=0; s < SELECT_SLOT_MAX; ++s)
     {
-        let selector;
-        selector = ".select"  +s     ; if(el = get_tool(selector)) { if(s == slot) add_el_class(el,"current_slot"); else del_el_class(el,"current_slot"); }
-        selector = "#thumb_p_"+s+"_0"; if(el = get_tool(selector)) { if(!(el.innerHTML.includes(SYMBOL_E))) el.innerText = SYMBOL_E; }
-        selector = "#thumb_s_"+s+"_0"; if(el = get_tool(selector)) { if(!(el.innerHTML.includes(SYMBOL_E))) el.innerText = SYMBOL_E; }
+        let id;
+        id = ".select"  +s    ; if(el = get_tool(id)) { if(s == slot) add_el_class(el,"current_slot"); else del_el_class(el,"current_slot"); }
+        id = "thumb_p_"+s+"_0"; if(el = get_tool(id)) { if(!(el.innerHTML.includes(SYMBOL_E))) el.innerText = SYMBOL_E; }
+        id = "thumb_s_"+s+"_0"; if(el = get_tool(id)) { if(!(el.innerHTML.includes(SYMBOL_E))) el.innerText = SYMBOL_E; }
     }
 
     /*}}}*/
@@ -1276,11 +1354,11 @@ if(log_this) log(" "+ elements.length+" "+data_selector);
             if( p == thumb_p)
             {
                 /* ? [slot_num_id] */
-                let slot_num_id = "#thumb_p_"+ slot +"_"+ num;
+                let slot_num_id = "thumb_p_"+ slot +"_"+ num;
                 if( !get_tool(slot_num_id) )
                 {
                     /* SEL_BAG */
-                    let id = "#thumb_p_"+slot+"_0";
+                    let id = "thumb_p_"+slot+"_0";
                     if( el = get_tool( id ))
                     {
 if(log_this) log(".HIGHLIGHT: id=["+id+"]");
@@ -1289,7 +1367,7 @@ if(log_this) log(".HIGHLIGHT: id=["+id+"]");
                     }
 
                     /* SEEKER */
-                    id = "#thumb_s_"+slot+"_0";
+                    id = "thumb_s_"+slot+"_0";
                     if( el = get_tool( id ))
                     {
 if(log_this) log(".HIGHLIGHT: id=["+id+"]");
@@ -1311,21 +1389,21 @@ if(log_this) log(".DEDICATED SLOT TOOL HIGHLIGHTED: slot_num_id=["+slot_num_id+"
 let s_clear_slot_all = function()
 {
     let caller = "s_clear_slot_all";
-let log_this = LOG_MAP.S2_SELECT || LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S2_SELECT || LOG_MAP.S3_SLOT;
 
     let cleared_count   = 0;
     let cleared_pat_csv = "";
 
-    for(let slot = ccs.length-1; slot > 0; --slot)
+    for(let slot = 1; slot < ccs.length; ++slot)
     {
-        if(                   !ccs[slot]) continue;
-        let       pattern    = ccs[slot].pattern;
+        let       pattern    = ccs[slot] ? ccs[slot].pattern : "";
+
         let clear_slot_count = clear_slot( slot );
+
+        if( clear_slot_count && pattern)
+            cleared_pat_csv  = csv_add(cleared_pat_csv, pattern);
+
         cleared_count       += clear_slot_count;
-
-        if(clear_slot_count)
-            cleared_pat_csv = csv_add(cleared_pat_csv, pattern);
-
     }
 
 if(log_this) log(caller+": "+cleared_count+" words highlighting cleared");
@@ -1337,7 +1415,7 @@ if(log_this) log(caller+": "+cleared_count+" words highlighting cleared");
 let s_selection_execCommand = function(cmd_csv)
 {
     let caller = "s_selection_execCommand("+cmd_csv+")";
-if(LOG_MAP.T4_SLOT) log(caller);
+if(LOG_MAP.S3_SLOT) log(caller);
 
     document.designMode = "on";
     try {
@@ -1379,7 +1457,7 @@ log("s_selection_del_cannot_expand");
 let get_slot_num_for_thumb_p = function(slot, thumb_p, backward)
 {
     let caller = "get_slot_num_for_thumb_p(slot=["+slot+"], thumb_p=["+thumb_p+"], backward=["+backward+"])";
-let log_this = LOG_MAP.T4_SLOT;
+let log_this = LOG_MAP.S3_SLOT;
 if( log_this) log(caller);
 
     if( !ccs[slot] ) {
@@ -1415,39 +1493,6 @@ if( log_this) log(caller+": return "+ num_at_or_past_thumb_p);
     return num_at_or_past_thumb_p;
 };
 /*}}}*/
-/*_ (add del set) id_class {{{*/
-
-let set_id_class_on_off = function(id, className, on_off)
-{
-    let el = get_tool("#"+id);
-    if(!el) return;
-
-    set_el_class_on_off(el, className, on_off);
-};
-
-let set_el_class_on_off = function(el, className, on_off)
-{
-    if(on_off) add_el_class(el, className);
-    else       del_el_class(el, className);
-};
-
-let set_el_class     = function(el, className) { if(!el || !el.classList) return      ;                                            el.className       = className  ; };
-let add_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(   !el.classList.contains( className )) el.classList.add   ( className ); };
-let del_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(    el.classList.contains( className )) el.classList.remove( className ); };
-let has_el_class     = function(el, className) { if(!el || !el.classList) return false; return el.classList.contains( className );                                   };
-
-let add_hi_container = function(container    ) { add_el_class(container, theme_dark ? "container_dark" : "container_light");  };
-
-let set_el_class_removing = function(el, className, remove_array)
-{
-    for(let i=0; i <              remove_array.length; ++i) {
-        if(el.classList.contains( remove_array[i] ))
-            el.classList.remove ( remove_array[i] );
-    }
-    if(!el.classList.contains( className ))
-        el.classList.add     ( className );
-};
-/*}}}*/
 
 /*}}}*/
 
@@ -1457,9 +1502,10 @@ let set_el_class_removing = function(el, className, remove_array)
 let get_range_from_XY = function(x, y)
 {
     /*{{{*/
-    let caller = "get_range_from_XY(x="+x+" , y="+y+")";
+    let caller = "get_range_from_XY";
 let log_this = LOG_MAP.S1_RANGE;
-if( log_this) log(caller);
+
+if( log_this) log(caller+"(x="+x+" , y="+y+")");
 if( log_this) log("<div class='div_match'>");
     /*}}}*/
     let       range = get_range_from_caret(x,y);
@@ -1496,47 +1542,40 @@ if(log_this) {
 /*_ get_range_from_caret {{{*/
 let get_range_from_caret = function(x, y)
 {
-    /*{{{*/
-    let caller = "get_range_from_caret(x="+x+" , y="+y+")";
+/*{{{*/
+let   caller = "get_range_from_caret";
 let log_this = LOG_MAP.S1_RANGE;
-if( log_this) log(caller);
-    /*}}}*/
+
+if( log_this) log(caller+"(x="+x+" , y="+y+")");
+/*}}}*/
+
     let  range = null;
     try {
-        /* caretPositionFromPoint {{{*/
-        if((!range || !range.commonAncestorContainer) && document.caretPositionFromPoint)
+        /* caretRangeFromPoint {{{*/
+if(log_this) log("%c...document.caretRangeFromPoint...=["+ document.caretRangeFromPoint    +"]", lbH+lf4);
+        if((!range || !range.commonAncestorContainer)   && document.caretRangeFromPoint)
         {
-if(log_this) log( "...document.caretPositionFromPoint=["+ document.caretPositionFromPoint +"]");
-            range =  document.caretPositionFromPoint(x,y);
+            range =  document.caretRangeFromPoint(x,y); /* within the current viewport */
 
-/*{{{*/
-/*log("range=["+range+"]");*/
-/*log("range.commonAncestorContainer=["+range.commonAncestorContainer+"]");*/
-/*log("range.offsetNode.............=["+range.offsetNode             +"]");*/
-/*}}}*/
-
-if(!range) log("caretPositionFromPoint failed", "warn");
-/*else     console_dir(range);*/
+/*{{{
+if(!range || !range.commonAncestorContainer) log("caretRangeFromPoint failed");
+}}}*/
         }
         /* }}}*/
-        /* caretRangeFromPoint {{{*/
-        if((!range || !range.commonAncestorContainer) && document.caretRangeFromPoint)
+        /* caretPositionFromPoint {{{*/
+if(log_this) log("%c...document.caretPositionFromPoint=["+ document.caretPositionFromPoint +"]", lbH+lf3);
+        if((!range || !range.commonAncestorContainer)   && document.caretPositionFromPoint)
         {
-/*if(log_this) log( "...document.caretRangeFromPoint...=["+ document.caretRangeFromPoint    +"]");*/
-            range =  document.caretRangeFromPoint(x,y);
+            range =  document.caretPositionFromPoint(x,y);
 
-/*{{{*/
-/*log("range=["+range+"]");*/
-/*log("range.commonAncestorContainer=["+range.commonAncestorContainer+"]");*/
-/*log("range.offsetNode.............=["+range.offsetNode             +"]");*/
-/*}}}*/
-
-if(!range || !range.commonAncestorContainer) log(   "caretRangeFromPoint failed", "warn");
-/*else console_dir(range);*/
+/*{{{
+if(!range) log("caretPositionFromPoint failed");
+}}}*/
         }
         /* }}}*/
     }
     catch(ex) { log(caller+": "+ex, "error"); }
+
 if(log_this) log_range(range, caller);
     return range;
 };
@@ -1613,64 +1652,55 @@ let rangeToString = function(range, rangeName="RANGE")
 };
 /*}}}*/
 /*_ log_range {{{*/
-let log_range = function(range, caller="")
+let log_range = function(range, _caller="")
 {
-    if(!range) return;
-
-    let s =  caller+":"
-        +    LF+"............range=["+ range                +"]"
-    ;
-
-    if(range.startContainer != range.endContainer)
-        s += LF+"...............(range.startContainer != range.endContainer)"
-    ;
-
-    if(range.startContainer && (range.startContainer.textContent.length < 80))
-        s += LF+"range.startContainer:"
-        +    LF+"......textContent=["+ trim_node_textContent(range.startContainer) +"]"
-        +    LF+"......startOffset=["+ mPadStart("\u21E7", range.startOffset, ".") +" "+range.startOffset
-        +    LF+"........endOffset=["+ mPadStart("\u21E7", range.  endOffset, ".") +" "+range.  endOffset
-    ;
-
-    if(range.collapsed)
-        s += LF+"........collapsed=["+ range.collapsed      +"]"
-    ;
-
-    if((range.endContainer != range.startContainer) && (range.endContainer.textContent.length < 80))
-        s += LF+".....endContainer=["+ range. endContainer .textContent +"] ....endOffset.=["+ range.endOffset   +"]"
-    ;
-
-    log(s);
-
-    console_dir(range);
+    if(!range) {
+        log(_caller+": range=["+range+"]");
+    }
+    else if(range.collapsed) {
+        log("%c"+_caller   +"%c"+range.startOffset+"%c"+trim_node_textContent(range.startContainer), lbL+lf8, lbC+lf3, lbR+lf3);
+    }
+    else {
+        log("%c"+_caller    +"%c"+range.startOffset+"%c"+trim_node_textContent(range.startContainer), lbL+lf8, lbC+lf4, lbR+lf4);
+        log("%c..endContainer %c"+range.  endOffset+"%c"+trim_node_textContent(range.  endContainer), lbL+lf8, lbC+lf5, lbR+lf5);
+    }
 };
 /*}}}*/
 /*}}}*/
 
 /** CHECK */
 /*{{{*/
+/*{{{*/
 let CHECK_LOG_MAX       =  64;
-let TOO_MANY_SELECTIONS = 128;
-let WORDS_EXACT         = "words_exact";
-let WORDS_SEGMENT       = "words_segment";
-let WORDS_HEAD_TAIL     = "words_head_tail";
-let WORDS_OPCYCLE       = "words_opcycle";
 
+let TOO_MANY_SELECTIONS = 256;
+/*
+//let WORDS_EXACT         = "words_exact";
+//let WORDS_SEGMENT       = "words_segment";
+//let WORDS_HEAD_TAIL     = "words_head_tail";
+//let WORDS_OPCYCLE       = "words_opcycle";
+*/
+let mNodeRegexP;
+/*}}}*/
 /*_ get_traversal_node_array {{{*/
 let get_traversal_node_array = function(pattern, options, mDomTraversal)
 {
-    let caller = "get_traversal_node_array(pattern=["+pattern+"], "+options+")";
+/*{{{*/
+let   caller = "get_traversal_node_array(pattern=["+pattern+"], "+options+")";
 let log_this = LOG_MAP.S1_RANGE;
+
 if( log_this) log(caller);
 if( log_this) log_tags();
+/*}}}*/
 
     mNodeRegexP = get_mNodeRegexP(pattern, options);
-if( log_this) log("mNodeRegexP=["+mNodeRegexP+"]");
+if( log_this) log("mNodeRegexP........=["+mNodeRegexP        +"]");
     if(!mNodeRegexP) return null;
 
     mNodeRegexP.pattern =         pattern;
-if( log_this) ("mNodeRegexP........=["+ mNodeRegexP         +"]");
-if( log_this) ("mNodeRegexP.pattern=["+ mNodeRegexP.pattern +"]");
+if( log_this)    log("mNodeRegexP.pattern=["+mNodeRegexP.pattern+"]");
+
+    t_words_regex_log( mNodeRegexP.toString() );
 
     /* clear any to-be-reselected selection */
     let slot;
@@ -1683,23 +1713,24 @@ if( log_this) ("mNodeRegexP.pattern=["+ mNodeRegexP.pattern +"]");
     {
         if( node_has_some_text(  node) ) {
 /*
-log("___ node.textContent..................=["+                  node.textContent  +"]");
+logXXX("___ node.textContent..................=["+                  node.textContent  +"]");
 */
             if(node_array.length >= TOO_MANY_SELECTIONS)
                 break;
             node_array.push(node);
         }
         else {
-/*
 if(log_this) {
 log("XXX !node_has_some_text(node).........=["+ node_toString(node)                +"]");
 log("XXX node.nodeValue....................=["+                  node.nodeValue    +"]");
 log("XXX node.textContent..................=["+                  node.textContent  +"]");
 log("XXX trim_alNum_lines(node.textContent)=["+ trim_alNum_lines(node.textContent) +"]");
 }
+/*
 */
         }
     }
+if(log_this) log(caller+": return node_array.length=["+node_array.length+"]");
     return node_array;
 };
 /*}}}*/
@@ -1710,6 +1741,7 @@ let get_mNodeRegexP = function(pattern, options)
 let log_this = LOG_MAP.S1_RANGE;
 
     let rx = null;
+try {
     switch(options)
     {
         case WORDS_EXACT:
@@ -1733,47 +1765,63 @@ let log_this = LOG_MAP.S1_RANGE;
         default:
 if(log_this) log("<em class='cc2'>*** wrong options: ["+ options +"] ***</em>");
     }
+} catch(ex) { log(caller+": "+ex, "error"); }
 if(log_this) log(caller+": ...return <em class='cc7'>"+rx+"</em>");
     return rx;
 };
 /*}}}*/
 
 /*_ check_Traversal {{{*/
-let check_NodeIterator = function(           id, pattern) { return check_Traversal("NodeIterator", id, pattern); };
-let check_TreeWalker   = function(           id, pattern) { return check_Traversal("TreeWalker"  , id, pattern); };
-let check_Traversal    = function(traversal, id, pattern)
+/*{{{*/
+let root_last_used_id;
+
+/*}}}*/
+let check_NodeIterator = function(           tag_or_id, pattern) { return check_Traversal("NodeIterator", tag_or_id, pattern); };
+let check_TreeWalker   = function(           tag_or_id, pattern) { return check_Traversal("TreeWalker"  , tag_or_id, pattern); };
+let check_Traversal    = function(traversal, tag_or_id, pattern)
 {
-    /* pattern {{{*/
-    let caller = "<em class='cc3'>check_traversal</em> traversal=<em class='cc3'>"+traversal+"</em> id=<em class='cc4'>"+id+"</em> pattern=<em class='cc6'>"+pattern+"</em>";
+/* {{{*/
+let   caller = "check_traversal";
 let log_this = LOG_MAP.S3_SLOT;
-if(log_this) log();
-if(log_this) log(caller);
 
-if(log_this) log_add_TR_SELECT(caller);
-
+if(log_this) log("%c"+caller+" %c traversal=["+traversal+"] %c tag_or_id=["+tag_or_id+"] %c pattern=["+pattern+"]"
+    ,             lbH         ,lbL                         ,lbC                         ,lbR                      );
+if(log_this) log_add_TR_SELECT("<em class='cc3'>caller</em> traversal=<em class='cc3'>"+traversal+"</em> tag_or_id=<em class='cc4'>"+tag_or_id+"</em> pattern=<em class='cc6'>"+pattern+"</em>");
+/*}}}*/
+if( !check_wall_of_text_done) check_wall_of_text();
+    /* pattern {{{*/
     if( !pattern ) {
-        log(caller+": no pattern to look for", "warn");
+        log("%c"+caller+" %c no pattern to look for", lbL, lbR+lf3);
         return;
     }
 
     /*}}}*/
-    /* root {{{*/
-    let root = pick_node(id, caller);
+    /* ROOT ID PERSISTENCE .. (unspecified tag_or_id fallback) {{{*/
+    if(tag_or_id) {              root_last_used_id = tag_or_id; if(log_this) log("%c SET %c root_last_used_id = tag_or_id %c "+tag_or_id, lbL+lf5, lbC, lbR+lf5); }
+    else          { tag_or_id  = root_last_used_id            ; if(log_this) log("%c GET %c tag_or_id = root_last_used_id %c "+tag_or_id, lbL+lf8, lbC, lbR+lf8); }
+
+    /*}}}*/
+    /* searched root {{{*/
+    let root = pick_tag_or_id_node(tag_or_id, caller);
 
     let mDomTraversal
         = (traversal == "NodeIterator")
-        ?  document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter)
-        :  document.createTreeWalker  (root, NodeFilter.SHOW_ALL , mNodeFilter);
+        ?  document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter_function)
+        :  document.createTreeWalker  (root, NodeFilter.SHOW_ALL , mNodeFilter_function);
 
-if(log_this) log("<em class='cc3'>"+ object_label(mDomTraversal) +"</em> ID: <em class='cc4'>"+id+"</em>");
+if(log_this) log("<em class='cc3'>"+ object_label(mDomTraversal) +"</em> ID: <em class='cc4'>"+tag_or_id+"</em>");
 
     /*}}}*/
     /* pattern matching node_array {{{*/
 
-    let options    = words_options;
+    let options
+        = prop_get(WORDS_EXACT  ) ? WORDS_EXACT
+        : prop_get(WORDS_SEGMENT) ? WORDS_SEGMENT
+        :                           WORDS_HEAD_TAIL
+    ;
     let node_array = get_traversal_node_array(pattern, options, mDomTraversal);
-/*
-    if((node_array.length < 1) && words_opcycle)
+/*{{{
+    if((node_array.length < 1) && prop_get("words_opcycle"))
     {
         options = (options == WORDS_EXACT  ) ? WORDS_SEGMENT
             :     (options == WORDS_SEGMENT) ? WORDS_HEAD_TAIL
@@ -1790,14 +1838,20 @@ if(log_this) log("<em class='cc3'>"+ object_label(mDomTraversal) +"</em> ID: <em
             node_array  = get_traversal_node_array(pattern, options, mDomTraversal);
         }
     }
-*/
+}}}*/
     /*}}}*/
+    if(!node_array)
+    {
+if(log_this) log_set_TR_RESULT();
+        return;
+    }
     /* collect matching nodes {{{*/
+
     if(    (node_array.length >= TOO_MANY_SELECTIONS)
         || (node_array.length == 0                  )
     ) {
         let sel_bag;
-        if( sel_bag = get_tool("#sel_bag"))
+        if( sel_bag = get_tool("sel_bag"))
         {
 
             let msg = (node_array.length > 0)
@@ -1805,14 +1859,13 @@ if(log_this) log("<em class='cc3'>"+ object_label(mDomTraversal) +"</em> ID: <em
                 : "--- NO MATCH: <em class='cc8'>"+pattern+"</em> ---"
             ;
             let el;
-            if( el = get_tool(  "#sel_bag_warn_div")) el.innerHTML= msg;
+            if( el = get_tool("sel_bag_warn_div")) el.innerHTML= msg;
             else     sel_bag.innerHTML = "<div id='sel_bag_warn_div' class='cc2'>"+  msg +"</div><br>"
                 +    sel_bag.innerHTML;
         }
 if(log_this) log_set_TR_RESULT();
         return;
     }
-
     if(log_this) {
         let msg = ""
             +"<p><em class='cc8'>" + options                          +"</em>"
@@ -1825,31 +1878,31 @@ if(log_this) log_set_TR_RESULT();
         log("<div class='badge'>"+msg+"</div>");
     }
 
-    let slot  = get_free_slot();
+    s_touchedWord_slot  = get_free_slot();
     for(let i = 0; i < node_array.length; ++i)
     {
 if(log_this) log("<em class='cc0' style='font-size:300%;'>"+(i+1)+"/"+node_array.length+"</em>");
-        collect_node_matches_to_slot(slot, node_array[i], pattern, options);
+        collect_node_matches_to_slot(s_touchedWord_slot, node_array[i], pattern, options);
     }
 
     /*}}}*/
-
 if(log_this) log_set_TR_RESULT();
 };
 /*}}}*/
+
 /*_ check_childNodes {{{*/
-let check_childNodes = function(id, pattern)
+let check_childNodes = function(tag_or_id, pattern)
 {
-    /* [id] {{{*/
-    let caller = "<em class='cc3'>check_childNodes</em> id=<em class='cc4'>"+id+"</em> pattern=<em class='cc6'>"+pattern+"</em>";
+    /* [tag_or_id] {{{*/
+    let caller = "<em class='cc3'>check_childNodes</em> tag_or_id=<em class='cc4'>"+tag_or_id+"</em> pattern=<em class='cc6'>"+pattern+"</em>";
 let log_this = LOG_MAP.S1_RANGE;
 if( log_this) log(caller);
 if( log_this) log_set_TR_SELECT(caller);
 
-    let root = pick_node(id, caller);
+    let root = pick_tag_or_id_node(tag_or_id, caller);
     if(!root) return;
 
-if( log_this) log("<em class='cc3'>check_childNodes</em> <em class='cc4'>ID: "+id+"</em> <em class='cc4'>pattern: "+pattern+"</em>");
+if( log_this) log("<em class='cc3'>check_childNodes</em> <em class='cc4'>ID: "+tag_or_id+"</em> <em class='cc4'>pattern: "+pattern+"</em>");
 if( log_this) log_tags();
 if( log_this) log("mNodeRegexP=["+mNodeRegexP+"]");
     /*}}}*/
@@ -1859,7 +1912,7 @@ if( log_this) log("mNodeRegexP=["+mNodeRegexP+"]");
     {
         node         = root.childNodes[count];
         last_node    = node;
-        if(count < CHECK_LOG_MAX) log_num_thumb(count, node);
+        if(count < CHECK_LOG_MAX) check_log_num_thumb(count, node);
     }
 
     if( log_this && (count >= CHECK_LOG_MAX)) {
@@ -1902,7 +1955,7 @@ if(log_this) log("mNodeRegexP=["+mNodeRegexP+"]");
         last_node    = node;
         if(!mNodeRegexP || node.textContent.match(mNodeRegexP))
         {
-            if(count < CHECK_LOG_MAX) log_num_thumb(count, node);
+            if(count < CHECK_LOG_MAX) check_log_num_thumb(count, node);
         }
     }
 
@@ -1924,8 +1977,8 @@ if( log_this) log(caller);
 
     let result = "";
     try {
-        let input_feature = get_tool("#input_feature"); var feature = input_feature.value;
-        let input_version = get_tool("#input_version"); var version = input_version.value;
+        let input_feature = get_tool("input_feature"); var feature = input_feature.value;
+        let input_version = get_tool("input_version"); var version = input_version.value;
         result = document.implementation.hasFeature(feature, version);
     }
     catch(ex) {
@@ -1936,69 +1989,8 @@ if( log_this) log(caller+": ...return "+result);
     return result;
 };
 /*}}}*/
-
-
-/* filter */
-/*_ mNodeFilter {{{ */
-let mNodeRegexP;
-let mNodeFilter = function(node)
-{
-    let mNodeFilter_result = do_mNodeFilter(node);
-
-if(LOG_MAP.S1_RANGE && (mNodeFilter_result != NodeFilter.FILTER_SKIP)) log("XXX mNodeFilter: "+ NodeFilter_toString(mNodeFilter_result) + node_toString(node));
-
-    return mNodeFilter_result;
-};
-
-let NodeFilter_toString = function(mNodeFilter_result)
-{
-    switch(mNodeFilter_result)
-    {
-        case NodeFilter.FILTER_ACCEPT: return "<em class='cc4'>FILTER_ACCEPT </em>";
-        case NodeFilter.FILTER_REJECT: return "<em class='cc1'>FILTER_REJECT </em>";
-        case NodeFilter.FILTER_SKIP  : return "<em class='cc8'>FILTER_SKIP   </em>";
-        default                      : return "<em class='cc2'>FILTER_ERROR  </em>";
-    }
-};
-
-let do_mNodeFilter = function(node)
-{
-    if(    mNodeRegexP         && node.textContent  )
-        if(mNodeRegexP.pattern == node.textContent  ) return NodeFilter.FILTER_ACCEPT;
-
-    /* REJECT OUT_OF_SCOPE_PARENT */
-    let parent = node.parentNode;
-    if( parent && (parent.nodeType == Node.ELEMENT_NODE))
-    {
-        if( parent.tagName  == "SCRIPT"             ) return NodeFilter.FILTER_REJECT;
-        if( parent.tagName  == "STYLE"              ) return NodeFilter.FILTER_REJECT;
-        if( is_node_selected( parent )              ) return NodeFilter.FILTER_REJECT;
-    }
-/*
-        if( parent.className.includes("knob_content") )
-        {
-            console.log("REJECTING: "+ parent.parentNode.id);
-            console.dir(parent);
-            return NodeFilter.FILTER_REJECT;
-        }
-*/
-    /* SKIP NON-TEXT */
-    if(node.nodeType != Node.TEXT_NODE              ) return NodeFilter.FILTER_SKIP  ;
-
-    /* ACCEPT UNFILTERED */
-    if(                       !mNodeRegexP          ) return NodeFilter.FILTER_ACCEPT;
-
-    /* REJECTED BY FILTER */
-    if(!node.textContent                            ) return NodeFilter.FILTER_SKIP  ;
-    if(!node.textContent.match(mNodeRegexP)         ) return NodeFilter.FILTER_SKIP  ;
-
-    /* ACCEPTED BY FILTER */
-    else                                              return NodeFilter.FILTER_ACCEPT;
-};
-/*}}}*/
-
-/*_ log_num_thumb {{{*/
-let log_num_thumb = function(count, node)
+/*_ check_log_num_thumb {{{*/
+let check_log_num_thumb = function(count, node)
 {
     let         num = mPadStart(count, 5, " ");
 
@@ -2008,9 +2000,252 @@ let log_num_thumb = function(count, node)
 
     let         val = node_toString(node);
 
-    log("<span class='log_num_thumb'>"+num + offset +"</span> "+ val);
+    log("<span class='check_log_num_thumb'>"+num + offset +"</span> "+ val);
 };
 /*}}}*/
+
+/*_ mNodeFilter_function {{{*/
+let mNodeFilter_function = function(node)
+{
+    let check_result = mNodeFilter_check_node( node );
+
+if(LOG_MAP.S1_RANGE && (check_result != NodeFilter.FILTER_SKIP)) log("mNodeFilter_function: "+ mNodeFilter_toString(check_result) + node_toString(node));
+
+    return check_result;
+};
+/*}}}*/
+/*_ mNodeFilter_check_node {{{*/
+let mNodeFilter_check_node = function(node)
+{
+    /* REJECT == child nodes are also rejected */
+    /* SKIP   == children are still considered */
+
+    /* 2. REJECT [parent   == SCRIPT or STYLE] {{{*/
+    let parent = node.parentNode;
+    if( parent && (parent.nodeType == Node.ELEMENT_NODE))
+    {
+        if( parent.tagName  == "SCRIPT"             ) return NodeFilter.FILTER_REJECT;
+        if( parent.tagName  == "STYLE"              ) return NodeFilter.FILTER_REJECT;
+        if( is_node_selected( parent )              ) return NodeFilter.FILTER_REJECT;
+    }
+/*{{{
+        if( parent.className.includes("knob_content") )
+        {
+            console.log("REJECTING: "+ parent.parentNode.id);
+            console.dir(parent);
+            return NodeFilter.FILTER_REJECT;
+        }
+}}}*/
+
+    /*}}}*/
+    /* REJECT .. f(node_to_hide parent) */
+    if( dom_hide_is_marked_to_hide( node )      ) {
+/*
+logXXX("%c mNodeFilter_check_node( "+get_id_or_tag(node)+" ) %c IS HIDDEN", lbL+lf6, lbR+lf7);
+*/
+        return NodeFilter.FILTER_REJECT;
+    }
+    /* 3. SKIP   [node     != TEXT_NODE] {{{*/
+    if(node.nodeType != Node.TEXT_NODE              ) return NodeFilter.FILTER_SKIP  ;
+
+    /*}}}*/
+    /* 1. ACCEPT [REGEXP   == textContent] {{{*/
+    if(    mNodeRegexP         && node.textContent  )
+        if(mNodeRegexP.pattern == node.textContent  ) return NodeFilter.FILTER_ACCEPT;
+
+    /*}}}*/
+    /* 4. ACCEPT [ALL WHEN NO REGEX] {{{*/
+    if(                       !mNodeRegexP          ) return NodeFilter.FILTER_ACCEPT;
+
+    /*}}}*/
+    /* 5. SKIP   [REGEX MISSMATCH or !textContent] {{{*/
+    if(!node.textContent                            ) return NodeFilter.FILTER_SKIP  ;
+    if(!node.textContent.match(mNodeRegexP)         ) return NodeFilter.FILTER_SKIP  ;
+
+    /*}}}*/
+    /* 6. ACCEPT BY FILTER {{{*/
+    else                                              return NodeFilter.FILTER_ACCEPT;
+
+    /*}}}*/
+};
+/*}}}*/
+/*_ mNodeFilter_toString {{{*/
+let mNodeFilter_toString = function( check_result )
+{
+    switch( check_result )
+    {
+        case NodeFilter.FILTER_ACCEPT: return "<em class='cc4'>FILTER_ACCEPT </em>";
+        case NodeFilter.FILTER_REJECT: return "<em class='cc1'>FILTER_REJECT </em>";
+        case NodeFilter.FILTER_SKIP  : return "<em class='cc8'>FILTER_SKIP   </em>";
+        default                      : return "<em class='cc2'>FILTER_ERROR  </em>";
+    }
+};
+/*}}}*/
+/*}}}*/
+
+/* CHUNK WALLS OF TEXT */
+/*{{{
+:!start explorer "https://regexr.com/32oeg"
+:!start explorer "https://www.regular-expressions.info/refrepeat.html"
+}}}*/
+/* check_wall_of_text {{{*/
+/*{{{*/
+const WALL_OF_TEXT_PARENT = "wall_of_text_parent";
+const WALL_OF_TEXT_SPLIT  = "wall_of_text_split";
+const WOT_LENGTH          = 512;
+const REPORTS_COUNT_MAX   = 3;
+let   check_wall_of_text_done;
+
+/*}}}*/
+let check_wall_of_text = function()
+{
+/*{{{*/
+let   caller = "check_wall_of_text";
+
+console.time(caller);
+/*{{{
+}}}*/
+/*}}}*/
+    /* split up wall of text nodes */
+    check_wall_of_text_done = true;
+    reports_count           = 0;
+
+    let          root = document.body;
+    let mDomTraversal = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter_wall_of_text_function);
+    let    text_node_array = get_wall_of_text_node_array(mDomTraversal);
+
+/*{{{
+log("%c"+caller+" %c "+text_node_array.length+" TEXT NODES FILTER_ACCEPT'ed", lbH, lbH+lf3);
+}}}*/
+    let node_count = 0;
+    let char_count = 0;
+    let line_count = 0;
+    for(let i = 0; i < text_node_array.length; ++i)
+    {
+        /* PARENT */
+        let                       text_node = text_node_array[i];
+        let              parent = text_node.parentNode;
+        /* already removed .. already handled */
+        if(             !parent                        ) continue;
+/*{{{
+        if( has_el_class(parent , WALL_OF_TEXT_PARENT) ) continue;
+}}}*/
+        add_el_class    (parent , WALL_OF_TEXT_PARENT);
+
+/*{{{
+log("%c"+i, lbb+lbH+lf3);
+console_dir(parent   , "parent has "+   parent.children.length+" children");
+console_dir(text_node, "text_node");
+log("%c "+get_id_or_tag(parent)+" "+parent.textContent.length+" characters", lbH);
+}}}*/
+
+        /* REPLACE #TEXT WITH A BUNCH OF <P> */
+        let                 split_node = document.createElement("P");
+        parent.insertBefore(split_node , text_node);
+
+        char_count                    += text_node.textContent.length;
+        parent.removeChild (             text_node );
+
+        /* INJECT #TEXT INTO A P.innerHTML {{{*/
+/*{{{
+        split_node.outerHTML = split_WALL_OF_TEXT(text_node.textContent, "P");
+}}}*/
+
+        let lines      = text_node.textContent.split(LF);
+        let innerHTML  = "";
+        let   l = 0;
+        while(l < lines.length)
+        {
+            let p = "";
+
+            do {
+                let s    = lines[l++];
+                if(s) p += escapeHTML(s)+LF;
+            }
+            while((l < lines.length) && (p.length + lines[l].length) <= WOT_LENGTH);
+
+            innerHTML += "<p class='"+WALL_OF_TEXT_SPLIT+"'>"+p+"</p>";
+        }
+        /*}}}*/
+        split_node.outerHTML =                                        innerHTML       ;
+
+/*{{{
+console_dir(parent, "...parent has "+parent.children.length+" children");
+}}}*/
+
+        line_count += lines.length;
+        node_count += 1;
+
+/*{{{
+logXXX("check_wall_of_text: %c node_count=["+node_count+"] %c line_count=["+line_count+"] %c char_count=["+char_count+"]", lbL, lbC, lbR);
+}}}*/
+    }
+
+/*{{{
+if(node_count) log("%c"+node_count+" WALLS OF TEXT %c "+char_count+" characters %c "+line_count+" lines", lbL, lbC, lbR);
+if(node_count) console.timeEnd(caller);
+}}}*/
+};
+/*}}}*/
+/*_ split_WALL_OF_TEXT {{{*/
+let regexp_CHUNK = new RegExp("((.|\\n){32,512}\\n)", "gm");
+let split_WALL_OF_TEXT = function(text, tagName)
+{
+    let result
+    = escapeHTML( text )
+        .   replace(regexp_CHUNK, "<"+tagName+" class='"+ WALL_OF_TEXT_SPLIT +"'>$1</"+tagName+">")
+    ;
+/*{{{
+log("%c"+result, lbH+lf5);
+}}}*/
+    return result;
+};
+/*}}}*/
+/*_ escapeHTML {{{*/
+/*{{{*/
+var escapeHTML_chars = {"<": "&lt;", ">": "&gt;", "&": "&amp;", [DOUBLE_QUOTE] : "&quot;"};
+
+/*}}}*/
+let escapeHTML = function (text)
+{
+  return text.replace(/[<>&"]/g, function(character) { return escapeHTML_chars[character]; });
+};
+/*}}}*/
+/*_ mNodeFilter_wall_of_text_function {{{*/
+let   reports_count;
+let mNodeFilter_wall_of_text_function = function(node)
+{
+    let                                                       check_result = NodeFilter.FILTER_ACCEPT, details = "";
+    if     ((!node.parentNode                      )      ) { check_result = NodeFilter.FILTER_REJECT; details = "NODE HAS NO PARENT" ; }
+    else if(( node.parentNode.tagName  == "SCRIPT" )      ) { check_result = NodeFilter.FILTER_REJECT; details = "SCRIPT TEXT"        ; }
+    else if(( node.parentNode.tagName  == "STYLE"  )      ) { check_result = NodeFilter.FILTER_REJECT; details = "STYLE TEXT"         ; }
+    else if(( node.nodeType       != Node.TEXT_NODE)      ) { check_result = NodeFilter.FILTER_SKIP  ; details = "NOT A TEXT NODE"    ; }
+    else if((!node.textContent                     )      ) { check_result = NodeFilter.FILTER_SKIP  ; details = "NO TEXT CONTENT"    ; }
+    else if(( node.textContent.length < WOT_LENGTH )      ) { check_result = NodeFilter.FILTER_SKIP  ; details = "["+ node.textContent.length+" char] <  [WOT_LENGTH "+WOT_LENGTH+"]"; }
+    else if(  dom_hide_is_marked_to_hide( node     )      ) { check_result = NodeFilter.FILTER_REJECT; details = "NODE MARKED TO HIDE"; }
+    else                                                    { check_result = NodeFilter.FILTER_ACCEPT; details = "FILTER_ACCEPT ["+ node.textContent.length+" char] >= [WOT_LENGTH "+WOT_LENGTH+"]"; }
+
+/*{{{
+if((check_result == NodeFilter.FILTER_ACCEPT) && (reports_count++ < REPORTS_COUNT_MAX))
+    logXXX("%c WOT ("+reports_count+"/"+REPORTS_COUNT_MAX+"...) "+ node.parentNode.tagName +"."+ node.nodeName +" %c "+details+" %c"+ellipsis(node.textContent, 64), lbL, lbC, lbR);
+}}}*/
+
+    return check_result;
+};
+/*}}}*/
+/*_ get_wall_of_text_node_array {{{*/
+let get_wall_of_text_node_array = function(mDomTraversal)
+{
+    let   node_array = [];
+    let   node;
+
+    while(node = mDomTraversal.nextNode())
+        node_array.push(node);
+/*
+log("get_wall_of_text_node_array: return node_array.length=["+node_array.length+"]");
+*/
+    return node_array;
+};
 /*}}}*/
 
 /** COLLECT */
@@ -2018,12 +2253,14 @@ let log_num_thumb = function(count, node)
 /*_ collect_node_matches_to_slot {{{*/
 let collect_node_matches_to_slot = function(slot, node, pattern, options)
 {
-    let caller = "collect_node_matches_to_slot(slot=["+slot+"])";
+/*{{{*/
+let   caller = "collect_node_matches_to_slot";
 let log_this = LOG_MAP.S1_RANGE;
-if( log_this) log(caller);
+
+if( log_this) log(caller+"(slot=["+slot+"], node=["+get_n_txt(node)+"]");
+/*}}}*/
 
 if( log_this) log("<div class='div_match'>");
-
     let matches;
     for(let i = 0; (matches = mNodeRegexP.exec(node.textContent)); ++i)
     {
@@ -2044,7 +2281,6 @@ if( log_this) log_match(node, slot, num, i, mNodeRegexP, matches);
         /* collect match */
         if(ccs[slot].nodes.length < TOO_MANY_SELECTIONS)
         {
-
             window.getSelection().removeAllRanges();
             window.getSelection().addRange( range );
             if(i == 0) document.execCommand("copy"); /* to clipboard */
@@ -2062,7 +2298,8 @@ if( log_this) log("...<blockquote class='cc6'>"+ get_n_txt(node).substring(mNode
         }
 if( log_this) log("</div>");
     }
-    window.getSelection().removeAllRanges(); /* prevent WebView popup */
+
+    window.getSelection().removeAllRanges(); /* .. to dismiss WebView Clipboard-Popup */
 
 if( log_this) log("</div>");
 };
@@ -2089,9 +2326,12 @@ let log_match = function(node, slot, num, i, regex, matches)
 /*_ collect_selection_to_slot {{{ */
 let collect_selection_to_slot = function(slot, pattern, options)
 {
-    let caller = "collect_selection_to_slot(slot=["+slot+"], pattern=["+pattern+"], options=["+options+"])";
+/*{{{*/
+    let caller = "collect_selection_to_slot";
 let log_this = LOG_MAP.S3_SLOT;
-if( log_this) log(caller);
+
+if( log_this) log(caller+"(slot=["+slot+"], pattern=["+pattern+"], options=["+options+"])");
+/*}}}*/
 
     let selection = window.getSelection();
     if(!selection               ) return null;
@@ -2117,12 +2357,16 @@ if(log_this) log("return ccs_node.nextSibling=["+ccs_node.nextSibling+"]");
 };
 /*}}}*/
 /*_ collect_ccs_range_node_slot {{{*/
+
+let some_container_is_too_high;
+
 let collect_ccs_range_node_slot = function(range, ccs_node, slot, pattern, options)
 {
     /*{{{*/
-let caller = "collect_ccs_range_node_slot(range, ccs_node, slot=["+slot+"])";
+let caller = "collect_ccs_range_node_slot";
 let log_this = LOG_MAP.S3_SLOT;
-if( log_this) log(caller);
+
+if( log_this) log(caller+"(range, ccs_node, slot=["+slot+"])");
     /*}}}*/
     /*  parent_with_overflow {{{*/
     let parent_with_overflow = get_parent_with_overflow( ccs_node );
@@ -2133,7 +2377,7 @@ if(log_this) log(caller+"%c NOT COLLECTING "+get_n_txt( ccs_node )+" .. parent_w
     }
     /*}}}*/
     /* container {{{*/
-    let container                      = get_node_container( range.startContainer );
+    let container                      = get_text_container( range.startContainer );
     let container_H                    = container ? container.offsetHeight : 0;
     let container_is_too_high          = (container_H             >  window.innerHeight);
     let container_is_body              = (container               == document.body);
@@ -2147,6 +2391,7 @@ if(log_this && container_is_body_direct_child) log("%c container_is_body_direct_
 if(log_this && container_is_body_single_child) log("%c container_is_body_single_child", lbH+lf5);
 if(log_this && container_is_body_first_child ) log("%c container_is_body_first_child ", lbH+lf6);
 
+    if(     container_is_too_high         ) some_container_is_too_high = true;
     if(     container_is_too_high         ) container = null;
     else if(container_is_body             ) container = null;
     else if(container_is_body_single_child) container = null;
@@ -2181,14 +2426,13 @@ logXXX("...node=["+get_n_lbl(node)+"]")
     range.insertNode(ccs_node);
 
     /*}}}*/
-/*FIXME*/
-    let thumb_p = get_node_thumb_p(container ? container : ccs_node);
-/*
-    let thumb_p = get_node_thumb_p(                        ccs_node);
-*/
+    let node    = container ? container : ccs_node;
+    let thumb_p = get_node_thumb_p( node );
 
-    if( thumb_p < 1) {
-if(log_this) log(caller+"%c NOT COLLECTING "+get_n_txt(node)+" .. (thumb_p < 1)", lbH+lf2);
+    if(thumb_p < 0.01)
+    {
+if(log_this) log(caller+"%c NOT COLLECTING "+get_n_txt(node)+" .. (thumb_p < 0.1)=["+thumb_p+"]", lbH+lf2);
+
         ccs_node.outerHTML = ccs_node.innerHTML;
         return;
     }
@@ -2225,25 +2469,28 @@ if(log_this) log("slot=["+slot+"] num=["+(next_idx+1)+"] thumb_p=["+thumb_p_str+
 if(log_this) log( ccs[slot].num_toHTML(next_idx + 1) );
     /*}}}*/
     /* CCS CONTAINER HIGHLIGHT [containers_hi] {{{ */
-    if( !containers_hi ) return;
+    if( !prop_get("containers_hi") ) return;
     if( !container     ) return;
     if(  container.classList)
         if(  container.classList.contains( "container_dark" ) || container.classList.contains( "container_light" )) return;
-    add_hi_container( container );
+
+    add_el_class(container , prop_get(THEME_DARK) ? "container_dark" : "container_light");
 
     /*}}}*/
 };
 /*}}}*/
 
-/*_ get_node_container {{{*/
+/*_ get_text_container {{{*/
 let BAIL_OUT_COUNT = 10;
-let get_node_container = function(node)
+let get_text_container = function(node)
 {
-    let caller = "get_node_container("+get_n_txt(node)+")";
+    let caller = "get_text_container("+get_n_txt(node)+")";
 let log_this = LOG_MAP.S3_SLOT;
-if( log_this) log(caller);
 
     let container = node.parentElement;
+
+    let node_text_length = node.textContent.trim().length;
+    if(!node_text_length) return container;
 
     let count;
     for(count = 0; count < BAIL_OUT_COUNT; ++count)
@@ -2259,6 +2506,16 @@ if(log_this) log("%c"+caller+"%c NO PARENT", lbL, lbR+lf2);
         {
 if(log_this) log("%c"+caller+"%c FOUND CONTAINER ["+get_n_str( container )+"] ("+container.tagName+")", lbL, lbR+lf4);
             break;
+
+/* container_text_length {{{
+            let container_text_length = container.textContent.trim().length;
+            if( container_text_length > node_text_length) {
+                break;
+            }
+            else {
+if(log_this) log("...(container_text_length=["+container_text_length+"] <= node_text_length=["+node_text_length+"]");
+            }
+}}}*/
         }
 
         container = container.parentElement;
@@ -2269,20 +2526,31 @@ if(log_this) log("%c"+caller+"%c FOUND CONTAINER ["+get_n_str( container )+"] ("
 if(log_this) log("%c"+caller+"%c BAILING OUT ON ["+get_n_str(node)+"] after "+count+" attempts at looking for a container", lbL, lbR+lf1);
 
     }
-
+/*
+if(log_this) logXXX("...container.textContent.length=["+container.textContent.length+"]")
+if(log_this) log("%c"+container.textContent, lbH);
+*/
     return container;
 };
 /*}}}*/
 /*_ is_text_container_node {{{*/
 let is_text_container_node = function(node)
 {
+let   caller = "is_text_container_node";
+let log_this = LOG_MAP.S1_RANGE;
+
     let tag = node.nodeName.toLowerCase();
+if( log_this) log("%c"+caller+" %c tag "+tag+" %c len "+node.textContent.length+" %c text "+get_n_txt(node)
+                 ,lbL          ,lbR           ,lbH+lf5                           ,lbH+lf4                  );
+
     let result
         =      (tag == "p"        )
         ||     (tag == "div"      )
-        ||    ((tag == "code"     ) && (node.textContent.length >= 80)) /* only if they contain a wall of text */
-        ||    ((tag == "li"       ) && (node.textContent.length >= 80)) /* only if they contain a wall of text */
-        ||    ((tag == "ul"       ) && (node.textContent.length >= 80)) /* only if they contain a wall of text */
+        ||    ((tag == "span"     ) && (node.textContent.length >= 360))
+        ||    ((tag == "code"     ) && (node.textContent.length >=  80)) /* only if they contain a wall of text */
+        ||    ((tag == "li"       ) && (node.textContent.length >=  80)) /* only if they contain a wall of text */
+        ||    ((tag == "ol"       ) && (node.textContent.length >=  80)) /* only if they contain a wall of text */
+        ||    ((tag == "ul"       ) && (node.textContent.length >=  80)) /* only if they contain a wall of text */
         ||     (tag == "section"  )
         ||     (tag == "article"  )
         ||     (tag == "aside"    )
@@ -2299,10 +2567,12 @@ let is_text_container_node = function(node)
     /*      ...COULD BE CONTAINERS .. ONLY WITH A WALL OF TEXT */
             && (tag != "code"     )
             && (tag != "li"       )
+            && (tag != "ol"       )
+            && (tag != "ul"       )
         )
     ;
 
-if(LOG_MAP.S1_RANGE) log("is_text_container_node(["+get_n_str(node)+"]...["+get_n_lbl(node)+"]): ...return "+result+" node.textContent.length=["+node.textContent.length+"]");
+if( log_this) log("is_text_container_node(["+get_n_str(node)+"]...["+get_n_lbl(node)+"]): ...return "+result+" node.textContent.length=["+node.textContent.length+"]");
     return result;
 };
 /*}}}*/
@@ -2310,46 +2580,53 @@ if(LOG_MAP.S1_RANGE) log("is_text_container_node(["+get_n_str(node)+"]...["+get_
 /*_ sync_containers_hi {{{*/
 let sync_containers_hi = function()
 {
+/*{{{*/
     let caller = "sync_containers_hi";
-if(LOG_MAP.S1_RANGE) log(caller);
+    let log_this = LOG_MAP.S1_RANGE;
 
+if( log_this) log(caller+": containers_hi=["+prop_get("containers_hi")+"]");
+/*}}}*/
     /* 1/2 - forget all current containers */
-    let selector  = ".container_light";
-    let node_list = document.querySelectorAll( selector );
-    for(let i = 0; i < node_list.length; ++i)
+    let className = "container_light";
+    let node_list = document.querySelectorAll("."+className);
+    for(let i     = 0; i < node_list.length; ++i)
     {
-        del_el_class(node_list[i], "container_light");
+        del_el_class(node_list[i], className);
     }
 
-    selector  = ".container_dark";
-    node_list = document.querySelectorAll( selector );
-    for(let i = 0; i < node_list.length; ++i)
+    className     = "container_dark";
+    node_list     = document.querySelectorAll("."+className);
+    for(let i     = 0; i < node_list.length; ++i)
     {
-        del_el_class(node_list[i], "container_dark");
+        del_el_class(node_list[i], className);
     }
 
     /* highlight active containers */
-    if(containers_hi)
+    if(prop_get("containers_hi"))
     {
+        let theme_class = prop_get(THEME_DARK) ? "container_dark" : "container_light";
+        let container;
         for(let slot = 1; slot < ccs.length; ++slot)
         {
             if( ccs[slot] )
             {
                 for(let i = 0; i < ccs[slot].nodes.length; ++i)
                 {
-                    if( ccs[slot].containers[i] )
-                        add_hi_container( ccs[slot].containers[i] );
+                    if(container = ccs[slot].containers[i])
+                        add_el_class(container, theme_class);
                 }
             }
         }
     }
 
     /* unhiglight everything else */
+/* FIXME .. explain...
     let html = document.getElementsByTagName("HTML")[0];
-    if(containers_hi) add_el_class(html             , "containers_hi"  );
-    else              del_el_class(html             , "containers_hi"  );
-    del_el_class(                  html, theme_dark ? "light" : "dark" );
-    add_el_class(                  html, theme_dark ?  "dark" : "light");
+    if(prop_get("containers_hi")) add_el_class(html             , "containers_hi"  );
+    else              del_el_class(html                              , "containers_hi"  );
+    del_el_class(                  html, prop_get("theme_dark") ? "light" : "dark" );
+    add_el_class(                  html, prop_get("theme_dark") ?  "dark" : "light");
+*/
 
 };
 /*}}}*/
@@ -2360,25 +2637,24 @@ let get_slot_num_container = function(slot, num)
     let n = num-1;
 
     let node
-        = (ccs[s] && ccs[s].containers)
-        ?            ccs[s].containers[n] /*   a node parent */
-        :            ccs[s].nodes     [n] /* the node itself */
-        ;
-
+        = (ccs[s] && ccs[s].containers && ccs[s].containers[n]) ? ccs[s].containers[n] /*   a node parent */
+        : (ccs[s] && ccs[s].nodes      && ccs[s].nodes     [n]) ? ccs[s].nodes     [n] /* the node itself */
+        :                                                         null
+    ;
 /*
-logXXX("get_slot_num_container("+s+","+n+"): ...return "+ get_n_lbl(node) +" .. "+ ((node == ccs[s].nodes[n]) ? "THE NODE ITSELF" : "A NODE PARENT"))
+logXXX("%c get_slot_num_container("+s+","+n+"): %c return "+ get_n_lbl(node) +" .. "+ (!node ? "" : ((node == ccs[s].nodes[n]) ? "THE NODE ITSELF" : "A NODE PARENT")), lbL, lbR+lf4)
 console.dir(ccs[s])
 */
     return  node;
 };
 /*}}}*/
 /*}}}*/
+
 /* PAT_BAG */
-/*XXX*/
 /*{{{*/
 /*_ t_onPatternUpdate {{{*/
 /*{{{*/
-const  PATTERN_UPDATE_DELAY =  500;/*//FIXME 250;*/
+const  PATTERN_UPDATE_DELAY =  500;/* FIXME 250;*/
 let t_onPatternUpdate_timer = null;
 
 /*}}}*/
@@ -2400,21 +2676,23 @@ if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_stage_msg(STAGE_2_ACTION, msg)
 
 let t_onPatternUpdate_handler = function()
 {
+/*{{{*/
+let caller = "t_onPatternUpdate_handler";
 let log_this = LOG_MAP.S2_SELECT;
-    let caller = "t_onPatternUpdate_handler";
-if( log_this) log(caller);
 
+if( log_this) log(caller);
+/*}}}*/
     t_onPatternUpdate_timer = null;
 
-if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_pat_off_bak_bin_csv(SYMBOL_UPDATE, "want");
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly_pat_off_bak_bin_csv(SYMBOL_UPDATE, "want");
 
     t_onPatternUpdate_handler_sync_csv_from_ccs();
-if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_pat_off_bak_bin_csv(SYMBOL_STAGE , "have");
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly_pat_off_bak_bin_csv(SYMBOL_STAGE , "have");
 
     t_set_1_sel_bag_innerHTML();
 
-    t_set_4_pat_off_bak_innerHTML(caller);
-if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_pat_off_bak_bin_csv(SYMBOL_RESULT, "have");
+    t_set_4_pat_off_bak_alt_innerHTML(caller);
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly_pat_off_bak_bin_csv(SYMBOL_RESULT, "have");
 
     t_onPatternUpdate_done();
 
@@ -2497,12 +2775,13 @@ if(log_this) if(bak_csv != old_bak_csv) csv_log(bak_csv, "bak_csv [x"+csv_count(
     /*}}}*/
 };
 /*}}}*/
-/*_ t_set_4_pat_off_bak_innerHTML {{{*/
-let t_set_4_pat_off_bak_innerHTML = function(_caller)
+/*_ t_set_4_pat_off_bak_alt_innerHTML {{{*/
+let t_set_4_pat_off_bak_alt_innerHTML = function(_caller)
 {
     /*{{{*/
 let log_this = LOG_MAP.S2_SELECT;
-if( log_this) log("%c t_set_4_pat_off_bak_innerHTML: .. %c CALLED BY ["+_caller+"]", lbF+lb3, lbF+lb0);
+
+if( log_this) log("%c t_set_4_pat_off_bak_alt_innerHTML: .. %c CALLED BY ["+_caller+"]", lbF+lb3, lbF+lb0);
 
     if(!pat_bag) return;
     let pat_bag_is_opened = has_el_class( pat_bag, "open_bag");
@@ -2514,9 +2793,10 @@ if( log_this) log("%c t_set_4_pat_off_bak_innerHTML: .. %c CALLED BY ["+_caller+
 ................................................num......................pat...............txt............
 */
     let pat_spans=[];
-    let bak_count = t_collect_el_class_from_into("pat_span", bak_bag, pat_spans);
-    let off_count = t_collect_el_class_from_into("pat_span", off_bag, pat_spans);
     let pat_count = t_collect_el_class_from_into("pat_span", pat_bag, pat_spans);
+    let off_count = t_collect_el_class_from_into("pat_span", off_bag, pat_spans);
+    let bak_count = t_collect_el_class_from_into("pat_span", bak_bag, pat_spans);
+    let alt_count = t_collect_el_class_from_into("pat_span", alt_bag, pat_spans);
 
 if(log_this) for(let i=0; i < pat_spans.length; ++i) log((i+1)+" %c["+pat_spans[i].innerText+"]", lbF+lbX[(i+1) % 10]);
 
@@ -2528,11 +2808,12 @@ if(log_this) for(let i=0; i < pat_spans.length; ++i) log((i+1)+" %c["+pat_spans[
   _cleanup_div(bak_bag);
 */
 
-    let bak_bag_innerHTML = "";
-    let off_bag_innerHTML = "";
     let pat_bag_innerHTML = "";
+    let off_bag_innerHTML = "";
+    let bak_bag_innerHTML = "";
+    let alt_bag_innerHTML = "";
     /*}}}*/
-    /* [nil] .. (sucks all nil.pat_spans from their current container] {{{*/
+    /* [nil] .. (sucks in all nil.pat_spans from their current container) {{{*/
     let bin_moved_to_count = 0;
 
     for(let pos = 1; pos <= csv_count(bin_csv); ++pos)
@@ -2578,7 +2859,7 @@ if(log_this) for(let i=0; i < pat_spans.length; ++i) log((i+1)+" %c["+pat_spans[
             /* container !bak_bag .. [MOVED_TO bak] {{{*/
             else {
 
-if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_msg("MOVED TO <em class='cc2'>BAK</em> FROM <em class='cc9'>"+get_n_lbl(container)+"</em> ["+pat_spans[pat_span_index].innerText+"]");
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly("MOVED TO <em class='cc2'>BAK</em> FROM <em class='cc9'>"+get_n_lbl(container)+"</em> ["+pat_spans[pat_span_index].innerText+"]");
                 bak_moved_to_count += 1;
                 bak_bag.appendChild( pat_spans[pat_span_index] );
             }
@@ -2598,8 +2879,56 @@ if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_msg("MOVED TO <em class='cc2'>
             let line = t_get_pat_span_line(num,pat,css_class,txt);
             /*}}}*/
             /* [INSERTED BAK] {{{*/
-            bak_bag_innerHTML += line;
+            bak_bag_innerHTML  += line;
             bak_inserted_count += 1;
+            /*}}}*/
+        }
+    }
+    /*}}}*/
+    /* [alt] {{{*/
+    let alt_moved_to_count = 0;
+    let alt_inserted_count = 0;
+    let alt_asserted_count = 0;
+
+    for(let pos = 1; pos<= csv_count(alt_csv); ++pos)
+    {
+        let pat            = csv_get(alt_csv, pos);
+        let pat_span_index = t_get_pat_span_index(pat_spans, pat);
+
+        if(pat_span_index >= 0)
+        {
+            /* container  alt_bag .. [CONFIRM alt] {{{*/
+            let container  = pat_spans[pat_span_index].parentNode;
+            if( container == alt_bag) {
+                alt_asserted_count += 1;
+
+            }
+            /*}}}*/
+            /* container !alt_bag .. [MOVED_TO bak] {{{*/
+            else {
+
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly("MOVED TO <em class='cc2'>BAK</em> FROM <em class='cc9'>"+get_n_lbl(container)+"</em> ["+pat_spans[pat_span_index].innerText+"]");
+                bak_moved_to_count += 1;
+                bak_bag.appendChild( pat_spans[pat_span_index] );
+            }
+            /*}}}*/
+            t_sync_pat_span_class(pat, pat_spans[pat_span_index]);
+            pat_spans[pat_span_index] = null;
+        }
+        else {
+            /* [new pat_span innerHTML] {{{*/
+            let  num = mPadStart(pos,2).replace(" ","&nbsp;");
+            let  txt = ellipsis(s_get_htmlEntities(pat), 16);
+            let  css_class
+                = "cc0"
+                + ((mov_div.innerText == txt) ? " mov_src" : "")
+            ;
+
+            let line = t_get_pat_span_line(num,pat,css_class,txt);
+            /*}}}*/
+            /* [INSERTED ALT] {{{*/
+            alt_bag_innerHTML += line;
+            alt_inserted_count += 1;
             /*}}}*/
         }
     }
@@ -2714,14 +3043,14 @@ if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_msg("MOVED TO <em class='cc2'>
             }
             /*}}}*/
             /* [INSERTED SEL] .. [to pat] {{{*/
-            else                       { pat_bag_innerHTML += line; ++pat_inserted_count; }
+            else                        { pat_bag_innerHTML += line; ++pat_inserted_count; }
             /*}}}*/
         }
 
     }
     /*}}}*/
     /* [pat_spans] unmoved [MOVED_TO bak] {{{*/
-    for(let pat_span_index=0; pat_span_index<pat_spans.length; ++pat_span_index)
+    for(let pat_span_index=0; pat_span_index < pat_spans.length; ++pat_span_index)
     {
         if(pat_spans[pat_span_index] == null) continue;
 
@@ -2739,13 +3068,13 @@ logXXX("________pat=["+ pat      +"]")
 
         if(csv_count(pat_csv) < SELECT_SLOT_MAX)
         {
-if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_msg("MOVED TO <em class='cc5'>OFF</em> <em class='cc8'>LOOSE</em> ["+pat_spans[pat_span_index].innerText+"]");
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly("MOVED TO <em class='cc5'>OFF</em> <em class='cc8'>LOOSE</em> ["+pat_spans[pat_span_index].innerText+"]");
             csv_move_pattern_to_off(pat);
             off_moved_to_count += 1;
             off_bag.appendChild( pat_spans[pat_span_index] );
         }
         else {
-if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_msg("MOVED TO <em class='cc8'>BAK</em> <em class='cc8'>LOOSE</em> ["+pat_spans[pat_span_index].innerText+"]");
+if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_fly("MOVED TO <em class='cc8'>BAK</em> <em class='cc8'>LOOSE</em> ["+pat_spans[pat_span_index].innerText+"]");
             csv_move_pattern_to_bak(pat);
             bak_moved_to_count += 1;
             bak_bag.appendChild( pat_spans[pat_span_index] );
@@ -2782,9 +3111,10 @@ if(LOG_MAP.EV8_FLOATLOG || fly_log_checked) t_log_msg("MOVED TO <em class='cc8'>
         log_msg += t_get_docker_bag_msg("pat", pat_moved_to_count, pat_asserted_count, pat_inserted_count);
         log_msg += t_get_docker_bag_msg("off", off_moved_to_count, off_asserted_count, off_inserted_count);
         log_msg += t_get_docker_bag_msg("bak", bak_moved_to_count, bak_asserted_count, bak_inserted_count);
+        log_msg += t_get_docker_bag_msg("alt", alt_moved_to_count, alt_asserted_count, alt_inserted_count);
         log_msg += t_get_docker_bag_msg("bin", bin_moved_to_count, 0                 , 0                 );
 
-        t_log_msg( log_msg );
+        t_fly( log_msg );
     }
 
 if(log_this && pat_bag_innerHTML) log("...pat_bag_innerHTML %c"+pat_bag_innerHTML, lb1);
@@ -2792,23 +3122,25 @@ if(log_this && off_bag_innerHTML) log("...off_bag_innerHTML %c"+off_bag_innerHTM
 if(log_this && bak_bag_innerHTML) log("...bak_bag_innerHTML %c"+bak_bag_innerHTML, lb3);
 pat_bag.title
     = "PAT "+csv_count(pat_csv)+LF
-    + "OFF "+csv_count(off_csv)+LF
-    + "BAK "+csv_count(bak_csv)
+    + "OFF "+csv_count(off_csv) + " .. BAK "+csv_count(bak_csv) + " .. ALT "+csv_count(alt_csv)
     ;
 
     /*}}}*/
-    /* [wide_bag] {{{*/
-    let needs_wide_bag
+    /* [grid_bag] {{{*/
+    let needs_grid_bag
+        = true
+/*{{{
         =  (csv_count(off_csv) >= 10)
         || (csv_count(bak_csv) >= 10)
+}}}*/
     ;
 
-    if(has_el_class(pat_bag, "wide_bag") != needs_wide_bag)
+    if(has_el_class(pat_bag, "grid_bag") != needs_grid_bag)
     {
-        set_el_class_on_off(pat_bag, "wide_bag", needs_wide_bag);
+        set_el_class_on_off(pat_bag, "grid_bag", needs_grid_bag);
 
-        t_log_transcript_info("<span style='"+ (needs_wide_bag ? "color:red" : "color:green"                 ) +";'>"+SYMBOL_BLACK_CIRCLE+"</span>"
-            +                 "<span style='"+ (needs_wide_bag ?          "" : "text-decoration:line-through") +";'>  wide_bag             </span>"
+        t_log_transcript_info("<span style='"+ (needs_grid_bag ? "color:red" : "color:green"                 ) +";'>"+SYMBOL_BLACK_CIRCLE+"</span>"
+            +                 "<span style='"+ (needs_grid_bag ?          "" : "text-decoration:line-through") +";'>  grid_bag             </span>"
         );
     }
 
@@ -2824,11 +3156,13 @@ pat_bag.title
     if(pat_bag_innerHTML) pat_bag.insertAdjacentHTML("beforeend", pat_bag_innerHTML);
     if(off_bag_innerHTML) off_bag.insertAdjacentHTML("beforeend", off_bag_innerHTML);
     if(bak_bag_innerHTML) bak_bag.insertAdjacentHTML("beforeend", bak_bag_innerHTML);
+    if(alt_bag_innerHTML) alt_bag.insertAdjacentHTML("beforeend", alt_bag_innerHTML);
 
     /*}}}*/
     /* BAGS ORDER {{{*/
     pat_bag.appendChild(off_bag);
     pat_bag.appendChild(bak_bag);
+    pat_bag.appendChild(alt_bag);
     pat_bag.appendChild(bot_div);
 
     /*}}}*/
@@ -2861,7 +3195,7 @@ let t_set_1_sel_bag_innerHTML = function()
     let caller = "t_set_1_sel_bag_innerHTML";
 let log_this = LOG_MAP.S3_SLOT;
 
-    let sel_bag = get_tool("#sel_bag");
+    let sel_bag = get_tool("sel_bag");
     if(!sel_bag) return;
     let sel_bag_innerHTML = "";
 
@@ -2879,7 +3213,8 @@ let log_this = LOG_MAP.S3_SLOT;
 
 if(log_this) log("%c "+caller+": sel_bag_innerHTML:%c<br>"+sel_bag_innerHTML, lbF+lb1, lb1);
 
-    sel_bag.innerHTML = sel_bag_innerHTML;
+    t_cleanup_div( sel_bag );
+    sel_bag.insertAdjacentHTML("beforeend", sel_bag_innerHTML);
 };
 /*}}}*/
 /*_ t_get_2_sel_bag_line {{{*/
@@ -2890,7 +3225,7 @@ let t_get_2_sel_bag_line = function(slot)
     let pattern = ccs[slot].pattern;
 
     return "<div class='select"+slot+"'>"
-        +   "<em id='thumb_p_"+slot+"' title='"+title     +"'>"+pattern+"</em>"
+        +   "<em id='thumb_p_"+slot+"' title='"+title     +"'>"+ellipsis(pattern, 32)+"</em>"
         +   t_get_3_sel_bag_thumbs_EM(slot, "thumb_p")
         +  "</div>"
     ;
@@ -2975,6 +3310,15 @@ let t_is_accessory_node = function(node)
         || (node == hov2                )
         || (node == hov3                )
         || (node == hov4                )
+
+        || has_el_class(node, "seeker_handle")
+        || has_el_class(node, "screener"     )
+
+        || has_el_class(node, "push_pin"     )
+        || has_el_class(node, "closepin"     )
+        || has_el_class(node, "scalepin"     )
+        || has_el_class(node, "clearpin"     )
+
     ;
 };
 /*}}}*/
@@ -2992,63 +3336,40 @@ let t_sync_pat_span_class = function(pat, pat_span, pat_off=true)
     set_el_class(el, css_class);
 };
 /*}}}*/
-/*_ t_cleanup_pat_bag {{{*/
-let t_cleanup_pat_bag = function()
-{
-let log_this = LOG_MAP.S2_SELECT;
-    let caller = "t_cleanup_pat_bag";
-if(log_this) log(caller);
-
-    let transient_pat_count = 0;
-    let              length = pat_bag.childNodes.length;
-    let                            node_removed;
-    for(let i=0; i < length; i += (node_removed ? 0 : 1))
-    {
-        let node = pat_bag.childNodes[i];
-/*console.dir(node);*/
-        node_removed = false;
-        if( t_is_accessory_node(node) )
-        {
-/*if(log_this) log("...KEEPING  %c["+get_n_lbl(node) +"]", lbF+lb1);*/
-        }
-        else if(node) {
-/*if(log_this) log("...REMOVING %c["+node.textContent+"]", lbF+lb2);*/
-            pat_bag.removeChild(node);
-            transient_pat_count += 1;
-            node_removed = true;
-        }
-        else {
-/*if(log_this) log("...SKIPPING %c[undefined]"           , lbF+lb8);*/
-        }
-    }
-if(log_this) log("..."+transient_pat_count+" [pat_bag] transient nodes removed");
-};
-/*}}}*/
 /*_ t_cleanup_div {{{*/
 let t_cleanup_div = function(div)
 {
-let log_this = LOG_MAP.S2_SELECT;
+/*{{{*/
     let caller = "t_cleanup_div";
-if(log_this) log(caller);
+let log_this = LOG_MAP.S2_SELECT;
 
-    let transient_pat_count = 0;
-    let              length = div.childNodes.length;
-    let                            node_removed;
+if( log_this) log(caller+"("+get_id_or_tag(div)+")");
+/*}}}*/
+
+    let  count = 0;
+    let length = div.childNodes.length;
+    let node_removed;
     for(let i=0; i < length; i += (node_removed ? 0 : 1))
     {
         let node = div.childNodes[i];
         node_removed = false;
         if( t_is_accessory_node(node) )
         {
-/*if(log_this) log("...KEEPING  %c["+get_n_lbl(node) +"]", lbF+lb1);*/
+if(log_this) log("...KEEPING  %c["+get_n_lbl(node) +"]", lbF+lb1);
         }
         else if(node) {
+if(log_this) log("...REMOVING %c "+get_id_or_tag(node)+" %c"+node.textContent, lbL, lbR+lf2);
             div.removeChild(node);
-            transient_pat_count += 1;
+            count += 1;
             node_removed = true;
         }
+        else {
+/*{{{
+if(log_this) log("...SKIPPING %c[undefined]"           , lbF+lb8);
+}}}*/
+        }
     }
-if(log_this) log("..."+transient_pat_count+" ["+get_n_lbl(div)+"] transient nodes removed");
+if(log_this) log("..."+count+" ["+get_n_lbl(div)+"] transient nodes removed");
 };
 /*}}}*/
 
@@ -3069,7 +3390,7 @@ logXXX("csv_escape(pat)=["+csv_escape(pat)+"]")
 /*_ t_get_pat_span_index {{{*/
 let t_get_pat_span_index = function(pat_spans, pat)
 {
-    for(let pat_span_index=0; pat_span_index<pat_spans.length; ++pat_span_index)
+    for(let pat_span_index=0; pat_span_index < pat_spans.length; ++pat_span_index)
     {
         if(pat_spans[pat_span_index] == null) continue;
 
@@ -3196,43 +3517,79 @@ if(LOG_MAP.S1_RANGE && result) log("is_node_selected("+get_n_lbl(node)+"): ...re
 /*{{{*/
 
 /* pick */
-/*_ pick_node {{{*/
-let pick_node = function(id, _caller)
+/*_ pick_tag_or_id_node {{{*/
+let pick_tag_or_id_node = function(tag_or_id, _caller)
 {
-    let caller = "pick_node("+id+"): caller=["+_caller+"]";
+/*{{{*/
+    let caller = "pick_tag_or_id_node("+tag_or_id+")";
 let log_this = LOG_MAP.S1_RANGE;
 
-    let node = (!id) ? document.body : null;
-    if(!node)
-        try {
-            node = document.getElementById(id) || document.getElementsByTagName(id)[0] || getElementsByContent(pattern);
-        } catch(ex) { }
+if(log_this) log(caller+".. CALLED BY ["+_caller+"]");
+/*}}}*/
+    /* default to body {{{*/
+    let node = (!tag_or_id) ? document.body : null;
 
+    let id = tag_or_id;
+    /*}}}*/
+    /* Note: LOOK FOR A TAG FIRST .. so as to dismiss ID collisions such as [body or html etc.] {{{*/
+    /* getElementsByTagName {{{*/
+    if(!node) {
+        node =    document.getElementsByTagName(  id  )[0] ;
+
+if(log_this) log("document.getElementsByTagName("+id+")[0].....["+get_id_or_tag(node)+"]");
+    }
+    /*}}}*/
+    /* getElementById {{{*/
+    if(!node) {
+        node =    document.getElementById      (  id      );
+
+if(log_this) log("document.getElementById      ("+id+")........["+get_id_or_tag(node)+"]");
+    }
+    /*}}}*/
+    /* getElementsByContent {{{*/
+    if(!node) {
+        node =    getElementsByContent         (  tag_or_id );
+
+if(log_this) log("getElementsByContent         ("+tag_or_id+")...["+get_id_or_tag(node)+"]");
+    }
+    /*}}}*/
+if(log_this) console.dir(node);
+
+    /*}}}*/
+    /* querySelector(#id) {{{*/
     let selector;
     if(!node ) {
         selector = "#"+id;
 if(log_this) log(caller+": NOT FOUND .. trying selector ["+selector+"]");
+
         node = document.querySelector( selector );
     }
-
+    /*}}}*/
+    /* querySelector(.id) {{{*/
     if(!node ) {
         selector = "."+id;
 if(log_this) log(caller+": NOT FOUND .. trying selector ["+selector+"]");
+
         node = document.querySelector( selector );
     }
-
+    /*}}}*/
+    /* default to body {{{*/
     if(!node )
     {
 if(log_this) log(caller+": NOT FOUND .. using body");
+
         node = document.body;
     }
-
+    /*}}}*/
+    /* default to document {{{*/
     if(!node )
     {
 if(log_this) log(caller+": NOT FOUND .. using document");
+
         node = document;
     }
-
+    /*}}}*/
+/*{{{*/
 if(log_this) {
     log("<div class='cc8'>");
     log(caller);
@@ -3241,167 +3598,11 @@ if(log_this) {
     log_node(SYMBOL_CHECK_MARK +" FIRST CHILD", node.firstChild);
     log_node(SYMBOL_CHECK_MARK +" LAST CHILD" , node.lastChild );
     log("</div>");
+    log(caller+": ...return "+get_id_or_tag(node));
+console.dir(node);
 }
+/*}}}*/
     return node;
-};
-/*}}}*/
-
-/* attributes */
-/*_ node_toString {{{ */
-let node_toString = function(node)
-{
-    let caller = "node_toString";
-    if(!node) return "<span class='gr'>"+caller+"(null node)</span>";
-
-    let result = "";
-    try {
-
-        let p_str = get_p_str( node          );
-        let n_str = get_n_str( node          );
-        let t_str = get_t_str( node.nodeType );
-
-        let text  = (           node.nodeType == Node.COMMENT_NODE)
-            ?                   node.textContent
-            :  truncate(trim_empty_lines(node.textContent))
-        ;
-
-        let em_class
-            = (node.nodeType == Node.TEXT_NODE   ) ? "cc4"
-            : (node.nodeType == Node.COMMENT_NODE) ? "cc8"
-            :                                        "cc3" ;
-
-        if(!text) { text = n_str; em_class = "cc2"; }
-        else      { text = ellipsis   ( text , 48); }
-
-        result = ""
-            + "<span class='log_node_toString'>"+ p_str                +"</span>"
-            + " <em  class='"+em_class     +"'>"+ s_get_htmlEntities( text ) +"</em>"
-        ;
-/*
-            + " "                             + mPadEnd     ( p_str ,32," ")
-            + " <em   class='"+ em_class +"'>"+ mPadEnd     ( n_str ,16," ") +"</em>"
-            + " <em   class='"+ em_class +"'>"+ mPadEnd     ( t_str ,16," ") +"</em>"
-*/
-
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-    return result;
-};
-/*}}}*/
-/*_ get_p_str {{{ */
-let get_p_str = function(node)
-{
-    let names = "";
-
-    for(let       parent  = node.parentNode
-        ;        (parent != null)
-        ;         parent  = parent.parentNode
-    ) {
-        let n_str         = get_n_str(parent);
-        if( n_str) names  =            n_str            + names;
-     /* if( n_str) names  = mPadEnd(   n_str,8,".") +"."+ names; */
-    }
-
-    return names;
-};
-/*}}}*/
-/*_ get_n_lbl {{{ */
-let get_n_lbl = function(node)
-{
-    if(!node                 ) return "null node";
-    if( node == window       ) return "window";
-    if( node == document.body) return "body";
-
-    let                n_lbl = null;
-    if(node.id ) try { n_lbl =   node.tagName +"#"+ node.id                                  ; } catch(ex) {}
-    if( !n_lbl ) try { n_lbl =   node.tagName +(node.className ? ("."+ node.className) : "") ; } catch(ex) {}
-    if( !n_lbl ) try { n_lbl =   truncate(node.textContent, 24)                              ; } catch(ex) {}
-    if( !n_lbl ) try { n_lbl =            node.tagName                                       ; } catch(ex) {}
-    if( !n_lbl ) try { n_lbl =            node.nodeType                                      ; } catch(ex) {}
-    if( !n_lbl )       n_lbl = "";
-    return             n_lbl;
-};
-/*}}}*/
-/*_ get_n_str {{{ */
-let get_n_str = function(node)
-{
-    let                h_tag = get_h_tag( node.nodeName );
-    let                n_str = null;
-/*  if( !n_str ) try { n_str =            node.id              ; if(n_str)  n_str = h_tag+"<sup>"+ellipsis(n_str,16)+"</sup>"; } catch(ex) {} */
-/*  if( !n_str ) try { n_str =   truncate(node.textContent, 32);                              } catch(ex) {} */
-    if( !n_str ) try { n_str =            h_tag                ;                              } catch(ex) {}
-    if( !n_str ) try { n_str =            node.tagName         ;                              } catch(ex) {}
-    if( !n_str ) try { n_str = get_t_str( node.nodeType       );                              } catch(ex) {}
-    if( !n_str )       n_str = "";
-    return             n_str;
-};
-/*}}}*/
-/*_ get_n_txt{{{ */
-let get_n_txt = function(node)
-{
-    if(!node) return "null node";
-    return strip_CR_LF( ellipsis(node.textContent.trim(), 64) );
-};
-/*}}}*/
-/*_ get_h_tag {{{ */
-let get_h_tag = function(node_nodeName)
-{
-    switch(node_nodeName) {
-
-        case "#document"     : return "|"     ; /*"\u2622";*/
-        case  "HTML"         : return "_"     ; /*"\u2AFC";*/
-        case   "HEAD"        : return "\u265E";
-        case   "BODY"        : return "\u26AB"; /*"\u265C";*/
-
-        case    "SCRIPT"     : return "\u2710";
-
-        case    "DIV"        : return "\u2610";
-        case    "BLOCKQUOTE" : return "\u275D";
-        case    "SPAN"       : return "\u2799";
-        case    "EM"         : return "\u2794";
-
-        case    "A"          : return "\u27A4";
-        case    "BUTTON"     : return "\u274D";
-        case    "INPUT"      : return "\u270B";
-        case    "TEXTAREA"   : return "\u2774";
-
-        case    "TABLE"      : return "TA";
-        case     "THEAD"     : return "TH";
-        case     "TFOOT"     : return "TF";
-        case     "TBODY"     : return "TB";
-        case      "TR"       : return "tr";
-        case      "TH"       : return "th";
-        case      "TD"       : return "td";
-
-        case    "UL"         : return "UL";
-        case    "OL"         : return "OL";
-        case    "LI"         : return "\u26AC";
-
-        default              : return node_nodeName;
-    }
-};
-/*}}}*/
-/*_ get_t_str {{{ */
-let get_t_str = function(node_nodeType)
-{
-    switch(node_nodeType)
-    {
-        case Node.ELEMENT_NODE               : return "ELEMENT"               ; /*  1 Element .. <p> or <div>*/
-        case Node.TEXT_NODE                  : return "TEXT"                  ; /*  3 Text of Element or Attr*/
-        case Node.PROCESSING_INSTRUCTION_NODE: return "PROCESSING_INSTRUCTION"; /*  7  .. <?xml-stylesheet ... ?> declaration (of an XML document)*/
-        case Node.COMMENT_NODE               : return "COMMENT"               ; /*  8 Comment*/
-        case Node.DOCUMENT_NODE              : return "DOCUMENT"              ; /*  9 Document*/
-        case Node.DOCUMENT_TYPE_NODE         : return "DOCUMENT_TYPE"         ; /* 10 .. <!DOCTYPE html> for HTML5 documents*/
-        case Node.DOCUMENT_FRAGMENT_NODE     : return "DOCUMENT_FRAGMENT"     ; /* 11 DocumentFragment*/
-        /* DEPRECATED* */
-        case Node.ATTRIBUTE_NODE             : return "ATTRIBUTE"             ; /*  2* Attribute of an Element  . The element attributes are no longer implementing the Node interface in DOM4 specification*/
-        case Node.CDATA_SECTION_NODE         : return "CDATA_SECTION"         ; /*  4* CDATASection             . Removed in DOM4 specification*/
-        case Node.ENTITY_REFERENCE_NODE      : return "ENTITY_REFERENCE"      ; /*  5* XML Entity Reference node. Removed in DOM4 specification*/
-        case Node.ENTITY_NODE                : return "ENTITY"                ; /*  6* XML <!ENTITY ...> node   . Removed in DOM4 specification*/
-        case Node.NOTATION_NODE              : return "NOTATION"              ; /* 12* XML <!NOTATION ...> node . Removed in DOM4 specification*/
-
-        default: return "[TYPE="+node_nodeType+"]";
-    }
 };
 /*}}}*/
 
@@ -3413,11 +3614,13 @@ let get_node_thumb_p = function(node)
 /*
 logXXX("%c get_node_thumb_p("+get_n_txt(node)+")",lbb+lbH)
 */
-    let          node_top      = getRealTop(node) - THUMB_OFFSET;
-    let                     ph = get_page_height();
+    let      node_top = getRealTop(node) - THUMB_OFFSET;
+    let            ph = get_page_height();
+
 /*
-logXXX("...ph=["+ph+"]")
-logXXX("...node_top=["+node_top+"]")
+logXXX("%c.........ph ["+ ph       +"]"           , lbb+lbH+lf5)
+logXXX("%c...node_top ["+ node_top +"]"           , lbb+lbH+lf6)
+logXXX("%c....thumb_p ["+ 100 * node_top / ph +"]", lbb+lbH+lf7)
 console.dir(node)
 */
     return 100 * node_top / ph;
@@ -3439,62 +3642,6 @@ let get_thumb_p_str = function(thumb_p)
 /*}}}*/
 
 /* log */
-/*_ log_option_changes {{{*/
-let log_option_changes = function(changes)
-{
-
-    let s = "<em>"+changes+"</em>" +"<br>"+LF
-        +"<table>"+LF
-        +"<tr><th>OPTIONS:</th></tr>"+LF
-        +"<tr>"
-        +" <td>"+ get_log_option_state("tools_scroll"      , tools_scroll                           ) +"</td>"
-        +" <td>"+ get_log_option_state("anchor_freeze"     , anchor_freeze                          ) +"</td>"
-        +" <td>"+ get_log_option_state("containers_hi"     , containers_hi                          ) +"</td>"
-        +" <td>"+ get_log_option_state("scroll_smooth"     , scroll_smooth                          ) +"</td>"
-        +" <td>"+ get_log_option_state("overflow_visi"     , overflow_visi                          ) +"</td>"
-        +" <td>"+ get_log_option_state("tools_extras"      , tools_extras                           ) +"</td>"
-        +"</tr>"+LF
-        +"<tr>"
-        +" <td>"+ get_log_option_value("words_options"     , get_words_options_symbol(words_options))
-        +" <td>"+ get_log_option_state("words_opcycle"     , words_opcycle                          ) +"</td>"
-        +" <td>"+ get_log_option_state("wording"           , wording                                ) +"</td>"
-        +" <td>"+ get_log_option_state("theme_dark"        , theme_dark                             ) +"</td>"
-        +"</tr>"+LF
-        +"<tr>"
-      /*+" <td>"+ get_log_option_value("tools_node"        , "<em class='cc9'>"+tools_node  +"</em>")         */
-      /*+" <td>"+ get_log_option_value("tools_filter"      , "<em class='cc9'>"+tools_filter+"</em>")         */
-      /*+" <td>"+ get_log_option_state("filter_auto"       , filter_auto                            ) +"</td>"*/
-      /*+" <td>"+ get_log_option_state("transcripts"       , transcripts                            ) +"</td>"*/
-        +"</tr>"+LF
-        +"<tr>"
-        +" <td>"+ get_log_option_state("logging_EVENTS"    , logging_EVENTS                         ) +"</td>"
-        +" <td>"+ get_log_option_state("logging_HIGHLIGHT" , logging_HIGHLIGHT                      ) +"</td>"
-        +" <td>"+ get_log_option_state("logging_TOOLBAR"   , logging_TOOLBAR                        ) +"</td>"
-        +"</tr>"+LF
-        +"<tr><th>CSS:</th></tr>"+LF
-        +"<tr>"
-        + "<td><em class='em_match'  >em_match  </em></td>"
-        + "<td><em class='em_missing'>em_missing</em></td>"
-        +"</tr>"+LF
-        +"</table>"+LF
-    ;
-
-    log_set_TR_LAYOUT("<div id='log_tags_div'>"+ s +"</div>");
-};
-
-let get_log_option_state = function(option, state)
-{
-    let     mark = state ? SYMBOL_CHECK_MARK : SYMBOL_NOT_CHECKED;
-    let em_class = state ?             "cc2" : "cc8";
-    return option +" <em class='"+em_class+"'>"+ mark     +"</em>    ";
-};
-
-let get_log_option_value = function(option, value_em)
-{
-    return option +" "+ value_em;
-};
-
-/*}}}*/
 /*_ log_tags {{{*/
 let log_tags = function()
 {
@@ -3540,573 +3687,14 @@ let log_node = function(label, node)
 
 /*}}}*/
 
-/** STRING */
-/*{{{*/
-/*_ csv_add {{{*/
-let csv_add = function(csv, val)
-{
-/*
-logXXX("csv_add(csv=[%c"+csv+"%c], val=[%c"+val+"%c])", lb1,lbA, lb2,lbA)
-*/
-    if(                     !val  ) return csv;
-    val = csv_escape(val);
-    if(             !csv          ) return val;
-    if( csv_contains(csv,    val) ) return csv; /* as a SET (i.e. NOT as a BAG) */
-/*
-logXXX("___val=[%c"+val+"%c]", lb2,lbA)
-logXXX(".return val=[%c"+csv+","+val+"%c]", lb2,lbA)
-*/
-    return           csv+","+val;
-};
-/*}}}*/
-/*_ csv_del {{{*/
-let csv_del = function(csv,val)
-{
-    if(       !val) return csv;
-    if(!csv       ) return csv;
-/*
-logXXX("csv_del(csv=[%c"+csv+"%c], val=[%c"+val+"%c])", lb1,lbA, lb2,lbA)
-*/
-
-    if( csv == val) {
-       csv = "";
-    }
-    else {
-        val = csv_escape(val);
-/*
-logXXX("___val=[%c"+val+"%c]", lb2,lbA)
-*/
-
-        let a = csv.split(",");
-        csv = "";
-        for(let i=0; i<a.length; ++i) {
-            if(                 !a[i]) continue;
-            if(       val ==     a[i]) continue;
-            if(!csv)  csv  =     a[i]; /* first */
-                else      csv += ","+a[i]; /*  more */
-        }
-    }
-
-/*
-logXXX(".return csv=[%c"+csv+"%c]", lb1,lbA)
-*/
-    return csv;
-};
-/*}}}*/
-/*_ csv_contains {{{*/
-/*
-:new C:/LOCAL/DEV/DEVEL/EMC/Extensions/PJC_SPECS/script/PJC_SPECS.asp
-*/
-let csv_contains = function(csv, val)
-{
-    if(!val) return false;
-    val = csv_escape(val);
-    let c = ","+ csv.trim() +",";
-    let v = ","+ val.trim() +",";
-    let r =        c.includes(v);
-    return r;
-};
-/*}}}*/
-/*_ csv_count {{{*/
-let csv_count = function(csv)
-{
-    if(!csv) return 0;
-
-    return csv.split(",").length;
-};
-/*}}}*/
-/*_ csv_get {{{*/
-let csv_get = function(csv,pos)
-{
-    if(!csv || !pos) return "";
-    let   val = "";
-    let     v = csv.split(",");
-    for(let i = 0; i < v.length; ++i)
-        if((i+1) == pos) { val = v[i]; break; }
-
-    val = csv_unescape(val);
-/*
-logXXX("csv_get(csv=[%c"+csv+"%c], pos=[%c"+pos+"%c])", lb1,lbA, lb2,lbA)
-logXXX(".return val=[%c"+val+"%c]", lb2,lbA)
-*/
-    return val;
-};
-/*}}}*/
-/*_ csv_log {{{*/
-let csv_log = function(csv, title="")
-{
-    if(title) {
-        if(csv) log("%c "+title                , lbF+lb9         );
-        else    log("%c "+title+"%c IS  EMPTY ", lbF+lb9, lbF+lb0);
-    }
-
-    if(!csv) return;
-
-    let count = csv_count(csv);
-
-    for(let i = 0; i < count; ++i) {
-        let v = csv_get(csv,i+1);
-        let u = unescape(v);
-        if( u == v) log(" "+(i+1)+" %c["+v+"]"                   , lbX[(i+1) % 10]     );
-        else        log(" "+(i+1)+" %c["+v+"]%c unescape=["+u+"]", lbX[(i+1) % 10], lb0);
-    }
-};
-/*}}}*/
-/*_ csv_escape csv_unescape {{{*/
-
-let APOST_ASC = "'";
-let APOST_UTF = "\\u0027";
-let APOST_HTM = "&apos;";
-
-let COMMA_ASC = ",";
-let COMMA_UTF = "\\u002C";
-let COMMA_HTM = "&comma;";
-
-let regexp_COMMA_ASC = new RegExp(COMMA_ASC, "g");
-let regexp_COMMA_UTF = new RegExp(COMMA_UTF, "g");
-let regexp_COMMA_HTM = new RegExp(COMMA_HTM, "g");
-let regexp_APOST_ASC = new RegExp(APOST_ASC, "g");
-let regexp_APOST_UTF = new RegExp(APOST_UTF, "g");
-let regexp_APOST_HTM = new RegExp(APOST_HTM, "g");
-
-let csv_escape = function(text)
-{
-    return text
-        .   replace(regexp_COMMA_ASC, COMMA_HTM)
-        .   replace(regexp_APOST_ASC, APOST_HTM)
-    ;
-};
-
-let csv_unescape = function(text)
-{
-    return text
-        .   replace(regexp_COMMA_HTM, COMMA_ASC)
-        .   replace(regexp_APOST_HTM, APOST_ASC)
-    ;
-};
-/*}}}*/
-/*_ csv_cat {{{*/
-let csv_cat = function(csv1, csv2)
-{
-    if(  !csv1) return csv2;
-    if(  !csv2) return csv1;
-    let   csv = csv1;
-    let     v = csv2.split(",");
-    for(let i = 0; i < v.length; ++i) {
-        csv += "," + v[i];
-    }
-};
-/*}}}*/
-/*_ csv_sort {{{*/
-let csv_sort = function(csv, reverse=false)
-{
-    if(  !csv) return csv;
-/*
-csv_log(csv,"csv_sort(csv, reverse="+reverse+"):");
-*/
-
-    let     v = csv.split(",");
-    if(reverse) v.sort( function(a, b) { return a.toLowerCase() < b.toLowerCase(); } );
-    else        v.sort( function(a, b) { return b.toLowerCase() < a.toLowerCase(); } );
-
-    csv = "";
-    for(let i = 0; i < v.length; ++i) {
-        csv += (csv ? "," : "")+ v[i];
-    }
-/*
-csv_log(csv,"===================================");
-*/
-    return csv;
-};
-/*}}}*/
-/*_ csv_reverse {{{*/
-let csv_reverse = function(csv)
-{
-    return csv_sort(csv, true);
-};
-/*}}}*/
-
-/*_ ellipsis {{{*/
-const ELLIPSIS_DEFAULT_LEN = 64;
-const ELLIPSIS_SHORT_LEN   = 32;
-
-let ellipsis_short = function(msg)
-{
-    return ellipsis(msg, ELLIPSIS_SHORT_LEN);
-};
-
-let ellipsis = function(_msg, len=ELLIPSIS_DEFAULT_LEN)
-{
-    let msg = String(_msg);
-    return (msg.length    <= len)
-        ?   msg
-        :   msg.substring(0, len-3)+HORIZONTAL_ELLLIPSIS
-    ;
-};
-/*}}}*/
-/*_ truncate {{{*/
-let truncate = function(_msg, length=80)
-{
-    let msg = strip_CR_LF( String(_msg) );
-    return (msg.length <= length)
-        ?   msg
-        :   msg.substring(0, length-3)+"..."
-    ;
-};
-/*}}}*/
-/*_ mPadStart {{{*/
-let mPadStart = function(s,l,c=" ") { s = String(s); while(s.length < l) s = c+s; return s; };
-/*}}}*/
-/*_ mPadEnd{{{*/
-let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length < l) s = s+c; return s; };
-/*}}}*/
-/*_ isAlNum {{{ */
-let isAlNum = function(s)
-{
-    let cp
-        = s.codePointAt(0);
-    let result
-        =  ((cp >=   48) && (cp <=  57 )) /* 0-9 */
-        || ((cp >=   65) && (cp <=  90 )) /* A-Z */
-        || ((cp ==   95)                ) /*  _  */
-        || ((cp >=   97) && (cp <= 122 )) /* a-z */
-        || ((cp >= 0xDF) && (cp <= 0xFF)) /* SHARP-S - Y-DIAERESIS */
-    ;
-    if(result)
-        return true;
-    else
-        return false;
-};
-
-let _sAlNum = function(s) { return /[0-9a-z]/.test( s.toLowerCase() ); };
-
-/*}}}*/
-/*_ object_label {{{*/
-let object_label = function(object)
-{
-    return object.toString()
-        .replace("[object ","")
-        .replace(       "]","");
-};
-/*}}}*/
-/*}}}*/
-
-/** REGEX */
-/*{{{*/
-/*_ trim_node_textContent {{{ */
-let trim_node_textContent = function(node)
-{
-    return strip_CR_LF( ellipsis(node.textContent.trim(), 64) );
-};
-/*}}}*/
-/*_ strip_pat {{{*/
-let strip_pat = function(text, str)
-{
-    if(typeof text == "undefined") return text;
-
-    let regexp_char = new RegExp(str, "g");
-    return text
-        .   replace(regexp_char,  "")
-        .   trim()
-    ;
-};
-/*}}}*/
-/*_ strip_CR_LF {{{*/
-let regexp_CR = new RegExp("\\r", "g");
-let regexp_LF = new RegExp("\\n", "g");
-let strip_CR_LF = function(text)
-{
-    return text
-        .   replace(regexp_CR,  "")
-        .   replace(regexp_LF, " ")
-        .   trim()
-    ;
-};
-/*}}}*/
-/*_ strip_UL {{{*/
-let regexp_ULX = new RegExp("__+", "g");
-let regexp_UL  = new RegExp(  "_", "g");
-let strip_UL = function(text)
-{
-    return text
-        .   replace(regexp_ULX, LF    )
-        .   replace(regexp_UL , " "   )
-        .   trim()
-    ;
-};
-/*}}}*/
-/*_ tokenize {{{*/                                      /* HOSTNAME           _ PATHNAME        */
-let regexp_NW      = new RegExp("[^0-9~A-z\\xC0-\\xFF]+", "g"); /* www.remotetabs.com _ C://LOCAL/STORE */
-let regexp_WORDS   = new RegExp("www|com|html"          , "g"); /* www remotetabs com _ C   LOCAL STORE */
-let regexp_HEADS   = new RegExp("^\\w\\s"                    ); /*                    _   C LOCAL_STORE */
-let regexp_SPACE   = new RegExp("\\s+"                  , "g"); /*                    _     LOCAL_STORE */
-let tokenize = function(text)
-{
-    return text
-        .   replace(regexp_NW   , " ")
-        .   replace(regexp_WORDS,  "")
-        .   replace(regexp_HEADS,  "")
-        .   trim(                    )
-        .   replace(regexp_SPACE, "_")
-    ;
-};
-/*}}}*/
-/*_ vbar_to_up_arrow {{{*/
-let regexp_VBAR = new RegExp("\\|", "g");
-let vbar_to_up_arrow = function(text)
-{
-    return text
-        .   replace(regexp_VBAR, SYMBOL_UP_ARROW)
-    ;
-};
-/*}}}*/
-/*_ escape_CR_LF {{{*/
-let escape_CR_LF = function(text)
-{
-    return text
-        .   replace(regexp_CR, SYMBOL_CR   )
-        .   replace(regexp_LF, SYMBOL_LF+"<br>"+LF)
-        .   trim()
-    ;
-};
-/*}}}*/
-/*_ trim_alNum_lines {{{ */
-let trim_alNum_lines = function(textContent)
-{
-    return trim_empty_lines(textContent, true);
-};
-/*}}}*/
-/*_ trim_empty_lines {{{ */
-let regexp_AN = new RegExp("[^a-z_ A-Z0-9]", "g");
-/*r regexp_nW = new RegExp("\\W"           , "g");*/
-let regexp_mS = new RegExp("\\s{2,}"       , "g");
-let trim_empty_lines = function(textContent, alnum_filter=false)
-{
-    let caller = "trim_empty_lines";
-    let text = "";
-    try {
-        if(textContent)
-        {
-            /* erase CR LF */
-            text = strip_CR_LF( textContent.trim() );
-
-            /* keep words only .. (erase non-word chars) */
-            if(alnum_filter)
-                text = text
-                    .  replace(regexp_AN, " ")
-                    /* replace(regexp_nW, " ")*/
-                    ;
-
-            /* collapse multiple space chars */
-            text = text
-                .  replace(regexp_mS, " ")
-                ;
-
-            if(text > 32)
-                text = ellipsis(text, 32);
-        }
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-    return text.trim();
-};
-/*}}}*/
-/*_ s_get_htmlEntities {{{ */
-let regexp_HTML_AMP   = new RegExp("&", "g");
-let regexp_HTML_LT    = new RegExp("<", "g");
-let regexp_HTML_GT    = new RegExp(">", "g");
-let regexp_HTML_QUOTE = new RegExp(DOUBLE_QUOTE, "g");
-let s_get_htmlEntities = function(str)
-{
-    return String(str)
-        .replace(regexp_HTML_AMP  , "&amp;")
-        .replace(regexp_HTML_LT   , "&lt;")
-        .replace(regexp_HTML_GT   , "&gt;")
-        .replace(regexp_HTML_QUOTE, "&quot;")
-    ;
-
-};
-/*}}}*/
-/*_ strip_html {{{*/
-let regexp_EM_O = new RegExp("<em[^>]*>"                , "g");
-let regexp_EM_C = new RegExp("</em[^>]*>"               , "g");
-let regexp_EOL  = new RegExp("<(ol|ul|/li|/div|br|pre)>", "g");
-let regexp_HTML = new RegExp("<[^>]*>"                  , "g");
-let regexp_ENTT = new RegExp("&\\w+;"                   , "g");
-/*
-let regexp_TRUE = new RegExp("=?\\[?true\\]?"           , "g");
-let regexp_FALSE= new RegExp("=?\\[?false\\]?"          , "g");
-*/
-let regexp_LF2  = new RegExp("\\n{2,}"                  , "g");
-
-let LOG_TRUE          = " TRUE_____";
-let LOG_FALSE         = " ____false";
-
-let strip_html = function(text)
-{
-    return text
-        .   replace(regexp_EM_O , "["         )
-        .   replace(regexp_EM_C , "] "        )
-        .   replace(regexp_EOL  , LF          )
-        .   replace(regexp_LF2  , LF          )
-        .   replace(regexp_HTML , ""          )
-        .   replace(regexp_ENTT , SYMBOL_EMPTY)
-/*
-        .   replace(regexp_TRUE , LOG_TRUE    )
-        .   replace(regexp_FALSE, LOG_FALSE   )
-*/
-        .trim()
-    ;
-};
-/*}}}*/
-/*_ bracket_to_em {{{*/
-let regexp_BRACKET_O = new RegExp("\\[", "g");
-let regexp_BRACKET_C = new RegExp("\\]", "g");
-let bracket_to_em = function(text)
-{
-    return text
-        .   replace(regexp_BRACKET_O,  "<em>")
-        .   replace(regexp_BRACKET_C, "</em>")
-    ;
-};
-/*}}}*/
-/*_ get_first_word {{{*/
-let regexp_FIRST_WORD = new RegExp("(\\w+)", "i");
-let get_first_word = function(text, caller)
-{
-/*
-    return strip_CR_LF( text.trim() )
-        .  replace(regexp_FIRST_WORD, "$1");
-    return text;
-*/
-    regexp_FIRST_WORD.lastIndex = 0;
-
-    let matches = regexp_FIRST_WORD.exec( text );
-
-    let  result = (matches) ? matches[0] : "";
-
-if(LOG_MAX.S1_RANGE) log("get_first_word(text=["+text+"], caller=["+caller+"]): "+ regexp_FIRST_WORD +" .. return ["+result+"]");
-    return result;
-};
-/*}}}*/
-/*_ get_tag_hour {{{*/
-let regexp_TAG_HOUR = new RegExp(":\\d(\\d)h", "i"); /* [9] .. (170602:19h11) */
-let get_tag_hour = function(text)
-{
-
-    regexp_TAG_HOUR.lastIndex = 0;
-
-    let matches = regexp_TAG_HOUR.exec( text );
-
-    let  result = (matches) ? matches[1] : "0";
-
-if(LOG_MAP.S1_RANGE) log("get_tag_hour("+ text +"): "+ regexp_TAG_HOUR +" .. return ["+result+"]");
-    return result;
-};
-/*}}}*/
-
-/*_ replace_character_entities {{{*/
-let regexp_eacute = new RegExp("\\xE9", "g"); var hex_eacute = String.fromCharCode(0xE9); /* E-ACUTE */
-let regexp_egrave = new RegExp("\\xE8", "g"); var hex_egrave = String.fromCharCode(0xE8); /* E-GRAVE */
-let replace_character_entities = function(text)
-{
-    return text
-        .   replace(regexp_eacute, hex_eacute)
-        .   replace(regexp_egrave, hex_egrave)
-    ;
-};
-/*}}}*/
-
-/*}}}*/
-
-/** LAYOUT */
-/*{{{*/
-/*_ getRealTop {{{ */
-let getRealTop = function(el)
-{
-    if(el.nodeType == Node.TEXT_NODE) el = el.parentElement;
-    let    y = el.offsetTop;
-/*
-logXXX("___"+get_n_lbl(el)+".offsetTop=["+el.offsetTop+"]")
-*/
-    while(el = el.offsetParent) {
-/*
-logXXX("____"+get_n_lbl(el)+".offsetTop=["+el.offsetTop+"]")
-*/
-        y   += el.offsetTop;
-    }
-    return y;
-};
-/*}}}*/
-/*_ getRealBot {{{ */
-let getRealBot = function(el)
-{
-    if(el.nodeType == Node.TEXT_NODE) el = el.parentElement;
-    return getRealTop(el) + el.offsetHeight;
-};
-/*}}}*/
-/*_ get_page_height {{{ */
-let get_page_height = function()
-{
-/*
-logXXX(    "ocument.body")
-logXXX(    document.body.scrollHeight)
-logXXX(    document.body.clientHeight)
-logXXX(    document.body.offsetHeight)
-logXXX(    "ocument.body.parentElement")
-logXXX(    document.body.parentElement.scrollHeight)
-logXXX(    document.body.parentElement.clientHeight)
-logXXX(    document.body.parentElement.offsetHeight)
-*/
-
-    return document.body.parentElement.scrollHeight; /* HTML */
-
-/*  return document.body.scrollHeight;    /* VIEWABLE+OVERFLOW +PADDING                    -border -scrollbar -margin */
-/*  return document.body.clientHeight; */ /* VIEWABLE          +PADDING                    -border -scrollbar -margin */
-/*  return document.body.offsetHeight; */ /* VIEWABLE          +PADDING +BORDER +SCROLLBAR                    -margin */
-/*
-    let body = document.body;
-    let html = document.documentElement;
-    return Math.max(
-          body.clientHeight
-        , body.offsetHeight
-        , body.scrollHeight
-        , html.clientHeight
-        , html.offsetHeight
-        , html.scrollHeight
-    );
-*/
-};
-/*}}}*/
-/*}}}*/
-
 /** TOOLS */
 /*{{{*/
-/*_ send_onchange_event_to {{{ */
-let send_onchange_event_to = function(el)
-{
-    let caller = "send_onchange_event_to("+el.id+")";
-    try {
-        if("createEvent" in document)
-        {
-            let evt = document.createEvent("HTMLEvents");
-            evt.initEvent("onchange", false, true);
-            el.dispatchEvent(evt);
-        }
-        else {
-            el.fireEvent("onchange");
-        }
-    }
-    catch(ex) { log(caller+": "+ex, "error"); }
-};
-/*}}}*/
-
 /*_ set_tools_filter {{{ */
 let set_tools_filter = function(text)
 {
     t_set_tool_id_value("tools_filter", text);
 };
 /*}}}*/
-
 /*_ sayHello {{{ */
 let sayHello = function()
 {
@@ -4119,287 +3707,3 @@ let sayHello = function()
 /*}}}*/
 /*}}}*/
 
-/** LOG */
-/*{{{*/
-let log_HTML    =  "";
-/*_ log_object {{{*/
-let log_object = function(o,lXX=lb0)
-{
-    if(!o) {
-        console.log("%c null objec ", lXX);
-        return "";
-    }
-    let tdata = "";
-    Object.keys(o).forEach(
-        function(key) {
-            console.log("%c"+key+"%c=%c"+o[key], lXX,lb0,lb8);
-            tdata    += "["+key+"]=["+o[key]+"]";
-        }
-    );
-    return tdata;
-};
-/*}}}*/
-/*_ log {{{ */
-let  log_is_full = false;
-let LOG_MAX = 50000;
-let CLEAR   = "DEFAULT_TO_CLEAR";
-let s_log = function(first_arg=CLEAR, ...args)
-{
-    /* [log_msg] {{{*/
-    let log_msg = !first_arg ? CLEAR : first_arg.trim();
-
-    /*}}}*/
-/*
-console.log("@@@")
-console.log("@@@ log_msg=["+log_msg+"]")
-for(let i=0; i<args.length; ++i) console.log("@@@ args["+i+"]=["+args[i]+"]");
-console.log("@@@")
-*/
-    /* [log_level] {{{*/
-    let log_level
-        =   log_is_full              ? "warn"
-        : (!log_HTML && args.length) ? args[0]
-/*
-        : (!log_HTML               ) ? "time"
-        : (!log_HTML               ) ? "groupCollapsed"
-        : (log_msg == CLEAR        ) ? "timeEnd"
-        : (log_msg == CLEAR        ) ? "groupEnd"
-*/
-        :                              "log"
-    ;
-
-    /*}}}*/
-/*
-console.log("@@@ log_level=["+log_level+"]")
-*/
-    /* console {{{*/
-    if(    (log_msg != CLEAR)
-        && ((typeof console) != "undefined")
-    ) {
-        if(arguments[0]) arguments[0] = strip_html(arguments[0]);
-/*
-console.log("@@@")
-console.log("@@@ arguments[0]=["+arguments[0]+"]")
-console.log("@@@")
-*/
-        switch(log_level) {
-            default              : console.log            .apply(console, Array.prototype.slice.call(arguments)); /*console.trace();*/ break;
-
-            case "error"         : console.error          .apply(console, Array.prototype.slice.call(arguments)); break;
-            case "warn"          : console.warn           .apply(console, Array.prototype.slice.call(arguments)); break;
-            case "info"          : console.info           .apply(console, Array.prototype.slice.call(arguments)); break;
-
-            case "time"          : console.time           .apply(console, "selection"                          ); break;
-            case "timeEnd"       : console.timeEnd        .apply(console, "selection"                          ); break;
-            case "groupEnd"      : console.groupEnd       .apply(console,                                      ); break;
-            case "group"         : console.group          .apply(console, Array.prototype.slice.call(arguments)); break;
-            case "groupCollapsed": console.groupCollapsed .apply(console, Array.prototype.slice.call(arguments)); break;
-
-        }
-    }
-    /*}}}*/
-    /* CLEAR [log_is_full] {{{*/
-    if(log_msg == CLEAR) {
-        if(log_is_full) {
-            if((typeof console) != "undefined") console.warn("log_is_full");
-            log_is_full = false;
-        }
-        log_HTML = "";
-    }
-    /*}}}*/
-    /* log_HTML ADD {{{*/
-    else {
-        log_HTML += LF+ strip_pat(log_msg,"%c\\log_msg*");
-    }
-    /*}}}*/
-    /* log_is_full {{{*/
-    if(log_HTML.length > LOG_MAX)
-    {
-        /* WARN ONCE .. (until next init)*/
-        if(!log_is_full ) {
-            log_is_full = true;
-            if((typeof console) != "undefined") console.error("log_is_full: ...LOG_MAX=["+LOG_MAX+"]");
-        }
-        return;
-    }
-    /*}}}*/
-/*
-:!start explorer "https://developers.google.com/web/tools/chrome-devtools/console/console-reference"
-*/
-};
-var log = s_log; /* (global reference) */
-/*}}}*/
-/*_ logXXX {{{*/
-let logXXX = function()
-{
-    arguments[0] = "XXX "+arguments[0];
-    console.log.apply(console, Array.prototype.slice.call(arguments));
-};
-/*}}}*/
-/*_ log_clear {{{*/
-let log_clear = function(caller)
-{
-    t_clear("log_clear(caller=["+_caller+"])");
-};
-/*}}}*/
-/*_ log set add clr {{{ */
-let log_set_TR_count = 0;
-
-let _log_add_TR1       = function(   msg="", ...args) { log_add_TR(log_tr1, msg, ...args); };
-let _log_add_TR2       = function(   msg="", ...args) { log_add_TR(log_tr2, msg, ...args); };
-let _log_set_TR1       = function(   msg="", ...args) { log_set_TR(log_tr1, msg, ...args); };
-let _log_set_TR2       = function(   msg="", ...args) { log_set_TR(log_tr2, msg, ...args); };
-
-let log_clr_TR1        = function(_caller) { /*logXXX("log_clr_TR1 .. CALLED BY "+_caller);*/ _log_set_TR1(""); };
-let log_clr_TR2        = function(_caller) { /*logXXX("log_clr_TR2 .. CALLED BY "+_caller);*/ _log_set_TR2(""); };
-
-let log_add_TR_EVENT   = _log_add_TR1;
-let log_add_TR_SELECT  = _log_add_TR1;
-let log_set_TR_EVENT   = _log_set_TR1;
-let log_set_TR_LAYOUT  = _log_set_TR1;
-let log_set_TR_SELECT  = _log_set_TR1;
-
-let log_add_TR_LAYOUT  = _log_add_TR2;
-let log_add_TR_STORAGE = _log_add_TR2;
-
-/*}}}*/
-/*_ log_set_TR_RESULT {{{ */
-let log_set_TR_RESULT = function(html=log_HTML)
-{
-    if(!html.trim()) return;
-
-    _log_set_TR2("<hr><table>"
-            +   " <tr><td><pre id='html'>"+ html +"</pre></td></tr>"
-            +   "</table>"
-    );
-
-    t_sync_layout("log_set_TR_RESULT");
-
-    log_HTML = ""; /* NOTE: log() should be called first to clear results to be reported here */
-};
-/*}}}*/
-/*_ log_set_TR {{{*/
-let log_set_TR  = function(tr,msg="", ...args) {
-    if(tr) {
-        /* removeChild {{{*/
-        for(let            i = (tr.childNodes.length-1); i > 0; --i)
-        {
-            if(                !tr.childNodes[i].classList.contains("push_pin") ) {
-                tr.removeChild( tr.childNodes[i] );
-                i =             tr.childNodes.length;
-            }
-
-        }
-        /*}}}*/
-        /* transcript decoration and step-stamp {{{*/
-        tr.innerHTML = "";
-        t_add_push_pin_to_panel(tr);
-        t_add_clearpin_to_panel(tr);
-        tr.innerHTML += ""
-            + "<em class='em_log'>"
-            + "<span class='cc"+(++log_set_TR_count % SELECT_SLOT_MAX)+"'>"
-            +  log_set_TR_count
-            + "</span>"
-            + "</em>"
-        ;
-        /*}}}*/
-    }
-
-    if(msg) { del_el_class(tr, "empty"); log_add_TR(tr, msg, args); }
-    else    { add_el_class(tr, "empty");                            }
-
-    log();
-};
-/*}}}*/
-/*_ log_add_TR {{{*/
-let log_add_TR  = function(tr,msg="", ...args)
-{
-/*{{{
-if(msg) console.log("%c"+strip_html(msg), String(args[0]));
-}}}*/
-    if(!tr) return;
-    if(msg) del_el_class(tr, "empty");
-    if(!tr.innerHTML) log_set_TR(tr,"");
-
-    if(msg.trim() == "") msg = "empty msg";
-
-    let s = "<table>";
-
-    /* mStartRange {{{*/
-    mStartRange_str = (mStartRange) ? rangeToString(mStartRange, "mStartRange") : "";
-    if(mStartRange) s += ""
-        +" <tr><th                       >        mStartRange             </th></tr>"
-        +" <tr><td                       ><pre>"+ mStartRange_str +"</pre></td></tr>"
-    ;
-
-    /*}}}*/
-    /* mEndRange {{{*/
-    mEndRange_str   = (mEndRange  ) ? rangeToString(mEndRange  , "mEndRange"  ) : "";
-    if(mEndRange) s += ""
-        +" <tr><th                       >        mEndRange               </th></tr>"
-        +" <tr><td                       ><pre>"+ mEndRange_str   +"</pre></td></tr>"
-    ;
-
-    /*}}}*/
-
-    if(msg) s += ""
-        +" <tr><td class='transcript_msg'>"+                    msg    +"</td></tr>"
-        +"</table>"
-    ;
-
-    s += "<table>";
-
-    tr.insertAdjacentHTML("beforeend", s);
-
-/* send_onchange_event_to( tr ); */
-};
-/*}}}*/
-/*_ log_layout_TR {{{*/
-let log_layout_TR = function(tr)
-{
-    let x_min =         BOX_MARGIN - tr.offsetWidth ; if(tr.offsetLeft < x_min) tr.style.left = x_min+"px";
-    let x_max = window.innerWidth  - BOX_MARGIN     ; if(tr.offsetLeft > x_max) tr.style.left = x_max+"px";
-
-    let y_min =         BOX_MARGIN - tr.offsetHeight; if(tr.offsetTop < y_min) tr.style.top   = y_min+"px";
-    let y_max = window.innerHeight - BOX_MARGIN     ; if(tr.offsetTop > y_max) tr.style.top   = y_max+"px";
-};
-/*}}}*/
-/*_ log_sep_top log_sep_bot  {{{*/
-
-const STYLE_TOP = "font-weight:900; border:0px #000 solid; border-radius:2em 2em .1em .1em; padding:  0 1em 1em 2em; overflow:visible;";
-const STYLE_BOT = "color:#0FF8;     border:0px #000 solid; border-radius:.1em .1em 2em 2em; padding:1em 1em 0em 2em; overflow:visible;";
-
-const STYLE_BG_TOP=[];
-      STYLE_BG_TOP [1] = " background:linear-gradient(to bottom, #964B0080 0%, #2222 100%);";
-      STYLE_BG_TOP [2] = " background:linear-gradient(to bottom, #FF000080 0%, #2222 100%);";
-      STYLE_BG_TOP [3] = " background:linear-gradient(to bottom, #FFA50080 0%, #2222 100%);";
-      STYLE_BG_TOP [4] = " background:linear-gradient(to bottom, #FFFF0080 0%, #2222 100%);";
-      STYLE_BG_TOP [5] = " background:linear-gradient(to bottom, #9ACD3280 0%, #2222 100%);";
-      STYLE_BG_TOP [6] = " background:linear-gradient(to bottom, #6495ED80 0%, #2222 100%);";
-      STYLE_BG_TOP [7] = " background:linear-gradient(to bottom, #EE82EE80 0%, #2222 100%);";
-      STYLE_BG_TOP [8] = " background:linear-gradient(to bottom, #A0A0A080 0%, #2222 100%);";
-      STYLE_BG_TOP [9] = " background:linear-gradient(to bottom, #FFFFFF80 0%, #2222 100%);";
-      STYLE_BG_TOP [0] = " background:linear-gradient(to bottom, #00000080 0%, #2222 100%);";
-
-const STYLE_BG_BOT=[];
-      STYLE_BG_BOT [1] = " background:linear-gradient(to    top, #964B0080 0%, #2222 100%);";
-      STYLE_BG_BOT [2] = " background:linear-gradient(to    top, #FF000080 0%, #2222 100%);";
-      STYLE_BG_BOT [3] = " background:linear-gradient(to    top, #FFA50080 0%, #2222 100%);";
-      STYLE_BG_BOT [4] = " background:linear-gradient(to    top, #FFFF0080 0%, #2222 100%);";
-      STYLE_BG_BOT [5] = " background:linear-gradient(to    top, #9ACD3280 0%, #2222 100%);";
-      STYLE_BG_BOT [6] = " background:linear-gradient(to    top, #6495ED80 0%, #2222 100%);";
-      STYLE_BG_BOT [7] = " background:linear-gradient(to    top, #EE82EE80 0%, #2222 100%);";
-      STYLE_BG_BOT [8] = " background:linear-gradient(to    top, #A0A0A080 0%, #2222 100%);";
-      STYLE_BG_BOT [9] = " background:linear-gradient(to    top, #FFFFFF80 0%, #2222 100%);";
-      STYLE_BG_BOT [0] = " background:linear-gradient(to    top, #00000080 0%, #2222 100%);";
-
-let log_sep_num=1;
-
-let log_sep_top = function(arg_line="") { console.log("%c "+strip_html(arg_line), STYLE_TOP + STYLE_BG_TOP[log_sep_num]); };
-let log_sep_bot = function(arg_line="") { console.log("%c "+strip_html(arg_line), STYLE_BOT + STYLE_BG_BOT[log_sep_num]); log_sep_num = (log_sep_num+1) % 10; };
-
-/* USAGE: if(LOG_MAP.XXX) log_sep_top("TOP_log_line"); */
-/* USAGE: if(LOG_MAP.XXX) log_sep_bot("BOT_log_line"); */
-
-/*}}}*/
-/*}}}*/

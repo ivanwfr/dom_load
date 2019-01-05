@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html     id='html'>
+
+ <head    id='head'>
+  <title  id='title'>playdom</title>
+
+<!-- style {{{-->
+  <style>
+    div {         background : rgba(192, 192, 255, 0.8);                                                  }
+    div {         box-shadow : rgba(192, 192, 255, 0.5) 0 0 0 18px, rgba(0, 0, 255, 0.3) 0 3px 3px inset; }
+    div {    -moz-box-shadow : rgba(192, 192, 255, 0.5) 0 0 0 18px, rgba(0, 0, 255, 0.3) 0 3px 3px inset; }
+    div { -webkit-box-shadow : rgba(192, 192, 255, 0.5) 0 0 0 18px, rgba(0, 0, 255, 0.3) 0 3px 3px inset; }
+    div { border        : 0px;          }
+    div { border-radius : 2em;          }
+    div { display       : inline-block; }
+    div { margin        : 3ex;          }
+    div { padding       : 1ex;          }
+  </style>
+<!--}}}-->
+
+ </head>
+
+ <body id='body' style='min-height:200em;'>
+  <h1  id='h1'>playdom (170418:16h)</h1>
+  <div>
+  <!-- LOCAL                  javascript/dom_load.js {{{ -->
+  <input  value    = 'LOCAL file:'
+          type     = 'button'
+          style    = 'background-color:#FFA; font-size:150%; font-weight:bold;'
+          onclick  = '
+          var el   = document.createElement("script");
+          el.src   = "javascript/dom_load.js";
+          document.getElementsByTagName("head")[0].appendChild(el);
+          '
+          />
+
+  <!-- }}} -->
+  <!-- LOCAL                  javascript/dom_load_data.js {{{ -->
+  <input  value    = 'LOCAL data:'
+          type     = 'button'
+          style    = 'background-color:#AAF; font-size:150%; font-weight:bold;'
+          onclick  = '
+          var el   = document.createElement("script");
+          el.src   = "javascript/dom_load_data.js";
+          document.getElementsByTagName("head")[0].appendChild(el);
+          '
+          />
+
+  <!-- }}} -->
+  <!-- https://remotetabs.com/javascript/dom_load_http.js {{{ -->
+  <input  value    = 'ONLINE https:'
+          type     = 'button'
+          style    = 'background-color:#FFF; font-size:150%; font-weight:bold;'
+          onclick  = '
+          var el   = document.createElement("script");
+          el.src   = "https://remotetabs.com/javascript/dom_load_http.js";
+          document.getElementsByTagName("head")[0].appendChild(el);
+          '
+          />
+
+  <!-- }}} -->
+  <!-- https://remotetabs.com/javascript/dom_load_data.js {{{ -->
+  <input  value    = 'ONLINE data:'
+          type     = 'button'
+          style    = 'background-color:#CCF;'
+          onclick  = '
+          var el   = document.createElement("script");
+          el.src   = "https://remotetabs.com/javascript/dom_load_data.js";
+          document.getElementsByTagName("head")[0].appendChild(el);
+          '
+          />
+
+  <!-- }}} -->
+  </div>
+  <div>
+  <!-- dom_wording {{{ -->
+  <h2 style='display:inline-block;'> dom_wording </h2>
+  &emsp;
+  <input  value    = 'LOAD dom_wording_js'
+          type     = 'button'
+          style    = 'background-color:#000 !important; color:#FFF !important; font-weight:bold;'
+          onclick  = '
+          var el   = document.getElementById("dom_wording_js");
+          if (el) {  dom_wording_cycle("CYCLE"); return true; }
+          el       = document.createElement("script");
+          el.src   = "javascript/dom_wording.js";
+          document.getElementsByTagName("head")[0].appendChild(el);
+          '
+          />
+
+  <input  value    = 'CYCLE'
+          type     = 'button'
+          style    = 'background-color:#FFF !important; color:#000 !important;'
+          onclick  = 'try{ dom_wording_cycle(this.value); } catch(e){ alert("dom_wording_cycle script not loaded yet"); }'
+          />
+
+  <input  value    = 'LIGHT'
+          type     = 'button'
+          style    = 'background-color:#FEA !important; color:#666 !important;'
+          onclick  = 'try{ dom_wording_cycle(this.value); } catch(e){ alert("dom_wording_cycle script not loaded yet"); }'
+          />
+
+  <input  value    = 'DARK'
+          type     = 'button'
+          style    = 'background-color:#121 !important; color:#888 !important;'
+          onclick  = 'try{ dom_wording_cycle(this.value); } catch(e){ alert("dom_wording_cycle script not loaded yet"); }'
+          />
+
+  <input  value    = 'OFF'
+          type     = 'button'
+          style    = 'background-color:#000 !important; color:#FFF !important;'
+          onclick  = 'try{ dom_wording_cycle(this.value); } catch(e){ alert("dom_wording_cycle script not loaded yet"); }'
+          />
+
+  <!-- }}} -->
+  </div>
+  <div>
+  <!-- function calls {{{ -->
+  <h2 style='display:inline-block;'> function calls </h2>
+  &emsp;
+  <input  id='console.clear'    value='console.clear'    type='button' onClick='   console.clear(this.id);'/>
+  <input  id='t_init'           value='t_init'           type='button' onClick='          t_init();'       />
+  <input  id       = 'call_alert'
+          type     = 'button'
+          value    = 'javascript: (function(){alert("XXX");})();'
+          onclick  = 'javascript: (function(){alert("XXX");})();'
+          />
+
+<!--
+          onclick  = 'return (function() { alert( "XXX"); })()'
+          onclick  = 'return (function() { alert( "XXX"); })()'
+  String eval_cmd  = 'return (function() { return "+ expression +"; })()';
+-->
+  <!-- }}} -->
+  </div>
+  <div style='display:block;'>
+  <!-- MWebJS {{{ -->
+  <h2 style='display:inline-block;'> MWebJS </h2>
+  &emsp;
+
+  <!-- script: showToast trace {{{ -->
+  <script type='text/javascript'>
+   function showToast(msg) {
+    if(typeof MWebJS === 'undefined') trace('MWebJS.showToast(<em>'+msg+'</em>)');
+    else                                     MWebJS.showToast(  msg  )  ;
+   }
+
+   function trace(msg) {
+    var el = document.getElementById('traces');
+    if( el ) el.innerHTML = msg;
+    else     alert(msg);
+   }
+  </script>
+
+  <!-- }}} -->
+
+  <input
+  value    = 'Say hello'
+  type     = 'button'
+  onClick  = 'showToast("Hello MWebJS!")'
+  />
+
+  <input
+  value    = 'showToast( window.getSelection().toString() );'
+  type     = 'button'
+  onClick  = 'showToast( window.getSelection().toString() );'
+  />
+  <!-- style {{{ -->
+  <style>
+
+   #traces    { padding:1ex; }
+   #traces    { border:3px dashed #FD8; }
+   #traces    { -webkit-border-radius:8px; }
+   #traces    { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset; }
+   #traces em { -webkit-border-radius:5px; }
+   #traces em { background-color:#ffff10; }
+   #traces em { border:1px solid #aaa; }
+   #traces em { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset; }
+   #traces em { color: #000 !important; }
+   #traces em { font-style:bold; }
+   #traces em { margin: 5pt; }
+   #traces em { padding:1ex; }
+   #traces em { white-space:nowrap; }
+
+  </style>
+  <!-- }}} -->
+
+  <blockquote id='traces' style='padding:1ex; border:3px dashed #FD8; -webkit-border-radius:5px; box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset;'>traces</blockquote>
+
+  <!-- }}} -->
+  </div>
+  <div>
+<!-- LINKS {{{ -->
+  <div>
+   <img src='https://developer.cdn.mozilla.net/static/img/favicon32.e02854fdcf73.png'></img>
+  </div>
+
+   <ul>
+   <li><a href='https://developer.mozilla.org/en-US/docs/Web/API/Range'                 target='_blank'>Range</a></li>
+   <li><a href='https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model' target='_blank'>DOM interfaces</a></li>
+   <li><a href='http://unixpapa.com/js/dyna.html'                                       target='_blank'>Dynamic Script Loading</a></li>
+   <li><a href='https://www.html5rocks.com/en/tutorials/speed/script-loading/'          target='_blank'>Deep script loading </a></li>
+   <li><a href='javascript/dom_tools.js'><span style='font-size:300%;'>dom_tools.js</span></a></li>
+   </ul>
+<!-- }}} -->
+  </div>
+ </body>
+</html>
+

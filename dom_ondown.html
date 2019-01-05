@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>dom_ondown</title>
+  <!-- META {{{ -->
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html; charset=latin1">
+  <meta                         http-equiv="Cache-control" content="no-cache">
+  <meta                         http-equiv="pragma"        content="no-cache">
+  <!-- }}} -->
+  <!-- [link] CSS {{{-->
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"  rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
+  <!--}}}-->
+ </head>
+ <body onload='set_title();'>
+  <!-- H1 {{{-->
+  <h1 style="clear:right; margin:1em; user-select:none;" title="onclick .. reload" onclick='document.location.reload();'>...</h1>
+  <!--}}}-->
+<!-- BUTTONS {{{-->
+  <div style="user-select:none;">
+
+   <b onclick="l_get_onWork_EL(        event)"        >click      </b> <br>checks get_onDown_SEEK<br><br>
+   <b onclick="l_call_set_onDown_seekX(     )"        >shift-click</b> <br>checks set_onDown_seek<br><br>
+   <b onclick="console.clear();" title="clear console">&#x2699;</b> <i>results in console log</i><br><br>
+
+  </div>
+<!--}}}-->
+  <!-- HTML {{{-->
+  <div style="display:grid; grid-template-columns : 1fr 1fr;">
+   <p style="margin:0; font-size:200px; background-color:#F002; border-radius:5%; text-align:center;">1
+   <p style="margin:0; font-size:200px; background-color:#0F02; border-radius:5%; text-align:center;">2
+  </div>
+  <!--}}}-->
+ <!-- SCRIPT set_title load_html {{{ -->
+ <script>
+  DOM_LOAD_ID       = "dom_ondown"; DOM_LOAD_TAG  = DOM_LOAD_ID+" (181231:01h)";
+  DOM_LOAD_PANELS   = "";
+  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
+  }
+  /*}}}*/
+  /*  load_html {{{*/
+  let load_html = function(id, html) {
+   if( document.getElementById(id) ) return;
+   let el       = document.createElement("DIV");
+   el.id        = id;
+   el.title     = id;
+   el.innerHTML = unescape(html);
+   document.body.appendChild(el);
+console.log("load_html("+id+") ...done")//FIXME
+  };
+  /*}}}*/
+ </script>
+ <!--}}}-->
+
+  <!-- SCRIPT UNDER TEST [dom_ondown_js] {{{-->
+  <script id="dom_ondown_js" src="javascript/dom_ondown.js" defer></script>
+  <script id="dom_log_js"     src="javascript/dom_log.js"     XXXdefer></script>
+  <script id="dom_util_js"    src="javascript/dom_util.js"    XXXdefer></script>
+ <!--}}}-->
+ <!-- SCRIPT DOWN MOVE UP {{{ -->
+ <script>
+/* DOWN  {{{*/
+/* RESOURCES {{{*/
+
+/* DATA SEEKER */ let onWork_EL;
+/* DATA SEEKER */ let onDown_EL;
+/* DATA SEEKER */ let onWork_SEEK_TOOL;
+/* DATA SEEKER */ let seeker_CU;
+/* DATA SEEKER */ let seeker_PU;
+/* DATA TARGET */ let target_tool;
+
+/* USE  SEEKER */ let t_seeker_PU_is_active     = function()                    { return false; };
+/* USE  SLOT   */ let t_get_EL_slot             = function()                    { return    -1; };
+/* USE  SLOT   */ let get_ccs_slot              = function(slot)                { return  true; };
+
+/* OUT         */ let prop_set                  = function(id, value, onchange) {};
+/* OUT         */ let t_change_onWork_SEEK_TOOL = function(seek_tool          ) {};
+/* OUT         */ let t_set_onDown_SEEK_label   = function(seek_label=""      ) {};
+
+/*}}}*/
+/*_ l_get_onWork_EL {{{*/
+let l_get_onWork_EL = function(e)
+{
+ console.log("l_get_onWork_EL");
+
+ console.log("CALLING get_onDown_SEEK(e)");
+ console.dir(e);
+ onWork_EL        = e.target;
+ onDown_EL        = e.target;
+ onWork_SEEK_TOOL = e.target;
+ get_onDown_SEEK(e);
+}
+/*}}}*/
+/* RESOURCES {{{*/
+
+/* DATA TOOL   */ const CSS_PRESSED               = "pressed";
+/* DATA TOOL   */ let hotspot;
+/* DATA TOOL   */ let onWork_PANEL;
+/* DATA SEEKER */ let seekzone;
+
+/* OUT         */ let set_seek_grab_done          = function(state) {};
+/* OUT         */ let t_seek_slot_num_SELECT_EL   = function(el   ) {};
+/* OUT         */ let t_target_tool_sync_pastable = function(     ) {};
+
+/*}}}*/
+/*_ l_call_set_onDown_seekX {{{*/
+let l_call_set_onDown_seekX = function()
+{
+ console.log("l_call_set_onDown_seekX");
+
+ /*........................... */ let lfx; log_this = true;
+ lfx = lf9; set_onDown_seek0_onTOOL  (lfx, log_this);
+ lfx = lf1; set_onDown_seek1_onSlotEL(lfx, log_this);
+ lfx = lf3; set_onDown_seek3_onJumpEL(lfx, log_this);
+ lfx = lf5; set_onDown_seek5_onTarget(lfx, log_this);
+ lfx = lf4; set_onDown_seek4_onSeeker(lfx, log_this);
+ lfx = lf2; set_onDown_seek2_onResume(lfx, log_this);
+ lfx = lf8; set_onDown_seek0_onDOC   (lfx, log_this);
+};
+/*}}}*/
+/*}}}*/
+/* MOVE {{{*/
+
+/*}}}*/
+/* UP {{{*/
+
+
+
+/*}}}*/
+ </script>
+ <!--}}}-->
+ <!-- SCRIPT LISTENERS {{{-->
+ <script>
+
+/*_ DOWN {{{*/
+/*_ l_pointerdown_listener {{{*/
+let l_pointerdown_listener = function(e)
+{
+let caller = e.shiftKey ? "SHIFT DOWN" : "DOWN";
+logBIG(caller, lf3);
+
+                l_get_onWork_EL(e);
+ if(e.shiftKey) l_call_set_onDown_seekX( );
+};
+/*}}}*/
+/*}}}*/
+/*_ MOVE {{{*/
+
+/*}}}*/
+/*_ UP {{{*/
+/*_ l_pointerup_listener {{{*/
+let l_pointerup_listener  = function(e)
+{
+let caller = "l_pointerup_listener";
+console.log(caller);
+console.dir(e);
+
+
+
+};
+/*}}}*/
+/*}}}*/
+ </script>
+ <!--}}}-->
+<!-- ADD LISTENERS {{{-->
+ <script>
+let l_add_listener_capture_active = function(el, ev, fn) { el.addEventListener(ev, fn, {capture:true, passive:false}); };
+let l_add_LISTENERS = function()
+{
+    if( ("ontouchstart" in document.documentElement) ) {
+        l_add_listener_capture_active(   window, "touchstart"       , l_pointerdown_listener);
+        l_add_listener_capture_active(   window, "touchend"         , l_pointerup_listener);
+    }
+    else {
+        l_add_listener_capture_active(   window, "mousedown"        , l_pointerdown_listener);
+        l_add_listener_capture_active(   window, "mouseup"          , l_pointerup_listener);
+    }
+};
+console.log(DOM_LOAD_ID+" LOADING DONE" );
+console.log("ADDING LISTENERS");
+l_add_LISTENERS();
+ </script>
+ <!--}}}-->
+ </body>
+<!-- check_load_html_results {{{ -->
+ <script>
+  function check_load_html_results()
+  {
+   console.log(DOM_LOAD_TAG);
+   let id;                                   let missing_ids  = "";
+ //if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ;
+ //if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ;
+ //if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ;
+ //if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ;
+ //if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ;
+ //if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ;
+ //if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ;
+ //if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ;
+ //if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ;
+   if(typeof DOM_ONDOWN_JS_ID   === 'undefined') missing_ids += "\n DOM_ONDOWN_JS_ID"    ;
+ //id =     "dom_tools_html_tag" ;               missing_ids +=     check_missing_id(id) ;
+ //id =     "dom_grid_html_tag"  ;               missing_ids +=     check_missing_id(id) ;
+
+   if(missing_ids) {
+    let lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+    let lf2 = "color:#FF0000;";
+    console.log("%c MISSING IDs:%c"+missing_ids, lbb+lf2, lf2);
+    alert(         "MISSING IDs:\n"+missing_ids);
+   }
+  }
+
+  function check_missing_id(id)
+  {
+   let el = shadow_root.querySelector("#"+id);
+   if(!el ) return "\n#"+id;
+   console.log(SYMBOL_CHECK_MARK+" "+el.textContent);
+   return "";
+  }
+
+  setTimeout(check_load_html_results, 500);
+ </script>
+<!--}}}-->
+</html>
+<!--
+ vim: sw=4
+-->
+

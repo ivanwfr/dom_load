@@ -1,7 +1,20 @@
 <!DOCTYPE html>
-<span id = "dom_grid_html_tag"  style="display:none">dom_grid_html (180601:17h)</span>
-<div id="dom_grid_playground" title="dom_grid_playground" class="collapsed display_delayed">
- <div  id="headsup_l_div"> <!-- headsup_l_div {{{-->
+<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (181129:16h)</span>
+<div  id="dom_grid_playground" class="display_delayed collapsed" title="dom_grid_playground">
+ <div id="dom_grid_headsup"> <!-- {{{-->
+
+  <em id="dom_grid_close_em"
+   style="
+    float            : right;
+    font-size        : 200%;
+    margin-right     : .5em;
+    background-color : transparent;
+    border-color     : transparent;
+    cursor           : pointer;
+    user-select      : none;
+    ">
+    &#x2715;
+  </em>
 
   <div onclick='t_grid_SIZE_TOGGLE(event);'>
    <b id="headsup_l_size">headsup_l_size</b>
@@ -13,24 +26,25 @@
   </div>
 
   <div id="headsup_l_check"  class="cc0"
-                             title="logging_grid toggle"
+                             title="LOG_MAP.T2_GRID toggle"
                              onclick='t_grid_logging_toggle();'
                              >...</div>
   <br>
-  <div>activated by dom_tools.t_sync_logging_grid</div>
 
+  <div>(activated by t5_load_grid)</div>
  </div><!--}}}-->
  <!-- traces {{{-->
  <div  id="traces_div" class="eso_div">
   <ul>
-   <li><em class='cc4 toolbag_button' onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
-   <li><em class='cc5 toolbag_button' onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
-   <li><em class='cc8 toolbag_button' onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
+   <li><em class="cc4 toolbag_button" onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
+   <li><em class="cc5 toolbag_button" onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
+   <li><em class="cc8 toolbag_button" onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
   </ul>
-  <blockquote id='traces'>
+  <blockquote id="traces">
    traces
   </blockquote>
 
  </div>
  <!--}}}-->
 </div>
+

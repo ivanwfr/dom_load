@@ -1,0 +1,213 @@
+<html>
+ <head>
+<style>
+
+body { background-image : url("images/grid20.png"); }
+
+.grid_container {
+    display               : grid;
+    grid-template-columns : 1fr 1fr 1fr;
+    width                 : 100%;
+}
+.grid_container >div {
+    border-radius    : 10px;
+    background-color : rgba(255,255,221,0.9);
+    padding          : 1em;
+}
+.grid_container >div:nth-child(3n+1) { box-shadow    : 0 0  5px #000 !important; transform : scale(0.9) rotate3d(0,0,1,-1deg) translate(0,  0px); }
+.grid_container >div:nth-child(3n+2) { box-shadow    : 0 0 10px #000 !important; transform : scale(0.9) rotate3d(0,0,1, 0deg) translate(0,-10px); }
+.grid_container >div:nth-child(3n+3) { box-shadow    : 0 0 15px #000 !important; transform : scale(0.9) rotate3d(0,0,1, 1deg) translate(0,  0px); }
+
+LI   { padding-left :   3em; }
+DIV  { float        :  left; }
+
+.big { color        :   red; }
+.big { font-size    :  120%; }
+.big { font-weight  :   900; }
+
+EM {
+    padding           : .1em .5em .1em .5em;
+    background-color  : #fafafa;
+    border            : 0px solid #aaa;
+    border-radius     : 5px;
+    color             : #444;
+    font-style        : normal;
+}
+/* COLOR CODED {{{ */
+.cc1 , .select1 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc2 , .select2 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc3 , .select3 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc4 , .select4 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc5 , .select5 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc6 , .select6 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc7 , .select7 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc8 , .select8 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc9 , .select9 { box-shadow: rgba(0, 0, 0, 0.3) 0 0.3em 0.3em inset !important; }
+.cc0 , .select0 { box-shadow: #FFF               0 0.1em 0.1em inset; }
+
+/* ECC #964B00 #FF0000 #FFA500 #FFFF00 #9ACD32 #6495ED #EE82EE #A0A0A0 #FFFFFF #CFB53B #C0C0C0 */
+/*      111111  222222  333333  444444  555555  666666  777777  888888  999999  000000  111111 */
+.cc1 , .select1 , .select1 em { color: #FFF !important; background-color:#964B00 !important; }
+.cc2 , .select2 , .select2 em { color: #FFF !important; background-color:#FF0000 !important; }
+.cc3 , .select3 , .select3 em { color: #000 !important; background-color:#FFA500 !important; }
+.cc4 , .select4 , .select4 em { color: #000 !important; background-color:#FFFF00 !important; }
+.cc5 , .select5 , .select5 em { color: #000 !important; background-color:#9ACD32 !important; }
+.cc6 , .select6 , .select6 em { color: #000 !important; background-color:#6495ED !important; }
+.cc7 , .select7 , .select7 em { color: #000 !important; background-color:#EE82EE !important; }
+.cc8 , .select8 , .select8 em { color: #000 !important; background-color:#A0A0A0 !important; }
+.cc9 , .select9 , .select9 em { color: #000 !important; background-color:#FFFFFF !important; }
+.cc0 , .select0 , .select0 em { color: #000 !important; background-color:#888    !important; }
+
+.select_words_exact     { border:0px red         !important; border-radius:.5ex;                            }
+.select_words_segment   { border:0px transparent !important; border-radius: 0  ;                            }
+.select_words_segment   { border:0px             !important;       outline: 3px rgba(128,128,128,.5) solid; }
+.select_words_head_tail { border:0px             !important; border-radius: 1ex;                            }
+
+/* }}} */
+
+/* sourceURL=index.css */
+</style>
+
+ </head>
+ <body>
+<h1>RTabs_Profiles/DEV (190105 18:30)</h1>
+  <div class='grid_container'>
+<!-- EMBEDED {{{-->
+<div>
+ <h2>C:/LOCAL</h2>
+ <ol>
+  <li><a                                        href="playground.html" class="big"><em class="cc1">1 playground </em></a></li>
+  <li><a                                        href="dom_target.html" class="big"><em class="cc2">2 dom_target </em></a></li>
+  <li><a                                        href="dom_find.html"   class="big"><em class="cc2">2 dom_find   </em></a></li>
+  <li><a                                        href="dom_hide.html"   class="big"><em class="cc3">3 dom_hide   </em></a></li>
+  <li><a                                        href="dom_prop.html"   class="big"><em class="cc4">4 dom_prop   </em></a></li>
+  <li><a                                        href="dom_ondown.html" class="big"><em class="cc5">5 dom_ondown </em></a></li>
+  <li><a target="4_file_making_lip_of_it"       href="file:///C:/LOCAL/DATA/ANDROID/PROJECTS/LOCAL/making_lip_of_it/making_lip_of_it.html"         class="big"><em class="cc6">6</em> making-lip-of-it            </a></li>
+  <li><a target="5_jslint_help"                 href="file:///C:/LOCAL/DATA/ANDROID/PROJECTS/LOCAL/crockford_com/JSLint_Help.html"                 class="big"><em class="cc7">7</em> JSLint Help                 </a></li>
+  <li><a target="6_The_JavaScript_Encyclopedia" href="file:///C:/LOCAL/DATA/ANDROID/PROJECTS/LOCAL/crockford_com/The_JavaScript_Encyclopedia.html" class="big"><em class="cc8">8</em> The JavaScript Encyclopedia </a></li>
+  <li><a target="7_GitHub_Guide_Flow"           href="file:///C:/LOCAL/DATA/ANDROID/PROJECTS/LOCAL/GitHub_Guide_Flow/GitHub_Guide_Flow.html"       class="big"><em class="cc9">9</em> GitHub_Guide_Flow           </a></li>
+ </ol>
+</div>
+<!--}}}-->
+<!-- ONLINE{{{-->
+<div>
+ <h2>ONLINE .. (https)</h2>
+ <ol>
+  <li><a target="1_playground"                  href="https://remotetabs.com/dev/rtabs/playground.html"         class="big"><em class="cc1">1</em> playground                  </a></li>
+  <li><a target="2_dom_target"                  href="https://remotetabs.com/dev/rtabs/dom_target.html"         class="big"><em class="cc2">2</em> dom_target                  </a></li>
+  <li><a target="2_dom_find"                    href="https://remotetabs.com/dev/rtabs/dom_find.html"           class="big"><em class="cc2">2</em> dom_find                    </a></li>
+  <li><a target="3_dom_hide"                    href="https://remotetabs.com/dev/rtabs/dom_hide.html"           class="big"><em class="cc3">3</em> dom_hide                    </a></li>
+  <li><a target="4_dom_prop"                    href="https://remotetabs.com/dev/rtabs/dom_prop.html"           class="big"><em class="cc4">4</em> dom_prop                    </a></li>
+  <li><a target="5_dom_ondown"                  href="https://remotetabs.com/dev/rtabs/dom_ondown.html"         class="big"><em class="cc5">5</em> dom_ondown                  </a></li>
+  <li><a target="6_making_lip_of_it"            href="https://qilong.wordpress.com/2011/09/18/making-lip-of-it" class="big"><em class="cc6">6</em>making-lip-of-it             </a></li>
+  <li><a target="7_jslint_help"                 href="https://www.jslint.com/help.html"                         class="big"><em class="cc7">7</em>JSLint Help                  </a></li>
+  <li><a target="8_The_JavaScript_Encyclopedia" href="https://crockford.com/javascript/encyclopedia/"           class="big"><em class="cc8">8</em>The JavaScript Encyclopedia  </a></li>
+  <li><a target="9_GitHub_Guide_Flow"           href="https://guides.github.com/introduction/flow/"             class="big"><em class="cc9">9</em>GitHub_Guide_Flow            </a></li>
+ </ol>
+</div>
+<!--}}}-->
+<!-- RTabsExtension {{{-->
+<div>
+ <h2>ftp .. (nas1)</h2>
+ <ol>
+  <li><a target="nas1"      href="ftp://nas1/Volume_1/HOT/DEV_ANDROID/PROJECTS/RTabsExtension"                          >RTabsExtension</a></li>
+  <li><a target="backgound" href="ftp://nas1/Volume_1/HOT/DEV_ANDROID/PROJECTS/RTabsExtension/javascript/background.js" >backgound.js  </a></li>
+  <li><a target="options"   href="ftp://nas1/Volume_1/HOT/DEV_ANDROID/PROJECTS/RTabsExtension/javascript/options.js"    >options.js    </a></li>
+  <li><a target="popup"     href="ftp://nas1/Volume_1/HOT/DEV_ANDROID/PROJECTS/RTabsExtension/javascript/popup.js"      >popup.js      </a></li>
+ </ol>
+ <h2>Bookmarklet .. (links to drag)</h2>
+ <ol>
+  <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_target';document.body.appendChild(s);})();">dom_target</a></li>
+  <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_find'  ;document.body.appendChild(s);})();">dom_find  </a></li>
+  <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_hide'  ;document.body.appendChild(s);})();">dom_hide  </a></li>
+  <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_load'  ;document.body.appendChild(s);})();">dom_load  </a></li>
+ </ol>
+</div>
+<!--}}}-->
+<!-- Keyboards {{{-->
+<div>
+ <h2>Keyboards</h2>
+ <ol>
+  <li><a target="truly_ergonomic" href="https://remotetabs.com/dev/truly_ergonomic/layout_browser.html"                            class="big">truly_ergonomic <sup>online</sup></a></li>
+  <li><a target="truly_ergonomic" href="file:///C:/LOCAL/GAMES/IVANWFR/INPUT/Truly_Ergonomic/layout_browser/layout_browser.html"   class="big">truly_ergonomic <sup>file  </sup></a></li>
+  <li><a target="twiddler"        href="https://remotetabs.com/dev/twiddler/layout_browser.html"                                   class="big">twiddler        <sup>online</sup></a></li>
+  <li><a target="twiddler"        href="file:///C:/LOCAL/GAMES/IVANWFR/INPUT/TWIDDLER/GitHub/Twiddler3-Layout/layout_browser.html" class="big">twiddler        <sup>file  </sup></a></li>
+ </ol>
+</div>
+<!--}}}-->
+<!-- Vim {{{-->
+<div>
+ <h2>Vim</h2>
+ <ol>
+  <li><a target="a_byte_of_vim" href="https://vim.swaroopch.com/" class="big">A Byte of Vim</a></li>
+ </ol>
+ <h2>Git</h2>
+ <ol>
+  <li><a target="git_book" href="https://git-scm.com/book/en/v2" class="big">Git - Book</a></li>
+ </ol>
+</div>
+<!--}}}-->
+<!-- remotetabs.com {{{-->
+<div>
+ <h2>remotetabs.com</h2>
+ <ol>
+  <li><a target="remotetabs" href="https://remotetabs.com"                                           class="big">remotetabs.com <sup>online</sup></a></li>
+  <li><a target="remotetabs" href="file:///C:/LOCAL/DATA/ANDROID/PROJECTS/RTabsDoc/RTabs/index.html" class="big">remotetabs.com <sup>file  </sup></a></li>
+ </ol>
+
+ <h2>orange.fr</h2>
+ <ol>
+  <li><a target="orange" href="http://ivanw.pagesperso-orange.fr/index.html"                         class="big">orange.fr      <sup>online</sup></a></li>
+  <li><a target="orange" href="file:///C:/LOCAL/DATA/ORANGE/index.html"                              class="big">orange.fr      <sup>file  </sup></a></li>
+ </ol>
+
+</div>
+<!--}}}-->
+   <div>
+<a href="MWebJS.html">MWebJS.html</a><br>
+<a href="dom_find.html">dom_find.html</a><br>
+<a href="dom_hide.html"><em class="big">dom_hide.html</em></a><br>
+<a href="dom_ondown.html">dom_ondown.html</a><br>
+<a href="dom_prop.html"><em class="big">dom_prop.html</em></a><br></div><div>
+<a href="dom_target.html">dom_target.html</a><br>
+<a href="images/grid20.png">images/grid20.png</a><br>
+<a href="images/screen_size.png">images/screen_size.png</a><br>
+<a href="index.html">index.html</a><br>
+<a href="javascript/dom_grid.html">javascript/dom_grid.html</a><br></div><div>
+<a href="javascript/dom_grid.js">javascript/dom_grid.js</a><br>
+<a href="javascript/dom_hide.js">javascript/dom_hide.js</a><br>
+<a href="javascript/dom_load.js">javascript/dom_load.js</a><br>
+<a href="javascript/dom_log.js">javascript/dom_log.js</a><br>
+<a href="javascript/dom_ondown.js">javascript/dom_ondown.js</a><br></div><div>
+<a href="javascript/dom_prop.js">javascript/dom_prop.js</a><br>
+<a href="javascript/dom_select.js">javascript/dom_select.js</a><br>
+<a href="javascript/dom_store.js">javascript/dom_store.js</a><br>
+<a href="javascript/dom_target.js">javascript/dom_target.js</a><br>
+<a href="javascript/dom_tools.html">javascript/dom_tools.html</a><br></div><div>
+<a href="javascript/dom_tools.js">javascript/dom_tools.js</a><br>
+<a href="javascript/dom_util.js">javascript/dom_util.js</a><br>
+<a href="javascript/dom_wording.js">javascript/dom_wording.js</a><br>
+<a href="playdom.html">playdom.html</a><br>
+<a href="playground.html"><em class="big">playground.html</em></a><br></div><div>
+<a href="screenshots/01_chrome_ext_popup_js.png">screenshots/01_chrome_ext_popup_js.png</a><br>
+<a href="screenshots/02_chrome_ext_options_js.png">screenshots/02_chrome_ext_options_js.png</a><br>
+<a href="screenshots/03_chrome_ext_background_js.png">screenshots/03_chrome_ext_background_js.png</a><br>
+<a href="screenshots/04_git_csp_filter_relax_collapsed.png">screenshots/04_git_csp_filter_relax_collapsed.png</a><br>
+<a href="screenshots/05_git_csp_filter_relax_expanded.png">screenshots/05_git_csp_filter_relax_expanded.png</a><br></div><div>
+<a href="screenshots/06_git_csp_filter_relax_popup.png">screenshots/06_git_csp_filter_relax_popup.png</a><br>
+<a href="screenshots/gripper.png">screenshots/gripper.png</a><br>
+<a href="screenshots/index.html">screenshots/index.html</a><br>
+<a href="screenshots/left.png">screenshots/left.png</a><br>
+<a href="screenshots/right.png">screenshots/right.png</a><br></div><div>
+<a href="screenshots/rtabs.png">screenshots/rtabs.png</a><br>
+<a href="stylesheet/2html.css">stylesheet/2html.css</a><br>
+<a href="stylesheet/checkbox.css">stylesheet/checkbox.css</a><br>
+<a href="stylesheet/dom_grid.css">stylesheet/dom_grid.css</a><br>
+<a href="stylesheet/dom_host.css">stylesheet/dom_host.css</a><br></div><div>
+<a href="stylesheet/dom_tools.css">stylesheet/dom_tools.css</a><br>
+<a href="stylesheet/playground.css">stylesheet/playground.css</a><br>
+<a href="twiddler.html">twiddler.html</a><br>
+   </div>
+  </div>
+ </body>
+</html>
