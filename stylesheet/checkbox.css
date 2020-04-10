@@ -1,5 +1,6 @@
 
-#checkbox_css_tag  { content: "checkbox_css (181127:19h)"; }
+#checkbox_css_tag  { content: "checkbox_css (200405:19h)"; }
+
 /* label {{{*/
 /* event delegation to   div container */
 /*{{{
@@ -154,15 +155,20 @@
 /*}}}*/
 
 /* big small {{{*/
-.big150  { font-size : 150% !important; display:inline-block; }
-.small   { font-size :  25% !important; }
-.small60 { font-size :  60% !important; border-radius : .5em; }
-.middle  { position  : absolute; top : 1em; left : 1em; transform : translate(-1em,0.5em); width : 100%; height : 100%; }
+    .big150  { font-size    : 150% !important; display:inline-block; }
+    .small   { font-size    :  25% !important; }
+    .small60 { font-size    :  60% !important; border-radius : .5em; }
+    .middle  { position     : absolute; top : 1em; left : 1em; transform : translate(-1em,0.5em); width : 100%; height : 100%; }
+
+span.small   { font-style   : oblique; }
+span.small   { color        :    gray; }
+span.small   { text-shadow  :    none; }
+span.small   { float        : right; clear:right; padding-right:5em; }
 /*}}}*/
 /* .magnified {{{*/
-.magnified { transform                   : scale(2); }
-.magnified { transition                  :      all   300ms      ease-out; }
-/*           transition                  : <property> <duration> <timing-function> <delay>; */
+.box_container.magnified { transform  : scale(2); }
+.box_container.magnified { transition :      all   300ms      ease-out                 ; }
+/*                         transition : <property> <duration> <timing-function> <delay>; */
 /*}}}*/
 
 /* knob {{{*/
@@ -726,8 +732,7 @@
     font-size      : 300%;
     position       : relative; width: 2em; height: 2em;
     border-radius  : 50%;
-    box-shadow     : inset 0em .05em .1em white, 0em .1em .1em rgba(0, 0, 0, 0.5);
-    background     : linear-gradient(to top, #000 0%, #222 40%, #666 100%);
+    box-shadow     : inset 0em .05em .1em black, 0em .1em .1em rgba(255, 255, 255, 0.2); background     : linear-gradient(to top, #000 0%, #222 40%, #666 100%);
 /*{{{
     box-shadow     : inset 0em 0.05em 3px 0px #00000000, 0em 0em 0.3em rgba(0, 0, 0, 0.5);
     background     : linear-gradient(to top, #ff000021 0%, #ffffff21 40%, #0000001f 100%);
@@ -736,7 +741,7 @@
 /*}}}*/
 /* lower edge {{{*/
 .cb_filled_pin label {
-    position       : absolute; top : 9%; left : 11%;
+    position       : absolute; top : 11%; left : 11%;
     width          : 80%;
     height         : 80%;
     border-radius  : 50%;

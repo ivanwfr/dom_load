@@ -1,9 +1,134 @@
-"use strict";
 /* dom_hide_js */
-let DOM_HIDE_JS_ID        = "dom_hide_js";
-let DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (181230:00h)";
+/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+const DOM_HIDE_JS_ID        = "dom_hide_js";
+const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (200206:14h)";
+let dom_hide    = (function() {
+"use strict";
+/* JSHint {{{*/
+/* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_tools */
+/* globals playground_notify */
+/*
+:1,$y *
+:!start explorer https://jshint.com/
+*/
+/*}}}*/
+let   DOM_HIDE_LOG          = false;
+let   DOM_HIDE_TAG          = false;
+
+/* IMPORT */
+/*{{{*/
+/*➔ t_hide_IMPORT {{{*/
+/*{{{*/
+/*....................................*/
+let t_data     = {}        ;    /* 05 */
+let t_log      = {}        ;    /* 06 */
+let t_util     = {}        ;    /* 07 */
+let t_prop     = {}        ;    /* 08 */
+let t_store    = {}        ;    /* 09 */
+/*  t_fly      = {}        ; */ /* 10 */
+/* ...................................*/
+/*  t_wording  = {}        ; */ /* 11 */
+/*  t_select   = {}        ; */ /* 12 */
+/*  t_slot     = {}        ; */ /* 13 */
+/* ...................................*/
+/*  t_hide     = {}        ; */ /* 14 */
+/*  t_view     = {}        ; */ /* 15 */
+/*  t_sticky   = {}        ; */ /* 16 */
+/*  t_seek     = {}        ; */ /* 17 */
+/*  t_share    = {}        ; */ /* 18 */
+/* ...................................*/
+/*  t_grid     = {}        ; */ /* 19 */
+/*  t_gutter   = {}        ; */ /* 20 */
+/* ...................................*/
+/*  t_ipc      = {}        ; */ /* 21 */
+let t_tools    = {}        ;    /* 22 */
+/*....................................*/
+/*}}}*/
+let t_hide_IMPORT   = function(log_this)
+{
+/* LOAD {{{*/
+/* ...................................*/
+    t_data    = dom_data   ;    /* 05 */
+    t_log     = dom_log    ;    /* 06 */
+    t_util    = dom_util   ;    /* 07 */
+    t_prop    = dom_prop   ;    /* 08 */
+    t_store   = dom_store  ;    /* 09 */
+/*  t_fly     = dom_fly    ; */ /* 10 */
+/* ...................................*/
+/*  t_wording = dom_wording; */ /* 11 */
+/*  t_select  = dom_select ; */ /* 12 */
+/*  t_slot    = dom_slot   ; */ /* 13 */
+/* ...................................*/
+/*  t_hide    = dom_hide   ; */ /* 14 */
+/*  t_view    = dom_view   ; */ /* 15 */
+/*  t_sticky  = dom_sticky ; */ /* 16 */
+/*  t_seek    = dom_seek   ; */ /* 17 */
+/*  t_share   = dom_share  ; */ /* 18 */
+/* ...................................*/
+/*  t_grid    = dom_grid   ; */ /* 19 */
+/*  t_gutter  = dom_gutter ; */ /* 20 */
+/* ...................................*/
+/*  t_ipc     = dom_ipc    ; */ /* 21 */
+    t_tools   = dom_tools  ;    /* 22 */
+/* ...................................*/
+/*}}}*/
+    hide_INTERN();
+    /* MODULE LOGGING TAGGING {{{*/
+    DOM_HIDE_LOG = DOM_HIDE_LOG || dom_store.t_store_getBool("DOM_HIDE_LOG");
+    DOM_HIDE_TAG = DOM_HIDE_TAG || dom_store.t_store_getBool("DOM_HIDE_TAG");
+
+    /*}}}*/
+if(log_this) log("%c 14 hide", lbH+lf8);
+};
+/*}}}*/
+/*_   hide_INTERN {{{*/
+/*{{{*/
+/* t_prop */
+let prop;
+
+/* t_log */
+let LOG_MAP;
+let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
+let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
+let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
+let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
+
+/*}}}*/
+let   hide_INTERN = function()
+{
+    /* t_log {{{*/
+    LOG_MAP = t_log.LOG_MAP;
+
+    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
+    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
+    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+
+    log                 = t_log.functions.log;
+    logBIG              = t_log.functions.logBIG;
+    logXXX              = t_log.functions.logXXX;
+    log_caller          = t_log.functions.log_caller;
+    log_json_one_liner  = t_log.functions.log_json_one_liner;
+    log_key_val         = t_log.functions.log_key_val;
+    log_key_val_group   = t_log.functions.log_key_val_group;
+    /*}}}*/
+    /* t_prop {{{*/
+    prop = t_prop;
+
+    /*}}}*/
+
+    hide_DEPEND();
+};
+/*}}}*/
+/*_   hide_DEPEND {{{*/
+let   hide_DEPEND = function()
+{
+
+};
+/*}}}*/
+/*}}}*/
 
 /* DOM_HIDE1_SELECT */
+/*{{{*/
 /*  dom_hide1_container_clicked .. (called by onUp_6_DOC_CB.[DOC CLICKED]) {{{*/
 let dom_hide1_container_clicked = function( container )
 {
@@ -11,13 +136,13 @@ let dom_hide1_container_clicked = function( container )
 let   caller = "dom_hide1_container_clicked"; if(typeof playground_notify != "undefined") playground_notify(caller);
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(container)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(container)+")", lbH+lf2);
     if(!container) return;
 /*{{{
-if( log_this) console_clear_post(caller);
+if( log_this) t_log.console_clear_post(caller);
 }}}*/
 /*}}}*/
-    let          hiding = !prop_get( MASK_OR_HIDE );
+    let          hiding = !prop.get( t_data.MASK_OR_HIDE );
     let     node_hidden = _dom_hide_mark_container( container );
     while(  node_hidden && (node_hidden != document.body))
     {
@@ -32,7 +157,6 @@ if( log_this) console_clear_post(caller);
     }
 };
 /*}}}*/
-
 /*  dom_hide1_collect_nodes {{{*/
 /*{{{*/
 let  children_collection = [];
@@ -41,7 +165,7 @@ let  children_collection = [];
 let dom_hide1_collect_nodes = function(child_level, _parent, parent_level)
 {
 /*{{{*/
-let   caller = "dom_hide1_collect_nodes(child_level=["+child_level+"], _parent=["+get_n_lbl(_parent)+"], parent_level=["+parent_level+"])";
+let   caller = "dom_hide1_collect_nodes(child_level=["+child_level+"], _parent=["+t_util.get_n_lbl(_parent)+"], parent_level=["+parent_level+"])";
 let log_this = LOG_MAP.T3_LAYOUT;
 
 /*}}}*/
@@ -75,7 +199,7 @@ let log_this = LOG_MAP.T3_LAYOUT;
     /*}}}*/
 /*{{{*/
 if(log_this && (parent_level == (child_level-1)) && parent.children.length)
-    log(caller+": %c level"+child_level+" %c"+get_parentage(parent)+" %c "+ child_collected_count +" children"
+    log(caller+": %c level"+child_level+" %c"+t_util.get_parentage(parent)+" %c "+ child_collected_count +" children"
         ,        lbH                     ,lbL+lf9                    ,lbR+lf7);
 
 if(log_this && (parent == document.body))
@@ -87,7 +211,7 @@ if(log_this && (parent == document.body))
     /*}}}*/
 };
 /*}}}*/
-/*  _dom_hide_is_node_maskable( {{{*/
+/*  _dom_hide_is_node_maskable {{{*/
 let _dom_hide_is_node_maskable = function(node, num)
 {
 /*{{{*/
@@ -98,11 +222,11 @@ let log_this = LOG_MAP.T3_LAYOUT;
     let                                             not_maskable = "";                    let lfX =  "";
     if(                      !node.clientWidth  ) { not_maskable = "HAS NO WIDTH";            lfX = lf5; }
     if(                      !node.clientHeight ) { not_maskable = "HAS NO HEIGHT";           lfX = lf6; }
-    if( is_a_doc_tool_panel ( node )            ) { not_maskable = "IS A DOC TOOL PANEL";     lfX = lf3; }
-    if( is_a_doc_tool_button( node )            ) { not_maskable = "IS A DOC TOOL BUTTON";    lfX = lf4; }
+    if( t_util.is_a_doc_tool_panel ( node )            ) { not_maskable = "IS A DOC TOOL PANEL";     lfX = lf3; }
+    if( t_util.is_a_doc_tool_button( node )            ) { not_maskable = "IS A DOC TOOL BUTTON";    lfX = lf4; }
 
     let result = (not_maskable == "");
-if(log_this && !result) log(caller+": %c #"+num+" %c"+get_parentage(node)+"%c"+not_maskable
+if(log_this && !result) log(caller+": %c #"+num+" %c"+t_util.get_parentage(node)+"%c"+not_maskable
     ,                                 lbL+lf2    ,lbC+lf9                 ,lbR+lfX         );
     return (not_maskable == "");
 };
@@ -126,7 +250,6 @@ if( log_this) log(caller+": "+children_collection.length+" nodes");
     _dom_hide_csv_stack_push("AFTER _dom_hide_add_children_collection");
 };
 /*}}}*/
-
 /*  dom_hide1_reset .. (called by onUp_5_TOOL_CB) {{{*/
 let dom_hide1_reset = function()
 {
@@ -134,9 +257,10 @@ let dom_hide1_reset = function()
 let   caller = "dom_hide1_reset"; if(typeof playground_notify != "undefined") playground_notify(caller);
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller);
+if( log_this) console.trace();
 /*{{{
-if( log_this) console_clear_post(caller);
+if( log_this) log(caller);
+if( log_this) t_log.console_clear_post(caller);
 }}}*/
 /*}}}*/
     _dom_hide_csv_stack_clear_history();
@@ -175,7 +299,7 @@ console.dir(child)
     }
 
 /*{{{
-logXXX("_dom_hide_all_siblings_hidden("+_dom_hide_get_id_or_tag(node)+"): ...return "+all_siblings_hidden+"")
+logXXX("_dom_hide_all_siblings_hidden("+t_util.get_node_id_or_tag(node)+"): ...return "+all_siblings_hidden+"")
 }}}*/
     return all_siblings_hidden;
 };
@@ -187,9 +311,9 @@ let _dom_hide_mark_container = function( container )
 let   caller = "_dom_hide_mark_container";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(container)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(container)+")", lbH+lf2);
 /*{{{
-if(log_this) console_clear_post(caller);
+if(log_this) t_log.console_clear_post(caller);
 }}}*/
 /*}}}*/
     /* [node_hidden] [node_mask] {{{*/
@@ -198,7 +322,7 @@ if(log_this) console_clear_post(caller);
         : container.node_mask   ? container             /* container is a hidden node .. with a link to its mask */
         :                         container
     ;
-if(log_this) console_dir(node_hidden, "node_hidden");
+if(log_this) t_log.console_dir(node_hidden, "node_hidden");
 
     let node_mask
         = container.node_hidden ? container             /* container is the mask      .. with a link to its hidden node */
@@ -206,7 +330,7 @@ if(log_this) console_dir(node_hidden, "node_hidden");
         :                         null
     ;
 
-if(log_this) console_dir(node_mask, "node_mask");
+if(log_this) t_log.console_dir(node_mask, "node_mask");
 
     /*}}}*/
     /* NO  MASK .. ADD ONE {{{*/
@@ -219,7 +343,7 @@ if( log_this) log("...NO  MASK .. ADD ONE");
         /* DISPLAY {{{*/
         _dom_hide_add_node_mask( node_hidden );
 
-        let hiding = !prop_get( MASK_OR_HIDE );
+        let hiding = !prop.get( t_data.MASK_OR_HIDE );
         if( hiding ) {
             _dom_hide_set_visibility(node_hidden, false);
         }
@@ -230,12 +354,12 @@ if( log_this) log("...NO  MASK .. ADD ONE");
             /* SYNC CSV .. (container hidden children (possibly) cleared) */
             _dom_hide_rebuild_csv_from_hidden_and_masked_nodes();
 
-            let count = csv_count( node_to_hide_csv );
+            let count = t_util.csv_count( node_to_hide_csv );
             let em_class = count ? "cc"+(count % 10) : "done cc9";
             _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" HIDDEN SUBTREE NODES</em> <em class='cc2'>SUBTREE REBUILT</em>");
         }
         else {
-            let count = csv_count( node_to_hide_csv );
+            let count = t_util.csv_count( node_to_hide_csv );
             let em_class = count ? "cc"+(count % 10) : "done cc9";
             _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" NODES MARKED TO HIDE</em>");
         }
@@ -245,10 +369,10 @@ if( log_this) log("...NO  MASK .. ADD ONE");
     /* HAS MASK .. REMOVE IT {{{*/
     else {
 if( log_this) log("...HAS MASK .. REMOVE IT");
-        if( has_el_class(node_hidden, LAST_HIDDEN) )
+        if( t_util.has_el_class(node_hidden, LAST_HIDDEN) )
         {
-if( log_this) log("...has_el_class(node_hidden, LAST_HIDDEN)");
-            del_el_class(node_hidden, LAST_HIDDEN);
+if( log_this) log("...t_util.has_el_class(node_hidden, LAST_HIDDEN)");
+            t_util.del_el_class(node_hidden, LAST_HIDDEN);
             /* TRASH MASK AND UNHIDE NODE {{{*/
             _dom_hide_del_node_mask( node_hidden );
 
@@ -266,7 +390,7 @@ if( log_this) log("...has_el_class(node_hidden, LAST_HIDDEN)");
 
             /*}}}*/
         }
-        let count = csv_count( node_to_hide_csv );
+        let count = t_util.csv_count( node_to_hide_csv );
         let em_class = count ? "cc"+(count % 10) : "done cc9";
         _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" NODES MARKED TO HIDE</em>");
     }
@@ -275,16 +399,21 @@ if( log_this) log("...has_el_class(node_hidden, LAST_HIDDEN)");
     _dom_hide_highlight_last_hidden();
 
     /*}}}*/
+/*{{{
     let site_page_or_both
-        = (          node_to_hide_csv   ? csv_count(node_to_hide_csv) : "NO"  )
-        + (prop_get( SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
+        = (          node_to_hide_csv   ? t_util.csv_count(node_to_hide_csv) : "NO"  )
+        + (prop.get( t_data.SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
     ;
+}}}*/
     _dom_hide__sync_DOM_HIDE1_RESET();
     return node_hidden;
 };
 /*}}}*/
 
+/*}}}*/
+
 /* DOM_HIDE2_STORE */
+/*{{{*/
 /*  dom_hide2_store_reload .. (called by t_store_page_site) {{{*/
 let dom_hide2_store_reload = function(site_or_page_or_both="both")
 {
@@ -313,17 +442,27 @@ let log_this = LOG_MAP.T3_LAYOUT;
 if( log_this) log(caller);
 /*}}}*/
 
-    let key   = "node_to_hide_csv";
-    let value =  node_to_hide_csv ;
+    let key
+        = prop.get( t_data.SITE_OR_PAGE )
+        ? "site_node_to_hide_arr"
+        : "page_node_to_hide_arr";
 
-    _notify_hide_store(key, value);
+    let arr_JSON =         node_to_hide_csv
+        ?   JSON.stringify(node_to_hide_csv.split(","))
+        :   ""
+    ;
+    _notify_hide_store(key, arr_JSON);
 
     /* NOTE: node_to_hide_csv_STACK csv history not saved */
 };
 /*}}}*/
 /*  _dom_hide_localStorage_load {{{*/
-let _site_page_or_both_label = "";
+/*{{{*/
+let loaded_site_csv_count    = 0; /* TODO rename to better reflect dom_hide attribute */
+let loaded_page_csv_count    = 0; /* TODO rename to better reflect dom_hide attribute */
 
+let _site_page_or_both_label = "";
+/*}}}*/
 let _dom_hide_localStorage_load = function(site_or_page_or_both)
 {
 /*{{{*/
@@ -337,8 +476,11 @@ if( log_this) log(caller);
     let site_label = "";
     if((site_or_page_or_both == "site") || (site_or_page_or_both == "both"))
     {
-        site_csv   = store_getItem("node_to_hide_csv", "site"); if(site_csv == null) site_csv = "";
-        site_label = (site_csv ? csv_count(site_csv) : "NO")+" SITE";
+        let    key = "site_node_to_hide_arr";
+        let    arr = t_store.t_store_getItem(key, "site"); site_csv = (arr == null) ? "" : JSON.parse(arr).join(",");
+
+        loaded_site_csv_count =  t_util.csv_count(site_csv);
+        site_label = (site_csv ? loaded_site_csv_count : "NO")+" SITE";
     }
     /*}}}*/
     /* [page_csv] [page_label] {{{*/
@@ -346,8 +488,11 @@ if( log_this) log(caller);
     let page_label = "";
     if((site_or_page_or_both == "page") || (site_or_page_or_both == "both"))
     {
-        page_csv   = store_getItem("node_to_hide_csv", "page"); if(page_csv == null) page_csv = "";
-        page_label = (page_csv ? csv_count(page_csv) : "NO")+" PAGE";
+        let    key = "page_node_to_hide_arr";
+        let    arr = t_store.t_store_getItem(key, "page"); page_csv = (arr == null) ? "" : JSON.parse(arr).join(",");
+
+        loaded_page_csv_count =  t_util.csv_count(page_csv);
+        page_label = (page_csv ? loaded_page_csv_count : "NO")+" PAGE";
     }
     /*}}}*/
 
@@ -356,24 +501,24 @@ if( log_this) log(caller);
     {
         node_to_hide_csv =  site_csv;
 
-if(log_this) csv_log(node_to_hide_csv, "SITE");
+if(log_this) t_util.csv_log(node_to_hide_csv, "SITE");
     }
     else if((site_or_page_or_both == "page"))
     {
         node_to_hide_csv = page_csv;
 
-if(log_this) csv_log(node_to_hide_csv, "PAGE");
+if(log_this) t_util.csv_log(node_to_hide_csv, "PAGE");
     }
     else {
         node_to_hide_csv = page_csv;
 
         let csv_array =  site_csv.split(",");
-        site_label    = (site_csv ? csv_count(site_csv) : "NO")+" SITE";
+        site_label    = (site_csv ? t_util.csv_count(site_csv) : "NO")+" SITE";
 
         for(let i = csv_array.length-1; i >= 0; --i)
-            node_to_hide_csv = csv_ins(node_to_hide_csv, csv_array[i]);
+            node_to_hide_csv = t_util.csv_ins(node_to_hide_csv, csv_array[i]);
     }
-if(log_this) csv_log(node_to_hide_csv, "CURRENT");
+if(log_this) t_util.csv_log(node_to_hide_csv, "CURRENT");
     /*}}}*/
 
     _dom_hide_csv_stack_clear_history();
@@ -388,7 +533,10 @@ if(log_this) csv_log(node_to_hide_csv, "CURRENT");
 };
 /*}}}*/
 
+/*}}}*/
+
 /* DOM_HIDE3_OR_MASK */
+/*{{{*/
 /*  dom_hide_set_MASK_OR_HIDE {{{*/
 let dom_hide_set_MASK_OR_HIDE = function(_hiding)
 {
@@ -398,10 +546,10 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
 /*}}}*/
     /* HIDE OR MASK SELECTED NODES {{{*/
-    let hiding = _hiding || !prop_get( MASK_OR_HIDE );
+    let hiding = _hiding || !prop.get( t_data.MASK_OR_HIDE );
 if( log_this) log("%c HIDE OR MASK %c "+(hiding ? "HIDE" : "MASK"), lbL, lbR);
 
-if( log_this) csv_log(node_to_hide_csv, "node_to_hide_csv");
+if( log_this) t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
 
     let invisible_count = 0;
     if(                         !node_to_hide_csv       ) return;
@@ -409,7 +557,7 @@ if( log_this) csv_log(node_to_hide_csv, "node_to_hide_csv");
     for(let n_num = 1; n_num <=  node_to_hide_csv_array.length; ++n_num)
     {
         let node_path         =  node_to_hide_csv_array[n_num-1];
-        let node              = _dom_hide_get_node_path_target(node_path, n_num);
+        let node              = t_util.get_node_path_target(node_path, n_num);
         if( node ) {
             if( hiding ) {
                 _dom_hide_MARKED_TO_HIDE                   ( node,  true);
@@ -424,9 +572,9 @@ if( log_this) csv_log(node_to_hide_csv, "node_to_hide_csv");
     }
     /*}}}*/
     /* NOTIFY INFO {{{*/
-    let       hidden_count = document.querySelectorAll("."+MARKED_TO_HIDE   ).length;
+    let       hidden_count = document.querySelectorAll("."+t_data.MARKED_TO_HIDE   ).length;
     let       masked_count = document.querySelectorAll("."+NODE_TO_HIDE_MASK).length;
-    let              count = csv_count(node_to_hide_csv);
+    let              count = t_util.csv_count(node_to_hide_csv);
     let                ccx = hiding ? 7 : 2;
     let  hiding_or_masking = hiding ? "HIDING" : "MASKING";
 
@@ -446,7 +594,10 @@ if( log_this) csv_log(node_to_hide_csv, "node_to_hide_csv");
 };
 /*}}}*/
 
+/*}}}*/
+
 /* DOM_HIDE4_SCROLL */
+/*{{{*/
 /*{{{*/
 const SCROLL_TO_LAST_HIDDEN_DELAY =  250;
 
@@ -455,7 +606,7 @@ let _dom_hide_scroll_to_last_hidden_DONE_MS;
 let _dom_hide_scroll_to_last_hidden_el;
 
 /*}}}*/
-/*  dom_hide4_scroll_to_last_hidden .. (called by t_seek_set_container_selected) {{{*/
+/*  dom_hide4_scroll_to_last_hidden .. (called by t_tools.t_seek_set_container_selected) {{{*/
 let dom_hide4_scroll_to_last_hidden = function( node )
 {
 /*{{{*/
@@ -503,16 +654,19 @@ let _dom_hide_scroll_to_last_hidden_handler = function()
 
     _dom_hide_scroll_to_last_hidden_DONE_MS = new Date().getTime();
 
-    let xy = t_scrollIntoViewIfNeeded_get_scrollXY_with_margin( _dom_hide_scroll_to_last_hidden_el );
+    let xy = t_tools.t_scrollIntoViewIfNeeded_get_scrollXY_with_margin( _dom_hide_scroll_to_last_hidden_el );
     if( xy ) {
         let dx = (xy.x - window.scrollX);
         let dy = (xy.y - window.scrollY);
-        if(dx || dy) t_window_scrollTo(xy.x, xy.y);
+        if(dx || dy) t_tools.t_window_scrollTo(xy.x, xy.y);
     }
 };
 /*}}}*/
 
+/*}}}*/
+
 /* DOM_HIDE5_START_HISTORY */
+/*{{{*/
 /*  dom_hide5_start_history {{{*/
 let dom_hide5_start_history = function()
 {
@@ -522,33 +676,38 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log(caller);
 /*}}}*/
-if( log_this) csv_log(node_to_hide_csv, "REBUILDING STACK HISTORY FROM node_to_hide_csv:");
+if( log_this) t_util.csv_log(node_to_hide_csv, "REBUILDING STACK HISTORY FROM node_to_hide_csv:");
 
     node_to_hide_csv_STACK = [];
-    let        count       = csv_count( node_to_hide_csv );
+    let        count       = t_util.csv_count( node_to_hide_csv );
     let      tmp_csv       =            node_to_hide_csv;
     node_to_hide_csv       =            "";
 
     for(let step = 1; step <= count; ++step)
     {
-        let    node_path = csv_get(         tmp_csv, step);
-        node_to_hide_csv = csv_add(node_to_hide_csv, node_path);
+        let    node_path = t_util.csv_get(         tmp_csv, step);
+        node_to_hide_csv = t_util.csv_add(node_to_hide_csv, node_path);
 
-        if(step < count) /* stack all but last step */
+        if(step < count) /* stack all but last */
             _dom_hide_csv_stack_push("INIT");
     }
-if( log_this) csv_log(node_to_hide_csv, "REBUILT STACK HISTORY");
+if( log_this) t_util.csv_log(node_to_hide_csv, "REBUILT STACK HISTORY");
 
+/*{{{
     let site_page_or_both
-        = (          node_to_hide_csv   ? csv_count(node_to_hide_csv) : "NO"  )
-        + (prop_get( SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
+        = (          node_to_hide_csv   ? t_util.csv_count(node_to_hide_csv) : "NO"  )
+        + (prop.get( t_data.SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
     ;
+}}}*/
     _dom_hide__sync_DOM_HIDE1_RESET();
 };
 /*}}}*/
 
+/*}}}*/
+
 /* DOM_HIDE6_OBSERVERS */
-/*  dom_hide6_add_container_observer .. (t_seek_set_container_selected) {{{*/
+/*{{{*/
+/*  dom_hide6_add_container_observer .. (t_tools.t_seek_set_container_selected) {{{*/
 /*{{{*/
 let hide_container_observers = [];
 
@@ -570,26 +729,26 @@ logXXX("_notify_hide_container("+container+", "+_caller+", "+msg+")")
         hide_container_observers[i](container, _caller, msg);
 };
 /*}}}*/
-/*  dom_hide6_add_store_set_value_observer .. (store_set_value) {{{*/
+/*  dom_hide6_add_t_store_set_value_observer .. (t_store.t_store_set_value) {{{*/
 /*{{{*/
-let hide_store_set_value_observers = [];
+let hide_t_store_set_value_observers = [];
 
 /*}}}*/
-let dom_hide6_add_store_set_value_observer = function(observer)
+let dom_hide6_add_t_store_set_value_observer = function(observer)
 {
 /*{{{
-logXXX("dom_hide6_add_store_set_value_observer("+observer.name+")")
+logXXX("dom_hide6_add_t_store_set_value_observer("+observer.name+")")
 }}}*/
-    if(!hide_store_set_value_observers.includes( observer ))
-        hide_store_set_value_observers.push    ( observer );
+    if(!hide_t_store_set_value_observers.includes( observer ))
+        hide_t_store_set_value_observers.push    ( observer );
 };
 let _notify_hide_store = function(key,value)
 {
 /*{{{
 logXXX("_notify_hide_store("+key+", "+value+")")
 }}}*/
-    for(let i=0; i < hide_store_set_value_observers.length; ++i)
-        hide_store_set_value_observers[i](key, value);
+    for(let i=0; i < hide_t_store_set_value_observers.length; ++i)
+        hide_t_store_set_value_observers[i](key, value);
 };
 /*}}}*/
 /*  dom_hide6_add_info_observer .. (t_fly) {{{*/
@@ -618,60 +777,53 @@ if( log_this) log(caller);
 };
 /*}}}*/
 
+/*}}}*/
+
 /* DOM_HIDE8_LOG */
-/*  dom_hide8_log .. (called by t_store0_log_settings) {{{*/
+/*{{{*/
+/*  dom_hide_log_settings .. (called by log_saved_settings) {{{*/
 /*{{{*/
 let _transcript = null;
-let node_to_hide_csv_logged;
-let     site_or_page_logged;
+let last_logged_node_to_hide_csv;
+let last_log_was_site_or_page;
 
 let missing_transcript_notified_once;
 /*}}}*/
-let dom_hide8_log = function()
+let dom_hide_log_settings = function()
 {
 /*{{{
-logBIG("dom_hide8_log")
+logBIG("dom_hide_log_settings: "+ (prop.get(t_data.SITE_OR_PAGE) ? "SITE" : "PAGE"));;
+log_caller();
 }}}*/
-
+    /* [dom_hide_log] .. (log transcript) {{{*/
     if( _transcript == null) _transcript = document.getElementById("dom_hide_log");
-
-    /* notify missing log transcript {{{*/
     if(!_transcript) {
-        if( !missing_transcript_notified_once)
-        {
-            logBIG("HTML HAS NO [dom_hide_log] TRANSCRIPT TO LOG TO", lbH+lf3);
+        if( !missing_transcript_notified_once) {
+logBIG("HTML HAS NO [dom_hide_log] TRANSCRIPT TO LOG TO", lbH+lf3);
             missing_transcript_notified_once = true;
         }
         return;
     }
     /*}}}*/
-    let key = "node_to_hide_csv";
-    let item = node_to_hide_csv ;
-    let lfs =               _store_isa_site_or_page_key(key) ? lf5 : lf7;
-/*{{{
-logXXX("store_getItem %c "+(_store_isa_site_or_page_key(key) ? "PAGE" : "SITE")+" %c"+key+" %c"+ item
-    ,                 lbH+lfs                                                    ,lbH+lf4  ,lbH+lfs)
-}}}*/
-/*{{{
-logXXX("o %c node_to_hide_csv  : %c "+node_to_hide_csv+" ", lbF+lb6, lbA);
-}}}*/
-    let         site_or_page = _store_isa_site_or_page_key(key);
-    let   ccX = site_or_page ?  "cc6" : "cc2" ;
-    let scope = site_or_page ? "PAGE" : "SITE";
-/*{{{
-logXXX("scope=["+scope+"]")
-}}}*/
-
-    if(        (site_or_page     ==     site_or_page_logged)
-          &&   (node_to_hide_csv == node_to_hide_csv_logged)
+    /* [t_data.SITE_OR_PAGE] */
+    let    this_log_is_site_or_page      = prop.get(   t_data.SITE_OR_PAGE);
+    if(   (last_log_was_site_or_page    == this_log_is_site_or_page)
+       && (last_logged_node_to_hide_csv == node_to_hide_csv)
       ) return;
 
+/*{{{
+logBIG("dom_hide_log_settings("+_caller+") .. "+ (this_log_is_site_or_page ? "SITE" : "PAGE"));;
+}}}*/
+
     let children_collection_length    =            children_collection   .length ;
-    let csv_count_node_to_hide_csv    = csv_count( node_to_hide_csv             );
+    let csv_count_node_to_hide_csv    = t_util.csv_count( node_to_hide_csv             );
     let node_to_hide_csv_stack_length =            node_to_hide_csv_STACK.length ;
 
-    /* save first sub-tool */
+    /* save first transcript sub-tool */
     let firstElementChild = _transcript.firstElementChild;
+    let             scope = this_log_is_site_or_page ? "SITE" : "PAGE";
+    let               ccX = this_log_is_site_or_page ? "cc2"  :  "cc6";
+
     _transcript.innerHTML
         = "<em class='big "+ccX+"'>"+ scope + "</em><br>"
         + "COLLECTION    <em class='big cc8'>"+ children_collection_length    +"</em><br>"
@@ -682,50 +834,31 @@ logXXX("scope=["+scope+"]")
 
     /* restore first sub-tool */
     if(       firstElementChild
-       && (   firstElementChild.classList.contains( CSS_CLEARPIN )
-           || firstElementChild.classList.contains( CSS_CLOSEPIN )
-           || firstElementChild.classList.contains( CSS_PUSH_PIN )
-           || firstElementChild.classList.contains( CSS_SCALEPIN )
+       && (   firstElementChild.classList.contains( t_tools.CSS_CLEARPIN )
+           || firstElementChild.classList.contains( t_tools.CSS_CLOSEPIN )
+           || firstElementChild.classList.contains( t_tools.CSS_PUSH_PIN )
+           || firstElementChild.classList.contains( t_tools.CSS_SCALEPIN )
            || firstElementChild.classList.contains("toolbag_button")
          )
       )
         _transcript.insertBefore(firstElementChild, _transcript.firstElementChild);
 
-    node_to_hide_csv_logged = node_to_hide_csv;
-    site_or_page_logged     = site_or_page;
+    last_logged_node_to_hide_csv = node_to_hide_csv;
+    last_log_was_site_or_page    = this_log_is_site_or_page;
 };
 /*}}}*/
 
+/*}}}*/
 
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PRIVATE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ {{{*/
-/* const {{{*/
+/* DOM_HIDE9_PRIVATE */
+/* {{{*/
 const LAST_HIDDEN               = "last_hidden";
-const MARKED_TO_HIDE            = "marked_to_hide";
 const NODE_TO_HIDE_MASK         = "node_to_hide_mask";
 const NODE_TO_HIDE_NOT_VISIBLE  = "node_to_hide_not_visible";
 
 let node_to_hide_csv            = "";
 /*}}}*/
-/* [dom_util] DEPENDENT {{{
-
-/\v\w+\zs(add_el_class|csv_add|csv_contains|csv_count|csv_ins|csv_log|del_el_class|get_el_xy|has_el_class|is_el_or_child_of_parent_el)
-
-get_el_xy
-is_el_or_child_of_parent_el
-
-add_el_class
-del_el_class
-has_el_class
-
-csv_add
-csv_contains
-csv_count
-csv_ins
-csv_log
-
-}}}*/
-
-/* UI */
+/* UI */ /*{{{*/
 /*  _dom_hide__sync_DOM_HIDE1_RESET {{{*/
 /*{{{*/
 const DOM_HIDE__SYNC_DOM_HIDE1_RESET_DELAY = 500;
@@ -736,7 +869,6 @@ let _dom_hide__sync_DOM_HIDE1_RESET = function()
 {
     if(_dom_hide__sync_DOM_HIDE1_RESET_timer) clearTimeout(_dom_hide__sync_DOM_HIDE1_RESET_timer);
     _dom_hide__sync_DOM_HIDE1_RESET_timer   =   setTimeout(_dom_hide__sync_DOM_HIDE1_RESET_handler, DOM_HIDE__SYNC_DOM_HIDE1_RESET_DELAY);
-
 };
 /*}}}*/
 /*  _dom_hide__sync_DOM_HIDE1_RESET_handler {{{*/
@@ -746,24 +878,24 @@ let _dom_hide__sync_DOM_HIDE1_RESET_handler = function()
 logBIG("_dom_hide__sync_DOM_HIDE1_RESET_handler: _site_page_or_both_label=["+_site_page_or_both_label+"]", lf3);
 }}}*/
 
-    let count = csv_count(node_to_hide_csv);
-    prop_init(DOM_HIDE1_RESET, (count > 0));
+    let count = t_util.csv_count(node_to_hide_csv);
+    prop.init(t_data.DOM_HIDE1_RESET, (count > 0));
 
-    let el = prop_get_EL(DOM_HIDE1_RESET);
+    let el = prop.get_EL(t_data.DOM_HIDE1_RESET);
     if( el )
         el.title
             = _site_page_or_both_label
-            + LF+" HIDDEN CONTAINERS"
-            + LF+" TO UNHIDE"
+            + t_data.LF+" HIDDEN CONTAINERS"
+            + t_data.LF+" TO UNHIDE"
     ;
 
 /*{{{
-    set_el_class_on_off(prop_get_EL( DOM_HIDE1_RESET ), CSS_CHECKED, have_node_to_hide_csv);
+    t_util.set_el_class_on_off(prop.get_EL( t_data.DOM_HIDE1_RESET ), t_data.CSS_CHECKED, have_node_to_hide_csv);
 }}}*/
 };
 /*}}}*/
-
-/* clear */
+/*}}}*/
+/* CLEAR */ /*{{{*/
 /*  _dom_hide_clear_display {{{*/
 let _dom_hide_clear_display = function()
 {
@@ -773,7 +905,7 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log(caller);
 /*{{{
-if( log_this) console_clear_post(caller);
+if( log_this) t_log.console_clear_post(caller);
 }}}*/
 /*}}}*/
     _dom_hide_clear_subtree();
@@ -787,7 +919,7 @@ let _dom_hide_clear_subtree = function( parent_node=null )
 let   caller = "_dom_hide_clear_subtree";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(parent_node)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(parent_node)+")", lbH+lf2);
 /*}}}*/
     let hide_count = _dom_hide_clear_mark_subtree_MARKED_TO_HIDE( parent_node );
     let mask_count = _dom_hide_clear_mark_subtree_mask          ( parent_node );
@@ -811,12 +943,12 @@ if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(parent_node)+")", lbH+lf2
 let _dom_hide_clear_mark_subtree_MARKED_TO_HIDE = function(parent_node)
 {
     let count     = 0;
-    let node_hidden_list = document.querySelectorAll("."+MARKED_TO_HIDE);
+    let node_hidden_list = document.querySelectorAll("."+t_data.MARKED_TO_HIDE);
     for(let     i = 0; i < node_hidden_list.length; ++i)
     {
         if( parent_node == node_hidden_list[i]) continue;
         let node_hidden  = node_hidden_list[i];
-        if(!parent_node || is_el_or_child_of_parent_el(node_hidden, parent_node))
+        if(!parent_node || t_util.is_el_or_child_of_parent_el(node_hidden, parent_node))
         {
             _dom_hide_del_node_mask( node_hidden );
             count   += 1;
@@ -835,7 +967,7 @@ let _dom_hide_clear_mark_subtree_mask  = function( parent_node )
         let    node_mask = node_mask_list[i];
         let  node_hidden = node_mask.node_hidden;
 
-        if(!parent_node || is_el_or_child_of_parent_el(node_hidden, parent_node))
+        if(!parent_node || t_util.is_el_or_child_of_parent_el(node_hidden, parent_node))
         {
             _dom_hide_del_node_mask( node_hidden );
             count   += 1;
@@ -844,8 +976,8 @@ let _dom_hide_clear_mark_subtree_mask  = function( parent_node )
     return count;
 };
 /*}}}*/
-
-/* hide visibility xy */
+/*}}}*/
+/* HIDE VISIBILITY XY */ /*{{{*/
 /*  _dom_hide_MARKED_TO_HIDE {{{*/
 
 let _dom_hide_MARKED_TO_HIDE = function(node, state)
@@ -854,27 +986,22 @@ let _dom_hide_MARKED_TO_HIDE = function(node, state)
 let caller = "_dom_hide_MARKED_TO_HIDE";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c(["+_dom_hide_get_id_or_tag(node)+"], "+state+")", lbH+lf2);
+if( log_this) log(caller+"%c(["+t_util.get_node_id_or_tag(node)+"], "+state+")", lbH+lf2);
 /*}}}*/
 
-    if( state ) add_el_class(node, MARKED_TO_HIDE);
-    else        del_el_class(node, MARKED_TO_HIDE);
+    if( state ) t_util.add_el_class(node, t_data.MARKED_TO_HIDE);
+    else        t_util.del_el_class(node, t_data.MARKED_TO_HIDE);
 };
 
-let dom_hide_is_marked_to_hide = function( node )
-{
-    return has_el_class(node, MARKED_TO_HIDE);
-
-};
 /*}}}*/
 /*  _dom_hide_is_node_parent_hidden {{{*/
 let _dom_hide_is_node_parent_hidden = function( node )
 {
-    let                     node_hidden_list = document.querySelectorAll("."+MARKED_TO_HIDE);
+    let                     node_hidden_list = document.querySelectorAll("."+t_data.MARKED_TO_HIDE);
     for(let i = 0;      i < node_hidden_list.length; ++i) {
         if( node         == node_hidden_list[i]) continue;
         let parent_hidden = node_hidden_list[i];
-        if( is_el_or_child_of_parent_el(node, parent_hidden) )
+        if( t_util.is_el_or_child_of_parent_el(node, parent_hidden) )
             return                            parent_hidden;
     }
     return null;
@@ -887,12 +1014,12 @@ let _dom_hide_set_visibility = function(node, visible)
 let   caller = "_dom_hide_set_visibility";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c(["+_dom_hide_get_id_or_tag(node)+"], "+visible+")", lbH+lf2);
+if( log_this) log(caller+"%c(["+t_util.get_node_id_or_tag(node)+"], "+visible+")", lbH+lf2);
 /*}}}*/
 /*{{{
     if(!visible && (node == document.body))
     {
-        logBIG(caller+"NOT HIDING "+get_id_or_tag(node), lf2);
+        logBIG(caller+"NOT HIDING "+t_util.get_id_or_tag(node), lf2);
         console.trace();
         logXXX("NOT HIDING NODE");
         return;
@@ -908,13 +1035,13 @@ if( log_this) log(caller+"%c(["+_dom_hide_get_id_or_tag(node)+"], "+visible+")",
            &&  node.parentElement.classList.contains( NODE_TO_HIDE_NOT_VISIBLE )
           ) {
 /*{{{
-logXXX("%c CHILD   VISIBLE .. SHOW PARENT "+_dom_hide_get_id_or_tag(node.parentElement), lbH+lf4)
+logXXX("%c CHILD   VISIBLE .. SHOW PARENT "+t_util.get_node_id_or_tag(node.parentElement), lbH+lf4)
 }}}*/
-            del_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
+            t_util.del_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
         }
 
-        /* node*/del_el_class(node, NODE_TO_HIDE_NOT_VISIBLE);
-        if(mask) del_el_class(mask, NODE_TO_HIDE_NOT_VISIBLE);
+        /* node*/t_util.del_el_class(node, NODE_TO_HIDE_NOT_VISIBLE);
+        if(mask) t_util.del_el_class(mask, NODE_TO_HIDE_NOT_VISIBLE);
 
         /* MASK DELAYED-SYNC-LAYOUT */
         if(mask) setTimeout(function() { _dom_hide_fit_node_mask(node); }, 100);
@@ -922,21 +1049,21 @@ logXXX("%c CHILD   VISIBLE .. SHOW PARENT "+_dom_hide_get_id_or_tag(node.parentE
     /*}}}*/
     /* HIDE CHILD [AND PARENT .. f(currently no visible child)] {{{*/
     else {
-        add_el_class(node, NODE_TO_HIDE_NOT_VISIBLE);
+        t_util.add_el_class(node, NODE_TO_HIDE_NOT_VISIBLE);
         if( _dom_hide_all_siblings_hidden( node ) )
         {
 /*{{{
-logXXX("%c HIDE PARENT "+_dom_hide_get_id_or_tag(node.parentElement)+" .. f(no other visible child)", lbH+lf8)
+logXXX("%c HIDE PARENT "+t_util.get_node_id_or_tag(node.parentElement)+" .. f(no other visible child)", lbH+lf8)
 }}}*/
-            if(node && (node.parentElement != document.body)) add_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
-            if(mask && (mask.parentElement != document.body)) add_el_class(mask.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
+            if(node && (node.parentElement != document.body)) t_util.add_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
+            if(mask && (mask.parentElement != document.body)) t_util.add_el_class(mask.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
         }
     }
     /*}}}*/
 
 /*{{{
 if( node.style) {
-    node.              style   .visibility =   (visible ? "" : "hidden"           ) ;
+    node.              style   .visibility =   (visible ? "" : CSS_HIDDEN         ) ;
     node.setAttribute("style", "visibility : "+(visible ? "" : "hidden !important"));
     node.setAttribute("style",    "display : "+(visible ? "" : "none   !important"));
 }
@@ -948,9 +1075,9 @@ let _dom_hide_is_at_xy = function(node, x, y)
 {
     let caller = "_dom_hide_is_at_xy";
     if(!node.offsetTop              ) return false;
-    if(!node.style.display == "none") return false;
+    if( node.style.display == "none") return false;
 
-    let    xy = get_el_xy(node, caller);
+    let    xy = t_util.get_el_xy(node, caller);
     let result
         =  (x > xy.x)
         && (x < (xy.x + node.offsetWidth ))
@@ -958,15 +1085,15 @@ let _dom_hide_is_at_xy = function(node, x, y)
         && (y < (xy.y + node.offsetHeight))
     ;
 /*{{{
-logXXX("%c xy=["+xy.x+" "+xy.y+"] %c "+ _dom_hide_get_id_or_tag(node) +" %c TL=["+ node.offsetLeft +" "+ node.offsetTop  +"] %c WH=["+ node.offsetWidth +" "+ node.offsetHeight+"]"
+logXXX("%c xy=["+xy.x+" "+xy.y+"] %c "+ t_util.get_node_id_or_tag(node) +" %c TL=["+ node.offsetLeft +" "+ node.offsetTop  +"] %c WH=["+ node.offsetWidth +" "+ node.offsetHeight+"]"
       ,lbL                       ,lbR+lf4                                   ,lbL                                                ,lbR)
 logXXX(caller+": ...return "+result);
 }}}*/
     return result;
 };
 /*}}}*/
-
-/* mask */
+/*}}}*/
+/* MASK */ /*{{{*/
 /*  _dom_hide_add_node_mask {{{*/
 /*{{{*/
 let _node_mask_div;
@@ -978,7 +1105,7 @@ let _dom_hide_add_node_mask = function( node )
 let   caller = "_dom_hide_add_node_mask";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(node)+")", lbH+lf2);
 /*}}}*/
     /* MASK TEMPLATE TO CLONE FROM {{{*/
     if(!_node_mask_div )
@@ -990,13 +1117,13 @@ if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
     /* ASSOCIATE MASK {{{*/
     let node_mask         = _node_mask_div.cloneNode(true);
     node_mask.innerText   = _dom_hide_get_body_hop_count(node);
-    node_mask.title       = get_parentage(node);
+    node_mask.title       = t_util.get_parentage(node);
     node_mask.node_hidden = node;
 
     document.body.insertBefore(node_mask, document.lastChild.nextSibling);
 
     node     .node_mask   = node_mask;
-    add_el_class(node, "has_node_mask");
+    t_util.add_el_class(node, "has_node_mask");
 
     _dom_hide_fit_node_mask( node );
     /*}}}*/
@@ -1026,12 +1153,12 @@ let _dom_hide_fit_node_mask = function( node )
 let   caller = "_dom_hide_fit_node_mask";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(node)+")", lbH+lf2);
 /*}}}*/
-    if( has_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE) ) del_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
-    if( has_el_class(node              , NODE_TO_HIDE_NOT_VISIBLE) ) del_el_class(node              , NODE_TO_HIDE_NOT_VISIBLE);
+    if( t_util.has_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE) ) t_util.del_el_class(node.parentElement, NODE_TO_HIDE_NOT_VISIBLE);
+    if( t_util.has_el_class(node              , NODE_TO_HIDE_NOT_VISIBLE) ) t_util.del_el_class(node              , NODE_TO_HIDE_NOT_VISIBLE);
 
-    let  xy = get_el_xy(   node);
+    let  xy = t_util.get_el_xy(   node);
     let e_W = Math.max(16, node.scrollWidth  || node.offsetWidth );
     let e_H = Math.max(16, node.scrollHeight || node.offsetHeight);
 
@@ -1055,18 +1182,18 @@ let _dom_hide_del_node_mask = function( node )
 let   caller = "_dom_hide_del_node_mask";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(node)+")", lbH+lf2);
 /*}}}*/
     /* TRASH MASK {{{*/
     if( node.node_mask )
     {
         document.body.removeChild( node.node_mask );
         node.node_mask = null;
-        del_el_class(node, "has_node_mask");
+        t_util.del_el_class(node, "has_node_mask");
     }
     /*}}}*/
     /* UNHIDE NODE {{{*/
-    del_el_class            (node, MARKED_TO_HIDE);
+    t_util.del_el_class            (node, t_data.MARKED_TO_HIDE);
     _dom_hide_set_visibility(node, true);
 
     /*}}}*/
@@ -1079,14 +1206,14 @@ let _dom_hide_is_node_parent_masked = function( node )
     for(let i = 0;      i < node_mask_list.length; ++i) {
         if( node         == node_mask_list[i].node_hidden) continue;
         let parent_hidden = node_mask_list[i].node_hidden;
-        if( is_el_or_child_of_parent_el(node, parent_hidden) )
+        if( t_util.is_el_or_child_of_parent_el(node, parent_hidden) )
             return                            parent_hidden;
     }
     return null;
 };
 /*}}}*/
-
-/* csv */
+/*}}}*/
+/* CSV */ /*{{{*/
 /*  _dom_hide_add_csv {{{*/
 let _dom_hide_add_csv = function( node )
 {
@@ -1094,7 +1221,7 @@ let _dom_hide_add_csv = function( node )
 let   caller = "_dom_hide_add_csv";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(node)+")", lbH+lf2);
 /*}}}*/
     /* ...return false if already hidden by parent {{{*/
     let node_parent
@@ -1103,21 +1230,21 @@ if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
     ;
     if( node_parent )
     {
-        _notify_hide_info("<em class='cc9'>"+ _dom_hide_get_id_or_tag(node)          +"</em>"
+        _notify_hide_info("<em class='cc9'>"+ t_util.get_node_id_or_tag(node)          +"</em>"
                    +      "<em class='cc8'>   already hidden by                        </em>"
-                   +      "<em class='cc9'>"+ _dom_hide_get_id_or_tag( node_parent ) +"</em>"
+                   +      "<em class='cc9'>"+ t_util.get_node_id_or_tag( node_parent ) +"</em>"
                  );
 
         return false;
     }
     /*}}}*/
     /*  CSV node_path {{{*/
-    let node_path = _dom_hide_get_node_path( node );
+    let node_path = t_util.get_node_path( node );
 if(log_this) log("...node_path=["+node_path+"]");
 
     /*}}}*/
     /* ...return false if already hidden {{{*/
-    if( csv_contains(node_to_hide_csv, node_path))
+    if( t_util.csv_contains(node_to_hide_csv, node_path))
     {
         return false;
     }
@@ -1127,8 +1254,8 @@ if(log_this) log("...node_path=["+node_path+"]");
 
     /*}}}*/
     /* ADD CSV {{{*/
-    node_to_hide_csv = csv_add(node_to_hide_csv, node_path);
-if(log_this) _dom_hide_csv_dump(caller);
+    node_to_hide_csv = t_util.csv_add(node_to_hide_csv, node_path);
+if(log_this) _dom_hide_csv_dump();
 
     /*}}}*/
     /* STORE CSV ...return true {{{*/
@@ -1145,15 +1272,15 @@ let _dom_hide_del_csv = function( node )
 let caller = "_dom_hide_del_csv";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log(caller+"%c("+_dom_hide_get_id_or_tag(node)+")", lbH+lf2);
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(node)+")", lbH+lf2);
 /*}}}*/
     /*  CSV node_path {{{*/
-    let node_path = _dom_hide_get_node_path( node );
+    let node_path = t_util.get_node_path( node );
 if(log_this) log("...node_path=["+node_path+"]");
 
     /*}}}*/
     /* ...return false if not yet stored {{{*/
-    if(!csv_contains(node_to_hide_csv, node_path))
+    if(!t_util.csv_contains(node_to_hide_csv, node_path))
     {
         return false;
     }
@@ -1163,8 +1290,8 @@ if(log_this) log("...node_path=["+node_path+"]");
 
     /*}}}*/
     /* DEL CSV {{{*/
-        node_to_hide_csv = csv_del(node_to_hide_csv, node_path);
-if(log_this) _dom_hide_csv_dump(caller);
+    node_to_hide_csv     = t_util.csv_del(node_to_hide_csv, node_path);
+if(log_this) _dom_hide_csv_dump();
 
     /*}}}*/
     /* STORE CSV ...return true {{{*/
@@ -1184,8 +1311,10 @@ let log_this = LOG_MAP.T3_LAYOUT;
 if( log_this) log(caller);
 /*}}}*/
     /* CLEAR CSV {{{*/
-    node_to_hide_csv = "";
+    node_to_hide_csv      = "";
 
+    loaded_site_csv_count = 0;
+    loaded_page_csv_count = 0;
     /*}}}*/
     /* STORE CSV {{{*/
     dom_hide2_store_save();
@@ -1204,14 +1333,14 @@ if( log_this) log(caller);
     _dom_hide_clear_csv_and_store();
 
     /*}}}*/
-    /* ADD MARKED_TO_HIDE {{{*/
+    /* ADD t_data.MARKED_TO_HIDE {{{*/
     let hidden_count = 0;
-    let                      node_hidden_list = document.querySelectorAll("."+MARKED_TO_HIDE);
+    let                      node_hidden_list = document.querySelectorAll("."+t_data.MARKED_TO_HIDE);
     for(let i = 0;      i <  node_hidden_list.length; ++i) {
         let node_hidden   =  node_hidden_list[i];
-        let     node_path = _dom_hide_get_node_path( node_hidden );
+        let     node_path = t_util.get_node_path( node_hidden );
 if(log_this) log("...node_path=["+node_path+"]");
-        node_to_hide_csv = csv_add(node_to_hide_csv, node_path);
+        node_to_hide_csv = t_util.csv_add(node_to_hide_csv, node_path);
         hidden_count += 1;
     }
 if(log_this) log("...hidden_count=["+hidden_count+"]");
@@ -1222,9 +1351,9 @@ if(log_this) log("...hidden_count=["+hidden_count+"]");
     let                      node_mask_list = document.querySelectorAll("."+NODE_TO_HIDE_MASK);
     for(let i = 0;      i <  node_mask_list.length; ++i) {
         let node_hidden   =  node_mask_list[i].node_hidden;
-        let     node_path = _dom_hide_get_node_path( node_hidden );
+        let     node_path = t_util.get_node_path( node_hidden );
 if(log_this) log("...node_path=["+node_path+"]");
-        node_to_hide_csv = csv_add(node_to_hide_csv, node_path);
+        node_to_hide_csv = t_util.csv_add(node_to_hide_csv, node_path);
         masked_count += 1;
     }
 if(log_this) log("...masked_count=["+masked_count+"]");
@@ -1234,14 +1363,13 @@ if(log_this) log("...masked_count=["+masked_count+"]");
     dom_hide2_store_save();
 
     /*}}}*/
-if(log_this) _dom_hide_csv_dump(caller);
+if(log_this) _dom_hide_csv_dump();
 };
 /*}}}*/
-
-/* history */
+/*}}}*/
+/* HISTORY */ /*{{{*/
 /*{{{*/
 let node_to_hide_csv_STACK = [];
-let node_to_hide_csv_pushed_last_on_top;
 
 /*}}}*/
 /*   _dom_hide_csv_stack_clear_history {{{*/
@@ -1274,16 +1402,16 @@ if( log_this) log("%c"+caller+"(%c "+reason+"):"
 
 if( log_this) log("...%c HISTORY FREEZED BY "+ _dom_hide_freeze_history_caller, lbH+lf8);
     }
-    else if(node_to_hide_csv == node_to_hide_csv_pushed_last_on_top)
+    else if(    (                       node_to_hide_csv_STACK.length > 0)
+             && (node_to_hide_csv_STACK[node_to_hide_csv_STACK.length - 1] == node_to_hide_csv))
     {
 
 if( log_this) log("...%c ALREADY ON TOP OF STACK", lbH+lf3);
     }
     else {
-        node_to_hide_csv_STACK.push( node_to_hide_csv   );
-        node_to_hide_csv_pushed_last_on_top = node_to_hide_csv;
+        node_to_hide_csv_STACK.push( node_to_hide_csv );
 
-if( log_this) csv_log(node_to_hide_csv,csv_count(node_to_hide_csv)+" NODES PUSHED ON TOP OF STACK");
+if( log_this) t_util.csv_log(node_to_hide_csv,t_util.csv_count(node_to_hide_csv)+" NODES PUSHED ON TOP OF STACK");
     }
     /*}}}*/
 };
@@ -1297,13 +1425,13 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller+" %c "+reason, lbL+lf3,lbR+lf3);
 /*{{{
-csv_log(node_to_hide_csv, "node_to_hide_csv");
+t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
 }}}*/
 /*}}}*/
     /* [HISTORY BACK] OR [LAST DROPPED] {{{*/
     let popped_csv = node_to_hide_csv_STACK.pop() || "";
 /*{{{
-csv_log(popped_csv, "popped_csv")
+t_util.csv_log(popped_csv, "popped_csv")
 }}}*/
 
     if(popped_csv) {
@@ -1314,11 +1442,11 @@ if(log_this) log("%c HISTORY BACK", lbH+lf7);
     else {
 if(log_this) log("%c LAST DROPPED", lbH+lf3);
 
-        node_to_hide_csv = csv_del_last(node_to_hide_csv);
+        node_to_hide_csv = t_util.csv_del_last(node_to_hide_csv);
     }
 
 /*{{{
-csv_log(node_to_hide_csv, "node_to_hide_csv");
+t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
 }}}*/
     /*}}}*/
     /* STORE CSV {{{*/
@@ -1356,9 +1484,9 @@ let _dom_hide_csv_to_html = function(csv)
             path += indent
                 +   "<em class='cc"+(  p_count)+"'>"+ parent +"</em><em class='sup cc"+(num % 10)+"'>"+num+"</em>"
                 +  " <em class='cc"+(++p_count)+"'>"+ child  +"</em>"
-                +  "<br>"+LF
+                +  "<br>"+t_data.LF
             ;
-            indent += SYMBOL_RIGHT_ARROW;
+            indent += t_data.SYMBOL_RIGHT_ARROW;
         }
         html += path+"<br>";
     }
@@ -1397,7 +1525,7 @@ let log_this = LOG_MAP.T3_LAYOUT;
 if( log_this) log(caller);
 /*}}}*/
     _dom_hide_highlight_last_hidden_timer = null;
-    let         count = csv_count( node_to_hide_csv );
+    let         count = t_util.csv_count( node_to_hide_csv );
 /*{{{
 logXXX("count=["+count+"]");
 }}}*/
@@ -1408,158 +1536,31 @@ logXXX("node_to_hide_csv=["+node_to_hide_csv+"]");
 
     let node_list = document.querySelectorAll("."+LAST_HIDDEN);
     for(let i=0; i < node_list.length; ++i)
-        del_el_class(node_list[i], LAST_HIDDEN);
+        t_util.del_el_class(node_list[i], LAST_HIDDEN);
 
-    let     node_path = csv_get(node_to_hide_csv, count);
+    let     node_path = t_util.csv_get(node_to_hide_csv, count);
 /*{{{
 logXXX("node_path=["+node_path+"]");
 }}}*/
-    let          node = _dom_hide_get_node_path_target(node_path);
+    let          node = t_util.get_node_path_target(node_path);
     if(!node) return;
 
 /*{{{
-console_dir(     node          , "NODE");
+t_log.console_dir(     node          , "NODE");
 }}}*/
-    add_el_class(node          , LAST_HIDDEN);
-    add_el_class(node.node_mask, LAST_HIDDEN);
+    t_util.add_el_class(node          , LAST_HIDDEN);
+    t_util.add_el_class(node.node_mask, LAST_HIDDEN);
 /*{{{
-console_dir(     node.node_mask, "MASK");
+t_log.console_dir(     node.node_mask, "MASK");
 }}}*/
 
-    _notify_hide_container(node, caller, "LAST HIDDEN "+get_id_or_tag(node));
+    _notify_hide_container(node, caller, "LAST HIDDEN "+t_util.get_id_or_tag(node));
 };
 /*}}}*/
-
-/* stringify */
-/*  _dom_hide_get_node_path {{{*/
-let _dom_hide_get_node_path = function( node )
-{
-    let node_path = "";
-    do {
-        if( node ) {
-            /* count preceding siblings */
-            let     child = node;
-            let       num = 1;
-/*{{{
-            while(child = child.previousElementSibling) num += 1;
-}}}*/
-            for(num = 1; (node.parentElement) && (num <= node.parentElement.children.length); ++num)
-            {
-                if(node.parentElement.children[num-1] == node) {
-/*{{{
-logXXX("...(node.parentElement == node.parentNode)=["+(node.parentElement == node.parentNode)+"]")
-console.dir(node.parentElement)
-logXXX("%c "+num+" of "+_dom_hide_get_id_or_tag(node.parentElement), lbb+lbH+lf7)
-console.dir(node)
-}}}*/
-                    break;
-                }
-            }
-
-            let   tag_num_str = _dom_hide_tag_num_to_str(node, num);
-/*{{{
-logXXX("_dom_hide_get_node_path: tag_num_str=["+tag_num_str+"]")
-}}}*/
-            node_path = csv_ins(node_path, tag_num_str);
-
-            node = node.parentElement;
-        }
-    }
-    while(    node
-          && (node != document.body)
-          && (node != document.documentElement)
-         );
-
-    return comma_to_vbar( node_path );
-};
 /*}}}*/
-/*  _dom_hide_get_node_path_target {{{*/
-let _dom_hide_get_node_path_target = function(node_path, log_num=8)
-{
-/*{{{*/
-let caller = "_dom_hide_get_node_path_target";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller);
-if( log_this) log(caller+"("+node_path+")");
-/*}}}*/
-    /* LOG {{{*/
-    let args = [""]; let s = "";
-    if( log_this) {
-        let lfn = lfX[log_num % 10];
-
-        s += "%c"+log_num; args.push(/*lbb+*/lfn);
-    }
-    /*}}}*/
-    let node_tag_num_array = node_path.split("|");   /* pre_0 | div_2 */
-    let          node = document.body;
-    for(let s_num = 1; s_num <= node_tag_num_array.length; ++s_num)
-    {
-        let  node_tag_num = _dom_hide_str_to_tag_num( node_tag_num_array[s_num-1] );
-        let       tag     = node_tag_num.tag;
-        let           num = node_tag_num.num;
-        /* LOG {{{*/
-        if( log_this) {
-            s      +=     " %c "+tag+" %c"+num;
-
-            let lfs = lfX[s_num % 10];
-            args.push( lbL+lfs);
-            args.push(            lbR+lfs);
-        }
-        /*}}}*/
-        if( !(node = node.children[num-1]) ) break;
-    }
-    /* LOG {{{*/
-    if( log_this ) {
-        let lfs = lfX[(1 + node_tag_num_array.length) % 10];
-        s      +=  "%c"+_dom_hide_get_id_or_tag(node); args.push(/*lbb+*/lbH+lfs);
-        args[0] = s;
-        console.log.apply(console, Array.prototype.slice.call(args));
-    }
-    /*}}}*/
-if(log_this/*|| !node*/) logXXX("%c "+caller+"("+node_path+"): return "+ _dom_hide_get_id_or_tag(node), lbb+lbH+lf7);
-    return node;
-};
-/*}}}*/
-/*  _dom_hide_tag_num_to_str - (USAE _dom_hide_get_id_or_tag) {{{*/
-let _dom_hide_tag_num_to_str = function(child, num)
-{
-/*{{{
-    let  child_label = _dom_hide_get_id_or_tag( child               );
-    let parent_label = _dom_hide_get_id_or_tag( child.parentElement );
-
-    let  child_label = child              .tagName;
-    let parent_label = child.parentElement.tagName;
-}}}*/
-    let  child_label = _dom_hide_get_id_or_tag(child              );
-    let parent_label = _dom_hide_get_id_or_tag(child.parentElement);
-
-    return    num                       /* 0 num    */
-        +" "+ child_label               /* 1 child  */
-        +   " of"                       /* 2 of     */
-        +" "+ parent_label              /* 3 parent */
-    ;
-};
-/*}}}*/
-/*  _dom_hide_str_to_tag_num {{{*/
-let _dom_hide_str_to_tag_num = function( node_tag_num )
-{
-    let words = node_tag_num.split(" ");
-
-    let num   = parseInt( words[0]);    /* 0 num   */
-    /* ----------------------------------- 1 child */
-    /* ----------------------------------- 2 of    */
-    let tag   =           words[3] ;    /* 3 tag   */
-/*
-logXXX("_dom_hide_str_to_tag_num("+node_tag_num+") ...return { tag:"+tag+" , num:"+num+" }")
-*/
-    return { tag:tag , num:num };
-};
-/*}}}*/
-
-/* log */
+/* LOG */ /*{{{*/
 /* _dom_hide_csv_dump {{{*/
-let _dom_hide_csv_dump = function(_caller)
+let _dom_hide_csv_dump = function()
 {
     if(!node_to_hide_csv) return;
 
@@ -1568,17 +1569,55 @@ let _dom_hide_csv_dump = function(_caller)
     {
         let     node_path = node_to_hide_csv_array[n_num-1];
 
-        _dom_hide_get_node_path_target(node_path, n_num);
+        t_util.get_node_path_target(node_path, n_num);
     }
 };
 /*}}}*/
-/* _dom_hide_get_id_or_tag {{{ */
-let _dom_hide_get_id_or_tag = function(el)
-{
-    if(!el) return "null_node";
-    return el.id || el.tagName;
-};
 /*}}}*/
 
-/* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PRIVATE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ }}}*/
+/* EXPORT */
+/*{{{*/
+return { name : "dom_hide"
+    , logging : function(value) { if(value != undefined) DOM_HIDE_LOG = value; dom_store.t_store_set_value("DOM_HIDE_LOG", DOM_HIDE_LOG); return DOM_HIDE_LOG; }
+    , tagging : function(value) { if(value != undefined) DOM_HIDE_TAG = value; dom_store.t_store_set_value("DOM_HIDE_TAG", DOM_HIDE_TAG); return DOM_HIDE_TAG; }
+    , t_hide_IMPORT
+
+    ,    get_node_to_hide_csv_count : function() { return loaded_site_csv_count + loaded_page_csv_count; }
+
+    /* DOM_HIDE1_SELECT */
+    ,    dom_hide1_collect_nodes
+    ,    dom_hide1_container_clicked
+    ,    dom_hide1_reset
+
+    /* DOM_HIDE2_STORE */
+    ,    dom_hide2_store_reload
+    ,    dom_hide2_store_save
+
+    /* DOM_HIDE3_OR_MASK */
+    ,    dom_hide_set_MASK_OR_HIDE
+
+    /* DOM_HIDE4_SCROLL */
+    ,    dom_hide4_scroll_to_last_hidden
+    ,    dom_hide4_scroll_to_last_hidden_handled_recently
+    ,    dom_hide4_scroll_to_last_hidden_is_pending
+
+    /* DOM_HIDE5_START_HISTORY */
+    ,    dom_hide5_start_history
+
+    /* DOM_HIDE6_OBSERVERS */
+    ,    dom_hide6_add_container_observer
+    ,    dom_hide6_add_info_observer
+    ,    dom_hide6_add_t_store_set_value_observer
+
+    /* DOM_HIDE8_LOG */
+    ,    dom_hide_log_settings
+
+    /* YET UNUSED */
+    ,    _dom_hide_is_at_xy
+
+};
+
+/*}}}*/
+
+}());
 

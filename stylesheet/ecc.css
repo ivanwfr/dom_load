@@ -1,0 +1,41 @@
+
+#ecc_css_tag  { content: "ecc_css (200330:16h)"; }
+
+/* fg1..fg0 {{{*/
+.fg1 {            color : rgba(150,  75,   0, 1) !important; }
+.fg2 {            color : rgba(255,   0,   0, 1) !important; }
+.fg3 {            color : rgba(255, 165,   0, 1) !important; }
+.fg4 {            color : rgba(255, 255,   0, 1) !important; }
+.fg5 {            color : rgba(154, 205,  50, 1) !important; }
+.fg6 {            color : rgba(100, 149, 237, 1) !important; }
+.fg7 {            color : rgba(238, 130, 238, 1) !important; }
+.fg8 {            color : rgba(160, 160, 160, 1) !important; }
+.fg9 {            color : rgba(255, 255, 255, 1) !important; }
+.fg0 {            color : rgba(  0,   0,   0, 1) !important; }
+
+/*}}}*/
+/* bg1..bg0 {{{*/
+.bg1 { background-color: rgba(150,  75,   0, .7) !important; }
+.bg2 { background-color: rgba(255,   0,   0, .7) !important; }
+.bg3 { background-color: rgba(255, 165,   0, .7) !important; }
+.bg4 { background-color: rgba(255, 255,   0, .7) !important; }
+.bg5 { background-color: rgba(154, 205,  50, .7) !important; }
+.bg6 { background-color: rgba(100, 149, 237, .7) !important; }
+.bg7 { background-color: rgba(238, 130, 238, .7) !important; }
+.bg8 { background-color: rgba(160, 160, 160, .7) !important; }
+.bg9 { background-color: rgba(255, 255, 255, .7) !important; }
+.bg0 { background-color: rgba(128, 128, 128, .7) !important; }
+
+/*}}}*/
+/* lbH lbL lbC lbR {{{*/
+.lfs                    { font-size        : 50%  ; }
+.lfs                    { vertical-align   : super; }
+
+.lbH, .lbL, .lbC, .lbR  { white-space      : nowrap               ; }
+.lbH, .lbL, .lbC, .lbR  { line-height      : 1.6em                ; }
+.lbH, .lbL, .lbC, .lbR  { background-color : rgba(136,136,136,0.3); }
+.lbR, .lbL, .lbC, .lbH  { border-radius    : 1em 1em 1em 1em      ; }
+.lbH, .lbL, .lbC, .lbR  { border           : 1px solid gray       ; }
+.lbH, .lbL, .lbC, .lbR  { padding          : 0 0.5em 0 0.5em      ; }
+/*}}}*/
+

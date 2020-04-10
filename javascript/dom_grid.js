@@ -1,16 +1,163 @@
-"use strict";
 /* dom_grid_js */
-let DOM_GRID_JS_ID          = 'dom_grid_js';
-let DOM_GRID_JS_TAG         = DOM_GRID_JS_ID    +' (181229:17h)';
+/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+const DOM_GRID_JS_ID        = "dom_grid_js";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (200211:16h)";
+let dom_grid    = (function() {
+"use strict";
+/* JSHint {{{*/
+/* globals dom_data, dom_log, dom_util, dom_store, dom_tools */
+/*
+:1,$y *
+:!start explorer https://jshint.com/
+*/
+/*}}}*/
+let   DOM_GRID_LOG          = false;
+let   DOM_GRID_TAG          = false;
 
-/*_ {{{*/
+/* IMPORT */
+/*{{{*/
+/*➔ t_grid_IMPORT {{{*/
+/* t_data .. t_tools {{{*/
+/*....................................*/
+let t_data     = {}        ;    /* 05 */
+let t_log      = {}        ;    /* 06 */
+let t_util     = {}        ;    /* 07 */
+/*  t_prop     = {}        ; */ /* 08 */
+/*  t_store    = {}        ; */ /* 09 */
+/*  t_fly      = {}        ; */ /* 10 */
+/* ...................................*/
+/*  t_wording  = {}        ; */ /* 11 */
+/*  t_select   = {}        ; */ /* 12 */
+/*  t_slot     = {}        ; */ /* 13 */
+/* ...................................*/
+/*  t_hide     = {}        ; */ /* 14 */
+/*  t_view     = {}        ; */ /* 15 */
+/*  t_sticky   = {}        ; */ /* 16 */
+/*  t_seek     = {}        ; */ /* 17 */
+/*  t_share    = {}        ; */ /* 18 */
+/* ...................................*/
+/*  t_grid     = {}        ; */ /* 19 */
+/*  t_gutter   = {}        ; */ /* 20 */
+/* ...................................*/
+/*  t_ipc      = {}        ; */ /* 21 */
+let t_tools    = {}        ;    /* 22 */
+/*....................................*/
+/*}}}*/
+let t_grid_IMPORT  = function(log_this)
+{
+/* t_data .. t_tools {{{*/
+/* ...................................*/
+    t_data    = dom_data   ;    /* 05 */
+    t_log     = dom_log    ;    /* 06 */
+    t_util    = dom_util   ;    /* 07 */
+/*  t_prop    = dom_prop   ; */ /* 08 */
+/*  t_store   = dom_store  ; */ /* 09 */
+/*  t_fly     = dom_fly    ; */ /* 10 */
+/* ...................................*/
+/*  t_wording = dom_wording; */ /* 11 */
+/*  t_select  = dom_select ; */ /* 12 */
+/*  t_slot    = dom_slot   ; */ /* 13 */
+/* ...................................*/
+/*  t_hide    = dom_hide   ; */ /* 14 */
+/*  t_view    = dom_view   ; */ /* 15 */
+/*  t_sticky  = dom_sticky ; */ /* 16 */
+/*  t_seek    = dom_seek   ; */ /* 17 */
+/*  t_share   = dom_share  ; */ /* 18 */
+/* ...................................*/
+/*  t_grid    = dom_grid   ; */ /* 19 */
+/*  t_gutter  = dom_gutter ; */ /* 20 */
+/* ...................................*/
+/*  t_ipc     = dom_ipc    ; */ /* 21 */
+    t_tools   = dom_tools  ;    /* 22 */
+/* ...................................*/
+/*}}}*/
+    grid_INTERN();
+    /* MODULE LOGGING TAGGING {{{*/
+    DOM_GRID_LOG = DOM_GRID_LOG || dom_store.t_store_getBool("DOM_GRID_LOG");
+    DOM_GRID_TAG = DOM_GRID_TAG || dom_store.t_store_getBool("DOM_GRID_TAG");
+
+    /*}}}*/
+if(log_this) log("%c 19 grid", lbH+lf9);
+};
+/*}}}*/
+/*_   grid_INTERN {{{*/
+/* t_log t_tools {{{*/
+
+/* t_log */
+let LOG_MAP;
+
+let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
+let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
+let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
+
+let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
+
+/* t_tools */
+let hotspot;
+let dom_grid_html;
+
+/* t_data */
+let CSS_HIDDEN;
+let CSS_ON_GRID;
+let ZINDEX_ON_GRID;
+
+/*}}}*/
+let   grid_INTERN = function()
+{
+    /* t_log {{{*/
+    LOG_MAP = t_log.LOG_MAP;
+
+    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
+    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
+    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+
+    log                 = t_log.functions.log;
+    logBIG              = t_log.functions.logBIG;
+    logXXX              = t_log.functions.logXXX;
+    log_caller          = t_log.functions.log_caller;
+    log_json_one_liner  = t_log.functions.log_json_one_liner;
+    log_key_val         = t_log.functions.log_key_val;
+    log_key_val_group   = t_log.functions.log_key_val_group;
+    /*}}}*/
+    /* t_tools {{{*/
+    hotspot                     = t_tools.t_get_tool("hotspot");
+    dom_grid_html               = t_tools.t_get_tool("dom_grid_html");
+
+    /*}}}*/
+    /* t_data {{{*/
+    CSS_HIDDEN                  = t_data.CSS_HIDDEN;
+    CSS_ON_GRID                 = t_data.CSS_ON_GRID;
+    ZINDEX_ON_GRID              = t_data.ZINDEX_ON_GRID;
+
+    /*}}}*/
+    grid_DEPEND();
+};
+/*}}}*/
+/*_   grid_DEPEND {{{*/
+/*{{{*/
+
+/*}}}*/
+let   grid_DEPEND = function()
+{
+
+};
+/*}}}*/
+/*}}}*/
+
+/* GRID const */
+/*{{{*/
 const GRID_CAPTION    = "grid_caption";
-const GRID_MARGIN_TOP = 180;
 
 /*}}}*/
 
 /* GRID TOOLS */
-/*_ t_grid_TOOLS_SELECT {{{ */
+/*_ get_tools_map {{{*/
+let get_tools_map = function()
+{
+    return t_tools.t_tools_get_map();
+};
+    /*}}}*/
+/*➔ t_grid_TOOLS_SELECT {{{ */
 let t_grid_TOOLS_SELECT = function(e)
 {
     /* GRID_CAPTION {{{*/
@@ -18,11 +165,11 @@ let t_grid_TOOLS_SELECT = function(e)
 let log_this = LOG_MAP.T2_GRID;
 
     let caller = "t_grid_TOOLS_SELECT";
-    let     el = t_get_event_target(e);
+    let     el = t_tools.t_get_event_target(e);
     let     caption = el.classList.contains(GRID_CAPTION) ? el : el.parentNode;
-if(log_this) log(caller+": el=["+get_n_lbl(el)+"]");
+if(log_this) log(caller+": el=["+t_util.get_n_lbl(el)+"]");
 /*
-if(log_this) log("...caption..........=["+ get_n_lbl(caption) +"]");
+if(log_this) log("...caption..........=["+ t_util.get_n_lbl(caption) +"]");
 if(log_this) log("...caption........id=["+ caption.id         +"]");
 if(log_this) log("...caption.classList=["+ caption.classList  +"]");
 */
@@ -32,24 +179,26 @@ if(log_this) log("...caption.classList=["+ caption.classList  +"]");
     if( e.preventDefault ) { e.preventDefault();        actions += " preventDefault" ; }
     if( e.stopPropagation) { e.stopPropagation();       actions += " stopPropagation"; }
     /*else*/               { e.cancelBubble = true;     actions += " cancelBubble"   ; }
-log_this = logging_something();;
+log_this = t_log.logging_something();
 if(log_this) log(caller+": ...actions=["+actions+" ]");
 
     /*}}}*/
-    t_grid_TOOLS_SELECT_caption( caption );
+    grid_TOOLS_SELECT_caption( caption );
 };
 /* }}} */
-/*_ t_grid_TOOLS_SELECT_caption {{{*/
-let t_grid_TOOLS_SELECT_caption = function(caption)
+/*… grid_TOOLS_SELECT_caption {{{*/
+let grid_TOOLS_SELECT_caption = function(caption)
 {
     /*{{{*/
-    let caller = "t_grid_TOOLS_SELECT_caption";
+    let caller = "grid_TOOLS_SELECT_caption";
 let log_this = LOG_MAP.T2_GRID;
 
-if(log_this) log(caller+": caption=["+get_n_lbl(caption)+"]");
+if(log_this) log(caller+": caption=["+t_util.get_n_lbl(caption)+"]");
 if(log_this) log("...caption.id=["+caption.id+"]");
     /*}}}*/
     /* SELECTING - DESELECTING {{{*/
+    let tools_map = get_tools_map();
+
     for(let i=0; i< tools_map.length; ++i)
     {
         let   map = tools_map[i];
@@ -59,23 +208,26 @@ if(log_this) log("...caption.id=["+caption.id+"]");
 if(log_this) log("...caption_id=["+caption_id+"]");
         if(caption_id == caption.id) {
             t_grid_TOOLS_SELECT_panel(panel, "toggle");
-            t_grid_caption_sync_opacity(map.selected, caption);
+            grid_caption_sync_opacity(map.selected, caption);
+/*{{{
+            grid_caption_sync_opacity(t_tools_panel_is_selected(panel), caption);
+}}}*/
             break;
         }
     }
     /*}}}*/
 };
 /*}}}*/
-/*_ t_grid_TOOLS_SELECT_panel {{{*/
+/*➔ t_grid_TOOLS_SELECT_panel {{{*/
 let t_grid_TOOLS_SELECT_panel = function(panel,new_state="toggle")
 {
-    let caller = "t_grid_TOOLS_SELECT_panel("+get_n_lbl(panel)+", "+new_state+")";
+    let caller = "t_grid_TOOLS_SELECT_panel("+t_util.get_n_lbl(panel)+", "+new_state+")";
 let log_this = LOG_MAP.T2_GRID;
 
 if( log_this) log(caller);
 
     /* check current panel selection state */
-    let      map  = tools_map_get(panel);
+    let      map  = t_tools.t_tools_map_get(panel);
 
     if(new_state == "toggle") new_state = !map.selected;
 
@@ -87,27 +239,28 @@ if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
         map.selected = new_state;
 if(log_this) log("... %c "+(map.selected ? "SELECTING" : "DESELECTING") + ": "+panel.id, lbF+(map.selected ? lb4 : lb1));
 
-        store_set_state(panel.id+".selected", map.selected);
-
-        t_cache_init_by(caller);
+        t_tools.t_cache_init_by(caller);
     }
 };
 /*}}}*/
 
 /* GRID SELECT */
-/*_ t_grid_caption_layout {{{*/
-let t_grid_caption_layout = function(num, panel_id, x, y, el)
+/*… grid_caption_layout {{{*/
+let grid_caption_layout = function(num, panel, x, y)
 {
-    /* create or get caption element {{{*/
-    let caller = "t_grid_caption_layout(num="+num+", panel_id="+panel_id+", x="+x+", y="+y+", el="+el.panel_id+")";
+/*{{{*/
+let caller = "grid_caption_layout(num="+num+" .. "+panel.id+" .. xy=["+x+" "+y+"])";
 let log_this = LOG_MAP.T2_GRID;
-if( log_this) log(caller);
 
-    let           gl = t_getElement(panel_id+"_"+GRID_CAPTION);
+if( log_this) log(caller);
+/*}}}*/
+    /* create or get caption element {{{*/
+    let  shadow_root = t_tools.t_get_shadow_root();
+    let           gl = grid_getElement(panel.id+"_"+GRID_CAPTION);
     if(!gl) {
         gl           = document.createElement("EM");
-        gl.       id = panel_id+"_"+GRID_CAPTION;
-        gl.    title = panel_id;
+        gl.       id = panel.id+"_"+GRID_CAPTION;
+        gl.    title = panel.id;                    /* tooltip */
         gl.className = GRID_CAPTION;
 
         if     (dom_grid_html) { dom_grid_html.appendChild(gl); if(log_this) log("dom_grid_html: "+caller); }
@@ -119,7 +272,13 @@ if( log_this) log(caller);
     }
     /*}}}*/
     /* show control ID {{{*/
-    gl.innerHTML       = num+" <em>"+panel_id+"</em>";
+    let ccx = (num % 10);
+    gl.innerHTML
+        = "<em class='cc"+ccx+"'>"+ num                             +"</em>"
+        + "<em class='cc"+ccx+"'>"+ t_util.get_id_caption(panel.id) +"</em>"
+        + "<em class='cc"+ccx+"'>"+                       panel.id  +"</em>"
+    ;
+
     gl.style.zIndex    = ZINDEX_ON_GRID;
     gl.style.position  = "fixed";
     gl.style.left      = (x      )+"px";
@@ -127,36 +286,38 @@ if( log_this) log(caller);
     /*}}}*/
     /* Caption layout {{{*/
     gl.style.top       = (y      )+"px";
-    gl.style.maxHeight = grid_sized ? (t_gh-t_mg)+"px" : el.clientHeight+"px";
-    gl.style.maxWidth  = grid_sized ? (t_gw-t_mg)+"px" : el.clientWidth +"px";
-    gl.style.minHeight = grid_sized ? (t_gh-t_mg)+"px" : el.clientHeight+"px";
-    gl.style.minWidth  = grid_sized ? (t_gw-t_mg)+"px" : el.clientWidth +"px";
+    gl.style.maxHeight = grid_sized ? (t_gh-t_mg)+"px" : panel.clientHeight+"px";
+    gl.style.maxWidth  = grid_sized ? (t_gw-t_mg)+"px" : panel.clientWidth +"px";
+    gl.style.minHeight = grid_sized ? (t_gh-t_mg)+"px" : panel.clientHeight+"px";
+    gl.style.minWidth  = grid_sized ? (t_gw-t_mg)+"px" : panel.clientWidth +"px";
 
     /*}}}*/
     return gl;
 };
 /*}}}*/
-/*_ t_grid_caption_hide_all {{{*/
-let t_grid_caption_hide_all = function()
+/*… grid_caption_hide_all {{{*/
+let grid_caption_hide_all = function()
 {
-    let caller = "t_grid_caption_hide_all";
+    let caller = "grid_caption_hide_all";
 let log_this = LOG_MAP.T2_GRID;
 if( log_this) log(caller);
 
+    let tools_map = get_tools_map();
+
     for(let i=0; i< tools_map.length; ++i)
     {
-        let   map = tools_map[i];
-        let panel =       map.panel;
+        let   map  = tools_map[i];
+        let panel  =       map.panel;
         if( panel == hotspot) continue;
-        let    gl  = t_getElement(panel.id+"_"+GRID_CAPTION);
+        let    gl  = grid_getElement(panel.id+"_"+GRID_CAPTION);
         if(!gl)  continue;
         gl.classList.remove("grid_caption_show");
         gl.classList.add   ("grid_caption_hide");
     }
 };
 /*}}}*/
-/*_ t_grid_caption_sync_opacity {{{*/
-let t_grid_caption_sync_opacity = function(selected, gl)
+/*… grid_caption_sync_opacity {{{*/
+let grid_caption_sync_opacity = function(selected, gl)
 {
     if(selected) gl.classList.add   ("grid_caption_see_through");
     else         gl.classList.remove("grid_caption_see_through");
@@ -164,60 +325,60 @@ let t_grid_caption_sync_opacity = function(selected, gl)
 /*}}}*/
 
 /* GRID EVENTS */
-/*_ t_grid_onresize {{{*/
-const T_GRID_ONRESIZE_DELAY = 500;
-let t_grid_onresize_timer   = null;
+/*➔ t_grid_onresize {{{*/
+const GRID_ONRESIZE_DELAY = 500;
+let   grid_onresize_timer = null;
 
-let t_grid_onresize  = function(caller)
+let t_grid_onresize = function(caller)
 {
 let log_this = LOG_MAP.T2_GRID;
 if( log_this) log("t_grid_onresize(caller "+caller+")");
 
-    if(t_grid_onresize_timer) clearTimeout(t_grid_onresize_timer);
-    t_grid_onresize_timer   = setTimeout  (t_grid_onresize_handle, T_GRID_ONRESIZE_DELAY);
+    if(grid_onresize_timer) clearTimeout(grid_onresize_timer);
+    grid_onresize_timer   = setTimeout  (grid_onresize_handle, GRID_ONRESIZE_DELAY);
 };
 
-let t_grid_onresize_handle = function()
+let grid_onresize_handle = function()
 {
-    let caller = "t_grid_onresize_handle";
+    let caller = "grid_onresize_handle";
 
     if( t_grid_IS_ON_GRID(caller) )
-        _t_grid_LAYOUT_ON();
+        grid_LAYOUT_ON();
 
-    t_grid_onresize_timer = null;
+    grid_onresize_timer = null;
 
     t_grid_onWork_EL_changed(caller);
 };
 /*}}}*/
-/*_ t_grid_onWork_EL_changed {{{*/
+/*➔ t_grid_onWork_EL_changed {{{*/
 /*{{{*/
-const T_GRID_ONWORK_EL_CHANGED_TIMER_DELAY = 500;
-let   t_grid_onWork_EL_changed_timer       = null;
+const GRID_ONWORK_EL_CHANGED_TIMER_DELAY = 500;
+let   grid_onWork_EL_changed_timer       = null;
 
 /*}}}*/
 /*_ t_grid_onWork_EL_changed {{{*/
 let t_grid_onWork_EL_changed = function(caller)
 {
 if(LOG_MAP.T2_GRID) log("t_grid_onWork_EL_changed(caller "+caller+")");
-    if(t_grid_onWork_EL_changed_timer) clearTimeout(t_grid_onWork_EL_changed_timer);
-    t_grid_onWork_EL_changed_timer   = setTimeout  (t_grid_onWork_EL_changed_handler, T_GRID_ONWORK_EL_CHANGED_TIMER_DELAY);
+    if(grid_onWork_EL_changed_timer) clearTimeout(grid_onWork_EL_changed_timer);
+    grid_onWork_EL_changed_timer   = setTimeout  (grid_onWork_EL_changed_handler, GRID_ONWORK_EL_CHANGED_TIMER_DELAY);
 };
 /*}}}*/
-/*_ t_grid_onWork_EL_changed_handler {{{*/
-let t_grid_onWork_EL_changed_handler = function()
+/*_ grid_onWork_EL_changed_handler {{{*/
+let grid_onWork_EL_changed_handler = function()
 {
-    let caller = "t_grid_onWork_EL_changed_handler";
+    let caller = "grid_onWork_EL_changed_handler";
 if(LOG_MAP.T2_GRID) log("%c "+caller+": LOG_MAP.T2_GRID=["+LOG_MAP.T2_GRID+"]",lb9+lbF);
     /* GRID LOGGING ON-OFF {{{*/
-    if(typeof t_get_onWork_EL_last_used == undefined) return;
+    if(typeof t_tools.t_get_onWork_EL_last_used == undefined) return;
 
-    let  el = t_getElement("headsup_l_check"); if(!el) return;
+    let el = grid_getElement("headsup_l_check"); if(!el) return;
 
     if(!LOG_MAP.T2_GRID) el.innerHTML="GRID LOGGING IS OFF";
 
     /*}}}*/
     /* [dom_grid_playground] {{{*/
-    let dom_grid_playground = t_getElement("dom_grid_playground");
+    let dom_grid_playground = grid_getElement("dom_grid_playground");
     if(dom_grid_playground) {
         if(!LOG_MAP.T2_GRID) dom_grid_playground.classList.add   ("collapsed");
         else                 dom_grid_playground.classList.remove("collapsed");
@@ -225,7 +386,7 @@ if(LOG_MAP.T2_GRID) log("%c "+caller+": LOG_MAP.T2_GRID=["+LOG_MAP.T2_GRID+"]",l
     /*}}}*/
     if(!LOG_MAP.T2_GRID) return;
     /* NOT SELECTED {{{*/
-    let ol = t_get_onWork_EL_last_used();
+    let ol = t_tools.t_get_onWork_EL_last_used();
     if(!ol) {
         el.innerHTML = "<em>onWork_EL</em> <em class='cc0'>NOT SELECTED</em>";
 
@@ -251,7 +412,7 @@ if(LOG_MAP.T2_GRID) log("%c "+caller+": LOG_MAP.T2_GRID=["+LOG_MAP.T2_GRID+"]",l
         t = "";
         w = window.innerWidth;
         h = window.innerHeight;
-}
+    }
 */
 
 /*
@@ -263,9 +424,9 @@ console.dir(ol);
 console.dir(style);
 */
     let info
-        = " transform    <em class='cc7'>"+ t                      +"</em> "
-        + " computed WxH <em class='cc8'>"+ w+" x "+h              +"</em> "
-        + " page height  <em class='cc7'>"+ get_page_height()      +"</em> "
+        = " transform    <em class='cc7'>"+ t               +"</em> "
+        + " computed WxH <em class='cc8'>"+ w+" x "+h       +"</em> "
+        + " page height  <em class='cc7'>"+ t_util.getPageHeight() +"</em> "
 /*
         + " margin [URDL]<em class='cc9'>"+ mU+" "+mR+" "+mD+" "+mL+"</em> "
 */
@@ -273,7 +434,7 @@ console.dir(style);
 
     el.innerHTML
         = "<table style='border-spacing:1em;'>"
-        + " <tr><th class='cc9' style='font-size:200%; font-weight:900;'>"+get_n_lbl(ol)+"</th> <td colspan='4'>"+info+"</td> </tr>"
+        + " <tr><th class='cc9' style='font-size:200%; font-weight:900;'>"+t_util.get_n_lbl(ol)+"</th> <td colspan='4'>"+info+"</td> </tr>"
         + " <tr><th>Offset</th> <td class='cc6'>"+ow  +"</td> <td>x</td> <td class='cc3'>"+oh+"</td> <td><span class='cc1'>+VIEWABLE</span> <span class='cc3'>+PADDING</span> <span class='cc4'>+BORDER</span> <span class='cc5'>+SCROLLBAR</span> <span class='ccA'>-margin</span><td></tr>"
         + " <tr><th>Client</th> <td class='cc7'>"+cw  +"</td> <td>x</td> <td class='cc4'>"+ch+"</td> <td><span class='cc1'>+VIEWABLE</span> <span class='cc3'>+PADDING</span> <span class='ccA'>-border</span> <span class='ccA'>-scrollbar</span> <span class='ccA'>-margin</span><td></tr>"
         + " <tr><th>Scroll</th> <td class='cc8'>"+sw  +"</td> <td>x</td> <td class='cc5'>"+sh+"</td> <td><span class='cc2'>+OVERFLOW</span> <span class='cc3'>+PADDING</span> <span class='ccA'>-border</span> <span class='ccA'>-scrollbar</span> <span class='ccA'>-margin</span><td></tr>"
@@ -283,9 +444,7 @@ console.dir(style);
 };
 /*}}}*/
 /*}}}*/
-/*_ t_grid_ON_OFF_CB {{{*/
-let t_grid_ON_CB     = function() { t_grid_ON_OFF_CB( true); };
-let t_grid_OFF_CB    = function() { t_grid_ON_OFF_CB(false); };
+/*➔ t_grid_ON_OFF_CB {{{*/
 let t_grid_ON_OFF_CB = function(new_state)
 {
     let caller = "t_grid_ON_OFF_CB("+new_state+")";
@@ -295,105 +454,79 @@ let log_this = LOG_MAP.T2_GRID;
     if(new_state == "toggle") new_state = !t_grid_IS_ON_GRID(caller);
 if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
 
-    if( new_state ) { if(typeof dimm_start != undefined) dimm_start(caller); }
-    else            { if(typeof dimm_stop  != undefined) dimm_stop (caller); }
+    if( new_state ) { if(typeof t_tools.t_dimm_start != undefined) t_tools.t_dimm_start(caller); }
+    else            { if(typeof t_tools.t_dimm_stop  != undefined) t_tools.t_dimm_stop (caller); }
 
-    if(!new_state )   t_update_TOOLS_MAP_GEOMETRY(caller); /* not when grid_sized */
+    if(!new_state )   t_tools.t_update_TOOLS_MAP_GEOMETRY(caller); /* not when grid_sized */
 
-    if( new_state ) { t_grid_SIZE_ON (); _t_grid_LAYOUT_ON (); }
-    else            { t_grid_SIZE_OFF(); _t_grid_LAYOUT_OFF(); }
+    if( new_state ) { grid_SIZE_ON (); grid_LAYOUT_ON (); }
+    else            { grid_SIZE_OFF(); grid_LAYOUT_OFF(); }
 
     call_t_grid_observers(new_state);
 
 };
 /*}}}*/
-/*_ t_grid_add_observer_callback {{{*/
+/*➔ t_grid_add_observer_callback {{{*/
 
-let t_grid_observer_callbacks = [];
+let grid_observer_callbacks = [];
 
 let t_grid_add_observer_callback = function(observer)
 {
-if(LOG_MAP.T2_GRID) console_log("t_grid_add_observer_callback("+(t_grid_observer_callbacks.length+1)+")");
+if(LOG_MAP.T2_GRID) t_log.console_log("t_grid_add_observer_callback("+(grid_observer_callbacks.length+1)+")");
 
-    if(!t_grid_observer_callbacks.includes( observer ))
-        t_grid_observer_callbacks.push    ( observer );
+    if(!grid_observer_callbacks.includes( observer ))
+        grid_observer_callbacks.push    ( observer );
 };
 
 let call_t_grid_observers = function(state)
 {
-if(LOG_MAP.T2_GRID) console_log("call_t_grid_observers("+state+")");
+if(LOG_MAP.T2_GRID) t_log.console_log("call_t_grid_observers("+state+")");
 
-    for(let i=0; i < t_grid_observer_callbacks.length; ++i)
-        t_grid_observer_callbacks[i]( state );
+    for(let i=0; i < grid_observer_callbacks.length; ++i)
+        grid_observer_callbacks[i]( state );
 };
 /*}}}*/
-/*_ t_grid_sized_sync {{{*/
-let t_grid_sized_sync = function(caller)
+/*… grid_sized_sync {{{*/
+let grid_sized_sync = function(caller)
 {
 let log_this = LOG_MAP.T2_GRID;
-if( log_this) log("%c t_grid_sized_sync: CALLED BY ["+caller+"] .. grid_sized=["+grid_sized+"]", lb3);
+if( log_this) log("%c grid_sized_sync: CALLED BY ["+caller+"] .. grid_sized=["+grid_sized+"]", lb3);
 
-    let n;
+    let tools_map = get_tools_map();
+
     for(let i=0; i< tools_map.length; ++i)
     {
         let   map = tools_map[i];
         let panel =       map.panel;
         if( panel == hotspot) continue;
         if(!panel           ) continue;
-        el = panel;
-/*
-log("..."+get_n_lbl(el)+": WH"
-    +"  style=["+el.style.width+" x "+el.style.height+"]"
-    +" client=["+el.clientWidth+" x "+el.clientHeight+"]"
-    +" offset=["+el.offsetWidth+" x "+el.offsetHeight+"]"
-    +" scroll=["+el.scrollWidth+" x "+el.scrollHeight+"]"
-    +"  xy_wh=["+    map.w+" x "+     map.h+"]"
-);
-*/
-/*
-console.dir(el);
-*/
-        el.style.maxHeight = grid_sized ? (t_gh-t_mg)+"px" : "";
-        el.style.maxWidth  = grid_sized ? (t_gw-t_mg)+"px" : "";
-        el.style.minHeight = grid_sized ? (t_gh-t_mg)+"px" : "";
-        el.style.minWidth  = grid_sized ? (t_gw-t_mg)+"px" : "";
-/*
-*/
-        /* clientWidth offsetWidth scrollWidth */
-/*
-        let scaleX  = grid_sized ? Math.min(t_gw/el.offsetWidth, t_gh/el.offsetHeight) : 1;
-        let scaleY  = scaleX;
-*/
-/*
-        let scaleY = grid_sized ?                              t_gh/el.offsetHeight  : 1;
-        let scaleX = grid_sized ?          t_gw/el.offsetWidth                       : 1;
 
-        let scaleY = grid_sized ?                              t_gh/map.h     : 1;
-        let scaleX = grid_sized ?          t_gw/map.w                         : 1;
-*/
-/*
-        let scaleY = grid_sized ?                              t_gh/panel.offsetHeight : 1;
-        let scaleX = grid_sized ?          t_gw/panel.offsetWidth                      : 1;
-        el.style.transform = "scale("+scaleX+","+scaleY+")";
-log("el=["+get_n_lbl(el)+"].style.transform=["+el.style.transform+"]");
-*/
-/*
-     if(grid_sized) el.style.animation = "on_grid_enter 200ms "+n+"00ms ease-out forwards";
-     else           el.style.animation = "on_grid_leave 200ms "+n+"00ms ease-out forwards";
-*/
-
+        if(grid_sized) {
+            panel.style.maxHeight = (t_gh-t_mg)+"px";
+            panel.style.maxWidth  = (t_gw-t_mg)+"px";
+            panel.style.minHeight = (t_gh-t_mg)+"px";
+            panel.style.minWidth  = (t_gw-t_mg)+"px";
+        }
+        else {
+            panel.style.maxHeight = "";
+            panel.style.maxWidth  = "";
+            panel.style.minHeight = "";
+            panel.style.minWidth  = "";
+        }
     }
 };
 /*}}}*/
 
 /* GRID SIZE */
-/*_ t_grid_SIZE_TOGGLE {{{*/
+/*➔ t_grid_SIZE_TOGGLE {{{*/
 let   grid_sized     = false;
 
 let t_grid_SIZE_TOGGLE = function(e)
 {
-    let caller = "t_grid_SIZE_TOGGLE("+get_n_lbl(e.target)+")";
-if(LOG_MAP.T2_GRID) console_log(caller);
+    let caller = "t_grid_SIZE_TOGGLE("+t_util.get_n_lbl(e.target)+")";
+if(LOG_MAP.T2_GRID) t_log.console_log(caller);
+
+    let tools_map = get_tools_map();
 
     if(!tools_map.length) return;
 
@@ -401,45 +534,46 @@ if(LOG_MAP.T2_GRID) console_log(caller);
     t_grid_MEASURE();
 
     /* TOOLS TOGGLE ON OR OFF GRID GEOMETRY */
-    if(grid_sized ) t_grid_SIZE_OFF();
-    else            t_grid_SIZE_ON ();
+    if(grid_sized ) grid_SIZE_OFF();
+    else            grid_SIZE_ON ();
 
     /* TOOLS TOGGLE ON OR OFF GRID LOCATION */
-    let el = tools_map[0].panel;
-    if( el.classList.contains("on_grid")) _t_grid_LAYOUT_ON();
-    else                                   t_grid_sized_sync("t_grid_SIZE_TOGGLE");
+    let panel = tools_map[0].panel;
+    if( panel.classList.contains("on_grid")) grid_LAYOUT_ON();
+    else                                     grid_sized_sync(caller);
 
 };
 /*}}}*/
-/*_ t_grid_IS_SIZED {{{*/
+/*➔ t_grid_IS_SIZED {{{*/
 let t_grid_IS_SIZED = function(caller)
 {
-if(LOG_MAP.T2_GRID) console_log("t_grid_IS_SIZED: ...return "+grid_sized+" .. caller=["+caller+"]");
+if(LOG_MAP.T2_GRID) t_log.console_log("t_grid_IS_SIZED: ...return "+grid_sized+" .. caller=["+caller+"]");
 
     return grid_sized;
 };
 /*}}}*/
-/*_ t_grid_IS_ON_GRID {{{*/
+/*➔ t_grid_IS_ON_GRID {{{*/
 let t_grid_IS_ON_GRID = function(_caller)
 {
 let log_this = LOG_MAP.T2_GRID;
 
-    if(!tools_map.length) t_load_TOOLS_MAP("t_grid_IS_ON_GRID");
+    let tools_map = get_tools_map();
+
+    if(!tools_map.length) t_tools.t_load_TOOLS_MAP("t_grid_IS_ON_GRID");
 
 if( log_this) log("%c t_grid_IS_ON_GRID %c CALLED BY "+_caller+" %c "+grid_sized, lbL, lbR, lbH+(grid_sized ? lf4 : lf8));
     return grid_sized;
 };
 /*}}}*/
-/*_ t_grid_SIZE_[ON/OFF/SET] {{{*/
-const GRID_SIZED      = "GRID SIZED";
-let t_grid_SIZE_ON    = function() { t_grid_SIZE_STATE(true ); };
-let t_grid_SIZE_OFF   = function() { t_grid_SIZE_STATE(false); };
-let t_grid_SIZE_STATE = function(state)
+/*… grid_SIZE_ON grid_SIZE_OFF grid_SIZE_STATE {{{*/
+let   grid_SIZE_ON    = function() { grid_SIZE_STATE(true ); };
+let   grid_SIZE_OFF   = function() { grid_SIZE_STATE(false); };
+let   grid_SIZE_STATE = function(state)
 {
-    let caller = "t_grid_SIZE_STATE("+state+")";
+    let caller = "grid_SIZE_STATE("+state+")";
 if(LOG_MAP.T2_GRID) log("%c "+caller,lb5+lbF);
 
-    let          checkbox         = t_getElement("headsup_l_size_checkbox");
+    let          checkbox         = grid_getElement("headsup_l_size_checkbox");
     if(checkbox) checkbox.checked = state;
 
     grid_sized = state;
@@ -451,131 +585,137 @@ if(LOG_MAP.T2_GRID) log("%c "+caller,lb5+lbF);
 /*}}}*/
 
 /* GRID LAYOUT */
-/*_ _t_grid_LAYOUT_OFF {{{*/
-let _t_grid_LAYOUT_OFF = function()
+/*… grid_LAYOUT_ON {{{*/
+let grid_LAYOUT_ON = function()
 {
-    let caller = "_t_grid_LAYOUT_OFF";
-if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
-
-    if(!tools_map  ) return;
-
-    let n = 1;
-    for(let i=0; i< tools_map.length; ++i)
-    {
-        let   map = tools_map[i];
-        let panel =       map.panel;
-        if( panel == hotspot) continue;
-        if(!panel           ) continue;
-        let    el = panel;
-
-        /* remove grid class */
-        el.classList.remove("on_grid");
-        if(!map.selected)
-            el.classList.add("hidden");
-/*
-        el.classList.remove("eso_div");
-*/
-        el.classList.remove("select"+n);
-
-        /* restore top-level saved position */
-        if(t_tools_loaded && is_a_tool_container(el))
-        {
-/*{{{
-logXXX("RESTORE SAVED POSITION=["+map.x+" "+map.y+"]")
-}}}*/
-            el.style.position = map.p     ;
-            el.style.left     = map.x+"px";
-            el.style.top      = map.y+"px";
-        }
-        else {
-            el.style.position = "initial";
-/*
-            el.style.left     = "initial";
-            el.style.top      = "initial";
-*/
-        }
-
-        n += 1;
-    }
-    /* restore size */
-    t_grid_sized_sync(caller);
-
-    /* hide grid caption */
-    t_grid_caption_hide_all();
-
-};
-/*}}}*/
-/*_ _t_grid_LAYOUT_ON {{{*/
-let _t_grid_LAYOUT_ON = function()
-{
-    let caller  = "_t_grid_LAYOUT_ON";
+/*{{{*/
+    let caller  = "grid_LAYOUT_ON";
 let log_this = LOG_MAP.T2_GRID;
+
+/*{{{
+t_log.console_clear(caller);
+}}}*/
 if(log_this) log("%c "+caller,lb9+lbF);
-    /* UPDATE GRID LAYOUT {{{*/
+/*}}}*/
+    /* UPDATE GRID CELL SIZE .. f(current window size) {{{*/
     t_grid_MEASURE();
 
     /*}}}*/
+    let tools_map = get_tools_map();
 
-    let   x = t_mw;
-    let   y = t_mh;
-    let num = 1;
+    let   num=0;
     for(let i=0; i< tools_map.length; ++i)
     {
+        /* save current off-grid position {{{*/
         let   map = tools_map[i];
         let panel =       map.panel;
         if( panel == hotspot) continue;
         if(!panel           ) continue;
-        let el = panel;
 
-/*if(log_this) console_log(num+" [xy_wh]=["+x+" "+y+"] ["+t_gw+"x"+t_gh+"] ["+el.id+"]");*/
+        map.x = panel.offsetLeft;
+        map.y = panel.offsetTop;
 
-        /* set on grid */
-        el.style.position = "fixed";
-        el.classList.remove("hidden" );
-        el.classList.add   ("on_grid");
-        el.classList.add   ("cc"+num );
-
-        map.x = el.offsetLeft;
-        map.y = el.offsetTop;
-
+        num += 1;
 /*{{{
 logXXX("%c"+caller+"%c "+panel.id+" %c "+map.x+" "+map.y, lbH, lbC+lf3, lbH+lf8);
 }}}*/
+        /*}}}*/
+        /* GRID CELL col row {{{*/
 
-        /* grid position */
-        el.style.left     = x+"px";
-        el.style.top      = y+"px";
+        let col = 1 + parseInt((num-1) % t_cols);
+        let row = 1 + parseInt((num-1) / t_rows);
 
-        /* grid caption show */
-        let gl = t_grid_caption_layout(num, panel.id, x, y, el);
+        let x      = t_mw + t_gw * (col-1);
+        let y      = t_mh + t_gh * (row-1)/* + t_gh * ((col-1)/10)*/;
+
+/*{{{*/
+if(log_this) log("%c "+num       +"%c col "+col+".."+t_cols+"%c row "+row+".."+t_rows+"%c"+panel.id
+                 ,lbH+lfX[num % 10], lbL+lfX[col]           , lbR+lfX[row]            ,lbH         );
+/*}}}*/
+        /*}}}*/
+        /* PANEL .. on  grid style .. show hidden panels {{{*/
+        panel.classList.remove( CSS_HIDDEN  );
+        panel.classList.add   ( CSS_ON_GRID );
+
+    /*  panel.classList.add   ("select"+num ); */
+        /*}}}*/
+        /* PANEL .. on grid layout {{{*/
+        panel.style.position     = "fixed";
+
+        panel.style.left         = x+"px";
+        panel.style.top          = y+"px";
+
+        panel.off_grid_transform = panel.style.transform; /* save off-grid layout property */
+        panel.style.transform    = "none";
+        /*}}}*/
+        /* CAPTION position and opacity .. f(selected) {{{*/
+        let gl = grid_caption_layout(num, panel, x, y);
         gl.classList.remove("grid_caption_hide");
         gl.classList.add   ("grid_caption_show");
 
-        /* grid caption opacity .. f(selected) */
-        t_grid_caption_sync_opacity(map.selected, gl);
+        grid_caption_sync_opacity(map.selected, gl);
+        /*}}}*/
+    }
+    /* sync grid size {{{*/
+    grid_sized_sync(caller);
 
-        /* next cell */
-/*if(log_this && ((num % t_rows)==0)) console_log("---");*/
-/*
-    let dx = Math.max(el.clientWidth , t_gw);
-*/
-        let dx =                           t_gw ;
-        x      = (num % t_cols) ? x + dx :     t_mw;
-        y      = (num % t_rows) ? y      : y + t_gh;
+    /*if(!grid_onresize_timer) t_grid_onresize(caller+"[repeat once]");*/
+
+    /*}}}*/
+};
+/*}}}*/
+/*… grid_LAYOUT_OFF {{{*/
+let grid_LAYOUT_OFF = function()
+{
+/*{{{*/
+    let caller = "grid_LAYOUT_OFF";
+if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
+
+    let tools_map = get_tools_map();
+    if(!tools_map  ) return;
+/*}}}*/
+
+    let   num=0;
+    for(let i=0; i< tools_map.length; ++i)
+    {
+        /* filter optional tool panels {{{*/
+        let   map = tools_map[i];
+        let panel =       map.panel;
+        if( panel == hotspot) continue;
+        if(!panel           ) continue;
 
         num += 1;
+        /*}}}*/
+        /* PANEL .. off grid style .. hide not selected panels {{{*/
+        if(!map.selected) panel.classList.add( CSS_HIDDEN  );
+        panel.classList.remove(                CSS_ON_GRID );
+
+    /*  panel.classList.remove("select"+num); */
+        /*}}}*/
+        /* PANEL .. off grid layout {{{*/
+        panel.style.position         = map.p     ;
+
+        panel.style.left             = map.x+"px";
+        panel.style.top              = map.y+"px";
+
+        if(panel.off_grid_transform) {
+            panel.style.transform    = panel.off_grid_transform; /* restore off-grid layout property */
+            delete                     panel.off_grid_transform;
+        }
+        /*}}}*/
     }
+    /* sync grid size {{{*/
+    grid_sized_sync(caller);
 
-    /* grid size */
-    t_grid_sized_sync(caller);
+    /* hide grid caption */
+    grid_caption_hide_all();
 
-    /* repeat once */
-    /*if(!t_grid_onresize_timer) t_grid_onresize(caller+"[repeat once]");*/
+    /*}}}*/
 };
 /*}}}*/
 
 /* GRID MEASURE */
-/*_ t_grid_MEASURE {{{*/
+/*➔ t_grid_MEASURE {{{*/
 
 let t_rows = 0;
 let t_cols = 0;
@@ -587,10 +727,11 @@ let t_mg   = 0; /* margin gap */
 
 let t_grid_MEASURE = function()
 {
-    let caller = "t_grid_MEASURE"; if(LOG_MAP.T2_GRID) console_log(caller);
+    let caller = "t_grid_MEASURE"; if(LOG_MAP.T2_GRID) t_log.console_log(caller);
     /* t_rows t_cols {{{*/
 
-    if(!tools_map.length) t_load_TOOLS_MAP(caller);
+    let tools_map = get_tools_map();
+    if(!tools_map.length) t_tools.t_load_TOOLS_MAP(caller);
 
     t_cols  = Math.round(Math.sqrt(tools_map.length));
 
@@ -606,7 +747,7 @@ let t_grid_MEASURE = function()
     let  cw = Math.round(ww / (t_cols+1));
     let  ch = Math.round(wh / (t_rows+1));
     if((cw == t_gw) && (ch == t_gh)) {
-if(LOG_MAP.T2_GRID) console_warn(caller+": GRID UNCHANGED");
+if(LOG_MAP.T2_GRID) t_log.console_warn(caller+": GRID UNCHANGED");
         return;
     }
 
@@ -616,8 +757,8 @@ if(LOG_MAP.T2_GRID) console_warn(caller+": GRID UNCHANGED");
     t_mh = Math.round(ch/2);
     t_mg = Math.round(ch/8);
 
-if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mw+"+ "+t_cols+"x"+t_gw+" + "+t_mw+") == "+(t_mw + t_cols*t_gw +t_mw)+" == ww= "+ww+"");
-if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mh+"+ "+t_rows+"x"+t_gh+" + "+t_mh+") == "+(t_mh + t_rows*t_gh +t_mh)+" == wh= "+wh+"");
+if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) t_log.console_log(" ("+t_mw+"+ "+t_cols+"x"+t_gw+" + "+t_mw+") == "+(t_mw + t_cols*t_gw +t_mw)+" == ww= "+ww+"");
+if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) t_log.console_log(" ("+t_mh+"+ "+t_rows+"x"+t_gh+" + "+t_mh+") == "+(t_mh + t_rows*t_gh +t_mh)+" == wh= "+wh+"");
     /*}}}*/
     /* headsup_l_table {{{*/
 
@@ -627,18 +768,18 @@ if(LOG_MAP.T2_GRID && t_grid_IS_ON_GRID(caller)) console_log(" ("+t_mh+"+ "+t_ro
             + "</table>"
         ;
 if(LOG_MAP.T2_GRID) log(msg);
-    let el = t_getElement("headsup_l_table");
-    if(el) el.innerHTML = msg;
+    let el = grid_getElement("headsup_l_table");
+    if( el ) el.innerHTML = msg;
 
     /*}}}*/
 };
 /*}}}*/
 
 /* GRID CSS RULES */
-/*_ t_grid_css_list {{{*/
+/*➔ t_grid_css_list {{{*/
 let t_grid_css_list = function()
 {
-    let caller = "t_grid_css_list"; if(LOG_MAP.T2_GRID) console_log(caller);
+    let caller = "t_grid_css_list"; if(LOG_MAP.T2_GRID) t_log.console_log(caller);
     /* traces open {{{*/
     let s = "<div>";
     s    += " document.styleSheets.length=["+document.styleSheets.length+"]";
@@ -653,38 +794,38 @@ let t_grid_css_list = function()
         s           += "   <ul>";
         /* title {{{*/
         if(sheet.title)
-            s       += "    <li> title=["+                          sheet.title             +    "]</li>";
+            s       += "    <li> title=["+                          sheet.title               +"]</li>";
 
         /*}}}*/
         /* id {{{*/
         if(sheet.ownerNode.id) {
-            s       += "    <li> OWNER=<em class='cc"+(i+1)+"'>"+   sheet.ownerNode.id      +    "</em></li>";
+            s       += "    <li> OWNER=<em class='cc"+(i+1) +"'>"+  sheet.ownerNode.id        +"</em></li>";
         }
         else {
-            s       += "    <li> OWNER=<em class='cc"+(i+1)+"'>"+  sheet.ownerNode.tagName +    "</em></li>";
+            s       += "    <li> OWNER=<em class='cc"+(i+1) +"'>"+  sheet.ownerNode.tagName    +"</em></li>";
             if(sheet.href)
-                s   += "    <li> href=[<a href='"+sheet.href+"'>"+  sheet.href              +    "</a>]</li>";
+                s   += "    <li> href=[<a href='"+sheet.href+"'>"+  sheet.href                +"</a>]</li>";
         }
 
         /*}}}*/
         /* type {{{*/
         if(sheet.type != "text/css")
-            s       += "    <li> type=["+                           sheet.type              +    "]</li>";
+            s       += "    <li> type=["+                           sheet.type                +"]</li>";
 
         /*}}}*/
         /* disabled {{{*/
         if(sheet.disabled)
-            s       += "    <li> disabled=["+                       sheet.disabled          +    "]</li>";
+            s       += "    <li> disabled=["+                       sheet.disabled            +"]</li>";
 
         /*}}}*/
         /* cssRules {{{*/
         try {
             if(sheet.cssRules) {
-                s       += "<li>cssRules.length=["+                     sheet.cssRules.length   +    "]";
+                s       += "<li>cssRules.length=["+                 sheet.cssRules.length     +"]";
                 s       += " <ol>";
 
                 for(let j = 0; j < sheet.cssRules.length; ++j)
-                    s   += " <li><em class='cc"+((j+1) % 10)+"'>"+sheet.cssRules[j].cssText +"</em></li>";
+                    s   += " <li><em class='cc"+((j+1) % 10)+"'>"+  sheet.cssRules[j].cssText +"</em></li>";
 
                 s       += " </ol>";
                 s       += "</li>";
@@ -702,23 +843,23 @@ let t_grid_css_list = function()
     s += "</div>";
 
     /*}}}*/
-    t_grid_trace(s);
+    grid_trace(s);
 };
 /*}}}*/
-/*_ t_grid_insertRules {{{*/
+/*➔ t_grid_insertRules {{{*/
 let t_grid_insertRules = function()
 {
     let caller = "t_grid_insertRules";
-if(LOG_MAP.T2_GRID) console_log(caller);
+if(LOG_MAP.T2_GRID) t_log.console_log(caller);
 
-    if( t_grid_css ) t_grid_deleteRules();
+    if( grid_css ) t_grid_deleteRules();
 
-    t_grid_get_t_grid_css();
+    grid_get_t_grid_css();
 
     let s = caller+":<br>";
 
-    if(!t_grid_css) {
-        s += caller+": <em class='cc2'>FOUND NO t_grid_css styleSheet</em>";
+    if(!grid_css) {
+        s += caller+": <em class='cc2'>FOUND NO grid_css styleSheet</em>";
     }
     else {
 
@@ -726,10 +867,10 @@ if(LOG_MAP.T2_GRID) console_log(caller);
         s    += " <ol>";
         let count = 0;
         let r;
-        r    = ".on_grid { min-width  : "+t_gw+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; t_grid_css.insertRule(r, 0); count += 1;
-        r    = ".on_grid { min-height : "+t_gh+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; t_grid_css.insertRule(r, 0); count += 1;
-        r    = ".on_grid { max-width  : "+t_gw+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; t_grid_css.insertRule(r, 0); count += 1;
-        r    = ".on_grid { max-height : "+t_gh+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; t_grid_css.insertRule(r, 0); count += 1;
+        r    = ".on_grid { min-width  : "+t_gw+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; grid_css.insertRule(r, 0); count += 1;
+        r    = ".on_grid { min-height : "+t_gh+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; grid_css.insertRule(r, 0); count += 1;
+        r    = ".on_grid { max-width  : "+t_gw+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; grid_css.insertRule(r, 0); count += 1;
+        r    = ".on_grid { max-height : "+t_gh+"px; }"; s += "  <li>insertRule <em class='cc0'>"+r+"</em></li>"; grid_css.insertRule(r, 0); count += 1;
         s    += " </ol>";
         s    += "</div>";
 
@@ -738,38 +879,38 @@ if(LOG_MAP.T2_GRID) console_log(caller);
         }
     }
 
-    t_grid_trace_add(s);
+    grid_trace_add(s);
 
-if(LOG_MAP.T2_GRID) console_log(caller+":");
-if(LOG_MAP.T2_GRID) console_dir(t_grid_css);
+if(LOG_MAP.T2_GRID) t_log.console_log(caller+":");
+if(LOG_MAP.T2_GRID) t_log.console_dir(grid_css);
 };
 /*}}}*/
-/*_ t_grid_deleteRules {{{*/
+/*➔ t_grid_deleteRules {{{*/
 let t_grid_deleteRules = function()
 {
-    let caller = "t_grid_deleteRules"; if(LOG_MAP.T2_GRID) console_log(caller);
+    let caller = "t_grid_deleteRules"; if(LOG_MAP.T2_GRID) t_log.console_log(caller);
 
     let        s  = "";
 /*
                s += caller+":<br>";
-               s += "t_grid_css.........=["+t_grid_css          +"]<br>";
-if(t_grid_css) s += "t_grid_css.cssRules=["+t_grid_css.cssRules +"]<br>";
+               s += "grid_css.........=["+grid_css          +"]<br>";
+if(grid_css) s += "grid_css.cssRules=["+grid_css.cssRules +"]<br>";
 */
-    if(!t_grid_css || !t_grid_css.cssRules)
+    if(!grid_css || !grid_css.cssRules)
     {
-        s += "<em class='cc2'>NO t_grid_css rules to delete</em><br>";
+        s += "<em class='cc2'>NO grid_css rules to delete</em><br>";
     }
     else {
         let count = 0;
         /* rules */
         s += "<div>";
         s += " <ol>";
-        for(let i = 0; i < t_grid_css.cssRules.length; ++i)
+        for(let i = 0; i < grid_css.cssRules.length; ++i)
         {
-            if(t_grid_css.cssRules[i].cssText.includes(".on_grid") )
+            if(grid_css.cssRules[i].cssText.includes(".on_grid") )
             {
-                s += " <li><em class='cc0'>"+ t_grid_css.cssRules[i].cssText +"</em></li>";
-                t_grid_css.deleteRule(i);
+                s += " <li><em class='cc0'>"+ grid_css.cssRules[i].cssText +"</em></li>";
+                grid_css.deleteRule(i);
                 count += 1;
                 i -= 1;
             }
@@ -782,38 +923,38 @@ if(t_grid_css) s += "t_grid_css.cssRules=["+t_grid_css.cssRules +"]<br>";
               + s;
         }
     }
-    t_grid_trace(s);
+    grid_trace(s);
 };
 /*}}}*/
-/*_ t_grid_get_t_grid_css {{{*/
-const T_GRID_CSS_ID = "t_grid_css";
+/*➔ grid_get_t_grid_css {{{*/
+const GRID_CSS_ID = "grid_css";
 
-let t_grid_css;
+let grid_css;
 
-let t_grid_get_t_grid_css = function()
+let grid_get_t_grid_css = function()
 {
-    if(t_grid_css) return;
+    if(grid_css) return;
 
-    let caller = "t_grid_get_t_grid_css";
-if(LOG_MAP.T2_GRID) console_log(caller);
+    let caller = "grid_get_t_grid_css";
+if(LOG_MAP.T2_GRID) t_log.console_log(caller);
 
-    let s = caller+": CREATING <em>"+T_GRID_CSS_ID+"</em><br>";
+    let s = caller+": CREATING <em>"+GRID_CSS_ID+"</em><br>";
     let el   = document.createElement("STYLE");
-    el.id    = T_GRID_CSS_ID;
-    el.title = T_GRID_CSS_ID;
+    el.id    = GRID_CSS_ID;
+    el.title = GRID_CSS_ID;
     el.type  = "text/css";
     el.rel   = "stylesheet";
 
     document.getElementsByTagName('head')[0].appendChild(el);
-    t_grid_css = el.sheet;
+    grid_css = el.sheet;
 
-    t_grid_trace(s);
-if(LOG_MAP.T2_GRID) console_dir(t_grid_css);
+    grid_trace(s);
+if(LOG_MAP.T2_GRID) t_log.console_dir(grid_css);
 };
 /*}}}*/
 
 /* GRID LOG */
-/*_ t_grid_logging_toggle {{{*/
+/*➔ t_grid_logging_toggle {{{*/
 let t_grid_logging_toggle = function(new_state="toggle")
 {
     let caller = "t_grid_logging_toggle";
@@ -825,38 +966,66 @@ let t_grid_logging_toggle = function(new_state="toggle")
 log("%c "+caller+": LOG_MAP.T2_GRID set to "+LOG_MAP.T2_GRID, lb7+lbF);
 
     t_grid_onWork_EL_changed(caller);
-    t_sync_tool_clones(caller);
+    t_tools.t_sync_tool_clones_state(caller);
 };
 /*}}}*/
-/*_ t_grid_trace {{{*/
-let t_grid_trace = function(s)
+/*… grid_trace {{{*/
+let grid_trace = function(s)
 {
     let el;
-    if( el = t_getElement("traces") ) el.innerHTML = s;
-    else                            console_log( strip_html(s) );
+    if( el = grid_getElement("traces") ) el.innerHTML = s;
+    else                                 t_log.console_log( t_util.strip_HTML(s) );
 };
 /*}}}*/
-/*_ t_grid_trace_add {{{*/
-let t_grid_trace_add = function(s)
+/*… grid_trace_add {{{*/
+let grid_trace_add = function(s)
 {
     let el;
-    if( el = t_getElement("traces") ) el.innerHTML += s;
-    else                            console_log( strip_html(s) );
+    if( el = grid_getElement("traces") ) el.innerHTML += s;
+    else                                 t_log.console_log( t_util.strip_HTML(s) );
 };
 /*}}}*/
-/*_ t_getElement {{{*/
-let t_getElement = function(id)
+/*… grid_getElement {{{*/
+let grid_getElement = function(id)
 {
-/*if(LOG_MAP.T2_GRID) log("t_getElement("+id+")");*/
+/*if(LOG_MAP.T2_GRID) log("grid_getElement("+id+")");*/
     let el = null;
-try {
-    if(shadow_root) el = shadow_root.querySelector("#"+id);
-} catch(ex) {}
-    if(!el)         el = document.getElementById  (    id);
+    let shadow_root      = t_tools.t_get_shadow_root();
+    if( shadow_root ) el = shadow_root.querySelector("#"+id);
+    if(!el)           el = document.getElementById  (    id);
     return el;
 };
 /*}}}*/
-/*
-console_log(DOM_GRID_JS_ID+": ...ready");
-*/
 
+/* EXPORT */
+/*{{{*/
+return { name : "dom_grid"
+    , logging : function(value) { if(value != undefined) DOM_GRID_LOG = value; dom_store.t_store_set_value("DOM_GRID_LOG", DOM_GRID_LOG); return DOM_GRID_LOG; }
+    , tagging : function(value) { if(value != undefined) DOM_GRID_TAG = value; dom_store.t_store_set_value("DOM_GRID_TAG", DOM_GRID_TAG); return DOM_GRID_TAG; }
+    ,    t_grid_IMPORT
+
+    ,    t_grid_IS_ON_GRID
+    ,    t_grid_IS_SIZED
+    ,    t_grid_MEASURE
+    ,    t_grid_ON_OFF_CB
+    ,    t_grid_TOOLS_SELECT
+
+    ,    t_grid_TOOLS_SELECT_panel
+    ,    t_grid_add_observer_callback
+    ,    t_grid_logging_toggle
+    ,    t_grid_onWork_EL_changed
+    ,    t_grid_onresize
+
+    /*   dom_grid.html   */
+    /*   playground.html */
+    ,    t_grid_SIZE_TOGGLE
+    ,    t_grid_css_list
+    ,    t_grid_deleteRules
+    ,    t_grid_insertRules
+    ,    grid_onresize_handle
+
+};
+
+/*}}}*/
+
+})();

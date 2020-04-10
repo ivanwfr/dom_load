@@ -1,0 +1,409 @@
+<!-- [doc_tools.html] {{{-->
+<!-- script {{{-->
+<script>
+let DOM_LOADER_LOG = false;
+let DOM_LOADER_TAG = false;
+/*_ init_doc_tools {{{*/
+let init_doc_tools = function()
+{
+    let some_are_logging = check_modules_state("logging");
+    let some_are_tagging = check_modules_state("tagging");
+
+if(some_are_logging) log("%c LOGGING: "+some_are_logging, lbb+lbH+lf8);
+if(some_are_tagging) log("%c TAGGING: "+some_are_tagging, lbb+lbH+lf8);
+
+    if(some_are_logging || some_are_tagging) {
+        dom_util.del_el_class(document.getElementById("doc_tools"), "minimized");
+        dom_util.del_el_class(document.getElementById("div_above"), "folded"   );
+    }
+};
+/*}}}*/
+/*_ check_modules_state {{{*/
+let DOM_MODULES;
+let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LOADER_LOG))
+{
+    let lfx = (state_name == "logging") ? lf3:lf5;
+
+    /* COLLECT LOADED MODULES {{{*/
+    if(!DOM_MODULES) {
+        DOM_MODULES
+            = [   { name : "dom_loader" , module : dom_loader }
+                , { name : "dom_fly"    , module : dom_fly    }
+                , { name : "dom_prop"   , module : dom_prop   }
+                , { name : "dom_seek"   , module : dom_seek   }
+                , { name : "dom_share"  , module : dom_share  }
+                , { name : "dom_select" , module : dom_select }
+                , { name : "dom_sticky" , module : dom_sticky }
+                , { name : "dom_store"  , module : dom_store  }
+                , { name : "dom_util"   , module : dom_util   }
+                , { name : "dom_tools"  , module : dom_tools  }
+            ];
+
+    }
+    /*}}}*/
+    let some_are = "";
+    let module_names  = [];
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     let selector = "[title='"+state_name+" "+module.name+"']"; /* .. document.querySelector("[title='tagging dom_loader']"); */
+                     let el = document.querySelector( selector );
+                     if( el ) {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+
+                         let state = state_get_set_function();
+                         if( state ) module_names.push( module.name );
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+
+                         if( state )
+                             some_are += (some_are ? " ": "")+module.name;
+                     }
+                 }
+                );
+
+if(log_this) {
+    if(module_names.length) {
+        log("%c check_modules_state %c"+state_name, lbL,lbR+lfx);
+        for(let i=0; i < module_names.length; ++i)
+            log("%c → "+ module_names[i]+" is "+state_name, lfx);
+    }
+    else {
+        log("%c check_modules_state %c No module is "+state_name, lbL,lbR+lf8);
+    }
+}
+
+    return some_are;
+};
+/*}}}*/
+/*_ toggle_module_state {{{*/
+let toggle_module_state = function(el)
+{
+    if(el.tagName == "DIV")
+    {
+        let state_name
+            = el.id.endsWith("tagging")
+            ?                "tagging"
+            :                "logging";
+
+        check_modules_state(state_name, true);
+        return;
+    }
+
+    let [ state_name , module_name ] = el.title.split(" ");
+
+    let lfx = (state_name == "logging") ? lf3:lf5;
+log("%c toggle_module_state %c"+module_name+"%c"+state_name, lbL,lbC+lf9,lbR+lfx);
+
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     if(name == module_name)
+                     {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+                         let state_was              = state_get_set_function();
+                         let state                  = state_get_set_function(!state_was);
+
+                         let l_x = state ? lfX[state ? 5:8] : lf0;
+if(state || DOM_LOADER_TAG || DOM_LOADER_LOG) log("%c "+module.name+" %c "+(state ? "is ":"not ")+state_name, lfx, l_x);
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+                     }
+                 }
+                 );
+};
+/*}}}*/
+/*➔ dom_loader {{{*/
+let dom_loader = (function()
+{
+if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
+
+    return { name : "dom_loader"
+        , logging : function(value) { if(value != undefined) DOM_LOADER_LOG = value; dom_store.t_store_set_value("DOM_LOADER_LOG", DOM_LOADER_LOG); return DOM_LOADER_LOG; }
+        , tagging : function(value) { if(value != undefined) DOM_LOADER_TAG = value; dom_store.t_store_set_value("DOM_LOADER_TAG", DOM_LOADER_TAG); return DOM_LOADER_TAG; }
+
+        , toggle_module_state
+
+        /* DEBUG */
+        , check_modules_state
+    };
+}());
+/*}}}*/
+</script>
+<!--}}}-->
+<span id="doc_tools_html_tag" style="display:none">doc_tools_html (200318:16h)</span>
+<!--      doc_tools {{{-->
+<div  id="doc_tools" title="doc_tools" class="round_el doc_tool user_select_none minimized">
+    <!-- STYLE {{{-->
+    <style>
+/* doc_tools {{{*/
+#doc_tools {
+    user-select      : none;
+    position         : fixed; bottom:0.2em; right:5%;
+    margin           : 0;
+    z-index          : 101; /* above dom_tools */
+    border           : none                  !important;
+    border-radius    : 0.5em;
+    padding          : 0.3em;
+    box-shadow       : rgba( 64, 64, 64,0.2) 2px 2px 10px 5px;
+    text-align       : center;
+/*{{{
+    line-height      : 1.8em;
+}}}*/
+    font-size        : 200%;
+    transform-origin : 100% 100%;
+}
+#doc_tools.minimized {
+    transform        : scale(0.5);
+}
+
+#doc_tools>div{
+    margin           : 0;
+    padding          : 0.3em 1em 0.3em 1em;
+}
+#doc_tools>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(128,128,128,0.9)) !important;
+/*{{{
+background       : rgba(255,255,255,0.9);
+background       : rgba(255,255,255,0.1);
+}}}*/
+}
+#doc_tools.minimized>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(017,017,017,0.5)) !important;
+}
+
+    /*}}}*/
+    /* div_above {{{*/
+
+    #div_above {
+        display               : grid;
+        grid-auto-flow        : column;
+        align-items           : align-self;
+/*{{{
+      grid-template-columns : 1fr 1fr 1fr;
+      grid-template-rows    : min-content;
+      grid-auto-rows        : min-content;
+      grid-gap              : 1em;
+      justify-items         : stretch;
+      min-height            : 30em;
+}}}*/
+    }
+
+    .minimized #div_above       { pointer-events:none; }
+
+    #div_above                  { margin-bottom    : 0;           }
+    #div_above                  { border-radius    : 1em 1em 0 0; }
+    #div_above                  { padding          : 0;           }
+
+    #div_above.folded           { height           : 0.5em; overflow : hidden; }
+    #div_above.clicked          { height           : unset;                    }
+
+    #div_above::before          { font-size        : 150% !important; content:'\261E'; pointer-events:none; position:absolute; bottom:0.5em; right:0.5em; }
+    #doc_tools::after           { font-size        : 150% !important; content:'\261F'; pointer-events:none; position:absolute; bottom:0.5em; left :0.5em; }
+
+    #div_above                  { transition       : all 250ms       ease-out; }
+    #doc_tools::after           { transition       : all 150ms 500ms ease-out; }
+    #div_above::before          { transition       : all 150ms 600ms ease-out; }
+
+    #doc_tools::after           { transform        : rotate(-90deg); }
+    #doc_tools.minimized::after { transform        : rotate( 90deg); }
+
+    .minimized #div_above.folded::before          { transform        : rotate(-135deg); }
+               #div_above::before          { transform        : rotate( 90deg); }
+               #div_above.folded::before   { transform        : rotate(-90deg); }
+
+    /*}}}*/
+    /* div_above ... {{{*/
+
+    #div_above .blurred_frame        { color            : white           !important; }
+    #div_above .blurred_frame        { box-shadow       : 0.1em 0.1em 0.1em white;    }
+
+    #div_above     a                 { padding          : 0 0.5em 0 0.5em !important; }
+    #div_above     a                 { min-width        : 5em; }
+    #div_above     a                 { font-size        :  45%            !important; }
+
+
+    #div_above   span                 { margin-bottom   : 0.5em           !important; }
+    #div_above   a                    { margin-bottom   : 0.5em           !important; }
+
+    #div_above > div                  { background      : transparent     !important; }
+    #div_above > div                  { border          : none;                       }
+    #div_above > div                  { display         : inline-block;               }
+
+    #div_above > div                  { margin          : 0.5em;                      }
+    #div_above > div                  { padding         : 0;                          }
+    #div_above > div                  { vertical-align  : top             !important; }
+
+    #div_above > div > *              { float:left; clear:left; }
+
+    #div_above > div > p:nth-child(1) { font-size:80%; padding:0; margin:0; }
+
+    /*}}}*/
+    /* div_bellow {{{*/
+    #div_bellow {
+        margin-top       : 0;
+        border-radius    : 0   0   1em 1em;
+        padding          : 0.5em 1em 0.5em 1em;
+    }
+    #div_bellow>a {
+        font-size : 120%;
+    }
+    /*}}}*/
+    </style>
+    <!--}}}-->
+    <!-- SCRIPT {{{-->
+    <script>
+        /* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+        "use strict";
+/* JSHint {{{*/
+/* globals dom_util, log, lbH, lf2, lf3, lf4, lf6, lf7 */
+/* exported toggle_this */
+/*
+:?script>?+,/script>/-y *
+:!start explorer https://jshint.com/
+ */
+/*}}}*/
+/*_ toggle_this {{{*/
+let toggle_this = function(event,el)
+{
+if(DOM_LOADER_LOG) log("%c toggle_this("+el.id+")", lbH+lf7);
+
+    let div_above = el.previousElementSibling;
+    let doc_tools = el.parentElement;
+
+    let clicked_left = (event.offsetX > (el.offsetWidth/2));
+    if( clicked_left ) {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        if(dom_util.has_el_class(div_above, "folded"   ))     unfold_this(div_above);
+        else                                                    fold_this(div_above);
+    }
+
+    else {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        else {                                                  fold_this(div_above);
+            /*.........................................*/   minimize_this(doc_tools);
+        }
+    }
+};
+/*}}}*/
+/*_   minimize_this {{{*/
+let   minimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c minimize_this("+el.id+")", lbH+lf2);
+
+    if(!dom_util.has_el_class(el,"minimized"))
+        dom_util.add_el_class(el,"minimized");
+};
+/*}}}*/
+/*_ unminimize_this {{{*/
+let unminimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unminimize_this("+el.id+")", lbH+lf3);
+
+    if( dom_util.has_el_class(el,"minimized"))
+        dom_util.del_el_class(el,"minimized");
+};
+/*}}}*/
+/*_   fold_this {{{*/
+let   fold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c fold_this("+el.id+")", lbH+lf6);
+
+    if(!dom_util.has_el_class(el,"folded"))
+        dom_util.add_el_class(el,"folded");
+};
+/*}}}*/
+/*_ unfold_this {{{*/
+let unfold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
+
+    if( dom_util.has_el_class(el,"folded"))
+        dom_util.del_el_class(el,"folded");
+};
+/*}}}*/
+    </script>
+    <!--}}}-->
+        <!-- div_above {{{-->
+        <div id="div_above" class="folded" onclick='if(event.target==this) unfold_this(this);'>
+            <div      id="div_log_csv"> <!--{{{-->
+                <span>TOOLS:</span>
+                <a title="dom_tools.t_log_csv"       class="em8 small" onclick='dom_tools.t_log_csv      (DOM_LOAD_ID                   );'>CSV</a>
+                <a title="dom_tools.t_log_status"    class="em8 small" onclick='dom_tools.t_log_status   (DOM_LOAD_ID                   );'>STATUS</a>
+                <a title="dom_tools.t_show_hotspot"  class="em5 small" onclick='dom_tools.t_show_hotspot();'                               >SHOW hotspot</a>
+                <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+                <a title="dom_tools.t_take_SNAPSHOT" class="em3 small" onclick='dom_tools.t_take_SNAPSHOT(DOM_LOAD_ID, snapshot_id, this);'>TAKE SNAPSHOT</a>
+                <a title="dom_tools.t_load_SNAPSHOT" class="em4 small" onclick='dom_tools.t_load_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>LOAD SNAPSHOT</a>
+                <a title="dom_tools.t_show_SNAPSHOT" class="em4 small" onclick='dom_tools.t_show_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>SHOW SNAPSHOT</a>
+            </div>
+            <!--}}}-->
+            <div      id="div_fist_sticky"> <!--{{{-->
+                <span title="call a sticky function on sticky #1"                         >first sticky</span>
+                <a    title="format_pad" class="em8 small" onclick='dom_sticky.format_pad();'> format_pad </a>
+                <a    title="fit_font"   class="em8 small" onclick='dom_sticky.fit_font();'  > fit_font   </a>
+                <a    title="msg_fit"    class="em8 small" onclick='dom_sticky.msg_fit();'   > msg_fit    </a>
+            </div>
+            <!--}}}-->
+            <div      id="div_all_sticky"> <!--{{{-->
+                <span title   = "other sticky functions">all sticky</span>
+                <a    title   = "t_sticky_format_pad_all" class   = "em8 small" onclick = 'dom_sticky.t_sticky_format_pad_all(); '>t_sticky_format_pad_all</a>
+                <a    title   = "t_sticky_LOG" class   = "em8 small" onclick = 'dom_sticky.t_sticky_LOG(); '>t_sticky_LOG</a>
+                <a    title   = "show_seekzone" class   = "em8 small"
+                   onclick = '      dom_prop.toggle(   this.title);
+                   let state      = dom_prop.get   (   this.title);
+                   this.innerText = "PROP."+           this.title+" "+   (state ? "\u2714":"");
+                   console.log("%c dom_prop.toggle(\""+this.title+"\",\""+state+"\")", lbb+lbH+lf7);
+                   let classWas   = state ? "em8" : "em2";
+                   let classNow   = state ? "em2" : "em8";
+                   dom_util.set_el_class_removing(     this, classNow, classWas);
+                   '>PROP "show_seekzone"</a>
+            </div>
+            <!--}}}-->
+            <div id="div_logging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">logging</span>
+                <a title="logging dom_loader" class="em1 small">LOADER</a>
+                <a title="logging dom_fly"    class="em2 small">fly   </a>
+                <a title="logging dom_prop"   class="em3 small">prop  </a>
+                <a title="logging dom_seek"   class="em4 small">seek  </a>
+                <a title="logging dom_share"  class="em5 small">share </a>
+                <a title="logging dom_select" class="em4 small">select</a>
+                <a title="logging dom_sticky" class="em6 small">sticky</a>
+                <a title="logging dom_store"  class="em7 small">store </a>
+                <a title="logging dom_util"   class="em8 small">util  </a>
+                <a title="logging dom_tools"  class="em9 small">TOOLS </a>
+            </div>
+            <!--}}}-->
+            <div id="div_tagging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">tagging</span>
+                <a title="tagging dom_loader" class="em1 small">LOADER</a>
+                <a title="tagging dom_fly"    class="em2 small">fly   </a>
+                <a title="tagging dom_prop"   class="em3 small">prop  </a>
+                <a title="tagging dom_seek"   class="em4 small">seek  </a>
+                <a title="tagging dom_share"  class="em5 small">share </a>
+                <a title="tagging dom_select" class="em4 small">select</a>
+                <a title="tagging dom_sticky" class="em6 small">sticky</a>
+                <a title="tagging dom_store"  class="em7 small">store </a>
+                <a title="tagging dom_util"   class="em8 small">util  </a>
+                <a title="tagging dom_tools"  class="em9 small">TOOLS </a>
+            </div>
+            <!--}}}-->
+        </div>
+        <!--}}}-->
+    <!-- div_bellow {{{-->
+    <div id     ="div_bellow"
+         onclick='if(event.target == this) toggle_this(event,this);'
+         >
+            <a title="page top"            class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
+            <a title="page bottom"         class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
+            <a title="dump csv and sticky" class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
+            <a title="reset"               class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
+            <a title="reset & reload"      class="em2 action" onclick='document.location.reload();'                 >&#8634;</a>
+    </div>
+    <!--}}}-->
+</div>
+<!--}}}-->
+<!--}}}-->

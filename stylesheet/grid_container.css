@@ -1,0 +1,68 @@
+
+#grid_container_css_tag  { content: "grid_container_css (200330:16h)"; }
+
+.grid_container {
+    display               : grid;
+    grid-template-columns : 1fr 1fr 1fr;
+    grid-template-rows    : min-content;
+    grid-auto-rows        : min-content;
+    grid-gap              : 1em;
+    justify-items         : stretch;
+/*{{{
+    min-height            : 30em;
+}}}*/
+}
+
+em.grid_cell_title {
+    pointer-events : none;
+    position       : relative          !important;
+    display        : inline-block      !important;
+    transform      : translate(0,-1em) !important;
+    width          : 100%              !important;
+    text-align     : center            !important;
+/*{{{
+    opacity       : 0.5;
+}}}*/
+}
+
+.grid_container>div {
+    border-radius         : 10px;
+    box-shadow            : 1px 1px  2px 0px #000 inset;
+    padding-left          : 1em;
+    padding-right         : 1em;
+    background            : rgba(187,187,187,0.7);
+    font-weight           : 900;
+}
+.grid_container>div.magnified {
+    box-shadow            : 1px 1px 10px 5px rgba(0,0,0,0.5);
+}
+.grid_container em {
+    user-select           : none;
+    border-radius         : 1em;
+/*{{{
+    box-shadow            : .1em .1em .5em #444;
+    padding-left          : 1em;
+    padding-right         : 1em;
+}}}*/
+    white-space           : nowrap;
+}
+.defered em {
+    filter    : grayscale(90%) brightness( 80%);
+}
+
+.grid_container canvas {
+    border-radius         : 10px;
+    margin-top            : 1em;
+}
+.grid_container pre::-webkit-scrollbar                       { width         : 1em; }
+.grid_container pre::-webkit-scrollbar                       { height        : 1em; }
+.grid_container pre::-webkit-scrollbar-thumb                 { border-radius : 1em; }
+.grid_container pre::-webkit-scrollbar-track                 { border-radius : 1em; }
+.grid_container pre::-webkit-scrollbar-thumb                 { box-shadow    : inset 0 0 0.1em rgba(0,0,0,0.5); }
+.grid_container pre::-webkit-scrollbar-track                 { box-shadow    : inset 0 0 0.1em rgba(0,0,0,0.3); }
+.grid_container pre::-webkit-scrollbar-thumb                 { box-shadow    : rgba(0,  0,0,0.5) 0 8px 24px; }
+.grid_container pre::-webkit-scrollbar-thumb                 { background    : rgba(0, 24,0,0.5); }
+.grid_container pre::-webkit-scrollbar-thumb:window-inactive { background    : rgba(0, 24,0,0.2); }
+.grid_container pre::-webkit-scrollbar-track                 { background    : rgba(0, 96,0,0.4); }
+.grid_container pre::-webkit-scrollbar-track:window-inactive { background    : rgba(0,128,0,0.2); }
+

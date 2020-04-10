@@ -1,5 +1,5 @@
 
-#dom_grid_css_tag   { content: "dom_grid_css (181121:15h)"; }
+#dom_grid_css_tag   { content: "dom_grid_css (190803:20h)"; }
 
 /* dom_grid_playground {{{*/
 #dom_grid_playground {
@@ -7,7 +7,7 @@
  border-radius : 1em;
  padding       : .5em;
  background    : linear-gradient(to bottom, #333, #111) !important;
- position      : fixed; top : 0.2em; right : 0.2em;
+ position      : fixed; top:0.2em; right:5em;
  width         : 75%;
 }
 #dom_grid_playground.collapsed                   { width   : 25%            ; }
@@ -18,7 +18,7 @@
 
 /*}}}*/
 /* ol li {{{*/
-ol>li{
+#dom_tools_html ol>li{
  margin-bottom: 1em;
   white-space : nowrap;
 }

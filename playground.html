@@ -1,74 +1,180 @@
 <!DOCTYPE html>
 <html>
-<head>
+ <head>
   <title>playground</title>
+
   <!-- META {{{ -->
-  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html; charset=latin1">
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html; charset=utf-8">
   <meta                         http-equiv="Cache-control" content="no-cache">
   <meta                         http-equiv="pragma"        content="no-cache">
   <!-- }}} -->
   <!-- [link] CSS {{{-->
-  <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
-  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
-  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
-  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
-  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"  rel="stylesheet"/>
+  <link id='grid_container' type='text/css' href='stylesheet/grid_container.css' rel='stylesheet'/>
+  <link id='ecc_css'        type='text/css' href='stylesheet/ecc.css'            rel='stylesheet'/>
+  <link id="index"          type="text/css" href="stylesheet/index.css"          rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css"     rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"       rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"       rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"       rel="stylesheet"/>
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"      rel="stylesheet"/>
   <!--}}}-->
  </head>
- <body onload='set_title();'>
-  <!-- h1 {{{--> <h1 style="clear:right; margin:1em;">My DOM playground</h1>
-  <!--}}}-->
+ <body onload='set_title(); playground_IMPORT(); init_doc_tools();'>
+<!-- links {{{-->
+<style>
+#div_links {
+ box-shadow     : none               !important;
+ background     : none               !important;
+ position       : absolute           !important;
+ top            : 8px                !important;
+ left           : 50%                !important;
+  padding       : 0                  !important;
+ font-size      : 32px               !important;
+ color          : #000               !important;
+ transform      : translate(-50%, 0) !important;
+ white-space    : nowrap             !important;
+    text-align  : center;
+vertical-align  : middle;
+}
+#div_links>* {
+  border-radius     : 48px         !important;
+  display           : inline-block !important;
+  margin            : 0 5px 0 0    !important;
+  padding           : 0            !important;
+    width           : 50px         !important;
+min-width           : 50px         !important;
+    height          : 50px         !important;
+min-height          : 50px         !important;
+    text-align      : center       !important;
+    text-decoration : none !important;
+}
+#div_links>*              { box-shadow : 1px 1px 4px #888 inset !important; }
+#div_links>*              { background : rgba(255,255,255,0.2)  !important; }
 
-   <!--note .. position:absolute {{{-->
-   <div style="width:32em; position:absolute; top:1em; left:38em;"
+/*{{{
+#div_links a              { background : rgba(255,255,255,1.0)  !important; }
+}}}*/
+#div_links a:hover        { background : rgba(221,221,255,1.0)  !important; }
+#div_links span           { background : rgba(221,221,255,0.9)  !important; }
+
+#div_links a:hover        { text-shadow: 1px 1px 0 #FFF         !important; }
+
+#div_links a:visited      { color      : unset                            ; }
+#div_links a:hover        { color      : #111                             ; }
+#div_links span           { color      : #111                             ; }
+
+#div_links span           { text-shadow: 1px 1px 0 #FFF         !important; }
+</style>
+
+<div id="div_links">
+ <a    class="fg1" target="dom_screenshots" href="https://remotetabs.com/dev/rtabs/screenshots.html" title="RTabs animation"> &#x25B6;  </a>
+ <a    class="fg2" target="dom_intro"       href="https://remotetabs.com/dev/rtabs/intro.html"       title="RTabs Extension"> &#x1F30F; </a>
+ <a    class="fg3" target="app_android"     href="https://remotetabs.com/index.html"                 title="RTabs Android"  > &#x1F4F1; </a>
+ <a    class="fg4" target="ivan_wellesz"    href="https://ivanw.pagesperso-orange.fr"                title="Ivan WELLESZ"   > &#x2302;  </a>
+ <a    class="fg5"
+ title="Bookmarklet Ã  activer sur des pages en ligne
+
+...peut-Ãªtre copiÃ© ou glissÃ© dans les favoris"
+ href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_load'  ;document.body.appendChild(s);})();"
+ onclick="confirm(this.title); return false;"
+ ><i style="font-size:13px; vertical-align:middle;">RTabs</i></a>
+</div>
+</div>
+<!--}}}-->
+<!-- HTML ABOUT JUMP{{{-->
+<!-- JUMP IN PAGE {{{-->
+  <!-- H1 playground {{{-->
+  <a name="body_start" id="body_start" href="#body_end"     class="big em6" style="float:left; clear:both; margin-left:2em;">&#x2193;</a>
+  <a                                   href="#div_CHECKBOX" class="big em4"                                                 >&#x25A3;</a>
+  <a                                   href="#TEXT_NODE"    class="em4"                                                     >&#x00B6;</a>
+<!--}}}-->
+ <!-- audio {{{-->
+ <br>
+ <a target="mdn_audio" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API">MDN audio</a>
+ <a target="converter" href="https://base64.guru/converter/encode/audio/mp3">base64</a>
+ <em
+  onclick='let el=document.getElementById("audio"); console.dir(el); el.play();'
+  class="big cc7"
+  style  ="cursor:pointer; user-select:none;"
+  >
+  &#x1F50A;
+  <audio id="audio" src="data:audio/mpeg;base64,/+MYxAAEaAIEeUAQAgBgNgP/////KQQ/////Lvrg+lcWYHgtjadzsbTq+yREu495tq9c6v/7vt/of7mna9v6/btUnU17Jun9/+MYxCkT26KW+YGBAj9v6vUh+zab//v/96C3/pu6H+pv//r/ycIIP4pcWWTRBBBAMXgNdbRaABQAAABRWKwgjQVX0ECmrb///+MYxBQSM0sWWYI4A++Z/////////////0rOZ3MP//7H44QEgxgdvRVMXHZseL//540B4JAvMPEgaA4/0nHjxLhRgAoAYAgA/+MYxAYIAAJfGYEQAMAJAIAQMAwX936/q/tWtv/2f/+v//6v/+7qTEFNRTMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV">
+   audio not supported
+  </audio>
+ </em>
+ <!--}}}-->
+  <!--}}}-->
+<!-- ABOUT {{{-->
+   <div id="about_div"
+        style="
+        position   : absolute;
+        top        : 128px;
+        left       : 50%;
+        box-shadow : 1px 1px 6px black;
+        font-size  : 80%;
+        width      : 32em;
+        transform  : translate(-50%, 0);
+        "
     >
     <div id="about_fr"
-         style="display:block; text-align:left;"
+         style="display:block; text-align:left; padding:2em;"
          class="green note"
          title="A propos de cette page...
-         Ensemble de fichiers 'Vanilla JS' à déployer sous forme:
+         Ensemble de fichiers 'Vanilla JS' Ã  dÃ©ployer sous forme:
          - de liens &lt;script&gt;
          - ou Bookmarklet
          - ou Extension Chrome"
          >
          <a href="#note_fr" style="float:right;"
                             onclick="
-                            getElementById('about_en').style.display='block';
-                            getElementById('about_fr').style.display='none' ;
+                            document.getElementById('about_en').style.display='block';
+                            document.getElementById('about_fr').style.display='none' ;
                             ">en</a>
+
+         <p>
          Cette page est faite pour moi.
-         <br>...de façon à me permettre de bricoller plein de choses bizares avant d'en jetter la plupart.
-         <p>Ce qui veut dire que vous devriez avoir beaucoup de mal à suivre ce qui se passe lorsqu'on clique
-         sur quelque chose et à quoi ça peut bien servir.
-         <p>L'essentiel des résultats consiste en des messages affichés par la console .. activés par une des
-         entrées du panneau "dev_log_map".
+         <br>...de faÃ§on Ã  me permettre de bricoller plein de choses bizares avant d'en jetter la plupart.
+         </p>
+         <p>Ce qui veut dire que vous devriez avoir beaucoup de mal Ã  suivre ce qui se passe lorsqu'on clique
+         sur quelque chose et Ã  quoi Ã§a peut bien servir.
+         </p>
+         <p>L'essentiel des rÃ©sultats consiste en des messages affichÃ©s par la console .. activÃ©s par une des
+         entrÃ©es du panneau "dev_log_map".
+         </p>
     </div>
 
-    <div id="about_en" 
-         style="display:none; text-align:left;"
+    <div id="about_en"
+         style="display:none; text-align:left; padding:2em;"
          class="red note"
          title="What this page is about...
-         'Vanilla JS' set of code files deployed either:
-         - as Embedded &lt;script&gt;
-         - or Bookmarklet
-         - or Chrome extension"
+                'Vanilla JS' set of code files deployed either:
+                - as Embedded &lt;script&gt;
+                - or Bookmarklet
+                - or Chrome extension"
          >
          <a href="#note_fr" style="float:right;"
                             onclick="
-                            getElementById('about_en').style.display='none' ;
-                            getElementById('about_fr').style.display='block';
+                            document.getElementById('about_en').style.display='none' ;
+                            document.getElementById('about_fr').style.display='block';
                             ">fr</a>
-         This page is meant for me
+
+         <p>This page is meant for me
          <br>...so I can tweak all kinds of weird things before trashing most of them.
+         </p>
          <p>It means you'll have a hard time guesssing what's happening when you click on something and why.
+         </p>
          <p>Most of the results make sense when reading some console outputs .. triggered by one of the "dev_log_map" entries.
+         </p>
     </div>
 
    </div>
    <!--}}}-->
-   <!--note .. RTabs Bookmarklet {{{-->
-   <div style="position:absolute; top:1em; right:1em;"
-    >
+<!-- [anchor1 anchor2] {{{-->
+  <em id="anchor1" onclick='this.style.left = (this.offsetLeft -50)+"px"; this.innerHTML += "<br>o"; dom_sticky.t_sticky_onLayout();'; class="big cc1" style="position:absolute; top:300px; right:5px;">anchor1</em>
+  <em id="anchor2" onclick='this.style.left = (this.offsetLeft -20)+"px"; this.innerHTML += "<br>o"; dom_sticky.t_sticky_onLayout();'; class="big cc2" style="position:absolute; top:400px; right:5px;">anchor2</em>
+<!--}}}-->
+   <!-- Bookmarklet .. (drag to the toolbar) {{{-->
+   <div id="bookmarklet" style="position:absolute; top:7em; right:1em;">
     <h2>RTabs Bookmarklet</h2>
     <ol>
      <li> <a href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_find';document.body.appendChild(s);})();">dom_find</a></li>
@@ -79,18 +185,654 @@
 
    </div>
    <!--}}}-->
-<!-- clone of the dev_log_map panel .. position:absolute {{{-->
+
+<h1 style="clear:right; margin:1em;">playground</h1>
+  <!-- ivan_wellesz {{{-->
+  <div class="transcript " style='display:inline-block; border:3px dotted red !important;'>
+   <a href="https://ivanw.pagesperso-orange.fr"               target="_blank" style="font-size:200%;" title="Ivan WELLESZ">&#x2302;</a>
+   <a href="https://remotetabs.com/dev/rtabs/playground.html" target="_blank" style="font-size:100%;font-weight:900;"     >RTabs playground</a>
+   <a href="https://google.com"                               target="_blank" style="font-size:!50%;font-weight:900;"     >Google</a>
+   <a href="https://vimhelp.org/usr_toc.txt.html"             target="_blank" style="font-size:!50%;font-weight:900;"     >Vim help</a>
+  </div>
+
+<hr style="clear:both; height:1em; background:rgba(128,128,128,0.77);">
+  <!--}}}-->
+<H1 id="IMPORT_EXPORT">TEXT_NODE</H1>
+<!-- grid_container {{{-->
+<div class="grid_container"
+     id   ="import_grid_container"
+     title="import_grid_container"
+ style="
+ margin           : 5em 10em 5em 2em !important;
+ border-radius    : 1em;
+ border           : 2px solid rgba(0,136,0,0.5);
+ box-shadow       : rgba(0,0,0,0.5) 0.3em 0.3em 0.5em;
+ background-color : rgba(204,221,187,0.9);
+ ">
+<!-- CLEAR IMPORT CLIPBOARD {{{-->
 <div
- id="dev_log_map"
- title="dev_log_map"
- class="transcript display_delayed prop_bag "
- style="display:grid; grid-gap:0.25em; position:absolute; top:18em; right:1em;"
+  style="
+  grid-column-start : 1;
+  grid-column-end   : 4;
+  display           : grid;
+  background-color  : rgba(221,221,221,0.5);
+  "
  >
+ <!-- IMPORT BUTTON {{{-->
+ <span
+  class="box toolbag_button cc5 lspacing1"
+  style=" grid-column-start : 1;"
+  title="IMPORT"
+  onclick='
+  let clipboard_container = document.getElementById("clipboard_container");
+  dom_tools.t_copy_innerHTML_to_clipboard( clipboard_container.innerText );
+  dom_share.t_share3_IMPORT_UI(event.target);
+  select_container( clipboard_container );
+  '
+  >IMPORT</span>
+
+ <!--}}}-->
+ <!-- CLEAR BUTTON {{{-->
+ <span class="box toolbag_button cc8 lspacing1"
+  style="
+  grid-column-start : 2;
+  "
+  title="CLEAR CDC AND CLIPBOARD" onclick='clear_clipboard_container();'>CLEAR</span>
+
+ <!--}}}-->
+ <!-- [clipboard_container] {{{-->
+ <br>
+ <pre
+  id="clipboard_container"
+  onclick = 'select_container(this);';
+  oninput = 'clear_clipboard_container();'
+  contenteditable
+  title="
+  1. CLICK to [SELECT]
+  2. COPY  to [CLIPBOARD] with CTRL-C or CTRL-X
+  3. PASTE to [IMPORT CONTAINER]"
+  style="
+  grid-row-start    : 2;
+  grid-column-start : 1;
+  grid-column-end   : 3;
+  border     : 2px black;
+  background : #AAA;
+  width      : 100%;
+  max-width  : 90em;
+  overflow   : auto;
+  "
+  ></pre>
+
+ <!--}}}-->
+ <!-- {{{-->
+ <pre contenteditable
+  id="cut_paste_container"
+  style="
+  grid-row-start    : 4;
+  grid-column-start : 1;
+  grid-column-end   : 4;
+  color             : #888 !important;
+  font-size         : 14px;
+  font-family       : monospace;
+  user-select       : text !important;
+  overflow          : auto;
+  "
+  class='cc9'
+  onclick="this.focus(); return false;"
+  ></pre>
+ <!--}}}-->
+</div>
+<!--}}}-->
+
+<!-- WORDS {{{-->
+<div class="blurred_frame" style="font-weight:900; position:relative;">
+
+<!--pre style="position:absolute; top:0em; left:0em; outline:1px solid black; height:max-content;">
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+</pre-->
+
+<pre style="position:absolute; top:0em; left:0em; font-size:90%;">
+âœ˜ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre>
+
+<pre style="float:right; font-size:150%;">
+
+    man rich wife
+    daughter God mother
+    fell fel grave
+
+    1  2  3  4  5
+    6  7  8  9  0
+
+    01 02 03 04 05 00000
+    06 07 08 09 10 11111
+
+    Cinderella Fairy tale
+    by The Brothers Grimm
+
+    The wife of a rich
+    man fell sick,
+    and as she felt that
+    her end was drawing near
+</pre>
+
+</div>
+<!--}}}-->
+<!-- IMPORT SAMPLES {{{-->
+<style>
+.div_pre_wrap pre {
+    white-space : no-wrap;
+    max-height  : 20em;
+    max-width   : 20em;
+    overflow    : auto;
+}
+</style>
+<div class="div_pre_wrap"> <em class='grid_cell_title cc8'>BROKEN JSON</em><br> <!--{{{-->
+ <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.pat_arr"
+,"val":"[\"BROKEN\"]"}}</pre>
+
+ <hr>
+
+ <em class='cc2'>t_share4_IMPORT_TEXT sticky_1</em>
+ <pre onclick='dom_share.t_share4_IMPORT_TEXT(this.innerText);'>
+[{"key":"DEV_playground.sticky_1","val":"{\"xy\":{\"x\":400,\"y\":776},\"msg\":\"MQ==\",\"num\":1,\"pad_H\":85,\"pad_W\":169,\"pinned\":true,\"offset_x\":\"-0.523\",\"offset_y\":\"0.881\",\"pad_flow\":\"ws_pre\",\"dir_class\":\"point_EE\",\"pad_msg_H\":53.921875,\"pad_msg_W\":98.59375,\"msg_fontSize\":\"49.3\",\"anchor_node_path\":\"18 import_grid_container of BODY|4 DIV of import_grid_container|6 PRE of DIV\"}"}]
+ </pre>
+</div>
+
+<!--}}}-->
+ <div> <em class='grid_cell_title cc2'>sticky 1 2 3</em><br> <!--{{{-->
+
+<em class='cc0'>sticky_1-10</em>
+  <pre onclick='add_to_CBC(event);' style="max-width:20em; max-height:10em; overflow:auto;">
+,{"key":"DEV_playground.sticky_1"  ,"val":"{\"xy\":{\"x\":900 ,\"y\": 600} ,\"pinned\":true ,\"msg\":\"MQ==\"}"}
+,{"key":"DEV_playground.sticky_2"  ,"val":"{\"xy\":{\"x\":600 ,\"y\": 650} ,\"pinned\":true ,\"msg\":\"Mg==\"}"}
+,{"key":"DEV_playground.sticky_3"  ,"val":"{\"xy\":{\"x\":900 ,\"y\": 700} ,\"pinned\":true ,\"msg\":\"Mw==\"}"}
+,{"key":"DEV_playground.sticky_4"  ,"val":"{\"xy\":{\"x\":600 ,\"y\": 750} ,\"pinned\":true ,\"msg\":\"NA==\"}"}
+,{"key":"DEV_playground.sticky_5"  ,"val":"{\"xy\":{\"x\":900 ,\"y\": 800} ,\"pinned\":true ,\"msg\":\"NQ==\"}"}
+,{"key":"DEV_playground.sticky_6"  ,"val":"{\"xy\":{\"x\":600 ,\"y\": 850} ,\"pinned\":true ,\"msg\":\"Ng==\"}"}
+,{"key":"DEV_playground.sticky_7"  ,"val":"{\"xy\":{\"x\":900 ,\"y\": 900} ,\"pinned\":true ,\"msg\":\"Nw==\"}"}
+,{"key":"DEV_playground.sticky_8"  ,"val":"{\"xy\":{\"x\":600 ,\"y\": 950} ,\"pinned\":true ,\"msg\":\"OA==\"}"}
+,{"key":"DEV_playground.sticky_9"  ,"val":"{\"xy\":{\"x\":900 ,\"y\":1000} ,\"pinned\":true ,\"msg\":\"OQ==\"}"}
+,{"key":"DEV_playground.sticky_10" ,"val":"{\"xy\":{\"x\":600 ,\"y\":1050} ,\"pinned\":true ,\"msg\":\"MA==\"}"}
+  </pre>
+
+<em class='cc1'>sticky_1</em>
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.sticky_1"
+,"val":"{\"xy\":{\"x\":800
+,\"y\":700}
+,\"pinned\":true
+,\"dir_class\":\"point_SE\"
+,\"date_MS\":1561852640994
+,\"msg\":\"LINE 1\\nLINE 2\\nLINE 3\\nLINE 4\\nLINE 5\"}"}</pre>
+
+  <hr>
+
+<em class='cc2'>sticky_2</em>
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.sticky_2"
+,"val":"{\"xy\":{\"x\":800
+,\"y\":800}
+,\"pinned\":true
+,\"dir_class\":\"point_SE\"
+,\"date_MS\":1561852640994
+,\"msg\":\"WORD 1, WORD 2, WORD 3, WORD 4, WORD 5\"}"}</pre>
+
+ </div>
+
+<!--}}}-->
+ <div> <em class='grid_cell_title cc7'>sticky 4 5 6</em><br> <!--{{{-->
+
+<em class='cc5'>sticky_4 RESISTORS</em>
+<pre onclick='add_to_CBC(event);' style="max-width:20em; max-height:10em; overflow:auto;">
+,{"key":"WindowOrWorkerGlobalScope_btoa.sticky_4"
+,"val":"{\"xy\":{\"x\":350,\"y\":1100}
+,\"pinned\":true
+,\"dir_class\":\"point_NE\"
+,\"date_MS\":1563149076857
+,\"msg\":\"PGltZyBzdHlsZT0iLXdlYmtpdC11c2VyLXNlbGVjdDogbm9uZTttYXJnaW46IGF1dG87IiBzcmM9Imh0dHBzOi8vdXBsb2FkLndpa2ltZWRpYS5vcmcvd2lraXBlZGlhL2NvbW1vbnMvdGh1bWIvNy83NS9FbGVjdHJvbmljLUF4aWFsLUxlYWQtUmVzaXN0b3JzLUFycmF5LmpwZy8zMjBweC1FbGVjdHJvbmljLUF4aWFsLUxlYWQtUmVzaXN0b3JzLUFycmF5LmpwZyI+\"
+,\"anchor_node_path\":\"22 DIV of BODY|5 DIV of DIV|4 PRE of DIV\"
+,\"offset_x\":0.56
+,\"offset_y\":0}"}
+</pre>
+
+<em class='cc4'>sticky_5 Global</em>
+<pre onclick='add_to_CBC(event);' style="max-width:20em; max-height:10em; overflow:auto;">
+,{"key":"WindowOrWorkerGlobalScope_btoa.sticky_5"
+,"val":"{\"xy\":{\"x\":350,\"y\":1200}
+,\"pinned\":true
+,\"dir_class\":\"point_EE\"
+,\"date_MS\":1563149058590
+,\"msg\":\"R2xvYmFs\"
+,\"anchor_node_path\":\"22 DIV of BODY|5 DIV of DIV|6 PRE of DIV\"
+,\"offset_x\":0.5
+,\"offset_y\":0}"}
+</pre>
+
+<em class='cc6'>sticky_6 Google</em>
+<img style="width:5em;" src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'>
+<pre onclick='add_to_CBC(event);' style="max-width:20em; max-height:10em; overflow:auto;">
+,{"key":"DEV_playground.sticky_6"
+,"val":"{\"xy\":{\"x\":470
+,\"y\":346}
+,\"msg\":\"PGltZyBzcmM9J2h0dHBzOi8vd3d3Lmdvb2dsZS5jb20vaW1hZ2VzL2JyYW5kaW5nL2dvb2dsZWxvZ28vMXgvZ29vZ2xlbG9nb19jb2xvcl8yNzJ4OTJkcC5wbmcnPg==\"
+,\"num\":1
+,\"pad_H\":141
+,\"pad_W\":384
+,\"pinned\":true
+,\"date_MS\":1563295825456
+,\"offset_x\":\"-0.111\"
+,\"offset_y\":\"1.000\"
+,\"pad_flow\":\"ws_pre_wrap\"
+,\"dir_class\":\"point_SE\"
+,\"pad_msg_H\":99
+,\"pad_msg_W\":314
+,\"anchor_node_path\":\"9 about_div of BODY|2 about_en of about_div|4 P of about_en\"}"}
+</pre>
+
+</div>
+
+<!--}}}-->
+ <div> <em class='grid_cell_title cc4'>pat_arr</em><br> <!--{{{-->
+
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.pat_arr"
+,"val":"[\"01|E\"
+,\"02|H\"
+,\"03|E\"
+,\"04|H\"
+,\"05|E\"]"}</pre>
+
+  <hr>
+
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.pat_arr"
+,"val":"[\"06|H\"
+,\"07|E\"
+,\"08|H\"
+,\"09|E\"
+,\"10\"]"}</pre>
+
+  <hr>
+
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.pat_arr"
+,"val":"[\"man\"
+,\"rich|E\"
+,\"wife|E\"]"}</pre>
+
+ </div>
+<!--}}}-->
+ <div> <em class='grid_cell_title cc6'>alt_arr</em><br> <!--{{{-->
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.alt_arr"
+,"val":"[\"daughter\"
+,\"God|E\"
+,\"mother|E\"]"}</pre>
+ </div>
+
+<!--}}}-->
+ <div> <em class='grid_cell_title cc2'>bak_arr</em><br> <!--{{{-->
+  <pre onclick='add_to_CBC(event);'>
+,{"key":"DEV_playground.bak_arr"
+,"val":"[\"Cinderella\"
+,\"Brothers\"
+,\"Grimm\"
+,\"Fairy\"]"}</pre>
+ </div>
+
+<!--}}}-->
+<div> <em class='grid_cell_title cc8'>BAGS</em><br> <!--{{{-->
+<em class='cc1'>headsup</em>
+<pre onclick='add_to_CBC(event);'>,{"key":"DEV_playground.headsup"
+,"val":"{\"selected\":true
+,\"pinned\":true
+,\"xy\":{\"x\":229
+,\"y\":0}
+,\"magnified\":false}"}</pre>
+
+<em class='cc2'>test_panel</em>
+<pre onclick='add_to_CBC(event);'>,{"key":"DEV_playground.test_panel"
+,"val":"{\"selected\":true
+,\"pinned\":true
+,\"xy\":{\"x\":599
+,\"y\":0}
+,\"magnified\":false}"}</pre>
+
+<em class='cc3'>pat_bag</em>
+<pre onclick='add_to_CBC(event);'>,{"key":"DEV_playground.pat_bag"
+,"val":"{\"selected\":true
+,\"pinned\":false
+,\"xy\":{\"x\":150
+,\"y\":500}
+,\"magnified\":false}"}</pre>
+
+<em class='cc4'>sel_bag</em>
+<pre onclick='add_to_CBC(event);'>,{"key":"DEV_playground.sel_bag"
+,"val":"{\"selected\":true
+,\"pinned\":false
+,\"xy\":{\"x\":-54
+,\"y\":69}
+,\"magnified\":false}"}</pre>
+
+</div>
+<!--}}}-->
+<!--}}}-->
+ <!-- SCRIPT .. [add_to_CBC] .. [select_container] {{{-->
+ <script>
+/*_ add_to_CBC {{{*/
+let add_to_CBC = function(event)
+{
+ let container = document.getElementById("clipboard_container");
+ add_to_container_id(event, container);
+};
+
+let add_to_container_id = function(event, container)
+{
+/*{{{
+console_dir(event,"event");
+console_dir(event.target,"event.target");
+}}}*/
+
+ /* CLICKED ELEMENT CONTENT .. FROM MULTILINE TO ONE-LINER */
+ let text_to_add = event.target.innerText.replace(/\n,/g,",").trim();
+
+ /* CONTAINER */
+
+ /* ALREADY INCLUDED .. BLINK CONTAINER */
+/*{{{
+ log("%c ........text_to_add=["+              text_to_add      +"]", lb4);
+ log("%c container=["+ container.innerHTML +"]", lb8);
+}}}*/
+ if( container.innerHTML.includes( text_to_add ))
+ {
+  /*...................*/ container.style.backgroundColor = "red";
+  setTimeout(function() { container.style.backgroundColor =    ""; select_container(container); } ,250);
+  return;
+ }
+
+ /* ADD TO CONTAINER */
+ if( container.innerHTML)   container.innerHTML += LF;
+ container    .innerHTML += text_to_add;
+
+ /* COPY CONTAINER TO CLIPBOARD */
+ dom_tools.t_copy_innerHTML_to_clipboard( container.innerText );
+
+ /* SELECT CONTAINER CONTENT */
+ select_container(container);
+
+};
+/*}}}*/
+/*_ select_container {{{*/
+let select_container = function(container)
+{
+/*{{{
+log("select_container("+get_n_lbl(container)+")");
+}}}*/
+
+ /* SELECT */
+ dom_util.clearSelection();
+ dom_util.selectNodeContents( container );
+
+ /* FOCUS */
+ container.focus();
+};
+/*}}}*/
+/*_ clear_clipboard_container {{{*/
+let clear_clipboard_container = function(event)
+{
+ let container = document.getElementById("clipboard_container");
+ container.innerHTML = "   ";
+ dom_tools.t_copy_innerHTML_to_clipboard(container.innerHTML);
+
+ dom_util.clearSelection();
+ dom_util.selectNodeContents( container );
+
+};
+/*}}}*/
+ </script>
+ <!--}}}-->
+</div>
+<hr style="height:2em; background-color:rgba(136,136,255,0.8)">
+<!--}}}-->
+<H1 id="white_space">white-space</H1>
+<!--{{{-->
+<pre style="font-size:120% !important; font-family:monospace; font-weight:900;">
+o-------------------------o--------------------------o
+| 1.pre                   | 3.break-spaces           |
+|   Sequences of white    |   The behavior is        |
+|   space are preserved.  |   identical to that of   |
+|   Lines are only        |   pre-wrap, except       |
+|   broken at newline     |   that:                  |
+|   characters in the     |   - Any sequence of      |
+|   source and at         |   preserved white        |
+|   BR elements.          |   space always takes     |
+o-------------------------o   up space, including    |
+| 2.pre-wrap              |   at the end of the      |
+|   Sequences of white    |   line.                  |
+|   space are preserved.  |   - A line breaking      |
+|   Lines are broken at   |   opportunity exists     |
+|   newline characters,   |   after every            |
+|   at BR and             |   preserved white        |
+|   as necessary to fill  |   space character,       |
+|   line boxes.           |   including between      |
+o-------------------------o   white space            |
+| 4.pre-line              |   characters.            |
+|    Sequences of white   |   - Such preserved       |
+|    space are collapsed. |   spaces take up space   |
+|    Lines are broken at  |   and do not hang, and   |
+|    newline characters,  |   thus affect the        |
+|    at BR and            |   box's intrinsic        |
+|    as necessary to fill |   sizes (min-content     |
+|    line boxes.          |   size and max-content   |
+o-------------------------o--------------------------o
+| 5.normal                | 6.nowrap                 |
+|   Sequences of white    |   Collapses white        |
+|   space are collapsed.  |   space as for normal,   |
+|   Newline characters    |   but suppresses line    |
+|   in the source are     |   breaks (text           |
+|   handled the same as   |   wrapping) within the   |
+|   other white space.    |   source.                |
+|   Lines are broken as   |                          |
+|   necessary to fill     |                          |
+|   line boxes.           |                          |
+o-------------------------o--------------------------o
+</pre>
+
+<hr style="height:2em; background-color:rgba(136,136,255,0.8)">
+<!--}}}-->
+<H1 id="VIM_HELP">VIM_HELP</H1>
+<!--{{{-->
+<dir id="vim_dir" style="background:rgba(255,255,255,0.86); margin:0; padding:0; height:80em;">
+<div id="d1"      style="background:rgba(255,068,000,0.27); position:relative; display:table; width:100%; margin:0 auto;">
+        <pre id="sp"      style="background:rgba(000,255,000,0.27); height:1px; font-size:11px;"></pre>
+        <div id="d2"      style="background:rgba(255,221,000,0.27);position:absolute; top:inherit; left:25%;">
+<pre id="big_pre" style="background:rgba(255,255,000,0.27);">
+<a name="usr_42.txt" class="t">usr_42.txt</a>    For <span class="i">Vim version 8.2.</span>  Last change: 2008 May 05
+
+                     VIM USER MANUAL <a href="motion.txt.html#-" class="d">-</a> by <a href="intro.txt.html#Bram" class="d">Bram</a> <a href="intro.txt.html#Moolenaar" class="d">Moolenaar</a>
+
+                              Add new <a href="gui.txt.html#menus" class="d">menus</a>
+
+
+By now you know that Vim <a href="motion.txt.html#is" class="d">is</a> very flexible.  This includes the <a href="gui.txt.html#menus" class="d">menus</a> used in
+the GUI.  You can define your own menu entries to make certain commands easily
+accessible.  This <a href="motion.txt.html#is" class="d">is</a> for mouse-happy users only.
+
+<a href="#42.1" class="l">42.1</a>  Introduction
+<a href="#42.2" class="l">42.2</a>  Menu commands
+<a href="#42.3" class="l">42.3</a>  Various
+<a href="#42.4" class="l">42.4</a>  Toolbar and <a href="popup.txt.html#popup" class="d">popup</a> <a href="gui.txt.html#menus" class="d">menus</a>
+
+     Next chapter: <a href="usr_43.txt.html#usr_43.txt" class="l">usr_43.txt</a>  Using <a href="filetype.txt.html#filetypes" class="d">filetypes</a>
+ Previous chapter: <a href="usr_41.txt.html#usr_41.txt" class="l">usr_41.txt</a>  Write <a href="insert.txt.html#a" class="d">a</a> Vim <a href="usr_41.txt.html#script" class="d">script</a>
+Table of contents: <a href="usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
+
+<span class="h">==============================================================================</span>
+<a name="42.1" class="t">42.1</a>  Introduction
+
+The <a href="gui.txt.html#menus" class="d">menus</a> that Vim uses are defined in the file "$VIMRUNTIME/menu.vim"<a href="repeat.txt.html#." class="d">.</a>  If
+you want to write your own menus, you might first want to look through that
+file.
+   To define <a href="insert.txt.html#a" class="d">a</a> menu item, use the "<a href="gui.txt.html#%3Amenu" class="d">:menu</a>" command.  The basic form of this
+command <a href="motion.txt.html#is" class="d">is</a> <a href="motion.txt.html#as" class="d">as</a> follows:
+<span class="e"></span>
+<span class="e">        :menu {menu-item} {keys}</span>
+<span class="e"></span>
+The <span class="s">{menu-item}</span> describes where on the menu to <a href="change.txt.html#put" class="d">put</a> the item.  <a href="insert.txt.html#A" class="d">A</a> typical
+<span class="s">{menu-item}</span> <a href="motion.txt.html#is" class="d">is</a> "File.Save"<a href="motion.txt.html#%2C" class="d">,</a> which represents the item "Save" under the
+"File" menu.  <a href="insert.txt.html#A" class="d">A</a> dot <a href="motion.txt.html#is" class="d">is</a> used to separate the names.  Example:
+<span class="e"></span>
+<span class="e">        :menu File.Save  :update&lt;CR&gt;</span>
+<span class="e"></span>
+The "<a href="editing.txt.html#%3Aupdate" class="d">:update</a>" command writes the file when <a href="motion.txt.html#it" class="d">it</a> was modified.
+   You can add another level: "Edit.Settings.Shiftwidth" defines <a href="insert.txt.html#a" class="d">a</a> submenu
+"Settings" under the "Edit" menu, with an item "Shiftwidth"<a href="repeat.txt.html#." class="d">.</a>  You could use
+even deeper levels.  Don't use this too much, you need to move the mouse quite
+<a href="insert.txt.html#a" class="d">a</a> bit to use such an item.
+   The "<a href="gui.txt.html#%3Amenu" class="d">:menu</a>" command <a href="motion.txt.html#is" class="d">is</a> very similar to the "<a href="map.txt.html#%3Amap" class="d">:map</a>" command: the left side
+specifies how the item <a href="motion.txt.html#is" class="d">is</a> triggered and the right hand side defines the
+characters that are executed.  <span class="s">{keys}</span> are characters, they are used just like
+you would have typed them.  Thus in <a href="insert.txt.html#Insert" class="d">Insert</a> mode, when <span class="s">{keys}</span> <a href="motion.txt.html#is" class="d">is</a> plain text,
+that text <a href="motion.txt.html#is" class="d">is</a> inserted.
+
+
+ACCELERATORS
+
+The ampersand character (&amp;) <a href="motion.txt.html#is" class="d">is</a> used to indicate an accelerator.  For instance,
+you can use Alt-F to select "File" and <a href="change.txt.html#S" class="d">S</a> to select "Save"<a href="repeat.txt.html#." class="d">.</a>  (The <a href="options.txt.html#%27winaltkeys%27" class="o">'winaltkeys'</a>
+option may disable this though!).  Therefore, the <span class="s">{menu-item}</span> looks like
+"&amp;File.&amp;Save"<a href="repeat.txt.html#." class="d">.</a>  The accelerator characters will be underlined in the menu.
+   You <a href="vim_faq.txt.html#must" class="d">must</a> take care that each key <a href="motion.txt.html#is" class="d">is</a> used only once in each menu.  Otherwise
+you will not know which of the two will actually be used.  Vim doesn't warn
+you for this.
+
+
+PRIORITIES
+
+The actual definition of the File.Save menu item <a href="motion.txt.html#is" class="d">is</a> <a href="motion.txt.html#as" class="d">as</a> follows:
+<span class="e"></span>
+<span class="e">        :menu 10.340 &amp;File.&amp;Save&lt;Tab&gt;:w  :confirm w&lt;CR&gt;</span>
+<span class="e"></span>
+The number 10.340 <a href="motion.txt.html#is" class="d">is</a> called the priority number.  It <a href="motion.txt.html#is" class="d">is</a> used by the editor to
+decide where <a href="motion.txt.html#it" class="d">it</a> places the menu item.  The first number (10) indicates the
+position on the menu bar.  Lower numbered <a href="gui.txt.html#menus" class="d">menus</a> are positioned to the left,
+higher numbers to the right.
+   These are the priorities used for the standard menus:
+
+          10    20     40     50      60       70               9999
+
+        +------------------------------------------------------------+
+        | File  Edit  Tools  <a href="autocmd.txt.html#Syntax" class="d">Syntax</a>  Buffers  Window            Help |
+        +------------------------------------------------------------+
+</pre>
+</div><!-- d2 -->
+</div><!-- d1 -->
+
+</dir>
+
+<hr style="height:2em; background-color:rgba(136,136,255,0.8)">
+<!--}}}-->
+<H1 id="TEXT_NODE">TEXT_NODE</H1>
+<!--{{{-->
+<pre>
+-- loadPresetSlots_checkSlotItemTable {{{
+function loadPresetSlots_checkSlotItemTable(log_this)
+if(log_this) then c(COLOR_4.."LOADING "..QSB.Settings.PresetName.." SLOTS") end
+
+    if(QSB.Settings.SlotItemTable == nil) then
+
+if(log_this) then c(COLOR_2.." nothing to load|r") end
+
+        return false
+    end
+
+    if is_SlotItemTable_empty() then
+
+if(log_this) then c(COLOR_8.." preset is empty|r") end
+
+    end
+
+    return true
+end
+--}}}
+/*_ f_name {{{*/
+let f_name = function(e)
+{
+    /* commented block {{{*/
+    if( f2_name() )
+        f3_name("argument string");
+
+    /*}}}*/
+
+    /* Second comment */
+    if(!seeker_move_grab_done)
+    {
+        if     ( condition  == one) { var = true; }
+        else if( condition  == 2  ) { var = true; }
+    }
+
+/*{{{
+log("%c var=["+ format(var)    +"]", lbb+lf5);
+log("%c var=["+ format(var)    +"]", lbb+lf5);
+log("%c var=["+ format(var)    +"]", lbb+lf5);
+log("%c var=["+ var.toString() +"]", lbb+lf5);
+
+LINE 1
+LINE 2
+LINE 3
+LINE 4
+LINE 5
+}}}*/
+
+};
+/*}}}*/
+</pre>
+
+<hr style="height:2em; background-color:rgba(136,136,255,0.8)">
+<!--}}}-->
+
+<!-- [dev_log_map top_right] {{{-->
+<div
+ id   ="dev_log_map" title="dev_log_map"
+ class="transcript display_delayed prop_bag top_right squeezed_0_1"
+ style="display:grid; grid-gap:0.25em; margin-top:3em; margin-right:2em;"
+ >
+<!--
+ style="display:grid; grid-gap:0.25em; position:absolute; top:100%; right:1em;"
+-->
+  <!-- [magpin_div] {{{-->
+  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input  id="squeeze_cycle_dev_log_map_clones_panel"           type="checkbox" />
+   <label for="squeeze_cycle_dev_log_map_clones_panel">
+    <pre>&#x25E4; &#x25E5;
+&#x25E3; &#x25E2;</pre>
+   </label>
+  </div>
+  <!--}}}-->
  <i>a clone of the<br>dev_log_map panel</i>
- <em class="toolbag_button cc8" id="LOG IPC"        >LOG IPC</em>
- <em class="toolbag_button cc8" id="LOG EVENTS"     >LOG EVENTS</em>
- <em class="toolbag_button cc8" id="LOG HIGHLIGHT"  >LOG HIGHLIGHT</em>
- <em class="toolbag_button cc8" id="LOG TOOLBAR"    >LOG TOOLBAR</em>
+
  <em class="toolbag_button cc8" id="EV0_LISTEN"     >EV0_LISTEN</em>
  <em class="toolbag_button cc8" id="EV1_DOWN"       >EV1_DOWN</em>
  <em class="toolbag_button cc8" id="EV2_MOVE"       >EV2_MOVE</em>
@@ -100,9 +842,12 @@
  <em class="toolbag_button cc8" id="EV6_CHANGED"    >EV6_CHANGED</em>
  <em class="toolbag_button cc8" id="EV7_DISPATCH"   >EV7_DISPATCH</em>
  <em class="toolbag_button cc8" id="EV8_FLOATLOG"   >EV8_FLOATLOG</em>
+
+ <em class="toolbag_button cc8" id="S0_PATTERN"     >S0_PATTERN</em>
  <em class="toolbag_button cc8" id="S1_RANGE"       >S1_RANGE</em>
  <em class="toolbag_button cc8" id="S2_SELECT"      >S2_SELECT</em>
  <em class="toolbag_button cc8" id="S3_SLOT"        >S3_SLOT</em>
+
  <em class="toolbag_button cc8" id="T0_STORE"       >T0_STORE</em>
  <em class="toolbag_button cc8" id="T1_DOM_LOAD"    >T1_DOM_LOAD</em>
  <em class="toolbag_button cc8" id="T2_GRID"        >T2_GRID</em>
@@ -110,27 +855,25 @@
  <em class="toolbag_button cc8" id="T4_PIVOT"       >T4_PIVOT</em>
  <em class="toolbag_button cc8" id="T5_SPREAD"      >T5_SPREAD</em>
  <em class="toolbag_button cc8" id="T6_SLOT"        >T6_SLOT</em>
+ <em class="toolbag_button cc8" id="T7_SHARE"       >T7_SHARE</em>
+ <em class="toolbag_button cc8" id="T8_TOOLBAR"     >T8_TOOLBAR</em>
+
+ <em class="toolbag_button cc8" id="IPC_LOG"        >IPC_LOG</em>
 </div>
 
+<hr style="clear:both; height:1em; background:rgba(128,128,128,0.7);">
 <!--}}}-->
-  <!-- ivan_wellesz {{{-->
-  <div class="transcript " style='display:inline-block; border:3px dotted red !important;'>
-   <a href="http://perso.orange.fr/ivanw"                     style="font-size:300%;" title="Ivan WELLESZ">&#x2302;</a>
-   <a href="https://remotetabs.com/dev/rtabs/playground.html" style="font-size:150%;font-weight:900;"     >RTabs playground</a>
-   <a href="https://google.com"                               style="font-size:200%;font-weight:900;"     >Google</a>
-  </div>
-  <!--}}}-->
-<br style="clear:both;">
 <!-- numbers affix {{{-->
-<div class='transcript '>
+<div class="transcript ">
  <i>numbers</i> <em>1234567890</em>
  <br><i>affix</i> .. <em>word</em> <em>words</em> .. <em>wording</em>
  <br><i>...accentuation &amp; quotes</i>
- <br>Le papillon qui est la forme 'adulte' de la chenille, éclos
- <br>durant l'été entre juin et septembre selon le climat.
+ <br>Le papillon qui est la forme 'adulte' de la chenille, Ã©clos
+ <br>durant l'Ã©tÃ© entre juin et septembre selon le climat.
 </div>
+
+<hr style="clear:both; height:1em; background:rgba(128,128,128,0.7);">
 <!--}}}-->
-<br style="clear:both;">
 <!-- blurred darkgreen {{{-->
   <div class="blurred_frame">
    <ol class="blurred darkgreen">
@@ -163,18 +906,25 @@
    </div>
   </div>
 <!--}}}-->
-
-<!-- HTML   PLAYGROUND {{{-->
+ <!--}}}-->
+<!-- HTML   playground {{{-->
  <!-- [playground_clones_panel bottom_right] {{{-->
- <div id="playground_clones_panel" class="transcript display_delayed bottom_right squeezed_0_1">
-  <!-- squeeze_cycle_playground_clones_panel {{{-->
-  <div class="box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
-   <input type="checkbox" id="squeeze_cycle_playground_clones_panel" />
-   <label for="squeeze_cycle_playground_clones_panel"><div  class="magpin">&#x1F50D;</div></label>
+ <div
+  id   ="playground_clones_panel" title="playground_clones_panel"
+  class="transcript display_delayed bottom_right squeezed_0_1"
+  >
+  <!-- [magpin_div] {{{-->
+  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input  id="squeeze_cycle_playground_clones_panel"            type="checkbox" />
+   <label for="squeeze_cycle_playground_clones_panel">
+    <pre>&#x25E4; &#x25E5;
+&#x25E3; &#x25E2;</pre>
+   </label>
   </div>
   <!--}}}-->
  </div>
  <!--}}}-->
+ <div style='float:right;'>
  <!-- div {{{-->
  <div   id="div1"    >div1
   <div  id="div1_1"  >div1_1
@@ -199,7 +949,7 @@
  <div id="div3">div3</div>
  <div id="div4">div4</div>
  <div id="div5">div5</div>
- <p id="python" class="green note" style="width:64em !important;">
+ <p id="python" class="green note" style="width:32em !important;">
 <!-- python {{{-->
   The assignment statement (token '=', the equals sign). This operates differently than in traditional <a href="/wiki/Imperative_programming" title="Imperative programming" class="">imperative programming</a>
   languages, and this fundamental mechanism (including the nature of Python's version of <i>variables</i>)
@@ -225,10 +975,11 @@
   have a type; thus there is <a href="/wiki/Dynamic_type" class="mw-redirect" title="Dynamic type">dynamic typing</a>.
 <!--}}}-->
  </p>
- 
+
  </div>
 
  <!--}}}-->
+ </div>
 <!-- GOOGLE KEEP {{{-->
 <!--{{{-->
 <div class="eso_div" style="float:left; background-color:black !important;">
@@ -245,8 +996,8 @@
   <li>add  and  copy buttons on first containers clipboard button</li>
   <li>node_to_hide: add display:none after masked-invisible states</li>
   <li>overlap quadrant layout while moving pannels</li>
-  <li>doc-select: discard short-lived select-unselect .. instead of…</li>
-  <li>get_word_start_end: words_drop_s "s" termination… do not mess with button press pressing</li>
+  <li>doc-select: discard short-lived select-unselect .. instead ofÂ…</li>
+  <li>get_word_start_end: words_drop_s "s" terminationÂ… do not mess with button press pressing</li>
  </ol>
 </div>
 
@@ -255,7 +1006,7 @@
 <div class="eso_div" style="float:left;">
  <h2>Google Keep &mdash; Android (180706)</h2>
  <ol>
-  <li>postpone-toast (new node) — rephrase: node-label first</li>
+  <li>postpone-toast (new node) Â— rephrase: node-label first</li>
   <li>Find a substitute to e.shift for move_cooldown_short</li>
   <li>toast .. no RTabs label when app is the active one</li>
   <li>Cart add-del ..bacground click should exit edit-mode</li>
@@ -272,27 +1023,33 @@
 <pre>
 <em>OVERFLOW</em> &mdash; <em>WALL OF TEXT</em>
 &bullet; However, The rules above it win, because IDs/class selectors have higher specificity than element selectors (you'll learn more about this in the next section).
-&bullet; Both elements have a class of better, but the 2nd one has an id of winning too. Since IDs have an even higher specificity than classes (you can only have one element with each unique ID on a page, but many elements with the same class — ID selectors are very specific in what they target), the red background color and the 1 pixel black border should both be applied to the 2nd element, with the first element getting the gray background color, and no border, as specified by the class.
+&bullet; Both elements have a class of better, but the 2nd one has an id of winning too. Since IDs have an even higher specificity than classes (you can only have one element with each unique ID on a page, but many elements with the same class Â— ID selectors are very specific in what they target), the red background color and the 1 pixel black border should both be applied to the 2nd element, with the first element getting the gray background color, and no border, as specified by the class.
 </pre>
 <pre>
 <em>OVERFLOW</em> &mdash; <em>LONG LINE</em>
-&bullet; The 2nd element does get the red background color, but no border. Why? Because of the !important declaration in the second rule — including this after border: none means that this declaration will win over the border value in the previous rule, even though the ID has higher specificity.
+&bullet; The 2nd element does get the red background color, but no border. Why? Because of the !important declaration in the second rule Â— including this after border: none means that this declaration will win over the border value in the previous rule, even though the ID has higher specificity.
 </pre>
 </div>
 <!--}}}-->
 <!-- WALL OF TEXT 1 {{{-->
 <pre>
 
-<span>WOT_1_align_contents</span>
+WOT_1_align_contents {
         -_1_------------wall of text ------------------
         -_1_------------wall of text ------------------
         -_1_------------wall of text ------------------
-<span>WOT_2_align_manual</span>
+}
+WOT_2_align_manual {
         -_2_------------wall of text ------------------
         -_2_------------wall of text ------------------
         -_2_------------wall of text ------------------
         -_2_------------wall of text ------------------
-<span>WOT_3_ align_usage</span>
+}
+WOT_3_ align_usage
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+        -_3_ ------------wall of text ------------------
+function XXX{
         -_3_ ------------wall of text ------------------
         -_3_ ------------wall of text ------------------
         -_3_ ------------wall of text ------------------
@@ -300,31 +1057,94 @@
         -_3_ ------------wall of text ------------------
         -_3_ ------------wall of text ------------------
         -_3_ ------------wall of text ------------------
+}
         -_3_ ------------wall of text ------------------
         -_3_ ------------wall of text ------------------
         -_3_ ------------wall of text ------------------
-        -_3_ ------------wall of text ------------------
-        -_3_ ------------wall of text ------------------
-        -_3_ ------------wall of text ------------------
-<span>WOT_4_align_maps</span>
+WOT_4_align_maps {
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
+}
+        /*{{{*/
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
+        /*}}}*/
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
+WOT_5_align_history
+{
         -_4_------------wall of text ------------------
         -_4_------------wall of text ------------------
-<span>WOT_5_align_history</span>
         -_5_------------wall of text ------------------
         -_5_------------wall of text ------------------
         -_5_------------wall of text ------------------
         -_5_------------wall of text ------------------
         -_5_------------wall of text ------------------
+}
 
+#region MEMBERS {{{
+
+#endregion }}}
+#region LOG {{{
+
+#endregion }}}
+#region PROFILE {{{
+
+#endregion }}}
+
+/*_ node_has_some_text {{{*/
+let node_has_some_text = function(node)
+{
+    return node.nodeValue
+        && node.textContent
+        && (trim_alNum_lines(node.textContent).length > 0)
+    ;
+};
+/*}}}*/
+
+
+const RE_PASV = /([-\d]+,[-\d]+,[-\d]+,[-\d]+),([-\d]+),([-\d]+)/;
+const FTP_NEWLINE = /\r\n|\n/;
+/* XXX */
+/* XXX */
+/* XXX */
+/* XXX */
+/* XXX */
+/* XXX */
+/* XXX */
+/* XXX */
+function runCmd(name, ...params) {
+  let callback = NOOP;
+  let completeCmd = name + " ";
+
+  if (typeof params[params.length - 1] === "function") {
+    callback = params.pop();
+  }
+
+  completeCmd += params.join(" ");
+  this.execute(completeCmd.trim(), callback);
+}
+
+function Ftp(cfg) {
+  this.host = cfg.host || FTP_HOST;
+  this.port = cfg.port || FTP_PORT;
+  this.user = cfg.user || "anonymous";
+  this.pass = cfg.pass || "@anonymous";
+  this.createSocket = cfg.createSocket;
+  // True if the server doesn't support the `stat` command. Since listing a
+  // directory or retrieving file properties is quite a common operation, it is
+  // more efficient to avoid the round-trip to the server.
+  this.useList = cfg.useList || false;
+  this.commandQueue = [];
+
+  EventEmitter.call(this);
+  this.on("data", dbgResponse);
+  this.on("error", dbgResponse);
+  this._createSocket(this.port, this.host);
+}
 </pre>
 <!--}}}-->
 
@@ -337,161 +1157,23 @@ escapeXXX(`
 `
 </pre>
 <!--}}}-->
+<h1 class='cc1' style='font-size:32px;'>dom_view</h1>
+<!-- dom_view {{{-->
+<pre style="word-wrap: break-word; white-space: pre-wrap;">
+<!--
+javascript/dom_view.js
+-->
+escapeXXX(`
+`
+</pre>
+<!--}}}-->
+<h1 class='cc2' style='font-size:32px;'>dom_prop</h1>
 <!-- dom_prop {{{-->
 <pre style="word-wrap: break-word; white-space: pre-wrap;">
 <!--
 javascript/dom_prop.js
 -->
-escape(`
-/*{{{*/
-"use strict";
-/* dom_prop_js */
-let DOM_PROP_JS_ID        = "dom_prop_js";
-let DOM_PROP_JS_TAG       = DOM_PROP_JS_ID  +" (181230:00h)";
-
-
-/* Prop public */
-let prop_init    = function(id, value, onchange) { return _prop_set  (id, value, onchange)        ; }; /* returns prop (not calling onchange) */
-let prop_set     = function(id, value, onchange) { return _prop_parse(id, value, onchange)        ; }; /* returns prop     */
-let prop_get     = function(id                 ) { return _prop_get  (id                 ).value  ; }; /* returns value    */
-let prop_toggle  = function(id                 ) { return _prop_parse(id,"toggle"        ).value  ; }; /* returns value    */
-let prop_set_EL  = function(id, el             ) { return _prop_get  (id                 ).el = el; }; /* returns EL       */
-let prop_get_EL  = function(id                 ) { return _prop_get  (id                 ).el     ; }; /* returns EL       */
-let prop_get_MAP = function(                   ) { return                                 Prop_Map; }; /* returns Prop_Map */
-let prop_set_CB  = function(cb                 ) {                                    Prop_CB = cb; }; /* UI state handler */
-let prop_log_MAP = function(_caller            ) {
-/* {{{*/
-
-    Prop_Map.forEach(
-                     function(prop,index,array) {
-                         prop.log(index +" "+ _caller);
-                     });
-
-};
-/*}}}*/
-
-/* Prop private */
-/* Prop_Map Prop_CB {{{*/
-let Prop_Map = [];
-let Prop_CB;
-
-/*}}}*/
-/*_Prop new {{{*/
-let Prop = function(id, value, onchange)
-{
-    this.id        = id;
-    this.value     = (value == "toggle") ? true      : value        ;
-    this.onchange  = onchange;
-    this.el        = null;
-    /* this.toString {{{*/
-    this.toString = function() {
-        return ""
-            +  "["+                  this.id
-            +  " "+                  this.value         +"]"
-            +  "["+ (this.onchange ? this.onchange.name : "")
-            +  " "+    get_id_or_tag(this.el)           +"]"
-        ;
-
-    };
-    /*}}}*/
-    /* this.log {{{*/
-    this.log = function(prefix="") {
-
-        let lfv = (this.value ==  null) ? lf8
-            :     (this.value == false) ? lb6
-            :     (this.value ==  true) ? lb5
-            :                             lb7;
-
-        let lfe = (this.el            ) ? lf4
-            :                             lf2;
-
-        console.groupCollapsed( "%c"+ mPadEnd  (               prefix     , 42)
-                       +       " %c"+ mPadStart(               this.id    , 24)
-                       +       " %c"+ mPadStart(               this.value , 16)
-                       +       " %c"+ mPadStart( get_id_or_tag(this.el   ), 24)
-                       +       " %c"+ (this.el ? " "+this.el.className : "")
-                       ,       lbH
-                       ,       lbL+lfe
-                       ,       lbC+lfv
-                       ,       lbR+lfe
-                       ,       lbH+lf3
-                              );
-
-        log_key_val(this.id, this, lf3);
-        console.trace();
-        console.groupEnd();
-    };
-
-    /*}}}*/
-};
-/*}}}*/
-/*  _prop_set {{{*/
-let _prop_set = function(id, value="toggle", onchange)
-{
-/*{{{*/
-let   caller = "_prop_set("+id+", "+value+")"; if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log("%c"+caller, lbH+lf3);
-/*}}}*/
-
-    let    prop  =  _prop_get(id, value, onchange);
-    if(onchange &&  (prop.onchange  != onchange )) { prop.onchange       = onchange;  }
-    if(             (prop.value     != value    )) { prop.value = (value == "toggle") ? !prop.value : value ; }
-    else if( log_this) log("...unchanged");
-
-    t1_prop_id_state_CB(id, prop.value);
-
-    return prop;
-};
-/*}}}*/
-/*  _prop_get {{{*/
-let _prop_get = function(id, value, onchange)
-{
-    let prop;
-    for(let i=0; i < Prop_Map.length; ++i ) {
-        if(  id == Prop_Map[i].id  ) {
-            prop = Prop_Map[i];
-            break;
-        }
-    }
-    if(!prop ) {
-        prop = new Prop(id, value, onchange);
-        Prop_Map.push(prop);
-    }
-    return prop;
-};
-/*}}}*/
-/*  _prop_parse {{{*/
-let _prop_parse = function(id, value, onchange)
-{
-/*{{{*/
-let   caller = "_prop_parse("+id+", "+value+")";
-let log_this = LOG_MAP.T1_DOM_LOAD;
-
-if( log_this) log(caller);
-/*}}}*/
-    let prop = _prop_get(id, value, onchange);
-    if(      onchange && (onchange != prop.onchange ))
-        prop .onchange  =  onchange;
-
-    if(  prop.value != value) {
-        _prop_set(id , value);
-
-        if(Prop_CB) Prop_CB(id, prop.value);
-
-        if( prop.onchange)
-            prop.onchange(id, prop.value);
-    }
-else if( log_this) log("...unchanged");
-
-if( log_this) prop.log(caller);
-    return prop;
-};
-/*}}}*/
-
-/*}}}*/
-//# sourceURL=dom_prop.js
+escapeXXX(`
 `
 </pre>
 <!--}}}-->
@@ -508,38 +1190,64 @@ escapeXXX(`
 <div id="checkbox_css_tag"   style="clear:right;"> checkbox_css_tag   </div><br>
 <div id="playground_css_tag" style="clear:right;"> playground_css_tag </div><br>
 <!-- data_image {{{-->
-<h2> data_image </h2>
+<h2 id="data_image_h2" title="data_image_h2">data_image</h2>
 <style>
-#data_image {
+#data_image_div {
  background       : url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAACXBIWXMAAAsSAAALEgHS3X78AAAFeklEQVRIiYWUXYxVVxXHf2vvfe49d+6dD4YZemeqdQpTHwwxjUYSeBCwYupbQ1uLCUqqTxWSStTEYmJiVCZ+tLVvfj3IA5HUFKVgaSOVGm1rx4K0UhVIrQxgNTMwc7/m3nvO2Xv5cO7cDproyjknOTtZ67/+//VfW1gdYkE9bPkRbNgN3RsgFkFRVybOapy4cD/rzWVu/dwihaEUMg+Sp2cB3CA8MCM8+bIyUR3HAVCaKDH2ofcSUiVrQTwOvp2DEUCsYf6Vt2Roum4Fq0GUSAOipcwzLSYHCAFI0M3T6s69xZWL/5xfyAHGN21kxy9mpdsAiSBr5gDGgfqAKRouHbrn4TE5NhXe1kY31oVnh/WWe+dvsyXOaBeHoM4iSRv/+U9hM8NXv3RIvp4D+C50m+jyIgQD1gJmpXlRF/HhaGnrg0vP1zulybIpeG7MVjppyvTYliVTnkigJ5Q1QBvqDYqgPYlEQC0jQ07Hhgq0OgGASmxYbGYstLzuWxvtLzaG9jdUsQCDnvqZQdL5gk7vu6p4QHuPAWdQIAcwAiFRtm9Edm0JTI6VsASuLHR55kyXQ78t0kZUNKiYvBBBsHHAxcEsd8EGiByo5ky05xvXH04sHD/r+flzCV/+TMSgafKVH2dE4xHEBoKKGCuq5FWsJc2U4QGYOQYfvB3u+Tik/1hVPRe6Fwo4CwNFjLXgHJSKSK8tjOAbdYwIEkWE5Sb07JN4eO1vcOIkXG8BUZ7SZ0B/RNpHF1VQRVGwhrDcovLRuzE77sOhtE/9kuTkrxHjUIUXL0Aa4Aen4PjXctlvZrBKuKD52z9TxRhL11huPHWE9NWXKe/6NFkIGAHv4cGPwDe+CMbApTehHK9iICK5tj1Ua8CZFSr5R1WJCwUqd22DpIMmSV6t11A7AVJodnKX3ySRqqoIaACKhpf+skyBBOI4PzO5XIOf2M2Vx77H6JoR7J0fQEMgKJRj4ae/g5cuQnUE1m+A5m/y1lxBoFAeKDQ9+CAQKadfU6AIseCD5sO0jus/+SFjD+0nefsqi6++QlQeYKmZ8shupb4NLs/Dxg197T2A2/XJezftfviJn33sW/+iVIooFCLssAGFdqcDGugkNd79+PeJvnsf85+9H1eIMAID0SAhC+DKrF0DE+tgqQW0lbYplUBxXoqVHZtunbj4+CIiwtzcHGma4FzE1O1TRC4iTVPeVR3m4uB7aJQXsJUKXqGUNvnr8vvZ/+y3kZChCiJYK55aNPoF3vfE3533IQB6x21rpFarcdeuu6nVanS7XbZu3cqxp49TjIdBA/smvsmLd3SolAwhgIjSSSOSxmg+zb7zQqBYMWh3YsWmApBmnnY348mnjvH6Gxc4e+48T5842XOKsuxG8dE6GtE4zcI4ddZxy+Qok+MpaIIxCbLykgJk7ywaYI3gvef5U79icnIS7zPWjAznQxPBaAaaYhHStnLnBsdD21L+8Kbn0O8tqa7QkL6/bwIAMMZw+PBhrl27xoEDB9i+fXuPo6C9RFUBK9TagdfnlMg5nAmk2Tu71K+3+kdVcc5x+vRp9uzZw+zsLNZatL+FPqDeg/cE70uR9+VC8OvXdryTxKPei3qPeo9mQAhO8+ygquq9J0kSWq0WMzMzTE1NcfToUXbu3EmSdAmmYokNIcpX9M/zUD+XUm96GhpDqbfBGoSoDLYUOWutW2EyMjLCwYMHqVarVKtVjhw5grUWgEKhSOXGMy/wxqU5qRQjQr79V1PJL1Wrq1ykio1jrv/xvGzevHl67969jzSbzcg5p3Ec0263CSFQqVRIkoROp6sDpWL0nUcfe/T8ZXfWlIdNCD70RrPqElYwESz+CToLgMh/jOT/hFjzX1P8X6Eh/Bs7TJStHjqCxQAAAABJRU5ErkJggg==") !important;
- outline          : 3px dotted pink !important;
- width            : 150px           !important;
- height           : 150px           !important;
- text-align       : center          !important;
- vertical-align   : middle          !important;
- margin           : 1em             !important;
- padding          : 1em             !important;
- border           : 8px #444 groove !important;
- background-color : #F004           !important;
+ outline          : 3px dotted pink   !important;
+ width            : 150px             !important;
+ height           : 150px             !important;
+ text-align       : center            !important;
+ vertical-align   : middle            !important;
+ margin           : 1em               !important;
+ padding          : 1em               !important;
+ border           : 8px #444 groove   !important;
+ background-color : rgba(255,0,0,0.3) !important;
 /*{{{
 :!start explorer "https://css-tricks.com/data-uris/"
 }}}*/
 }
 </style>
 
-<div id="data_image">data_image</div>
+<div id="data_image_div" title="data_image_div"></div>
 
 <!--}}}-->
 <!--}}}-->
-  <!-- SCRIPT PLAYGROUND {{{ -->
+
+
+
+  <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (190102:19h)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (200410:16h)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
   function set_title() {
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
-   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc6'>My DOM "+DOM_LOAD_TAG+"</em>";
+   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc6'>"+DOM_LOAD_TAG+"</em>";
+  }
+  /*}}}*/
+  /* playground_IMPORT {{{*/
+  let log;
+  function playground_IMPORT() {
+    /* dom_log {{{*/
+      log = dom_log;
+
+    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log.LOG_BG_ARR;
+    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log.LOG_XX_ARR;
+    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log.LOG_FG_ARR;
+
+    log                 = dom_log.functions.log;
+    logBIG              = dom_log.functions.logBIG;
+    logXXX              = dom_log.functions.logXXX;
+    log_caller          = dom_log.functions.log_caller;
+    log_json_one_liner  = dom_log.functions.log_json_one_liner;
+    log_key_val         = dom_log.functions.log_key_val;
+    log_key_val_group   = dom_log.functions.log_key_val_group;
+    /*}}}*/
+    DOM_LOADER_LOG = dom_store.t_store_getBool("DOM_LOADER_LOG");
+    DOM_LOADER_TAG = dom_store.t_store_getBool("DOM_LOADER_TAG");
+log("%c 23 "+DOM_LOAD_TAG, lbH+lf3);
   }
   /*}}}*/
   let CHECK_MARK           = "\u2714";
@@ -567,12 +1275,14 @@ escapeXXX(`
      /*}}}*/
      /* load_html {{{*/
      load_html = function(id, html) {
+//console.log("load_html("+id+")")
       if( document.getElementById(id) ) return;
       let el       = document.createElement("DIV");
       el.id        = id;
       el.title     = id;
       el.innerHTML = unescape(html);
       document.body.appendChild(el);
+//console.log("load_html("+id+") .. DONE")
      };
      /*}}}*/
   </script>
@@ -586,7 +1296,7 @@ escapeXXX(`
   /*  checkbox_clicked {{{*/
   let checkbox_clicked = function(el_or_id)
   {
-logBIG("checkbox_clicked", lbH+lf3);
+log("checkbox_clicked", lbb+lbH+lf3);
 
    let input     = (typeof el_or_id == "object") ? el_or_id : document.getElementById(el_or_id);
    input.checked = !input.checked;
@@ -604,7 +1314,7 @@ console_dir(label_on , get_n_lbl(label_on ))
    label_off.innerHTML = input.checked ?  on_text : off_text;
    label_on .innerHTML = input.checked ? off_text :  on_text;
 
-   set_el_class_on_off(input.parentElement, "on", input.checked);
+   dom_util.set_el_class_on_off(input.parentElement, "on", input.checked);
   };
 /*}}}*/
   </script>
@@ -618,7 +1328,7 @@ javascript/dom_grid.html
 dom_grid_html_data = escape(`
 <!--{{{-->
 <!DOCTYPE html>
-<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (181129:16h)</span>
+<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (191124:16h)</span>
 <div  id="dom_grid_playground" class="display_delayed collapsed" title="dom_grid_playground">
  <div id="dom_grid_headsup"> <!-- {{{-->
 
@@ -635,18 +1345,18 @@ dom_grid_html_data = escape(`
     &#x2715;
   </em>
 
-  <div onclick='t_grid_SIZE_TOGGLE(event);'>
+  <div onclick='dom_grid.t_grid_SIZE_TOGGLE(event);'>
    <b id="headsup_l_size">headsup_l_size</b>
    <br>
    <div class="box cb_slider_pin">
     <input type="checkbox"       id="headsup_l_size_checkbox" name="check"/>
-    <label for="headsup_l_size_checkbox" onclick='t_grid_SIZE_TOGGLE(event);'></label>
+    <label for="headsup_l_size_checkbox" onclick='dom_grid.t_grid_SIZE_TOGGLE(event);'></label>
    </div>
   </div>
 
   <div id="headsup_l_check"  class="cc0"
                              title="LOG_MAP.T2_GRID toggle"
-                             onclick='t_grid_logging_toggle();'
+                             onclick='dom_grid.t_grid_logging_toggle();'
                              >...</div>
   <br>
 
@@ -655,9 +1365,9 @@ dom_grid_html_data = escape(`
  <!-- traces {{{-->
  <div  id="traces_div" class="eso_div">
   <ul>
-   <li><em class="cc4 toolbag_button" onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
-   <li><em class="cc5 toolbag_button" onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
-   <li><em class="cc8 toolbag_button" onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
+   <li><em class="cc4 toolbag_button" onclick='dom_grid.t_grid_css_list   ();'>dom_grid.t_grid_css_list   </em></li>
+   <li><em class="cc5 toolbag_button" onclick='dom_grid.t_grid_insertRules();'>dom_grid.t_grid_insertRules</em></li>
+   <li><em class="cc8 toolbag_button" onclick='dom_grid.t_grid_deleteRules();'>dom_grid.t_grid_deleteRules</em></li>
   </ul>
   <blockquote id="traces">
    traces
@@ -674,121 +1384,125 @@ load_html("dom_grid_html" , dom_grid_html_data );
 
 </script>
 <!--}}}-->
-<!-- transcript {{{-->
-<div class="transcript display_delayed" style="display:inline-grid;">
-<!--}}}-->
-<!-- doc_log_div {{{-->
- <div id="doc_log_div" class="left_div round_el cleardiv display_delayed"></div>
-<!--}}}-->
-<!-- doc_evt_div {{{-->
- <div id="doc_evt_div" class="left_div round_el cleardiv display_delayed"></div>
-</div>
-<!--}}}-->
+ <!-- transcript doc_log_div doc_evt_div {{{-->
+ <div  id="doc_transcript"title="doc_transcript" class="transcript display_delayed" style="display:inline-grid;">
+  <div id="doc_log_div"   title="doc_log_div" class="left_div round_el cleardiv display_delayed"></div>
+  <div id="doc_evt_div"   title="doc_evt_div" class="left_div round_el cleardiv display_delayed"></div>
+ </div>
+ <!--}}}-->
 
-  <!-- LOG     JS [dom_log_js_data] {{{-->
-  <script id="dom_log_js"     src="javascript/dom_log.js"     defer></script>
+  <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] [defer] .. DEPENDENCIES SOLVED BY PAGE ORDER AND IMPORT CALL {{{-->
 
-  <!--}}}-->
-  <!-- UTIL    JS [dom_util_js_data] {{{-->
-  <script id="dom_util_js"    src="javascript/dom_util.js"    defer></script>
+  <script id="dom_data_js"    src="javascript/dom_data.js"    defer></script> <!-- DATA    05 DATA                          -->
+  <script id="dom_log_js"     src="javascript/dom_log.js"     defer></script> <!-- LOG     06 data LOG util                 -->
+  <script id="dom_util_js"    src="javascript/dom_util.js"    defer></script> <!-- UTIL    07 data log UTIL                 -->
+  <script id="dom_prop_js"    src="javascript/dom_prop.js"    defer></script> <!-- PROP    08 data log util PROP            -->
+  <script id="dom_store_js"   src="javascript/dom_store.js"   defer></script> <!-- STORE   09 data log util      STORE      -->
+  <script id="dom_fly_js"     src="javascript/dom_fly.js"     defer></script> <!-- FLY     10 data log util prop store FLY  -->
 
-  <!--}}}-->
-  <!-- WORDING JS [dom_wording_js_data] {{{-->
-  <script id="dom_wording_js" src="javascript/dom_wording.js" defer></script>
+  <script id="dom_wording_js" src="javascript/dom_wording.js" defer></script> <!-- WORDING 11      log                        WORDING               -->
+  <script id="dom_select_js"  src="javascript/dom_select.js"  defer></script> <!-- SELECT  12 data log util prop       fly            SELECT  slot  -->
+  <script id="dom_slot_js"    src="javascript/dom_slot.js"    defer></script> <!-- SLOT    13 data log      prop                      select  SLOT  -->
 
-  <!--}}}-->
-  <!-- GRID    JS [dom_grid_js_data] {{{-->
-  <script id="dom_grid_js"    src="javascript/dom_grid.js"    defer></script>
-  <!--}}}-->
-  <!-- STORE   JS [dom_store_js_data] {{{-->
-  <script id="dom_store_js"    src="javascript/dom_store.js"  defer></script>
+  <script id="dom_hide_js"    src="javascript/dom_hide.js"    defer></script> <!-- HIDE    14 data log util prop store                             HIDE                          -->
+  <script id="dom_view_js"    src="javascript/dom_view.js"    defer></script> <!-- VIEW    15 data log util prop                                         VIEW                    -->
+  <script id="dom_sticky_js"  src="javascript/dom_sticky.js"  defer></script> <!-- STICKY  16 data log util prop store                                   view STICKY seek        -->
+  <script id="dom_seek_js"    src="javascript/dom_seek.js"    defer></script> <!-- SEEK    17 data log util prop                      select                  sticky SEEK        -->
+  <script id="dom_share_js"   src="javascript/dom_share.js"   defer></script> <!-- SHARE   18 data log util      store fly                                    sticky      SHARE  -->
 
-  <!--}}}-->
-  <!-- HIDE    JS [dom_hide_js_data] {{{-->
-  <script id="dom_hide_js"    src="javascript/dom_hide.js"    defer></script>
+  <script id="dom_grid_js"    src="javascript/dom_grid.js"    defer></script> <!-- GRID    19 data log util                                                                       GRID         -->
+  <script id="dom_gutter_js"  src="javascript/dom_gutter.js"  defer></script> <!-- GUTTER  20 data log util prop                                                                       GUTTER  -->
 
-  <!--}}}-->
-  <!-- SELECT  JS [dom_select_js_data] {{{-->
-  <script id="dom_select_js"  src="javascript/dom_select.js"  defer></script>
+  <script id="dom_ipc_js"     src="javascript/dom_ipc.js"     defer></script> <!-- IPC     21 log                                                                                               IPC        -->
+  <script id="dom_tools_js"   src="javascript/dom_tools.js"   defer></script> <!-- TOOLS   22 data log util prop store fly            select        hide view sticky seek share   grid          ipc TOOLS  -->
 
-  <!--}}}-->
-  <!-- TOOLS HTML [dom_tools_html_data] {{{-->
-  <script>
+
+ <!--}}}-->
+
+<!-- HTML playground {{{-->
+
+<!-- [tools STUB] HTML [dom_tools_html_data] {{{-->
+<script>
 /*
 javascript/dom_tools.html
 */
 dom_tools_html_data = escape(`
 <!--{{{-->
 <!DOCTYPE html>
-<head><title>dom_tools_html</title></head>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (190102:19h)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (200124:22h)</span>
 
  <!-- hotspot {{{-->
- <div   id="hotspot"       title="hotspot"         class="hotspot_frame">
-  <div  id="hotwave"                               class="hotwave">
-   <div id="hotring"                               class="hotring">&nbsp;</div>
+ <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
+  <div  id="hotwave"       class="hotwave">
+   <div id="hotring"       class="hotring">&nbsp;</div>
   </div>
   <div id="hotspot_c">&#x00BB;</div>
  </div>
  <!--}}}-->
  <!-- headsup {{{ -->
- <div id="headsup"         title="headsup"         class="transcript hidden">
-  <em  id="thumb_p"        title="thumb_p">&#x0020;</em>
-  <em  id="theme_dark"     title="theme_dark"      class="toolbag_button cc8" >LIGHT</em>
-  <em  id="wording"        title="wording"         class="toolbag_button cc3" >WORDING</em>
-  <em  id="anchor_freeze"  title="anchor_freeze"   class="toolbag_button cc9" >&#x26D4;</em>
-  <em  id="containers_hi"  title="containers_hi"   class="toolbag_button cc9" >&#x00A7;</em>
-  <em  id="overflow_visi"  title="overflow_visi"   class="toolbag_button cc9" >&nbsp;</em>
-  <em  id="scroll_smooth"  title="scroll_smooth"   class="toolbag_button cc9" >&nbsp;</em>
+ <div id="headsup"         class="transcript hidden"        title="headsup">
+  <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
+  <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
+  <em  id="wording"        class="toolbag_button cc3"       title="wording">WORDING</em>
+  <em  id="anchor_freeze"  class="toolbag_button cc9"       title="anchor_freeze">&#x26D4;</em>
+  <em  id="containers_hi"  class="toolbag_button cc9"       title="containers_hi">&#x00A7;</em>
+  <em  id="overflow_visi"  class="toolbag_button cc9"       title="overflow_visi">&nbsp;</em>
+  <em  id="scroll_smooth"  class="toolbag_button cc9"       title="scroll_smooth">&nbsp;</em>
 
-  <em  id="tools_extras"    title="tools_extras"    class="toolbag_button cc9">&#x2630;</em>
+  <em  id="tools_extras"   class="toolbag_button cc9"       title="tools_extras">&#x2630;</em>
 
-  <em  id="show_seekzone"  title="show_seekzone"   class="toolbag_button cc9" >&nbsp;</em>
-  <em  id="pin_seekspot"   title="pin_seekspot"    class="toolbag_button cc9" >&nbsp;</em>
-  <em  id="log_seekspot"   title="log_seekspot"    class="toolbag_button cc9" >&nbsp;</em>
+  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
+  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
+  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+
+  <em  id="remove_ads"     class="toolbag_button cc9"       title="remove_ads">&nbsp;</em>
+  <em  id="split_wot"      class="toolbag_button cc9"       title="split_wot">&nbsp;</em>
+  <em  id="lines_wot"      class="toolbag_button cc9"       title="lines_wot">&nbsp;</em>
 
  </div>
  <!-- }}} -->
 
  <!-- pat_bag {{{ -->
-  <div id="pat_bag"        title="PAT BAG"        class="transcript hidden bag"></div>
+  <div id="pat_bag"           class="transcript hidden bag" title="PAT BAG"></div>
  <!-- }}} -->
  <!-- headsup_w {{{ -->
- <div    id="headsup_w"       title="headsup_w"       class="transcript hidden"  >
-  <input id="tools_filter"    title="tools_filter"    type="text"               />
-  <em    id="recycle"         title="recycle"         class="toolbag_button"     >&#x267B;</em>
-  <em    id="words_exact"     title="words_exact"     class="toolbag_button cc3" >&#x2261;</em>
-  <em    id="words_segment"   title="words_segment"   class="toolbag_button cc4" >&#x2282;</em>
-  <em    id="words_head_tail" title="words_head_tail" class="toolbag_button cc5" >&#x2208;</em>
-  <em    id="words_opcycle"   title="words_opcycle"   class="toolbag_button cc9" >&#x27F3;</em>
-  <em    id="words_drop_ing"  title="words_drop_ing"  class="toolbag_button cc8" >&nbsp;</em>
-  <em    id="words_drop_s"    title="words_drop_s"    class="toolbag_button cc8" >&nbsp;</em>
-  <div   id="words_regex"                             class="txt_log"            >words_regex</div>
+ <div    id="headsup_w"       class="transcript hidden"     title="headsup_w">
+  <input id="words_filter"    type="text"                   title="words_filter"/>
+  <em    id="words_exact"     class="toolbag_button cc3"    title="words_exact">&#x2261;</em>
+  <em    id="words_segment"   class="toolbag_button cc4"    title="words_segment">&#x2282;</em>
+  <em    id="words_head_tail" class="toolbag_button cc5"    title="words_head_tail">&#x2208;</em>
+  <em    id="words_opcycle"   class="toolbag_button cc9"    title="words_opcycle">&#x27F3;</em>
+  <em    id="words_recycle"   class="toolbag_button cc7"    title="words_recycle">&#x267B;</em>
+  <em    id="words_bag_rot"   class="toolbag_button cc0"    title="words_bag_rot">&#x2026;</em>
+  <em    id="words_drop_case" class="toolbag_button cc8"    title="words_drop_case">&nbsp;</em>
+  <em    id="words_drop_ing"  class="toolbag_button cc8"    title="words_drop_ing">&nbsp;</em>
+  <em    id="words_drop_s"    class="toolbag_button cc8"    title="words_drop_s">&nbsp;</em>
+  <div   id="words_regex"     class="txt_log"               >words_regex</div>
  </div>
  <!-- }}} -->
  <!-- sel_bag {{{ -->
-  <div id="sel_bag"        title="sel_bag"        class="transcript hidden bag"><span class="seeker_handle"></span></div>
+  <div id="sel_bag"           class="transcript hidden bag" title="sel_bag"><span class="seeker_handle"></span></div>
  <!-- }}} -->
 
  <!-- headsup_ds {{{ -->
- <div id="headsup_ds"       title="headsup_ds"      class="transcript hidden">
-  <em  id="tools_trap"      title="tools_trap"      class="toolbag_button"    >&#x00BB;</em>
-  <em  id="tools_scroll"    title="tools_scroll"    class="toolbag_button"    >&#x2693;</em>
-  <em  id="site_or_page"    title="site_or_page"    class="toolbag_button cc9">&nbsp;</em>
-  <em  id="mask_or_hide"    title="mask_or_hide"    class="toolbag_button cc9">&nbsp;</em>
-  <em  id="edit_or_stage"   title="edit_or_stage"   class="toolbag_button cc9">&nbsp;</em>
-  <em  id="dom_hide1_reset" title="dom_hide1_reset" class="toolbag_button cc9">&nbsp;</em>
-  <em  id="deny_or_allow"   title="deny_or_allow"   class="toolbag_button cc8">&nbsp;</em>
+ <div id="headsup_ds"         class="transcript hidden"     title="headsup_ds">
+  <em  id="tools_trap"        class="toolbag_button"        title="tools_trap">&#x00BB;</em>
+  <em  id="tools_scroll"      class="toolbag_button"        title="tools_scroll">&#x2693;</em>
+  <em  id="site_or_page"      class="toolbag_button cc9"    title="site_or_page">&nbsp;</em>
+  <em  id="mask_or_hide"      class="toolbag_button cc9"    title="mask_or_hide">&nbsp;</em>
+  <em  id="edit_or_stage"     class="toolbag_button cc9"    title="edit_or_stage">&nbsp;</em>
+  <em  id="dom_hide1_reset"   class="toolbag_button cc9"    title="dom_hide1_reset">&nbsp;</em>
+  <em  id="deny_or_allow"     class="toolbag_button cc8"    title="deny_or_allow">&nbsp;</em>
 <!--{{{
-  <em  id="targeteer"     title="targeteer"     class="toolbag_button cc9">&nbsp;</em>
-  <em  id="target_01"     title="target_01"     class="toolbag_button cc1">&nbsp;</em>
-  <em  id="target_02"     title="target_02"     class="toolbag_button cc2">&nbsp;</em>
-  <em  id="target_03"     title="target_03"     class="toolbag_button cc3">&nbsp;</em>
+  <em  id="targeteer"         class="toolbag_button cc9"    title="targeteer">&nbsp;</em>
+  <em  id="target_01"         class="toolbag_button cc1"    title="target_01">&nbsp;</em>
+  <em  id="target_02"         class="toolbag_button cc2"    title="target_02">&nbsp;</em>
+  <em  id="target_03"         class="toolbag_button cc3"    title="target_03">&nbsp;</em>
 }}}-->
  </div>
  <!-- }}} -->
  <!-- headsup_bw {{{ -->
- <div id="headsup_bw"      title="headsup_bw"       class="transcript hidden">
+ <div id="headsup_bw"          class="transcript hidden"    title="headsup_bw">
   <em id="headsup_bw_value"    class="cc10">BODY WIDTH</em><br>
   <em class="cc1"> 480</em><em class="cc2"> 640</em><em class="cc3"> 780</em><br>
   <em class="cc4"> 960</em><em class="cc5">1024</em><em class="cc6">1200</em><br>
@@ -796,7 +1510,7 @@ dom_tools_html_data = escape(`
  </div>
  <!-- }}} -->
  <!-- headsup_bz {{{ -->
- <div id="headsup_bz"      title="headsup_bz"         class="transcript hidden">
+ <div id="headsup_bz"          class="transcript hidden"    title="headsup_bz">
   <em id="headsup_bz_value"     class="cc10">BODY ZOOM</em><br>
   <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
   <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
@@ -804,9 +1518,19 @@ dom_tools_html_data = escape(`
   <em class="cc1"> 180%</em><em class="cc2" > 200%</em><em class="cc3"> 220%</em><br>
  </div>
  <!-- }}} -->
+ <!-- headsup_fs {{{ -->
+ <div id="headsup_fs"          class="transcript hidden"    title="headsup_fs">
+  <em id="headsup_fs_value"     class="cc10">BODY FONT SIZE</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 140%</em><em class="cc3"> 150%</em><br>
+  <em class="cc1"> 160%</em><em class="cc2" > 170%</em><em class="cc3"> 180%</em><br>
+  <em class="cc1"> 190%</em><em class="cc2" > 200%</em><em class="cc3"> 210%</em><br>
+ </div>
+ <!-- }}} -->
 
  <!-- dom_traversal {{{ -->
- <div id="dom_traversal"   title="dom_traversal"      class="transcript hidden" >
+ <div id="dom_traversal"   class="transcript hidden"        title="dom_traversal">
  <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
   <em class = "toolbag_button cc5">NodeIterator</em>
   <em class = "toolbag_button cc6">TreeWalker</em>
@@ -818,7 +1542,7 @@ dom_tools_html_data = escape(`
    <tr>
     <th>node</th>
     <td>
-     <input id="tools_node" title="tools_node"        type="text" />
+     <input id="tools_node"     type="text"                title="tools_node"/>
      <span class="cc2">html</span>
      <span class="cc3">head</span>
      <span class="cc4">body</span>
@@ -829,20 +1553,19 @@ dom_tools_html_data = escape(`
  </div>
  <!-- }}} -->
  <!-- test_panel: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
- <div id="test_panel"      title="test_panel"         class="transcript hidden">
-  <em id="RELOAD"          title="RELOAD"             class="toolbag_button cc7"> RELOAD    </em>
-  <em id="CLEAR"           title="CLEAR"              class="toolbag_button"    > CLEAR     </em>
-  <em id="REGEX"           title="REGEX"              class="toolbag_button"    > REGEX     </em>
-  <em id="BEHAVIOR"        title="BEHAVIOR"           class="toolbag_button"    > BEHAVIOR  </em>
-  <em id="HIGHLIGHT"       title="HIGHLIGHT"          class="toolbag_button cc3"> HIGHLIGHT </em>
+ <div id="test_panel"      class="transcript hidden"     title="test_panel">
+  <em id="CLEAR"           class="toolbag_button cc1"    title="CLEAR"     > CLEAR      </em>
+  <em id="BEHAVIOR"        class="toolbag_button cc2"    title="BEHAVIOR"  > BEHAVIOR   </em>
+  <em id="HIGHLIGHT"       class="toolbag_button cc3"    title="HIGHLIGHT" > HIGHLIGHT  </em>
+  <em id="REGEX"           class="toolbag_button cc4"    title="REGEX"     > REGEX      </em>
+  <em id="EXPORT"          class="toolbag_button cc6"    title="EXPORT"    > EXPORT     </em>
+  <em id="IMPORT"          class="toolbag_button cc5"    title="IMPORT"    > IMPORT     </em>
+  <em id="RELOAD"          class="toolbag_button cc7"    title="RELOAD"    >&#x267B;<br>RELOAD<br>&#x267B;</em>
  </div>
  <!-- }}} -->
 
   <!-- dev_log_map {{{-->
-  <div
-   id      = "dev_log_map"
-   title   = "dev_log_map"
-   class   = "transcript hidden"
+  <div id="dev_log_map"    class="transcript hidden"     title="dev_log_map"
    >
    dev_log_map placeholder:<br>
    <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
@@ -850,10 +1573,7 @@ dom_tools_html_data = escape(`
   </div>
   <!-- }}} -->
  <!-- dom_load_tags (placeholder) {{{ -->
- <div
-  id       = "dom_load_tags"
-  title    = "dom_load_tags"
-  class    = "transcript hidden"
+ <div id="dom_load_tags"   class="transcript hidden"     title="dom_load_tags"
   >
   dom_load_tags placeholder:<br />
   <i class="todo">...should have been populated by <em>dom_tools.show_tags</em> with the value of DOM_LOAD_TAG</i>
@@ -862,43 +1582,35 @@ dom_tools_html_data = escape(`
  <!-- }}} -->
 
  <!-- transcript1 {{{ -->
- <div id="transcript1"     title="transcript1"  class="transcript hidden cleardiv"></div>
+ <div id="transcript1"     class="transcript hidden cleardiv"  title="transcript1"></div>
  <!-- }}} -->
  <!-- transcript2 {{{ -->
- <div id="transcript2"     title="transcript2"  class="transcript hidden cleardiv"></div>
+ <div id="transcript2"     class="transcript hidden cleardiv"  title="transcript2"></div>
  <!-- }}} -->
 
  <!-- pivspot {{{-->
- <div   id="pivspot"       title="pivspot"         class="hidden">
+ <div   id="pivspot"       class="hidden"                      title="pivspot">
    <div id="pivspot_c">&#x00BB;</div>
  </div>
  <!--}}}-->
  <!-- seeker {{{-->
- <div  id = "seeker_PU"    title="seeker_PU"       class="seeker_P"     ><div id="seeker_CU" >seeker up    </div></div>
- <div  id = "seeker_PD"    title="seeker_PD"       class="seeker_P"     ><div id="seeker_CD" >seeker_thumbs</div></div>
+ <div  id = "seeker_PU"    class="seeker_P"                    title="seeker_PU"><div id="seeker_CU" >seeker up    </div></div>
+ <div  id = "seeker_PD"    class="seeker_P"                    title="seeker_PD"><div id="seeker_CD" >seeker_thumbs</div></div>
 
- <div id = "seekspot_U"                                                 ></div>
- <div id = "seekzone"      title="seekzone"        class="hotspot_frame"></div>
- <div id = "seekspot_A"                                                 >&#x2191;</div>
- <div id = "seekspot_D"                                                 ></div>
+ <div id = "seekspot_U"                                                        ></div>
+ <div id = "seekzone"      class="hotspot_frame"               title="seekzone"></div>
+ <div id = "seekspot_A"                                                >&#x2191;</div>
+ <div id = "seekspot_D"                                                        ></div>
  <!--}}}-->
 <!--}}}-->
 `
 );
 load_html("dom_tools_html", dom_tools_html_data);
 </script>
-  <!--}}}-->
-  <!-- PROP    JS [dom_prop_js_data] {{{-->
-  <script id="dom_prop_js"   src="javascript/dom_prop.js"   defer></script>
+<!--}}}-->
 
-  <!--}}}-->
-  <!-- TOOLS   JS [dom_tools_js_data] {{{-->
-  <script id="dom_tools_js"   src="javascript/dom_tools.js"      defer></script>
-
-  <!--}}}-->
-
-  <!-- playground_div HTML {{{-->
-  <div id="playground_div">
+  <!-- checkbox_div HTML {{{-->
+  <div id="checkbox_div", title="checkbox_div">
 
    <!-- CHECKBOX {{{-->
    <div id="div_CHECKBOX" class="box_div dark_div">
@@ -914,8 +1626,16 @@ load_html("dom_tools_html", dom_tools_html_data);
      <div  class="box_container" title="slider dot"         ><!--dot         --><div class="box cb_slider_dot"      ><input type="checkbox" id="cb_slider_dot" name="check"/><label for="cb_slider_dot" ></label></div></div>
 
      <div  class="box_container" title="slider pin"         ><!--pin         --><div class="box cb_slider_pin"      ><input type="checkbox" id="cb_slider_pin" name="check"/><label for="cb_slider_pin" ></label></div></div>
+     <!-- filled marker {{{-->
+     <div class="box_container" title="slider filled tab"  ><!--filled tab  --><div class="box cb_filled_tab"     ><input type="checkbox" id="cb_filled_tab" name="check" /><label for="cb_filled_tab"></label></div></div>
+     <div class="box_container" title="slider marker dot"  ><!--marker dot  --><div class="box cb_marker_dot"     ><input type="checkbox" id="cb_marker_dot" name="check" /><label for="cb_marker_dot"></label></div></div>
+     <div class="box_container" title="slider marker box"  ><!--marker box  --><div class="box cb_marker_box"     ><input type="checkbox" id="cb_marker_box" name="check" /><label for="cb_marker_box"></label></div></div>
+     <div class="box_container" title="slider marker low"  ><!--marker low  --><div class="box cb_marker_low"     ><input type="checkbox" id="cb_marker_low" name="check" /><label for="cb_marker_low"></label></div></div>
+     <div class="box_container" title="slider marker out"  ><!--marker out  --><div class="box cb_marker_out"     ><input type="checkbox" id="cb_marker_out" name="check" /><label for="cb_marker_out"></label></div></div>
      <br>
+     <!--}}}-->
 
+     <p></p>
      <div  class="box_container" title="slider filled pin"  ><!--filled pin  --><div class="box cb_filled_pin bg2"><input type="checkbox" id="cb_filled_pin"   name="check"/><label for="cb_filled_pin" ></label></div></div>
      <div  class="box_container" title="slider filled pin R"><!--filled pin R--><div class="box cb_filled_pin bg3"><input type="checkbox" id="cb_filled_pin1"  name="check"/><label for="cb_filled_pin1"></label></div></div>
      <div  class="box_container" title="slider filled pin Y"><!--filled pin Y--><div class="box cb_filled_pin bg4"><input type="checkbox" id="cb_filled_pin2"  name="check"/><label for="cb_filled_pin2"></label></div></div>
@@ -933,32 +1653,24 @@ load_html("dom_tools_html", dom_tools_html_data);
       <div class="knob_frame"> <div id="knob_R" class="knob"     ><div class="knob_content"><em>R</em></div> </div> </div>
      </div>
      <!--}}}-->
-     <!-- traces {{{-->
-     <br>
-     <div id="traces">traces</div>
-
-     <br>
-     <!--}}}-->
-     <!-- filled marker {{{-->
-     <div class="box_container" title="slider filled tab"  ><!--filled tab  --><div class="box cb_filled_tab"     ><input type="checkbox" id="cb_filled_tab" name="check" /><label for="cb_filled_tab"></label></div></div>
-     <div class="box_container" title="slider marker dot"  ><!--marker dot  --><div class="box cb_marker_dot"     ><input type="checkbox" id="cb_marker_dot" name="check" /><label for="cb_marker_dot"></label></div></div>
-     <div class="box_container" title="slider marker box"  ><!--marker box  --><div class="box cb_marker_box"     ><input type="checkbox" id="cb_marker_box" name="check" /><label for="cb_marker_box"></label></div></div>
-     <div class="box_container" title="slider marker low"  ><!--marker low  --><div class="box cb_marker_low"     ><input type="checkbox" id="cb_marker_low" name="check" /><label for="cb_marker_low"></label></div></div>
-     <div class="box_container" title="slider marker out"  ><!--marker out  --><div class="box cb_marker_out"     ><input type="checkbox" id="cb_marker_out" name="check" /><label for="cb_marker_out"></label></div></div>
-     <br>
-     <!--}}}-->
     </div>
     <!--}}}-->
-    <!-- rotate_container {{{-->
-    <div id="rotate_container" class="box_container round_el" style="display:inline-grid;  align-items:start;"
-     onclick=' /* playground.html playground_div #boxes rotate */
-      /*_ sel_el_class {{{*/
-      let CHOICES = [
+     <!-- traces {{{-->
+     <p></p>
+     <div id="traces">traces</div>
+     <p></p>
+     <!--}}}-->
+    <!-- disc {{{-->
+    <div id="disc_container" class="box_container round_el" style="display:inline-grid;  align-items:start;"
+     onclick=' /* playground.html checkbox_div #boxes rotate */
+      /*_ ROTATIONS {{{*/
+      let ROTATIONS = [
      "rotate_0" , "rotate_1" , "rotate_2",
      "rotate_3" , "rotate_4" , "rotate_5",
      "rotate_6" , "rotate_7" , "rotate_8",
      "rotate_9" , "rotate_A" , "rotate_B"
      ];
+
       let sel_el_class = function(el, choices, choice)
       {
        /* check current */
@@ -969,16 +1681,18 @@ load_html("dom_tools_html", dom_tools_html_data);
         if( choices.includes( className )) el.classList.remove(className);
        }
        /* add */
-       if(!choice_removed) { el.classList.add(choice    ); console.log("playground.html "+choice           ); }
-       else                { el.classList.add(choices[0]); console.log("playground.html "+choice+" removed"); }
+       if(!choice_removed) el.classList.add(choice    );
+       else                el.classList.add(choices[0]);
       };
       /*}}}*/
-      let button = event.path[0];
-      let choice = CHOICES.includes(button.id) ? button.id : CHOICES[0];
+      let button       = event.path[0];
+      /* WHEEL */
+      let choice       = ROTATIONS.includes(button.id) ? button.id : ROTATIONS[0];
       let rotate_arrow = document.getElementById("rotate_arrow");
-      sel_el_class(rotate_arrow, CHOICES, choice);
-     '>
-     <!-- numpad {{{-->
+      sel_el_class(rotate_arrow, ROTATIONS, choice);
+     '
+     >
+     <!-- rotate_disc .. numpad {{{-->
 
       <div style="grid-row:1; grid-column:1;" id="rotate_disc" class="cb_filled_pin">
        <div class="rotate_0" id='rotate_arrow' style='width:2em; height:2em;'>
@@ -991,15 +1705,15 @@ load_html("dom_tools_html", dom_tools_html_data);
        <em style="grid-row:1; grid-column:1;" id="rotate_0" class="cb_filled_pin button">0</em>
        <em style="grid-row:1; grid-column:2;" id="rotate_1" class="cb_filled_pin button">1</em>
        <em style="grid-row:1; grid-column:3;" id="rotate_2" class="cb_filled_pin button">2</em>
-                              
+
        <em style="grid-row:2; grid-column:1;" id="rotate_3" class="cb_filled_pin button">3</em>
        <em style="grid-row:2; grid-column:2;" id="rotate_4" class="cb_filled_pin button">4</em>
        <em style="grid-row:2; grid-column:3;" id="rotate_5" class="cb_filled_pin button">5</em>
-                              
+
        <em style="grid-row:3; grid-column:1;" id="rotate_6" class="cb_filled_pin button">6</em>
        <em style="grid-row:3; grid-column:2;" id="rotate_7" class="cb_filled_pin button">7</em>
        <em style="grid-row:3; grid-column:3;" id="rotate_8" class="cb_filled_pin button">8</em>
-                              
+
        <em style="grid-row:4; grid-column:1;" id="rotate_9" class="cb_filled_pin button">9</em>
        <em style="grid-row:4; grid-column:2;" id="rotate_A" class="cb_filled_pin button">A</em>
        <em style="grid-row:4; grid-column:3;" id="rotate_B" class="cb_filled_pin button">B</em>
@@ -1007,8 +1721,206 @@ load_html("dom_tools_html", dom_tools_html_data);
       <!--}}}-->
     </div>
     <!--}}}-->
+     <!-- div3d {{{-->
+     <!-- script {{{-->
+     <script>
+      /*_ const {{{*/
+      const ROT       = [ "r_0", "r_1" , "r_2" , "r_3" , "r_4" , "r_5" , "r_6" ];
+      const ROT_DELTA =  30; /* degre */
+
+      /*}}}*/
+/*_ cube_rotate {{{*/
+let cube;
+let cube_rotate = function(e)
+{
+ /* label (rotation htmlFor input) {{{*/
+ if(!cube) cube = document.getElementById("cube");
+
+ let label = e.path[0];
+ /*}}}*/
+ /* cube move {{{*/
+ if(!label.htmlFor )
+ {
+  if( dom_util.is_el_child_of_id(e.path[0], "cube") )
+  {
+if(!dom_tools.behavior_TOUCH_ELSE_DESKTOP) dom_tools.t_preventDefault(e, "PREVENT PAGE DRAG SELECTION for cube_rotate");
+
+   cube_add_move_listener("cube_rotate");
+   dom_tools.set_onDown_XY(e, "cube_rotate");
+  }
+  return;
+ }
+ /*}}}*/
+ /* htmlFor .. style {{{*/
+ if( label.htmlFor.startsWith("r_") ) {
+  cube.rotateX         = 0;
+  cube.rotateY         = 0;
+  cube.style.transform = "";
+
+  let className = label.htmlFor;
+  dom_util.set_el_class_removing(cube, className, ROT);
+  if(className == "r_0")
+   cube_rotate_xy(ROT_DELTA , ROT_DELTA);
+  return
+ }
+ /*}}}*/
+ /* htmlFor .. rotation {{{*/
+ let rx_delta
+  = label.htmlFor.startsWith("rx_M") ?  ROT_DELTA
+  : label.htmlFor.startsWith("rx_L") ? -ROT_DELTA
+  : 0;
+
+ let ry_delta
+  = label.htmlFor.startsWith("ry_M") ?  ROT_DELTA
+  : label.htmlFor.startsWith("ry_L") ? -ROT_DELTA
+  : 0;
+
+ if(rx_delta || ry_delta)
+ {
+  if(!dom_util.has_el_class(cube, "r_0"))
+   dom_util.set_el_class(cube, "r_0"); /* clears transform and sets transition */
+  cube_rotate_xy(rx_delta , ry_delta);
+ }
+
+ cube_add_long_press();
+ /*}}}*/
+};
+/*}}}*/
+/*_ cube_rotate_xy {{{*/
+let cube_rotate_xy = function(rx_delta, ry_delta)
+{
+ if(!cube) cube = document.getElementById("cube");
+
+ if(rx_delta == undefined) rx_delta = cube.rx_delta; /* keep last velocicy */
+ if(ry_delta == undefined) ry_delta = cube.ry_delta;
+
+ let rx = cube.rotateX || 0;
+ let ry = cube.rotateY || 0;
+ /*{{{
+       let  cs         = getComputedStyle(cube);
+       log_key_val_group( "cube"
+       , { perspective       : cs.perspective
+       ,   perspectiveOrigin : cs.perspectiveOrigin
+       ,   transform         : cs.transform
+       ,                  rx : rx+ (rx_delta ? (" + "+rx_delta) : "")
+       ,                  ry : rx+ (ry_delta ? (" + "+ry_delta) : "")
+       }
+   , lf3, false);
+ }}}*/
+ cube.rx_delta        =      rx_delta;
+ cube.ry_delta        =      ry_delta;
+ cube.rotateX         = rx + rx_delta;
+ cube.rotateY         = ry + ry_delta;
+ cube.style.transform = "rotateX("+cube.rotateX+"deg) rotateY("+cube.rotateY+"deg)";
+};
+/*}}}*/
+/*_ cube_add_move_listener {{{*/
+let cube_add_move_listener = function(_caller)
+{
+ if(("ontouchmove" in document.documentElement)) dom_tools.add_listener_capture_active(   window, "touchmove", cube_move_listener);
+ else                                            dom_tools.add_listener_capture_active(   window, "mousemove", cube_move_listener);
+
+ if(("ontouchmove" in document.documentElement)) dom_tools.add_listener_capture_active(   window, "scroll"   , null);
+};
+/*}}}*/
+/*_ cube_move_listener {{{*/
+let cube_move_listener = function(e)
+{
+ if(dom_tools.behavior_TOUCH_ELSE_DESKTOP) t_window_scrollTo(0, onDown_SCROLL_XY.y); /* PREVENT PAGE SCROLL for cube_rotate_xy */
+
+ /* MOVED XY */
+ let      onMoveDXY = dom_tools.get_onMoveDXY(e, "cube_move_listener");
+ let dx = onMoveDXY.x;
+ let dy = onMoveDXY.y;
+
+ /* FROM XY .. start over from there */
+ dom_tools.set_onDown_XY(e, "cube_move_listener");
+
+ let rx_delta = -dy; /* UP   .. rotate around X-axis */
+ let ry_delta =  dx; /* DOWN .. rotate around Y-axis */
+
+ if(!rx_delta && !ry_delta) return;
+
+ cube_rotate_xy(rx_delta , ry_delta);
+};
+/*}}}*/
+/*_ cube_remove_listeners {{{*/
+let cube_remove_listeners = function(_caller)
+{
+ if(("ontouchmove" in document.documentElement)) dom_tools.remove_listener_capture_active(   window, "touchmove", cube_move_listener);
+ else                                            dom_tools.remove_listener_capture_active(   window, "mousemove", cube_move_listener);
+ cube_del_long_press();
+};
+/*}}}*/
+/*_ cube_add_long_press {{{*/
+let cube_long_press_timer;
+
+let cube_add_long_press       = function()
+{
+  if(cube_long_press_timer) clearTimeout(cube_long_press_timer);
+  cube_long_press_timer     = setTimeout(cube_long_press_handler, 500);
+};
+
+let cube_del_long_press      = function()
+{
+  if(cube_long_press_timer) clearTimeout(cube_long_press_timer);
+  cube_long_press_timer= null;
+};
+
+let cube_long_press_handler  = function()
+{
+ cube_rotate_xy(); /* repeat last cube rotation */
+ cube_long_press_timer       = setTimeout(cube_long_press_handler, 100);
+};
+
+/*}}}*/
+     </script>
+     <!--}}}-->
+     <div
+      id           = "div3d"
+      style        = "display:inline-block; user-select:none; display:inline-grid;"
+      onmousedown  = 'cube_rotate(event);'
+      onmouseenter = 'if(cube) return; cube_rotate_xy(ROT_DELTA , ROT_DELTA);'
+      onmouseup    = 'cube_remove_listeners("onmouseup");'
+      ontouchstart = 'cube_rotate(event);'
+      ontouchend   = 'cube_remove_listeners("ontouchend"); return false;'
+      >
+       <!-- ROTATE XY .. [default More Less] {{{-->
+      <div class="cb_filled_pin bg1" style="grid-column:1; grid-row:1;"><input type="checkbox" id="r_0" /><label for="r_0" >R0 </label></div>
+      <div class="cb_filled_pin bg2" style="grid-column:3; grid-row:1;"><input type="checkbox" id="rx_M"/><label for="rx_M">RX+</label></div>
+      <div class="cb_filled_pin bg2" style="grid-column:3; grid-row:5;"><input type="checkbox" id="rx_L"/><label for="rx_L">RX-</label></div>
+      <div class="cb_filled_pin bg3" style="grid-column:5; grid-row:3;"><input type="checkbox" id="ry_M"/><label for="ry_M">RY+</label></div>
+      <div class="cb_filled_pin bg3" style="grid-column:1; grid-row:3;"><input type="checkbox" id="ry_L"/><label for="ry_L">RY-</label></div>
+
+      <!--}}}-->
+      <!-- cube .. with embeded rotated css classes {{{-->
+      <div  id="cube" class="r_0" style="grid-column-start:2; grid-column-end:5; grid-row-start:2; grid-row-end:5;">
+       <div class="face front" ><div class="cb_filled_pin bg1"><input type="checkbox" id="r_1"/><label for="r_1">1</label></div></div>
+       <div class="face back"  ><div class="cb_filled_pin bg2"><input type="checkbox" id="r_2"/><label for="r_2">2</label></div></div>
+       <div class="face right" ><div class="cb_filled_pin bg3"><input type="checkbox" id="r_3"/><label for="r_3">3</label></div></div>
+       <div class="face left"  ><div class="cb_filled_pin bg4"><input type="checkbox" id="r_4"/><label for="r_4">4</label></div></div>
+       <div class="face top"   ><div class="cb_filled_pin bg5"><input type="checkbox" id="r_5"/><label for="r_5">5</label></div></div>
+       <div class="face bottom"><div class="cb_filled_pin bg6"><input type="checkbox" id="r_6"/><label for="r_6">6</label></div></div>
+      </div>
+     </div>
+     <!--}}}-->
+     <!--}}}-->
    </div>
    <!--}}}-->
+     <!-- panel3d {{{-->
+      <div class="container"
+           style="transform : rotate3d(2 , 0.1 ,-0.3 , 20deg); transform-origin: 0 50%; display:inline-block;">
+       rotate3d(2 , 0.1 ,-0.3 , 20deg);
+      </div>
+
+     <!--}}}-->
+     <!-- panel3d {{{-->
+      <div class="container"
+           style="transform : rotateY(50deg) translateZ(50px); transform-origin: 0 50%; display:inline-block;">
+       rotateY(50deg) translateZ(50px);
+      </div>
+
+     <!--}}}-->
 
    <em class="toolbag_button" title="pat_sort" style="cursor:pointer;" onclick='toggle_keyword("pat_sort");'>pat_sort</em>
    <br style="clear:left;">
@@ -1149,30 +2061,41 @@ and the <u>boundary point of the Range</u>.
     <ol>
      <li><a href=index.html>index.html</a></li>
 
+     <hr>
      <li><a href=stylesheet/dom_host.css>stylesheet/dom_host.css</a></li>
      <li><a href=stylesheet/dom_tools.css>stylesheet/dom_tools.css</a><br></li>
 
+     <hr>
      <li><a href=mloi.html.lnk>mloi.html.lnk</a></li>
      <li><a href=playdom.html>playdom.html</a></li>
      <li><a href=playground.html>playground.html</a><br></li>
 
+     <hr>
+     <li><a href=dom_dash_css.html>dom_dash_css.html</a></li>
      <li><a href=dom_host_css.html>dom_host_css.html</a></li>
+     <li><a href=dom_tools_css.html>dom_tools_css.html</a></li>
+
+     <hr>
      <li><a href=dom_select.html>dom_select.html</a></li>
      <li><a href=dom_tools.html>dom_tools.html</a></li>
-     <li><a href=dom_tools_css.html>dom_tools_css.html</a></li>
-     <li><a href=dom_dash_css.html>dom_dash_css.html</a></li>
      <li><a href=twiddler.html>twiddler.html</a><br></li>
 
-     <li><a href=javascript/dom_load.js>javascript/dom_load.js</a></li>
-     <li><a href=javascript/dom_wording.js>javascript/dom_wording.js</a></li>
+     <hr>
+     <li><a href=javascript/dom_data.js>javascript/dom_data.js</a></li>
      <li><a href=javascript/dom_log.js>javascript/dom_log.js</a></li>
-     <li><a href=javascript/dom_util.js>javascript/dom_util.js</a></li>
      <li><a href=javascript/dom_select.js>javascript/dom_select.js</a></li>
-     <li><a href=javascript/dom_hide.js>javascript/dom_hide.js</a></li>
+     <li><a href=javascript/dom_slot.js>javascript/dom_slot.js</a></li>
      <li><a href=javascript/dom_store.js>javascript/dom_store.js</a></li>
+     <li><a href=javascript/dom_share.js>javascript/dom_share.js</a></li>
      <li><a href=javascript/dom_tools.html>javascript/dom_tools.html</a></li>
+     <li><a href=javascript/dom_util.js>javascript/dom_util.js</a></li>
+     <li><a href=javascript/dom_wording.js>javascript/dom_wording.js</a></li>
+     <li><a href=javascript/dom_ipc.js>javascript/dom_ipc.js</a></li>
      <li><a href=javascript/dom_tools.js>javascript/dom_tools.js</a></li>
 
+     <hr>
+     <li><a href=javascript/dom_load.js>javascript/dom_load.js</a></li>
+     <li><a href=javascript/dom_hide.js>javascript/dom_hide.js</a></li>
     </ol>
    </div>
    <!--}}}-->
@@ -1194,15 +2117,18 @@ sel1 213 sel2 435 sel3 213 sel4 435 sel6 213 546
 hotspot.html
 index.html
 playground.html
-
 javascript/dom_grid.html
+
+|          dom_data.js
 |          dom_grid.js
 |          dom_load.js
 |          dom_log.js
 |          dom_util.js
+|          dom_slot.js
 |          dom_select.js
 |          dom_hide.js
 |          dom_store.js
+|          dom_share.js
 |          dom_tools.html
 |          dom_tools.js
 |_________ dom_wording.js
@@ -1218,7 +2144,7 @@ stylesheet/dom_host.css
    <div class="left_div round_el"
    style="
    display          : inline-flex;
-   font-size        : 150%;
+   font-size        : 120%;
    font-weight      : 900;
    background-color : navy;
    line-height      : 2em;
@@ -1269,21 +2195,26 @@ stylesheet/dom_host.css
     </div>
 
     <div>
-    <em>&#x25CF;</em> 25CF        BLACK CIRCLE<br>
-    <em>&#x26AB;</em> 26AB MEDIUM BLACK CIRCLE<br>
-    <em>&#x26AA;</em> 26AA MEDIUM WHITE CIRCLE<br>
-    <em>&#x2B55;</em> 2B55  HEAVY LARGE CIRCLE<br>
-    <em>&#x2718;</em> 2718  HEAVY BALLOT X    <br>
+     <em>&#x25CF;</em> <em class="em8">25CF</em>        BLACK CIRCLE<br>
+     <em>&#x26AB;</em> <em class="em8">26AB</em> MEDIUM BLACK CIRCLE<br>
+     <em>&#x26AA;</em> <em class="em8">26AA</em> MEDIUM WHITE CIRCLE<br>
+     <em>&#x2B55;</em> <em class="em8">2B55</em> HEAVY  LARGE CIRCLE<br>
+     <em>&#x2718;</em> <em class="em8">2718</em> HEAVY  BALLOT X    <br>
+     <em>&#x270D;</em> <em class="em8">270D</em> WRITING HAND       <br>
+     <em>&#x261A;</em> <em class="em8">261A</em> BLACK_L HAND       <br>
+     <em>&#x261B;</em> <em class="em8">261B</em> BLACK_R HAND       <br>
+     <em>&#x261C;</em> <em class="em8">261C</em> WHITE_L HAND       <br>
     </div>
 
     <div>
-    <em style="background-color:transparent; color:red;" >&#x26AB;</em> 26AB<br>
-    <em style="background-color:transparent; color:#666;">&#x23E9;</em> 23E9<br>
-    <em style="background-color:transparent; color:#666;">&#x23EA;</em> 23EA<br>
-    <em style="background-color:transparent; color:#666;">&#x2590;</em> 2590<br>
-    <em style="background-color:transparent; color:#666;">&#x25B6;</em> 25B6<br>
-    <em style="background-color:transparent; color:#666;">&#x25BA;</em> 25BA<br>
-    <em style="background-color:transparent; color:#666;">&#x25FE;</em> 25FE<br>
+    <em style="background-color:transparent; color:red;" >&#x26AB;  </em> 26AB<br>
+    <em style="background-color:transparent; color:#666;">&#x23E9;  </em> 23E9<br>
+    <em style="background-color:transparent; color:#666;">&#x23EA;  </em> 23EA<br>
+    <em style="background-color:transparent; color:#666;">&#x2590;  </em> 2590<br>
+    <em style="background-color:transparent; color:#666;">&#x25B6;  </em> 25B6<br>
+    <em style="background-color:transparent; color:#666;">&#x25BA;  </em> 25BA<br>
+    <em style="background-color:transparent; color:#666;">&#x25FE;  </em> 25FE<br>
+    <em style="background-color:transparent; color:#F00;">&#x1F47D; </em>1F47D<br>
     </div>
 
     <!--}}}-->
@@ -1441,18 +2372,50 @@ let populate_div_playground = function()
  </div>
 <!--}}}-->
  <!--}}}-->
+<!-- dom_seek {{{-->
+<div id="div_dom_seek"
+ style="
+ display               : grid;
+ grid-template-columns : 2fr auto;
+ column-gap            : 1em;
+ width                 : max-content;
+ "
+ >
+ <em class='cc8 big' style='grid-column-start:1; grid-column-end:3;'>dom_seek</em>
+
+ <em class='cc6'>seektool_set6_onSticky</em> <em class='cc6'>t_set_onWork_EL   ( sticky    )</em>
+ <em class='cc5'>seektool_set5_onSeeker</em> <em class='cc5'>t_set_onWork_EL   ( seeker_PU )</em>
+ <em class='cc4'>seektool_set4_onJumpEL</em> <em class='cc4'>t_seeker_SELECT_EL( onWork_EL ) slot  num  container  highlight</em>
+ <em class='cc3'>seektool_set3_onTOOL  </em> <em class='cc3'>nothing to do</em>
+ <em class='cc2'>seektool_set2_onSlotEL</em> <em class='cc2'>SEEK         slot</em>
+ <em class='cc1'>seektool_set1_onResume</em> <em class='cc1'>RESUME (same slot)</em>
+ <em class='cc0'>seektool_set0_onDOC   </em> <em class='cc0'>t_seeker_clr_TOOL</em>
+
+ <em class='cc8 big' style='grid-column-start:1; grid-column-end:3;'>dom_seek</em>
+</div>
+<!--}}}-->
  <!-- h_words_1 .. h_words_A {{{-->
  <div  id="h_words"   class="left_div round_el">
-  <div id="h_words_1" style="background-color: rgba(150,  75,   0, .7) !important; "><ol><li><code>words_1</code></li></ol></div>
-  <div id="h_words_2" style="background-color: rgba(255,   0,   0, .7) !important; "><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
-  <div id="h_words_3" style="background-color: rgba(255, 165,   0, .7) !important; "><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
-  <div id="h_words_4" style="background-color: rgba(255, 255,   0, .7) !important; "><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
-  <div id="h_words_5" style="background-color: rgba(154, 205,  50, .7) !important; "><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
-  <div id="h_words_6" style="background-color: rgba(100, 149, 237, .7) !important; "><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
-  <div id="h_words_7" style="background-color: rgba(238, 130, 238, .7) !important; "><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
-  <div id="h_words_8" style="background-color: rgba(160, 160, 160, .7) !important; "><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
-  <div id="h_words_9" style="background-color: rgba(255, 255, 255, .7) !important; "><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
-  <div id="h_words_A" style="background-color: rgba(207, 181, 059, .7) !important; "><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
+  <div id="h_words_1" style="background-color: rgba(150,  75,   0, .9) !important; "><ol><li><code>words_1</code></li><li>
+         <code>o___1_E</code>
+</li><li><code>oo__1_S</code>
+</li><li><code>ooo_1_H</code>
+</li><li><code>v___2_E</code>
+</li><li><code>vv__2_S</code>
+</li><li><code>vvv_2_H</code>
+</li><li><code>x___3_E</code>
+</li><li><code>xx__3_S</code>
+</li><li><code>xxx_3_H</code>
+</li></ol></div>
+  <div id="h_words_2" style="background-color: rgba(255,   0,   0, .9) !important; "><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
+  <div id="h_words_3" style="background-color: rgba(255, 165,   0, .9) !important; "><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
+  <div id="h_words_4" style="background-color: rgba(255, 255,   0, .9) !important; "><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
+  <div id="h_words_5" style="background-color: rgba(154, 205,  50, .9) !important; "><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
+  <div id="h_words_6" style="background-color: rgba(100, 149, 237, .9) !important; "><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
+  <div id="h_words_7" style="background-color: rgba(238, 130, 238, .9) !important; "><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
+  <div id="h_words_8" style="background-color: rgba(160, 160, 160, .9) !important; "><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
+  <div id="h_words_9" style="background-color: rgba(255, 255, 255, .9) !important; "><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
+  <div id="h_words_A" style="background-color: rgba(207, 181, 059, .9) !important; "><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
  </div>
  <!--}}}-->
  <!-- words_1 .. words_A {{{-->
@@ -1683,79 +2646,802 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
    <!--}}}-->
   <hr style="clear:left;">
 
-<!-- NOTES {{{-->
-<div class="eso_div">
- A <strong>positioned element</strong> is an element whose <a href="/en-US/docs/CSS/computed_value" title="CSS/computed_value">computed</a>
-   <em>position</em> value
-   is either
-   <ul>
-    <li><em>relative</em>                                           </li>
-    <li><em>absolute</em>                                           </li>
-    <li><em>fixed</em> <i>or:</i>                                   </li>
-    <li><em>sticky</em> <i>In other words, it's anything except:</i></li>
-    <li><em>static</em>                                             </li>
-   </ul>
-</div>
-
-<!--ESO patch-notes (placeholder) {{{-->
-<!--
-}:r C:/LOCAL/DATA/ANDROID/PROJECTS/BAK/HTML/ESO_patch_notes.html
--->
-
+<!-- t_sticky_LOG {{{-->
+ <em class='big cc3'
+  onclick='console_clear( document.getElementsByTagName("title")[0].innerText ); dom_sticky.t_sticky_LOG("ALL");'
+  >t_sticky_LOG</em>
 <!--}}}-->
-<!--}}}-->
-<!-- Page end {{{-->
-<div
-class="round_el"
+
+ <!-- NOTES {{{-->
+ <table
+  id   ="notes_table"
+  title="notes_table"
+  style="margin:5em; width:80%; box-shadow: rgba(0,0,0,0.3) 3px 3px 3px 6px;"
+  cellspacing="20"
+  border
+  >
+
+  <tr>
+   <td id="TD_LEFT" style="width:30%; background-color:#FDD;">
+    TD_LEFT
+    <ul>
+     <li>A <strong>positioned element</strong> is an element whose</li>
+     <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/computed_value" title="CSS/computed_value">computed</a> <em>position</em> value</li>
+     <li>...is either:</li>
+     <li><em>relative</em>                                           </li>
+     <li><em>absolute</em>                                           </li>
+     <li><em>fixed</em> <i>or:</i>                                   </li>
+     <li><em>sticky</em></li>
+     <li><i>In other words, it's anything except:</i></li>
+     <li><em>static</em>                                             </li>
+    </ul>
+   </td>
+   <td id="TD_CENTER" style="width:30%; background-color:#DFD; white-space:pre-wrap;">
+    TD_CENTER
+    <ul>
+     <li>CLICK    t_sticky_CLICK_CB</li>
+     <li><em class="cc3">PRESS</em>    onLong_press3_TOOL_EL_CB</li>
+    </ul>
+
+   </td>
+   <td id="TD_RIGHT" style="width:30%; background-color:#DDF;">
+    TD_RIGHT
+    <ul>
+     <li></li>
+     <li></li>
+     <li></li>
+    </ul>
+   </td>
+  </tr>
+ </table>
+
+ <!--ESO patch-notes (placeholder) {{{-->
+ <!--
+  }:r C:/LOCAL/DATA/ANDROID/PROJECTS/BAK/HTML/ESO_patch_notes.html
+ -->
+
+ <!--}}}-->
+ <!--}}}-->
+
+<!-- grid_container {{{-->
+<div class="grid_container"
+     id   ='tools_grid_container'
+     title='tools_grid_container'
  style="
- float            : left;
- writing-mode     : vertical-rl;
- text-orientation : upright;
- white-space      : nowrap;
+ margin           : 5em !important;
+ border-radius    : 1em;
+ border           : 2px solid rgba(0,136,0,0.5);
+ box-shadow       : rgba(  0,  0,  0,0.5) .3em .3em .5em;
+ background-color : rgba(204,221,187,0.9);
+ user-select      : none;
  ">
- Page end
+<!-- t_sticky_LOG [row1 col1] {{{-->
+ <em
+  class='em7'
+  style="
+  grid-row-start    : 1;
+  grid-row-end      : 2;
+  grid-column-start : 1;
+  grid-column-end   : 2;
+  "
+  onclick='dom_sticky.t_sticky_LOG("ALL");
+  document.getElementById("console_pre").innerHTML += get_log_HTML()+"<br>";
+  '
+  >t_sticky_LOG</em>
+<!--}}}-->
+<!-- CLEAR [row2 col1] {{{-->
+ <em
+  class='em8'
+  style="
+  grid-row-start    : 2;
+  grid-row-end      : 3;
+  grid-column-start : 1;
+  grid-column-end   : 2;
+  "
+  onclick='
+  log_CLR();
+  console_clear(DOM_LOAD_TAG);
+  document.getElementById("console_pre").innerHTML = get_log_HTML()+"<br>";
+  '
+  >CLEAR</em>
+<!--}}}-->
+<!-- get_log_HTML [row3 col1] {{{-->
+ <em
+  class='em5'
+  style="
+  grid-row-start    : 3;
+  grid-row-end      : 4;
+  grid-column-start : 1;
+  grid-column-end   : 2;
+  "
+  onclick='
+  document.getElementById("console_pre").innerHTML = get_log_HTML()+"<br>";
+  '
+  >log_HTML</em>
+<!--}}}-->
+<!-- anchor_node_path [row1 col2] {{{-->
+<em
+    style="
+    grid-row-start    : 1;
+    grid-column-start : 2;
+    grid-column-end   : 3;
+    "
+    class='cc7'
+    onclick='
+    let           el = document.getElementById( this.children[0].innerText );
+    anchor_node_path = dom_util.get_node_path( el );
+    log( anchor_node_path );
+    document.getElementById("console_pre").innerHTML += get_log_HTML()+"<br>";
+    '
+    >        anchor_node_path = get_node_path_target( <em>clipboard_container</em> )
+</em>
+
+<!--}}}-->
+ <!-- node_path_target [row2 col2] {{{-->
+ <em
+  style="
+  grid-row-start    : 2;
+  grid-column-start : 2;
+  grid-column-end   : 3;
+  "
+  class='cc4'
+  onclick='
+  let             el = document.getElementById( this.children[0].innerText );
+  anchor_node        = dom_util.get_node_path_target(    anchor_node_path        );
+  log( get_n_lbl(anchor_node), lbb+lf4);
+  document.getElementById("console_pre").innerHTML += get_log_HTML()+"<br>";
+  '
+  >               anchor_node = get_node_path_target(    <em>anchor_node_path</em>)
+ </em>
+
+ <!--}}}-->
+ <!-- console [row3 col1..2] {{{-->
+ <pre contenteditable
+  id   ="console_pre"
+  title="console_pre"
+  style="
+  grid-row-start    : 4;
+  grid-column-start : 1;
+  grid-column-end   : 4;
+  color             : #888 !important;
+  font-size         : 14px;
+  font-family       : monospace;
+  user-select       : text !important;
+  "
+  class='cc9'
+  ></pre>
+ <!--}}}-->
 </div>
 <!--}}}-->
- </body>
-<!-- check_load_html_results {{{ -->
- <script>
-  function check_load_html_results()
-  {
-   console.log(DOM_LOAD_TAG);
-   let id;                                   let missing_ids  = "";
-   if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ;
-   if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ;
-   if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ;
-   if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ;
-   if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ;
-   if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ;
-   if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ;
-   if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ;
-   if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ;
-   id =     "dom_tools_html_tag" ;               missing_ids +=     check_missing_id(id) ;
-   id =     "dom_grid_html_tag"  ;               missing_ids +=     check_missing_id(id) ;
 
-   if(missing_ids) {
-    let lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
-    let lf2 = "color:#FF0000;";
-    console.log("%c MISSING IDs:%c"+missing_ids, lbb+lf2, lf2);
-    alert(         "MISSING IDs:\n"+missing_ids);
-   }
-  }
+<!-- WHITE BOARD {{{-->
+<span
+  style="
+  pointer-events : none;
+  user-select    : none;
+  float          : left;
+  clear          : left;
+  margin-left    :  2em;
+  opacity        :  0.1;
+  font-size      : 200%;
+  font-weight    :  900;
+  font-style     : oblique;
+  font-family    : Comic sans ms;
+  "
+  id="editable_white_board_stamp"
+  >EDITABLE WHITE BOARD</span>
 
-  function check_missing_id(id)
-  {
-   let el = shadow_root.querySelector("#"+id);
-   if(!el ) return "\n#"+id;
-   console.log(SYMBOL_CHECK_MARK+" "+el.textContent);
-   return "";
-  }
-
-  setTimeout(check_load_html_results, 500);
- </script>
+<div contenteditable
+    id   ="white_board"
+    title="white_board"
+    style="
+    width            : 90%;
+    height           : 80em;
+    border-radius    : 8px;
+    border           : 2px inset !important;
+    margin           : 3em  !important;
+    padding          : 0    !important;
+    background-color : rgba(224,212,212,0.9);
+    font-weight      : 900;
+    overflow         : auto;
+    ">
+</div>
 <!--}}}-->
+<!-- JUMP {{{-->
+<a name="body_end" id="body_end" href="#body_start"   class="big em6 action">&#x2191;</a>
+<a                               href="#div_CHECKBOX" class="big em4 action">&#x25A3;</a>
+<!--}}}-->
+ <!-- PAGE END .. [left] .. [center] [reload] .. [right] {{{-->
+ <!-- PAGE END LEFT {{{-->
+ <div
+  id   ="page_end_left"
+  title="page_end_left"
+  class="round_el"
+  style="
+  float            : left;
+  font-size        : 50%;
+  writing-mode     : vertical-rl;
+  text-orientation : upright;
+  white-space      : nowrap;
+  ">
+  Page end left
+ </div>
+ <!--}}}-->
+ <!-- PAGE END RIGHT {{{-->
+ <div
+  id   ="page_end_right"
+  title="page_end_right"
+  class="round_el"
+  style="
+  float            : right;
+  font-size        : 50%;
+  writing-mode     : vertical-rl;
+  text-orientation : upright;
+  white-space      : nowrap;
+  ">
+  Page end right
+ </div>
+ <!--}}}-->
+ <!--}}}-->
+<hr style="height:3em; background-color:red; border:1px;">
+Same <a href="motion.txt.html#as" class="d">as</a>"*"<a href="motion.txt.html#%2C" class="d">,</a>but search backward.
+<hr style="height:3em; background-color:red; border:1px;">
+<!-- CONTAINER POSITIONED CHILD {{{-->
+
+<div id   ="overflowing_container"
+     title="overflowing_container"
+     style="
+     height         : 10em;
+     user-select    : none;
+     clear          : both;
+     margin-left    : 10em;
+     border         : 8px solid rgba(255,0,0,0.3);
+     width          : fit-content;
+     background     : rgba(255,0,0,0.3);
+     transition     : height 250ms ease-in-out;
+     ">
+
+<span
+  style="
+  opacity        :  0.5;
+  font-size      : 200%;
+  font-weight    :  900;
+  font-style     : oblique;
+  font-family    : Comic sans ms;
+  white-space    : nowrap;
+  "
+  >last body node containing a overflowing child</span>
+
+<div class="box cb_filled_pin toolbag_button bg2" title="overflow">
+ <input type="checkbox" id="overflow_checkbox"/>
+ <label
+  for="overflow"
+  onclick='
+  let container = document.getElementById("overflowing_container");
+  let     input = document.getElementById("overflow_checkbox");
+  input.checked = !input.checked;
+//container.style.height = (input.checked ? "fit-content" : "10em"); .. is not animatable */
+  container.style.height = (input.checked ?        "22em" : "10em");
+  '>
+ </label>
+</div>
+
+<pre style="
+border           :  8px solid rgba(255,0,0,0.3);
+left             :  10em;
+margin           :  1em;
+">
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+overflowing child
+</pre>
+</div>
+<!--}}}-->
+<!-- playground }}}-->
+
+<script>let snapshot_id;</script>
+<!-- [doc_tools.html] {{{-->
+<!-- script {{{-->
+<script>
+let DOM_LOADER_LOG = false;
+let DOM_LOADER_TAG = false;
+/*_ init_doc_tools {{{*/
+let init_doc_tools = function()
+{
+    let some_are_logging = check_modules_state("logging");
+    let some_are_tagging = check_modules_state("tagging");
+
+if(some_are_logging) log("%c LOGGING: "+some_are_logging, lbb+lbH+lf8);
+if(some_are_tagging) log("%c TAGGING: "+some_are_tagging, lbb+lbH+lf8);
+
+    if(some_are_logging || some_are_tagging) {
+        dom_util.del_el_class(document.getElementById("doc_tools"), "minimized");
+        dom_util.del_el_class(document.getElementById("div_above"), "folded"   );
+    }
+};
+/*}}}*/
+/*_ check_modules_state {{{*/
+let DOM_MODULES;
+let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LOADER_LOG))
+{
+    let lfx = (state_name == "logging") ? lf3:lf5;
+
+    /* COLLECT LOADED MODULES {{{*/
+    if(!DOM_MODULES) {
+        DOM_MODULES
+            = [   { name : "dom_loader" , module : dom_loader }
+                , { name : "dom_fly"    , module : dom_fly    }
+                , { name : "dom_prop"   , module : dom_prop   }
+                , { name : "dom_seek"   , module : dom_seek   }
+                , { name : "dom_share"  , module : dom_share  }
+                , { name : "dom_select" , module : dom_select }
+                , { name : "dom_sticky" , module : dom_sticky }
+                , { name : "dom_store"  , module : dom_store  }
+                , { name : "dom_util"   , module : dom_util   }
+                , { name : "dom_tools"  , module : dom_tools  }
+            ];
+
+    }
+    /*}}}*/
+    let some_are = "";
+    let module_names  = [];
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     let selector = "[title='"+state_name+" "+module.name+"']"; /* .. document.querySelector("[title='tagging dom_loader']"); */
+                     let el = document.querySelector( selector );
+                     if( el ) {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+
+                         let state = state_get_set_function();
+                         if( state ) module_names.push( module.name );
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+
+                         if( state )
+                             some_are += (some_are ? " ": "")+module.name;
+                     }
+                 }
+                );
+
+if(log_this) {
+    if(module_names.length) {
+        log("%c check_modules_state %c"+state_name, lbL,lbR+lfx);
+        for(let i=0; i < module_names.length; ++i)
+            log("%c â†’ "+ module_names[i]+" is "+state_name, lfx);
+    }
+    else {
+        log("%c check_modules_state %c No module is "+state_name, lbL,lbR+lf8);
+    }
+}
+
+    return some_are;
+};
+/*}}}*/
+/*_ toggle_module_state {{{*/
+let toggle_module_state = function(el)
+{
+    if(el.tagName == "DIV")
+    {
+        let state_name
+            = el.id.endsWith("tagging")
+            ?                "tagging"
+            :                "logging";
+
+        check_modules_state(state_name, true);
+        return;
+    }
+
+    let [ state_name , module_name ] = el.title.split(" ");
+
+    let lfx = (state_name == "logging") ? lf3:lf5;
+log("%c toggle_module_state %c"+module_name+"%c"+state_name, lbL,lbC+lf9,lbR+lfx);
+
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     if(name == module_name)
+                     {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+                         let state_was              = state_get_set_function();
+                         let state                  = state_get_set_function(!state_was);
+
+                         let l_x = state ? lfX[state ? 5:8] : lf0;
+if(state || DOM_LOADER_TAG || DOM_LOADER_LOG) log("%c "+module.name+" %c "+(state ? "is ":"not ")+state_name, lfx, l_x);
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+                     }
+                 }
+                 );
+};
+/*}}}*/
+/*âž” dom_loader {{{*/
+let dom_loader = (function()
+{
+if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
+
+    return { name : "dom_loader"
+        , logging : function(value) { if(value != undefined) DOM_LOADER_LOG = value; dom_store.t_store_set_value("DOM_LOADER_LOG", DOM_LOADER_LOG); return DOM_LOADER_LOG; }
+        , tagging : function(value) { if(value != undefined) DOM_LOADER_TAG = value; dom_store.t_store_set_value("DOM_LOADER_TAG", DOM_LOADER_TAG); return DOM_LOADER_TAG; }
+
+        , toggle_module_state
+
+        /* DEBUG */
+        , check_modules_state
+    };
+}());
+/*}}}*/
+</script>
+<!--}}}-->
+<span id="doc_tools_html_tag" style="display:none">doc_tools_html (200318:16h)</span>
+<!--      doc_tools {{{-->
+<div  id="doc_tools" title="doc_tools" class="round_el doc_tool user_select_none minimized">
+    <!-- STYLE {{{-->
+    <style>
+/* doc_tools {{{*/
+#doc_tools {
+    user-select      : none;
+    position         : fixed; bottom:0.2em; right:5%;
+    margin           : 0;
+    z-index          : 101; /* above dom_tools */
+    border           : none                  !important;
+    border-radius    : 0.5em;
+    padding          : 0.3em;
+    box-shadow       : rgba( 64, 64, 64,0.2) 2px 2px 10px 5px;
+    text-align       : center;
+/*{{{
+    line-height      : 1.8em;
+}}}*/
+    font-size        : 200%;
+    transform-origin : 100% 100%;
+}
+#doc_tools.minimized {
+    transform        : scale(0.5);
+}
+
+#doc_tools>div{
+    margin           : 0;
+    padding          : 0.3em 1em 0.3em 1em;
+}
+#doc_tools>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(128,128,128,0.9)) !important;
+/*{{{
+background       : rgba(255,255,255,0.9);
+background       : rgba(255,255,255,0.1);
+}}}*/
+}
+#doc_tools.minimized>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(017,017,017,0.5)) !important;
+}
+
+    /*}}}*/
+    /* div_above {{{*/
+
+    #div_above {
+        display               : grid;
+        grid-auto-flow        : column;
+        align-items           : align-self;
+/*{{{
+      grid-template-columns : 1fr 1fr 1fr;
+      grid-template-rows    : min-content;
+      grid-auto-rows        : min-content;
+      grid-gap              : 1em;
+      justify-items         : stretch;
+      min-height            : 30em;
+}}}*/
+    }
+
+    .minimized #div_above       { pointer-events:none; }
+
+    #div_above                  { margin-bottom    : 0;           }
+    #div_above                  { border-radius    : 1em 1em 0 0; }
+    #div_above                  { padding          : 0;           }
+
+    #div_above.folded           { height           : 0.5em; overflow : hidden; }
+    #div_above.clicked          { height           : unset;                    }
+
+    #div_above::before          { font-size        : 150% !important; content:'\261E'; pointer-events:none; position:absolute; bottom:0.5em; right:0.5em; }
+    #doc_tools::after           { font-size        : 150% !important; content:'\261F'; pointer-events:none; position:absolute; bottom:0.5em; left :0.5em; }
+
+    #div_above                  { transition       : all 250ms       ease-out; }
+    #doc_tools::after           { transition       : all 150ms 500ms ease-out; }
+    #div_above::before          { transition       : all 150ms 600ms ease-out; }
+
+    #doc_tools::after           { transform        : rotate(-90deg); }
+    #doc_tools.minimized::after { transform        : rotate( 90deg); }
+
+    .minimized #div_above.folded::before          { transform        : rotate(-135deg); }
+               #div_above::before          { transform        : rotate( 90deg); }
+               #div_above.folded::before   { transform        : rotate(-90deg); }
+
+    /*}}}*/
+    /* div_above ... {{{*/
+
+    #div_above .blurred_frame        { color            : white           !important; }
+    #div_above .blurred_frame        { box-shadow       : 0.1em 0.1em 0.1em white;    }
+
+    #div_above     a                 { padding          : 0 0.5em 0 0.5em !important; }
+    #div_above     a                 { min-width        : 5em; }
+    #div_above     a                 { font-size        :  45%            !important; }
+
+
+    #div_above   span                 { margin-bottom   : 0.5em           !important; }
+    #div_above   a                    { margin-bottom   : 0.5em           !important; }
+
+    #div_above > div                  { background      : transparent     !important; }
+    #div_above > div                  { border          : none;                       }
+    #div_above > div                  { display         : inline-block;               }
+
+    #div_above > div                  { margin          : 0.5em;                      }
+    #div_above > div                  { padding         : 0;                          }
+    #div_above > div                  { vertical-align  : top             !important; }
+
+    #div_above > div > *              { float:left; clear:left; }
+
+    #div_above > div > p:nth-child(1) { font-size:80%; padding:0; margin:0; }
+
+    /*}}}*/
+    /* div_bellow {{{*/
+    #div_bellow {
+        margin-top       : 0;
+        border-radius    : 0   0   1em 1em;
+        padding          : 0.5em 1em 0.5em 1em;
+    }
+    #div_bellow>a {
+        font-size : 120%;
+    }
+    /*}}}*/
+    </style>
+    <!--}}}-->
+    <!-- SCRIPT {{{-->
+    <script>
+        /* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+        "use strict";
+/* JSHint {{{*/
+/* globals dom_util, log, lbH, lf2, lf3, lf4, lf6, lf7 */
+/* exported toggle_this */
+/*
+:?script>?+,/script>/-y *
+:!start explorer https://jshint.com/
+ */
+/*}}}*/
+/*_ toggle_this {{{*/
+let toggle_this = function(event,el)
+{
+if(DOM_LOADER_LOG) log("%c toggle_this("+el.id+")", lbH+lf7);
+
+    let div_above = el.previousElementSibling;
+    let doc_tools = el.parentElement;
+
+    let clicked_left = (event.offsetX > (el.offsetWidth/2));
+    if( clicked_left ) {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        if(dom_util.has_el_class(div_above, "folded"   ))     unfold_this(div_above);
+        else                                                    fold_this(div_above);
+    }
+
+    else {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        else {                                                  fold_this(div_above);
+            /*.........................................*/   minimize_this(doc_tools);
+        }
+    }
+};
+/*}}}*/
+/*_   minimize_this {{{*/
+let   minimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c minimize_this("+el.id+")", lbH+lf2);
+
+    if(!dom_util.has_el_class(el,"minimized"))
+        dom_util.add_el_class(el,"minimized");
+};
+/*}}}*/
+/*_ unminimize_this {{{*/
+let unminimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unminimize_this("+el.id+")", lbH+lf3);
+
+    if( dom_util.has_el_class(el,"minimized"))
+        dom_util.del_el_class(el,"minimized");
+};
+/*}}}*/
+/*_   fold_this {{{*/
+let   fold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c fold_this("+el.id+")", lbH+lf6);
+
+    if(!dom_util.has_el_class(el,"folded"))
+        dom_util.add_el_class(el,"folded");
+};
+/*}}}*/
+/*_ unfold_this {{{*/
+let unfold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
+
+    if( dom_util.has_el_class(el,"folded"))
+        dom_util.del_el_class(el,"folded");
+};
+/*}}}*/
+    </script>
+    <!--}}}-->
+        <!-- div_above {{{-->
+        <div id="div_above" class="folded" onclick='if(event.target==this) unfold_this(this);'>
+            <div      id="div_log_csv"> <!--{{{-->
+                <span>TOOLS:</span>
+                <a title="dom_tools.t_log_csv"       class="em8 small" onclick='dom_tools.t_log_csv      (DOM_LOAD_ID                   );'>CSV</a>
+                <a title="dom_tools.t_log_status"    class="em8 small" onclick='dom_tools.t_log_status   (DOM_LOAD_ID                   );'>STATUS</a>
+                <a title="dom_tools.t_show_hotspot"  class="em5 small" onclick='dom_tools.t_show_hotspot();'                               >SHOW hotspot</a>
+                <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+                <a title="dom_tools.t_take_SNAPSHOT" class="em3 small" onclick='dom_tools.t_take_SNAPSHOT(DOM_LOAD_ID, snapshot_id, this);'>TAKE SNAPSHOT</a>
+                <a title="dom_tools.t_load_SNAPSHOT" class="em4 small" onclick='dom_tools.t_load_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>LOAD SNAPSHOT</a>
+                <a title="dom_tools.t_show_SNAPSHOT" class="em4 small" onclick='dom_tools.t_show_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>SHOW SNAPSHOT</a>
+            </div>
+            <!--}}}-->
+            <div      id="div_fist_sticky"> <!--{{{-->
+                <span title="call a sticky function on sticky #1"                         >first sticky</span>
+                <a    title="format_pad" class="em8 small" onclick='dom_sticky.format_pad();'> format_pad </a>
+                <a    title="fit_font"   class="em8 small" onclick='dom_sticky.fit_font();'  > fit_font   </a>
+                <a    title="msg_fit"    class="em8 small" onclick='dom_sticky.msg_fit();'   > msg_fit    </a>
+            </div>
+            <!--}}}-->
+            <div      id="div_all_sticky"> <!--{{{-->
+                <span title   = "other sticky functions">all sticky</span>
+                <a    title   = "t_sticky_format_pad_all" class   = "em8 small" onclick = 'dom_sticky.t_sticky_format_pad_all(); '>t_sticky_format_pad_all</a>
+                <a    title   = "t_sticky_LOG" class   = "em8 small" onclick = 'dom_sticky.t_sticky_LOG(); '>t_sticky_LOG</a>
+                <a    title   = "show_seekzone" class   = "em8 small"
+                   onclick = '      dom_prop.toggle(   this.title);
+                   let state      = dom_prop.get   (   this.title);
+                   this.innerText = "PROP."+           this.title+" "+   (state ? "\u2714":"");
+                   console.log("%c dom_prop.toggle(\""+this.title+"\",\""+state+"\")", lbb+lbH+lf7);
+                   let classWas   = state ? "em8" : "em2";
+                   let classNow   = state ? "em2" : "em8";
+                   dom_util.set_el_class_removing(     this, classNow, classWas);
+                   '>PROP "show_seekzone"</a>
+            </div>
+            <!--}}}-->
+            <div id="div_logging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">logging</span>
+                <a title="logging dom_loader" class="em1 small">LOADER</a>
+                <a title="logging dom_fly"    class="em2 small">fly   </a>
+                <a title="logging dom_prop"   class="em3 small">prop  </a>
+                <a title="logging dom_seek"   class="em4 small">seek  </a>
+                <a title="logging dom_share"  class="em5 small">share </a>
+                <a title="logging dom_select" class="em4 small">select</a>
+                <a title="logging dom_sticky" class="em6 small">sticky</a>
+                <a title="logging dom_store"  class="em7 small">store </a>
+                <a title="logging dom_util"   class="em8 small">util  </a>
+                <a title="logging dom_tools"  class="em9 small">TOOLS </a>
+            </div>
+            <!--}}}-->
+            <div id="div_tagging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">tagging</span>
+                <a title="tagging dom_loader" class="em1 small">LOADER</a>
+                <a title="tagging dom_fly"    class="em2 small">fly   </a>
+                <a title="tagging dom_prop"   class="em3 small">prop  </a>
+                <a title="tagging dom_seek"   class="em4 small">seek  </a>
+                <a title="tagging dom_share"  class="em5 small">share </a>
+                <a title="tagging dom_select" class="em4 small">select</a>
+                <a title="tagging dom_sticky" class="em6 small">sticky</a>
+                <a title="tagging dom_store"  class="em7 small">store </a>
+                <a title="tagging dom_util"   class="em8 small">util  </a>
+                <a title="tagging dom_tools"  class="em9 small">TOOLS </a>
+            </div>
+            <!--}}}-->
+        </div>
+        <!--}}}-->
+    <!-- div_bellow {{{-->
+    <div id     ="div_bellow"
+         onclick='if(event.target == this) toggle_this(event,this);'
+         >
+            <a title="page top"            class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
+            <a title="page bottom"         class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
+            <a title="dump csv and sticky" class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
+            <a title="reset"               class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
+            <a title="reset & reload"      class="em2 action" onclick='document.location.reload();'                 >&#8634;</a>
+    </div>
+    <!--}}}-->
+</div>
+<!--}}}-->
+<!--}}}-->
+
+ </body>
+
+ <!-- check_load_html_results {{{-->
+ <script>
+    function check_load_html_results()
+    {
+        /* CSS {{{*/
+        const lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+        const lbH = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+        const lf2 = "color:#F00;";
+        const lf5 = "color:#0F0;";
+        const lf8 = "color:#AAA;";
+        const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
+        const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
+
+        let missing_ids  = "";
+        let id;
+        /*}}}*/
+        /*  check_missing_id {{{*/
+        let check_missing_id = function(id)
+        {
+            let   shadow_host
+                = document.getElementById("shadow_host");
+
+            let   shadow_root
+                = shadow_host
+                ? shadow_host.shadowRoot
+                : null;
+
+            let el = shadow_root
+                ?    shadow_root.querySelector("#"+id)
+                :    document   .querySelector("#"+id);
+
+            if(!el ) return SKO+" #"+id+"\n";
+            console.log("%c"+SOK+" %c"+el.textContent,lbH+lf8,lf8);
+            return "";
+        };
+        /*}}}*/
+
+        id =     "dom_tools_html_tag";                missing_ids +=     check_missing_id(id) ;
+        id =     "dom_grid_html_tag" ;                missing_ids +=     check_missing_id(id) ;
+
+        if(typeof DOM_DATA_JS_TAG    === 'undefined') missing_ids += "\n DOM_DATA_JS_TAG"     ; /* 05 */
+        if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ; /* 06 */
+        if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ; /* 07 */
+        if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ; /* 08 */
+        if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ; /* 09 */
+        if(typeof DOM_FLY_JS_TAG     === 'undefined') missing_ids += "\n DOM_FLY_JS_TAG"      ; /* 10 */
+
+        if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ; /* 11 */
+        if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ; /* 12 */
+        if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ; /* 13 */
+
+        if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ; /* 14 */
+        if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ; /* 15 */
+        if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 16 */
+        if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 17 */
+        if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 18 */
+
+        if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 19 */
+        if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 20 */
+
+        if(typeof DOM_IPC_JS_TAG     === 'undefined') missing_ids += "\n DOM_IPC_JS_TAG"      ; /* 21 */
+        if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ; /* 22 */
+
+        /* print missing_ids {{{*/
+        if(missing_ids) {
+            console.log("%c"+DOM_LOAD_TAG+" MISSING IDs:", lbb+lf2);
+            console.log("%c"+ missing_ids  , lbH+lf2);
+            alert(           "MISSING IDs:\n"+ missing_ids);
+        }
+        /*}}}*/
+    }
+
+    setTimeout(check_load_html_results, 500);
+ </script>
+ <!--}}}-->
+
 </html>
 <!--
- vim: sw=1
+EMBEDED:
+ - dom_tools_html
+ - dom_grid_html
+
+vim: sw=4
 -->
 

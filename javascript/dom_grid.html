@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (181129:16h)</span>
+<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (191124:16h)</span>
 <div  id="dom_grid_playground" class="display_delayed collapsed" title="dom_grid_playground">
  <div id="dom_grid_headsup"> <!-- {{{-->
 
@@ -16,18 +16,18 @@
     &#x2715;
   </em>
 
-  <div onclick='t_grid_SIZE_TOGGLE(event);'>
+  <div onclick='dom_grid.t_grid_SIZE_TOGGLE(event);'>
    <b id="headsup_l_size">headsup_l_size</b>
    <br>
    <div class="box cb_slider_pin">
     <input type="checkbox"       id="headsup_l_size_checkbox" name="check"/>
-    <label for="headsup_l_size_checkbox" onclick='t_grid_SIZE_TOGGLE(event);'></label>
+    <label for="headsup_l_size_checkbox" onclick='dom_grid.t_grid_SIZE_TOGGLE(event);'></label>
    </div>
   </div>
 
   <div id="headsup_l_check"  class="cc0"
                              title="LOG_MAP.T2_GRID toggle"
-                             onclick='t_grid_logging_toggle();'
+                             onclick='dom_grid.t_grid_logging_toggle();'
                              >...</div>
   <br>
 
@@ -36,9 +36,9 @@
  <!-- traces {{{-->
  <div  id="traces_div" class="eso_div">
   <ul>
-   <li><em class="cc4 toolbag_button" onclick='t_grid_css_list   ();'>t_grid_css_list   </em></li>
-   <li><em class="cc5 toolbag_button" onclick='t_grid_insertRules();'>t_grid_insertRules</em></li>
-   <li><em class="cc8 toolbag_button" onclick='t_grid_deleteRules();'>t_grid_deleteRules</em></li>
+   <li><em class="cc4 toolbag_button" onclick='dom_grid.t_grid_css_list   ();'>dom_grid.t_grid_css_list   </em></li>
+   <li><em class="cc5 toolbag_button" onclick='dom_grid.t_grid_insertRules();'>dom_grid.t_grid_insertRules</em></li>
+   <li><em class="cc8 toolbag_button" onclick='dom_grid.t_grid_deleteRules();'>dom_grid.t_grid_deleteRules</em></li>
   </ul>
   <blockquote id="traces">
    traces
