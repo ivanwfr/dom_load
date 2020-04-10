@@ -4,7 +4,7 @@ javascript: (function (){
 /* globals, escape, unescape, send_IPC dom_ipc t_load }}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (200410:18h)"; let tag = DOM_LOAD_TAG;
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (200410:19h)"; let tag = DOM_LOAD_TAG;
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
