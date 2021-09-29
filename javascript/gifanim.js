@@ -1,12 +1,59 @@
-"use strict";
 /* gifanim */
-let DOM_GIFANIM_JS_ID             = "dom_gifanim_js";
-let DOM_GIFANIM_JS_TAG            =  DOM_GIFANIM_JS_ID  +" (200212:19h)";
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+"use strict"; /* eslint-disable-line strict */
+
+/* globals console, document, window */
+/* globals clearTimeout, setTimeout */
+/* globals log */
+
+/* exported GifAnim, DOM_GIFANIM_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable dot-notation        */
+
+const DOM_GIFANIM_JS_ID     = "dom_gifanim_js";
+const DOM_GIFANIM_JS_TAG    =  DOM_GIFANIM_JS_ID+" (210928:18h:31)";
+/*}}}*/
+/*{{{*/
 let LOG_THROTTLE_IMG_ONLOAD_DELAY = 2000;
-let log_this = false;
 
 const CSS_DEFERED         = "defered";
 const CSS_HIDDEN          = "hidden";
+/*}}}*/
+
+let log_this = false;
+/* dom_log {{{*/
+/* eslint-disable no-unused-vars */
+
+log = log || console.log; /* eslint-disable-line no-global-assign */ /* eslint-disable-line no-native-reassign */
+
+let lb0="", lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lbX="";
+
+let lf1 = "color:#964B00;";
+let lf2 = "color:#FF0000;";
+let lf3 = "color:#FFA500;";
+let lf4 = "color:#FFFF00;";
+let lf5 = "color:#9ACD32;";
+let lf6 = "color:#6495ED;";
+let lf7 = "color:#EE82EE;";
+let lf8 = "color:#A0A0A0;";
+let lf9 = "color:#FFFFFF;";
+let lf0 = "color:#707070; background-color:#000000; font-weight:900;";
+let lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
+
+let lbb = "font-weight:900; font-size:150%; margin:0;";
+
+let lbA="", lbB="", lbF="", lbS="";
+
+let lbH  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+let lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0 1ex; padding:0 .5em 0 .5em; border-radius:1em   0   0 1em; background:linear-gradient(to   left, #333 0%           ,#445 100%);";
+let lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
+let lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
+
+let logBIG = function(msg) { console.log("%c"+msg, lbb); }; /* eslint-disable-line strict */
+/* eslint-disable no-unused-vars */
+
+/*}}}*/
 
 /* ================== */
 /* === GifAnim ====== */
@@ -14,6 +61,7 @@ const CSS_HIDDEN          = "hidden";
 /*_ GifAnim {{{*/
 let GifAnim = function()
 {
+"use strict";
 /*{{{*/
 const LOAD_NEXT_GIFANIM_INTERVAL = 1000;
 
@@ -65,7 +113,7 @@ const FULLSCREEN_CAPTION_STYLE
     /* gifAnim1_init {{{*/
     this.gifAnim1_init = function()
     {
-if(log_this) log("gifAnim1_init");
+if(log_this) logBIG("gifAnim1_init");
         /* add players {{{*/
         let gifanims = document.querySelectorAll(".gifanim");
         let players  = [];
@@ -93,7 +141,7 @@ if(log_this) log("...players.length=["+players.length+"]");
     /*_ gifAnim2_add_img .. (gifAnim2_img_onload canvas click) {{{*/
     let gifAnim2_add_img = function(img)
     {
-if(log_this) log("gifAnim2_add_img("+img.outerHTML+")");
+if(log_this) log("%c gifAnim2_add_img("+img.outerHTML+")", lf5);
         /* data-gifanim {{{*/
         let gifanim_height = img.getAttribute("data-gifanim-height"  ) || CANVAS_H;
         let gifanim_width  = img.getAttribute("data-gifanim-width"   ) || CANVAS_W;
@@ -175,17 +223,13 @@ if(log_this) log("...wh.w=["+wh.w+"] .. wh.h=["+wh.h+"]");
 
             player.onclick = gifAnim2_player_onclick;
             /*}}}*/
-        }
+        };
         /*}}}*/
         /*_ gifAnim2_player_onclick {{{*/
         let gifAnim2_player_onclick = function(e)
         {
 if(log_this) log("gifAnim2_player_onclick("+e.type+")");
-if((typeof t_gutter_drag_hotspot_to_LAST_GUTTER_XY != "undefined")) t_gutter_drag_hotspot_to_LAST_GUTTER_XY();
-            /* player {{{*/
-            let player = this;
-
-            /*}}}*/
+if((typeof t_gutter_drag_hotspot_to_LAST_GUTTER_XY != "undefined")) t_gutter_drag_hotspot_to_LAST_GUTTER_XY(); /* eslint-disable-line no-undef */
             /* 1/2 - SHOW .. (fullscreen_div is empty) {{{*/
             if(!fullscreen_div || !fullscreen_div.firstElementChild)
             {
@@ -233,12 +277,12 @@ if((typeof t_gutter_drag_hotspot_to_LAST_GUTTER_XY != "undefined")) t_gutter_dra
         };
         /*}}}*/
         return player;
-    }
+    };
     /*}}}*/
     /*_ gifAnim2_add_img_player {{{*/
-    let gifAnim2_add_img_player = function(img, w, h)
+    let gifAnim2_add_img_player = function(img, w, h) /* eslint-disable-line no-unused-vars */
     {
-if(log_this) log("gifAnim2_add_img_player ["+img.src+"]");
+if(log_this) log("%c gifAnim2_add_img_player ["+img.src+"]", lf6);
         /* player symbol {{{*/
         let play_circle    = document.createElement("DIV");
         play_circle.setAttribute("class"    , "play_circle");
@@ -247,7 +291,7 @@ if(log_this) log("gifAnim2_add_img_player ["+img.src+"]");
         let     play_arrow = document.createElement("DIV");
         play_arrow.setAttribute("style", parseStyles( PLAY_ICON_STYLE   ));
 
-        play_circle.appendChild( play_arrow )
+        play_circle.appendChild( play_arrow );
         /*}}}*/
         /* player button {{{*/
         let player = document.createElement("BUTTON");
@@ -274,7 +318,7 @@ if(log_this) log("gifAnim2_add_img_player ["+img.src+"]");
         let gifAnim2_player_parentNode_onclick = function()
         {
             /* PARK TOOLS {{{*/
-            if((typeof t_gutter_drag_hotspot_to_LAST_GUTTER_XY != "undefined")) t_gutter_drag_hotspot_to_LAST_GUTTER_XY();
+            if((typeof t_gutter_drag_hotspot_to_LAST_GUTTER_XY != "undefined")) t_gutter_drag_hotspot_to_LAST_GUTTER_XY(); /* eslint-disable-line no-undef */
 
             /*}}}*/
             /* LOAD DEFERED PLAYER IMG {{{*/
@@ -296,7 +340,7 @@ if(log_this) log("...gifAnim2_player_parentNode_onclick %c DEFERED IMG ALREADY L
         player.parentNode.onclick = gifAnim2_player_parentNode_onclick;
         /*}}}*/
         return player;
-    }
+    };
     /*}}}*/
     /*_ gifAnim2_add_caption_num {{{*/
     let gifAnim2_add_caption_num = function(player, num, count)
@@ -321,7 +365,7 @@ if(log_this) log("...gifAnim2_player_parentNode_onclick %c DEFERED IMG ALREADY L
     let gifAnim3_check_defered = function()
     {
         /* GET DEFERED .. (hidden / not hidden) {{{*/
-if(log_this) log("gifAnim3_check_defered");
+if(log_this) log("%c gifAnim3_check_defered", lf7);
 /*{{{
 console.trace();
 }}}*/
@@ -391,7 +435,7 @@ if(log_this) log(  "...GIFS ["+       gifanims.length           +"]"
     };
     /*}}}*/
     /*_ gifAnim3_load_next_defered {{{*/
-    let gifAnim3_load_next_defered = function()
+    let gifAnim3_load_next_defered = function() /* eslint-disable-line no-unused-vars */
     {
         if(!gifAnim3_load_next_defered_timeout)
             gifAnim3_load_next_defered_timeout = setTimeout(function() { gifAnim3_load_next_defered_handler(); }, LOAD_NEXT_GIFANIM_INTERVAL);
@@ -489,7 +533,7 @@ if(log_this) log("gifAnim5_fullscreen_show_handler("+e.type+", "+img+")");
 let count = gifAnim5_fullscreen_show_count % 10;
 let digit = get_digit(player.title);
 
-console.log("%c"+gifAnim5_fullscreen_show_count+"%c"+player.title +"%c"+(player.duration ? (" ("+(player.duration / 1000)+" sec)") : "")
+log("%c"+gifAnim5_fullscreen_show_count+"%c"+player.title +"%c"+(player.duration ? (" ("+(player.duration / 1000)+" sec)") : "")
             ,lbH+lfX[count]                     ,lbH+lfX[digit]    ,lbH);
 /*}}}*/
         /* fullscreen_caption {{{*/
@@ -572,24 +616,16 @@ if(log_this) log("gifAnim7_fullscreen_park_handler");
     /* === UTIL === */
     /* ============ */
     /*{{{*/
-    const lbb = "font-weight:900; font-size:150%; margin:0;";
-    const lbH = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:0 1ex 1ex 0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #000 0%, #223 50%, #000 100%);";
-    const lf1 = "color:#964B00;";
-    const lf2 = "color:#FF0000;";
-    const lf3 = "color:#FFA500;";
-    const lf4 = "color:#FFFF00;";
-    const lf5 = "color:#9ACD32;";
-    const lf6 = "color:#6495ED;";
-    const lf7 = "color:#EE82EE;";
-    const lf8 = "color:#A0A0A0;";
-    const lf9 = "color:#FFFFFF;";
-    const lf0 = "color:#707070; background-color:#000000; font-weight:900;";
-    const lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
-
     /*_ console_dir {{{*/
-    let console_dir = function(o , msg=null)
+    let console_dir = function(a1, a2=null) /* eslint-disable-line no-unused-vars */
     {
-        try { if(msg) log("%c"+msg, lbb+lbH); console.dir(o); } catch(ex){}
+        let o   = (a2) ? a2 : a1;
+        let msg = (a2) ? a1 : null;
+        try {
+            if( msg )
+                log("%c"+msg, lbb+lbH);
+            console.dir(o);
+        } catch(ex) {}
     };
     /*}}}*/
     /*_ get_digit {{{*/
@@ -602,11 +638,12 @@ if(log_this) log("gifAnim7_fullscreen_park_handler");
 
         let  result = (matches) ? matches[1] : "0";
 
-//console.log("get_digit("+ text +"): "+ regexp_DIGIT +" .. return ["+result+"]");
+//log("get_digit("+ text +"): "+ regexp_DIGIT +" .. return ["+result+"]");
         return result;
     };
     /*}}}*/
     /*_ log {{{*/
+/*{{{
     let log = function()
     {
         let col_num = arguments[0].includes("%c") ?  0 :  get_digit(arguments[0]);
@@ -614,12 +651,13 @@ if(log_this) log("gifAnim7_fullscreen_park_handler");
             let args = Array.prototype.slice.call(arguments);
             args[0]  = "%c"+args[0];
             args.push(lfX[ col_num ]);
-            console.log.apply(console, args);
+            log.apply(console, args);
         }
         else {
-            console.log.apply(console, Array.prototype.slice.call(arguments));
+            log.apply(console, Array.prototype.slice.call(arguments));
         }
     };
+}}}*/
     /*}}}*/
     /*}}}*/
     /*_ classList {{{*/
@@ -657,37 +695,37 @@ if(log_this) log("gifAnim7_fullscreen_park_handler");
                 el  = el.offsetParent;
             }
         }
-        return { x: x, y: y };
+        return { x,y };
     };
     /*}}}*/
     /*_ get_player_wh {{{*/
     let get_player_wh = function(el, w, h, img_W, img_H)
     {
-        let img_ratio = img_W / img_H
+        let img_ratio = img_W / img_H;
 
         if(w.toString().indexOf("%") > 0)
         {
-            w = parseInt(w.toString().replace("%", ""))
-            w = (w / 100) * el.parentNode.offsetWidth
-            h =  w / img_ratio
+            w = parseInt(w.toString().replace("%", ""));
+            w = (w / 100) * el.parentNode.offsetWidth;
+            h =  w / img_ratio;
         }
         else if (h.toString().indexOf("%") > 0)
         {
-            h = parseInt(h.toString().replace("%", ""))
-            h = (h / 100) * el.parentNode.offsetWidth
-            w =  h * img_ratio
+            h = parseInt(h.toString().replace("%", ""));
+            h = (h / 100) * el.parentNode.offsetWidth;
+            w =  h * img_ratio;
         }
-        return { w: w, h: h }
-    }
+        return { w,h };
+    };
     /*}}}*/
     /*_ parseStyles {{{*/
     let parseStyles = function(styles)
     {
-        let stylesStr = ""
-        for(let prop in styles)
-            stylesStr += prop + ":" + styles[prop] + ";"
-        return stylesStr
-    }
+        let stylesStr = "";
+        for(let prop in styles)                             /* eslint-disable-line guard-for-in */
+            stylesStr += prop + ":" + styles[prop] + ";";
+        return stylesStr;
+    };
     /*}}}*/
 
     return this;
@@ -700,11 +738,12 @@ if(log_this) log("gifAnim7_fullscreen_park_handler");
 /*_ log_img_complete {{{*/
 let log_img_complete = function()
 {
+"use strict";
     let gifanims = document.querySelectorAll(".gifanim");
     for(let i=0; i<gifanims.length; ++i)
     {
         let img =  gifanims[i];
-if(log_this) console.log("onLOAD: img.complete=["+img.complete+"] src=["+img.src+"] src_defered=["+img.src_defered+"]");
+if(log_this) log("onLOAD: img.complete=["+img.complete+"] src=["+img.src+"] src_defered=["+img.src_defered+"]");
     }
 };
     /*}}}*/
@@ -715,14 +754,27 @@ if(log_this) console.log("onLOAD: img.complete=["+img.complete+"] src=["+img.src
 /*  on1_document_onDOMContentLoaded_defer_gifanim {{{*/
 let on1_document_onDOMContentLoaded_defer_gifanim = function()
 {
-if(log_this) console.log("%c on1_document_onDOMContentLoaded_defer_gifanim", lbb+lbH+lf1);
+"use strict";
+let caller = "on1_document_onDOMContentLoaded_defer_gifanim";
+    /* [dom_log] {{{*/
+    /* eslint-disable no-undef */
+    if(typeof dom_log != "undefined")
+    {
+        [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log.LOG_BG_ARR;
+        [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log.LOG_XX_ARR;
+        [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log.LOG_FG_ARR;
+
+({ logBIG } = dom_log);
+logBIG(DOM_GIFANIM_JS_ID+": [dom_log]", 3);
+    }
+    /* eslint-enable  no-undef */
+    /*}}}*/
+if(log_this) logBIG(caller, 1);
 
     let gifanims = document.querySelectorAll(".gifanim");
     for(let i=0; i<gifanims.length; ++i)
     {
         let img =  gifanims[i];
-if(log_this) console.log("on_DOM: img.complete=["+img.complete+"] img.src=["+img.src+"]");
-
         /* save image src .. (to be loaded later) */
 /*{{{
         img.src_defered    = img.src || img.src_defered;
@@ -730,6 +782,8 @@ if(log_this) console.log("on_DOM: img.complete=["+img.complete+"] img.src=["+img
         img.src_defered    = img.src || img.getAttribute("data-src");
         img.src            =      "";
         img.style.display  = "none";
+
+if(log_this) log("...img.complete=["+img.complete+"] ➔ img.src_defered=["+img.src_defered+"]");
 
         /* hide image container */
         let defered_parent = img.parentElement;
@@ -741,14 +795,15 @@ if(log_this) console.log("on_DOM: img.complete=["+img.complete+"] img.src=["+img
 /*  on2_window_onload_GifAnim_init {{{*/
 let on2_window_onload_GifAnim_init = function()
 {
-if(log_this) console.log("%c on2_window_onload_GifAnim_init", lbb+lbH+lf2);
+"use strict";
+if(log_this) log("%c on2_window_onload_GifAnim_init", lbb+lbH+lf2);
 
     if(log_this) log_img_complete();
 
     let myGifAnim = new GifAnim();
     myGifAnim.gifAnim1_init();
 
-    let youtube_player = document.getElementById('youtube_player');
+    let youtube_player = document.getElementById("youtube_player");
     youtube_player.src = youtube_player.src || youtube_player.getAttribute("data-src");
 
 };
@@ -756,7 +811,8 @@ if(log_this) console.log("%c on2_window_onload_GifAnim_init", lbb+lbH+lf2);
 /*  on3_no_canvas_unhide_gifanims {{{*/
 let on3_no_canvas_unhide_gifanims = function()
 {
-if(log_this) console.log("%c on3_no_canvas_unhide_gifanims", lbb+lbH+lf3);
+"use strict";
+if(log_this) log("%c on3_no_canvas_unhide_gifanims", lbb+lbH+lf3);
 
     let gifanims = document.querySelectorAll(".gifanim");
     for(let i=0; i<gifanims.length; ++i)
@@ -779,3 +835,6 @@ if(log_this) console.log("%c on3_no_canvas_unhide_gifanims", lbb+lbH+lf3);
 document.addEventListener("DOMContentLoaded", on1_document_onDOMContentLoaded_defer_gifanim);
 window  .addEventListener("load"            , on2_window_onload_GifAnim_init  );
 
+/*
+:!start explorer "file:///C:/LOCAL/STORE/DEV/PROJECTS/RTabs/Util/RTabs_Profiles/DEV/screenshots.html"
+*/

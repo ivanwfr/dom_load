@@ -1,46 +1,61 @@
 /* dom_view_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_VIEW_JS_ID        = "dom_view_js";
-const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (200207:21h)";
+const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (210928:16h:04)";
 let dom_view    = (function() {
 "use strict";
 /* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_store, dom_prop, dom_seek, dom_tools */
+/* globals window */
+/* globals dom_data   */
+/* globals dom_i18n   */
+/* globals dom_log    */
+/* globals dom_prop   */
+/* globals dom_seek   */
+/* globals dom_store  */
+/* globals dom_tools  */
+/* globals dom_util   */
+
+/* exported dom_view, DOM_VIEW_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable dot-notation        */
 /*
 :1,$y *
 :!start explorer https://jshint.com/
 */
 /*}}}*/
-var   DOM_VIEW_LOG          = false;
-var   DOM_VIEW_TAG          = false;
+let   DOM_VIEW_LOG          = false;
+let   DOM_VIEW_TAG          = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_view_IMPORT {{{*/
 /* t_data .. t_tools {{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-/*  t_store    = {}        ; */ /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+let t_i18n     = {}        ;    /* 08 */
+let t_prop     = {}        ;    /* 09 */
+/*  t_store    = {}        ; */ /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /* ...................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-let t_seek     = {}        ;    /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+let t_seek     = {}        ;    /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /* ...................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_view_IMPORT  = function(log_this)
@@ -50,31 +65,33 @@ let t_view_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_prop    = dom_prop   ;    /* 08 */
-/*  t_store   = dom_store  ; */ /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+    t_i18n    = dom_i18n   ;    /* 08 */
+    t_prop    = dom_prop   ;    /* 09 */
+/*  t_store   = dom_store  ; */ /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-/*  t_sticky  = dom_sticky ; */ /* 16 */
-    t_seek    = dom_seek   ;    /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+    t_seek    = dom_seek   ;    /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     view_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_VIEW_LOG = DOM_VIEW_LOG || dom_store.t_store_getBool("DOM_VIEW_LOG");
-    DOM_VIEW_TAG = DOM_VIEW_TAG || dom_store.t_store_getBool("DOM_VIEW_TAG");
+    DOM_VIEW_LOG = DOM_VIEW_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_VIEW_LOG"));
+    DOM_VIEW_TAG = DOM_VIEW_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_VIEW_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 15 view", lbH+lf8);
@@ -107,13 +124,13 @@ let   view_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
 
     log_label_URDL      = t_log.log_label_URDL;
     console_dir         = t_log.console_dir;
@@ -133,6 +150,7 @@ let   view_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /*➔ t_view1_is_el_in_viewport {{{*/
@@ -142,6 +160,21 @@ let t_view1_is_el_in_viewport = function(el)
     return t_view1_is_xy_in_viewport(xy.x, xy.y);
 };
 /*}}}*/
+/*➔ t_view1_is_el_topLeft_or_bottomRight_in_viewport {{{*/
+let t_view1_is_el_topLeft_or_bottomRight_in_viewport = function(el)
+{
+    let xy = t_util.get_el_xy(el);
+
+    let tl_in_viewport = t_view1_is_xy_in_viewport(xy.x, xy.y);
+
+    xy.x += el.clientWidth;
+    xy.y += el.clientHeight;
+    let br_in_viewport = t_view1_is_xy_in_viewport(xy.x, xy.y);
+
+    return tl_in_viewport || br_in_viewport;
+};
+/*}}}*/
+
 /*➔ t_view1_is_xy_in_viewport {{{*/
 /*{{{
 let last_x_IN_viewport;
@@ -269,7 +302,7 @@ let   view3_move_panel_is_bordering = function(panel)
 let onUp_pinned_panels_show_seekzone_done;
 
 /*}}}*/
-let   view3_move_panel_CSS = function(panel)
+let   view3_move_panel_CSS = function(panel) /* eslint-disable-line complexity */
 {
     /* URDL CSS_CORNER {{{*/
     let wcX = (window.innerWidth  - t_data.SCROLLBAR_WIDTH) / 2;
@@ -349,7 +382,7 @@ let   move_bordering_panel_URDL_pageXY_result = {};
 let   last_panel_cache;
 
 /*}}}*/
-let t_view4_move_panel_CONFINED = function(panel, x, y, margin_urdl)
+let t_view4_move_panel_CONFINED = function(panel, x, y, margin_urdl) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let caller = "t_view4_move_panel_CONFINED";
@@ -365,7 +398,7 @@ let log_this = /*DOM_VIEW_LOG ||*/ LOG_MAP.T3_LAYOUT; /* VERBOSE!! */
     if(!last_panel_cache || (last_panel_cache.panel != panel))
     {
         last_panel_cache
-            = {                panel : panel
+            = {                panel
                 , transformOrigin_XY : t_util.get_el_transformOrigin(panel)
             };
     }
@@ -646,7 +679,7 @@ if(log_this) view4_move_panel_bump_XY_log(caller, {p, t_x, t_y, x_wall, y_wall, 
 };
 /*}}}*/
 /*…   view4_move_panel_bump_XY_log {{{*/
-let   view4_move_panel_bump_XY_log = function (caller, {p, t_x, t_y, x_wall, y_wall, x_jump, y_jump })
+let   view4_move_panel_bump_XY_log = function (caller, {p, t_x, t_y, x_wall, y_wall, x_jump, y_jump }) /* eslint-disable-line complexity */
 {
 /*{{{
     if(bumps_logged_since_last_panels_notification.length < 1) dom_log.console_clear("view4_move_panel_bump_XY_log");
@@ -714,7 +747,7 @@ if( log_this) log(caller+"("+panel.id+", "+x+", "+y+")");
     /* CHECK CAPPED FROM {{{*/
     view5_move_panel_origin_and_view( panel );
 
-    let xy    = { x:x , y:y };
+    let xy    = { x , y };
     xy.x      = Math.max(       panel.view_left  , x);
     xy.x      = Math.min( xy.x, panel.view_right    );
 
@@ -841,7 +874,7 @@ let log_this = DOM_VIEW_LOG || LOG_MAP.T3_LAYOUT;
     onUp_pinned_panels_show_seekzone_done       = false;
     bumps_logged_since_last_panels_notification = [];
 
-if(log_this) console_dir(onUp_pinned_panels, caller+".onUp_pinned_panels");
+if(log_this) console_dir(caller+".onUp_pinned_panels", onUp_pinned_panels);
     /*}}}*/
 };
 /*}}}*/
@@ -859,13 +892,13 @@ let t_view7_clr_panel_capped_from_xy = function(panel)
 
 /* EXPORT */
 /*{{{*/
-
 return { name : "dom_view"
-    , logging : function(value) { if(value != undefined) DOM_VIEW_LOG = value; dom_store.t_store_set_value("DOM_VIEW_LOG", DOM_VIEW_LOG); return DOM_VIEW_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_VIEW_TAG = value; dom_store.t_store_set_value("DOM_VIEW_TAG", DOM_VIEW_TAG); return DOM_VIEW_TAG; }
+    , logging : (state) => DOM_VIEW_LOG = dom_util.t_util_set_state("DOM_VIEW_LOG",state)
+    , tagging : (state) => DOM_VIEW_TAG = dom_util.t_util_set_state("DOM_VIEW_TAG",state)
     , t_view_IMPORT
 
     , t_view1_is_el_in_viewport
+    , t_view1_is_el_topLeft_or_bottomRight_in_viewport
     , t_view1_is_xy_in_viewport
     , t_view2_is_xy_near_viewport
 

@@ -1,5 +1,5 @@
-
-#checkbox_css_tag  { content: "checkbox_css (200405:19h)"; }
+@charset "utf-8";
+#checkbox_css_tag  { content: "checkbox_css (200624:21h:09)"; }
 
 /* label {{{*/
 /* event delegation to   div container */

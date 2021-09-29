@@ -3,8 +3,12 @@
  <head>
   <title>playground</title>
 
+<!--{{{ CSP
+  <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'; script-src 'self' https://a.slack-edge.com/; style-src 'self' 'unsafe-inline' https://a.slack-edge.com/ https://b.slack-edge.com/">
+}}}-->
+
   <!-- META {{{ -->
-  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html; charset=utf-8">
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
   <meta                         http-equiv="Cache-control" content="no-cache">
   <meta                         http-equiv="pragma"        content="no-cache">
   <!-- }}} -->
@@ -19,9 +23,52 @@
   <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"      rel="stylesheet"/>
   <!--}}}-->
  </head>
+ <style>
+ body>details    { display     : flow-root; }
+ body>details    { border      : 2px solid #888; margin: 8px !important; }
+      details    { margin-left : 1em !important;    }
+      summary    { user-select : none;   }
+      summary H1 { display     : inline; }
+ </style>
  <body onload='set_title(); playground_IMPORT(); init_doc_tools();'>
+<H1 style="margin-left:3em;"><B>PLAYGROUND</B></H1>
+<!-- JUMP IN PAGE {{{-->
+  <!-- H1 playground {{{-->
+  <a name="body_start" id="body_start" href="#body_end"     class="big em6" style="float:left; clear:both; margin-left:2em;">&#x2193;</a>
+  <a                                   href="#div_CHECKBOX" class="big em4"                                                 >&#x25A3;</a>
+  <a                                   href="#TEXT_NODE"    class="em4"                                                     >&#x00B6;</a>
+  <a                                   href="#SENTENCE_DIV" class="em7"                                                     >&#x1F4D6; SENTENCE_DIV</a>
+<!--}}}-->
+ <!-- audio {{{-->
+ <br>
+ <a target="mdn_audio" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API">MDN audio</a>
+ <a target="converter" href="https://base64.guru/converter/encode/audio/mp3">base64</a>
+ <em
+  onclick='let el=document.getElementById("audio"); console.dir(el); el.play();'
+  class="big cc7"
+  style  ="cursor:pointer; user-select:none;"
+  >
+  &#x1F50A;
+  <audio id="audio" src="data:audio/mpeg;base64,/+MYxAAEaAIEeUAQAgBgNgP/////KQQ/////Lvrg+lcWYHgtjadzsbTq+yREu495tq9c6v/7vt/of7mna9v6/btUnU17Jun9/+MYxCkT26KW+YGBAj9v6vUh+zab//v/96C3/pu6H+pv//r/ycIIP4pcWWTRBBBAMXgNdbRaABQAAABRWKwgjQVX0ECmrb///+MYxBQSM0sWWYI4A++Z/////////////0rOZ3MP//7H44QEgxgdvRVMXHZseL//540B4JAvMPEgaA4/0nHjxLhRgAoAYAgA/+MYxAYIAAJfGYEQAMAJAIAQMAwX936/q/tWtv/2f/+v//6v/+7qTEFNRTMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV">
+   audio not supported
+  </audio>
+ </em>
+ <!--}}}-->
+  <!--}}}-->
+  <!-- ivan_wellesz {{{-->
+  <div class="transcript " style='display:inline-block; border:3px dotted red !important;'>
+   <a href="https://ivanw.pagesperso-orange.fr"               target="_blank" style="font-size:200%;" title="Ivan WELLESZ">&#x2302;</a>
+   <a href="https://remotetabs.com/dev/rtabs/playground.html" target="_blank" style="font-size:100%;font-weight:900;"     >RTabs playground</a>
+   <a href="https://google.com"                               target="_blank" style="font-size:!50%;font-weight:900;"     >Google</a>
+   <a href="https://vimhelp.org/usr_toc.txt.html"             target="_blank" style="font-size:!50%;font-weight:900;"     >Vim help</a>
+  </div>
+
+  <!--}}}-->
+<!--hr style="clear:both; height:1em; background:rgba(128,128,128,0.77);"-->
 <!-- links {{{-->
 <style>
+div { margin    : 1em; }
+
 #div_links {
  box-shadow     : none               !important;
  background     : none               !important;
@@ -71,49 +118,87 @@ min-height          : 50px         !important;
  <a    class="fg2" target="dom_intro"       href="https://remotetabs.com/dev/rtabs/intro.html"       title="RTabs Extension"> &#x1F30F; </a>
  <a    class="fg3" target="app_android"     href="https://remotetabs.com/index.html"                 title="RTabs Android"  > &#x1F4F1; </a>
  <a    class="fg4" target="ivan_wellesz"    href="https://ivanw.pagesperso-orange.fr"                title="Ivan WELLESZ"   > &#x2302;  </a>
- <a    class="fg5"
+ <a    class="fg5" 
  title="Bookmarklet à activer sur des pages en ligne
 
 ...peut-être copié ou glissé dans les favoris"
- href="javascript:(function(){var%20s=document.createElement('script');s.id='dom_load';s.type='text/javascript';s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js';s.title='dom_load'  ;document.body.appendChild(s);})();"
+ href="javascript:(function(){var%20s=document.createElement('script'); s.id='dom_load'; s.type='text/javascript'; s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js'; s.title='dom_load'; document.body.appendChild(s); })();"
  onclick="confirm(this.title); return false;"
  ><i style="font-size:13px; vertical-align:middle;">RTabs</i></a>
 </div>
 </div>
 <!--}}}-->
-<!-- HTML ABOUT JUMP{{{-->
-<!-- JUMP IN PAGE {{{-->
-  <!-- H1 playground {{{-->
-  <a name="body_start" id="body_start" href="#body_end"     class="big em6" style="float:left; clear:both; margin-left:2em;">&#x2193;</a>
-  <a                                   href="#div_CHECKBOX" class="big em4"                                                 >&#x25A3;</a>
-  <a                                   href="#TEXT_NODE"    class="em4"                                                     >&#x00B6;</a>
-<!--}}}-->
- <!-- audio {{{-->
- <br>
- <a target="mdn_audio" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Using_Web_Audio_API">MDN audio</a>
- <a target="converter" href="https://base64.guru/converter/encode/audio/mp3">base64</a>
- <em
-  onclick='let el=document.getElementById("audio"); console.dir(el); el.play();'
-  class="big cc7"
-  style  ="cursor:pointer; user-select:none;"
-  >
-  &#x1F50A;
-  <audio id="audio" src="data:audio/mpeg;base64,/+MYxAAEaAIEeUAQAgBgNgP/////KQQ/////Lvrg+lcWYHgtjadzsbTq+yREu495tq9c6v/7vt/of7mna9v6/btUnU17Jun9/+MYxCkT26KW+YGBAj9v6vUh+zab//v/96C3/pu6H+pv//r/ycIIP4pcWWTRBBBAMXgNdbRaABQAAABRWKwgjQVX0ECmrb///+MYxBQSM0sWWYI4A++Z/////////////0rOZ3MP//7H44QEgxgdvRVMXHZseL//540B4JAvMPEgaA4/0nHjxLhRgAoAYAgA/+MYxAYIAAJfGYEQAMAJAIAQMAwX936/q/tWtv/2f/+v//6v/+7qTEFNRTMuOTkuNVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV">
-   audio not supported
-  </audio>
- </em>
- <!--}}}-->
+<!-- [dev_log_map top_right] {{{-->
+<div
+ id   ="dev_log_map" title="dev_log_map"
+ class="transcript display_delayed prop_bag top_right squeezed_0_1"
+ style="display:grid; grid-gap:0.25em; margin-top:3em; margin-right:2em;"
+ >
+<!--
+ style="display:grid; grid-gap:0.25em; position:absolute; top:100%; right:1em;"
+-->
+  <!-- [magpin_div] {{{-->
+  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input  id="squeeze_cycle_dev_log_map_clones_panel"           type="checkbox" />
+   <label for="squeeze_cycle_dev_log_map_clones_panel">
+    <pre>&#x25E4; &#x25E5;
+&#x25E3; &#x25E2;</pre>
+   </label>
+  </div>
   <!--}}}-->
+ <i>a clone of the<br>dev_log_map panel</i>
+
+ <em class="toolbag_button cc8" id="EV0_LISTEN"     >EV0_LISTEN</em>
+ <em class="toolbag_button cc8" id="EV1_DOWN"       >EV1_DOWN</em>
+ <em class="toolbag_button cc8" id="EV2_MOVE"       >EV2_MOVE</em>
+ <em class="toolbag_button cc8" id="EV3_UP"         >EV3_UP</em>
+ <em class="toolbag_button cc8" id="EV4_LONG_PRESS" >EV4_LONG_PRESS</em>
+ <em class="toolbag_button cc8" id="EV5_TOOL_CB"    >EV5_TOOL_CB</em>
+ <em class="toolbag_button cc8" id="EV6_CHANGED"    >EV6_CHANGED</em>
+ <em class="toolbag_button cc8" id="EV7_DISPATCH"   >EV7_DISPATCH</em>
+ <em class="toolbag_button cc8" id="EV8_FLOATLOG"   >EV8_FLOATLOG</em>
+
+ <em class="toolbag_button cc8" id="S0_PATTERN"     >S0_PATTERN</em>
+ <em class="toolbag_button cc8" id="S1_RANGE"       >S1_RANGE</em>
+ <em class="toolbag_button cc8" id="S2_SELECT"      >S2_SELECT</em>
+ <em class="toolbag_button cc8" id="S3_SLOT"        >S3_SLOT</em>
+
+ <em class="toolbag_button cc8" id="T0_STORE"       >T0_STORE</em>
+ <em class="toolbag_button cc8" id="T1_DOM_LOAD"    >T1_DOM_LOAD</em>
+ <em class="toolbag_button cc8" id="T2_GRID"        >T2_GRID</em>
+ <em class="toolbag_button cc8" id="T3_LAYOUT"      >T3_LAYOUT</em>
+ <em class="toolbag_button cc8" id="T4_PIVOT"       >T4_PIVOT</em>
+ <em class="toolbag_button cc8" id="T5_SPREAD"      >T5_SPREAD</em>
+ <em class="toolbag_button cc8" id="T6_SLOT"        >T6_SLOT</em>
+ <em class="toolbag_button cc8" id="T7_SHARE"       >T7_SHARE</em>
+ <em class="toolbag_button cc8" id="T8_TOOLBAR"     >T8_TOOLBAR</em>
+
+ <em class="toolbag_button cc8" id="IPC_LOG"        >IPC_LOG</em>
+</div>
+
+<!--}}}-->
+
+<hr style="height:3em; background-color:navy; border:1px;">
+<!-- ┌─────────────────────────────────────────────────────────────────────┐ -->
+<!-- │ DETAILS                                                             │ -->
+<!-- └─────────────────────────────────────────────────────────────────────┘ -->
+<!--{{{-->
+<details id="ABOUT_TO_WHITE_BOARD"><summary><H1><B>ABOUT_TO_WHITE_BOARD</B></H1></summary>
+
+<details id="ABOUT_anchor1_anchor2_Bookmarklet"><summary><H1><B>ABOUT_anchor1_anchor2_Bookmarklet</B></H1></summary>
 <!-- ABOUT {{{-->
    <div id="about_div"
         style="
+        display    : flow-root;
+/*{{{
         position   : absolute;
         top        : 128px;
         left       : 50%;
+        transform  : translate(-50%, 0);
+}}}*/
         box-shadow : 1px 1px 6px black;
         font-size  : 80%;
         width      : 32em;
-        transform  : translate(-50%, 0);
         "
     >
     <div id="about_fr"
@@ -185,19 +270,9 @@ min-height          : 50px         !important;
 
    </div>
    <!--}}}-->
+</details>
 
-<h1 style="clear:right; margin:1em;">playground</h1>
-  <!-- ivan_wellesz {{{-->
-  <div class="transcript " style='display:inline-block; border:3px dotted red !important;'>
-   <a href="https://ivanw.pagesperso-orange.fr"               target="_blank" style="font-size:200%;" title="Ivan WELLESZ">&#x2302;</a>
-   <a href="https://remotetabs.com/dev/rtabs/playground.html" target="_blank" style="font-size:100%;font-weight:900;"     >RTabs playground</a>
-   <a href="https://google.com"                               target="_blank" style="font-size:!50%;font-weight:900;"     >Google</a>
-   <a href="https://vimhelp.org/usr_toc.txt.html"             target="_blank" style="font-size:!50%;font-weight:900;"     >Vim help</a>
-  </div>
-
-<hr style="clear:both; height:1em; background:rgba(128,128,128,0.77);">
-  <!--}}}-->
-<H1 id="IMPORT_EXPORT">TEXT_NODE</H1>
+<details id="details_TEXT_NODE"><summary> <H1 id="IMPORT_EXPORT"><B>TEXT_NODE</B></H1> </summary>
 <!-- grid_container {{{-->
 <div class="grid_container"
      id   ="import_grid_container"
@@ -259,6 +334,7 @@ min-height          : 50px         !important;
   background : #AAA;
   width      : 100%;
   max-width  : 90em;
+let t_select   = {}        ;    /* 14 */
   overflow   : auto;
   "
   ></pre>
@@ -283,7 +359,6 @@ min-height          : 50px         !important;
  <!--}}}-->
 </div>
 <!--}}}-->
-
 <!-- WORDS {{{-->
 <div class="blurred_frame" style="font-weight:900; position:relative;">
 
@@ -432,6 +507,8 @@ min-height          : 50px         !important;
 
 <em class='cc6'>sticky_6 Google</em>
 <img style="width:5em;" src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'>
+<img style="width:5em;" src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'>
+<img style="width:5em;" src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'>
 <pre onclick='add_to_CBC(event);' style="max-width:20em; max-height:10em; overflow:auto;">
 ,{"key":"DEV_playground.sticky_6"
 ,"val":"{\"xy\":{\"x\":470
@@ -551,8 +628,8 @@ let add_to_CBC = function(event)
 let add_to_container_id = function(event, container)
 {
 /*{{{
-console_dir(event,"event");
-console_dir(event.target,"event.target");
+console_dir("event",event);
+console_dir("event.target",event.target);
 }}}*/
 
  /* CLICKED ELEMENT CONTENT .. FROM MULTILINE TO ONE-LINER */
@@ -614,9 +691,10 @@ let clear_clipboard_container = function(event)
  </script>
  <!--}}}-->
 </div>
-<hr style="height:2em; background-color:rgba(136,136,255,0.8)">
-<!--}}}-->
-<H1 id="white_space">white-space</H1>
+<!-- grid_container }}}-->
+</details>
+
+<details id="details_white_space"><summary> <H1 id="white_space"><B>white-space</B></H1> </summary>
 <!--{{{-->
 <pre style="font-size:120% !important; font-family:monospace; font-weight:900;">
 o-------------------------o--------------------------o
@@ -662,7 +740,9 @@ o-------------------------o--------------------------o
 
 <hr style="height:2em; background-color:rgba(136,136,255,0.8)">
 <!--}}}-->
-<H1 id="VIM_HELP">VIM_HELP</H1>
+</details>
+
+<details id="details_VIM_HELP"><summary> <H1 id="VIM_HELP"><B>VIM_HELP</B></H1> </summary>
 <!--{{{-->
 <dir id="vim_dir" style="background:rgba(255,255,255,0.86); margin:0; padding:0; height:80em;">
 <div id="d1"      style="background:rgba(255,068,000,0.27); position:relative; display:table; width:100%; margin:0 auto;">
@@ -676,21 +756,22 @@ o-------------------------o--------------------------o
                               Add new <a href="gui.txt.html#menus" class="d">menus</a>
 
 
-By now you know that Vim <a href="motion.txt.html#is" class="d">is</a> very flexible.  This includes the <a href="gui.txt.html#menus" class="d">menus</a> used in
+By now you know that Vim <a href="motion.txt.html#is" class="d">is</a> very flexible.  This includes the <a href="gui.txt.html#menus" class="d">menus</a> used in   {{{
 the GUI.  You can define your own menu entries to make certain commands easily
 accessible.  This <a href="motion.txt.html#is" class="d">is</a> for mouse-happy users only.
-
-<a href="#42.1" class="l">42.1</a>  Introduction
+}}}
+<a href="#42.1" class="l">42.1</a>  Introduction    {{{
 <a href="#42.2" class="l">42.2</a>  Menu commands
 <a href="#42.3" class="l">42.3</a>  Various
 <a href="#42.4" class="l">42.4</a>  Toolbar and <a href="popup.txt.html#popup" class="d">popup</a> <a href="gui.txt.html#menus" class="d">menus</a>
 
-     Next chapter: <a href="usr_43.txt.html#usr_43.txt" class="l">usr_43.txt</a>  Using <a href="filetype.txt.html#filetypes" class="d">filetypes</a>
+}}}
+     Next chapter: <a href="usr_43.txt.html#usr_43.txt" class="l">usr_43.txt</a>  Using <a href="filetype.txt.html#filetypes" class="d">filetypes</a>   {{{
  Previous chapter: <a href="usr_41.txt.html#usr_41.txt" class="l">usr_41.txt</a>  Write <a href="insert.txt.html#a" class="d">a</a> Vim <a href="usr_41.txt.html#script" class="d">script</a>
 Table of contents: <a href="usr_toc.txt.html#usr_toc.txt" class="l">usr_toc.txt</a>
 
 <span class="h">==============================================================================</span>
-<a name="42.1" class="t">42.1</a>  Introduction
+<a name="42.1" class="t">42.1</a>  Introduction {{{
 
 The <a href="gui.txt.html#menus" class="d">menus</a> that Vim uses are defined in the file "$VIMRUNTIME/menu.vim"<a href="repeat.txt.html#." class="d">.</a>  If
 you want to write your own menus, you might first want to look through that
@@ -717,8 +798,8 @@ characters that are executed.  <span class="s">{keys}</span> are characters, the
 you would have typed them.  Thus in <a href="insert.txt.html#Insert" class="d">Insert</a> mode, when <span class="s">{keys}</span> <a href="motion.txt.html#is" class="d">is</a> plain text,
 that text <a href="motion.txt.html#is" class="d">is</a> inserted.
 
-
-ACCELERATORS
+}}}
+ACCELERATORS {{{
 
 The ampersand character (&amp;) <a href="motion.txt.html#is" class="d">is</a> used to indicate an accelerator.  For instance,
 you can use Alt-F to select "File" and <a href="change.txt.html#S" class="d">S</a> to select "Save"<a href="repeat.txt.html#." class="d">.</a>  (The <a href="options.txt.html#%27winaltkeys%27" class="o">'winaltkeys'</a>
@@ -728,8 +809,8 @@ option may disable this though!).  Therefore, the <span class="s">{menu-item}</s
 you will not know which of the two will actually be used.  Vim doesn't warn
 you for this.
 
-
-PRIORITIES
+}}}
+PRIORITIES {{{
 
 The actual definition of the File.Save menu item <a href="motion.txt.html#is" class="d">is</a> <a href="motion.txt.html#as" class="d">as</a> follows:
 <span class="e"></span>
@@ -746,6 +827,7 @@ higher numbers to the right.
         +------------------------------------------------------------+
         | File  Edit  Tools  <a href="autocmd.txt.html#Syntax" class="d">Syntax</a>  Buffers  Window            Help |
         +------------------------------------------------------------+
+}}}
 </pre>
 </div><!-- d2 -->
 </div><!-- d1 -->
@@ -754,7 +836,10 @@ higher numbers to the right.
 
 <hr style="height:2em; background-color:rgba(136,136,255,0.8)">
 <!--}}}-->
-<H1 id="TEXT_NODE">TEXT_NODE</H1>
+<!--}}}-->
+</details>
+
+<details id="details_TEXT_NODE"><summary> <H1 id="TEXT_NODE"><B>TEXT_NODE</B></H1> </summary>
 <!--{{{-->
 <pre>
 -- loadPresetSlots_checkSlotItemTable {{{
@@ -810,59 +895,10 @@ LINE 5
 /*}}}*/
 </pre>
 
-<hr style="height:2em; background-color:rgba(136,136,255,0.8)">
 <!--}}}-->
+</details>
 
-<!-- [dev_log_map top_right] {{{-->
-<div
- id   ="dev_log_map" title="dev_log_map"
- class="transcript display_delayed prop_bag top_right squeezed_0_1"
- style="display:grid; grid-gap:0.25em; margin-top:3em; margin-right:2em;"
- >
-<!--
- style="display:grid; grid-gap:0.25em; position:absolute; top:100%; right:1em;"
--->
-  <!-- [magpin_div] {{{-->
-  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
-   <input  id="squeeze_cycle_dev_log_map_clones_panel"           type="checkbox" />
-   <label for="squeeze_cycle_dev_log_map_clones_panel">
-    <pre>&#x25E4; &#x25E5;
-&#x25E3; &#x25E2;</pre>
-   </label>
-  </div>
-  <!--}}}-->
- <i>a clone of the<br>dev_log_map panel</i>
-
- <em class="toolbag_button cc8" id="EV0_LISTEN"     >EV0_LISTEN</em>
- <em class="toolbag_button cc8" id="EV1_DOWN"       >EV1_DOWN</em>
- <em class="toolbag_button cc8" id="EV2_MOVE"       >EV2_MOVE</em>
- <em class="toolbag_button cc8" id="EV3_UP"         >EV3_UP</em>
- <em class="toolbag_button cc8" id="EV4_LONG_PRESS" >EV4_LONG_PRESS</em>
- <em class="toolbag_button cc8" id="EV5_TOOL_CB"    >EV5_TOOL_CB</em>
- <em class="toolbag_button cc8" id="EV6_CHANGED"    >EV6_CHANGED</em>
- <em class="toolbag_button cc8" id="EV7_DISPATCH"   >EV7_DISPATCH</em>
- <em class="toolbag_button cc8" id="EV8_FLOATLOG"   >EV8_FLOATLOG</em>
-
- <em class="toolbag_button cc8" id="S0_PATTERN"     >S0_PATTERN</em>
- <em class="toolbag_button cc8" id="S1_RANGE"       >S1_RANGE</em>
- <em class="toolbag_button cc8" id="S2_SELECT"      >S2_SELECT</em>
- <em class="toolbag_button cc8" id="S3_SLOT"        >S3_SLOT</em>
-
- <em class="toolbag_button cc8" id="T0_STORE"       >T0_STORE</em>
- <em class="toolbag_button cc8" id="T1_DOM_LOAD"    >T1_DOM_LOAD</em>
- <em class="toolbag_button cc8" id="T2_GRID"        >T2_GRID</em>
- <em class="toolbag_button cc8" id="T3_LAYOUT"      >T3_LAYOUT</em>
- <em class="toolbag_button cc8" id="T4_PIVOT"       >T4_PIVOT</em>
- <em class="toolbag_button cc8" id="T5_SPREAD"      >T5_SPREAD</em>
- <em class="toolbag_button cc8" id="T6_SLOT"        >T6_SLOT</em>
- <em class="toolbag_button cc8" id="T7_SHARE"       >T7_SHARE</em>
- <em class="toolbag_button cc8" id="T8_TOOLBAR"     >T8_TOOLBAR</em>
-
- <em class="toolbag_button cc8" id="IPC_LOG"        >IPC_LOG</em>
-</div>
-
-<hr style="clear:both; height:1em; background:rgba(128,128,128,0.7);">
-<!--}}}-->
+<details id="details_numbers"><summary> <H1><B>numbers affix mask clearpin gutter scalepin </B></H1> </summary>
 <!-- numbers affix {{{-->
 <div class="transcript ">
  <i>numbers</i> <em>1234567890</em>
@@ -906,26 +942,11 @@ LINE 5
    </div>
   </div>
 <!--}}}-->
- <!--}}}-->
-<!-- HTML   playground {{{-->
- <!-- [playground_clones_panel bottom_right] {{{-->
- <div
-  id   ="playground_clones_panel" title="playground_clones_panel"
-  class="transcript display_delayed bottom_right squeezed_0_1"
-  >
-  <!-- [magpin_div] {{{-->
-  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
-   <input  id="squeeze_cycle_playground_clones_panel"            type="checkbox" />
-   <label for="squeeze_cycle_playground_clones_panel">
-    <pre>&#x25E4; &#x25E5;
-&#x25E3; &#x25E2;</pre>
-   </label>
-  </div>
-  <!--}}}-->
- </div>
- <!--}}}-->
- <div style='float:right;'>
+</details>
+
+<details id="details_div1_div3"><summary> <H1><B>div1..div3</B></H1> </summary>
  <!-- div {{{-->
+ <div>
  <div   id="div1"    >div1
   <div  id="div1_1"  >div1_1
    <div id="div1_1_1">div1_1_1
@@ -978,8 +999,12 @@ LINE 5
 
  </div>
 
- <!--}}}-->
  </div>
+ <!--}}}-->
+</details>
+
+<details id="GOOGLE_KEEP_TO_GRID"><summary><H1><B>GOOGLE_KEEP_TO_GRID</B></H1></summary>
+<!--{{{-->
 <!-- GOOGLE KEEP {{{-->
 <!--{{{-->
 <div class="eso_div" style="float:left; background-color:black !important;">
@@ -1212,13 +1237,10 @@ escapeXXX(`
 <div id="data_image_div" title="data_image_div"></div>
 
 <!--}}}-->
-<!--}}}-->
-
-
 
   <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (200410:16h)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (210929:21h:31)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
@@ -1228,7 +1250,6 @@ escapeXXX(`
   }
   /*}}}*/
   /* playground_IMPORT {{{*/
-  let log;
   function playground_IMPORT() {
     /* dom_log {{{*/
       log = dom_log;
@@ -1237,17 +1258,17 @@ escapeXXX(`
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log.LOG_FG_ARR;
 
-    log                 = dom_log.functions.log;
-    logBIG              = dom_log.functions.logBIG;
-    logXXX              = dom_log.functions.logXXX;
-    log_caller          = dom_log.functions.log_caller;
-    log_json_one_liner  = dom_log.functions.log_json_one_liner;
-    log_key_val         = dom_log.functions.log_key_val;
-    log_key_val_group   = dom_log.functions.log_key_val_group;
+    log                 = dom_log.log;
+    logBIG              = dom_log.logBIG;
+    logXXX              = dom_log.logXXX;
+    log_caller          = dom_log.log_caller;
+    log_json_one_liner  = dom_log.log_json_one_liner;
+    log_key_val         = dom_log.log_key_val;
+    log_key_val_group   = dom_log.log_key_val_group;
     /*}}}*/
     DOM_LOADER_LOG = dom_store.t_store_getBool("DOM_LOADER_LOG");
     DOM_LOADER_TAG = dom_store.t_store_getBool("DOM_LOADER_TAG");
-log("%c 23 "+DOM_LOAD_TAG, lbH+lf3);
+log("%c"+DOM_LOAD_TAG, lbH+lf3);
   }
   /*}}}*/
   let CHECK_MARK           = "\u2714";
@@ -1255,10 +1276,16 @@ log("%c 23 "+DOM_LOAD_TAG, lbH+lf3);
   LF            = String.fromCharCode(10);
   CR            = String.fromCharCode(13);
   CS            = "color:yellow;background-color:navy;font-size:150%;";
-  console_clear = function(  msg=null) { try { console.clear(); if(msg) console.warn("%c=== CLEARED BY: "+msg,CS);        } catch(ex) {} };
-  console_dir   = function(o,msg=null) { try {                  if(msg) console.log (               msg); console.dir(o); } catch(ex) {} };
-  console_log   = function(  msg     ) { try {                          console.log (               msg);                 } catch(ex) {} };
-  console_warn  = function(  msg=null) { try {                          console.warn(               msg);                 } catch(ex) {} };
+  console_clear = function(msg=null  ) { try { console.clear(); if(msg) console.warn("%c=== CLEARED BY: "+msg,CS);        } catch(ex) {} };
+  console_dir   = function(a1,a2=null) {
+      let o   = (a2) ? a2 : a1;
+      let msg = (a2) ? a1 : null;
+      if( msg )
+        console.log ("%c"+msg+":",CS);
+      console.dir(o);
+  };
+  console_log   = function(msg       ) { try {                          console.log (               msg);                 } catch(ex) {} };
+  console_warn  = function(msg=null  ) { try {                          console.warn(               msg);                 } catch(ex) {} };
   /*}}}*/
   /* showToast {{{*/
   function showToast(msg) {
@@ -1304,9 +1331,9 @@ log("checkbox_clicked", lbb+lbH+lf3);
    let label_off = input.labels[0];
    let label_on  = input.labels[1];
 
-console_dir(input    , input.id   )
-console_dir(label_off, get_n_lbl(label_off))
-console_dir(label_on , get_n_lbl(label_on ))
+console_dir(input.id            , input    )
+console_dir(get_n_lbl(label_off), label_off)
+console_dir(get_n_lbl(label_on ), label_on )
 
    let    on_text = input.getAttribute("on" ) || SYMBOL_CHECK_MARK;
    let   off_text = input.getAttribute("off") || SYMBOL_NOT_CHECKED;
@@ -1319,16 +1346,15 @@ console_dir(label_on , get_n_lbl(label_on ))
 /*}}}*/
   </script>
   <!-- }}} -->
-
 <!-- GRID  HTML [dom_grid_html_data] {{{-->
 <script>
 /*
 javascript/dom_grid.html
 */
 dom_grid_html_data = escape(`
-<!--{{{-->
+<!--INLINE{{{-->
 <!DOCTYPE html>
-<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (191124:16h)</span>
+<span id="dom_grid_html_tag"   style="display:none">dom_grid_html (210226:19h:39)</span>
 <div  id="dom_grid_playground" class="display_delayed collapsed" title="dom_grid_playground">
  <div id="dom_grid_headsup"> <!-- {{{-->
 
@@ -1377,59 +1403,65 @@ dom_grid_html_data = escape(`
  <!--}}}-->
 </div>
 
-<!--}}}-->
+<!--INLINE}}}-->
 `
 );
 load_html("dom_grid_html" , dom_grid_html_data );
 
 </script>
 <!--}}}-->
+<!--}}}-->
+</details>
+
+<details id="details_doc_transcript"><summary> <H1><B><em>transcript</em> <em>doc_log_div</em> <em>doc_evt_div</em></B></H1> </summary>
  <!-- transcript doc_log_div doc_evt_div {{{-->
  <div  id="doc_transcript"title="doc_transcript" class="transcript display_delayed" style="display:inline-grid;">
   <div id="doc_log_div"   title="doc_log_div" class="left_div round_el cleardiv display_delayed"></div>
   <div id="doc_evt_div"   title="doc_evt_div" class="left_div round_el cleardiv display_delayed"></div>
  </div>
  <!--}}}-->
+</details>
 
   <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] [defer] .. DEPENDENCIES SOLVED BY PAGE ORDER AND IMPORT CALL {{{-->
 
   <script id="dom_data_js"    src="javascript/dom_data.js"    defer></script> <!-- DATA    05 DATA                          -->
   <script id="dom_log_js"     src="javascript/dom_log.js"     defer></script> <!-- LOG     06 data LOG util                 -->
-  <script id="dom_util_js"    src="javascript/dom_util.js"    defer></script> <!-- UTIL    07 data log UTIL                 -->
-  <script id="dom_prop_js"    src="javascript/dom_prop.js"    defer></script> <!-- PROP    08 data log util PROP            -->
-  <script id="dom_store_js"   src="javascript/dom_store.js"   defer></script> <!-- STORE   09 data log util      STORE      -->
-  <script id="dom_fly_js"     src="javascript/dom_fly.js"     defer></script> <!-- FLY     10 data log util prop store FLY  -->
+  <script id="dom_popup_js"   src="javascript/dom_popup.js"   defer></script> <!-- POPUP           log                      -->
+  <script id="dom_util_js"    src="javascript/dom_util.js"    defer></script> <!-- UTIL    07 data log UTIL(i18n)           -->
+  <script id="dom_details_js" src="javascript/dom_details.js" defer></script> <!-- DETAILS         log util                 -->
+  <script id="dom_i18n_js"    src="javascript/dom_i18n.js"    defer></script> <!-- I18N    08 data log util I18N            -->
+  <script id="dom_prop_js"    src="javascript/dom_prop.js"    defer></script> <!-- PROP    09 data log util PROP            -->
+  <script id="dom_store_js"   src="javascript/dom_store.js"   defer></script> <!-- STORE   10 data log util      STORE      -->
+  <script id="dom_fly_js"     src="javascript/dom_fly.js"     defer></script> <!-- FLY     11 data log util prop store FLY  -->
 
-  <script id="dom_wording_js" src="javascript/dom_wording.js" defer></script> <!-- WORDING 11      log                        WORDING               -->
-  <script id="dom_select_js"  src="javascript/dom_select.js"  defer></script> <!-- SELECT  12 data log util prop       fly            SELECT  slot  -->
-  <script id="dom_slot_js"    src="javascript/dom_slot.js"    defer></script> <!-- SLOT    13 data log      prop                      select  SLOT  -->
+  <script id="dom_wording_js" src="javascript/dom_wording.js" defer></script> <!-- WORDING 12      log                        WORDING               -->
+  <script id="dom_select_js"  src="javascript/dom_select.js"  defer></script> <!-- SELECT  13 data log util prop       fly            SELECT  slot  -->
+  <script id="dom_wot_js"     src="javascript/dom_wot.js"     defer></script>
+  <script id="dom_slot_js"    src="javascript/dom_slot.js"    defer></script> <!-- SLOT    14 data log      prop                      select  SLOT  -->
 
-  <script id="dom_hide_js"    src="javascript/dom_hide.js"    defer></script> <!-- HIDE    14 data log util prop store                             HIDE                          -->
-  <script id="dom_view_js"    src="javascript/dom_view.js"    defer></script> <!-- VIEW    15 data log util prop                                         VIEW                    -->
-  <script id="dom_sticky_js"  src="javascript/dom_sticky.js"  defer></script> <!-- STICKY  16 data log util prop store                                   view STICKY seek        -->
-  <script id="dom_seek_js"    src="javascript/dom_seek.js"    defer></script> <!-- SEEK    17 data log util prop                      select                  sticky SEEK        -->
-  <script id="dom_share_js"   src="javascript/dom_share.js"   defer></script> <!-- SHARE   18 data log util      store fly                                    sticky      SHARE  -->
+  <script id="dom_hide_js"    src="javascript/dom_hide.js"    defer></script> <!-- HIDE    15 data log util prop store                             HIDE                          -->
+  <script id="dom_view_js"    src="javascript/dom_view.js"    defer></script> <!-- VIEW    16 data log util prop                                         VIEW                    -->
+  <script id="dom_sticky_js"  src="javascript/dom_sticky.js"  defer></script> <!-- STICKY  17 data log util prop store                                   view STICKY seek        -->
+  <script id="dom_seek_js"    src="javascript/dom_seek.js"    defer></script> <!-- SEEK    18 data log util prop                      select                  sticky SEEK        -->
+  <script id="dom_share_js"   src="javascript/dom_share.js"   defer></script> <!-- SHARE   19 data log util      store fly                                    sticky      SHARE  -->
 
-  <script id="dom_grid_js"    src="javascript/dom_grid.js"    defer></script> <!-- GRID    19 data log util                                                                       GRID         -->
-  <script id="dom_gutter_js"  src="javascript/dom_gutter.js"  defer></script> <!-- GUTTER  20 data log util prop                                                                       GUTTER  -->
+  <script id="dom_grid_js"    src="javascript/dom_grid.js"    defer></script> <!-- GRID    20 data log util                                                                       GRID         -->
+  <script id="dom_gutter_js"  src="javascript/dom_gutter.js"  defer></script> <!-- GUTTER  21 data log util prop                                                                       GUTTER  -->
 
-  <script id="dom_ipc_js"     src="javascript/dom_ipc.js"     defer></script> <!-- IPC     21 log                                                                                               IPC        -->
-  <script id="dom_tools_js"   src="javascript/dom_tools.js"   defer></script> <!-- TOOLS   22 data log util prop store fly            select        hide view sticky seek share   grid          ipc TOOLS  -->
+  <script id="dom_ipc_js"     src="javascript/dom_ipc.js"     defer></script> <!-- IPC     22 log                                                                                               IPC        -->
+  <script id="dom_tools_js"   src="javascript/dom_tools.js"   defer></script> <!-- TOOLS   23 data log util prop store fly            select        hide view sticky seek share   grid          ipc TOOLS  -->
 
 
  <!--}}}-->
-
-<!-- HTML playground {{{-->
-
 <!-- [tools STUB] HTML [dom_tools_html_data] {{{-->
 <script>
 /*
 javascript/dom_tools.html
 */
 dom_tools_html_data = escape(`
-<!--{{{-->
+<!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (200124:22h)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:21h:29)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -1441,6 +1473,9 @@ dom_tools_html_data = escape(`
  <!--}}}-->
  <!-- headsup {{{ -->
  <div id="headsup"         class="transcript hidden"        title="headsup">
+
+  <em  id="user_lang"      class="toolbag_button cc9"       title="user_lang">&nbsp;</em>
+
   <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
   <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
   <em  id="wording"        class="toolbag_button cc3"       title="wording">WORDING</em>
@@ -1449,11 +1484,17 @@ dom_tools_html_data = escape(`
   <em  id="overflow_visi"  class="toolbag_button cc9"       title="overflow_visi">&nbsp;</em>
   <em  id="scroll_smooth"  class="toolbag_button cc9"       title="scroll_smooth">&nbsp;</em>
 
-  <em  id="tools_extras"   class="toolbag_button cc9"       title="tools_extras">&#x2630;</em>
+  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&#x25B2;</em>
+  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&#x25BC;</em>
+  <em  id="details_radio"  class="toolbag_button cc9"       title="details_radio">&nbsp;</em>
 
+  <em  id="tools_tier2"    class="toolbag_button cc9"       title="tools_tier2">&#x2630;</em>
+
+<!--{{{
   <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
   <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
   <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+}}}-->
 
   <em  id="remove_ads"     class="toolbag_button cc9"       title="remove_ads">&nbsp;</em>
   <em  id="split_wot"      class="toolbag_button cc9"       title="split_wot">&nbsp;</em>
@@ -1492,6 +1533,7 @@ dom_tools_html_data = escape(`
   <em  id="mask_or_hide"      class="toolbag_button cc9"    title="mask_or_hide">&nbsp;</em>
   <em  id="edit_or_stage"     class="toolbag_button cc9"    title="edit_or_stage">&nbsp;</em>
   <em  id="dom_hide1_reset"   class="toolbag_button cc9"    title="dom_hide1_reset">&nbsp;</em>
+  <em  id="dom_hide1_undo"    class="toolbag_button cc9"    title="dom_hide1_undo">…</em>
   <em  id="deny_or_allow"     class="toolbag_button cc8"    title="deny_or_allow">&nbsp;</em>
 <!--{{{
   <em  id="targeteer"         class="toolbag_button cc9"    title="targeteer">&nbsp;</em>
@@ -1532,10 +1574,14 @@ dom_tools_html_data = escape(`
  <!-- dom_traversal {{{ -->
  <div id="dom_traversal"   class="transcript hidden"        title="dom_traversal">
  <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
-  <em class = "toolbag_button cc5">NodeIterator</em>
-  <em class = "toolbag_button cc6">TreeWalker</em>
-  <em class = "toolbag_button cc7">childNodes</em>
-  <em class = "toolbag_button cc7">tagNodes</em>
+  <em class = "toolbag_button cc5">NodeIterator</em><br>
+  <em class = "toolbag_button cc6">TreeWalker</em><br>
+  <em class = "toolbag_button cc7">childNodes</em><br>
+  <em class = "toolbag_button cc7">tagNodes</em><br>
+
+  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
+  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
+  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
   <!-- }}} -->
   <!-- tools_node {{{ -->
   <table>
@@ -1560,7 +1606,7 @@ dom_tools_html_data = escape(`
   <em id="REGEX"           class="toolbag_button cc4"    title="REGEX"     > REGEX      </em>
   <em id="EXPORT"          class="toolbag_button cc6"    title="EXPORT"    > EXPORT     </em>
   <em id="IMPORT"          class="toolbag_button cc5"    title="IMPORT"    > IMPORT     </em>
-  <em id="RELOAD"          class="toolbag_button cc7"    title="RELOAD"    >&#x267B;<br>RELOAD<br>&#x267B;</em>
+  <em id="RELOAD"          class="toolbag_button cc7"    title="RELOAD"    >&#x21BB;<br>RELOAD<br>&#x21BB;</em>
  </div>
  <!-- }}} -->
 
@@ -1602,13 +1648,14 @@ dom_tools_html_data = escape(`
  <div id = "seekspot_A"                                                >&#x2191;</div>
  <div id = "seekspot_D"                                                        ></div>
  <!--}}}-->
-<!--}}}-->
+<!--INLINE}}}-->
 `
 );
 load_html("dom_tools_html", dom_tools_html_data);
 </script>
 <!--}}}-->
 
+<details id="details_checkbox_div"><summary> <H1><B>checkbox_div</B></H1> </summary>
   <!-- checkbox_div HTML {{{-->
   <div id="checkbox_div", title="checkbox_div">
 
@@ -1700,7 +1747,7 @@ load_html("dom_tools_html", dom_tools_html_data);
        </div>
       </div>
 
-      <div style="grid-row:1; grid-column:2; display:grid;">
+      <div style="display:grid; grid-row:1; grid-column:2; grid-gap:0.5em;">
 
        <em style="grid-row:1; grid-column:1;" id="rotate_0" class="cb_filled_pin button">0</em>
        <em style="grid-row:1; grid-column:2;" id="rotate_1" class="cb_filled_pin button">1</em>
@@ -2077,6 +2124,7 @@ and the <u>boundary point of the Range</u>.
 
      <hr>
      <li><a href=dom_select.html>dom_select.html</a></li>
+     <li><a href=dom_wot.html>dom_wot.html</a></li>
      <li><a href=dom_tools.html>dom_tools.html</a></li>
      <li><a href=twiddler.html>twiddler.html</a><br></li>
 
@@ -2084,11 +2132,13 @@ and the <u>boundary point of the Range</u>.
      <li><a href=javascript/dom_data.js>javascript/dom_data.js</a></li>
      <li><a href=javascript/dom_log.js>javascript/dom_log.js</a></li>
      <li><a href=javascript/dom_select.js>javascript/dom_select.js</a></li>
+     <li><a href=javascript/dom_wot.js>javascript/dom_wot.js</a></li>
      <li><a href=javascript/dom_slot.js>javascript/dom_slot.js</a></li>
      <li><a href=javascript/dom_store.js>javascript/dom_store.js</a></li>
      <li><a href=javascript/dom_share.js>javascript/dom_share.js</a></li>
      <li><a href=javascript/dom_tools.html>javascript/dom_tools.html</a></li>
      <li><a href=javascript/dom_util.js>javascript/dom_util.js</a></li>
+     <li><a href=javascript/dom_i18n.js>javascript/dom_i18n.js</a></li>
      <li><a href=javascript/dom_wording.js>javascript/dom_wording.js</a></li>
      <li><a href=javascript/dom_ipc.js>javascript/dom_ipc.js</a></li>
      <li><a href=javascript/dom_tools.js>javascript/dom_tools.js</a></li>
@@ -2124,8 +2174,10 @@ javascript/dom_grid.html
 |          dom_load.js
 |          dom_log.js
 |          dom_util.js
+|          dom_i18n.js
 |          dom_slot.js
 |          dom_select.js
+|          dom_wot.js
 |          dom_hide.js
 |          dom_store.js
 |          dom_share.js
@@ -2141,7 +2193,7 @@ stylesheet/dom_host.css
    <br style="clear:left;">
    <!-- SYMBOLS {{{-->
 
-   <div class="left_div round_el"
+   <div class="left_div round_el" id="SYMBOLS"
    style="
    display          : inline-flex;
    font-size        : 120%;
@@ -2155,6 +2207,7 @@ stylesheet/dom_host.css
      <em title="21AA" >&#x21AA;</em><br>
      <em title="2699" >&#x2699;</em><br>
      <em title="267B" >&#x267B;</em><br>
+     <em title="21BB" >&#x21BB;</em><br>
      <em title="1F50D">&#x1F50D;</em><br>
      <em title="1F50E">&#x1F50E;</em><br>
     </div>
@@ -2215,6 +2268,7 @@ stylesheet/dom_host.css
     <em style="background-color:transparent; color:#666;">&#x25BA;  </em> 25BA<br>
     <em style="background-color:transparent; color:#666;">&#x25FE;  </em> 25FE<br>
     <em style="background-color:transparent; color:#F00;">&#x1F47D; </em>1F47D<br>
+    <em style="background-color:transparent; color:#F00;">&#x2714;  </em> 2714<br>
     </div>
 
     <!--}}}-->
@@ -2240,7 +2294,10 @@ stylesheet/dom_host.css
    <!--}}}-->
   </div>
   <!--}}}-->
-  <!-- ABS HTML {{{-->
+</details>
+
+<details id="details_WORDS"><summary> <H1><B>WORDS</B></H1> </summary>
+  <!-- WORDS HTML {{{-->
  <!-- [iframe] {{{-->
  <br style="clear:both">
 <!-- style {{{-->
@@ -2302,8 +2359,12 @@ let if_smaller = function()
 };
 /*}}}*/
 /*_ if_url {{{*/
-let if_url = function(a)
+let if_url = function(a_href,a_text)
 {
+if(!a_href) return;
+console.clear();
+console.log("[a_href "+a_href+"] , [a_text "+a_text+"]");
+
     let iframe              =  document.getElementById("iframe_playground");
     let button              =  document.getElementById("iframe_button");
 
@@ -2311,11 +2372,11 @@ let if_url = function(a)
     {
      iframe.style.display   =  "none";
      iframe.src             =      "";
-     window.open(a.href, a.innerText.toLowerCase());
+     window.open(a_href, a_text);
     }
     else {
        iframe.style.display =  iframe.disabled ?            "none" : "block" ;
-       iframe.src           =  iframe.disabled ?                "" : a.href  ;
+       iframe.src           =  iframe.disabled ?                "" : a_href  ;
     }
 
     document.getElementById("iframe_taller" ).style.display = iframe.disabled ? "none" : "inline";
@@ -2348,19 +2409,23 @@ let populate_div_playground = function()
 /*}}}*/
 </script>
 <!--}}}-->
+ <div  class=".div_if_url">div_if_url<!--{{{-->
+  <input type="text" onclick='if_url(this.value,"_blank");'/>
+ </div>
+<!--}}}-->
  <div  class=".div_w3">w3 intro <!--{{{-->
-  <a href="https://www.w3.org/WAI"                                                   onclick='return if_url(this);'> w3_WAI   </a>
-  <a href="https://www.w3.org/WAI/ARIA/faq"                                          onclick='return if_url(this);'> w3_FAQ   </a>
-  <a href="https://www.w3.org/WAI/intro/aria"                                        onclick='return if_url(this);'> w3_aria  </a>
-  <a href="https://www.w3.org/WAI/intro/wcag"                                        onclick='return if_url(this);'> w3_wcag  </a>
+  <a href="https://www.w3.org/WAI"                                                   onclick='return if_url(this,this.innerText);'> w3_WAI   </a>
+  <a href="https://www.w3.org/WAI/ARIA/faq"                                          onclick='return if_url(this,this.innerText);'> w3_FAQ   </a>
+  <a href="https://www.w3.org/WAI/intro/aria"                                        onclick='return if_url(this,this.innerText);'> w3_aria  </a>
+  <a href="https://www.w3.org/WAI/intro/wcag"                                        onclick='return if_url(this,this.innerText);'> w3_wcag  </a>
  </div>
 <!--}}}-->
  <div  class=".div_w3">w3 TR <!--{{{-->
-  <a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/understanding-techniques.html" onclick='return if_url(this);'> w3_tech  </a>
-  <a href="https://www.w3.org/TR/WCAG20-TECHS"                                       onclick='return if_url(this);'> w3_wcag  </a>
-  <a href="https://www.w3.org/TR/html5/webappapis.html"                              onclick='return if_url(this);'> w3_API   </a>
-  <a href="https://www.w3.org/TR/personalization-semantics-1.0"                      onclick='return if_url(this);'> w3_perso </a>
-  <a href="https://www.w3.org/TR/wai-aria-practices-1.1"                             onclick='return if_url(this);'> w3_ARIA  </a>
+  <a href="https://www.w3.org/TR/UNDERSTANDING-WCAG20/understanding-techniques.html" onclick='return if_url(this,this.innerText);'> w3_tech  </a>
+  <a href="https://www.w3.org/TR/WCAG20-TECHS"                                       onclick='return if_url(this,this.innerText);'> w3_wcag  </a>
+  <a href="https://www.w3.org/TR/html5/webappapis.html"                              onclick='return if_url(this,this.innerText);'> w3_API   </a>
+  <a href="https://www.w3.org/TR/personalization-semantics-1.0"                      onclick='return if_url(this,this.innerText);'> w3_perso </a>
+  <a href="https://www.w3.org/TR/wai-aria-practices-1.1"                             onclick='return if_url(this,this.innerText);'> w3_ARIA  </a>
  </div>
 <!--}}}-->
  <div  class=".div_w3"><!--{{{-->
@@ -2609,8 +2674,10 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
 </div>
 <!--}}}-->
   <!--}}}-->
-  <hr style="clear:left;">
+</details>
+
    <!-- SANDBOX UI {{{-->
+  <hr style="clear:left;">
 <!--{{{
    <div
     id="buttons"
@@ -2643,15 +2710,15 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
 }}}-->
    <!--div id="transcript" class="transcript" style="float:right; min-width:10em; min-height:10em;"     > TRANSCRIPT </div-->
 
-   <!--}}}-->
   <hr style="clear:left;">
+   <!--}}}-->
 
+<details id="details_t_sticky_LOG"><summary> <H1><B>t_sticky_LOG</B></H1> </summary>
 <!-- t_sticky_LOG {{{-->
  <em class='big cc3'
   onclick='console_clear( document.getElementsByTagName("title")[0].innerText ); dom_sticky.t_sticky_LOG("ALL");'
   >t_sticky_LOG</em>
 <!--}}}-->
-
  <!-- NOTES {{{-->
  <table
   id   ="notes_table"
@@ -2702,7 +2769,6 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
 
  <!--}}}-->
  <!--}}}-->
-
 <!-- grid_container {{{-->
 <div class="grid_container"
      id   ='tools_grid_container'
@@ -2725,7 +2791,7 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
   grid-column-end   : 2;
   "
   onclick='dom_sticky.t_sticky_LOG("ALL");
-  document.getElementById("console_pre").innerHTML += get_log_HTML()+"<br>";
+  document.getElementById("console_pre").innerHTML += dom_log.get_log_HTML()+"<br>";
   '
   >t_sticky_LOG</em>
 <!--}}}-->
@@ -2739,62 +2805,38 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
   grid-column-end   : 2;
   "
   onclick='
-  log_CLR();
+  dom_log.log_CLR();
   console_clear(DOM_LOAD_TAG);
-  document.getElementById("console_pre").innerHTML = get_log_HTML()+"<br>";
+  document.getElementById("console_pre").innerHTML = dom_log.get_log_HTML()+"<br>";
   '
   >CLEAR</em>
 <!--}}}-->
-<!-- get_log_HTML [row3 col1] {{{-->
- <em
-  class='em5'
-  style="
-  grid-row-start    : 3;
-  grid-row-end      : 4;
-  grid-column-start : 1;
-  grid-column-end   : 2;
-  "
-  onclick='
-  document.getElementById("console_pre").innerHTML = get_log_HTML()+"<br>";
-  '
-  >log_HTML</em>
-<!--}}}-->
-<!-- anchor_node_path [row1 col2] {{{-->
+<!-- node_path [row1 col2] {{{-->
 <em
-    style="
-    grid-row-start    : 1;
-    grid-column-start : 2;
-    grid-column-end   : 3;
-    "
-    class='cc7'
-    onclick='
-    let           el = document.getElementById( this.children[0].innerText );
-    anchor_node_path = dom_util.get_node_path( el );
-    log( anchor_node_path );
-    document.getElementById("console_pre").innerHTML += get_log_HTML()+"<br>";
-    '
-    >        anchor_node_path = get_node_path_target( <em>clipboard_container</em> )
-</em>
-
-<!--}}}-->
- <!-- node_path_target [row2 col2] {{{-->
- <em
   style="
-  grid-row-start    : 2;
+  grid-row-start    : 1;
   grid-column-start : 2;
   grid-column-end   : 3;
   "
-  class='cc4'
+  class='cc7'
   onclick='
-  let             el = document.getElementById( this.children[0].innerText );
-  anchor_node        = dom_util.get_node_path_target(    anchor_node_path        );
-  log( get_n_lbl(anchor_node), lbb+lf4);
-  document.getElementById("console_pre").innerHTML += get_log_HTML()+"<br>";
+  let el        = document.getElementById      ( this.children[0].value );
+  let node_path = dom_util.get_node_path       ( el                     );
+  dom_log.log("node_path=["+node_path+"]");
+  document.getElementById("console_pre").innerHTML += dom_log.get_log_HTML()+"<br>";
   '
-  >               anchor_node = get_node_path_target(    <em>anchor_node_path</em>)
- </em>
+  >get_node_path <input type="text"
+  value="TD_RIGHT"
+  style="border-radius:0.8em;
+  border:none;
+  padding:0.5em;
+  font-size:80%;
+  font-weight:900;
+  padding:0 1em 0 1em;
+  "/>
+</em>
 
- <!--}}}-->
+<!--}}}-->
  <!-- console [row3 col1..2] {{{-->
  <pre contenteditable
   id   ="console_pre"
@@ -2813,43 +2855,2408 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
  <!--}}}-->
 </div>
 <!--}}}-->
+</details>
+<!--}}}-->
 
+
+
+
+
+
+
+
+
+<hr style="height:3em; background-color:navy; border:1px;">
+<!-- ┌─────────────────────────────────────────────────────────────────────┐ -->
+<!-- │ FOLDED CODE                                                         │ -->
+<!-- └─────────────────────────────────────────────────────────────────────┘ -->
+<!-- style {{{-->
+<style>
+.folded_code {
+/*
+background-color: #222;
+           color: #FFF;
+*/
+background-color: #EEE;
+}
+</style>
+<!--}}}-->
+<!-- feedback_tree {{{-->
+<!--
+}:r $APROJECTS/iwintoo/USR/CLIENT/feedback_tree.js
+}:r            iwintoo/USR/CLIENT/feedback_tree.js
+:/^<pre> *<!--{{{-->/++,/^<\/pre> *<!--}}}-->/-d
+-->
+<details id="feedback_tree" class="folded_code"><summary> <H1><B>feedback_tree</B></H1> </summary>
+<hr>
+<pre> <!--{{{-->
+
+//┌────────────────────────────────────────────────────────────────────────────┐
+//│ [feedback_tree] FORM ➔ {subjects , questions, qcm} .. _TAG (210918:04h:37) │
+//└────────────────────────────────────────────────────────────────────────────┘
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */ /*{{{*/
+/* globals  feedback_topics_json, i18n_translate */
+/* globals  console, document, setTimeout */ // eslint-disable-line no-unused-vars
+/* eslint-disable no-warning-comments */
+
+/*}}}*/
+//{{{
+//┌────────────────────────────────────────────────────────────────────────────┐
+//│ NOTE                                                                       │
+//├────────────────────────────────────────────────────────────────────────────┤
+//│                                                                            │
+//│ feedback_topics_json   ➔ [JS server-generated-topics]                      │
+//├                                                                            ┤
+//│ feedback_items_array   ➔ [subject   .. sid_array .. qid_array .. questions │
+//│                           qcm_array .. rnk_array .. comments]              │
+//├                                                                            ┤
+//│ feedback_replies_json  ➔ [subject   .. sid       .. qid       .. question  │
+//│                           qcm_rank  .. comment   .. feedback]              │
+//├                                                                            ┤
+//│ feedback_replies_array ➔ === [feedback_replies_json]                       │
+//│                        ➔ or a generated array from destructuring           │
+//│                          a [subject_id-version] of [feedback_topics_json]  │
+//│                                                                            │
+//└────────────────────────────────────────────────────────────────────────────┘
+//}}}
+
+let feedback_tree = (function() {
+"use strict";
+let   TAG_TREE = false; // TOGGLED ON FROM A PAGE SUCH AS document.location.href.includes("dev");;
+  // ┌─────────────────────────────────────────────────────────────────────┐ -->
+  // │ INPUT UI                                                            │ -->
+  // └─────────────────────────────────────────────────────────────────────┘ -->
+/*{{{*/
+const I18N             = "i18n"          ;
+
+const SUBJECT          = "subject"       ;
+const QUESTION         = "question"      ;
+const QUESTION_ID      = "question_id"   ;
+const QCM_RANK         = "qcm_rank"      ;
+
+const QCM_PANEL        = "qcm_panel"     ;
+
+const FEEDBACK_PANEL   = "feedback_panel";
+const FEEDBACK         = "feedback"      ;
+const FEEDBACK_GOOD    =  "good"         ;
+const FEEDBACK_CORRECT =  "correct"      ;
+const FEEDBACK_WRONG   =  "wrong"        ;
+const FEEDBACK_BAD     =  "bad"          ;
+
+const COMMENT          = "comment"       ;
+
+const STATUS_PANEL     = "status_panel"  ;
+
+const THANK_YOU_ACK_MS = 1000;
+
+const RIGHT_QUOTE      = String.fromCharCode(8217); /* ’ (unicode 2019) */
+
+/*}}}*/
+/* FORM {{{*/
+let          form_div;
+let            submit;
+let             purge;
+let         qcm_panel;
+let    feedback_panel;
+let      status_panel;
+
+/* FORM POST SUBMIT PARAMS */
+let     user_id_input;
+let        lang_input;
+
+let     subject_input;
+let    question_input;
+let question_id_input;
+let    qcm_rank_input;
+
+let    feedback_input;
+let        good_input;
+let     correct_input;
+let       wrong_input;
+let         bad_input;
+
+let     comment_input;
+
+/*}}}*/
+
+  // ┌─────────────────────────────────────────────────────────────────────┐ -->
+  // │ POPULATE [subject questions feedback comment] .. sync ON SUBMIT     │ -->
+  // └─────────────────────────────────────────────────────────────────────┘ -->
+/*➔ populate_GUI {{{*/
+let populate_GUI = function()
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("populate_GUI");
+//}}}
+    TAG_TREE ||= document.location.href.includes("dev");
+
+    /* 1. GET PARAMETERS [user_id] [lang] */
+    let { user_id , lang } = populate_get_user_id_lang();
+
+    /* 2. CREATE [feedback_div] GUI or FAIL WITH [error_div] */
+    /* [feedback_div] {{{*/
+    let feedback_div = document.getElementById("feedback_div");
+    if(!feedback_div)
+    {
+        let title = "Server-side error";
+        let   msg = "THIS PAGE TEMPLATE IS MISSING THE <em>feedback_div</em> GUI CONTAINER";
+        populate_show_error_div(title, msg);
+
+        console.log("%c "+msg, "background-color: #D00; font-size:150%; border:3px solid #F00;");
+        return;
+    }
+
+    let innerHTML  = "";
+    /*}}}*/
+
+    /* 3. BUID GUI [innerHTML] */
+    /*{{{*/
+    /* MISS [user_id] {{{*/
+    if(!user_id )
+    {
+        innerHTML
+=` <pre style='color:red; font-style:oblique; font-family:cursive;'>
+*** user_id is undefined ***
+➔ feedback_tree
+➔➔ populate_GUI
+</pre>
+<ul>
+<li>user_id=[${ user_id }]</li>
+<li>   lang=[${    lang }]</li>
+</ul>
+`;
+
+    }
+    /*}}}*/
+    /* MISS [feedback_topics_json) {{{*/
+    else if(typeof feedback_topics_json == "undefined")
+    {
+//console.log('(typeof feedback_topics_json == "undefined")')
+
+        innerHTML
+=` <pre style='color:red; font-style:oblique; font-family:cursive;'>
+*** No feedback topics defined ***
+➔ feedback_tree
+➔➔ populate_GUI
+</pre>
+<!--<ul>
+<li>user_id=[${ user_id }]</li>
+<li>   lang=[${    lang }]</li>
+</ul>-->
+`;
+
+    }
+    /*}}}*/
+    /* SHOW TOPICS [subject questions] {{{*/
+    else {
+        populate_get_feedback_items_array();
+
+        for(let i=0; i < feedback_items_array.length; ++i)
+        {
+            let      feedback_item = feedback_items_array[i];
+            let   subject =          feedback_item.subject  ; // string
+            let questions =          feedback_item.questions; // string array
+            let       sid = SUBJECT+(i+1);
+
+            innerHTML += populate_subject(sid, subject, questions);
+        }
+    }
+    /*}}}*/
+    /*}}}*/
+
+    /* 4. DISPLAY TOPICS [feedback_div.innerHTML] */
+    /*{{{*/
+    get_form_div(user_id,lang);
+
+    feedback_div.innerHTML
+        = "<ul>"
+        +   innerHTML
+        + "</ul>";
+
+    /*}}}*/
+
+    /* 5. TRANSLATE GUI [I18N] CONTENT [optional] */
+    /*{{{*/
+    if(typeof            i18n_translate != "undefined")
+    {
+        setTimeout(() => i18n_translate.set_lang(lang, "FROM [populate_GUI]"), 1000);
+        setTimeout(() => i18n_translate.sync_i18n_elements()                 , 1000);
+    }
+    /*}}}*/
+
+};
+/*}}}*/
+/*_ populate_get_user_id_lang {{{*/
+let populate_get_user_id_lang = function()
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("populate_get_user_id_lang");
+//}}}
+    /* [user_id] [lang] ➔ GET FROM LOCATION URL-PARAM {{{*/
+if(TAG_TREE) console.groupCollapsed("%c [user_id] [lang] ➔ FROM LOCATION URL PARAM OR FROM COOKIE:", "border: 3px solid #888; font-size:150%;");
+//console.log("document.location");
+//console.log( document.location );
+
+    let user_id_location_param = document.location.href.replace(/.*user_id=([^\&]+).*/, "$1");
+    let    lang_location_param = document.location.href.replace(   /.*lang=([^\&]+).*/, "$1");
+
+if(TAG_TREE) console.log("%c ➔ user_id_location_param.=["+ user_id_location_param +"]", "border: 3px solid  yellow; font-size:150%;");
+if(TAG_TREE) console.log("%c ➔    lang_location_param.=["+    lang_location_param +"]", "border: 3px solid  yellow; font-size:150%;");
+    /*}}}*/
+    /* [user_id] [lang] ➔ GET FROM COOKIE {{{*/
+
+    let user_id_cookie_value   = _get_cookie("user_id");
+    let    lang_cookie_value   = _get_cookie("lang"   );
+
+if(TAG_TREE) console.log("%c ➔ user_id_cookie_value...=["+ user_id_cookie_value   +"]", "border: 3px solid  orange; font-size:150%;");
+if(TAG_TREE) console.log("%c ➔    lang_cookie_value...=["+    lang_cookie_value   +"]", "border: 3px solid  orange; font-size:150%;");
+    /*}}}*/
+    /* [user_id] [lang] ➔ CHOOSE PARAM OR COOKIE {{{*/
+    let user_id   = user_id_location_param ? user_id_location_param : user_id_cookie_value;
+    let    lang   =    lang_location_param ?    lang_location_param :    lang_cookie_value;
+if(TAG_TREE) console.log("%c ➔ user_id................=["+ user_id_cookie_value   +"]", "border: 3px solid   green; font-size:150%;");
+if(TAG_TREE) console.log("%c ➔    lang................=["+    lang_cookie_value   +"]", "border: 3px solid   green; font-size:150%;");
+
+if(TAG_TREE) console.groupEnd();
+
+    /*}}}*/
+    return { user_id , lang };
+};
+/*}}}*/
+/*_ populate_show_error_div {{{*/
+let populate_show_error_div = function(title,msg)
+{
+    let error_div
+        = document.createElement("DIV");
+
+    error_div.style
+        = "color:red; font-family:cursive; font-style:oblique;";
+
+    error_div.innerHTML
+        = "<h3>"+title+"</h3>"
+        + "<span>"+msg+"</span>";
+
+    document.body.appendChild( error_div );
+};
+    /*}}}*/
+/*_ populate_get_feedback_items_array {{{*/
+/*{{{*/
+let feedback_items_array   = [];
+
+let feedback_replies_array = []; // local instance eventually initialized from an optional global object
+
+/*}}}*/
+let populate_get_feedback_items_array = function populate_get_feedback_items_array()
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("populate_get_feedback_items_array");
+//}}}
+    /* 1/4 - FEEDBACK ➔ IS ARRAY .. [feedback_items_array = feedback_topics_json] {{{*/
+    if(     Array.isArray( feedback_topics_json )
+        && (typeof         feedback_replies_json != "undefined")
+      ) {
+        feedback_replies_array = feedback_replies_json; /* eslint-disable-line no-undef */
+        feedback_items_array   = feedback_topics_json;
+
+if(TAG_TREE) console.log  ("%c 1/4 - FEEDBACK ➔ USER REPLIES RECEIVED ("+feedback_replies_array.length+")", "background-color: #040; font-size:150%; border:3px solid #0F0;");
+    }
+    /*}}}*/
+    /* 2/4 - FEEDBACK ➔ ALREADY CONVERTED TO ARRAY {{{*/
+    else if(feedback_items_array.length >  0)
+    {
+if(TAG_TREE) console.log  ("%c 2/4 - FEEDBACK ➔ ALREADY CONVERTED TO ARRAY" , "background-color: #880; font-size:150%; border:3px solid #FF0;");
+
+    }
+    /*}}}*/
+    /* 3/4 - FEEDBACK ➔ [has subject_id] CONVERTING TO ARRAY {{{*/
+    else if(      feedback_topics_json[0].subject_id != undefined )
+    {
+if(TAG_TREE) console.groupCollapsed("%c FEEDBACK ➔ [has subject_id] CONVERTING TO ARRAY", "background-color: #00D; font-size:150%; border:3px solid #00F;");
+
+        populate_get_feedback_items_array_streamlined();
+    }
+    /*}}}*/
+    /* 4/4 - FEEDBACK ➔ FORMAT MISMATCH {{{*/
+    else {
+        let title = "Server-side error";
+        let   msg = "FEEDBACK ➔ FORMAT MISMATCH: <em>feedback_topics_json</em> has no subject_id";
+        populate_show_error_div(title, msg);
+
+        console.log("%c "+msg, "background-color: #D00; font-size:150%; border:3px solid #F00;");
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ populate_get_feedback_items_array_streamlined {{{*/
+let populate_get_feedback_items_array_streamlined = function()
+{
+    Object.keys(feedback_topics_json)
+        .forEach( (idx) => {
+            let val         = feedback_topics_json[idx];
+            let vid         = parseInt(val.subject_id ) ;
+            let subject     = val.libelle;
+
+            /* SANITIZE MISSING [subject ] */
+            subject         = (subject  && subject  != "null") ? subject : "* subject"+vid;
+
+if(TAG_TREE) console.groupCollapsed("%c"+subject, "font-size:120%;");
+
+            let sid_array   = [];
+            let qid_array   = [];
+            let questions   = [];
+            let qcm_array   = [];
+            let rnk_array   = [];
+            let comments    = [];
+
+            Object.keys(val.questions)
+                .forEach((k) => {
+
+                    let question = val.questions[k];
+
+                    let sid =      parseInt( question. subject_id ) ;
+                    let qid =      parseInt( question.question_id ) ;
+                    let lib =                question.libelle       ;
+                    let qcm = Object.values( question.qcm          );
+                    let rnk =                question.qcm_rank      ; // 0-based .. happened to be missing as of 210910
+                    let cmt =                question.user_comment  ;
+
+                    /* SANITIZE MISSING [question] */
+                    lib = (lib && lib != "null") ? lib : "* subject"+sid+"_question"+qid;
+
+                    /* SANITIZE MISSING [qcm] */
+                    for(let i=0;  i < qcm.length; ++i)
+                        qcm[i] = (qcm[i] && qcm[i] != "null") ? qcm[i] : "* subject"+sid+"_question"+qid+"_qcm"+i;
+
+                    sid_array.push( sid );
+                    qid_array.push( qid );
+                    questions.push( lib );
+                    qcm_array.push( qcm );
+                    rnk_array.push( rnk );
+                    comments .push( cmt );
+
+//{{{
+if(TAG_TREE) {
+  console.log(sid+"."+qid+" %c["+             lib  +"]"  , "color:#FF0; background-color:#00A;");
+  console.log(         "… qcm %c"+JSON.stringify(qcm)    , "color:#0BB;");
+  console.log(         "… rnk %c"+JSON.stringify(rnk)    , "color:#B0B;");
+  console.log(         "… cmt %c["+              cmt +"]", "color:#F0F;");
+}
+//}}}
+                });
+
+            feedback_items_array
+                .push( { subject
+                       , sid_array
+                       , qid_array
+                       , questions
+                       , qcm_array
+                       , rnk_array
+                       , comments
+                });
+
+            for(let i=0; i<questions.length; ++i)
+            {
+                feedback_replies_array
+                    .push( { subject
+                           , sid      : sid_array[i]
+                           , qid      : qid_array[i]
+                           , question : questions[i] || "?"
+                           , qcm      : qcm_array[i]
+                           , qcm_rank : rnk_array[i]
+                           , comment  : comments [i]
+                           , feedback : undefined
+                    });
+            }
+if(TAG_TREE) console.groupEnd();
+        });
+
+//{{{
+if(TAG_TREE) {
+  console.log("feedback_items_array:" );
+  console.log( feedback_items_array   );
+  console.log("feedback_replies_array:");
+  console.log( feedback_replies_array  );
+}
+
+if(TAG_TREE) console.groupEnd();
+//}}}
+};
+/*}}}*/
+/*_ populate_subject {{{*/
+let populate_subject = function(sid, subject, questions)
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("populate_subject: "+sid+" .. questions( "+questions.length+" ) .. ["+subject+"]");
+//}}}
+    let className
+        = I18N
+        + ((subject.startsWith("*")) ? " sanitized" : "");
+
+    let innerHTML = "<b class='"+className+" subject' id='"+sid+"'>"+ subject +"</b>";
+    innerHTML    += "<ul>";
+    for(let q=0; q<questions.length; ++q)
+    {
+        let        question = questions[q] || "";
+//{{{
+if(log_this) console.log("questions["+q+"]");
+if(log_this) console.dir( question         );
+//}}}
+        /* 1/2 - ADD FORM [question] {{{*/
+        if(typeof question != "object")
+        {
+            let user_feedback = get_user_feedback(subject , question, "populate_subject");
+            let    data_topic = JSON.stringify(  {subject , question}).replace(/'/gm, RIGHT_QUOTE);
+//{{{
+if(log_this) console.log("populate_subject: ➔ data_topic=["+data_topic+"]");
+if(log_this) console.dir(user_feedback);
+//}}}
+
+            let   qid = sid+"_q"+(q+1);
+
+            let label = (typeof i18n_translate != "undefined")
+                ?        i18n_translate.get_i18n(question)
+                :        question;
+
+            className = I18N
+                +       " "+ get_qcm_className(user_feedback.qcm_rank, user_feedback.feedback, label)
+                +       ((label.startsWith("*")) ? " sanitized" : "");
+
+//{{{
+if(log_this) console.log("➔ %c qid=["+qid+"] .. subject=["+subject+"] .. className=["+className+"] label=["+label+"]", "color:black; background-color: #FFD; border: 1px solid #FF0;");
+//}}}
+
+            innerHTML        += `
+<li     id="${qid}"
+     class="${className}"
+data-topic='${data_topic}'
+           >${label}</li>`;
+
+        }
+        /*}}}*/
+        /* 2/2 - RECURSE INTO EMBEDDED [subject] {{{*/
+        else {
+            innerHTML        += populate_subject(sid+(q+1),question);
+
+        }
+        /*}}}*/
+    }
+    innerHTML    += "</ul>";
+
+    return "<li>"+innerHTML+"</li>";
+};
+/*}}}*/
+/*_ get_qcm_className {{{*/
+let get_qcm_className = function(qcm_rank,feedback)
+{
+    let has_rank
+        = !isNaN( parseInt(qcm_rank) );
+
+    let className
+        =     QUESTION
+        +" "+ ( has_rank ? ("gradient"+(1+parseInt(qcm_rank)) )
+              : feedback ? (                       feedback   )
+              :            (                       ""         )
+              );
+
+//console.log("…qcm_rank=["+qcm_rank+"] feedback=["+feedback+"] ➔ className=["+className+"] ➔ label=["+label+"]");
+    return className;
+};
+/*}}}*/
+
+  // ┌─────────────────────────────────────────────────────────────────────┐ -->
+  // │ [user_feedback]                                                     │ -->
+  // └─────────────────────────────────────────────────────────────────────┘ -->
+/*_ get_user_feedback {{{*/
+/*{{{*/
+const regexp_NOWRD    = new RegExp("[^0-9~A-Za-z\\xC0-\\xFF]+"                , "g"); /* quantité */
+
+/*}}}*/
+let get_user_feedback = function(subject,question,_caller)
+{
+/*{{{*/
+let log_this=false;
+
+/*}}}*/
+    let user_feedback = { subject , question };
+
+    if(!subject || !question) return user_feedback;
+    subject  = subject .replace(regexp_NOWRD, " ");
+    question = question.replace(regexp_NOWRD, " ");
+    for(let i=0; i < feedback_replies_array.length; ++i)
+    {
+        let             reply = feedback_replies_array[i];
+        if( subject  != reply.subject .replace(regexp_NOWRD, " ")) continue;
+        if(question  != reply.question.replace(regexp_NOWRD, " ")) continue;
+        user_feedback = reply;
+        break;
+    }
+
+/*{{{*/
+let color
+        = (Object.keys(user_feedback).length < 1) ? "#444"
+        :                 _caller.startsWith("p") ? "#006"
+        :                                           "#550";
+let css   = "border: 5px solid "+color+";";
+
+if(log_this)
+{
+    console.log("%c get_user_feedback: _caller=["+_caller+"]\n"
+                +   "subject  = ["+ subject      +"]\n"
+                +   "question = ["+ question     +"]\n"
+                + JSON.stringify(   user_feedback )
+                .  replace(     /,/g, " .. ")
+                .  replace(/[\{\}]/g, " $& ")
+                , css);
+
+if(Object.keys(user_feedback).length < 1)
+    console.dir( feedback_replies_array );
+}
+/*}}}*/
+    return user_feedback;
+};
+/*}}}*/
+/*_ get_user_feedback_from_el_attributes {{{*/
+let get_user_feedback_from_el_attributes = function(e_target)
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("get_user_feedback_from_el_attributes");
+//}}}
+    // ┌──────────────────────────────────────────────────────────┐
+    // │ subject  sid  qid  question  qcm_rank  comment  feedback │
+    // └──────────────────────────────────────────────────────────┘
+    let data_topic          = e_target.getAttribute("data-topic");
+    let {subject, question} = JSON.parse( data_topic );
+    let       user_feedback = get_user_feedback(subject, question, "form_div_onclick");
+
+//{{{
+if(log_this) console.log("get_user_feedback_from_el_attributes: ➔ data_topic=["+data_topic+"]");
+if(log_this) console.dir(user_feedback);
+//}}}
+    return user_feedback;
+};
+/*}}}*/
+
+  // ┌─────────────────────────────────────────────────────────────────────┐ -->
+  // │ SHOW HIDE                                                           │ -->
+  // └─────────────────────────────────────────────────────────────────────┘ -->
+/*➔ form_div_onclick .. (user feedback html page .. onclick) {{{*/
+let form_div_onclick = function(event) /* eslint-disable-line complexity */
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("form_div_onclick");
+//}}}
+//{{{
+if(log_this) console.log("form_div_onclick");
+if(log_this) console.dir(event);
+if(log_this) console.log("srcElement=["+(event.srcElement.id ? event.srcElement.id : event.srcElement.type)+"]");
+if(log_this) console.log("....target=["+(event.target.id     ? event.target.id     : event.target.type    )+"]");
+//}}}
+    /* SHOW [form_div] {{{*/
+
+    form_div.style.display = "block";
+    /*}}}*/
+    /* [e_target] {{{*/
+    let e_target = event.target;
+
+//{{{
+if(log_this) console.log("form_div.parentElement"); // the attached to question
+if(log_this) console.dir( form_div.parentElement );
+if(log_this) console.log("e_target ["+e_target.className+"]");
+if(log_this) console.dir( e_target                          );
+//}}}
+    /*}}}*/
+    /* form_div INPUT {{{*/
+    if(_is_el_child_of_id(e_target, "form_div"))
+    {
+        // SYNC FORM [hidden] INPUT
+        /* QCM or feedback ➔ copy to FORM input value {{{*/
+        if( e_target.tagName == "INPUT")
+        {
+            /* save checkekd qcm radio into qcm_rank_input SUBMIT param*/
+            qcm_rank_input.value
+                = get_form_div_qcm_rank();
+
+            feedback_input.value
+                =    good_input.checked  ? FEEDBACK_GOOD
+                : correct_input.checked  ? FEEDBACK_CORRECT
+                :   wrong_input.checked  ? FEEDBACK_WRONG
+                :     bad_input.checked  ? FEEDBACK_BAD
+                :                          undefined;
+
+if(TAG_TREE) console.log("%c ➔ [QCM RANK "+qcm_rank_input.value+"] .. [feedback "+(feedback_input.value || "")+"]", "color:cyan;");
+
+            form_div_sync( event ); // QCM has been answered .. enable purge or submit
+        }
+        /*}}}*/
+        return;
+    }
+    /*}}}*/
+    /* HIDE .. (by removing from parentElement) {{{*/
+    let hiding
+        =  (!e_target.classList.contains( QUESTION ))
+        || (form_div.parentElement == e_target);
+//{{{
+if(log_this) console.log("hiding=["+hiding+"]");
+//}}}
+    if( hiding )
+    {
+        if( form_div.parentElement )
+            form_div.parentElement.removeChild( form_div );
+
+    }
+    /*}}}*/
+    /* SHOW .. (POPULATE DIALOG WITH TO-BE-SUBMITTED DATA) {{{*/
+    else {
+        /* FOCUS GUI WHEN DONE .. (after this function has ended) {{{*/
+        setTimeout(() => {
+            comment_input.focus();
+            comment_input.selectionEnd   = comment_input.value.length;
+            comment_input.selectionStart = 0; }, 0);
+
+        /*}}}*/
+        /* LOAD PARAMS AND INSERT FORM INTO DOM {{{*/
+        let user_feedback = get_user_feedback_from_el_attributes(event.target);
+if(log_this) console.log("user_feedback:");
+if(log_this) console.dir( user_feedback  );
+
+        form_div_onclick_LOAD( user_feedback );
+
+        e_target.appendChild(form_div, e_target.lastElement);
+        /*}}}*/
+        // SYNC WITH (possibly changed) [lang] {{{*/
+        // .. that may have changed (while hiding i.e. when this form was removed from the DOM)
+        // search and sync its children elements
+        // once appended back into the DOM (where document can search for them)
+        if(typeof i18n_translate != "undefined")
+        {
+            let el_array
+                =   Array.from( document.querySelectorAll    ("#form_div ."+I18N    ) )
+//{{{
+// TRANSLATE MORE ?
+//              .concat(Array.from( form_div.getElementsByTagName("LABEL"               ) ))
+//              .concat(Array.from( document.querySelectorAll    ("#form_div ."+SUBJECT ) ))
+//              .concat(Array.from( document.querySelectorAll    ("#form_div ."+QUESTION) ))
+//}}}
+        ;
+//{{{
+if(log_this) console.log("form_div .. el_array.length=["+el_array.length+"]");
+//}}}
+            if(el_array.length)
+                i18n_translate.sync_i18n_elements( el_array );
+        }
+        /*}}}*/
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ form_div_onclick_LOAD {{{*/
+let form_div_onclick_LOAD = function(user_feedback) /* eslint-disable-line no-unused-vars */ /* eslint-disable-line complexity */
+{
+/*{{{*/
+let log_this=false;
+
+    let { comment
+        , feedback
+        , qcm
+        , qcm_rank
+        , qid
+        , question
+        , subject
+    } = user_feedback;
+
+if(log_this) console.log("%c form_div_onclick_LOAD: ["+subject+"] .. ["+question+"])", "border: 3px solid green;");
+if(log_this) console.dir(user_feedback);
+/*}}}*/
+    /* REOPENING SAME ENTRY {{{*/
+    if(    (subject_input .value == subject )
+        && (question_input.value == question)
+      ) {
+if(TAG_TREE) console.log("..REOPENING ["+ question_input.value +"] QUESTION");
+
+        return;
+    }
+    /*}}}*/
+    /* RESET ALL FORM-INPUT  {{{*/
+    form_div_onclick_LOAD_RESET();
+
+    if(!subject || !question) return;
+
+    /*}}}*/
+    /* LOAD FORM-INPUT ➔ [subject question question_id comment] {{{*/
+
+    /**/     subject_input.value =                  subject  ? subject  : "";
+    /**/    question_input.value =                  question ? question : "";
+    /**/ question_id_input.value = !isNaN( parseInt(qid   )) ? qid      : "";
+    /**/     comment_input.value =                 (comment || "");
+
+
+if(TAG_TREE) console.log("....OPENING ["+ question_input.value +"] QUESTION");
+    /*}}}*/
+    /* [qcm_rank_input] .. POPULATE OR HIDE {{{*/
+    let have_qcm = (qcm && (qcm.length > 0));
+    if( have_qcm )
+    {
+        let innerHTML   = "";
+        for(let i=0;  i < qcm.length; ++i)
+        {
+            let id      = "qcm"+i;
+            let label   = qcm[i];
+
+            let checked = (    !isNaN( parseInt(qcm_rank) )
+                           &&  (  i ==          qcm_rank  ))
+                           ? "checked" : "" ;
+
+            let className
+                =         I18N
+                +         ((label.startsWith("*")) ? " sanitized" : "");
+
+            innerHTML  += `
+  <input  id="${id}" type="radio" name="qcm" value="${label}" ${checked}/>`
++`<label for="${id}" class="${className}">${label}</label>`;
+        }
+        qcm_panel.innerHTML     = innerHTML;
+        qcm_panel.style.display = "block";
+        qcm_rank_input.value    = qcm_rank;
+    }
+    else {
+        qcm_panel.style.display      = "none";
+
+        qcm_panel.innerHTML          = ""; /* clear any current input */
+    }
+    /*}}}*/
+    /* [feedback_input] .. HIDE OR POPULATE {{{*/
+    if( have_qcm )
+    {
+        feedback_panel.style.display = "none";
+    }
+    else {
+        feedback_panel.style.display = "block";
+
+        /**/     good_input.checked = feedback ? (feedback == FEEDBACK_GOOD   ) : false;
+        /**/  correct_input.checked = feedback ? (feedback == FEEDBACK_CORRECT) : false;
+        /**/    wrong_input.checked = feedback ? (feedback == FEEDBACK_WRONG  ) : false;
+        /**/      bad_input.checked = feedback ? (feedback == FEEDBACK_BAD    ) : false;
+    }
+    /*}}}*/
+    /* [comment_input] .. COLORIZE EARLIER LOADED FEEDBACK-LEVEL {{{*/ // TODO: cope with qcm_rank
+    comment_input  .value
+        = comment_input.value
+        . replace ( /''/gm , "'"  ) /* SINGLE_QUOTE(x2) ➔ (x1) */
+        . replace ( /""/gm , '"'  ) /* DOUBLE_QUOTE(x2) ➔ (x1) */ /* eslint-disable-line quotes */
+        . replace (/\\r/gm , ""   ) /* CR */
+        . replace (/\\n/gm , "\n" ) /* LF */
+    ;
+
+    let has_comment = (comment);
+
+    comment_input.style.backgroundColor
+        = has_comment
+        ?  "rgba(255,255,192,0.5)"
+        :  "";
+
+    comment_monitor();
+    /*}}}*/
+    /* [status_panel] {{{*/
+    if( status_panel )
+    {
+        status_panel.style.display  = "block";
+
+        let innerHTML = "";
+
+        if( user_feedback )
+        {
+
+if(log_this) console.log("KEYS:" );
+if(log_this) console.log( Object.keys  ( user_feedback ) );
+
+if(log_this) console.log("VALUES:" );
+if(log_this) console.log( Object.values( user_feedback ) );
+
+            Object.keys(user_feedback) .forEach((k) =>   { innerHTML += "<li>"    +k+"=["+String(user_feedback[k]).replace(/\n/g,"<br>XXX")+"]</li>\n"     ; });
+
+            if(innerHTML.length) innerHTML = "<ul>\n"+innerHTML+"</ul>";
+        }
+        else {
+            innerHTML =
+                "No user_feedback for:"
+                +"  SUBJECT ["+subject+"]"
+                +" QUESTION ["+question+"]";
+
+        }
+
+        if( innerHTML.length)
+            innerHTML += "<br>➔ <small><i>STATUS_PANEL IS ONLY DISPLAYED IN A PAGE WITH A <sup>_dev</sup> URL</i></small>";
+
+        status_panel.innerHTML = innerHTML;
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ form_div_onclick_LOAD_RESET {{{*/
+let form_div_onclick_LOAD_RESET = function()
+{
+    submit       .classList.add   ("disabled"   );  submit.disabled = true;
+    purge        .classList.add   ("disabled"   );  purge .disabled = true;
+
+    /**/    good_input.checked   =  false;
+    /**/ correct_input.checked   =  false;
+    /**/   wrong_input.checked   =  false;
+    /**/     bad_input.checked   =  false;
+
+    comment_input.classList.remove("mandatory"  );
+    comment_input.classList.remove("min_reached");
+};
+/*}}}*/
+/*_ get_form_div {{{*/
+let get_form_div = function(user_id,lang)
+{
+    /* FORM PANELS [form_div qcm feedback qcm] {{{*/
+    form_div                = document.getElementById( "form_div"       );
+    /**/    feedback_panel  = document.getElementById( FEEDBACK_PANEL   );
+    /**/         qcm_panel  = document.getElementById( QCM_PANEL        );
+    /**/      status_panel  = document.location.href.includes("dev")
+    /**/                    ? document.getElementById( STATUS_PANEL     )
+    /**/                    : null;
+
+    form_div.addEventListener("submit", form_div_submit_handler        );
+    /*}}}*/
+    /* SESSION HIDDEN INPUT [user_id lang] {{{*/
+    user_id_input           = document.getElementById( "user_id"        );
+    lang_input              = document.getElementById( "lang"           );
+
+    user_id_input.value     = user_id;
+    lang_input   .value     = lang   ;
+
+    /*}}}*/
+    /* SUBMIT BUTTONS [submit] [purge] {{{*/
+    submit                  = document.getElementById( "button_submit"  );
+    purge                   = document.getElementById( "button_purge"   );
+
+    /*}}}*/
+    /* USER INPUT FIELDS [subject question qcm feedback comment] {{{*/
+    /**/      subject_input = document.getElementById( SUBJECT          );
+    /**/     question_input = document.getElementById( QUESTION         );
+    /**/  question_id_input = document.getElementById( QUESTION_ID      );
+
+    /**/     qcm_rank_input = document.getElementById( QCM_RANK         );
+
+    /**/     feedback_input = document.getElementById( FEEDBACK         );
+    /**/         good_input = document.getElementById( FEEDBACK_GOOD    );
+    /**/      correct_input = document.getElementById( FEEDBACK_CORRECT );
+    /**/        wrong_input = document.getElementById( FEEDBACK_WRONG   );
+    /**/          bad_input = document.getElementById( FEEDBACK_BAD     );
+
+
+    /**/      comment_input = document.getElementById( COMMENT          );
+    /*}}}*/
+};
+/*}}}*/
+/*_ get_form_div_qcm_rank {{{*/
+let get_form_div_qcm_rank = function()
+{
+    let qcm_rank;
+
+    let qcm_input_array
+        = qcm_panel.querySelectorAll("INPUT");
+
+    for(let i=0; i < qcm_input_array.length; ++i)
+    {
+        if( qcm_input_array[i].checked )
+        {
+            qcm_rank = i;
+
+            break;
+        }
+    }
+
+    return qcm_rank;
+};
+/*}}}*/
+/*  _is_el_child_of_id {{{*/
+let _is_el_child_of_id = function(el, id)
+{
+    while(el && (el.id != id) && (el = el.parentElement)) // eslint-disable-line no-param-reassign
+        ;
+    return (el != null);
+};
+/*}}}*/
+/*  _get_cookie {{{*/
+let _get_cookie = function(key)
+{
+    let    value = "";
+    let  cookies = document.cookie.split(";");
+    let param_EQ = key+"=";
+    for(let i=0; i < cookies.length; ++i)
+    {
+        let s = cookies[i].trim();
+        if( s.indexOf(param_EQ) == 0)
+        {
+            value = s.substring(param_EQ.length, s.length)
+                .     replace(/'/g,"")
+                .     replace(/"/g,"");
+            break;
+        }
+    }
+//console.log("_get_cookie("+key+") ...return ["+value+"]");
+    return value;
+};
+/*}}}*/
+
+  // ┌─────────────────────────────────────────────────────────────────────┐ -->
+  // │ SUBMIT                                                              │ -->
+  // └─────────────────────────────────────────────────────────────────────┘ -->
+/*_ form_div_submit_handler {{{*/
+let form_div_submit_handler = function(event) /* eslint-disable-line complexity */
+{
+/*{{{*/
+let log_this=false;
+
+if(log_this) console.log("%c form_div_submit_handler", "border: 1px solid cyan;");
+/*}}}*/
+/*{{{*/
+//console.dir(event);
+//
+//console.log("event.srcElement:")
+//console.dir( event.srcElement  )
+//
+//console.log("event.submitter:")
+//console.dir( event.submitter  )
+//
+//console.log("event.submitter.formAction...=["+event.submitter.formAction+"]")
+//console.log("event.submitter.formTarget...=["+event.submitter.formTarget+"]")
+//
+//console.log("form_div")
+//console.dir( form_div )
+//
+//console.log("form_div.parentElement")
+//console.dir( form_div.parentElement )
+/*}}}*/
+
+    /* COLLECT OR CLEAR FORM PARAMS TO SUBMIT {{{*/
+    let action
+        = event.submitter.formAction.includes("submit")
+        ?  "submit"
+        :  "purge";
+
+    if(action == "purge")
+    {
+        qcm_rank_input.value = "-1";
+        feedback_input.value = "";
+        comment_input .value = "";
+    }
+    /*}}}*/
+    /* FORMAT USER TEXT {{{*/
+    comment_input
+        .value =     comment_input.value
+        .  replace(/’/gm     , "''") // RIGHT_QUOTE ➔ APOS (x2)
+        .  replace(/\s\s+$/gm, "\n") // no-multiple-empty-lines
+        .  trim();
+
+if(log_this) console.log("%c form_div_submit_handler:\n"
+                         + " -      action=["+ action      +"]\n"
+                         + " -     subject_input.value=["+     subject_input.value +"]\n"
+                         + " -    question_input.value=["+    question_input.value +"]\n"
+                         + " - question_id_input.value=["+ question_id_input.value +"]\n"
+                         + " -    qcm_rank_input.value=["+    qcm_rank_input.value +"]\n"
+                         + " -    feedback_input.value=["+    feedback_input.value +"]\n"
+                         + " -     comment_input.value=["+     comment_input.value +"]\n"
+                         , "color:cyan;");
+
+    /*}}}*/
+
+    /* SERVER-DATA .. SUBMIT [dialog_form] {{{*/
+
+//  let form = event.srcElement;
+    let form = document.forms.dialog_form;
+//{{{
+//console.log("form:"       )
+//console.dir( form         )
+//console.log("form.submit:")
+//console.dir( form.submit  )
+//}}}
+
+    /* RESPONSE GUI TARGET */
+    form.target = "response_iframe";
+//{{{
+//console.log("%c comment=["+comment+"]", "color:orange;")
+//console.log("form.target.submit():")
+//console.dir( form.target  )
+//}}}
+
+if(TAG_TREE) console.log("FORM SUBMIT");
+    form.submit();
+    /*}}}*/
+    /* CLIENT-DATA .. UPDATE LOCALLY .. f(submit) {{{*/
+    for(let i=0; i < feedback_replies_array.length; ++i)
+    {
+        /* reach subject question feedback_reply {{{*/
+        let            feedback_reply = feedback_replies_array[i];
+
+        if(subject_input .value != feedback_reply.subject ) continue;
+        if(question_input.value != feedback_reply.question) continue;
+
+        /*}}}*/
+        /* purge  feedback_reply {{{*/
+        if(action == "purge")
+        {
+//{{{
+//console.log("..."+action+": splice("+i+",1) feedback_replies_array.feedback_reply #"+i+"")
+//}}}
+            feedback_replies_array.splice(i,1);
+        }
+        /*}}}*/
+        /* submit feedback_reply {{{*/
+        else {
+//{{{
+//console.log("..."+action+": updating feedback_replies_array.item #"+i+"")
+//}}}
+            feedback_reply.feedback = feedback_input.value; // good correct wrong bad
+            feedback_reply.qcm_rank = qcm_rank_input.value; // [qcm_rank]
+            feedback_reply.comment  =  comment_input.value ; // comment
+        }
+        /*}}}*/
+        break;
+    }
+    /*}}}*/
+
+    /* CLIENT FORM RESET .. f(purge) {{{*/
+    if(action == "purge")
+    {
+//{{{
+//console.log("..."+action+": RESETTING form_div")
+//}}}
+
+        /* FEEDBACK DATA */
+        /**/    good_input.checked = false;
+        /**/ correct_input.checked = false;
+        /**/   wrong_input.checked = false;
+        /**/     bad_input.checked = false;
+
+        /**/ comment_input.value   = "";
+
+        /* FEEDBACK UI */
+        submit .classList.add("disabled"); submit.disabled = true;
+        purge  .classList.add("disabled"); purge .disabled = true;
+
+        comment_input.style.backgroundColor = "";
+    }
+    /*}}}*/
+    /* HIDE FORM DIV {{{*/
+    if(typeof feedback_replies_array != "undefined")
+    {
+        setTimeout(function() {
+            if( form_div.parentElement )
+                form_div.parentElement.removeChild( form_div );
+        }, (action == "purge") ? 200 : THANK_YOU_ACK_MS);
+
+    }
+    /*}}}*/
+    /* SYNC [feedback value] {{{*/
+    form_div_submit_handler_sync_GUI(action, subject_input.value, question_input.value, qcm_rank_input.value, feedback_input.value);
+
+    /*}}}*/
+
+//{{{
+//console.log("feedback_replies_array")
+//console.dir( feedback_replies_array )
+//}}}
+    //document.location.reload();
+    /* RELOAD GUI */
+//  setTimeout(populate_GUI, 1000);
+};
+/*}}}*/
+/*_ form_div_submit_handler_sync_GUI {{{*/
+let form_div_submit_handler_sync_GUI = function(_action, _subject, _question, _qcm_rank, _feedback)
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("%c form_div_submit_handler_sync_GUI(_action=["+_action+"] _subject=["+_subject+"]  _question=["+_question+"]  _qcm_rank=["+_qcm_rank+"]  _feedback=["+_feedback+"]", "background-color:navy;");
+//}}}
+
+    let feedback = (_action == "purge") ? "" : _feedback;
+    let qcm_rank = (_action == "purge") ? "" : _qcm_rank;
+//console.log("feedback=["+feedback+"]")
+//console.log("qcm_rank=["+qcm_rank+"]")
+
+    let el_array = Array.from( document.querySelectorAll(".question") );
+//{{{
+//console.log("el_array querySelectorAll(form_div .question):")
+//console.dir( el_array )
+//}}}
+
+    _subject  = _subject .replace(regexp_NOWRD, " ");
+    _question = _question.replace(regexp_NOWRD, " ");
+
+    for(let i = 0; i < el_array.length; ++i)
+    {
+        /* ACCESS EACH question.GUI {{{*/
+        let el = el_array[i];
+//{{{
+//console.log("el")
+//console.dir( el )
+//}}}
+
+        /*}}}*/
+        /* FIND MATCHING {subject , question} from el dataSet attribute {{{*/
+        let data_topic          = el.getAttribute("data-topic");
+        let {subject, question} = JSON.parse( data_topic );
+//{{{
+if(log_this) console.log("form_div_submit_handler_sync_GUI: ➔ data_topic=["+data_topic+"]");
+if(log_this) console.log("subject=["+subject+"] .. question=["+question+"]");
+//}}}
+        if(_subject  != subject .replace(regexp_NOWRD, " ")) continue;
+        if(_question != question.replace(regexp_NOWRD, " ")) continue;
+
+        /*}}}*/
+        /* SYNC  question.GUI CSS .. f(qcm_rank LEVEL) .. f(feedback LEVEL) {{{*/
+        let className = get_qcm_className(qcm_rank, feedback, el.untransltated_textContent);
+        el .className = className;
+
+if(TAG_TREE) console.log("["+className+"] ➔ "+el.untransltated_textContent);
+        /*}}}*/
+    }
+};
+/*}}}*/
+
+  // ┌─────────────────────────────────────────────────────────────────────┐ -->
+  // │ EVENT                                                               │ -->
+  // └─────────────────────────────────────────────────────────────────────┘ -->
+/*➔ comment_monitor {{{*/
+/*{{{*/
+const LF = String.fromCharCode(10); /* eslint-disable-line no-unused-vars */
+
+let ta_status;
+/*}}}*/
+let comment_monitor = function(event)
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.clear();
+if(log_this) console.log("comment_monitor("+(event ? event.type : "")+")");
+//}}}
+
+    if(!comment_input) return;
+
+    // ENTER ➔ SUBMIT FORM (see I18N/i18n_populate.js)
+    /* [ta_status] {{{*/
+    if(!ta_status)
+        ta_status = document.getElementById("ta_status");
+
+    if(!ta_status) {
+        ta_status    = document.createElement("EM");
+        ta_status.id = "ta_status";
+        comment_input.parentElement.appendChild(ta_status);
+    }
+    /*}}}*/
+    /* UPDATE {{{*/
+    if( event )
+    {
+        /* validation params {{{*/
+        let warn_length =  comment_input.maxLength - 32;
+        let min_reached = (comment_input.value.length >= comment_input.minLength);
+        let max_reached = (comment_input.value.length >= comment_input.maxLength);
+        let red_reached = (comment_input.value.length >= warn_length            );
+
+        let count_down  = (comment_input.minLength+" < "+comment_input.value.length +" < "+comment_input.maxLength);
+
+        let available
+            = (red_reached && !max_reached)
+            ?  "oooooooooooooooooooooooooooooooo".substring(0,comment_input.maxLength - comment_input.value.length)
+            :  "";
+
+        /*}}}*/
+        /* validation status {{{*/
+        ta_status.innerText
+            = count_down +" "+ available;
+
+if(log_this) {
+    console.log("...minLength= ["+ comment_input.minLength +"]");
+    console.log("...maxLength= ["+ comment_input.maxLength +"]");
+    console.log("warn_length = ["+ warn_length             +"]");
+    console.log("min_reached = ["+ min_reached             +"]");
+    console.log("red_reached = ["+ red_reached             +"]");
+    console.log(".count_down = ["+ count_down              +"]");
+    console.log("..available = ["+ available               +"]");
+    console.log( ta_status.innerText );
+}
+
+        ta_status.style.color
+            = !min_reached ?    "red"
+            :  max_reached ? "yellow"
+            :  red_reached ?    "red"
+            :                  "gray";
+
+        ta_status.style.backgroundColor
+            =  max_reached ?    "red"
+            :           "transparent";
+
+        /*}}}*/
+    }
+    /*}}}*/
+    /* OR RESET {{{*/
+    else {
+if(log_this) console.log("NOT A USER-EVENT ➔ RESETTING COMMENT");
+
+//      comment_input.value = "";
+        comment_input.classList.remove("mandatory"  );
+        comment_input.classList.remove("min_reached");
+
+        if(ta_status) ta_status.innerText = "";
+    }
+    /*}}}*/
+    form_div_sync(); // f(need_comment min_reached) .. enable purge or submit
+};
+/*}}}*/
+/*➔ form_div_sync .. (disable submit purge) .. (comment mandatory min_reached) {{{*/
+let form_div_sync = function(/*event*/) /* eslint-disable-line complexity */
+{
+//{{{
+let log_this=false;
+
+if(log_this) console.log("form_div_sync");
+//}}}
+
+    if(!submit) return; // TOO EARLY
+
+    // RESET FORM and return .. (!event) .. @see ../CLIENT/feedback_tree.js
+    /* [need_comment] {{{*/
+    let need_comment = (wrong_input.checked || bad_input.checked);
+
+    if( need_comment )  comment_input.minLength =  24;
+    else                comment_input.minLength =   0;
+    /*}}}*/
+    /* BLINK GUI .. f((some_checked required) {{{*/
+    let qcm_rank_checked
+        = (get_form_div_qcm_rank() != undefined);
+
+    let some_checked
+        =   wrong_input.checked ? "wrong"
+        :     bad_input.checked ? "bad"
+        :    good_input.checked ? "good"
+        : correct_input.checked ? "correct"
+        :      qcm_rank_checked ? "qcm_rank"
+        :                         ""
+    ;
+
+if(log_this) console.log("...need_comment=["+need_comment+"]");
+if(log_this) console.log("...some_checked=["+some_checked+"]");
+
+    if(!some_checked) {
+        /**/    good_input.classList.add("blink"); setTimeout(() => {    good_input.classList.remove("blink"); }, 300);
+        /**/ correct_input.classList.add("blink"); setTimeout(() => { correct_input.classList.remove("blink"); }, 400);
+        /**/   wrong_input.classList.add("blink"); setTimeout(() => {   wrong_input.classList.remove("blink"); }, 500);
+        /**/     bad_input.classList.add("blink"); setTimeout(() => {     bad_input.classList.remove("blink"); }, 600);
+    }
+    /*}}}*/
+    /* [min_reached] .. [can_submit] {{{*/
+    let min_reached  = (comment_input.value.length >= comment_input.minLength);
+
+    let can_submit   =  some_checked && (!need_comment || min_reached);
+    let can_purge    =  some_checked                                  ;
+
+if(log_this) console.log(".....can_submit=["+ can_submit +"]");
+if(log_this) console.log("......can_purge=["+ can_purge  +"]");
+    /*}}}*/
+    /* [submit] [purge] ... [  disable .. enable   ] {{{*/
+    if(can_submit)      { submit.classList.remove ("disabled");  submit.disabled = false; }
+    else                { submit.classList.add    ("disabled");  submit.disabled =  true; }
+
+    if(can_purge )      { purge .classList.remove ("disabled");  purge .disabled = false; }
+    else                { purge .classList.add    ("disabled");  purge .disabled =  true; }
+    /*}}}*/
+    /* [comment_input] .. [mandatory .. minLength] {{{*/
+    if(need_comment)    comment_input.classList.add   ("mandatory"  );
+    else                comment_input.classList.remove("mandatory"  );
+
+    if(min_reached )    comment_input.classList.add   ("min_reached");
+    else                comment_input.classList.remove("min_reached");
+
+    /*}}}*/
+};
+/*}}}*/
+
+    return { populate_GUI  // (called onload)
+        ,    form_div_onclick
+        ,    comment_monitor
+        ,    form_div_sync
+        // DEBUG ONLY
+        ,  populate_get_feedback_items_array
+        ,  get_form_div_qcm_rank
+    };
+})();
+
+setTimeout( feedback_tree.populate_GUI, 500); /* onload */
+
+</pre> <!--}}}-->
+</details>
+<!--}}}-->
+<!-- details {{{-->
+<!--
+}:r javascript/dom_details.js
+:/^<pre> *<!--{{{-->/++,/^<\/pre> *<!--}}}-->/-d
+-->
+<details id="dom_details"   class="folded_code"><summary> <H1><B>dom_details</B></H1> </summary>
+<hr>
+<pre> <!--{{{-->
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ DETAILS                                                                  │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* eslint-disable no-redeclare */
+/* globals document            */
+/* globals setTimeout          */
+/* globals localStorage        */
+/* globals dom_log             */
+/* globals dom_util            */
+/* eslint-enable  no-redeclare */
+
+/* exported dom_details        */
+/* exported DOM_DETAILS_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+
+const DOM_DETAILS_JS_ID        = "dom_details_js";
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (210922:20h:06)";  /* eslint-disable-line no-unused-vars */
+/*}}}*/
+let dom_details = (function() {
+"use strict";
+let   DOM_DETAILS_LOG          = false;
+let   DOM_DETAILS_TAG          = false;
+/* IMPORT */
+/*{{{*/
+/* eslint-disable no-unused-vars */
+/*➔ t_details_IMPORT {{{*/
+/*{{{*/
+let t_log      = {}        ;    /* 06 */
+let t_util     = {}        ;    /* 07 */
+/*}}}*/
+let t_details_IMPORT  = function(log_this)
+{
+/* LOAD {{{*/
+    t_log     = dom_log    ;    /* 06 */
+    t_util    = dom_util   ;    /* 07 */
+/*}}}*/
+    util_INTERN();
+    /* MODULE LOGGING TAGGING {{{*/
+    DOM_DETAILS_LOG = DOM_DETAILS_LOG || localStorage_getItem("DOM_DETAILS_LOG");
+    DOM_DETAILS_TAG = DOM_DETAILS_TAG || localStorage_getItem("DOM_DETAILS_TAG");
+
+    /*}}}*/
+if(log_this) log("%c 07 util", lbH+lf7);
+};
+/*}}}*/
+/*_   util_INTERN {{{*/
+/* t_log {{{*/
+let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
+let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
+let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
+let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
+
+/*}}}*/
+/* t_util {{{*/
+let add_el_class;
+let del_el_class;
+let get_el_child_with_tag;
+let get_el_sibling_with_tag;
+let get_id_or_tag;
+let get_id_or_tag_and_className;
+let get_nodeXPath;
+let has_el_class;
+let is_el_or_child_of_parent_el;
+
+/*}}}*/
+let   util_INTERN = function()
+{
+    /* t_log {{{*/
+
+    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                               ] = t_log.LOG_BG_ARR;
+    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                         ] = t_log.LOG_XX_ARR;
+    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                               ] = t_log.LOG_FG_ARR;
+
+    log                         = t_log.log;
+    logBIG                      = t_log.logBIG;
+    logXXX                      = t_log.logXXX;
+    log_caller                  = t_log.log_caller;
+    log_json_one_liner          = t_log.log_json_one_liner;
+    log_key_val                 = t_log.log_key_val;
+    log_key_val_group           = t_log.log_key_val_group;
+
+    /*}}}*/
+    /* t_util {{{*/
+    add_el_class                = t_util.add_el_class;
+    del_el_class                = t_util.del_el_class;
+    get_el_child_with_tag       = t_util.get_el_child_with_tag;
+    get_el_sibling_with_tag     = t_util.get_el_sibling_with_tag;
+    get_id_or_tag               = t_util.get_id_or_tag;
+    get_id_or_tag_and_className = t_util.get_id_or_tag_and_className;
+    get_nodeXPath               = t_util.get_nodeXPath;
+    has_el_class                = t_util.has_el_class;
+    is_el_or_child_of_parent_el = t_util.is_el_or_child_of_parent_el;
+
+    /*}}}*/
+};
+/*}}}*/
+/* eslint-enable no-unused-vars */
+/*}}}*/
+
+/*➔ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); }; /* eslint-disable-line no-unused-vars */
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    );                                    }; /* eslint-disable-line no-unused-vars */
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    );                                    }; /* eslint-disable-line no-unused-vars */
+/*}}}*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ ➔ ONLOAD RESTORE SAVED DETAILS OPEN STATE                                │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+ /*➔ details_load_open_state {{{*/
+let  details_load_open_state = function(container=document)
+{
+/*{{{*/
+let caller = "details_load_open_state";
+
+if(DOM_DETAILS_LOG) logBIG(caller, 8);
+/*}}}*/
+    /* ➔ RESTORE ONLOAD [open] STATE .. f(localStorage) {{{*/
+    let        details_array = container.querySelectorAll("DETAILS");
+
+    Array.from(details_array).forEach( (el) => {
+        let open = (el.id) && localStorage_getItem(el.id+"_open");
+        if( open ) {
+            el.open = true;
+if(DOM_DETAILS_LOG) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
+        }
+    });
+    /*}}}*/
+    /* 1. LISTEN TOGGLE DETAILS OPEN STATE {{{*/
+    Array.from(details_array).forEach( (el) => {
+        if(!el.id) return;
+        el.addEventListener("toggle", details_ontoggle);
+    });
+    /*}}}*/
+    /* 2. DETAILS RADIO-BEHAVIOR {{{*/
+    details_radio_set_from_localStorage();
+
+    /*}}}*/
+    /* 3. OPEN LINKS HASH TARGETS DETAILS-CONTAINERS {{{*/
+    details_add_hash_link_onclick_listener();
+
+    /*}}}*/
+};
+/*}}}*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ 1. LISTEN TOGGLE DETAILS OPEN STATE       [localStorage details_id_open] │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/*_ details_ontoggle {{{*/
+let details_ontoggle = function(e)
+{
+if(details_ontoggle_listener_mutex) return;
+/*{{{*/
+let caller = "details_ontoggle";
+if(DOM_DETAILS_LOG) log(caller+"("+e.target.tagName+") .. open=["+e.target.open+"]");
+
+     let details_el = e.target;
+/*   if(!details_el ) return; .. why is this required ? */
+
+if(DOM_DETAILS_LOG) log("➔ details_el=["+(details_el.id || details_el.firstElementChild.textContent)+"] .. open=["+details_el.open+"]");
+/*}}}*/
+
+    if(details_el.id)
+    {
+        /*...................................*/ let key = details_el.id+"_open";
+        if( details_el.open ) localStorage_setItem( key , "true");
+        else                  localStorage_delItem( key         );
+
+        if( details_el.open ) details_ontoggle_apply_radio_behavior( details_el );
+        else                  details_ontoggle_close_children      ( details_el );
+    }
+};
+ /*}}}*/
+/*_ details_ontoggle_apply_radio_behavior {{{*/
+let details_ontoggle_apply_radio_behavior = function(details_el)
+{
+let caller = "details_ontoggle_apply_radio_behavior";
+    let details_radio  = localStorage_getItem( DETAILS_RADIO_ID );
+if(DOM_DETAILS_LOG || DOM_DETAILS_TAG) logBIG(caller+": details_radio=["+details_radio+"]", 4);
+
+    if(!details_radio ) return;
+
+    let parent = details_el.parentElement;
+    for(let i=0; i<parent.children.length; ++i)
+    {
+        /* skip target */
+        let sibling  = parent.children[i];
+        if( sibling == details_el) continue;
+
+        /* close sibling */
+        if((sibling.tagName == "DETAILS") && sibling.open)
+        {
+if(DOM_DETAILS_LOG) log("...close sibling=["+(sibling.id || sibling.firstElementChild.textContent)+"]");
+
+            sibling.open = false;
+            if(sibling.id)
+                localStorage_delItem(sibling.id+"_open");
+        }
+    }
+};
+/*}}}*/
+/*_ details_ontoggle_close_children {{{*/
+let details_ontoggle_close_children = function(parent_details)
+{
+/*{{{*/
+let caller = "details_ontoggle_close_children";
+if(DOM_DETAILS_LOG) logBIG(caller+"("+get_id_or_tag_and_className(parent_details)+") .. open=["+parent_details.open+"]", 2);
+
+/*}}}*/
+    let el_array
+        = Array.from( parent_details.querySelectorAll("DETAILS[open]") );
+
+    el_array.forEach( (child_details) =>
+                      {
+                          child_details.open = false;
+                          if(child_details.id)
+                          {
+                              let key = child_details.id+"_open";
+                              localStorage_delItem( key );
+                          }
+                      });
+};
+/*}}}*/
+/*_ prevent_details_ontoggle_listener {{{*/
+/*{{{*/
+const DETAILS_ONTOGGLE_LISTENER_DELAY = 500;
+let   details_ontoggle_listener_mutex;
+
+/*}}}*/
+let prevent_details_ontoggle_listener = function()
+{
+    /* sync .. (effective on call) */
+if(DOM_DETAILS_LOG) logBIG("prevent_details_ontoggle_listener",7);
+    details_ontoggle_listener_mutex   =  true;
+};
+/*}}}*/
+/*_ restore_details_ontoggle_listener {{{*/
+let restore_details_ontoggle_listener = function()
+{
+    /* async .. (effective on calling thread termination) */
+    setTimeout(function() {
+if(DOM_DETAILS_LOG) logBIG("restore_details_ontoggle_listener",6);
+            details_ontoggle_listener_mutex = false;
+        }
+        , DETAILS_ONTOGGLE_LISTENER_DELAY);
+};
+/*}}}*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ 2. DETAILS RADIO-BEHAVIOR                   [localStorage details_radio] │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/*{{{*/
+const DETAILS_RADIO_ID = "details_radio";
+
+/*}}}*/
+/*➔ details_radio_toggle {{{*/
+let details_radio_toggle = function(e)
+{
+if(DOM_DETAILS_LOG) log("details_radio_toggle("+e.target.tagName+")");
+
+    /* INPUT {{{*/
+    let { input , details_radio_el } = details_radio_get_input(e);
+
+    /*}}}*/
+    /* GET CURRENT STATE {{{*/
+    let state
+        = input
+        ? ((e.target != input) ? input.checked : !input.checked)
+        : has_el_class(details_radio_el, "selected");
+
+    /*}}}*/
+    /* TOGGLE STATE {{{*/
+    state = !state;
+
+    if( input && (!e || (input != e.target))) /* update if not the event initiator */
+        input.checked = state;
+
+    /*}}}*/
+    /* [TOGGLE details_radio_el.selected] {{{*/
+    if( details_radio_el )
+    {
+        if(state) add_el_class(details_radio_el, "selected"); /* state [false ➔  true] */
+        else      del_el_class(details_radio_el, "selected"); /* state [ true ➔ false] */
+    }
+
+    /*}}}*/
+    /* STORE !STATE {{{*/
+    if(state) localStorage_setItem(DETAILS_RADIO_ID,  "true");
+    else      localStorage_setItem(DETAILS_RADIO_ID,   null );
+
+    /*}}}*/
+/*{{{*/
+if(DOM_DETAILS_LOG || DOM_DETAILS_TAG)
+    log_key_val_group("details_radio_toggle: ...state=["+state+"]"
+        , { state
+          , input
+          , details_radio_el
+          , e
+          , e_target : (e ? e.target : "")
+        }
+        , (state ? lb4:lb8)
+        , false);
+/*}}}*/
+};
+/*}}}*/
+/*_ details_radio_set_from_localStorage {{{*/
+let details_radio_set_from_localStorage = function()
+{
+/*{{{*/
+if(DOM_DETAILS_LOG) log("details_radio_set_from_localStorage");
+
+/*}}}*/
+    /* UI [input] [details_radio_el] {{{*/
+    let { input , details_radio_el } = details_radio_get_input();
+
+    /*}}}*/
+    /* GET STORED STATE {{{*/
+    let state = localStorage_getItem( DETAILS_RADIO_ID );
+
+    /*}}}*/
+    /* SHOW STATE {{{*/
+    if( input ) {
+        input.checked = state;
+    }
+
+    if(state) add_el_class(input.parentElement, "selected");
+    else      del_el_class(input.parentElement, "selected");
+    /*}}}*/
+/*{{{*/
+if(DOM_DETAILS_LOG)
+    log_key_val_group("details_radio_set_from_localStorage: ...state=["+state+"]"
+        , { state
+          , input
+          , details_radio_el
+        }
+        , (state ? lb4:lb8)
+        , false);
+/*}}}*/
+};
+/*}}}*/
+/*_ details_radio_get_input {{{*/
+let details_radio_get_input = function(e)
+{
+/*{{{*/
+let caller = "details_radio_get_input";
+
+/*}}}*/
+    /* DETAILS_RADIO_ID .. f(event target) .. tools .. document {{{*/
+    let el
+        = (e)
+        ?  e.target
+        :  document.querySelector("#"+DETAILS_RADIO_ID);
+
+if(DOM_DETAILS_LOG) log(caller+": ["+DETAILS_RADIO_ID+"] ➔ el=["+get_id_or_tag(el)+"]");
+
+    /*}}}*/
+    /* [input] {{{*/
+    let input
+        =                                  ((el.tagName == "INPUT") && el)
+        || get_el_child_with_tag  ( el          , "INPUT")
+        || get_el_sibling_with_tag( el          , "INPUT");
+
+
+    /*}}}*/
+    /* [details_radio_el] {{{*/
+    let details_radio_el
+        = input
+        ? input.parentElement
+        : document.querySelector("#"+DETAILS_RADIO_ID);
+
+    if(!details_radio_el)
+        details_radio_el = document.getElementById( DETAILS_RADIO_ID );
+
+    /*}}}*/
+/*{{{*/
+if(DOM_DETAILS_LOG)
+    log_key_val_group(caller+": ...return ["+(input ? input.tagName : "")+"]"
+        , { e
+          , e_target         : (e ? e.target : "")
+          , el
+          , details_radio_el : get_nodeXPath( details_radio_el )+" ["+get_id_or_tag( details_radio_el )+"]"
+          , input            : get_nodeXPath( input            )+" ["+get_id_or_tag( input            )+"]"
+        }
+        , 4
+        , true);
+/*}}}*/
+    return { input , details_radio_el };
+};
+/*}}}*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ 3. OPEN LINKS HASH TARGETS DETAILS-CONTAINERS     ➔ [put target in view] │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/*➔ details_has_closed_el_parent {{{*/
+let details_has_closed_el_parent = function(el)
+{
+    let   details_el = el.parentElement;
+    while(details_el)
+    {
+        if(details_el.nodeName == "DETAILS")
+        {
+/*
+            let el_in_a_visible_summary
+                =    ( el.nodeName        == "SUMMARY")
+                ||   ( el.parentElement   == details_el);
+*/
+            /* a details summary is still visible when closed */
+            let details_el_summary
+                = details_el.firstElementChild;
+
+            let el_in_a_visible_summary
+                = is_el_or_child_of_parent_el(el, details_el_summary);
+
+            if(       !details_el.open
+                   && !el_in_a_visible_summary
+              )
+                return true;
+        }
+        details_el   = details_el.parentElement;
+    }
+    return false;
+};
+/*}}}*/
+/*➔ details_open_closed_el_parent {{{*/
+let details_open_closed_el_parent = function(el)
+{
+
+    let   details_el = el.parentElement;
+    while(details_el)
+    {
+        if(details_el.nodeName == "DETAILS")
+        {
+            if(!details_el.open)
+            {
+if(DOM_DETAILS_LOG) logBIG("details_open_closed_el_parent("+get_id_or_tag_and_className(el)+") ➔ open details_el "+get_nodeXPath(details_el));
+
+                details_el.open = true;
+            }
+        }
+        details_el   = details_el.parentElement;
+    }
+    el.open = true;
+};
+/*}}}*/
+/*_ details_add_hash_link_onclick_listener {{{*/
+let details_add_hash_link_onclick_listener = function(el=document)
+{
+/*{{{*/
+let caller = "details_add_hash_link_onclick_listener";
+
+if(DOM_DETAILS_LOG) log(caller+"(el "+t_util.get_id_or_tag_and_className(el)+")");
+/*}}}*/
+    /* [details_hash_link_onclick] {{{*/
+    let           details_hash_links = document.querySelectorAll("A[href^='#']");
+    Array.from(   details_hash_links)
+        .forEach((details_hash_link ) => {
+            /**/  details_hash_link.addEventListener("click", details_hash_link_onclick);
+        });
+    /*}}}*/
+if(DOM_DETAILS_LOG || DOM_DETAILS_TAG) logBIG(caller+": "+details_hash_links.length+" details_hash_links", 7);
+};
+/*}}}*/
+/*_ details_hash_link_onclick {{{*/
+let details_hash_link_onclick = function(e)
+{
+let caller = "details_hash_link_onclick";
+
+    let        link = e.target;
+    if(              !link.hash) return;
+
+    let  name_or_id = link.hash.substr(1);
+    let   id_target = document.getElementById(          name_or_id     );
+    let name_target = document.querySelector ( "[name="+name_or_id+"]" );
+    let link_target = id_target || name_target;
+
+if(DOM_DETAILS_LOG)
+    log_key_val(caller
+                , {  name_or_id
+                   , id_target
+                   , name_target
+                   , link_target
+                });
+if(DOM_DETAILS_LOG) log("%c"+caller+" %c"+name_or_id+"%c➔%c"+get_nodeXPath(link_target), lbH+lf3, lbH, lbL+lf4, lbR+lf5);
+
+
+    if( link_target )
+        details_open_closed_el_parent( link_target );
+
+};
+/*}}}*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ ➔ OPEN-CLOSE ALL DETAILS CONTAINERS                                      │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/*➔ details_close_opened {{{*/
+let details_close_opened = function()
+{
+    prevent_details_ontoggle_listener();
+    let       el_array = Array.from( document.querySelectorAll("DETAILS[open]") );
+    if(       !el_array.length) {
+if(DOM_DETAILS_LOG) log("FOUND NO OPENED DETAILS TO CLOSE");
+        return;
+    }
+if(DOM_DETAILS_LOG) log("CLOSING "+el_array.length+" OPENED DETAILS");
+
+/*{{{
+    for(let i=el_array.length-1; i>=0; --i)
+        el_array[i].open = false;
+}}}*/
+    el_array.forEach( (el) => { el.open = false; });
+
+    setTimeout(restore_details_ontoggle_listener, 0);
+};
+/*}}}*/
+/*➔ details_open_closed {{{*/
+let details_open_closed = function()
+{
+    prevent_details_ontoggle_listener();
+    let       el_array = Array.from( document.querySelectorAll("DETAILS:not([open])") );
+    if(       !el_array.length) {
+if(DOM_DETAILS_LOG) log("FOUND NO OPENED DETAILS TO OPEN");
+        return;
+    }
+if(DOM_DETAILS_LOG) log("OPENING "+el_array.length+" CLOSED DETAILS");
+
+/*{{{
+    for(let i=el_array.length-1; i>=0; --i)
+        el_array[i].open = true;
+}}}*/
+    el_array.forEach( (el) => { el.open =  true; });
+
+    setTimeout(restore_details_ontoggle_listener, 0);
+};
+/*}}}*/
+
+
+/* EXPORT */
+/*{{{*/
+/*_ t_details_set_state {{{*/
+let t_details_set_state = function(label,state)
+{
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
+
+return { name    : "dom_details"
+    ,    logging : (state) => { DOM_DETAILS_LOG = dom_details.t_details_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
+    ,    tagging : (state) => { DOM_DETAILS_TAG = dom_details.t_details_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
+    ,    t_details_IMPORT
+    ,    t_details_set_state
+
+    /*   --------------------------------- CALLERS:       */
+
+    ,    details_load_open_state        /* TOGGLE-EVENT   */
+    ,    details_radio_toggle           /* RADIO-BEHAVIOR */
+
+    ,    details_has_closed_el_parent   /* dom_seek       */
+    ,    details_open_closed_el_parent  /* dom_seek       */
+
+    ,    details_close_opened           /* HTML TOOL      */
+    ,    details_open_closed            /* HTML TOOL      */
+
+};
+/*}}}*/
+
+}());
+
+</pre> <!--}}}-->
+</details>
+<!--}}}-->
+
+
+
+
+
+
+
+
+<hr style="height:3em; background-color:navy; border:1px;">
+<!-- ┌─────────────────────────────────────────────────────────────────────┐ -->
+<!-- │ SENTENCE                                                            │ -->
+<!-- └─────────────────────────────────────────────────────────────────────┘ -->
+<details id="details_SENTENCE"><summary> <H1><B>SENTENCE_DIV <a name ="SENTENCE_DIV">&#x1F4D6;</a></B></H1> </summary>
+<!-- SENTENCE {{{-->
+<div class="bg9" style="border: 3px #888 groove;">
+ <p class="bg0 fg1"> P1:
+  Sentence 1, clause 2, last clause.
+ </p>
+
+ <p class="bg0 fg2"> P2:
+  Sentence 1, clause 2, last clause.
+  Sentence 2, clause 2, last clause.
+ </p>
+
+ <p class="bg0 fg3"> P3:
+  Sentence 1, clause 2, last clause.
+  Sentence 2, clause 2, last clause.
+  Sentence 3, clause 2, last clause.
+ </p>
+
+</div>
+
+<!-- M. Mme. Mgnr. {{{-->
+<pre style="font-weight:100">
+M. Monsieur.
+Mme. Madame.
+Mgnr. Monseigneur_has_underscrore_characters
+
+Longtemps, les États ont toléré toutes les infractions des industries numériques, qu’il s’agisse de fiscalité, de propriété intellectuelle ou de vie privée.
+Il fallait « agir vite et casser des choses », selon le mot de M. Mark Zuckerberg.
+Mais le rapport de forces avec les puissances publiques bascule.
+La question n’est plus de savoir si l’activité de ces groupes sera réglementée, mais comment et au profit de qui.
+</pre> <!--}}}-->
+<!-- infractions des industries numériques {{{-->
+<pre style="font-weight:900">
+M. Monsieur.
+Mme. Madame.
+Mgnr. Monseigneur_has_underscrore_characters
+
+Longtemps, les États ont toléré toutes les infractions des industries numériques, qu’il s’agisse de fiscalité, de propriété intellectuelle ou de vie privée.
+Il fallait « agir vite et casser des choses », selon le mot de M. Mark Zuckerberg.
+Mais le rapport de forces avec les puissances publiques bascule.
+La question n’est plus de savoir si l’activité de ces groupes sera réglementée, mais comment et au profit de qui.
+</pre> <!--}}}-->
+<pre> <!-- Catherine Taylor {{{-->
+
+    La vie de Mme Catherine Taylor a basculé le jour où un courtier en données personnelles
+    a inscrit par erreur dans son dossier : « Tentative de vendre et de fabriquer des méthamphétamines ».
+    Cette fausse accusation s’est répandue comme une traînée de poudre, par le truchement 
+    des ventes effrénées d’informations relatives aux consommateurs.
+    Lorsqu’elle postulait à un emploi, ce stigmate numérique lui collait à la peau et faisait fuir les recruteurs.
+    Elle ne pouvait même pas s’acheter un lave-vaisselle à crédit.
+
+</pre> <!--}}}-->
+<pre> <!-- chloroquine {{{-->
+Que cherche t'on... à dévaloriser ses recherches...
+quel intérêt financier pour nos chers laboratoires
+un médicament aussi accessible ?
+
+<h3>h3</h3>
+
+La chloroquine commercialisée sous le nom de nivaquine
+est un anti paludéen (j'ai moi même pris ce médicament
+pendant des années en afrique).
+
+Next sentence start, prev_end, next_start, last_word.
+
+Another sentence.
+
+</pre> <!--}}}-->
+<pre><!-- code onmessage {{{-->
+<code>
+onmessage = function(e) {
+  console.log('Message received from main script');
+  var workerResult = 'Result: ' + (e.data[0] * e.data[1]);
+  console.log('Posting message back to main script');
+  postMessage(workerResult);
+}
+</code>
+</pre> <!--}}}-->
+<!-- console.log('XXX'); {{{-->
+<pre>
+  console.log('XXX');
+</pre>
+<!--}}}-->
+<!-- CSP - Writing a policy - MDN {{{-->
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">CSP - Writing a policy - MDN</a>
+<pre>
+    A policy is described using a series of policy directives
+    , each of which describes the policy for a certain resource type or policy area.
+    Your policy should include a default-src policy directive,
+    which is a fallback for other resource types when they don't have policies of their own (for a complete list,
+    see the description of the default-src directive).
+    A policy needs to include a default-src or script-src directive to prevent inline scripts from running,
+    as well as blocking the use of eval().
+    A policy needs to include a default-src or style-src directive to restrict inline styles from being applied from a &lt;style&gt; element or a style attribute.
+    There are specific directives for a wide variety of types of items,
+    so that each type can have its own policy, including fonts, frames, images, audio and video media, scripts, and workers.
+</pre>
+<!--}}}-->
+<!-- Privacy, permissions, and information security {{{-->
+<div class="round_el"
+ style="
+ float:left;
+ display:inline-block;
+ font-size:80%;
+ ">
+<a href="https://developer.mozilla.org/en-US/docs/Web/Privacy">Privacy, permissions, and information security</a>
+<table class="standard-table" style="max-width: 42rem;">
+ <caption>Web technologies and features used to enforce <em>security</em> and <em>privacy</em></caption>
+ <thead>
+  <tr>
+   <th scope="col">Technology or feature</th>
+   <th scope="col">Description</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr>
+   <td><a href="/en-US/docs/Web/Security/Certificate_Transparency">Certificate Transparency</a></td>
+   <td class="pressed">An open standard for monitoring and auditing certificates, creating a database of public logs that can be used to help identify incorrect or malicious certificates</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/HTTP/CSP">Content <em>Security</em> Policy </a></td>
+   <td>Provides the ability to define the extent to which a document's content can be accessed by other devices over the web; used in particular to prevent or mitigate attacks on the server</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/HTTP/Feature_Policy">Feature Policy</a></td>
+   <td>Lets web developers selectively enable, disable, and modify the behavior of certain features and APIs both for a document and for subdocuments loaded in <a href="/en-US/docs/Web/HTML/Element/iframe" title="The HTML Inline Frame element (<iframe>) represents a nested browsing context, embedding another HTML page into the current one."><code>&lt;iframe&gt;</code></a>s</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/HTML/Element/iframe" title="The HTML Inline Frame element (<iframe>) represents a nested browsing context, embedding another HTML page into the current one."><code>&lt;iframe&gt;</code></a>'s <code><a href="/en-US/docs/Web/HTML/Global_attributes#attr-allow">allow</a></code> attribute</td>
+   <td>Technically part of Feature Policy, the&nbsp;<code>allow</code>&nbsp;attribute on an&nbsp;<code>&lt;iframe&gt;</code>&nbsp;specifies which web features the document in the frame should be allowed to access</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/HTTP/Public_Key_Pinning">HTTP Public Key Pinning</a> (HPKP)</td>
+   <td>HPKP is used by servers to instruct a client to associate a specific public key with the server going forward in order to decrease the likelihood of man-in-the-middle attacks</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">HTTP Strict Transport <em>Security</em></a> (HSTS)</td>
+   <td>HSTS is used by servers to let them protect themselves from protocol downgrade and cookie hijack attacks by letting sites tell clients that they can only use HTTPS to communicate with the server</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Glossary/HTTP_2">HTTP/2</a></td>
+   <td>While HTTP/2 technically does not&nbsp;<em>have</em>&nbsp;to use encryption, most browser developers are only supporting it when used with HTTPS, so it can be thought of in that regard as being <em>security-related</em></td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/API/Permissions_API">Permissions API</a></td>
+   <td>Provides a way to determine the status of permissions for the current browser context</td>
+  </tr>
+  <tr>
+   <td><a href="/en-US/docs/Web/Security/Transport_Layer_Security">Transport Layer <em>Security</em></a> (TLS); formerly known as Secure Sockets Layer (SSL)</td>
+   <td>TLS provides <em>security</em> and <em>privacy</em> by encrypting data during transport over the network. This is the technology behind the <a href="/en-US/docs/Glossary/https">HTTPS</a> (HyperText Transport Protocol Secured) protocol</td>
+  </tr>
+ </tbody>
+</table>
+</div>
+<!--}}}-->
+<!--LES DIFFÉRENTS POINTS À CONSIDÉRER {{{-->
+<div style="clear:both; border:5px double navy; border-radius:1em; background-color:rgba(221,170,170,0.8)">
+<pre>
+
+
+    Bonjour Francis,
+    Bonjour Amaël,
+
+    Mon rapport d'avancement sur l'étude pour une extension destinée à analyser et communiquer le contenu d'une page Internet visitée par un navigateur.
+
+    LES DIFFÉRENTS POINTS À CONSIDÉRER:
+
+        1. SOLUTIONS TECHNIQUES - AVEC DES RÉSULTATS POSITIFS:
+         - j'ai pu adapter un module open-source de Google pour la transmission du DOM basé sur MutationObserver
+
+        2. DUPLICAT5ION DES PAGES VISITÉES:
+
+        - [pagemirror]
+
+            ... démontre la duplication du DOM
+            ... par transmission des constituants de la page
+            ... et de l'évolution des attributs en temps réel
+
+
+        - [screen_sharing_extension]
+
+            ... mêmes mécanismes concernant le DOM
+            ... communication WebSocket
+            ... pour l'instant: sur la MÊME MACHINE QUE CELLE DU NAVIGATEUR
+            ... SUBMIT MODE POST à étudier avec la PERSONNE EN CHARGE DU SERVEUR
+
+
+        3. DES PROBLÈMES À CREUSER:
+
+         - Les shadowRoot en mode closed .. ils sont inaccessibles au JavaScript
+
+             ... les pubs sont-elles concernées ?
+
+
+         - Les CSP (Content-Security-Policy) qui peuvent bloquer javascript:
+
+             ... script-src, connect-src, frame-src, plungin-type, worker-src, ...
+
+
+        4. DES QUESTIONS À ÉCLAIRCIR:
+
+         - architecture du serveur CXUnified à alimenter:
+
+             ... y a-t'il un INTERLOCUTEUR TECHNIQUE sur le sujet ?
+             ... le PROTOCOLE à utiliser pour cette transmission
+             ... disponibilité d'un SERVEUR DE TEST
+             ... POSSIBILITÉS DE SIMULATION pendant le développement
+
+
+        5. DÉVELOPPEMENT À PARTIR DE LÀ:
+
+            ... communication HTTPRequest mode POST
+            ... besoin de COMPÉTENCES ET DE RESSOURCES complémentaires pour avancer
+
+
+    J'ai des choses à vous montrer en partage d'écran,
+    mais j'ai des besoins de collaboration pour rester
+    efficace concernant les aspects en marge de mes compétences.
+
+    J'attends de vos nouvelles...
+    A bientôt,
+    Ivan
+
+
+
+</pre>
+</div>
+<!--}}}-->
+<!-- {{{-->
+<div style="clear:both; border:5px double navy; border-radius:1em; background-color:rgba(170,221,170,0.8)">
+<pre>
+
+    iwintoo/browser-extension
+         < a href="https://gitlab.com/cxunified/browser-extension/-/tree/develop">https://gitlab.com/cxunified/browser-extension/-/tree/develop</a>
+        ivanwfr izZ
+
+    <u><b>README.md</b></u>
+
+    Requirements
+
+    Docker
+        <a href="https://www.docker.com/">https://www.docker.com/</a>
+
+    docker-compose
+        <a href="https://docs.docker.com/compose/">https://docs.docker.com/compose/</a>
+
+    OpenSSL (development)
+        OpenSSL development package is libssl-dev.
+        "SSL development libraries
+        , header files and documentation"
+        (from libssl-dev package description).
+
+    Update hostfile (/etc/hosts) with:
+
+    Local server (development)
+
+    127.0.0.1       api.one2one.digital
+    Usage
+    Handling serv
+    Generate cert files
+
+    bash nginx/generate_cert.sh
+
+    Build config
+
+    Dev
+
+    cp config/docker-compose.dev.yml docker-compose.yml
+    cp nginx/conf/dev.conf nginx/default.conf
+    Prod
+
+    cp config/docker-compose.prod.yml docker-compose.yml
+    cp nginx/conf/prod.conf nginx/default.conf
+    Lauch containers
+
+    docker-compose up -d
+
+    To get webapp logs :
+
+    docker container logs webapp -f
+    Visit https://api.one2one.digital to validate certificates once at least
+
+    Extension
+    yarn
+        <a href="https://yarnpkg.com/">https://yarnpkg.com/</a>
+
+    yarn build
+    You can now load the extension/build/ folder in chrome://extension
+
+</pre>
+</div>
+<!--}}}-->
+<!-- DL..DT..DL .. DETAILS..SUMMARY {{{-->
+<div style="clear:both; border:1em double navy; border-radius:0.5em; background-color:rgba(170,170,221,0.8)">
+
+<a href="https://linux.die.net/man/1/grep">grep(1) - Linux man page</a>
+<hr>
+
+<span id="details_span">&lt;DETAILS closed&gt;</span>
+<DETAILS open>
+<!--{{{-->
+
+ <summary onclick='document.getElementById("details_span").textContent="&lt;DETAILS "+(this.parentElement.open ? "close":"open")+"&gt;";'>
+&lt;summary&gt; <b>Matcher Selection</b> &lt;/summary&gt;
+ </summary>
+
+
+&lt;dl&gt;
+<dl style='border:1px inset; background-color:rgba(170,170,170,0.7);'>
+  
+ <dt>
+  <b>-E</b>, 
+  <b>-- extended -regexp </b>
+ </dt>
+ <dd>
+  Interpret PATTERN as an extended regular expression (ERE, see below).
+   (-E is specified by POSIX.)
+ </dd>
+
+ <dt>
+  <b>-F</b>, <b>--fixed-strings</b>
+ </dt>
+ <dd>Interpret 
+  <i>PATTERN</i> as a list of fixed strings, separated by newlines, any of which is to be matched.
+  ( <b>-F </b> is specified by <small>POSIX </small> .)
+ </dd>
+
+ <dt>
+  <b>-G </b>, 
+  <b>--basic-regexp</b>
+ </dt>
+ <dd>Interpret 
+  <i>PATTERN </i> as a basic regular expression (BRE, see below). This is the default.
+ </dd>
+
+ <dt>
+  <b>-P</b>, 
+  <b>--perl-regexp </b>
+ </dt>
+ <dd>Interpret 
+  <i>PATTERN</i> as a Perl regular expression. This is highly experimental and <b>grep -P </b>
+  may warn of unimplemented features.
+ </dd>
+
+</dl>
+&lt;/dl&gt;
+
+<!--}}}-->
+</DETAILS>
+&lt;/DETAILS&gt;
+</div>
+<!--}}}-->
+<!--}}}-->
+</details>
+
+<hr style="height:3em; background-color:navy; border:1px;">
+<!-- ┌─────────────────────────────────────────────────────────────────────┐ -->
+<!-- │ WHITE_BOARD                                                         │ -->
+<!-- └─────────────────────────────────────────────────────────────────────┘ -->
+<details id="details_WHITE_BOARD" title="white_board"> <summary><H1><B>WHITE BOARD</B></H1></summary>
 <!-- WHITE BOARD {{{-->
-<span
-  style="
-  pointer-events : none;
-  user-select    : none;
-  float          : left;
-  clear          : left;
-  margin-left    :  2em;
-  opacity        :  0.1;
-  font-size      : 200%;
-  font-weight    :  900;
-  font-style     : oblique;
-  font-family    : Comic sans ms;
-  "
-  id="editable_white_board_stamp"
-  >EDITABLE WHITE BOARD</span>
+<hr style="margin-top:3em; height:1em;">
+<!--{{{-->
+<script>
+let white_board_store = function()
+{
+    let el = document.getElementById("white_board");
+    if(el.innerText.length < 5) return;
 
+console.log("white_board_store");
+
+    setTimeout(function() {
+        dom_store.t_store_set_value("white_board", el.innerText);
+    }, 200);
+};
+let white_board_load  = function()
+{
+console.log("white_board_store");
+
+    let el = document.getElementById("white_board");
+    el.innerText = dom_store.t_store_getItem("white_board");
+};
+let w_smaller = function()
+{
+    let el=document.getElementById("white_board");
+    let w = parseInt(el.style.width);
+    el.style.width = (w * 0.9).toFixed(0)+"%";
+};
+let w_larger = function()
+{
+    let el=document.getElementById("white_board");
+    let w = parseInt(el.style.width);
+    el.style.width = (w * 1.1).toFixed(0)+"%";
+};
+let f_smaller = function()
+{
+    let el=document.getElementById("white_board");
+    let s = parseInt(el.style.fontSize);
+    el.style.fontSize = (s * 0.9).toFixed(0)+"%";
+};
+let f_larger = function()
+{
+    let el=document.getElementById("white_board");
+    let s = parseInt(el.style.fontSize);
+    el.style.fontSize = (s * 1.1).toFixed(0)+"%";
+};
+
+</script>
+<!--}}}-->
+<!-- buttons {{{-->
+..
+<button style="height:3em;" onclick='white_board_load ();'> LOAD  editable white board</button>
+<button style="height:3em;" onclick='white_board_store();'> STORE editable white board</button>
+..
+<button style="height:3em;" onclick='w_smaller();'>w_smaller</button>
+<button style="height:3em;" onclick='w_larger ();'>w_larger </button>
+..
+<button style="height:3em;" onclick='f_smaller();'>f_smaller</button>
+<button style="height:3em;" onclick='f_larger ();'>f_larger </button>
+<!--}}}-->
+<!-- div contenteditable {{{-->
 <div contenteditable
     id   ="white_board"
-    title="white_board"
     style="
     width            : 90%;
     height           : 80em;
     border-radius    : 8px;
-    border           : 2px inset !important;
-    margin           : 3em  !important;
-    padding          : 0    !important;
+    border           : 2px inset     !important;
+    margin           : 0 3em 3em 3em !important;
+    padding          : 0             !important;
     background-color : rgba(224,212,212,0.9);
-    font-weight      : 900;
     overflow         : auto;
-    ">
+    font-family      : monospace;
+    font-size        : 100%;
+    white-space      : pre-line;
+    "
+>
 </div>
 <!--}}}-->
+<!--}}}-->
+</details>
+<!--}}}-->
+</details>
+<hr style="height:3em; background-color:navy; border:1px;">
+
 <!-- JUMP {{{-->
+<a                               href="#words_1"                            >#words&#x200D;_1</a> <!-- ZERO WIDTH JOINER -->
+<a                               href="#fold_5"                                 >#fold&zwj;_5 <sup><i>&#x220B; WOT</i></sup></a> <!-- ZERO WIDTH JOINER -->
+<a                               href="#SYMBOLS"                            >#SYMBOLS</a>
 <a name="body_end" id="body_end" href="#body_start"   class="big em6 action">&#x2191;</a>
 <a                               href="#div_CHECKBOX" class="big em4 action">&#x25A3;</a>
+<a                               href="#SENTENCE_DIV" class="em7"           >&#x1F4D6; SENTENCE_DIV</a>
 <!--}}}-->
  <!-- PAGE END .. [left] .. [center] [reload] .. [right] {{{-->
  <!-- PAGE END LEFT {{{-->
@@ -2883,9 +5290,765 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
  </div>
  <!--}}}-->
  <!--}}}-->
+ <!-- [playground_clones_panel bottom_right] {{{-->
+ <div
+  id   ="playground_clones_panel" title="playground_clones_panel"
+  class="transcript display_delayed bottom_right squeezed_0_1"
+  >
+  <!-- [magpin_div] {{{-->
+  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input  id="squeeze_cycle_playground_clones_panel"            type="checkbox" />
+   <label for="squeeze_cycle_playground_clones_panel">
+    <pre>&#x25E4; &#x25E5;
+&#x25E3; &#x25E2;</pre>
+   </label>
+  </div>
+  <!--}}}-->
+ </div>
+ <!--}}}-->
+
 <hr style="height:3em; background-color:red; border:1px;">
 Same <a href="motion.txt.html#as" class="d">as</a>"*"<a href="motion.txt.html#%2C" class="d">,</a>but search backward.
+<!-- SVG {{{-->
+<div style="background-color:rgba(136,136,255,0.5)">
+
+cursor = "url('<a href='stylesheet/svg_32.svg' target='svg_32'>stylesheet/svg_32.svg</a>') 16 16, pointer"
+
+<svg
+id          = "svg_X"
+xml:space   = "preserve"
+xmlns:xlink = "http://www.w3.org/1999/xlink"
+xmlns       = "http://www.w3.org/2000/svg"
+version     = "1.1"
+width       = "32px"
+height      = "32px"
+viewBox     = "0 0 512 512"
+style       = "border: 4px ridge #88F;"
+>
+</svg>
+
+</div>
+<!--}}}-->
 <hr style="height:3em; background-color:red; border:1px;">
+
+<!-- FOLD (details..summary) {{{-->
+<hr>
+<!-- populate_FOLD_PRE fold_FOLD_PRE FOLD_PRE {{{-->
+<button onclick="populate_FOLD_PRE();">populate_FOLD_PRE</button>
+<button onclick="fold_FOLD_PRE();"    >    fold_FOLD_PRE</button>
+➔  [dom_seek TARGETS]: <em>let.*=.*function</em> <em>const</em>
+
+<details><summary>FOLD_PRE</summary>
+<pre id="FOLD_PRE">
+</pre>
+</details>
+
+<!--}}}-->
+<!-- script {{{-->
+<script>
+let fold_FOLD_PRE = function()
+{
+let pre = document.getElementById("FOLD_PRE");
+    dom_wot.t_WOT_FOLD_EL( pre );
+    dom_details.details_load_open_state(pre);
+};
+/*
+}:r javascript/dom_wot.js
+*/
+let populate_FOLD_PRE = function()
+{
+    let pre = document.getElementById("FOLD_PRE");
+    /*{{{*/
+    pre.innerHTML = dom_util.escapeHTML(`
+
+/* dom_wot_js */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+/* JSHint {{{*/
+/* globals document, Node, NodeFilter */
+/* globals console, localStorage */
+/* globals dom_data    */
+/* globals dom_fly     */
+/* globals dom_i18n    */
+/* globals dom_log     */
+/* globals dom_prop    */
+/* globals dom_slot    */
+/* globals dom_store   */
+/* globals dom_tools   */
+/* globals dom_util    */
+
+/* exported dom_wot, DOM_WOT_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable dot-notation        */
+/*
+:update|1,$y *
+:!start explorer https://jshint.com/
+*/
+
+const DOM_WOT_JS_ID      = "dom_wot_js";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (210925:16h:24)";
+/*}}}*/
+let dom_wot  = (function() {
+"use strict";
+let   DOM_WOT_LOG        = false;
+let   DOM_WOT_TAG        = false;
+/* IMPORT */
+/*{{{*/
+/* eslint-disable no-unused-vars */
+/*➔ t_wot_IMPORT {{{*/
+/*{{{*/
+/*....................................*/
+let t_data     = {}        ;    /* 05 */
+let t_log      = {}        ;    /* 06 */
+let t_util     = {}        ;    /* 07 */
+let t_i18n     = {}        ;    /* 08 */
+let t_prop     = {}        ;    /* 09 */
+let t_store    = {}        ;    /* 10 */
+let t_fly      = {}        ;    /* 11 */
+/* ...................................*/
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_wot      = {}        ; */ /* 13 */
+let t_slot     = {}        ;    /* 14 */
+/* ...................................*/
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
+/* ...................................*/
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
+/* ...................................*/
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
+/*....................................*/
+/*}}}*/
+let t_wot_IMPORT  = function(log_this)
+{
+/* LOAD {{{*/
+/* ...................................*/
+    t_data    = dom_data   ;    /* 05 */
+    t_log     = dom_log    ;    /* 06 */
+    t_util    = dom_util   ;    /* 07 */
+    t_i18n    = dom_i18n   ;    /* 08 */
+    t_prop    = dom_prop   ;    /* 09 */
+    t_store   = dom_store  ;    /* 10 */
+    t_fly     = dom_fly    ;    /* 11 */
+/* ...................................*/
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 14 */
+    t_slot    = dom_slot   ;    /* 14 */
+/* ...................................*/
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
+/* ...................................*/
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
+/* ...................................*/
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
+/* ...................................*/
+/*}}}*/
+    select_INTERN();
+    /* MODULE LOGGING TAGGING {{{*/
+    DOM_WOT_LOG = DOM_WOT_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_WOT_LOG"));
+    DOM_WOT_TAG = DOM_WOT_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_WOT_TAG"));
+
+    /*}}}*/
+if(log_this) log("%c 14 WOT", lbH+lf4);
+};
+/*}}}*/
+/*_   select_INTERN {{{*/
+/*{{{*/
+
+/* t_log */
+let LOG_MAP;
+
+let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
+let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
+let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
+let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
+
+/*  prop */
+let prop;
+
+/*}}}*/
+let   select_INTERN = function()
+{
+    /* t_log {{{*/
+    LOG_MAP = t_log.LOG_MAP;
+
+    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
+    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
+    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
+    /*}}}*/
+    /* t_prop {{{*/
+    prop = t_prop;
+
+    /*}}}*/
+
+    select_DEPEND();
+};
+/*}}}*/
+/*_   select_DEPEND {{{*/
+let   select_DEPEND = function()
+{
+
+};
+/*}}}*/
+/* eslint-enable  no-unused-vars */
+/*}}}*/
+/* FOLD {{{*/
+const FOLD_OPEN   = "{{{";
+const BRACE_OPEN  =   "{";
+const BRACE_CLOSE =   "}";
+const FOLD_CLOSE  = "}}}";
+/*_ is_line_fold_open {{{*/
+/*{{{
+let logged_count = 0; const LOGGED_COUNT_MAX = 100;
+}}}*/
+let is_line_fold_open = function(line)
+{
+    let result = line.includes( FOLD_OPEN ) ;
+/*{{{
+if(logged_count++ < LOGGED_COUNT_MAX) log("is_line_fold_open("+line+") ...return "+result+"");
+}}}*/
+    return result;
+};
+/*}}}*/
+/*_ is_line_fold_close {{{*/
+/*{{{*/
+const LEVELS = "123456789";
+
+/*}}}*/
+let is_line_fold_close = function(line)
+{
+    let result = line.includes( FOLD_CLOSE ) ;
+
+    /* look for implicit-closing marker level */
+    if(!result)
+    {
+        let idx    = line.indexOf(     FOLD_OPEN       );
+        if( idx ) {
+            let s  = line.charAt(idx + FOLD_OPEN.length);
+            if((s != "") && (LEVELS.indexOf(s) >= 0)) /* (level number match not handled yet) */
+                result = true;
+        }
+    }
+/*{{{
+if(logged_count++ < LOGGED_COUNT_MAX) log("is_line_fold_close("+line+") ...return "+result+"");
+}}}*/
+    return result;
+};
+/*}}}*/
+/*_ is_line_brace_open {{{*/
+let is_line_brace_open = function(line)
+{
+    let result =  !line.startsWith(" ") && line.endsWith( BRACE_OPEN );
+/*{{{
+if(logged_count++ < LOGGED_COUNT_MAX) log("is_line_brace_open("+line+") ...return "+result+"");
+}}}*/
+    return result;
+};
+/*}}}*/
+/*_ is_line_brace_close {{{*/
+let is_line_brace_close = function(line)
+{
+    let result = line.startsWith( BRACE_CLOSE );
+/*{{{
+if(logged_count++ < LOGGED_COUNT_MAX) log("is_line_brace_close("+line+") ...return "+result+"");
+}}}*/
+    return result;
+};
+/*}}}*/
+/*}}}*/
+/*➔ t_WOT_SPLIT {{{*/
+/*{{{*/
+const WALL_OF_TEXT_PARENT   = "wall_of_text_parent";
+const WALL_OF_TEXT_SPLIT    = "wall_of_text_split";
+const WALL_OF_TEXT_BLOCK    = "wall_of_text_block";
+const WALL_OF_TEXT_FOLD     = "wall_of_text_fold";
+const WOT_P_LINES_MIN       =    1;
+const WOT_LENGTH            =  256;
+const PAR_LENGTH_MAX        = 2048;
+const REPORTED_COUNT_MAX    =    8;
+
+const regexp_REGIONFOLD     = new RegExp("#region (\\S+).*");
+const regexp_FUNCTION_JS    = new RegExp("\\/\\*[_ ]*(\\S+).*\\{\\{\\{\\*\\/");
+/*........................................../  * _   (FFFF)    ^  ^  ^       */
+const regexp_FUNCTION_LUA   = new RegExp(    "--[_ ]*(\\S+).*\\{\\{\\{");
+/*............................................-- _   (FFFF)    ^  ^  ^ */
+
+let   wot_split_done = false;
+/*}}}*/
+let t_WOT_SPLIT = function() /* eslint-disable-line complexity */
+{
+    /* [wot_split_done] {{{*/
+    if( wot_split_done ) return;
+
+    wot_split_done = true;
+    /*}}}*/
+/*{{{*/
+let   caller = "t_WOT_SPLIT";
+let log_this = LOG_MAP.T1_DOM_LOAD;
+
+if( log_this) console.time(caller);
+/*}}}*/
+    /* SPLIT UP WALL OF TEXT NODES {{{*/
+    pre_innerHTML_to_innerText();
+
+    reported_count      = 0;
+    reported_filters    = [];
+
+    let            root = document.body;
+    let   mDomTraversal = document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter_wall_of_text_block);
+    let text_node_array = get_wall_of_text_node_array( mDomTraversal );
+
+if( log_this) log("%c"+caller+" %c "+text_node_array.length+" TEXT NODES FILTER_ACCEPT'ed", lbH, lbH+lf3);
+/*{{{
+}}}*/
+    /*}}}*/
+    /* REPLACE BIG CHUNCKS OF TEXT WITH A BUNCH OF SMALLER PARAGRAPHS {{{*/
+    let node_count = 0;
+    let char_count = 0;
+    let LF_count   = 0;
+
+    let line_num   = 1;
+    let trailNoEOL = "";
+    let innerHTML;
+    for(let i = 0; i < text_node_array.length; ++i)
+    {
+        /* SPLIT INTO LINES {{{*/
+
+        /* prepend previous truncated-trailer */
+        let text_node   = text_node_array[i];
+
+        let textContent = trailNoEOL + text_node.textContent;
+        char_count     += textContent.length;
+
+        /* next truncated-trailer -- FIXME drops last line from MISSING-EOL-DOS-FILES */
+        trailNoEOL
+            = textContent.endsWith(t_data.LF)
+            ? ""
+            : textContent.substring( textContent.lastIndexOf(t_data.LF)+1 );
+
+        let lines      = textContent.split(t_data.LF);
+        LF_count      += lines.length;
+
+        let last_line  = lines[lines.length-1];
+
+        if( last_line == trailNoEOL) lines.pop(); /* drop truncated line .. (missing EOL) */
+
+/*{{{*/
+if(log_this && (i < 2))
+    log_key_val_group("line_num %c"+ line_num
+                      , {         textContent_length : textContent.length
+                          ,               trailNoEOL : "["+trailNoEOL+"] .. length=["+ trailNoEOL.length+"]"
+                          ,               last_line  : "["+last_line +"] .. length=["+ last_line .length+"]"
+                          ,  last_line_eq_missingEOL : (last_line == trailNoEOL)
+                          ,                STARTWITH : textContent.substring(0                  ,80)
+                          ,                ENDS_WITH : textContent.substring(textContent.length -80)
+                      }
+                      , false);
+/*}}}*/
+        /*}}}*/
+        /* EMPTY PARENT .. (on first node) {{{*/
+        let               parent = text_node.parentNode;
+        if(              !parent ) continue; /* already removed .. already handled */
+        if( !t_util.has_el_class(parent, WALL_OF_TEXT_PARENT) )
+        {
+            parent.innerHTML = "";
+            t_util.add_el_class(parent, WALL_OF_TEXT_PARENT);
+        }
+        /*}}}*/
+/*{{{*/
+if( log_this) {
+    log("%c"+i, lbb+lbH+lf3);
+    t_log.console_dir("parent has "+ parent.children.length+" children", parent   );
+    t_log.console_dir("text_node", text_node);
+    log("%c "+t_util.get_id_or_tag(parent) +" "+ parent.textContent.length+" characters", lbH);
+}
+/*}}}*/
+        /* REFILL PARENT {{{*/
+        let fold_open  = is_line_fold_open (text_node.textContent);
+        let fold_close = is_line_fold_close(text_node.textContent);
+        if( fold_open && fold_close)  [line_num , innerHTML] = get_FOLD_EL_innerHTML(lines, line_num);
+        else                          [line_num , innerHTML] = get_lines_innerHTML  (lines, line_num);
+
+        parent.innerHTML += innerHTML;
+        node_count += 1;
+        /*}}}*/
+/*{{{*/
+if( log_this) t_log.console_dir("...parent has "+parent.children.length+" children", parent);
+if( log_this) log(caller+": %c node_count=["+node_count+"] %c LF_count=["+LF_count+"] %c char_count=["+char_count+"]"
+                  ,        lbL                            ,lbC                       ,lbR                            );
+/*}}}*/
+    }
+    /*}}}*/
+    /* Show results in [split_wot] button tooltip {{{*/
+    let split_wot = t_tools.t_get_tool("split_wot");
+    if( split_wot )
+        split_wot.title
+            = t_util.get_el_title( split_wot )
+                +t_data.LF +(LF_count ? (LF_count+" lines have been parsed") : "Found no WOT to parse"); /* TODO i18N */
+    /*}}}*/
+/*{{{*/
+if( log_this && node_count) console.timeEnd(caller);
+
+if( log_this)
+    if(node_count) log("%c"+caller+"%c"+node_count+" WALLS OF TEXT %c "+char_count+" characters %c "+LF_count+" t_data.LF"
+                       ,lbH+lf7    ,lbb+lbH+lf7                   ,lbH+lf7                     ,lbH+lf9            );
+/*}}}*/
+};
+/*}}}*/
+/*➔ t_WOT_FOLD_EL {{{*/
+let t_WOT_FOLD_EL = function(el)
+{
+    el.textContent = ""+ el.textContent; /* replace children */ /* eslint-disable-line no-self-assign */
+    let lines      = el.textContent.split(t_data.LF);
+    let line_num   = 1;
+    let innerHTML;
+    [line_num , innerHTML] = get_FOLD_EL_innerHTML(lines, line_num);
+
+    el.innerHTML   = innerHTML;
+};
+/*}}}*/
+
+/*_ get_lines_innerHTML {{{*/
+let get_lines_innerHTML = function(lines, line_num) /* eslint-disable-line complexity */
+{
+    let with_line_num = t_store.t_store_getBool( t_data.LINES_WOT ); /* prop may not be ready yet */
+
+    let innerHTML = "";
+    let    l = 0;
+    while((l < lines.length))
+    {
+        /* new paragraph {{{*/
+
+        let paragraph = "";
+        let par_lines = 0;
+
+        let this_line = lines[l  ];
+
+        let fold_open  = is_line_fold_open (this_line); let fold_close  ;
+        let brace_open = is_line_brace_open(this_line); let brace_close ;
+
+        let may_add_next_line;
+        /*}}}*/
+        do {
+            /* this_line next_line {{{*/
+            this_line = lines[l  ];
+            let next_line = lines[l+1] || "";
+
+            /*}}}*/
+            /* stop before a new fold {{{*/
+            if(par_lines > WOT_P_LINES_MIN) {
+                if( is_line_fold_open  (this_line)) break;
+                if( is_line_brace_open (this_line)) break;
+            }
+
+            /*}}}*/
+            /* pick line {{{*/
+            let h_line = t_util.escapeHTML(this_line);
+            /*{{{
+if(h_line.includes("#region")) log(h_line);
+}}}*/
+            h_line     = h_line.replace(regexp_REGIONFOLD   , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line     = h_line.replace(regexp_FUNCTION_JS  , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line     = h_line.replace(regexp_FUNCTION_LUA , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+
+            /*}}}*/
+            /* region {{{*/
+            if( h_line.includes(  "#region" ) ) /* C# */
+            {
+                h_line = h_line.replace("'>", " region'>#region ");
+
+            }
+            /*}}}*/
+            /* function {{{*/
+            else if( next_line )
+            {
+                if(      next_line.includes  (  " function(" ) /* javascript */
+                      || next_line.includes  (  "function "  ) /* LUA */
+                      || next_line.includes  (  "private "   ) /* C# */
+                      || next_line.includes  (  "protected " )
+                      || next_line.includes  (  "public "    )
+                      || next_line.includes  (  "static "    )
+                      || next_line.includes  (  "void "      )
+                  )
+                    h_line = h_line.replace("'>", " function'>");
+
+            }
+            else {
+                h_line = "<span class='text_line'>"+h_line+"</span>";
+            }
+            /*}}}*/
+            /* details..summary {{{*/
+            if(      h_line.includes(FOLD_OPEN) && !h_line.includes(FOLD_CLOSE)) h_line =        "<details><summary>"+h_line+"</summary>";
+            else if(!h_line.includes(FOLD_OPEN) &&  h_line.includes(FOLD_CLOSE)) h_line = h_line+"</details>";
+            /*}}}*/
+            /* p_line .. paragraph {{{*/
+            if(with_line_num) {
+                let p_line = "<span class='"+t_data.CSS_LINE_NUM+"'>"+t_util.mPadStart(line_num, 6)+" </span>"+(h_line || "")+t_data.LF;
+                paragraph += p_line;
+            }
+            else {
+                paragraph += (h_line || "")+t_data.LF;
+            }
+
+            par_lines += 1;
+            line_num  += 1;
+            /*}}}*/
+            /* stop after close fold {{{*/
+            if(par_lines > WOT_P_LINES_MIN) {
+                fold_close  = is_line_fold_close ( this_line );
+                brace_close = is_line_brace_close( this_line );
+            }
+
+            /*}}}*/
+            /* or consider next line .. checking paragraph length so far {{{*/
+/*{{{
+            let this_line_length   = this_line.trim().length;
+}}}*/
+            l += 1;
+
+            let next_p_len =  paragraph.length + next_line.length;
+            may_add_next_line
+                =      (     lines.length  > l)
+                && (   ( next_line.length == 0)
+                       || (next_p_len        <= PAR_LENGTH_MAX));
+
+            /*}}}*/
+        } while(may_add_next_line && !fold_close && !brace_close);
+        /* add paragraph {{{*/
+        let className
+            = WALL_OF_TEXT_SPLIT
+            + ((       ( fold_open &&  fold_close)
+                    || (brace_open && brace_close)
+               )
+               ?    (" "+WALL_OF_TEXT_FOLD)
+               :    ""
+              )
+        ;
+
+        if(paragraph.length) innerHTML += "<pre class='"+className+"'>"+paragraph+"</pre>";
+        /*}}}*/
+    }
+    return [line_num , innerHTML];
+};
+/*}}}*/
+/*_ get_FOLD_EL_innerHTML {{{*/
+let get_FOLD_EL_innerHTML = function(lines,line_num) /* eslint-disable-line complexity */
+{
+    let with_line_num     = t_store.t_store_getBool( t_data.LINES_WOT ); /* prop may not be ready yet */
+    let innerHTML         = "";
+    let    l              = 0;
+    while((l < lines.length))
+    {
+        let paragraph     = "";
+
+        let this_line     = lines[l  ];
+
+        let may_add_next_line;
+        do {
+            this_line     = lines[l  ];
+            let next_line = lines[l+1] || "";
+            let h_line    = t_util.escapeHTML(this_line);
+
+            let fold_close = is_line_fold_close(this_line);
+            let fold_open  = is_line_fold_open (this_line);
+
+            if(fold_open) {
+                h_line
+                    = (fold_close ? "</details>" : "")
+                    + "<details id='fold_"+l+"' class='"+WALL_OF_TEXT_SPLIT+"'>"
+                    +  "<summary>"+h_line+"</summary>"
+                    +  "<pre>"
+                ;
+            }
+            else if( fold_close )
+            {
+                h_line
+                    =             h_line
+                    + "</pre>"
+                    + "</details>"
+                ;
+            }
+
+            /* p_line .. paragraph {{{*/
+            if(with_line_num) {
+                let p_line = "<span class='"+t_data.CSS_LINE_NUM+"'>"+t_util.mPadStart(line_num, 6)+" </span>"+(h_line || "")+t_data.LF;
+                paragraph += p_line;
+            }
+            else {
+                paragraph += (h_line || "")+t_data.LF;
+            }
+            l            += 1;
+            line_num     += 1;
+
+            /*}}}*/
+            may_add_next_line
+                =      (     lines.length  > l)
+                && (   ( next_line.length == 0));
+
+        } while(may_add_next_line);
+        if(paragraph.length) innerHTML += paragraph;
+    }
+
+    return [line_num , innerHTML];
+};
+/*}}}*/
+/*_ get_wall_of_text_node_array {{{*/
+let get_wall_of_text_node_array = function(mDomTraversal)
+{
+    let   node_array = [];
+    let   node;
+
+    while(node = mDomTraversal.nextNode())
+        node_array.push(node);
+/*
+log("get_wall_of_text_node_array: return node_array.length=["+node_array.length+"]");
+*/
+    return node_array;
+};
+/*}}}*/
+/*_ pre_innerHTML_to_innerText {{{*/
+let pre_innerHTML_to_innerText = function()
+{
+    let pre_list = document.getElementsByTagName("PRE");
+    let pre_count = 0;
+    let pre;
+
+    while(pre = pre_list[pre_count++])
+        pre.textContent = ""+ pre.textContent; /* eslint-disable-line no-self-assign */
+
+    /* textContent gets the content of all elements
+     * Setting textContent on a node removes all of the node's children
+     * and replaces them with a single text node with the given string value
+     */
+};
+/*}}}*/
+/*_ mNodeFilter_wall_of_text_block {{{*/
+/*{{{*/
+let reported_count;
+let reported_filters;
+
+/*}}}*/
+let mNodeFilter_wall_of_text_block = function(node) /* eslint-disable-line complexity */
+{
+/*{{{*/
+let   caller = "mNodeFilter_wall_of_text_block";
+let log_this = LOG_MAP.S1_RANGE;
+
+/*}}}*/
+    /* FILTER DOM NODES {{{*/
+    let check_result = NodeFilter.FILTER_ACCEPT;
+    let      details = "";
+
+    let npar = node.parentNode;
+
+    /* FILTER_REJECT .. (skip this node and all its children) ______________________ */
+    if     ((!npar                     )                                                ) { check_result = NodeFilter.FILTER_REJECT; details = "NODE HAS NO PARENT" ; }
+    else if(( npar.tagName  == "SCRIPT")                                                ) { check_result = NodeFilter.FILTER_REJECT; details = "SCRIPT TEXT"        ; }
+    else if(( npar.tagName  ==  "STYLE")                                                ) { check_result = NodeFilter.FILTER_REJECT; details = "STYLE TEXT"         ; }
+
+    /* FILTER_SKIP .... (skip this node but not its children) ______________________ */
+    else if(( npar.tagName   !=   "PRE") && (node.nodeType != Node.TEXT_NODE)           ) { check_result = NodeFilter.FILTER_SKIP  ; details = "NOT A TEXT NODE"    ; }
+    /* _______________________________________________ PRE or TEXT to split ________ */
+    else if((!node.textContent                    ) /* TEXT NONE ___________________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "NO TEXT CONTENT"    ; }
+    else if(( node.textContent.length < WOT_LENGTH) /* TEXT SHORT __________________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "["+ node.textContent.length+" char] <  [WOT_LENGTH "+WOT_LENGTH+"]"; }
+    else if(!t_util.get_first_word(      node.textContent) /* TEXT WORDS NONE _____________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "["+ node.textContent.length+" char] .. HAS NO WORDS"; }
+
+    /* FILTER_REJECT _______________________________________________________________ */
+    else if(  t_util.is_marked_to_hide(node)               /* HIDDEN NDE __________________ */ ) { check_result = NodeFilter.FILTER_REJECT; details = "NODE MARKED TO HIDE"; }
+
+    /* FILTER_ACCEPT */
+    else                                                                                  { check_result = NodeFilter.FILTER_ACCEPT; details = "["+ node.textContent.length+" char]"; }
+
+    /*}}}*/
+/*{{{*/
+if(        log_this
+   && (    node.textContent.length  > 32                )
+   && (   (reported_count           < REPORTED_COUNT_MAX)
+       || !reported_filters.includes( check_result      )
+      )
+  ) {
+    reported_count += 1;
+    if(!reported_filters.includes( check_result ) ) reported_filters.push( check_result );
+
+    let result
+        = (check_result == NodeFilter.FILTER_REJECT) ? "REJECT"
+        : (check_result == NodeFilter.FILTER_SKIP  ) ? "__SKIP"
+        : (check_result == NodeFilter.FILTER_ACCEPT) ? "ACCEPT"
+        :                                               check_result;
+    let lfx
+        = (check_result == NodeFilter.FILTER_REJECT) ? lf2
+        : (check_result == NodeFilter.FILTER_SKIP  ) ? lf8
+        : (check_result == NodeFilter.FILTER_ACCEPT) ? lf4
+        :                                              lf7;
+
+    log(caller+":%c WOT ("+reported_count+"/"+REPORTED_COUNT_MAX+"...) "+ npar.tagName +"["+npar.textContent.length+"c]."+ node.nodeName +"%c"+result+"%c"+details+"%c "+t_util.strip_CR_LF(t_util.ellipsis(node.textContent, 64))
+        ,        lbL                                                                                                                      ,lbR+lfx    ,lbL         ,lbR                                                          );
+}
+/*}}}*/
+    return check_result;
+};
+/*}}}*/
+/* ➔ EXPORT {{{*/
+/*_ t_wot_set_state {{{*/
+let t_wot_set_state = function(label,state)
+{
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
+
+return { name    : "dom_wot"
+    ,    logging : (state) => { DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state); return DOM_WOT_LOG; }
+    ,    tagging : (state) => { DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state); return DOM_WOT_TAG; }
+    ,    t_wot_IMPORT
+    ,    t_wot_set_state
+
+    ,    t_WOT_FOLD_EL
+    ,    t_WOT_SPLIT
+    ,    t_WOT_SPLIT_done : () => wot_split_done
+    /* DEBUG */
+    ,    htot             : () => pre_innerHTML_to_innerText()
+};
+/*}}}*/
+}());
+
+`
+.replace(/\\/g,"\\\\")
+)
+.replace(/%u/g,"\\u")
+;
+    /*}}}*/
+    pre.parentElement.open = true;
+};
+</script>
+<!--}}}-->
+<!--}}}-->
 <!-- CONTAINER POSITIONED CHILD {{{-->
 
 <div id   ="overflowing_container"
@@ -2945,9 +6108,11 @@ overflowing child
 </pre>
 </div>
 <!--}}}-->
-<!-- playground }}}-->
-
 <script>let snapshot_id;</script>
+
+<!--
+j:r javascript/doc_tools.html
+-->
 <!-- [doc_tools.html] {{{-->
 <!-- script {{{-->
 <script>
@@ -2966,6 +6131,81 @@ if(some_are_tagging) log("%c TAGGING: "+some_are_tagging, lbb+lbH+lf8);
         dom_util.del_el_class(document.getElementById("doc_tools"), "minimized");
         dom_util.del_el_class(document.getElementById("div_above"), "folded"   );
     }
+
+    build_svg_X();
+};
+/*}}}*/
+/*_ build_svg_X {{{*/
+let build_svg_X = function()
+{
+//logXXX("build_svg_X")
+    /* [svg_X] path {{{*/
+    let svg_X           = document.getElementById("svg_X");
+    if(!svg_X) return;
+    let d = ""
+        +"M443.6,387.1"
+        +"L312.4,255.4"
+        +"l131.5-130"
+        +"c5.4-5.4,5.4-14.2,0-19.6"
+        +"l-37.4-37.6"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        + ""
+        +"L256,197.8"
+        +"L124.9,68.3"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        +"L68,105.9"
+        +"c-5.4,5.4-5.4,14.2,0,19.6"
+        +"l131.5,130"
+        +"L68.4,387.1"
+        + " "
+        +"c-2.6,2.6-4.1,6.1-4.1,9.8"
+        +"c0,3.7,1.4,7.2,4.1,9.8"
+        +"l37.4,37.6"
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"L256,313.1"
+        +"l130.7,131.1"
+        + " "
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"l37.4-37.6"
+        +"c2.6-2.6,4.1-6.1,4.1-9.8"
+        +"C447.7,393.2,446.2,389.7,443.6,387.1"
+        +"z"
+        ;
+    svg_X.innerHTML     = "<path d='"+d+"'></path>";
+
+//console_dir("svg_X",svg_X)
+    /*}}}*/
+    /* [svg_32] CLONE {{{*/
+    let svg_32          = svg_X.cloneNode(true);
+    svg_32.style.width  = "32px";
+    svg_32.style.height = "32px";
+    svg_32.style.backgroundColor  = "rgba(255,000,255,0.3)";
+    svg_32.style.borderColor      = "rgba(255,000,255,0.5)";
+    svg_32.style.borderStyle      = "outset";
+    svg_32.style.borderRadius     = "32px";
+    svg_32.style.borderWidth      =  "2px";
+    svg_32.style.padding          =  "2px";
+    svg_32.style.transform        =  "rotate(45deg)";
+//console_dir("svg_32",svg_32)
+
+    svg_X.parentElement.appendChild(svg_32);
+    /*}}}*/
+    /* [data:image/svg+xml] parent div cursor {{{*/
+    let cursor
+//      = "url('stylesheet/svg_32.svg') 16 16, pointer";
+        = "url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnDQppZCAgICAgICAgICA9ICJzdmdfWCINCnhtbDpzcGFjZSAgID0gInByZXNlcnZlIg0KeG1sbnM6eGxpbmsgPSAiaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCnhtbG5zICAgICAgID0gImh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIg0KdmVyc2lvbiAgICAgPSAiMS4xIg0Kd2lkdGggICAgICAgPSAiMzJweCINCmhlaWdodCAgICAgID0gIjMycHgiDQp2aWV3Qm94ICAgICA9ICIwIDAgNTEyIDUxMiINCnN0eWxlICAgICAgID0gIg0KICAgIHdpZHRoICAgICAgICAgICAgOiAzMnB4Ow0KICAgIGhlaWdodCAgICAgICAgICAgOiAzMnB4Ow0KLyoNCiAgICBiYWNrZ3JvdW5kLWNvbG9yIDogI0YwRjQ7DQogICAgYm9yZGVyLWNvbG9yICAgICA6ICNGMEY4Ow0KICAgIGJvcmRlci1zdHlsZSAgICAgOiBvdXRzZXQ7DQogICAgYm9yZGVyLXJhZGl1cyAgICA6IDMycHg7DQogICAgYm9yZGVyLXdpZHRoICAgICA6IDJweDsNCiAgICBwYWRkaW5nICAgICAgICAgIDogMnB4Ow0KKi8NCiINCj4NCjxwYXRoIGQ9ICJNNDQzLjYsMzg3LjFMMzEyLjQsMjU1LjRsMTMxLjUtMTMwYzUuNC01LjQsNS40LTE0LjIsMC0xOS42bC0zNy40LTM3LjZjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDQNCiAgICBMMjU2LDE5Ny44TDEyNC45LDY4LjNjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDRMNjgsMTA1LjljLTUuNCw1LjQtNS40LDE0LjIsMCwxOS42bDEzMS41LDEzMEw2OC40LDM4Ny4xDQogICAgYy0yLjYsMi42LTQuMSw2LjEtNC4xLDkuOGMwLDMuNywxLjQsNy4yLDQuMSw5LjhsMzcuNCwzNy42YzIuNywyLjcsNi4yLDQuMSw5LjgsNC4xYzMuNSwwLDcuMS0xLjMsOS44LTQuMUwyNTYsMzEzLjFsMTMwLjcsMTMxLjENCiAgICBjMi43LDIuNyw2LjIsNC4xLDkuOCw0LjFjMy41LDAsNy4xLTEuMyw5LjgtNC4xbDM3LjQtMzcuNmMyLjYtMi42LDQuMS02LjEsNC4xLTkuOEM0NDcuNywzOTMuMiw0NDYuMiwzODkuNyw0NDMuNiwzODcuMXoiLz4NCjwvc3ZnPg=='), pointer";
+//console_dir("cursor", cursor)
+
+    svg_X.parentElement.style.cursor = cursor;
+
+//console_dir("svg_X.parentElement"             ,svg_X.parentElement             )
+//console_dir("svg_X.parentElement.style"       ,svg_X.parentElement.style       )
+//console_dir("svg_X.parentElement.style.cursor",svg_X.parentElement.style.cursor)
+    /*}}}*/
 };
 /*}}}*/
 /*_ check_modules_state {{{*/
@@ -2977,16 +6217,20 @@ let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LO
     /* COLLECT LOADED MODULES {{{*/
     if(!DOM_MODULES) {
         DOM_MODULES
-            = [   { name : "dom_loader" , module : dom_loader }
-                , { name : "dom_fly"    , module : dom_fly    }
-                , { name : "dom_prop"   , module : dom_prop   }
-                , { name : "dom_seek"   , module : dom_seek   }
-                , { name : "dom_share"  , module : dom_share  }
-                , { name : "dom_select" , module : dom_select }
-                , { name : "dom_sticky" , module : dom_sticky }
-                , { name : "dom_store"  , module : dom_store  }
-                , { name : "dom_util"   , module : dom_util   }
-                , { name : "dom_tools"  , module : dom_tools  }
+            = [   { name : "dom_loader"  , module : dom_loader  } /* 00 */
+                , { name : "dom_log"     , module : dom_log     } /* 06 */
+                , { name : "dom_util"    , module : dom_util    } /* 07 */
+                , { name : "dom_details" , module : dom_details } /* 07 */
+                , { name : "dom_i18n"    , module : dom_i18n    } /* 08 */
+                , { name : "dom_prop"    , module : dom_prop    } /* 09 */
+                , { name : "dom_store"   , module : dom_store   } /* 10 */
+                , { name : "dom_fly"     , module : dom_fly     } /* 11 */
+                , { name : "dom_select"  , module : dom_select  } /* 13 */
+                , { name : "dom_wot"     , module : dom_wot     } /* 13 */
+                , { name : "dom_sticky"  , module : dom_sticky  } /* 17 */
+                , { name : "dom_seek"    , module : dom_seek    } /* 18 */
+                , { name : "dom_share"   , module : dom_share   } /* 19 */
+                , { name : "dom_tools"   , module : dom_tools   } /* 23 */
             ];
 
     }
@@ -3071,8 +6315,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(value) { if(value != undefined) DOM_LOADER_LOG = value; dom_store.t_store_set_value("DOM_LOADER_LOG", DOM_LOADER_LOG); return DOM_LOADER_LOG; }
-        , tagging : function(value) { if(value != undefined) DOM_LOADER_TAG = value; dom_store.t_store_set_value("DOM_LOADER_TAG", DOM_LOADER_TAG); return DOM_LOADER_TAG; }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 
@@ -3083,15 +6327,14 @@ if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 /*}}}*/
 </script>
 <!--}}}-->
-<span id="doc_tools_html_tag" style="display:none">doc_tools_html (200318:16h)</span>
 <!--      doc_tools {{{-->
-<div  id="doc_tools" title="doc_tools" class="round_el doc_tool user_select_none minimized">
+<div  id="doc_tools" title="doc_tools_html_tag (210923:21h:09)" class="round_el doc_tool user_select_none minimized">
     <!-- STYLE {{{-->
     <style>
 /* doc_tools {{{*/
 #doc_tools {
     user-select      : none;
-    position         : fixed; bottom:0.2em; right:5%;
+    position         : fixed; bottom:0.2em; right:15%;
     margin           : 0;
     z-index          : 101; /* above dom_tools */
     border           : none                  !important;
@@ -3195,7 +6438,7 @@ background       : rgba(255,255,255,0.1);
     #div_bellow {
         margin-top       : 0;
         border-radius    : 0   0   1em 1em;
-        padding          : 0.5em 1em 0.5em 1em;
+        padding          : 0.5em 2em !important;
     }
     #div_bellow>a {
         font-size : 120%;
@@ -3205,10 +6448,10 @@ background       : rgba(255,255,255,0.1);
     <!--}}}-->
     <!-- SCRIPT {{{-->
     <script>
-        /* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+        /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
         "use strict";
 /* JSHint {{{*/
-/* globals dom_util, log, lbH, lf2, lf3, lf4, lf6, lf7 */
+/* globals dom_util, dom_i18n, log, lbH, lf2, lf3, lf4, lf6, lf7 */
 /* exported toggle_this */
 /*
 :?script>?+,/script>/-y *
@@ -3314,31 +6557,39 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
             <div id="div_logging" onclick='dom_loader.toggle_module_state(event.target);'
                 > <!--{{{-->
                 <span style="pointer-events:none;">logging</span>
-                <a title="logging dom_loader" class="em1 small">LOADER</a>
-                <a title="logging dom_fly"    class="em2 small">fly   </a>
-                <a title="logging dom_prop"   class="em3 small">prop  </a>
-                <a title="logging dom_seek"   class="em4 small">seek  </a>
-                <a title="logging dom_share"  class="em5 small">share </a>
-                <a title="logging dom_select" class="em4 small">select</a>
-                <a title="logging dom_sticky" class="em6 small">sticky</a>
-                <a title="logging dom_store"  class="em7 small">store </a>
-                <a title="logging dom_util"   class="em8 small">util  </a>
-                <a title="logging dom_tools"  class="em9 small">TOOLS </a>
+                <a title="logging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="logging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="logging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="logging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="logging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="logging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="logging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="logging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="logging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="logging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
+                <a title="logging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="logging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="logging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
             <div id="div_tagging" onclick='dom_loader.toggle_module_state(event.target);'
                 > <!--{{{-->
                 <span style="pointer-events:none;">tagging</span>
-                <a title="tagging dom_loader" class="em1 small">LOADER</a>
-                <a title="tagging dom_fly"    class="em2 small">fly   </a>
-                <a title="tagging dom_prop"   class="em3 small">prop  </a>
-                <a title="tagging dom_seek"   class="em4 small">seek  </a>
-                <a title="tagging dom_share"  class="em5 small">share </a>
-                <a title="tagging dom_select" class="em4 small">select</a>
-                <a title="tagging dom_sticky" class="em6 small">sticky</a>
-                <a title="tagging dom_store"  class="em7 small">store </a>
-                <a title="tagging dom_util"   class="em8 small">util  </a>
-                <a title="tagging dom_tools"  class="em9 small">TOOLS </a>
+                <a title="tagging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="tagging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="tagging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="tagging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="tagging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="tagging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="tagging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="tagging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="tagging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="tagging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
+                <a title="tagging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="tagging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="tagging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="tagging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
         </div>
@@ -3347,11 +6598,16 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
     <div id     ="div_bellow"
          onclick='if(event.target == this) toggle_this(event,this);'
          >
-            <a title="page top"            class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
-            <a title="page bottom"         class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
-            <a title="dump csv and sticky" class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
-            <a title="reset"               class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
-            <a title="reset & reload"      class="em2 action" onclick='document.location.reload();'                 >&#8634;</a>
+<!--{{{
+            <a id="details_close" title="details_close"          class="em5 action" onclick='dom_details.details_close_opened();     '>                         <label>▲</label></a>
+            <a id="details_open"  title="details_open"           class="em5 action" onclick='dom_details.details_open_closed ();     '>                         <label>▼</label></a>
+            <a id="details_radio" title="details radio behavior" class="em5 action" onclick='dom_details.details_radio_toggle(event);'><input type="checkbox" /><label>&#x25B6;</label></a>
+}}}-->
+            <a                    title="page top"               class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
+            <a                    title="page bottom"            class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
+            <a                    title="dump csv and sticky"    class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
+            <a                    title="reset"                  class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
+            <a                    title="reset & reload"         class="em2 action" onclick='document.location.reload();'                 >&#x21BB;</a>
     </div>
     <!--}}}-->
 </div>
@@ -3359,7 +6615,6 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
 <!--}}}-->
 
  </body>
-
  <!-- check_load_html_results {{{-->
  <script>
     function check_load_html_results()
@@ -3373,8 +6628,6 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
         const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
         const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
 
-        let missing_ids  = "";
-        let id;
         /*}}}*/
         /*  check_missing_id {{{*/
         let check_missing_id = function(id)
@@ -3392,10 +6645,13 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
                 :    document   .querySelector("#"+id);
 
             if(!el ) return SKO+" #"+id+"\n";
-            console.log("%c"+SOK+" %c"+el.textContent,lbH+lf8,lf8);
+//console.log("%c"+SOK+" %c"+el.textContent,lbH+lf8,lf8);
             return "";
         };
         /*}}}*/
+
+        let missing_ids = "";
+        let id;
 
         id =     "dom_tools_html_tag";                missing_ids +=     check_missing_id(id) ;
         id =     "dom_grid_html_tag" ;                missing_ids +=     check_missing_id(id) ;
@@ -3403,25 +6659,26 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
         if(typeof DOM_DATA_JS_TAG    === 'undefined') missing_ids += "\n DOM_DATA_JS_TAG"     ; /* 05 */
         if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ; /* 06 */
         if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ; /* 07 */
-        if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ; /* 08 */
-        if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ; /* 09 */
-        if(typeof DOM_FLY_JS_TAG     === 'undefined') missing_ids += "\n DOM_FLY_JS_TAG"      ; /* 10 */
+        if(typeof DOM_I18N_JS_TAG    === 'undefined') missing_ids += "\n DOM_I18N_JS_TAG"     ; /* 08 */
+        if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ; /* 09 */
+        if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ; /* 10 */
+        if(typeof DOM_FLY_JS_TAG     === 'undefined') missing_ids += "\n DOM_FLY_JS_TAG"      ; /* 11 */
 
-        if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ; /* 11 */
-        if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ; /* 12 */
-        if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ; /* 13 */
+        if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ; /* 12 */
+        if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ; /* 13 */
+        if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ; /* 14 */
 
-        if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ; /* 14 */
-        if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ; /* 15 */
-        if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 16 */
-        if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 17 */
-        if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 18 */
+        if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ; /* 15 */
+        if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ; /* 16 */
+        if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 17 */
+        if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 18 */
+        if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 19 */
 
-        if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 19 */
-        if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 20 */
+        if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 20 */
+        if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 21 */
 
-        if(typeof DOM_IPC_JS_TAG     === 'undefined') missing_ids += "\n DOM_IPC_JS_TAG"      ; /* 21 */
-        if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ; /* 22 */
+        if(typeof DOM_IPC_JS_TAG     === 'undefined') missing_ids += "\n DOM_IPC_JS_TAG"      ; /* 22 */
+        if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ; /* 23 */
 
         /* print missing_ids {{{*/
         if(missing_ids) {
@@ -3435,13 +6692,12 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
     setTimeout(check_load_html_results, 500);
  </script>
  <!--}}}-->
-
 </html>
-<!--
+<!--{{{
 EMBEDED:
  - dom_tools_html
  - dom_grid_html
 
 vim: sw=4
--->
+}}}-->
 

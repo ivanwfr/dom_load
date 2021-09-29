@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html>
+<!--{{{-->
+<script>
+  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (210928:19h:07)";
+  DOM_LOAD_PANELS   = "";
+</script>
+<!--}}}-->
+ <head>
+  <title>RTabs screenshots</title>
+<!-- TODO - LOAD RESOURCES ONLINE {{{
+/\v"(javascripts*|stylesheets*|images*)
+  <base href="https://remotetabs.com/dev/rtabs/">
+}}}-->
+  <!-- META {{{ -->
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
+
+
+  <!-- }}} -->
+  <!-- [link] CSS {{{-->
+  <link id='grid_container' type='text/css' href='stylesheet/grid_container.css' rel='stylesheet'/>
+  <link id='ecc_css'        type='text/css' href='stylesheet/ecc.css'            rel='stylesheet'/>
+  <link id='index_css'      type='text/css' href='stylesheet/index.css'          rel='stylesheet'/>
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"      rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"       rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"       rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css"     rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"       rel="stylesheet"/>
+  <!--}}}-->
+ </head>
+ <body onload='set_title(); screenshots_IMPORT(); init_doc_tools();'>
+<!-- links {{{-->
+<style>
+#div_links {
+ box-shadow     : none               !important;
+ background     : none               !important;
+ position       : absolute           !important;
+ top            : 8px                !important;
+ left           : 50%                !important;
+  padding       : 0                  !important;
+ font-size      : 32px               !important;
+ color          : #000               !important;
+ transform      : translate(-50%, 0) !important;
+ white-space    : nowrap             !important;
+    text-align  : center;
+vertical-align  : middle;
+}
+#div_links>* {
+  border-radius     : 48px         !important;
+  display           : inline-block !important;
+  margin            : 0 5px 0 0    !important;
+  padding           : 0            !important;
+    width           : 50px         !important;
+min-width           : 50px         !important;
+    height          : 50px         !important;
+min-height          : 50px         !important;
+    text-align      : center       !important;
+    text-decoration : none !important;
+}
+#div_links>*              { box-shadow : 1px 1px 4px #888 inset !important; }
+#div_links>*              { background : rgba(255,255,255,0.2)  !important; }
+
+/*{{{
+#div_links a              { background : rgba(255,255,255,1.0)  !important; }
+}}}*/
+#div_links a:hover        { background : rgba(221,221,255,1.0)  !important; }
+#div_links span           { background : rgba(221,221,255,0.9)  !important; }
+
+#div_links a:hover        { text-shadow: 1px 1px 0 #FFF         !important; }
+
+#div_links a:visited      { color      : unset                            ; }
+#div_links a:hover        { color      : #111                             ; }
+#div_links span           { color      : #111                             ; }
+
+#div_links span           { text-shadow: 1px 1px 0 #FFF         !important; }
+</style>
+
+<div id="div_links">
+ <span class="fg1" target="dom_screenshots" href="https://remotetabs.com/dev/rtabs/screenshots.html" title="RTabs animation"> &#x25B6;  </span>
+ <a    class="fg2" target="dom_intro"       href="https://remotetabs.com/dev/rtabs/intro.html"       title="RTabs Extension"> &#x1F30F; </a>
+ <a    class="fg3" target="app_android"     href="https://remotetabs.com/index.html"                 title="RTabs Android"  > &#x1F4F1; </a>
+ <a    class="fg4" target="ivan_wellesz"    href="https://ivanw.pagesperso-orange.fr"                title="Ivan WELLESZ"   > &#x2302;  </a>
+ <a    class="fg5" 
+ title="Bookmarklet à activer sur des pages en ligne
+
+...peut-être copié ou glissé dans les favoris"
+ href="javascript:(function(){var%20s=document.createElement('script'); s.id='dom_load'; s.type='text/javascript'; s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js'; s.title='dom_load'; document.body.appendChild(s); })();"
+ onclick="confirm(this.title); return false;"
+ ><i style="font-size:13px; vertical-align:middle;">RTabs</i></a>
+</div>
+</div>
+<!--}}}-->
+
+ <!-- HTML .. [screenshots] [Grim Tale] {{{-->
+<h1 class='title'>RTabs screenshots</h1>
+<!-- contenteditable {{{-->
+<pre contenteditable
+style="
+float:right;
+border:solid white 3px;
+background: #A0A0A0A0;
+width:10em;
+min-height:10em;
+height:auto;
+font-size: 12px !important;
+text-align:left;
+">line  1
+line  2
+line  3
+line  4
+line  5
+line  6
+line  7
+line  8
+line  9
+line 10</pre>
+<!--}}}-->
+  <!-- screenshots {{{-->
+  <div class='grid_container'
+       style="margin-top:5em;"
+       onclick='
+       let youtube_div            = document.getElementById("youtube_div");
+       if( youtube_div.className != "stopped")
+       {
+           let youtube_player     = document.getElementById("youtube_player");
+           youtube_player.src     = "https://www.youtube.com/embed/k0wrBuT2gJE?autohide=1";
+           youtube_div.className  = "stopped";
+       }
+       '>
+
+<!-- youtube_div {{{-->
+<div id="youtube_div"
+     class="stopped"
+     onclick='
+     if( this.className == "stopped") {
+         this.className = "expanded";
+         if( event.stopPropagation ) event.stopPropagation(); // would call grid_container.onclick
+     }
+     '>
+
+   <iframe
+       id              = "youtube_player"
+       style           = "width:100%; height:100%;"
+       data-src        = "https://www.youtube.com/embed/k0wrBuT2gJE?autohide=1"
+       frameborder     = "0"
+       allowfullscreen = ""
+       allow           = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+       >
+   </iframe>
+</div>
+<!--}}}-->
+   <div> <em title="SELECTING WORDS"    >Selecting words       </em> <br> <img class="gifanim" data-gifanim-duration="15000" data-src="GIF_ANIM/1_selecting_words.gif"     /> </div>
+   <div> <em title="BROWSING WORDS"     >Browsing words        </em> <br> <img class="gifanim" data-gifanim-duration="19000" data-src="GIF_ANIM/2_browsing_words.gif"      /> </div>
+                                        
+   <div> <em title="BROWSING PARAGRAPHS">Browsing paragraphs   </em> <br> <img class="gifanim" data-gifanim-duration="20000" data-src="GIF_ANIM/3_browsing_paragraphs.gif" /> </div>
+   <div> <em title="INSERTING NOTES"    >Inserting notes       </em> <br> <img class="gifanim" data-gifanim-duration="19000" data-src="GIF_ANIM/4_inserting_notes.gif"     /> </div>
+   <div> <em title="PATTERNS BAG TOOL"  >Patterns bag tool     </em> <br> <img class="gifanim" data-gifanim-duration="19000" data-src="GIF_ANIM/6_pat_bag.gif"             /> </div>
+   <div> <em title="GREEN BLUE RED BAGS">Green, Blue, Red  bags</em> <br> <img class="gifanim" data-gifanim-duration="39000" data-src="GIF_ANIM/7_pat_bag_rot.gif"         /> </div>
+   <div> <em title="DEV-CONSOLE LOGS"   >Dev console logs      </em> <br> <img class="gifanim" data-gifanim-duration="25000" data-src="GIF_ANIM/5_dev_console_logs.gif"    /> </div>
+
+<!-- {{{
+   <div> <em>browsing paragraphs </em> <br> <img class="gifanim" data-gifanim-duration="20000"; data-src="GIF_ANIM/3_browsing_paragraphs.gif" /> </div>
+   <div> <em>inserting notes     </em> <br> <img class="gifanim" data-gifanim-duration="30000"; data-src="GIF_ANIM/4_inserting_notes.gif"     /> </div>
+   <div> <em>dev console logs    </em> <br> <img class="gifanim" data-gifanim-duration="30000"; data-src="GIF_ANIM/5_dev_console_logs.gif"    /> </div>
+}}}-->
+
+  </div>
+  <!--}}}-->
+<!-- style {{{-->
+<style>
+ body { font-size : 23px; }
+.sample {
+/*{{{
+    background-color:#F004;
+}}}*/
+    outline : 1px dotted #888;
+}
+#numbers      {
+    float        : left;
+    font-size    : 75%;
+    color        : #CCC;
+    line-height  : 2em;
+    text-align   : center;
+}
+#numbers * {
+    cursor     : pointer !important;
+    padding    : 0 0 0 1em;
+    min-width  : 2em;
+}
+#numbers>*:hover {
+    outline      : 1px solid black;
+}
+</style>
+<!--
+j0"qy$
+ebcwspan class="sample"f/ cwspann
+/\v<(wife|rich|man|daughter|mother|God|grave|fell)
+-->
+<!--}}}-->
+   <div class="grimm_tale" style="background:rgba(216,255,216,0.8)">
+   <!-- Cinderella {{{-->
+   <h1 id="cinderella" align="center">Cinderella
+
+       <a  style   = "font-size:100%; float:right;"
+           title   = "Tale Top"
+           href    = "#cinderella"
+           onclick = 'if((typeof t_gutter_drag_hotspot_to_LAST_WINDOW_XY != "undefined")) t_gutter_drag_hotspot_to_LAST_WINDOW_XY();'
+           >&#x1F51D;</a>
+       <a
+           style   = "float:right; cursor:pointer;"
+           title="reload"
+           class="em2"
+           onclick='document.location.reload();'
+           >&#x2699;</a>
+
+       <div style="float:left; font-size:50%; color:#CCC; text-align:center; line-height:2em;">
+           <span>man      </span>  <span>rich  </span>  <span>wife   </span><br>
+           <span>daughter </span>  <span>God   </span>  <span>mother </span><br>
+           <span>fell     </span>  <span>fel   </span>  <span>grave </span>
+       </div>
+
+       <div id="numbers">
+           <span>01</span> <span>02</span> <span>03</span> <span>04</span>  <span>05</span><br>
+           <span>06</span> <span>07</span> <span>08</span> <span>09</span>  <span>10</span>
+       </div>
+
+   </h1>
+   <h2 align="center">Fairy tale by The Brothers Grimm</h2>
+   <!--}}}-->
+       <!--{{{-->
+       <div>
+           <p>The <span class="sample">wife</span> of a <span class="sample">rich</span> <span class="sample">man</span> fell sick, and as she felt that her end was drawing   near, she called her only <span class="sample">daughter</span> to her bedside and said, "Dear child, be   good and pious, and then the good <span class="sample">God</span> will always protect thee, and I will   look down on thee from heaven and be near thee."  Thereupon she closed her   eyes and departed.  Every day the maiden went out to her <span class="sample">mother</span>'s <span class="sample">grave</span> and   wept, and she remained pious and good.  When winter came the snow spread   a white sheet over the grave, and when the spring sun had drawn it off again,   the man had taken another wife. </p>
+           <p> The woman had brought two daughters into the house with her, who were   beautiful and fair of face, but vile and black of heart.  Now began a bad time   for the poor step-child.  "Is the stupid goose to sit in the parlour with us?" said   they.  "He who wants to eat bread must earn it; out with the kitchen-wench."    They took her pretty clothes away from her, put an old grey bedgown on her,   and gave her wooden shoes.  "Just look at the proud princess, how decked out   she is!" they cried, and laughed, and led her into the kitchen.  There she had to   do hard work from morning till night, get up before daybreak, carry water, light   fires, cook and wash.  Besides this, the sisters did her every imaginable injury   they mocked her and emptied her peas and lentils into the ashes, so that she was  forced to sit and pick them out again.  In the evening when she had worked till   she was weary she had no bed to go to, but had to sleep by the fireside in the   ashes.  And as on that account she always looked dusty and dirty, they called   her Cinderella.  It happened that the father was once going to the fair, and he  asked his two step-daughters what he should bring back for them.  "Beautiful   dresses," said one, "Pearls and jewels," said the second.  "And thou, Cinderella,"   said he, "what wilt thou have?"  "Father, break off for me the first branch which   knocks against your hat on your way home."  So he bought beautiful dresses,   pearls and jewels for his two step-daughters, and on his way home, as he was   riding through a green thicket, a hazel twig brushed against him and knocked   off his hat.  Then he broke off the branch and took it with him.  When he reached   home he gave his step-daughters the things which they had wished for, and to   Cinderella he gave the branch from the hazel-bush.  Cinderella thanked him, went   to her mother's grave and planted the branch on it, and wept so much that the tears  fell down on it and watered it.  It grew, however, and became a handsome tree.   Thrice a day Cinderella went and sat beneath it, and wept and prayed, and a   little white bird always came on the tree, and if Cinderella expressed a wish,   the bird threw down to her what she had wished for. </p>
+
+           <p> It happened, however, that the King appointed a festival which was to last three   days, and to which all the beautiful young girls in the country were invited, in   order that his son might choose himself a bride.  When the two step-sisters   heard that they too were to appear among the number, they were delighted,   called Cinderella and said, "Comb our hair for us, brush our shoes and fasten   our buckles, for we are going to the festival at the King's palace."  Cinderella   obeyed, but wept, because she too would have liked to go with them to the   dance, and begged her step-mother to allow her to do so.  "Thou go, Cinderella!"   said she; "Thou art dusty and dirty, and wouldst go to the festival?  Thou hast   no clothes and shoes, and yet wouldst dance!"  As, however, Cinderella went on   asking, the step-mother at last said, "I have emptied a dish of lentils into the ashes   for thee, if thou hast picked them out again in two hours, thou shalt go with us."    The maiden went through the back-door into the garden, and called, "You tame   pigeons, you turtle-doves, and all you birds beneath the sky, come and help me to pick </p>
+           <blockquote> "The good into the pot,<br>
+               The bad into the crop." </blockquote>
+           <p> Then two white pigeons came in by the kitchen-window, and afterwards the   turtle-doves, and at last all the birds beneath the sky, came whirring and   crowding in, and alighted amongst the ashes.  And the pigeons nodded with   their heads and began pick, pick, pick, pick, and the rest began also pick, pick,   pick, pick, and gathered all the good grains into the dish.  Hardly had one hour   passed before they had finished, and all flew out again.  Then the girl took the   dish to her step-mother, and was glad, and believed that now she would be allowed   to go with them to the festival.  But the step-mother said, "No, Cinderella, thou hast   no clothes and thou canst not dance; thou wouldst only be laughed at."  And as  Cinderella wept at this, the step-mother said, "If thou canst pick two dishes of   lentils out of the ashes for me in one hour, thou shalt go with us."  And she thought   to herself, "That she most certainly cannot do."  When the step-mother had emptied   the two dishes of lentils amongst the ashes, the maiden went through the back-door   into the garden and cried, "You tame pigeons, you turtle-doves, and all you birds   under heaven, come and help me to pick </p>
+           <blockquote> "The good into the pot,<br>
+               The bad into the crop." </blockquote>
+           Then two white pigeons came in by the kitchen-window, and afterwards the   turtle-doves, and at length all the birds beneath the sky, came whirring and   crowding in, and alighted amongst the ashes.  And the doves nodded with   their heads and began pick, pick, pick, pick, and the others began also pick,   pick, pick, pick, and gathered all the good seeds into the dishes, and before   half an hour was over they had already finished, and all flew out again.  Then   the maiden carried the dishes to the step-mother and was delighted, and   believed that she might now go with them to the festival.  But the step-mother   said, "All this will not help thee; thou goest not with us, for thou hast no clothes   and canst not dance; we should be ashamed of thee!"  On this she turned her  back on Cinderella, and hurried away with her two proud daughters.
+           <p> As no one was now at home, Cinderella went to her mother's grave beneath the   hazel-tree, and cried, </p>
+           <blockquote> "Shiver and quiver, little tree,<br>
+               Silver and gold throw down over me." </blockquote>
+           Then the bird threw a gold and silver dress down to her, and slippers embroidered   with silk and silver.  She put on the dress with all speed, and went to the festival.    Her step-sisters and the step-mother however did not know her, and thought she   must be a foreign princess, for she looked so beautiful in the golden dress.  They   never once thought of Cinderella, and believed that she was sitting at home in the   dirt, picking lentils out of the ashes.  The prince went to meet her, took her by the   hand and danced with her.  He would dance with no other maiden, and never left   loose of her hand, and if any one else came to invite her, he said, "This is my  partner."
+           <p> She danced till it was evening, and then she wanted to go home.  But the King's   son said, "I will go with thee and bear thee company," for he wished to see to   whom the beautiful maiden belonged.  She escaped from him, however, and   sprang into the pigeon-house.  The King's son waited until her father came, and  then he told him that the stranger maiden had leapt into the pigeon-house.  The   old man thought, "Can it be Cinderella?" and they had to bring him an axe and   a pickaxe that he might hew the pigeon-house to pieces, but no one was inside it.    And when they got home Cinderella lay in her dirty clothes among the ashes, and  a dim little oil-lamp was burning on the mantle-piece, for Cinderella had jumped   quickly down from the back of the pigeon-house and had run to the little hazel-tree,   and there she had taken off her beautiful clothes and laid them on the grave, and the   bird had taken them away again, and then she had placed herself in the kitchen   amongst the ashes in her grey gown. </p>
+           <p> Next day when the festival began afresh, and her parents and the step-sisters had   gone once more, Cinderella went to the hazel-tree and said </p>
+           <blockquote> "Shiver and quiver, my little tree,<br>
+               Silver and gold throw down over me." </blockquote>
+           Then the bird threw down a much more beautiful dress than on the   preceding day.  And when Cinderella appeared at the festival in this dress,   every one was astonished at her beauty.  The King's son had waited until   she came, and instantly took her by the hand and danced with no one but   her.  When others came and invited her, he said, "She is my partner."    When evening came she wished to leave, and the King's son followed her   and wanted to see into which house she went.  But she sprang away from   him, and into the garden behind the house.  Therein stood a beautiful tall   tree on which hung the most magnificent pears.  She clambered so nimbly  between the branches like a squirrel, that the King's son did not know where   she was gone.  He waited until her father came, and said to him, "The stranger-  maiden has escaped from me, and I believe she has climbed up the pear-tree."    The father thought, "Can it be Cinderella?" and had an axe brought and cut   the tree down, but no one was on it.  And when they got into the kitchen,   Cinderella lay there amongst the ashes, as usual, for she had jumped down   on the other side of the tree, had taken the beautiful dress to the bird on the   little hazel-tree, and put on her grey gown.
+           <p> On the third day, when the parents and sisters had gone away, Cinderella   went once more to her mother's grave and said to the little tree </p>
+           <blockquote> "Shiver and quiver, my little tree,<br>
+               Silver and gold throw down over me." </blockquote>
+           And now the bird threw down to her a dress which was more splendid and   magnificent than any she had yet had, and the slippers were golden.  And   when she went to the festival in the dress, no one knew how to speak for   astonishment.  The King's son danced with her only, and if any one invited   her to dance, he said, "She is my partner."
+           <p> When evening came, Cinderella wished to leave, and the King's son was   anxious to go with her, but she escaped from him so quickly that he could   not follow her.  The King's son had, however, used a stratagem, and had   caused the whole staircase to be smeared with pitch, and there, when she   ran down, had the maiden's left slipper remained sticking.  The King's son   picked it up, and it was small and dainty, and all golden.  Next morning,   he went with it to the father, and said to him, "No one shall be my wife   but she whose foot this golden slipper fits."  Then were the two sisters   glad, for they had pretty feet.  The eldest went with the shoe into her  room and wanted to try it on, and her mother stood by.  But she could   not get her big toe into it, and the shoe was too small for her.  Then her   mother gave her a knife and said, "Cut the toe off; when thou art Queen   thou wilt have no more need to go on foot."  The maiden cut the toe off,   forced the foot into the shoe, swallowed the pain, and went out to the   King's son.  Then he took her on his horse as his bride and rode away   with her.  They were, however, obliged to pass the grave, and there, on the   hazel-tree, sat the two pigeons and cried, </p>
+           <blockquote> "Turn and peep, turn and peep,<br>
+               There's blood within the shoe,<br>
+               The shoe it is too small for her,<br>
+               The true bride waits for you." </blockquote>
+           Then he looked at her foot and saw how the blood was streaming  from it.  He turned his horse round and took the false bride home   again, and said she was not the true one, and that the other sister   was to put the shoe on.  Then this one went into her chamber and   got her toes safely into the shoe, but her heel was too large.  So her   mother gave her a knife and said, "Cut a bit off thy heel; when thou   art Queen thou wilt have no more need to go on foot."  The maiden   cut a bit off her heel, forced her foot into the shoe, swallowed the pain,   and went out to the King's son.  He took her on his horse as his bride,   and rode away with her, but when they passed by the hazel-tree, two   little pigeons sat on it and cried,
+           <blockquote> "Turn and peep, turn and peep,<br>
+               There's blood within the shoe,<br>
+               The shoe it is too small for her,<br>
+               The true bride waits for you." </blockquote>
+           He looked down at her foot and saw how the blood was running out of   her shoe, and how it had stained her white stocking.  Then he turned his   horse and took the false bride home again.  "This also is not the right one,"   said he, "have you no other daughter?"  "No," said the man, "There is still   a little stunted kitchen-wench which my late wife left behind her, but she   cannot possibly be the bride."  The King's son said he was to send her up   to him; but the mother answered, "Oh no, she is much too dirty, she cannot   show herself!"  He absolutely insisted on it, and Cinderella had to be called.    She first washed her hands and face clean, and then went and bowed down  before the King's son, who gave her the golden shoe.  Then she seated herself   on a stool, drew her foot out of the heavy wooden shoe, and put it into the   slipper, which fitted like a glove.  And when she rose up and the King's son   looked at her face he recognized the beautiful maiden who had danced with  him and cried, "That is the true bride!"  The step-mother and the two sisters   were terrified and became pale with rage; he, however, took Cinderella on   his horse and rode away with her.  As they passed by the hazel-tree, the two   white doves cried,
+           <blockquote> "Turn and peep, turn and peep,<br>
+               No blood is in the shoe,<br>
+               The shoe is not too small for her,<br>
+               The true bride rides with you," </blockquote>
+           and when they had cried that, the two came flying down and placed   themselves on Cinderella's shoulders, one on the right, the other on   the left, and remained sitting there.
+           <p> When the wedding with the King's son had to be celebrated, the two false   sisters came and wanted to get into favour with Cinderella and share her   good fortune.  When the betrothed couple went to church, the elder was at   the right side and the younger at the left, and the pigeons pecked out one   eye of each of them.  Afterwards as they came back, the elder was at the   left, and the younger at the right, and then the pigeons pecked out the other   eye of each.  And thus, for their wickedness and falsehood, they were punished   with blindness as long as they lived. </p>
+           <p> From Jacob and Wilhelm Grimm, <em>Household Tales</em>, trans. Margaret Hunt  (London:  George Bell, 1884)        </p>
+       </div>
+
+
+       <!--}}}-->
+   </div>
+   <div class="grimm_tale" style="background:rgba(255,216,216,0.8)">
+   <!-- Little Red-Cap {{{-->
+   <h1 id="little_red_cap" align="center">Little Red-Cap
+       <a
+           href    = ""
+           id      = "RELOAD"
+           style   = "font-size:100%; float:right;"
+           title   = "reload"
+           onclick = 'document.location.reload();'
+           >&#x267B;</a>
+       <a
+           href    = "#little_red_cap"
+           style   = "font-size:100%; float:right;"
+           title   = "Tale Top"
+           onclick = 'if((typeof t_gutter_drag_hotspot_to_LAST_WINDOW_XY != "undefined")) t_gutter_drag_hotspot_to_LAST_WINDOW_XY();'
+           >&#x1F51D;</a>
+
+       <div style="float:left; font-size:50%; color:#CCC; text-align:left; line-height:2em;">
+           <span>girl</span>  <span>grandmother</span>  <span>cake</span><br>
+       </div>
+
+   </h1>
+   <h2 align="center">Fairy tale by The Brothers Grimm</h2>
+   <!--}}}-->
+       <!--{{{-->
+       <div>
+           <p> Once upon a time there was a dear little girl who was loved by every one who looked at her, but most of all by her grandmother, and there was nothing that she would not have given to the child.  Once she gave her a little cap of red velvet, which suited her so well that she would never wear anything else.  So she was always called little red-cap.  </p>
+           <p> One day her mother said to her, come, little red-cap, here is a piece of cake and a bottle of wine.  Take them to your grandmother, she is ill and weak, and they will do her good.  Set out before it gets hot, and when you are going, walk nicely and quietly and do not run off the path, or you may fall and break the bottle, and then your grandmother will get nothing.  And when you go into her room, don't forget to say, good-morning, and don't peep into every corner before you do it.  </p>
+           <p>I will take great care, said little red-cap to her mother, and gave her hand on it.  </p>
+           <p>The grandmother lived out in the wood, half a league from the village, and just as little red-cap entered the wood, a wolf met her.  Red-cap did not know what a wicked creature he was, and was not at all afraid of him.  </p>
+<pre>
+Good-day, little red-cap, said he.
+Thank you kindly, wolf.
+Whither away so early, little red-cap?
+To my grandmother's.
+What have you got in your apron?
+Cake and wine.  Yesterday was baking-day, so poor sick
+grandmother is to have something good, to make her stronger.
+Where does your grandmother live, little red-cap?
+A good quarter of a league farther on in the wood.  Her house
+stands under the three large oak-trees, the nut-trees are just
+below.  You surely must know it, replied little red-cap.
+</pre>
+           <p>The wolf thought to himself, what a tender young creature.  What a nice plump mouthful, she will be better to eat than the old woman.  I must act craftily, so as to catch both.  So he walked for a short time by the side of little red-cap, and then he said, </p>
+<pre>
+see little red-cap, how pretty the flowers are about here.
+Why do you not look round.  I believe, too, that you do not
+hear how sweetly the little birds are singing.  You walk gravely
+along as if you were going to school, while everything else out
+here in the wood is merry.
+</pre>
+           <p>Little red-cap raised her eyes, and when she saw the sunbeams dancing here and there through the trees, and pretty flowers growing everywhere, she thought, suppose I take grandmother a fresh nosegay.  That would please her too.  It is so early in the day that I shall still get there in good time.  And so she ran from the path into the wood to look for flowers.  And whenever she had picked one, she fancied that she saw a still prettier one farther on, and ran after it, and so got deeper and deeper into the wood.  </p>
+           <p>Meanwhile the wolf ran straight to the grandmother's house and knocked at the door.  </p>
+<pre>
+Who is there?
+Little red-cap, replied the wolf.  She is bringing cake and
+wine.  Open the door.
+Lift the latch, called out the grandmother, I am too weak, and
+cannot get up.
+</pre>
+           <p>The wolf lifted the latch, the door sprang open, and without saying a word he went straight to the grandmother's bed, and devoured her.  Then he put on her clothes, dressed himself in her cap, laid himself in bed and drew the curtains.  </p>
+           <p>Little red-cap, however, had been running about picking flowers, and when she had gathered so many that she could carry no more, she remembered her grandmother, and set out on the way to her.  </p>
+           <p>She was surprised to find the cottage-door standing open, and when she went into the room, she had such a strange feeling that she said to herself, oh dear, how uneasy I feel to-day, and at other times I like being with grandmother so much.  She called out, good morning, but received no answer.  So she went to the bed and drew back the curtains.  There lay her grandmother with her cap pulled far over her face, and looking very strange.  </p>
+<pre>
+Oh, grandmother, she said, what big ears you have.
+The better to hear you with, my child, was the reply.
+But, grandmother, what big eyes you have, she said.
+The better to see you with, my dear.
+But, grandmother, what large hands you have.
+The better to hug you with.
+Oh, but, grandmother, what a terrible big mouth you have.
+The better to eat you with.
+</pre>
+           <p>And scarcely had the wolf said this, than with one bound he was out of bed and swallowed up red-cap.  </p>
+           <p>When the wolf had appeased his appetite, he lay down again in the bed, fell asleep and began to snore very loud.  The huntsman was just passing the house, and thought to himself, how the old woman is snoring.  I must just see if she wants anything.  </p>
+           <p>So he went into the room, and when he came to the bed, he saw that the wolf was lying in it.  Do I find you here, you old sinner, said he.  I have long sought you.  Then just as he was going to fire at him, it occurred to him that the wolf might have devoured the grandmother, and that she might still be saved, so he did not fire, but took a pair of scissors, and began to cut open the stomach of the sleeping wolf.  When he had made two snips, he saw the little red-cap shining, and then he made two snips more, and the little girl sprang out, crying, ah, how frightened I have been.  How dark it was inside the wolf.  And after that the aged grandmother came out alive also, but scarcely able to breathe.  Red-cap, however, quickly fetched great stones with which they filled the wolf's belly, and when he awoke, he wanted to run away, but the stones were so heavy that he collapsed at once, and fell dead.  </p>
+           <p>Then all three were delighted.  The huntsman drew off the wolf's skin and went home with it.  The grandmother ate the cake and drank the wine which red-cap had brought, and revived, but red-cap thought to herself, as long as I live, I will never by myself leave the path, to run into the wood, when my mother has forbidden me to do so.  </p>
+           <p>It is also related that once when red-cap was again taking cakes to the old grandmother, another wolf spoke to her, and tried to entice her from the path.  Red-cap, however, was on her guard, and went straight forward on her way, and told her grandmother that she had met the wolf, and that he had said good-morning to her, but with such a wicked look in his eyes, that if they had not been on the public road she was certain he would have eaten her up.  Well, said the grandmother, we will shut the door, that he may not come in.  Soon afterwards the wolf knocked, and cried, open the door, grandmother, I am little red-cap, and am bringing you some cakes.  But they did not speak, or open the door, so the grey-beard stole twice or thrice round the house, and at last jumped on the roof, intending to wait until red-cap went home in the evening, and then to steal after her and devour her in the darkness.  But the grandmother saw what was in his thoughts.  In front of the house was a great stone trough, so she said to the child, take the pail, red-cap.  I made some sausages yesterday, so carry the water in which I boiled them to the trough.  Red-cap carried until the great trough was quite full.   Then the smell of the sausages reached the wolf, and he sniffed and peeped down, and at last stretched out his neck so far that he could no longer keep his footing and began to slip, and slipped down from the roof straight into the great trough, and was drowned.  But red-cap went joyously home, and no one ever did anything to harm her again.  </p>
+       </div>
+       <!--}}}-->
+   </div>
+  <!--}}}-->
+
+
+
+ <!-- SCRIPT screenshots {{{ -->
+ <script>
+  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
+  }
+  /*}}}*/
+  /* screenshots_IMPORT {{{*/
+  let log;
+  function screenshots_IMPORT() {
+    /* dom_log {{{*/
+      log = dom_log;
+
+    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log.LOG_BG_ARR;
+    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log.LOG_XX_ARR;
+    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log.LOG_FG_ARR;
+
+    log                 = dom_log.log;
+    logBIG              = dom_log.logBIG;
+    logXXX              = dom_log.logXXX;
+    log_caller          = dom_log.log_caller;
+    log_json_one_liner  = dom_log.log_json_one_liner;
+    log_key_val         = dom_log.log_key_val;
+    log_key_val_group   = dom_log.log_key_val_group;
+    /*}}}*/
+    DOM_LOADER_LOG = dom_store.t_store_getBool("DOM_LOADER_LOG");
+    DOM_LOADER_TAG = dom_store.t_store_getBool("DOM_LOADER_TAG");
+log("%c 23 "+DOM_LOAD_ID, lbH+lf3);
+  }
+  /*}}}*/
+  /*  load_html {{{*/
+  let load_html = function(id, html) {
+   if( document.getElementById(id) ) return;
+   let el       = document.createElement("DIV");
+   el.id        = id;
+   el.title     = id;
+   el.innerHTML = unescape(html);
+   document.body.appendChild(el);
+//console.log("load_html("+id+") ...done");
+  };
+  /*}}}*/
+ </script>
+ <!--}}}-->
+
+
+
+
+
+  <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] .. [defer] {{{-->
+  <script id="dom_data_js"    src="javascript/dom_data.js"    charset="utf-8" defer></script>
+  <script id="dom_log_js"     src="javascript/dom_log.js"     charset="utf-8" defer></script>
+  <script id="dom_popup_js"   src="javascript/dom_popup.js"   charset="utf-8" defer></script>
+  <script id="dom_util_js"    src="javascript/dom_util.js"    charset="utf-8" defer></script>
+  <script id="dom_details_js" src="javascript/dom_details.js" charset="utf-8" defer></script>
+  <script id="dom_i18n_js"    src="javascript/dom_i18n.js"    charset="utf-8" defer></script>
+  <script id="dom_prop_js"    src="javascript/dom_prop.js"    charset="utf-8" defer></script>
+  <script id="dom_store_js"   src="javascript/dom_store.js"   charset="utf-8" defer></script>
+  <script id="dom_fly_js"     src="javascript/dom_fly.js"     charset="utf-8" defer></script>
+
+  <script id="dom_wording_js" src="javascript/dom_wording.js" charset="utf-8" defer></script>
+  <script id="dom_select_js"  src="javascript/dom_select.js"  charset="utf-8" defer></script>
+  <script id="dom_wot_js"     src="javascript/dom_wot.js"     charset="utf-8" defer></script>
+  <script id="dom_slot_js"    src="javascript/dom_slot.js"    charset="utf-8" defer></script>
+
+  <script id="dom_hide_js"    src="javascript/dom_hide.js"    charset="utf-8" defer></script>
+  <script id="dom_view_js"    src="javascript/dom_view.js"    charset="utf-8" defer></script>
+  <script id="dom_sticky_js"  src="javascript/dom_sticky.js"  charset="utf-8" defer></script>
+  <script id="dom_seek_js"    src="javascript/dom_seek.js"    charset="utf-8" defer></script>
+  <script id="dom_share_js"   src="javascript/dom_share.js"   charset="utf-8" defer></script>
+
+  <script id="dom_grid_js"    src="javascript/dom_grid.js"    charset="utf-8" defer></script>
+  <script id="dom_gutter_js"  src="javascript/dom_gutter.js"  charset="utf-8" defer></script>
+
+  <script id="dom_ipc_js"     src="javascript/dom_ipc.js"     charset="utf-8" defer></script>
+  <script id="dom_tools_js"   src="javascript/dom_tools.js"   charset="utf-8" defer></script>
+
+  <script id="gifanim_js"     src="javascript/gifanim.js"     charset="utf-8" defer></script>
+ <!--}}}-->
+
+<!-- [tools] HTML [dom_tools_html_data] {{{-->
+<script>
+/*
+javascript/dom_tools.html
+*/
+dom_tools_html_data = escape(`
+<!--INLINE{{{-->
+<!DOCTYPE html>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:19h:26)</span>
+
+ <!-- hotspot {{{-->
+ <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
+  <div  id="hotwave"       class="hotwave">
+   <div id="hotring"       class="hotring">&nbsp;</div>
+  </div>
+  <div id="hotspot_c">&#x00BB;</div>
+ </div>
+ <!--}}}-->
+ <!-- headsup {{{ -->
+ <div id="headsup"         class="transcript hidden"        title="headsup">
+
+  <em  id="user_lang"      class="toolbag_button cc9"       title="user_lang">&nbsp;</em>
+
+  <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
+  <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
+  <em  id="wording"        class="toolbag_button cc3"       title="wording">WORDING</em>
+  <em  id="anchor_freeze"  class="toolbag_button cc9"       title="anchor_freeze">&#x26D4;</em>
+  <em  id="containers_hi"  class="toolbag_button cc9"       title="containers_hi">&#x00A7;</em>
+  <em  id="overflow_visi"  class="toolbag_button cc9"       title="overflow_visi">&nbsp;</em>
+  <em  id="scroll_smooth"  class="toolbag_button cc9"       title="scroll_smooth">&nbsp;</em>
+
+  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&#x25B6;</em>
+  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&#x25B6;</em>
+  <em  id="details_radio"  class="toolbag_button cc9"       title="details_radio">&nbsp;</em>
+
+  <em  id="tools_tier2"    class="toolbag_button cc9"       title="tools_tier2">&#x2630;</em>
+
+<!--{{{
+  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
+  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
+  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+}}}-->
+
+  <em  id="remove_ads"     class="toolbag_button cc9"       title="remove_ads">&nbsp;</em>
+  <em  id="split_wot"      class="toolbag_button cc9"       title="split_wot">&nbsp;</em>
+  <em  id="lines_wot"      class="toolbag_button cc9"       title="lines_wot">&nbsp;</em>
+
+ </div>
+ <!-- }}} -->
+
+ <!-- pat_bag {{{ -->
+  <div id="pat_bag"           class="transcript hidden bag" title="PAT BAG"></div>
+ <!-- }}} -->
+ <!-- headsup_w {{{ -->
+ <div    id="headsup_w"       class="transcript hidden"     title="headsup_w">
+  <input id="words_filter"    type="text"                   title="words_filter"/>
+  <em    id="words_exact"     class="toolbag_button cc3"    title="words_exact">&#x2261;</em>
+  <em    id="words_segment"   class="toolbag_button cc4"    title="words_segment">&#x2282;</em>
+  <em    id="words_head_tail" class="toolbag_button cc5"    title="words_head_tail">&#x2208;</em>
+  <em    id="words_opcycle"   class="toolbag_button cc9"    title="words_opcycle">&#x27F3;</em>
+  <em    id="words_recycle"   class="toolbag_button cc7"    title="words_recycle">&#x267B;</em>
+  <em    id="words_bag_rot"   class="toolbag_button cc0"    title="words_bag_rot">&#x2026;</em>
+  <em    id="words_drop_case" class="toolbag_button cc8"    title="words_drop_case">&nbsp;</em>
+  <em    id="words_drop_ing"  class="toolbag_button cc8"    title="words_drop_ing">&nbsp;</em>
+  <em    id="words_drop_s"    class="toolbag_button cc8"    title="words_drop_s">&nbsp;</em>
+  <div   id="words_regex"     class="txt_log"               >words_regex</div>
+ </div>
+ <!-- }}} -->
+ <!-- sel_bag {{{ -->
+  <div id="sel_bag"           class="transcript hidden bag" title="sel_bag"><span class="seeker_handle"></span></div>
+ <!-- }}} -->
+
+ <!-- headsup_ds {{{ -->
+ <div id="headsup_ds"         class="transcript hidden"     title="headsup_ds">
+  <em  id="tools_trap"        class="toolbag_button"        title="tools_trap">&#x00BB;</em>
+  <em  id="tools_scroll"      class="toolbag_button"        title="tools_scroll">&#x2693;</em>
+  <em  id="site_or_page"      class="toolbag_button cc9"    title="site_or_page">&nbsp;</em>
+  <em  id="mask_or_hide"      class="toolbag_button cc9"    title="mask_or_hide">&nbsp;</em>
+  <em  id="edit_or_stage"     class="toolbag_button cc9"    title="edit_or_stage">&nbsp;</em>
+  <em  id="dom_hide1_reset"   class="toolbag_button cc9"    title="dom_hide1_reset">&nbsp;</em>
+  <em  id="dom_hide1_undo"    class="toolbag_button cc9"    title="dom_hide1_undo">…</em>
+  <em  id="deny_or_allow"     class="toolbag_button cc8"    title="deny_or_allow">&nbsp;</em>
+<!--{{{
+  <em  id="targeteer"         class="toolbag_button cc9"    title="targeteer">&nbsp;</em>
+  <em  id="target_01"         class="toolbag_button cc1"    title="target_01">&nbsp;</em>
+  <em  id="target_02"         class="toolbag_button cc2"    title="target_02">&nbsp;</em>
+  <em  id="target_03"         class="toolbag_button cc3"    title="target_03">&nbsp;</em>
+}}}-->
+ </div>
+ <!-- }}} -->
+ <!-- headsup_bw {{{ -->
+ <div id="headsup_bw"          class="transcript hidden"    title="headsup_bw">
+  <em id="headsup_bw_value"    class="cc10">BODY WIDTH</em><br>
+  <em class="cc1"> 480</em><em class="cc2"> 640</em><em class="cc3"> 780</em><br>
+  <em class="cc4"> 960</em><em class="cc5">1024</em><em class="cc6">1200</em><br>
+  <em class="cc7">1440</em><em class="cc8">1600</em><em class="cc9">1980</em><br>
+ </div>
+ <!-- }}} -->
+ <!-- headsup_bz {{{ -->
+ <div id="headsup_bz"          class="transcript hidden"    title="headsup_bz">
+  <em id="headsup_bz_value"     class="cc10">BODY ZOOM</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 150%</em><em class="cc3"> 160%</em><br>
+  <em class="cc1"> 180%</em><em class="cc2" > 200%</em><em class="cc3"> 220%</em><br>
+ </div>
+ <!-- }}} -->
+ <!-- headsup_fs {{{ -->
+ <div id="headsup_fs"          class="transcript hidden"    title="headsup_fs">
+  <em id="headsup_fs_value"     class="cc10">BODY FONT SIZE</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 140%</em><em class="cc3"> 150%</em><br>
+  <em class="cc1"> 160%</em><em class="cc2" > 170%</em><em class="cc3"> 180%</em><br>
+  <em class="cc1"> 190%</em><em class="cc2" > 200%</em><em class="cc3"> 210%</em><br>
+ </div>
+ <!-- }}} -->
+
+ <!-- dom_traversal {{{ -->
+ <div id="dom_traversal"   class="transcript hidden"        title="dom_traversal">
+ <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
+  <em class = "toolbag_button cc5">NodeIterator</em><br>
+  <em class = "toolbag_button cc6">TreeWalker</em><br>
+  <em class = "toolbag_button cc7">childNodes</em><br>
+  <em class = "toolbag_button cc7">tagNodes</em><br>
+
+  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
+  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
+  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+  <!-- }}} -->
+  <!-- tools_node {{{ -->
+  <table>
+   <tr>
+    <th>node</th>
+    <td>
+     <input id="tools_node"     type="text"                title="tools_node"/>
+     <span class="cc2">html</span>
+     <span class="cc3">head</span>
+     <span class="cc4">body</span>
+    </td>
+   </tr>
+  </table>
+  <!-- }}} -->
+ </div>
+ <!-- }}} -->
+ <!-- test_panel: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
+ <div id="test_panel"      class="transcript hidden"     title="test_panel">
+  <em id="CLEAR"           class="toolbag_button cc1"    title="CLEAR"     > CLEAR      </em>
+  <em id="BEHAVIOR"        class="toolbag_button cc2"    title="BEHAVIOR"  > BEHAVIOR   </em>
+  <em id="HIGHLIGHT"       class="toolbag_button cc3"    title="HIGHLIGHT" > HIGHLIGHT  </em>
+  <em id="REGEX"           class="toolbag_button cc4"    title="REGEX"     > REGEX      </em>
+  <em id="EXPORT"          class="toolbag_button cc6"    title="EXPORT"    > EXPORT     </em>
+  <em id="IMPORT"          class="toolbag_button cc5"    title="IMPORT"    > IMPORT     </em>
+  <em id="RELOAD"          class="toolbag_button cc7"    title="RELOAD"    >&#x21BB;<br>RELOAD<br>&#x21BB;</em>
+ </div>
+ <!-- }}} -->
+
+  <!-- dev_log_map {{{-->
+  <div id="dev_log_map"    class="transcript hidden"     title="dev_log_map"
+   >
+   dev_log_map placeholder:<br>
+   <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
+
+  </div>
+  <!-- }}} -->
+ <!-- dom_load_tags (placeholder) {{{ -->
+ <div id="dom_load_tags"   class="transcript hidden"     title="dom_load_tags"
+  >
+  dom_load_tags placeholder:<br />
+  <i class="todo">...should have been populated by <em>dom_tools.show_tags</em> with the value of DOM_LOAD_TAG</i>
+
+ </div>
+ <!-- }}} -->
+
+ <!-- transcript1 {{{ -->
+ <div id="transcript1"     class="transcript hidden cleardiv"  title="transcript1"></div>
+ <!-- }}} -->
+ <!-- transcript2 {{{ -->
+ <div id="transcript2"     class="transcript hidden cleardiv"  title="transcript2"></div>
+ <!-- }}} -->
+
+ <!-- pivspot {{{-->
+ <div   id="pivspot"       class="hidden"                      title="pivspot">
+   <div id="pivspot_c">&#x00BB;</div>
+ </div>
+ <!--}}}-->
+ <!-- seeker {{{-->
+ <div  id = "seeker_PU"    class="seeker_P"                    title="seeker_PU"><div id="seeker_CU" >seeker up    </div></div>
+ <div  id = "seeker_PD"    class="seeker_P"                    title="seeker_PD"><div id="seeker_CD" >seeker_thumbs</div></div>
+
+ <div id = "seekspot_U"                                                        ></div>
+ <div id = "seekzone"      class="hotspot_frame"               title="seekzone"></div>
+ <div id = "seekspot_A"                                                >&#x2191;</div>
+ <div id = "seekspot_D"                                                        ></div>
+ <!--}}}-->
+<!--INLINE}}}-->
+`
+);
+load_html("dom_tools_html", dom_tools_html_data);
+</script>
+<!--}}}-->
+
+<script>let snapshot_id;</script>
+
+<!--
+j:r javascript/doc_tools.html
+-->
+<!-- [doc_tools.html] {{{-->
+<!-- script {{{-->
+<script>
+let DOM_LOADER_LOG = false;
+let DOM_LOADER_TAG = false;
+/*_ init_doc_tools {{{*/
+let init_doc_tools = function()
+{
+    let some_are_logging = check_modules_state("logging");
+    let some_are_tagging = check_modules_state("tagging");
+
+if(some_are_logging) log("%c LOGGING: "+some_are_logging, lbb+lbH+lf8);
+if(some_are_tagging) log("%c TAGGING: "+some_are_tagging, lbb+lbH+lf8);
+
+    if(some_are_logging || some_are_tagging) {
+        dom_util.del_el_class(document.getElementById("doc_tools"), "minimized");
+        dom_util.del_el_class(document.getElementById("div_above"), "folded"   );
+    }
+
+    build_svg_X();
+};
+/*}}}*/
+/*_ build_svg_X {{{*/
+let build_svg_X = function()
+{
+//logXXX("build_svg_X")
+    /* [svg_X] path {{{*/
+    let svg_X           = document.getElementById("svg_X");
+    if(!svg_X) return;
+    let d = ""
+        +"M443.6,387.1"
+        +"L312.4,255.4"
+        +"l131.5-130"
+        +"c5.4-5.4,5.4-14.2,0-19.6"
+        +"l-37.4-37.6"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        + ""
+        +"L256,197.8"
+        +"L124.9,68.3"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        +"L68,105.9"
+        +"c-5.4,5.4-5.4,14.2,0,19.6"
+        +"l131.5,130"
+        +"L68.4,387.1"
+        + " "
+        +"c-2.6,2.6-4.1,6.1-4.1,9.8"
+        +"c0,3.7,1.4,7.2,4.1,9.8"
+        +"l37.4,37.6"
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"L256,313.1"
+        +"l130.7,131.1"
+        + " "
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"l37.4-37.6"
+        +"c2.6-2.6,4.1-6.1,4.1-9.8"
+        +"C447.7,393.2,446.2,389.7,443.6,387.1"
+        +"z"
+        ;
+    svg_X.innerHTML     = "<path d='"+d+"'></path>";
+
+//console_dir("svg_X",svg_X)
+    /*}}}*/
+    /* [svg_32] CLONE {{{*/
+    let svg_32          = svg_X.cloneNode(true);
+    svg_32.style.width  = "32px";
+    svg_32.style.height = "32px";
+    svg_32.style.backgroundColor  = "rgba(255,000,255,0.3)";
+    svg_32.style.borderColor      = "rgba(255,000,255,0.5)";
+    svg_32.style.borderStyle      = "outset";
+    svg_32.style.borderRadius     = "32px";
+    svg_32.style.borderWidth      =  "2px";
+    svg_32.style.padding          =  "2px";
+    svg_32.style.transform        =  "rotate(45deg)";
+//console_dir("svg_32",svg_32)
+
+    svg_X.parentElement.appendChild(svg_32);
+    /*}}}*/
+    /* [data:image/svg+xml] parent div cursor {{{*/
+    let cursor
+//      = "url('stylesheet/svg_32.svg') 16 16, pointer";
+        = "url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnDQppZCAgICAgICAgICA9ICJzdmdfWCINCnhtbDpzcGFjZSAgID0gInByZXNlcnZlIg0KeG1sbnM6eGxpbmsgPSAiaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCnhtbG5zICAgICAgID0gImh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIg0KdmVyc2lvbiAgICAgPSAiMS4xIg0Kd2lkdGggICAgICAgPSAiMzJweCINCmhlaWdodCAgICAgID0gIjMycHgiDQp2aWV3Qm94ICAgICA9ICIwIDAgNTEyIDUxMiINCnN0eWxlICAgICAgID0gIg0KICAgIHdpZHRoICAgICAgICAgICAgOiAzMnB4Ow0KICAgIGhlaWdodCAgICAgICAgICAgOiAzMnB4Ow0KLyoNCiAgICBiYWNrZ3JvdW5kLWNvbG9yIDogI0YwRjQ7DQogICAgYm9yZGVyLWNvbG9yICAgICA6ICNGMEY4Ow0KICAgIGJvcmRlci1zdHlsZSAgICAgOiBvdXRzZXQ7DQogICAgYm9yZGVyLXJhZGl1cyAgICA6IDMycHg7DQogICAgYm9yZGVyLXdpZHRoICAgICA6IDJweDsNCiAgICBwYWRkaW5nICAgICAgICAgIDogMnB4Ow0KKi8NCiINCj4NCjxwYXRoIGQ9ICJNNDQzLjYsMzg3LjFMMzEyLjQsMjU1LjRsMTMxLjUtMTMwYzUuNC01LjQsNS40LTE0LjIsMC0xOS42bC0zNy40LTM3LjZjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDQNCiAgICBMMjU2LDE5Ny44TDEyNC45LDY4LjNjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDRMNjgsMTA1LjljLTUuNCw1LjQtNS40LDE0LjIsMCwxOS42bDEzMS41LDEzMEw2OC40LDM4Ny4xDQogICAgYy0yLjYsMi42LTQuMSw2LjEtNC4xLDkuOGMwLDMuNywxLjQsNy4yLDQuMSw5LjhsMzcuNCwzNy42YzIuNywyLjcsNi4yLDQuMSw5LjgsNC4xYzMuNSwwLDcuMS0xLjMsOS44LTQuMUwyNTYsMzEzLjFsMTMwLjcsMTMxLjENCiAgICBjMi43LDIuNyw2LjIsNC4xLDkuOCw0LjFjMy41LDAsNy4xLTEuMyw5LjgtNC4xbDM3LjQtMzcuNmMyLjYtMi42LDQuMS02LjEsNC4xLTkuOEM0NDcuNywzOTMuMiw0NDYuMiwzODkuNyw0NDMuNiwzODcuMXoiLz4NCjwvc3ZnPg=='), pointer";
+//console_dir("cursor", cursor)
+
+    svg_X.parentElement.style.cursor = cursor;
+
+//console_dir("svg_X.parentElement"             ,svg_X.parentElement             )
+//console_dir("svg_X.parentElement.style"       ,svg_X.parentElement.style       )
+//console_dir("svg_X.parentElement.style.cursor",svg_X.parentElement.style.cursor)
+    /*}}}*/
+};
+/*}}}*/
+/*_ check_modules_state {{{*/
+let DOM_MODULES;
+let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LOADER_LOG))
+{
+    let lfx = (state_name == "logging") ? lf3:lf5;
+
+    /* COLLECT LOADED MODULES {{{*/
+    if(!DOM_MODULES) {
+        DOM_MODULES
+            = [   { name : "dom_loader"  , module : dom_loader  } /* 00 */
+                , { name : "dom_log"     , module : dom_log     } /* 06 */
+                , { name : "dom_util"    , module : dom_util    } /* 07 */
+                , { name : "dom_details" , module : dom_details } /* 07 */
+                , { name : "dom_i18n"    , module : dom_i18n    } /* 08 */
+                , { name : "dom_prop"    , module : dom_prop    } /* 09 */
+                , { name : "dom_store"   , module : dom_store   } /* 10 */
+                , { name : "dom_fly"     , module : dom_fly     } /* 11 */
+                , { name : "dom_select"  , module : dom_select  } /* 13 */
+                , { name : "dom_wot"     , module : dom_wot     } /* 13 */
+                , { name : "dom_sticky"  , module : dom_sticky  } /* 17 */
+                , { name : "dom_seek"    , module : dom_seek    } /* 18 */
+                , { name : "dom_share"   , module : dom_share   } /* 19 */
+                , { name : "dom_tools"   , module : dom_tools   } /* 23 */
+            ];
+
+    }
+    /*}}}*/
+    let some_are = "";
+    let module_names  = [];
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     let selector = "[title='"+state_name+" "+module.name+"']"; /* .. document.querySelector("[title='tagging dom_loader']"); */
+                     let el = document.querySelector( selector );
+                     if( el ) {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+
+                         let state = state_get_set_function();
+                         if( state ) module_names.push( module.name );
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+
+                         if( state )
+                             some_are += (some_are ? " ": "")+module.name;
+                     }
+                 }
+                );
+
+if(log_this) {
+    if(module_names.length) {
+        log("%c check_modules_state %c"+state_name, lbL,lbR+lfx);
+        for(let i=0; i < module_names.length; ++i)
+            log("%c → "+ module_names[i]+" is "+state_name, lfx);
+    }
+    else {
+        log("%c check_modules_state %c No module is "+state_name, lbL,lbR+lf8);
+    }
+}
+
+    return some_are;
+};
+/*}}}*/
+/*_ toggle_module_state {{{*/
+let toggle_module_state = function(el)
+{
+    if(el.tagName == "DIV")
+    {
+        let state_name
+            = el.id.endsWith("tagging")
+            ?                "tagging"
+            :                "logging";
+
+        check_modules_state(state_name, true);
+        return;
+    }
+
+    let [ state_name , module_name ] = el.title.split(" ");
+
+    let lfx = (state_name == "logging") ? lf3:lf5;
+log("%c toggle_module_state %c"+module_name+"%c"+state_name, lbL,lbC+lf9,lbR+lfx);
+
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     if(name == module_name)
+                     {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+                         let state_was              = state_get_set_function();
+                         let state                  = state_get_set_function(!state_was);
+
+                         let l_x = state ? lfX[state ? 5:8] : lf0;
+if(state || DOM_LOADER_TAG || DOM_LOADER_LOG) log("%c "+module.name+" %c "+(state ? "is ":"not ")+state_name, lfx, l_x);
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+                     }
+                 }
+                 );
+};
+/*}}}*/
+/*➔ dom_loader {{{*/
+let dom_loader = (function()
+{
+if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
+
+    return { name : "dom_loader"
+        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
+
+        , toggle_module_state
+
+        /* DEBUG */
+        , check_modules_state
+    };
+}());
+/*}}}*/
+</script>
+<!--}}}-->
+<!--      doc_tools {{{-->
+<div  id="doc_tools" title="doc_tools_html_tag (210923:21h:09)" class="round_el doc_tool user_select_none minimized">
+    <!-- STYLE {{{-->
+    <style>
+/* doc_tools {{{*/
+#doc_tools {
+    user-select      : none;
+    position         : fixed; bottom:0.2em; right:15%;
+    margin           : 0;
+    z-index          : 101; /* above dom_tools */
+    border           : none                  !important;
+    border-radius    : 0.5em;
+    padding          : 0.3em;
+    box-shadow       : rgba( 64, 64, 64,0.2) 2px 2px 10px 5px;
+    text-align       : center;
+/*{{{
+    line-height      : 1.8em;
+}}}*/
+    font-size        : 200%;
+    transform-origin : 100% 100%;
+}
+#doc_tools.minimized {
+    transform        : scale(0.5);
+}
+
+#doc_tools>div{
+    margin           : 0;
+    padding          : 0.3em 1em 0.3em 1em;
+}
+#doc_tools>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(128,128,128,0.9)) !important;
+/*{{{
+background       : rgba(255,255,255,0.9);
+background       : rgba(255,255,255,0.1);
+}}}*/
+}
+#doc_tools.minimized>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(017,017,017,0.5)) !important;
+}
+
+    /*}}}*/
+    /* div_above {{{*/
+
+    #div_above {
+        display               : grid;
+        grid-auto-flow        : column;
+        align-items           : align-self;
+/*{{{
+      grid-template-columns : 1fr 1fr 1fr;
+      grid-template-rows    : min-content;
+      grid-auto-rows        : min-content;
+      grid-gap              : 1em;
+      justify-items         : stretch;
+      min-height            : 30em;
+}}}*/
+    }
+
+    .minimized #div_above       { pointer-events:none; }
+
+    #div_above                  { margin-bottom    : 0;           }
+    #div_above                  { border-radius    : 1em 1em 0 0; }
+    #div_above                  { padding          : 0;           }
+
+    #div_above.folded           { height           : 0.5em; overflow : hidden; }
+    #div_above.clicked          { height           : unset;                    }
+
+    #div_above::before          { font-size        : 150% !important; content:'\261E'; pointer-events:none; position:absolute; bottom:0.5em; right:0.5em; }
+    #doc_tools::after           { font-size        : 150% !important; content:'\261F'; pointer-events:none; position:absolute; bottom:0.5em; left :0.5em; }
+
+    #div_above                  { transition       : all 250ms       ease-out; }
+    #doc_tools::after           { transition       : all 150ms 500ms ease-out; }
+    #div_above::before          { transition       : all 150ms 600ms ease-out; }
+
+    #doc_tools::after           { transform        : rotate(-90deg); }
+    #doc_tools.minimized::after { transform        : rotate( 90deg); }
+
+    .minimized #div_above.folded::before          { transform        : rotate(-135deg); }
+               #div_above::before          { transform        : rotate( 90deg); }
+               #div_above.folded::before   { transform        : rotate(-90deg); }
+
+    /*}}}*/
+    /* div_above ... {{{*/
+
+    #div_above .blurred_frame        { color            : white           !important; }
+    #div_above .blurred_frame        { box-shadow       : 0.1em 0.1em 0.1em white;    }
+
+    #div_above     a                 { padding          : 0 0.5em 0 0.5em !important; }
+    #div_above     a                 { min-width        : 5em; }
+    #div_above     a                 { font-size        :  45%            !important; }
+
+
+    #div_above   span                 { margin-bottom   : 0.5em           !important; }
+    #div_above   a                    { margin-bottom   : 0.5em           !important; }
+
+    #div_above > div                  { background      : transparent     !important; }
+    #div_above > div                  { border          : none;                       }
+    #div_above > div                  { display         : inline-block;               }
+
+    #div_above > div                  { margin          : 0.5em;                      }
+    #div_above > div                  { padding         : 0;                          }
+    #div_above > div                  { vertical-align  : top             !important; }
+
+    #div_above > div > *              { float:left; clear:left; }
+
+    #div_above > div > p:nth-child(1) { font-size:80%; padding:0; margin:0; }
+
+    /*}}}*/
+    /* div_bellow {{{*/
+    #div_bellow {
+        margin-top       : 0;
+        border-radius    : 0   0   1em 1em;
+        padding          : 0.5em 2em !important;
+    }
+    #div_bellow>a {
+        font-size : 120%;
+    }
+    /*}}}*/
+    </style>
+    <!--}}}-->
+    <!-- SCRIPT {{{-->
+    <script>
+        /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+        "use strict";
+/* JSHint {{{*/
+/* globals dom_util, dom_i18n, log, lbH, lf2, lf3, lf4, lf6, lf7 */
+/* exported toggle_this */
+/*
+:?script>?+,/script>/-y *
+:!start explorer https://jshint.com/
+ */
+/*}}}*/
+/*_ toggle_this {{{*/
+let toggle_this = function(event,el)
+{
+if(DOM_LOADER_LOG) log("%c toggle_this("+el.id+")", lbH+lf7);
+
+    let div_above = el.previousElementSibling;
+    let doc_tools = el.parentElement;
+
+    let clicked_left = (event.offsetX > (el.offsetWidth/2));
+    if( clicked_left ) {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        if(dom_util.has_el_class(div_above, "folded"   ))     unfold_this(div_above);
+        else                                                    fold_this(div_above);
+    }
+
+    else {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        else {                                                  fold_this(div_above);
+            /*.........................................*/   minimize_this(doc_tools);
+        }
+    }
+};
+/*}}}*/
+/*_   minimize_this {{{*/
+let   minimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c minimize_this("+el.id+")", lbH+lf2);
+
+    if(!dom_util.has_el_class(el,"minimized"))
+        dom_util.add_el_class(el,"minimized");
+};
+/*}}}*/
+/*_ unminimize_this {{{*/
+let unminimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unminimize_this("+el.id+")", lbH+lf3);
+
+    if( dom_util.has_el_class(el,"minimized"))
+        dom_util.del_el_class(el,"minimized");
+};
+/*}}}*/
+/*_   fold_this {{{*/
+let   fold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c fold_this("+el.id+")", lbH+lf6);
+
+    if(!dom_util.has_el_class(el,"folded"))
+        dom_util.add_el_class(el,"folded");
+};
+/*}}}*/
+/*_ unfold_this {{{*/
+let unfold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
+
+    if( dom_util.has_el_class(el,"folded"))
+        dom_util.del_el_class(el,"folded");
+};
+/*}}}*/
+    </script>
+    <!--}}}-->
+        <!-- div_above {{{-->
+        <div id="div_above" class="folded" onclick='if(event.target==this) unfold_this(this);'>
+            <div      id="div_log_csv"> <!--{{{-->
+                <span>TOOLS:</span>
+                <a title="dom_tools.t_log_csv"       class="em8 small" onclick='dom_tools.t_log_csv      (DOM_LOAD_ID                   );'>CSV</a>
+                <a title="dom_tools.t_log_status"    class="em8 small" onclick='dom_tools.t_log_status   (DOM_LOAD_ID                   );'>STATUS</a>
+                <a title="dom_tools.t_show_hotspot"  class="em5 small" onclick='dom_tools.t_show_hotspot();'                               >SHOW hotspot</a>
+                <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+                <a title="dom_tools.t_take_SNAPSHOT" class="em3 small" onclick='dom_tools.t_take_SNAPSHOT(DOM_LOAD_ID, snapshot_id, this);'>TAKE SNAPSHOT</a>
+                <a title="dom_tools.t_load_SNAPSHOT" class="em4 small" onclick='dom_tools.t_load_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>LOAD SNAPSHOT</a>
+                <a title="dom_tools.t_show_SNAPSHOT" class="em4 small" onclick='dom_tools.t_show_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>SHOW SNAPSHOT</a>
+            </div>
+            <!--}}}-->
+            <div      id="div_fist_sticky"> <!--{{{-->
+                <span title="call a sticky function on sticky #1"                         >first sticky</span>
+                <a    title="format_pad" class="em8 small" onclick='dom_sticky.format_pad();'> format_pad </a>
+                <a    title="fit_font"   class="em8 small" onclick='dom_sticky.fit_font();'  > fit_font   </a>
+                <a    title="msg_fit"    class="em8 small" onclick='dom_sticky.msg_fit();'   > msg_fit    </a>
+            </div>
+            <!--}}}-->
+            <div      id="div_all_sticky"> <!--{{{-->
+                <span title   = "other sticky functions">all sticky</span>
+                <a    title   = "t_sticky_format_pad_all" class   = "em8 small" onclick = 'dom_sticky.t_sticky_format_pad_all(); '>t_sticky_format_pad_all</a>
+                <a    title   = "t_sticky_LOG" class   = "em8 small" onclick = 'dom_sticky.t_sticky_LOG(); '>t_sticky_LOG</a>
+                <a    title   = "show_seekzone" class   = "em8 small"
+                   onclick = '      dom_prop.toggle(   this.title);
+                   let state      = dom_prop.get   (   this.title);
+                   this.innerText = "PROP."+           this.title+" "+   (state ? "\u2714":"");
+                   console.log("%c dom_prop.toggle(\""+this.title+"\",\""+state+"\")", lbb+lbH+lf7);
+                   let classWas   = state ? "em8" : "em2";
+                   let classNow   = state ? "em2" : "em8";
+                   dom_util.set_el_class_removing(     this, classNow, classWas);
+                   '>PROP "show_seekzone"</a>
+            </div>
+            <!--}}}-->
+            <div id="div_logging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">logging</span>
+                <a title="logging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="logging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="logging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="logging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="logging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="logging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="logging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="logging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="logging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="logging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
+                <a title="logging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="logging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="logging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
+            </div>
+            <!--}}}-->
+            <div id="div_tagging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">tagging</span>
+                <a title="tagging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="tagging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="tagging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="tagging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="tagging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="tagging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="tagging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="tagging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="tagging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="tagging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
+                <a title="tagging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="tagging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="tagging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="tagging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
+            </div>
+            <!--}}}-->
+        </div>
+        <!--}}}-->
+    <!-- div_bellow {{{-->
+    <div id     ="div_bellow"
+         onclick='if(event.target == this) toggle_this(event,this);'
+         >
+<!--{{{
+            <a id="details_close" title="details_close"          class="em5 action" onclick='dom_details.details_close_opened();     '>                         <label>▲</label></a>
+            <a id="details_open"  title="details_open"           class="em5 action" onclick='dom_details.details_open_closed ();     '>                         <label>▼</label></a>
+            <a id="details_radio" title="details radio behavior" class="em5 action" onclick='dom_details.details_radio_toggle(event);'><input type="checkbox" /><label>&#x25B6;</label></a>
+}}}-->
+            <a                    title="page top"               class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
+            <a                    title="page bottom"            class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
+            <a                    title="dump csv and sticky"    class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
+            <a                    title="reset"                  class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
+            <a                    title="reset & reload"         class="em2 action" onclick='document.location.reload();'                 >&#x21BB;</a>
+    </div>
+    <!--}}}-->
+</div>
+<!--}}}-->
+<!--}}}-->
+
+ </body>
+
+ <!-- check_load_html_results {{{ -->
+ <script>
+    function check_load_html_results()
+    {
+        /* CSS {{{*/
+        const lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+        const lbH = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+        const lf2 = "color:#F00;";
+        const lf5 = "color:#0F0;";
+        const lf8 = "color:#AAA;";
+        const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
+        const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
+
+        let missing_ids  = "";
+        let id;
+        /*}}}*/
+        /*  check_missing_id {{{*/
+        let check_missing_id = function(id)
+        {
+            let   shadow_host
+                = document.getElementById("shadow_host");
+
+            let   shadow_root
+                = shadow_host
+                ? shadow_host.shadowRoot
+                : null;
+
+            let el = shadow_root
+                ?    shadow_root.querySelector("#"+id)
+                :    document   .querySelector("#"+id);
+
+            if(!el ) return SKO+" #"+id+"\n";
+            console.log("%c"+SOK+" %c"+el.textContent,lbH+lf8,lf8);
+            return "";
+        };
+        /*}}}*/
+
+        id =     "dom_tools_html_tag";                missing_ids +=     check_missing_id(id) ;
+      //id =     "dom_grid_html_tag" ;                missing_ids +=     check_missing_id(id) ;
+
+        if(typeof DOM_DATA_JS_TAG    === 'undefined') missing_ids += "\n DOM_DATA_JS_TAG"     ; /* 05 */
+        if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ; /* 06 */
+        if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ; /* 07 */
+        if(typeof DOM_I18N_JS_TAG    === 'undefined') missing_ids += "\n DOM_I18N_JS_TAG"     ; /* 08 */
+        if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ; /* 09 */
+        if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ; /* 10 */
+      //if(typeof DOM_FLY_JS_TAG     === 'undefined') missing_ids += "\n DOM_FLY_JS_TAG"      ; /* 11 */
+                                                                                                         
+        if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ; /* 12 */
+        if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ; /* 13 */
+        if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ; /* 14 */
+                                                                                                         
+        if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ; /* 15 */
+        if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ; /* 16 */
+        if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 17 */
+      //if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 18 */
+        if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 19 */
+                                                                                                         
+        if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 20 */
+        if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 21 */
+                                                                                                         
+      //if(typeof DOM_IPC_JS_TAG     === 'undefined') missing_ids += "\n DOM_IPC_JS_TAG"      ; /* 22 */
+        if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ; /* 23 */
+
+        /* print missing_ids {{{*/
+        if(missing_ids) {
+            console.log("%c"+DOM_LOAD_TAG+" MISSING IDs:", lbb+lf2);
+            console.log("%c"+ missing_ids  , lbH+lf2);
+            alert(           "MISSING IDs:\n"+ missing_ids);
+        }
+        /*}}}*/
+    }
+
+    setTimeout(check_load_html_results, 500);
+ </script>
+ <!--}}}-->
+
+</html>
+<!--
+EMBEDED:
+ - dom_tools_html
+
+
+vim: sw=4
+-->
+

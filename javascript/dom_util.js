@@ -1,47 +1,63 @@
-/* dom_util_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_util                                                                 │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals Document, XPathEvaluator, XPathResult */
+/* globals Node, NodeFilter, getComputedStyle */
+/* globals btoa, atob */
+/* globals console */
+/* globals window, document */
+
+/* globals dom_data    */
+/* globals dom_i18n    */ /* OPTIONAL */
+/* globals dom_log     */
+/* globals dom_store   */ /* OPTIONAL */
+/* globals dom_tools   */ /* OPTIONAL */
+/*
+/* eslint-disable no-global-assign    */
+/* eslint-disable no-implicit-globals */
+/* eslint-disable no-mixed-operators  */
+/* eslint-disable no-native-reassign  */
+/* eslint-disable no-warning-comments */
+
 const DOM_UTIL_JS_ID        = "dom_util_js";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (200410:17h)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (210928:16h:04)";  /* eslint-disable-line no-unused-vars */
+/*}}}*/
 let dom_util    = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_store, dom_tools */
-/* globals escape, unescape */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_UTIL_LOG          = false;
 let   DOM_UTIL_TAG          = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_util_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 /*  t_util     = {}        ; */ /* 07 */
-/*  t_prop     = {}        ; */ /* 08 */
-/*  t_store    = {}        ; */ /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+/*  t_i18n     = {}        ; */ /* 08 */
+/*  t_prop     = {}        ; */ /* 09 */
+/*  t_store    = {}        ; */ /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /* ...................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /* ...................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+/*  t_tools    = {}        ; */ /* 23 */
 /*....................................*/
 /*}}}*/
 let t_util_IMPORT  = function(log_this)
@@ -51,31 +67,33 @@ let t_util_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
 /*  t_util    = dom_util   ; */ /* 07 */
-/*  t_prop    = dom_prop   ; */ /* 08 */
-/*  t_store   = dom_store  ; */ /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+/*  t_i18n    = dom_i18n   ; */ /* 08 */
+/*  t_prop    = dom_prop   ; */ /* 09 */
+/*  t_store   = dom_store  ; */ /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-/*  t_sticky  = dom_sticky ; */ /* 16 */
-/*  t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+/*  t_tools   = dom_tools  ; *  /* 23 */
 /* ...................................*/
 /*}}}*/
     util_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_UTIL_LOG = DOM_UTIL_LOG || dom_store.t_store_getBool("DOM_UTIL_LOG");
-    DOM_UTIL_TAG = DOM_UTIL_TAG || dom_store.t_store_getBool("DOM_UTIL_TAG");
+    DOM_UTIL_LOG = DOM_UTIL_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_UTIL_LOG"));
+    DOM_UTIL_TAG = DOM_UTIL_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_UTIL_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 07 util", lbH+lf7);
@@ -91,6 +109,9 @@ let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
 let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
 let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
 
+/* dom_i18n */
+let i18n_get = function(id) { return id; };
+
 /*}}}*/
 let   util_INTERN = function()
 {
@@ -101,14 +122,21 @@ let   util_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                         ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                               ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
 
+    /*}}}*/
+    /* dom_i18n {{{*/
+    if(typeof dom_i18n !== "undefined")
+    {
+        i18n_get        = dom_i18n.i18n_get;
+
+    }
     /*}}}*/
 
     util_DEPEND();
@@ -117,21 +145,56 @@ let   util_INTERN = function()
 /*_   util_DEPEND {{{*/
 /*{{{*/
 
-let regexp_HTML_QUOTE;
 
 /*}}}*/
 let   util_DEPEND = function()
 {
-    regexp_HTML_QUOTE = new RegExp(t_data.DOUBLE_QUOTE, "g");
 
 };
 /*}}}*/
+/* eslint-enable no-unused-vars */
 /*}}}*/
 
 /* const */
 /*{{{*/
 const LF    = String.fromCharCode(10);
 
+/*}}}*/
+
+/* [beforeunload] */
+/*➔ t_prevent_reload {{{*/
+/*{{{*/
+const PREVENT_RELOAD_ID   = "prevent_reload";
+const PREVENT_RELOAD_DATA = "data:text/javascript;charset='utf-8',"
+    +"window.onbeforeunload = function() { return 'Reload Site?'; }" /* eslint-disable-line quotes */
+;
+
+/*}}}*/
+let t_prevent_reload = function()
+{
+    if(!document.getElementById( PREVENT_RELOAD_ID ) )
+    {
+logBIG("load_js(PREVENT_RELOAD_ID, PREVENT_RELOAD_DATA)");
+
+        load_js(PREVENT_RELOAD_ID, PREVENT_RELOAD_DATA);
+    }
+};
+/*}}}*/
+/*… load_js {{{*/
+let load_js = function(js_id, js_data)
+{
+    let el    = document.createElement("script");
+    el.type   = "text/javascript";
+    el.id     = js_id;
+    el.src    = js_data;
+    el.charset= "utf-8";
+    el.async  = false;
+    el.defer  = true;
+    el.addEventListener("error", function(e) { console.log(e); } );
+    document.getElementsByTagName("head")[0].appendChild(el);
+/*console_dir(el);*/
+    return true;
+};
 /*}}}*/
 
 /* DOM */
@@ -170,7 +233,7 @@ log("%c"+(el.id || el.tagName)+" "+cs.position,lbH+lf8);
 }}}*/
     }
 
-    return { x: x, y: y };
+    return { x , y };
 };
 /*}}}*/
 /*➔ get_el_xy_computed {{{*/
@@ -179,7 +242,7 @@ let get_el_xy_computed = function(el)
     let cs = window.getComputedStyle(el);
     let  x = parseInt(cs.left);
     let  y = parseInt(cs.top );
-    return { x: x, y: y };
+    return { x , y };
 };
 /*}}}*/
 /*}}}*/
@@ -252,8 +315,9 @@ let getInPageTop = function(el)
     while(el = el.offsetParent)
         y   += el.offsetTop;
 }}}*/
-
-    let    y = Math.round(el.getBoundingClientRect().top + window.scrollY);
+    let y = el.getBoundingClientRect
+        ?    Math.round(el.getBoundingClientRect().top + window.scrollY)
+        :    0;
 /*{{{
 log("getInPageTop("+el.tagName+") %c"+y, lbb+lbH+lf5, lbb+lbH+lf6);
 }}}*/
@@ -343,12 +407,12 @@ let get_el_transformOrigin = function(el)
     let xy = [];
     let cs = window.getComputedStyle(el);
     let px = cs.transformOrigin.split(" ");
-    px.forEach( s => xy.push(parseInt(s)) );
+    px.forEach( (s) => xy.push(parseInt(s)) );
     return { x:xy[0] , y:xy[1] };
 };
 /*}}}*/
 /*➔ t_adjust_panel_transform_origin {{{*/
-let t_adjust_panel_transform_origin = function(panel)
+let t_adjust_panel_transform_origin = function(panel) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "t_adjust_panel_transform_origin";
@@ -513,7 +577,7 @@ let get_xy_tlbr_dist = function(x, y, tlbr)
 };
 /*}}}*/
 /*➔ intersect_r1_r2 {{{*/
-let intersect_r1_r2 = function(r1,r2)
+let intersect_r1_r2 = function(r1,r2) /* eslint-disable-line complexity */
 {
     /* MISSING SURFACE .. (flat rectangle) */
     if(r1.width  <= 0        ) return false;
@@ -611,6 +675,182 @@ if(log_this)
     return result;
 };
 /*}}}*/
+/*➔ is_el_visible {{{*/
+let is_el_visible = function(el) /* eslint-disable-line complexity */
+{
+/*{{{*/
+let   caller = "is_el_visible";
+let log_this = DOM_UTIL_LOG;
+
+/*}}}*/
+    let parent_display_none
+        = get_el_parent_with_display_none(el);
+
+    let parent_hidden
+        =  !parent_display_none
+        && get_el_parent_with_class(el, t_data.MARKED_TO_HIDE);
+
+    let parent_dimmed
+        =  !parent_display_none
+        && !parent_hidden
+        && get_el_parent_with_class(el, t_data.CSS_DIMMED);
+
+    let parent_clipped
+        =  !parent_display_none
+        && !parent_hidden
+        && !parent_dimmed
+        && get_el_parent_clipped(el);
+
+    let visible
+        =  !parent_display_none
+        && !parent_hidden
+        && !parent_dimmed
+        && !parent_clipped
+    ;
+
+/*{{{
+if( tag_this)
+    log_key_val_group(caller+": visible=["+visible+"]"
+                      , {   parent_display_none
+                          , parent_clipped
+                          , parent_hidden
+                          , parent_dimmed
+                          , visible
+                      }
+                      , lbH+lfX[visible ? 5:2]
+                      , visible);
+}}}*/
+/*{{{*/
+if( log_this) {
+    let reason
+        = parent_display_none ? "parent_display_none"
+        : parent_hidden       ? "parent_hidden"
+        : parent_dimmed       ? "parent_dimmed"
+        : parent_clipped      ? "parent_clipped"
+        : ""
+    ;
+    let lfx = lfX[visible ? 5:2];
+    log("%c"+caller+"("+get_id_or_tag(el)+"):%c ...return "+visible+"%c"+reason
+        , lbL+lfx                           ,lbR+lfx                ,lbH+lfx   );
+}
+/*}}}*/
+
+    return visible;
+};
+/*}}}*/
+
+/* FIXED */
+/*➔ t_set_position_fixed {{{*/
+let t_set_position_fixed = function(el)
+{
+/*{{{
+log("%c t_set_position_fixed: "+ el.style.position.toUpperCase(), lf4);
+}}}*/
+    let        caller = "t_set_position_fixed";
+
+    if(  has_el_class(el, "fixed") ) return;
+    else add_el_class(el, "fixed");
+
+    /* SAVE LAYOUT IN ITS PARENT CONTAINER */
+    let xy = get_el_xy(el, caller);
+    if(!el.saved_layout) {
+/*{{{
+logBIG("SAVE LAYOUT IN ITS PARENT CONTAINER");
+}}}*/
+        el.saved_layout
+            = { position : el.style.position
+              , top      : el.style.top
+              , left     : el.style.left
+              , width    : el.style.width
+              , height   : el.style.height
+            };
+        el.ontransitionend = position_fixed_transitionend;
+
+    }
+    else {
+/*{{{
+logBIG("NOT SAVE LAYOUT IN ITS PARENT CONTAINER", lf8);
+}}}*/
+    }
+    if(!el.saved_layout.xy) {
+/*{{{
+logBIG("SAVE XY", lf3);
+}}}*/
+        el.saved_layout.xy =  xy;
+    }
+
+    /* MOVE EL IN PLACE AT ITS IN-CONTAINER SCREEN LOCATION */
+    el.style.position    = "fixed";
+    el.style.left        =  xy.x +"px";
+    el.style.top         =  xy.y +"px";
+
+/*{{{
+let cs = window.getComputedStyle(el);
+log_key_val_group( caller
+    , {            el
+      ,            xy
+      , cs_left  : cs.left
+      , cs_right : cs.right
+    }, lf7, false);
+}}}*/
+};
+/*}}}*/
+/*➔ t_del_position_fixed {{{*/
+let t_del_position_fixed = function(el)
+{
+/*{{{
+log("%c t_del_position_fixed: "+ el.style.position.toUpperCase(), lf5);
+log_caller();
+}}}*/
+
+    del_el_class(el, "fixed");
+
+    if(!el.saved_layout) return;
+
+    /* MOVE BACK EL TO ITS IN-CONTAINER SCREEN LOCATION */
+    if( el.saved_layout.xy )
+    {
+        el.style.top    = el.saved_layout.xy.y +"px";
+        el.style.left   = el.saved_layout.xy.x +"px";
+        el.style.width  = el.saved_layout.width;
+        el.style.height = el.saved_layout.height;
+
+    }
+
+/*{{{
+log_key_val_group( "t_del_position_fixed", el , lf6, false);
+}}}*/
+};
+/*}}}*/
+/*_ position_fixed_transitionend {{{*/
+let position_fixed_transitionend = function(event)
+{
+    let caller = "position_fixed_transitionend";
+
+    let el = event.target;
+    if(!el.saved_layout         ) return;
+    if(!el.saved_layout.xy      ) return;
+    if( has_el_class(el, "fixed") ) return; /* NOTHING TO DO WHEN MOVING AWAY FROM CONTAINER */
+
+    let    xy    = get_el_xy(el, caller);
+    if(   (xy.x != el.saved_layout.xy.x)
+       || (xy.y != el.saved_layout.xy.y)
+      )
+        return;
+
+/*{{{
+log("%c"+caller+"("+get_n_lbl(el)+"): "+ event.propertyName.toUpperCase(), lf7);
+}}}*/
+
+    /* MOVE EL BACK INTO ITS PARENT CONTAINER */
+    el.style.position = el.saved_layout.position;
+    el.style.top      = el.saved_layout.top ;
+    el.style.left     = el.saved_layout.left;
+
+    delete              el.saved_layout.xy;
+};
+/*}}}*/
+
 /*}}}*/
 /* EVENTS {{{*/
 /*➔ has_scrollbar {{{*/
@@ -674,9 +914,9 @@ if( log_this) {
                   , cs_padding            :  cs.padding
 
                   , TOP_HEIGHT_BOTTOM     :  "---"
-                  , cs_marginTop          :  cs.marginTop   
+                  , cs_marginTop          :  cs.marginTop
                   , cs_borderTop          :  cs.borderTop
-                  , cs_paddingTop         :  cs.paddingTop   
+                  , cs_paddingTop         :  cs.paddingTop
                   , cs_height             :  cs.height
                   , cs_paddingBottom      :  cs.paddingBottom
                   , cs_borderBottom       :  cs.borderBottom
@@ -750,9 +990,9 @@ if( log_this) {
                   , cs_padding            :  cs.padding
 
                   , LEFT_WIDTH_RIGHT      :  "---"
-                  , cs_marginLeft         :  cs.marginLeft   
+                  , cs_marginLeft         :  cs.marginLeft
                   , cs_borderLeft         :  cs.borderLeft
-                  , cs_paddingLeft        :  cs.paddingLeft   
+                  , cs_paddingLeft        :  cs.paddingLeft
                   , cs_width              :  cs.width
                   , cs_paddingRight       :  cs.paddingRight
                   , cs_borderRight        :  cs.borderRight
@@ -784,11 +1024,11 @@ let   caller = "is_event_on_scrollbar";
 let log_this = DOM_UTIL_LOG;
 
 /*{{{
-    let e_target = t_tools.t_get_event_target(e);
+    let e_target = t_get_event_target(e);
     let e_target = e.touches ? e.touches[0].target : e.target;
 }}}*/
 /*}}}*/
-    let event_XY = t_tools.get_event_XY(e);
+    let event_XY = get_event_XY(e);
 
     let    e_target = e.path ? e.path[0] : e.target; /* Chrome || Firefox */
     if(   !e_target                 ) return false;
@@ -832,9 +1072,9 @@ if( log_this) {
                 } ,lbH+lfX[on_scrollbar ? 4:8]);
 
 /*{{{
-t_log.console_dir(e       ,"e"       );
-t_log.console_dir(e_target,"e_target");
-t_log.console_dir(bcr,"bcr");
+t_log.console_dir("e"       , e       );
+t_log.console_dir("e_target", e_target);
+t_log.console_dir("bcr"     , bcr     );
 }}}*/
 }
     return on_scrollbar;
@@ -856,14 +1096,14 @@ let get_el_parent_with_any_event_handler = function(el)
 /*_ get_el_mouse_event_handler {{{*/
 let get_el_mouse_event_handler = function(el)
 {
-    if(!el)                    return null;
-    if(el.onmousedown != null) return el.onmousedown;
-    if(el.onmouseup   != null) return el.onmouseup  ;
-    if(el.touchstart  != null) return el.onmouseup  ;
-    if(el.touchend    != null) return el.onmouseup  ;
-    if(el.onclick     != null) return el.onclick    ;
-    if(el.ondblclick  != null) return el.ondblclick ;
-    else                       return null;
+    if(!el)                     return null;
+    if( el.onmousedown != null) return el.onmousedown;
+    if( el.onmouseup   != null) return el.onmouseup  ;
+    if( el.touchstart  != null) return el.onmouseup  ;
+    if( el.touchend    != null) return el.onmouseup  ;
+    if( el.onclick     != null) return el.onclick    ;
+    if( el.ondblclick  != null) return el.ondblclick ;
+    else                        return null;
 };
 /*}}}*/
 /*_ get_el_onkey_event_handler {{{*/
@@ -923,7 +1163,7 @@ if(log_this) log("%c get_el_event_handler("+get_n_lbl(el)+") .. CALLED BY ["+ _c
 if(log_this && bubbling) log("...bubbling=["+bubbling+"] .. return null");
     if(bubbling) return null;
 
-    return { handler:handler , label:label };
+    return { handler , label };
 };
 /*}}}*/
 /*_ get_el_event_handler_label {{{*/
@@ -959,8 +1199,192 @@ let send_onchange_event_to = function(el)
     catch(ex) { log(caller+": "+ex, "error"); }
 };
 /*}}}*/
+/*  get_event_XY {{{*/
+let get_event_XY = function(e)
+{
+    let x, y;
+    if(e.changedTouches) {
+        x = parseInt(e.changedTouches[0].clientX);
+        y = parseInt(e.changedTouches[0].clientY);
+    }
+    else {
+        x = parseInt(                  e.clientX);
+        y = parseInt(                  e.clientY);
+    }
+    return { x , y };
+};
+/*}}}*/
+/*_ t_get_event_target {{{*/
+/*{{{*/
+let t_get_event_target_last_e;
+let t_get_event_target_last_e_target;
+
+/*}}}*/
+let t_get_event_target = function(e) /* eslint-disable-line complexity */
+{
+/*{{{*/
+let caller = "t_get_event_target";
+let log_this = DOM_UTIL_LOG;
+
+if( log_this) caller += "("+e.type+" on "+get_id_or_tag((e.path ? e.path[0] : e.e_target))+")";
+if( log_this) log("%c"+caller, lbH+lf7);
+if( log_this) console.dir(e);
+/*}}}*/
+    /* SAME THAN LAST EVENT {{{*/
+    if(e === t_get_event_target_last_e)
+    {
+/*{{{*/
+if( log_this)
+    log("%c...returning last target %c"+get_id_or_tag(t_get_event_target_last_e_target), lf8, lbH+lf8);
+
+/*}}}*/
+        return t_get_event_target_last_e_target;
+    }
+    /*}}}*/
+    /* NEW EVENT {{{*/
+    let e_target = e.target ? e.target  : undefined;
+    let e_path_0 =  e.path  ? e.path[0] : undefined;
+    let e_path_1 =  e.path  ? e.path[1] : undefined;
+/*{{{*/
+if( log_this ) {
+    log_key_val_group("...event path and target"
+                      , { e_target
+                        , e_path_0
+                        , e_path_1
+                        , e_originalTarget         : e.originalTarget
+                        , e_explicitOriginalTarget : e.explicitOriginalTarget
+                        ,                  callers : t_log.get_callers()
+                      }, lf7, false
+                     );
+
+}
+/*}}}*/
+
+    /*}}}*/
+    /*  e_target .. f(event) {{{*/
+    /* [event.target] {{{
+     * A reference to the object that dispatched the event.
+     * It is different from [event.currentTarget]
+     * . when the event handler is called
+     * . during the bubbling
+     * . or capturing phase of the event.
+     }}} */
+    if     (e.path && (e_path_0.tagName != "IMG")) {  e_target = e_path_0;                 /*log("e.path..................=["+ e.path                   +"]");*/ }
+    else if(e.path &&  e_path_1                  ) {  e_target = e_path_1;                 /*log("e.path..................=["+ e.path                   +"]");*/ }
+    else if(e.originalTarget                     ) {  e_target = e.originalTarget;         /*log("e.originalTarget........=["+ e.originalTarget         +"]");*/ }
+    else if(e.explicitOriginalTarget             ) {  e_target = e.explicitOriginalTarget; /*log("e.explicitOriginalTarget=["+ e.explicitOriginalTarget +"]");*/ }
+    else if(e_target                             ) {/*e_target = e_target;*/               /*log("e_target................=["+ e_target                 +"]");*/ }
+
+    /*}}}*/
+    /* skip proxy el {{{*/
+    let el;
+/*{{{*/
+if( log_this ) {
+    let e_parent = e_target.parentElement;
+    log_key_val_group("...skipping proxy el"
+                      , { e_target_firstElementChild           : e_target ?                         e_target.firstElementChild : ""
+                        , e_target_parentElement               : e_parent ?                         e_parent                   : ""
+                        , e_target_htmlFor                     : e_target ?                         e_target.htmlFor           : ""
+                        , e_target_htmlFor_EL                  : e_target ? document.getElementById(e_target.htmlFor)          : ""
+                        , e_target_parentElement_htmlFor       : e_parent ?                         e_parent.htmlFor           : ""
+                        , e_target_parentElement_htmlFor_EL    : e_parent ? document.getElementById(e_parent.htmlFor)          : ""
+                      }, lf7, false
+                     );
+}
+/*}}}*/
+    e_target
+        = ((el = e_target.firstElementChild) && (el.tagName == "INPUT")) ? e_target.firstElementChild
+        : ((el = e_target                  ) && (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
+        : ((el = e_target.parentElement    ) && (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
+        : /*..........................................................*/   e_target
+    ;
+
+    /*}}}*/
+    /* NOT A TOOLS handled_target .. f(handler delegate) {{{*/
+/*//FIXME
+//returns BODY on P on https://www.elderscrollsonline.com/en-us/news/post/58777
+    if((typeof dom_tools == "undefined") || !dom_tools.t_is_a_handled_tool( e_target )) {
+        let handled_target = get_handled_target(e, e_target, log_this);
+        if( handled_target ) e_target = handled_target;
+    }
+*/
+    /*}}}*/
+/*{{{
+onmousedown onmouseup onclick ondblclick
+onkeydown onkeypress onkeyup
+onchange
+onfocus onselect oninput onsubmit onblur TODO
+
+console.dir(e);
+console.dir(e_target);
+
+try { log("e_target.id......=["+e_target.id      +"]"); } catch(ex) { console.warn(ex); console.dir(e_target); }
+try { log("e_target.nodeName=["+e_target.nodeName+"]"); } catch(ex) { console.warn(ex); console.dir(e_target); }
+try { log("e_target.tagName.=["+e_target.tagName +"]"); } catch(ex) { console.warn(ex); console.dir(e_target); }
+}}}*/
+/*{{{*/
+if( log_this)
+    log("%c...return %c"+get_id_or_tag(e_target), lf7, lbH+lf7);
+
+/*}}}*/
+    t_get_event_target_last_e        = e;
+    t_get_event_target_last_e_target = e_target;
+    return e_target;
+};
+/*}}}*/
+/*_ get_handled_target {{{*/
+let et_handled_target = function(e, e_target, log_this) /* eslint-disable-line no-unused-vars, complexity */
+{
+let caller = "get_handled_target";
+
+    let handled_target;
+    switch(e.type)
+    {
+        /* MOUSE */
+        case "mousedown" :
+        case "mouseup"   :
+        case "touchstart":
+        case "touchend"  :
+        case "click"     :
+        case "dblclick"  :
+        if( !get_el_mouse_event_handler(e_target) ) handled_target = get_el_parent_with_any_event_handler(e_target);
+        break;
+        /* KEY */
+        case "keydown"   :
+        case "keypress"  :
+        case "keyup"     :
+        if( !get_el_onkey_event_handler(e_target) ) handled_target = get_el_parent_with_any_event_handler(e_target);
+        break;
+        /* INPUT .. (form frame) */
+        case "change"    :
+        case "focus"     :
+        case "select"    :
+        case "input"     :
+        case "submit"    :
+        case "blur"      :
+        if( !get_el_input_event_handler(e_target) ) handled_target = get_el_parent_with_any_event_handler(e_target);
+        break;
+        /* NOT HANDLED */
+        default:
+log("%c*** "+caller+": EVENT TYPE ["+e.type+"] NOT HANDLED", lbF+lb2);
+        break;
+    }
+
+if( log_this) log("%c"+caller+"("+e.type+", "+get_id_or_tag(e_target)+") %c return "+get_id_or_tag(handled_target), lbL+lf4, lbR+lbX[handled_target ? 3:0]);
+    return handled_target;
+};
+/*}}}*/
 /*}}}*/
 /* NODE {{{*/
+/*_ get_shadow_root {{{*/
+let get_shadow_root = function()
+{
+    let    shadow_host = document.getElementById("shadow_host");
+    let    shadow_root = shadow_host ? shadow_host.shadowRoot : null;
+
+    return shadow_root;
+};
+/*}}}*/
 /*_ get_position_absolute_children {{{*/
 let get_position_absolute_children = function(el,level=1)
 {
@@ -1052,7 +1476,7 @@ let node_toString = function(node)
 };
 /*}}}*/
 /*_ get_h_tag {{{ */
-let get_h_tag = function(node_nodeName)
+let get_h_tag = function(node_nodeName) /* eslint-disable-line complexity */
 {
     let symbol;
     let   name;
@@ -1215,6 +1639,17 @@ let get_parentage = function(node)
     return names;
 };
 /*}}}*/
+/*➔ get_el_parent_fragment {{{*/
+let get_el_parent_fragment = function(el)
+{
+    while( el ) {
+        if(el.shadowRoot                             ) return el;
+        if(el.nodeType == Node.DOCUMENT_FRAGMENT_NODE) return el;
+        el              = el.parentNode;
+    }
+    return null;
+};
+/*}}}*/
 
 /*_ has_a_fixed_parent {{{*/
 let has_a_fixed_parent = function(el)
@@ -1228,7 +1663,7 @@ let has_a_fixed_parent = function(el)
 /*}}}*/
 /*_ get_document_el_at_XY {{{*/
 
-let get_document_el_at_XY = function(x,y)
+let get_document_el_at_XY = function(x,y) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "get_document_el_at_XY";
@@ -1261,10 +1696,10 @@ if( log_this) log(caller+"("+x+" , "+y+")");
     let              elements = Array.from( abs_nodes ) .     concat(document.elementsFromPoint(x , y)) ;
 }}}*/
     let              elements = document.elementsFromPoint(x , y);
-if( log_this) t_log.console_dir(abs_nodes, "get_document_el_at_XY .. abs_nodes");
-if( log_this) t_log.console_dir(elements , "get_document_el_at_XY .. elements" );
+if( log_this) t_log.console_dir("get_document_el_at_XY .. abs_nodes", abs_nodes);
+if( log_this) t_log.console_dir("get_document_el_at_XY .. elements" , elements );
 
-    let           shadow_root = t_tools.t_get_shadow_root();
+    let           shadow_root = get_shadow_root();
     let              el_at_XY;
     for(let i=0; i < elements.length; ++i)
     {
@@ -1277,7 +1712,7 @@ if( log_this) log("%c"+(i+1)+" SKIP: shadow_root %c "+get_n_lbl(el), lbL+lfX[i+1
         }
         /*}}}*/
         /* SKIP: [shadow_root] child {{{*/
-        else if( is_el_or_child_of_parent_el(el, shadow_root) )
+        else if(  shadow_root && is_el_or_child_of_parent_el(el, shadow_root))
         {
             el = shadow_root.elementFromPoint(x,y);
 
@@ -1332,7 +1767,7 @@ let get_abs_nodes = function()
 let get_selector_nodes = function(selector)
 {
     let nodes = Array.from( document.querySelectorAll(selector) );
-t_log.console_dir(nodes, selector);
+t_log.console_dir(selector, nodes);
     return nodes;
 };
 /*}}}*/
@@ -1343,120 +1778,31 @@ let get_viewport_nodes = function()
     return nodes;
 };
 /*}}}*/
-/*➔ get_el_anchor_in_view_array {{{*/
-let get_el_anchor_in_view_array = function(root=document.body)
-{
-/*{{{*/
-let   caller = "get_el_anchor_in_view_array("+get_id_or_tag(root)+")";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) console.time   (caller);
-    let time_start = new Date().getTime();
-/*}}}*/
-    let anchor_in_view_array = [];
-    let node;
-    if(anchor_leaf_in_view_filter(root) == NodeFilter.FILTER_ACCEPT)
-    {
-if( log_this) log("root is a LEAF");
-        anchor_in_view_array.push(root);
-    }
-    else {
-        let treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, anchor_leaf_in_view_filter);
-        while(node = treeWalker.nextNode())
-            anchor_in_view_array.push(node);
-    }
-    let time_end = new Date().getTime();
-if( log_this) console.timeEnd(caller);
-if( log_this) t_log.console_dir(anchor_in_view_array, "anchor_in_view_array");
-    return { anchor_in_view_array , search_ms:(time_end - time_start) };
-};
-/*}}}*/
-/*_ anchor_leaf_in_view_filter {{{*/
-let anchor_leaf_in_view_filter = function(node)
-{
-    /* REJECT TOOL {{{*/
-    let why = NodeFilter.FILTER_ACCEPT;
-    let why_not;
-    if     ( has_el_class(node, "transcript"   ) ) { why = NodeFilter.FILTER_REJECT;  why_not =       "transcript"; }
-    else if( has_el_class(node, "doc_tool"     ) ) { why = NodeFilter.FILTER_REJECT;  why_not =         "doc_tool"; }
-
-    /*}}}*/
-    /* REJECT INVISIBLE {{{*/
-    else if( node.tagName    == "SCRIPT"         ) { why = NodeFilter.FILTER_REJECT;  why_not =       node.tagName; }
-    else if( node.tagName    == "STYLE"          ) { why = NodeFilter.FILTER_REJECT;  why_not =       node.tagName; }
-    else if( is_marked_to_hide( node )           ) { why = NodeFilter.FILTER_REJECT;  why_not =   "MARKED_TO_HIDE"; }
-    else if( node.style.display == "none"        ) { why = NodeFilter.FILTER_REJECT;  why_not =     "DISPLAY_NONE"; }
-
-    /*}}}*/
-    /* ACCEPT FIXED CONTAINER {{{*/
-    else if( node.style.position == "fixed") { why = NodeFilter.FILTER_ACCEPT; }
-
-    /*}}}*/
-    /* SKIP CONTAINER .. STILL EXPLORE SUB-TREE {{{*/
-    else if( node.children.length > 0            ) { why = NodeFilter.FILTER_SKIP  ;  why_not =     "HAS_CHILDREN"; }
-
-    /*}}}*/
-    /* REJECT LEAF OUT OF VIEW {{{*/
-    if(why != NodeFilter.FILTER_REJECT)
-    {
-        /* REJECT NO DIMENSION LEAF */
-        let bcr = node.getBoundingClientRect();
-        if(node.children.length == 0)
-        {
-            if     (bcr.height < 1               ) { why = NodeFilter.FILTER_REJECT;  why_not =        "NO HEIGHT"; }
-            else if(bcr.width  < 1               ) { why = NodeFilter.FILTER_REJECT;  why_not =         "NO WIDTH"; }
-            else if(bcr.top > window.innerHeight ) { why = NodeFilter.FILTER_REJECT;  why_not =           "BELLOW"; }
-            else if(bcr.bottom < 0               ) { why = NodeFilter.FILTER_REJECT;  why_not =            "ABOVE"; }
-        }
-        /* REJECT CONTAINER BELOW VIEW */
-        else if(    bcr.top > window.innerHeight ) { why = NodeFilter.FILTER_REJECT;  why_not = "CONTAINER BELLOW"; }
-
-        /* ACCEPT CONTAINER ABOVE VIEW .. (as it may have spreading absolute children) */
-/*{{{
-        else if(    bcr.bottom < 0               ) { why = NodeFilter.FILTER_REJECT;  why_not =  "CONTAINER ABOVE"; }
-}}}*/
-        else if(    bcr.bottom < 0               ) {
-/*{{{
-            log("ACCEPT CONTAINER ABOVE VIEW %c"+get_node_path_tail(node), lbH);
-}}}*/
-        }
-    }
-    /*}}}*/
-/*{{{*/
-/*{{{
-if(why_not) {
-    log(why_not+" .. "+get_id_or_tag(node));
-    del_el_class(node, "cc3");
-} else {
-    add_el_class(node, "cc3");
-    console.log(node)
-    console.dir(node)
-    log("%c why=["+why+"]", lbH+lf8)
-}
-}}}*/
-/*}}}*/
-    return why;
-};
-/*}}}*/
 
 /*➔ t_REMOVE_ADS {{{*/
 /*{{{*/
 let   remove_ads_result;
 
 /*}}}*/
-let t_REMOVE_ADS = function(tag)
+let t_REMOVE_ADS = function(id, _tag)
 {
     if(!remove_ads_result)
         remove_ads_result = "";
 
-    if( tag ) {
-        remove_ads_result += remove_ads_tag( tag    );
+    if( _tag ) {
+        remove_ads_result += remove_ads_tag( _tag );
     }
     else {
         let tag;    let result;
         tag = "SCRIPT"; result = remove_ads_tag(tag); remove_ads_result += result + (result ? LF : "");
         tag = "IFRAME"; result = remove_ads_tag(tag); remove_ads_result += result + (result ? LF : "");
         tag = "INS"   ; result = remove_ads_tag(tag); remove_ads_result += result + (result ? LF : "");
+    }
+
+    if(typeof dom_tools !== "undefined")
+    {
+        let el = dom_tools.t_get_tool( id );
+        if( el && (typeof dom_i18n !== "undefined")) el.title = i18n_get(dom_i18n.ADS_REMOVED);
     }
 
 /*{{{
@@ -1476,7 +1822,7 @@ let   remove_ads_tag = function(tag)
 {
 /*{{{*/
 let   caller = "remove_ads_tag";
-let log_this = LOG_MAP.T1_DOM_LOAD;
+let log_this = DOM_UTIL_TAG || DOM_UTIL_LOG || LOG_MAP.T1_DOM_LOAD;
 
 /*}}}*/
     let removed = 0;
@@ -1561,8 +1907,8 @@ log_caller();
         while( is_a_doc_tool_node(node) ) node = node.parentElement;
 }}}*/
         /* [num .. skipped] .. (count preceding siblings .. skipping doc_tools) {{{*/
-        let num = 1;
         let skipped = 0;
+        let num;
         for(num = 1; (node.parentElement) && (num <= node.parentElement.children.length); ++num)
         {
             let                    child  = node.parentElement.children[num-1];
@@ -1648,7 +1994,8 @@ if( log_this ) {
     let lfs = lfX[(1 + node_tag_num_array.length) % 10];
     s      +=  "%c...return "+get_node_txt_id_or_tag_path(node); args.push(/*lbb+*/lbH+lfs);
     args[0] = s;
-    console.log.apply(console, Array.prototype.slice.call(args));
+/*  console.log.apply(console, Array.prototype.slice.call(args)); */
+    console.log.apply(console,                         ...args );
 }
 /*}}}*/
     return node;
@@ -1672,7 +2019,7 @@ let get_node_txt_id_or_tag_path = function(node)
 };
 /*}}}*/
 /*  _dom_hide_tag_num_to_str - (USE get_node_id_or_tag) {{{*/
-let _dom_hide_tag_num_to_str = function(child, num, skipped)
+let _dom_hide_tag_num_to_str = function(child, num/*, skipped*/)
 {
 /*{{{
     let  child_label = get_node_id_or_tag( child               );
@@ -1706,7 +2053,7 @@ let _dom_hide_str_to_tag_num = function( node_tag_num )
 /*
 logXXX("_dom_hide_str_to_tag_num("+node_tag_num+") ...return { tag:"+tag+" , num:"+num+" }")
 */
-    return { tag:tag , num:num };
+    return { tag , num };
 };
 /*}}}*/
 /* get_node_id_or_tag {{{ */
@@ -1714,6 +2061,149 @@ let get_node_id_or_tag = function(el)
 {
     if(!el) return "null_node";
     return el.id || el.tagName;
+};
+/*}}}*/
+/*}}}*/
+/* NODE ANCHOR {{{*/
+/*➔ get_el_anchor_in_view_array {{{*/
+let get_el_anchor_in_view_array = function(root=document.body)
+{
+/*{{{*/
+let   caller = "get_el_anchor_in_view_array("+get_id_or_tag(root)+")";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) console.time   (caller);
+    let time_start = new Date().getTime();
+/*}}}*/
+    let anchor_in_view_array = [];
+    let node;
+    if(anchor_leaf_in_view_filter(root) == NodeFilter.FILTER_ACCEPT)
+    {
+if( log_this) log("root is a LEAF");
+        anchor_in_view_array.push(root);
+    }
+    else {
+        let treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, anchor_leaf_in_view_filter);
+        while(node = treeWalker.nextNode())
+            anchor_in_view_array.push(node);
+    }
+    let time_end = new Date().getTime();
+if( log_this) console.timeEnd(caller);
+if( log_this) t_log.console_dir("anchor_in_view_array", anchor_in_view_array);
+    return { anchor_in_view_array , search_ms:(time_end - time_start) };
+};
+/*}}}*/
+/*_ anchor_leaf_in_view_filter {{{*/
+let anchor_leaf_in_view_filter = function(node)
+{
+/*{{{*/
+let log_this = LOG_MAP.T3_LAYOUT || LOG_MAP.T7_SHARE;
+
+/*}}}*/
+    /* REJECT TOOL {{{*/
+    let why = NodeFilter.FILTER_ACCEPT;
+    let why_not;
+    if     ( has_el_class(node, "transcript"   ) ) { why = NodeFilter.FILTER_REJECT;  why_not =       "transcript"; }
+    else if( has_el_class(node, "doc_tool"     ) ) { why = NodeFilter.FILTER_REJECT;  why_not =         "doc_tool"; }
+
+    /*}}}*/
+    /* REJECT INVISIBLE {{{*/
+    else if( node.tagName    == "SCRIPT"         ) { why = NodeFilter.FILTER_REJECT;  why_not =       node.tagName; }
+    else if( node.tagName    == "STYLE"          ) { why = NodeFilter.FILTER_REJECT;  why_not =       node.tagName; }
+    else if( is_marked_to_hide( node )           ) { why = NodeFilter.FILTER_REJECT;  why_not =   "MARKED_TO_HIDE"; }
+    else if( node.style.display == "none"        ) { why = NodeFilter.FILTER_REJECT;  why_not =     "DISPLAY_NONE"; }
+
+    /*}}}*/
+    /* ACCEPT FIXED CONTAINER {{{*/
+    else if( node.style.position == "fixed") { why = NodeFilter.FILTER_ACCEPT; }
+
+    /*}}}*/
+    /* SKIP CONTAINER .. STILL EXPLORE SUB-TREE {{{*/
+    else if( node.children.length > 0            ) { why = NodeFilter.FILTER_SKIP  ;  why_not =     "HAS_CHILDREN"; }
+
+    /*}}}*/
+    /* REJECT LEAF OUT OF VIEW {{{*/
+    if(why != NodeFilter.FILTER_REJECT)
+    {
+        /* REJECT NO DIMENSION LEAF */
+        let bcr = node.getBoundingClientRect();
+        if(node.children.length == 0)
+        {
+            if     (bcr.height < 1               ) { why = NodeFilter.FILTER_REJECT;  why_not =        "NO HEIGHT"; }
+            else if(bcr.width  < 1               ) { why = NodeFilter.FILTER_REJECT;  why_not =         "NO WIDTH"; }
+            else if(bcr.top > window.innerHeight ) { why = NodeFilter.FILTER_REJECT;  why_not =           "BELLOW"; }
+            else if(bcr.bottom < 0               ) { why = NodeFilter.FILTER_REJECT;  why_not =            "ABOVE"; }
+        }
+        /* REJECT CONTAINER BELOW VIEW */
+        else if(    bcr.top > window.innerHeight ) { why = NodeFilter.FILTER_REJECT;  why_not = "CONTAINER BELLOW"; }
+
+        /* ACCEPT CONTAINER ABOVE VIEW .. (as it may have spreading absolute children) */
+/*{{{
+        else if(    bcr.bottom < 0               ) { why = NodeFilter.FILTER_REJECT;  why_not =  "CONTAINER ABOVE"; }
+}}}*/
+        else if(    bcr.bottom < 0               ) {
+/*{{{
+            log("ACCEPT CONTAINER ABOVE VIEW %c"+get_node_path_tail(node), lbH);
+}}}*/
+        }
+    }
+    /*}}}*/
+/*{{{*/
+if(log_this && why_not) log("anchor_leaf_in_view_filter("+get_id_or_tag(node)+"): .. "+why_not);
+/*{{{
+if(why_not) {
+    log(why_not+" .. "+get_id_or_tag(node));
+    del_el_class(node, "cc3");
+} else {
+    add_el_class(node, "cc3");
+    console.log(node)
+    console.dir(node)
+    log("%c why=["+why+"]", lbH+lf8)
+}
+}}}*/
+/*}}}*/
+    return why;
+};
+/*}}}*/
+/*_ not_an_anchor_target {{{*/
+let not_an_anchor_target = function(node)
+{
+/*{{{*/
+let   caller = "not_an_anchor_target";
+let log_this = LOG_MAP.T3_LAYOUT || LOG_MAP.T7_SHARE;
+
+/*}}}*/
+    if(!node) return false;
+    let      shadow_root = get_shadow_root();           let why_not = "";                 let lfx = lf8;
+
+    /* REJECT DOM STRUCTURE NODES */
+    if     ( node                == document.body.parentElement   ) { why_not = "HTML"                ;            }
+    else if( node                == document.body                 ) { why_not = "BODY"                ;            }
+    else if( node.nodeType       != Node.ELEMENT_NODE             ) { why_not = "NOT AN ELEMENT_NODE ";            }
+    else if( node.tagName        == "STYLE"                       ) { why_not = "HAS A STYLE TAG"     ;            }
+    else if( node.tagName        == "SCRIPT"                      ) { why_not = "HAS A SCRIPT TAG"    ;            }
+    else if( node.shadowRoot                                      ) { why_not = "HAS A SHADOWROOT "   ;            }
+    else if(!node.parentElement                                   ) { why_not = "HAS NO PARENT "      ;            }
+    /* REJECT TOOL NODES */
+    else if( node                == shadow_root                   ) { why_not = "SHADOW_ROOT"         ; lfx = lf6; }
+    else if( node.id   && node.id.startsWith("select")            ) { why_not = "SELECT_TOOL"         ; lfx = lf5; }
+    else if( has_el_class(node, dom_data.CSS_DOC_TOOL)            ) { why_not = "IS_A_TOOL"           ; lfx = lf3; }
+    else if( has_el_class(node, dom_data.CSS_LINE_NUM)            ) { why_not = "IS_A_LINE_NUM"       ; lfx = lf3; }
+/*{{{
+    else if( node.style.position == "fixed"                       ) { why_not = "IS_FIXED"            ; lfx = lf2; }
+}}}*/
+    /* REJECT NO-LAYOUT NODES */
+/*{{{
+    else if( node.offsetHeight    > window.innerHeight            ) { why_not = "TALLER THAN VIEWPORT"; lfx = lf7; }
+    else if( node.offsetWidth    == undefined                     ) { why_not = "NOT_AN_ELEMENT"      ;            }
+    else if(!node.offsetWidth    ||       !node.offsetHeight      ) { why_not =       "NOT_AN_ELEMENT";            }
+    else if((node.offsetWidth    == 0) && (node.offsetHeight == 0)) { why_not =          "HAS_NO_SIZE";            }
+    else if(window.getComputedStyle( node ).position   == "fixed" ) { why_not =             "IS_FIXED"; lfx = lf2; }
+}}}*/
+
+if( log_this && (why_not != "") && (lfx != lf8)) log("%c"+caller+"%c"+why_not+"%c"+get_n_lbl(node)
+                                                     ,lbb+lbH+lfx,lbL+lfx     ,lbR+lfX[node.id ? 3:8]);
+    return why_not;
 };
 /*}}}*/
 /*}}}*/
@@ -1733,7 +2223,7 @@ let is_a_doc_tool_panel = function(node)
 /*_ is_el_child_of_id {{{*/
 let is_el_child_of_id = function(el, id)
 {
-    while(el && (el.id != id) && (el = el.parentElement))
+    while(el && (el.id != id) && (el = el.parentElement)) /* eslint-disable-line no-param-reassign */
         ;
     return (el != null);
 };
@@ -1741,8 +2231,8 @@ let is_el_child_of_id = function(el, id)
 /*_ is_el_child_of_class {{{*/
 let is_el_child_of_class = function(el, className)
 {
-    while(el && (el = el.parentElement) && !el.classList.contains(className))
-        ;
+    while(el && !el.classList.contains(className)) /* eslint-disable-line no-param-reassign */
+        el = el.parentElement;
 /*{{{
 if(el) logBIG("is_el_child_of_class("+get_n_lbl(el)+", "+className+") .. ["+get_n_lbl(el)+"]");
 }}}*/
@@ -1771,6 +2261,7 @@ let is_el_or_child_of_parent_el = function(el, parent_el)
     return (el == parent_el);
 };
 /*}}}*/
+
 /*_ get_child_num {{{*/
 let get_child_num = function(child)
 {
@@ -1817,8 +2308,8 @@ log("get_el_child_with_class("+get_id_or_tag(parent)+" , "+className+") %c LEVEL
 /*_ get_el_child_with_tag {{{*/
 let get_el_child_with_tag = function(parent,tag)
 {
-    for(let     c = 0; c < parent.children.length; ++c) {
-        let child = parent.children[c];
+    for(let     c  = 0; c < parent.children.length; ++c) {
+        let child  = parent.children[c];
         if((child != null) && (child.tagName == tag))
             return child;
     }
@@ -1828,8 +2319,8 @@ let get_el_child_with_tag = function(parent,tag)
 /*_ get_el_child_with_id {{{*/
 let get_el_child_with_id = function(parent,id)
 {
-    for(let     c = 0; c < parent.children.length; ++c) {
-        let child = parent.children[c];
+    for(let     c  = 0; c < parent.children.length; ++c) {
+        let child  = parent.children[c];
         if((child != null) && (child.id == id))
             return child;
     }
@@ -1841,9 +2332,8 @@ let get_el_child_with_tag_class = function(parent,tag,className)
 {
     let children_with_tag = parent.getElementsByTagName( tag );
 
-    for(let i = 0; i < children_with_tag.length; ++i)
-    {
-        let child = children_with_tag[i];
+    for(let     c  = 0; c < children_with_tag.length; ++c) {
+        let child  = children_with_tag[c];
         if( has_el_class(child, className) )
             return child;
     }
@@ -1859,16 +2349,46 @@ log("get_el_child_with_tag_first_word("+get_n_lbl(parent)+", "+tag+", "+first_wo
 
     let children = parent.querySelectorAll( tag );
 
-    for(let     c = 0; c < children.length; ++c)
-    {
-        let child          = children[c];
-        if(!child                ) continue;
+    for(let     c = 0; c < children.length; ++c) {
+        let child        = children[c];
+        if(!child) continue;
         let child_first_word  = get_first_word(child.innerText, "get_el_child_with_tag_first_word");
 /*{{{
 log("%c child_first_word=["+child_first_word+"]", lbH+lf8)
 }}}*/
         if( child_first_word == first_word)
             return child;
+    }
+    return null;
+};
+/*}}}*/
+
+/*_ get_el_sibling_with_tag {{{*/
+let get_el_sibling_with_tag = function(el,tag)
+{
+    for(let     c  = 0; c < el.parentElement.children.length; ++c) {
+        let child  =        el.parentElement.children[c];
+        if((child != null) && (child.tagName == tag) && (child != el))
+            return child;
+    }
+    return null;
+};
+/*}}}*/
+
+/*_ get_el_parent_clipped {{{*/
+let get_el_parent_clipped = function(el)
+{
+    while(  el ) {
+        let cs = window.getComputedStyle(el);
+        if( cs.clip
+        && (cs.clip     != "auto")
+        && (cs.clip     != "none")) return el;
+
+        if( cs.clipPath
+        && (cs.clip     != "auto")
+        && (cs.clipPath != "none")) return el;
+
+        el = el.parentElement;
     }
     return null;
 };
@@ -1886,14 +2406,16 @@ let get_el_parent_with_class = function(el, className)
 /*_ get_el_parent_with_id {{{*/
 let get_el_parent_with_id = function(el,id)
 {
+    if(                 !el              ) return el;   /* return whatever received */
+    if(                 !el.parentElement) return el;   /* return top el */
     while(               el
-          && (          !el.id            /* no ID */
-              || (id && (el.id != id))    /* or not the expected one */
-             )
+          && (          !el.id                          /* no ID */
+              || (id && (el.id != id))                  /* or not the expected one */
+             )                                          /* keep searching the parent chain */
          )
         el = el.parentElement;
 
-    return el; /* ID EXPECTED .. or the first DEFINED */
+    return el;                                          /* ID EXPECTED .. or the first DEFINED */
 };
 /*}}}*/
 /*_ get_el_parent_with_display_none {{{*/
@@ -1906,35 +2428,12 @@ let get_el_parent_with_display_none = function(el)
     return null;
 };
 /*}}}*/
-/*_ get_el_parent_child_of_id {{{*/
-let get_el_parent_child_of_id = function(el,id)
-{
-    do {
-        if(!el                       ) return null;
-        if(!el.parentElement         ) return null;
-        if( el.parentElement.id == id) return   el;
-    }
-    while(el = el.parentElement);
-
-    return null;
-};
-/*}}}*/
-/*_ get_el_parent_child_of_class {{{*/
-let get_el_parent_child_of_class = function(el,className)
-{
-    do {
-        if(!el                                     ) return null;
-        if(!el.parentElement                       ) return null;
-        if( el.parentElement.className == className) return   el;
-    }
-    while(el = el.parentElement);
-
-    return null;
-};
-/*}}}*/
 /*_ get_el_parent_with_tag {{{*/
 let get_el_parent_with_tag = function(el,tag)
 {
+    if( el.nodeName == "#text")
+        el     = el.parentElement;
+
     while(el && (el.tagName != tag))
         el     = el.parentElement;
 
@@ -1942,6 +2441,7 @@ let get_el_parent_with_tag = function(el,tag)
     return (         tag == el.tagName) ? el : null;
 };
 /*}}}*/
+
 /*_ get_el_in_view_up_from_el {{{*/
 let get_el_in_view_up_from_el = function(from_el)
 {
@@ -1995,47 +2495,6 @@ if( log_this && result) log(caller+"%c"+result+"%c"+get_n_lbl(node), lbL+lfx, lb
     return result;
 };
 /*}}}*/
-/*_ not_an_anchor_target {{{*/
-let not_an_anchor_target = function(node)
-{
-/*{{{*/
-let   caller = "not_an_anchor_target";
-let log_this = LOG_MAP.T3_LAYOUT || LOG_MAP.T7_SHARE;
-
-/*}}}*/
-    if(!node) return false;
-    let      shadow_root = t_tools.t_get_shadow_root();           let why_not = "";                 let lfx = lf8;
-
-    /* REJECT DOM STRUCTURE NODES */
-    if     ( node                == document.body.parentElement   ) { why_not = "HTML"                ;            }
-    else if( node                == document.body                 ) { why_not = "BODY"                ;            }
-    else if( node.nodeType       != Node.ELEMENT_NODE             ) { why_not = "NOT AN ELEMENT_NODE ";            }
-    else if( node.tagName        == "STYLE"                       ) { why_not = "HAS A STYLE TAG"     ;            }
-    else if( node.tagName        == "SCRIPT"                      ) { why_not = "HAS A SCRIPT TAG"    ;            }
-    else if( node.shadowRoot                                      ) { why_not = "HAS A SHADOWROOT "   ;            }
-    else if(!node.parentElement                                   ) { why_not = "HAS NO PARENT "      ;            }
-    /* REJECT TOOL NODES */
-    else if( node                == shadow_root                   ) { why_not = "SHADOW_ROOT"         ; lfx = lf6; }
-    else if( node.id   && node.id.startsWith("select")            ) { why_not = "SELECT_TOOL"         ; lfx = lf5; }
-    else if( has_el_class(node, dom_data.CSS_DOC_TOOL)            ) { why_not = "IS_A_TOOL"           ; lfx = lf3; }
-    else if( has_el_class(node, dom_data.CSS_LINE_NUM)            ) { why_not = "IS_A_LINE_NUM"       ; lfx = lf3; }
-/*{{{
-    else if( node.style.position == "fixed"                       ) { why_not = "IS_FIXED"            ; lfx = lf2; }
-}}}*/
-    /* REJECT NO-LAYOUT NODES */
-/*{{{
-    else if( node.offsetHeight    > window.innerHeight            ) { why_not = "TALLER THAN VIEWPORT"; lfx = lf7; }
-    else if( node.offsetWidth    == undefined                     ) { why_not = "NOT_AN_ELEMENT"      ;            }
-    else if(!node.offsetWidth    ||       !node.offsetHeight      ) { why_not =       "NOT_AN_ELEMENT";            }
-    else if((node.offsetWidth    == 0) && (node.offsetHeight == 0)) { why_not =          "HAS_NO_SIZE";            }
-    else if(window.getComputedStyle( node ).position   == "fixed" ) { why_not =             "IS_FIXED"; lfx = lf2; }
-}}}*/
-
-if( log_this && (why_not != "") && (lfx != lf8)) log("%c"+caller+"%c"+why_not+"%c"+get_n_lbl(node)
-                                                     ,lbb+lbH+lfx,lbL+lfx     ,lbR+lfX[node.id ? 3:8]);
-    return why_not;
-};
-/*}}}*/
 /*}}}*/
 /* CSS_CLASS {{{*/
 let add_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(   !el.classList.contains( className )) el.classList.add   ( className ); };
@@ -2059,7 +2518,7 @@ let cycle_el_classList = function(el_or_id, classList, remove_only)
             next_picked    =      classList[i+1];
         }
     }
-    if( remove_only ) return;
+    if( remove_only ) return undefined;
 
     /* WRAP [next_picked] */
     if(!next_picked) next_picked = classList[0];
@@ -2097,19 +2556,12 @@ let flip_el_class = function(el_or_id, className)
 
 let flip_id_class = flip_el_class;
 /*}}}*/
-/*_ set_el_class_on_off .. set_id_class_on_off {{{*/
+/*_ set_el_class_on_off {{{*/
 let set_el_class_on_off = function(el, className, on_off)
 {
     if(on_off) add_el_class(el, className);
     else       del_el_class(el, className);
-};
 
-let set_id_class_on_off = function(id, className, on_off)
-{
-    let el = t_tools.t_get_tool(id);
-    if(!el) return;
-
-    set_el_class_on_off(el, className, on_off);
 };
 /*}}}*/
 /*_ set_el_class_removing {{{*/
@@ -2121,13 +2573,14 @@ let set_el_class_removing = function(el_or_id, class_to_add, classes_to_remove) 
         ?                          el_or_id
         :  document.getElementById(el_or_id)
     ;
+    if(!el) return false; /* @hapens with dom_sticky.html */
     /* [classes_to_remove] */
     let removed = "";
     for(let i=0; i <               classes_to_remove.length; ++i)
     {
-        if(el.classList.contains(  classes_to_remove[i] )) {
-            el.classList.remove (  classes_to_remove[i] );
-            removed =              classes_to_remove[i]  ;
+        if( el.classList.contains( classes_to_remove[i] )) {
+            el.classList.remove  ( classes_to_remove[i]  );
+            removed =              classes_to_remove[i]   ;
         }
     }
 
@@ -2150,7 +2603,7 @@ let is_marked_to_hide = function( node )
 /*}}}*/
 /*}}}*/
 /* SELECTION {{{*/
-/*_ selectNodeContents {{{*/
+/*➔ selectNodeContents {{{*/
 let selectNodeContents = function(el)
 {
 /*{{{*/
@@ -2169,14 +2622,14 @@ if( log_this) log_caller();
     catch(ex) { log(caller+": "+ex, "error"); }
 };
 /*}}}*/
-/*_ clearSelection {{{ */
+/*➔ clearSelection {{{ */
 let clearSelection = function()
 {
     let                       selection = window.getSelection();
     let                       selection_text = selection.toString();
-    let something_removed = !!selection.baseNode;
     try {                     selection.removeAllRanges(); } catch(ex) { log("clearSelection: "+ex, "error"); }
 /*{{{
+    let something_removed = !!selection.baseNode;
 log("clearSelection: ...return something_removed: %c"+something_removed, lbH+lfX[something_removed ? 5:8]);
 }}}*/
 /*{{{
@@ -2184,6 +2637,52 @@ log("clearSelection: ...return something_removed: %c"+something_removed, lbH+lfX
 }}}*/
     return selection_text;
 };
+/*}}}*/
+/*➔ log_range {{{*/
+let log_range = function(range, _caller="")
+{
+    if(!range) {
+        log(_caller+": range=["+range+"]");
+        return;
+    }
+
+    log_key_val_group(_caller
+                      ,{ document_caretPositionFromPoint : typeof document.caretPositionFromPoint
+                       ,    document_caretRangeFromPoint : typeof document.caretRangeFromPoint
+                       ,                    typeof_range : typeof range
+
+                       ,            range_startContainer : range.startContainer
+                       ,               range_startOffset : range.startOffset
+                       ,      startContainer_textContent : get_range_textContent(range.startContainer)
+
+                       ,              range_endContainer : range.endContainer
+                       ,                 range_endOffset : range.endOffset
+                       ,        endContainer_textContent : get_range_textContent(range.  endContainer)
+
+                       ,                 range_collapsed : range.collapsed
+                       ,                 node_type       : get_range_node_type(range)
+                       ,                range_offsetNode : range.offsetNode /* i.e. Firefox */
+                       ,                           range
+                      }, lf7, false);
+};
+
+let get_range_textContent = function(node)
+{
+    return node
+        ? strip_CR_LF( ellipsis(node.textContent.trim(), 64) )
+        : ""
+    ;
+};
+
+let get_range_node_type = function(range)
+{
+    let node = (range.startContainer || range.offsetNode);
+    return node
+        ? node.nodeName
+        : "null node"
+    ;
+};
+
 /*}}}*/
 /*}}}*/
 
@@ -2206,7 +2705,7 @@ let ellipsis_short = function(msg)
 
 let ellipsis = function(_msg, len=ELLIPSIS_DEFAULT_LEN)
 {
-    let msg = String(_msg);
+    let msg = show_CR_LF( String(_msg) );
     return (msg.length    <= len)
         ?   msg
         :   msg.substring(0, len-3)+HORIZONTAL_ELLLIPSIS
@@ -2232,7 +2731,6 @@ let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length < l) s = s+c
 /*{{{
 /[0-9A-Z_a-z\xC0-\xD6\xD8-\xf6\xf8-\xff]
 const regexp_WORDS              = new RegExp("[0-9A-Z_a-z\\xC0-\\xD6\\xD8-\\xf6\\xf8-\\xff]", "g");
-:!start explorer "https://www.regextester.com/94757"
 }}}*/
 let isAlNum = function(s)
 {
@@ -2252,6 +2750,23 @@ let isAlNum = function(s)
 let _sAlNum = function(s) { return /[0-9a-z]/.test( s.toLowerCase() ); };
 }}}*/
 
+/*}}}*/
+/*_ is_hex_string {{{*/
+let is_hex_string = function(s)
+{
+    for(let i = 0; i < s.length; ++i)
+    {
+        let cp       = s.codePointAt(i);
+
+        if( !(   ((cp >=   48 ) && (cp <=  57)) /* 0-9 */
+              || ((cp >=   65 ) && (cp <=  70)) /* A-F */
+              || ((cp >=   97 ) && (cp <= 102)) /* a-f */
+             )
+          )
+            return false;
+    }
+    return true;
+};
 /*}}}*/
 /*_ object_label {{{*/
 let object_label = function(object)
@@ -2332,6 +2847,74 @@ let string_to_ms = function(s)
     return ms;
 };
 /*}}}*/
+/*_ string_to_utf8 {{{*/
+let string_to_utf8 = function(s)
+{
+    let result      = "";
+    let non_ascii;
+    for(let       i = 0; i < s.length; ++i)
+    {
+        let      cp = s.codePointAt( i );
+        let       u = (cp < 128) ? s[i] : "&#x"+cp.toString(16)+";";
+        result += u;
+
+        non_ascii = non_ascii || (cp >= 128);
+    }
+
+/*{{{
+if(non_ascii) log("%c string_to_utf8("+s+") %c"+result, lbL+lf8, lbR+lf7)
+}}}*/
+    return result;
+};
+/*}}}*/
+/*_ string_to_ascii {{{*/
+let string_to_ascii = function(s)
+{
+    let non_ascii;
+    let result = "";
+    for(let  i = 0; i < s.length; ++i)
+    {
+        if(               (s[i  ] == "&")
+           &&             (s[i+1] == "#"))
+        {
+            non_ascii   =  true;                             /* é .. &#233; */ /* eslint-disable-line no-unused-vars */
+            let hex_fmt = (s[i+2] == "x");                   /* é .. &#e9;  */
+
+            let      ss =  s.substr(i);
+            let     id0 =  hex_fmt ? 3 : 2;
+            let     id1 =  ss.indexOf(";");
+            let     str =  ss.substr(id0, id1-id0);
+            let      cp =  parseInt(str, hex_fmt ? 16 : 10)
+                ||         parseInt(str,           16     ); /* fallback to hex */
+
+            let       c =  String.fromCodePoint( cp );
+            result     +=  c;
+
+            i          += id1;
+
+/*{{{
+log_key_val_group(   result
+                  ,{ hex_fmt
+                  ,  ss
+                  ,  id0
+                  ,  id1
+                  ,  str
+                  ,  cp
+                  ,  c
+                  }, lf8, false);
+}}}*/
+        }
+        else {
+            result += s[i];
+        }
+    }
+
+/*{{{
+if(non_ascii) log("%c string_to_ascii("+s+") %c"+result, lbL+lf8, lbR+lf7)
+}}}*/
+    return result;
+};
+/*}}}*/
 /*}}}*/
 /* REGEX {{{*/
 /* RegExp {{{*/
@@ -2363,7 +2946,7 @@ const regexp_CR                 = new RegExp("\\r"                          , "g
 const regexp_LF                 = new RegExp("\\n"                          , "g");
 const regexp_LF2                = new RegExp("\\n{2,}"                      , "g");
 const regexp_AN                 = new RegExp("[^a-z_ A-Z0-9]"               , "g");
-const regexp_SFX                = new RegExp("_\\d$"                        , "g");
+const regexp_SFX                = new RegExp("_\\d+$"                       , "g");
 
 /* PARSE */
 const regexp_PERCENT_C          = new RegExp(" ?%c ?"                       , "g");
@@ -2382,10 +2965,10 @@ const regexp_ULX                = new RegExp("__+"                          , "g
 const regexp_UNDERLINE          = new RegExp("_"                            , "g");
 const regexp_UNDERLINE_UTF8     = new RegExp("\\{U\\+005F\\}"               , "g");
 const regexp_VBAR               = new RegExp("\\|"                          , "g");
-const regexp_eacute_to_char     = new RegExp("\\xE9"                        , "g"); var char_eacute = String.fromCharCode(0xE9); /* E-ACUTE */
-const regexp_eacute_to_hex      = new RegExp(String.fromCharCode(0xE9)      , "g"); var hex_eacute = "\\xE9"; /* E-ACUTE */
-const regexp_egrave_to_char     = new RegExp("\\xE8"                        , "g"); var char_egrave = String.fromCharCode(0xE8); /* E-GRAVE */
-const regexp_egrave_to_hex      = new RegExp(String.fromCharCode(0xE8)      , "g"); var hex_egrave = "\\xE8"; /* E-GRAVE */
+const regexp_eacute_to_char     = new RegExp("\\xE9"                        , "g"); let char_eacute = String.fromCharCode(0xE9); /* E-ACUTE */
+const regexp_eacute_to_hex      = new RegExp(String.fromCharCode(0xE9)      , "g"); let hex_eacute = "\\xE9"; /* E-ACUTE */
+const regexp_egrave_to_char     = new RegExp("\\xE8"                        , "g"); let char_egrave = String.fromCharCode(0xE8); /* E-GRAVE */
+const regexp_egrave_to_hex      = new RegExp(String.fromCharCode(0xE8)      , "g"); let hex_egrave = "\\xE8"; /* E-GRAVE */
 const regexp_mS                 = new RegExp("\\s{2,}"                      , "g");
 
 /* KEYWORD */
@@ -2413,9 +2996,6 @@ const regexp_EM_O               = new RegExp("<em[^>]*> *"                      
 const regexp_ENTT               = new RegExp("&\\w+;"                                   , "g");
 const regexp_EOL                = new RegExp("<(ol|ul|/li|/div|br|pre)>"                , "g");
 const regexp_HTML               = new RegExp("<[^>]*>"                                  , "g");
-const regexp_HTML_AMP           = new RegExp("&"                                        , "g");
-const regexp_HTML_GT            = new RegExp(">"                                        , "g");
-const regexp_HTML_LT            = new RegExp("<"                                        , "g");
 
 /*}}}*/
 /* TRIM {{{*/
@@ -2473,12 +3053,7 @@ let trim_empty_lines = function(textContent, alnum_filter=false)
 /*_ trim_node_textContent {{{ */
 let trim_node_textContent = function(node)
 {
-/* CALLERS:
-// javascript/dom_select.js	touchedWord_adjust_3_word_syntaxic_lookup
-// javascript/dom_select.js	log_range
-// javascript/dom_select.js	log_range
-// javascript/dom_select.js	log_range
-*/
+
     return strip_CR_LF( ellipsis(node.textContent.trim(), 64) );
 };
 /*}}}*/
@@ -2502,6 +3077,16 @@ let strip_CR_LF = function(text)
     return text
         .   replace(regexp_CR,  "")
         .   replace(regexp_LF, " ")
+        .   trim()
+    ;
+};
+/*}}}*/
+/*_ show_CR_LF {{{*/
+let show_CR_LF = function(text)
+{
+    return text
+        .   replace(regexp_CR,  "")
+        .   replace(regexp_LF, t_data.SYMBOL_DOWN_LEFT_ARROW)
         .   trim()
     ;
 };
@@ -2646,11 +3231,12 @@ let comma_to_vbar = function(text)
 /*}}}*/
 /*_ escapeHTML {{{*/
 /*{{{*/
-var escapeHTML_chars
+let escapeHTML_chars
     = {   "<"                   : "&lt;"
         , ">"                   : "&gt;"
         , "&"                   : "&amp;"
-        , '"'                   : "&quot;"
+        , '"'                   : "&quot;" /* eslint-disable-line quotes */
+        , "'"                   : "&apos;"
     };
 
 /*}}}*/
@@ -2718,10 +3304,10 @@ let vbar_to_LF = function(text, prefix="")
 /*_ vbar_to_QUOTED_LINES {{{*/
 let vbar_to_QUOTED_LINES = function(text)
 {
-    return '"'
+    return '"'                                  /* eslint-disable-line quotes */
         +  text
-        .   replace(regexp_VBAR, '"'+LF+'"')
-        +  '"'
+        .   replace(regexp_VBAR, '"'+LF+'"')    /* eslint-disable-line quotes */
+        +  '"'                                  /* eslint-disable-line quotes */
     ;
 };
 /*}}}*/
@@ -2780,15 +3366,27 @@ let character_entities_to_hex = function(text)
 };
 /*}}}*/
 /*_ t_get_htmlEntities {{{ */
+/*{{{
+const regexp_HTML_AMP           = new RegExp("&"                                        , "g");
+const regexp_HTML_LT            = new RegExp("<"                                        , "g");
+const regexp_HTML_GT            = new RegExp(">"                                        , "g");
+const regexp_HTML_APOS          = new RegExp("'", "g");
+const regexp_HTML_QUOTE         = new RegExp('"', "g");
+}}}*/
+const regexp_HTML_ENTITIES = new RegExp("[\\u00A0-\\u9999<>\\&']", "gim");
+
 let t_get_htmlEntities = function(str)
 {
+/*{{{
     return String(str)
-        .replace(regexp_HTML_AMP  , "&amp;")
-        .replace(regexp_HTML_LT   , "&lt;")
-        .replace(regexp_HTML_GT   , "&gt;")
+        .replace(regexp_HTML_AMP  , "&amp;" )
+        .replace(regexp_HTML_LT   , "&lt;"  )
+        .replace(regexp_HTML_GT   , "&gt;"  )
+        .replace(regexp_HTML_APOS , "&apos;")
         .replace(regexp_HTML_QUOTE, "&quot;")
     ;
-
+}}}*/
+    return str.replace(regexp_HTML_ENTITIES, function(c) { return "&#"+c.charCodeAt(0)+";"; });
 };
 /*}}}*/
 /*}}}*/
@@ -2953,8 +3551,8 @@ let csv_contains = function(csv, val)
 /*{{{
     if(!val) return false;
 
-    csv = t_tools.t_pattern_del_words_option_sfx(csv);
-    val = t_tools.t_pattern_del_words_option_sfx(val);
+    csv = pattern_del_words_option_sfx(csv);
+    val = pattern_del_words_option_sfx(val);
 
     val = csv_escape(val);
 
@@ -2973,17 +3571,17 @@ let csv_pos = function(csv,val)
     if(!csv       ) return 0;
 
 /*{{{
-    csv = t_tools.t_pattern_del_words_option_sfx(csv);
-    val = t_tools.t_pattern_del_words_option_sfx(val);
+    csv = pattern_del_words_option_sfx(csv);
+    val = pattern_del_words_option_sfx(val);
 }}}*/
-    let csv_no_sfx  =            t_tools.t_pattern_del_words_option_sfx(csv); /* ? single entry csv */
-    let val_no_sfx  = csv_escape(t_tools.t_pattern_del_words_option_sfx(val));
+    let csv_no_sfx  =            pattern_del_words_option_sfx(csv); /* ? single entry csv */
+    let val_no_sfx  = csv_escape(pattern_del_words_option_sfx(val));
     if( val_no_sfx == csv_no_sfx) return 1;
 
     let a = csv.split(",");
     for(let i=0; i < a.length; ++i)
     {
-        let       a_i = t_tools.t_pattern_del_words_option_sfx(a[i]);
+        let       a_i = pattern_del_words_option_sfx(a[i]);
         if(val_no_sfx == a_i ) return (i+1);
     }
 
@@ -3000,8 +3598,8 @@ let csv_del = function(csv,val)
 logXXX("csv_del(csv=[%c"+csv+"%c], val=[%c"+val+"%c])", lb1,lbA, lb2,lbA)
 }}}*/
 
-    let csv_no_sfx =            t_tools.t_pattern_del_words_option_sfx(csv); /* ? single entry csv */
-    let val_no_sfx = csv_escape(t_tools.t_pattern_del_words_option_sfx(val));
+    let csv_no_sfx =            pattern_del_words_option_sfx(csv); /* ? single entry csv */
+    let val_no_sfx = csv_escape(pattern_del_words_option_sfx(val));
 
     /* removing a single item */
     if( csv_no_sfx == val_no_sfx)
@@ -3017,7 +3615,7 @@ logXXX("___val=[%c"+val_no_sfx+"%c]", lb2,lbA)
         let a = csv.split(",");
         csv = "";
         for(let i=0; i < a.length; ++i) {
-            let item_no_sfx = t_tools.t_pattern_del_words_option_sfx(a[i]);
+            let item_no_sfx = pattern_del_words_option_sfx(a[i]);
 
             if(              !item_no_sfx) continue;
             if( val_no_sfx == item_no_sfx) continue;
@@ -3098,12 +3696,12 @@ let log_this = LOG_MAP.S0_PATTERN || LOG_MAP.S2_SELECT;
 /*{{{*/
 if(log_this) {
     log_key_val_group( "csv_slice_head_or_tail"
-                       , {               csv : csv
-                           ,      length_max :  length_max
-                           ,    head_or_tail : head_or_tail
+                       , {               csv
+                           ,      length_max
+                           ,    head_or_tail
                            ,        a_length : a.length
-                           ,       head_csv  : head_csv
-                           ,       tail_csv  : tail_csv
+                           ,       head_csv
+                           ,       tail_csv
                            ,      result_csv : result.csv
                            , result_overflow : result.overflow
                        }
@@ -3183,6 +3781,22 @@ let csv_log = function(csv, title="")
     }
 };
 /*}}}*/
+
+/*_ pattern_del_words_option_sfx {{{*/
+let pattern_del_words_option_sfx = function(pattern)
+{
+
+    let result
+    =   (typeof dom_tools !== "undefined")
+    ?           dom_tools.t_pattern_del_words_option_sfx( pattern )
+    :                                                     pattern
+    ;
+/*{{{
+log("pattern_del_words_option_sfx("+pattern+") %c"+result, lbH+lf8);
+}}}*/
+    return result;
+};
+/*}}}*/
 /*}}}*/
 /* TITLE {{{*/
 /*  get_el_title {{{*/
@@ -3201,101 +3815,32 @@ let get_el_title = function(el)
 };
 /*}}}*/
 /*  get_id_caption {{{*/
-let get_id_caption = function(el_id, caption, lang)
+let get_id_caption = function(el_id, caption/*, lang*/)
 {
 /*{{{*/
 let   caller = "get_id_caption";
-let log_this = LOG_MAP.T0_STORE;
+let log_this = DOM_UTIL_TAG || DOM_UTIL_LOG || LOG_MAP.T1_DOM_LOAD;
 
 /*}}}*/
-    if(!lang) lang = user_lang;
-    el_id = strip_el_id_suffix( el_id );
-    let el_caption_lang;
-    /* FROM.DOM_ID..............................................i18n_get(I18N_GLOSSARY_ENTRY    , el_id, lang){{{*/
-    if     (el_id == "pat_bag"              ) el_caption_lang = i18n_get(I18N_PAT_BAG           , el_id, lang);
-    else if(el_id == "sel_bag"              ) el_caption_lang = i18n_get(I18N_SEL_BAG           , el_id, lang);
-
-    else if(el_id == "headsup_w"            ) el_caption_lang = i18n_get(I18N_HEADSUP_W         , el_id, lang);
-    else if(el_id == "headsup"              ) el_caption_lang = i18n_get(I18N_HEADSUP           , el_id, lang);
-    else if(el_id == "headsup_ds"           ) el_caption_lang = i18n_get(I18N_HEADSUP_DS        , el_id, lang);
-    else if(el_id == "dom_traversal"        ) el_caption_lang = i18n_get(I18N_DOM_TRAVERSAL     , el_id, lang);
-    else if(el_id == "headsup_bw"           ) el_caption_lang = i18n_get(I18N_HEADSUP_BW        , el_id, lang);
-    else if(el_id == "headsup_bz"           ) el_caption_lang = i18n_get(I18N_HEADSUP_BZ        , el_id, lang);
-    else if(el_id == "headsup_fs"           ) el_caption_lang = i18n_get(I18N_HEADSUP_FS        , el_id, lang);
-    else if(el_id == "test_panel"           ) el_caption_lang = i18n_get(I18N_TEST_PANEL        , el_id, lang);
-    else if(el_id == "dev_log_map"          ) el_caption_lang = i18n_get(I18N_DEV_LOG_MAP       , el_id, lang);
-    else if(el_id == "transcript1"          ) el_caption_lang = i18n_get(I18N_TRANSCRIPT1       , el_id, lang);
-    else if(el_id == "transcript2"          ) el_caption_lang = i18n_get(I18N_TRANSCRIPT2       , el_id, lang);
-    else if(el_id == "dom_load_tags"        ) el_caption_lang = i18n_get(I18N_DOM_LOAD_TAGS     , el_id, lang);
-
-    else if(el_id == "alt_bag"              ) el_caption_lang = i18n_get(I18N_ALT_BAG           , el_id, lang);
-    else if(el_id == "bak_bag"              ) el_caption_lang = i18n_get(I18N_BAK_BAG           , el_id, lang);
-    else if(el_id == "off_bag"              ) el_caption_lang = i18n_get(I18N_OFF_BAG           , el_id, lang);
-    else if(el_id == "bag_rot"              ) el_caption_lang = i18n_get(I18N_BAG_ROT           , el_id, lang);
-    else if(el_id == "words_bag_rot"        ) el_caption_lang = i18n_get(I18N_BAG_ROT           , el_id, lang);
-    else if(el_id == "bagopen"              ) el_caption_lang = i18n_get(I18N_BAGOPEN           , el_id, lang);
-    else if(el_id == "bag_log"              ) el_caption_lang = i18n_get(I18N_BAG_LOG           , el_id, lang);
-    else if(el_id == "pat_sort"             ) el_caption_lang = i18n_get(I18N_SORT_SELECTION    , el_id, lang);
-
-    else if(el_id == "fly_log"              ) el_caption_lang = i18n_get(I18N_FLY_LOG           , el_id, lang);
-
-    else if(el_id == "scroll_smooth"        ) el_caption_lang = i18n_get(I18N_SCROLL_SMOOTH     , el_id, lang);
-    else if(el_id == "anchor_freeze"        ) el_caption_lang = i18n_get(I18N_ANCHOR_FREEZE     , el_id, lang);
-    else if(el_id == "containers_hi"        ) el_caption_lang = i18n_get(I18N_CONTAINERS_HI     , el_id, lang);
-    else if(el_id == "deny_or_allow"        ) el_caption_lang = i18n_get(I18N_DENY_OR_ALLOW     , el_id, lang);
-    else if(el_id == "dom_hide1_reset"      ) el_caption_lang = i18n_get(I18N_DOM_HIDE1_RESET   , el_id, lang);
-    else if(el_id == t_data.EDIT_OR_STAGE   ) el_caption_lang = i18n_get(I18N_EDIT_OR_STAGE     , el_id, lang);
-    else if(el_id == "log_seekspot"         ) el_caption_lang = i18n_get(I18N_LOG_SEEKSPOT      , el_id, lang);
-
-    else if(el_id == "remove_ads"           ) el_caption_lang = i18n_get(I18N_REMOVE_ADS        , el_id, lang);
-    else if(el_id == "split_wot"            ) el_caption_lang = i18n_get(I18N_SPLIT_WALL_OF_TEXT, el_id, lang);
-    else if(el_id == "lines_wot"            ) el_caption_lang = i18n_get(I18N_LINES_WALL_OF_TEXT, el_id, lang);
-
-    else if(el_id == "mask_or_hide"         ) el_caption_lang = i18n_get(I18N_MASK_OR_HIDE      , el_id, lang);
-    else if(el_id == "overflow_visi"        ) el_caption_lang = i18n_get(I18N_OVERFLOW_VISI     , el_id, lang);
-    else if(el_id == "pin_seekspot"         ) el_caption_lang = i18n_get(I18N_PIN_SEEKSPOT      , el_id, lang);
-    else if(el_id == "words_recycle"        ) el_caption_lang = i18n_get(I18N_WORDS_RECYCLE     , el_id, lang);
-    else if(el_id == "show_seekzone"        ) el_caption_lang = i18n_get(I18N_SHOW_SEEKZONE     , el_id, lang);
-    else if(el_id == "site_or_page"         ) el_caption_lang = i18n_get(I18N_SITE_OR_PAGE      , el_id, lang);
-    else if(el_id == "theme_dark"           ) el_caption_lang = i18n_get(I18N_THEME_DARK        , el_id, lang);
-    else if(el_id == "tools_extras"         ) el_caption_lang = i18n_get(I18N_TOOLS_EXTRAS      , el_id, lang);
-    else if(el_id == "tools_scroll"         ) el_caption_lang = i18n_get(I18N_TOOLS_SCROLL      , el_id, lang);
-    else if(el_id == "tools_trap"           ) el_caption_lang = i18n_get(I18N_TOOLS_TRAP        , el_id, lang);
-
-    else if(el_id == "wording"              ) el_caption_lang = i18n_get(I18N_1_WORDING         , el_id, lang);
-    else if(el_id == "words_exact"          ) el_caption_lang = i18n_get(I18N_2_WORDS_EXACT     , el_id, lang);
-    else if(el_id == "words_segment"        ) el_caption_lang = i18n_get(I18N_3_WORDS_SEGMENT   , el_id, lang);
-    else if(el_id == "words_head_tail"      ) el_caption_lang = i18n_get(I18N_4_WORDS_HEAD_TAIL , el_id, lang);
-    else if(el_id == "words_opcycle"        ) el_caption_lang = i18n_get(I18N_5_WORDS_OPCYCLE   , el_id, lang);
-    else if(el_id == "words_drop_case"      ) el_caption_lang = i18n_get(I18N_6_WORDS_DROP_CASE , el_id, lang);
-    else if(el_id == "words_drop_ing"       ) el_caption_lang = i18n_get(I18N_7_WORDS_DROP_ING  , el_id, lang);
-    else if(el_id == "words_drop_s"         ) el_caption_lang = i18n_get(I18N_8_WORDS_DROP_S    , el_id, lang);
-
-/* TODO .. PANELS TOOLTIP IS CURRENTLY CAPTURED BY THEIR LONG_PRESS MAGNIY HANDLER */
 /*{{{
-const BODY_WIDTH                     = "BODY .. Fixed Width";
-        , [ BODY_WIDTH               , "BODY .. Largeur fixe" ]
-    else if(el_id == "headsup_bw"           ) el_caption_lang = i18n_get(I18N_BODY_WIDTH        , el_id, lang);
+    if(!lang)
+        lang
+            = (typeof dom_i18n !== "undefined")
+            ?  dom_i18n.user_lang
+            :  "";
 }}}*/
 
-    /*}}}*/
-    /* FROM.SUB-TOOL.CSS_CLASSNAME..............................i18n_get(I18N_GLOSSARY_ENTRY    , el_id, lang) {{{*/
-    else {
-        if     ( el_id.includes("clearpin") ) el_caption_lang = i18n_get(  I18N_CLEAR_PANEL     , el_id, lang);
-        else if( el_id.includes("closepin") ) el_caption_lang = i18n_get(  I18N_CLOSE_PANEL     , el_id, lang);
-        else if( el_id.includes("push_pin") ) el_caption_lang = i18n_get(    I18N_PIN_PANEL     , el_id, lang);
-        else if( el_id.includes("scalepin") ) el_caption_lang = i18n_get(I18N_MAGNIFY_PANEL     , el_id, lang);
-    }
-    /*}}}*/
+    el_id = strip_el_id_suffix( el_id );
+
+    let el_caption_lang = get_el_caption_lang(el_id, /*lang,*/ log_this);
     /* DEFAULT TO [BARE DOM_ID] or [BARE CAPTION TOOLTIP] {{{*/
     if(!el_caption_lang) {
         if(!caption && el_id) el_caption_lang = i18n_get(el_id);
-        else                  el_caption_lang = "";
     }
     /*}}}*/
     /* [WARNING LOG FOR MISSING ELEMENT TITLE] {{{*/
     if(!el_caption_lang) {
-        log("%c"+caller+"("+el_id+"%c"+lang+" %c IS MISSING", lbb+lbL+lf6, lbb+lbC+lf3, lbb+lbR+lf3);
+        log("%c"+caller+"("+el_id+"%c"+dom_i18n.user_lang+" %c IS MISSING", lbb+lbL+lf6, lbb+lbC+lf3, lbb+lbR+lf3);
 log_caller(2);
     }
     /*}}}*/
@@ -3305,9 +3850,115 @@ log_caller(2);
 
     /*}}}*/
 if(log_this)
-    log(caller+"("+el_id+", ["+caption+"], "+lang+"): ...el_caption_lang %c"+el_caption_lang, lbH+lf7);
-/*{{{
-}}}*/
+    log("%c"+caller+"("+el_id+", caption=["+caption+"], user_lang=["+dom_i18n.user_lang+"]): ...el_caption_lang %c"+el_caption_lang, lf7, lbH+lf7);
+    return el_caption_lang;
+};
+/*}}}*/
+/*_ get_el_caption_lang .. OPTIONAL {{{*/
+let get_el_caption_lang = function(el_id, /*lang,*/ log_this) /* eslint-disable-line complexity */
+{
+/*{{{*/
+let   caller = "get_el_caption_lang";
+
+/*}}}*/
+    let el_caption_lang;
+
+    /* translation module not involved */
+    if(typeof dom_i18n === "undefined")
+    {
+        el_caption_lang = el_id;
+    }
+    /* from dom_i18n {{{*/
+    else {
+        /* FROM.DOM_ID..............................................i18n_get(dom_i18n.GLOSSARY_ENTRY    , el_id){{{*/
+        if     (el_id == "pat_bag"              ) el_caption_lang = i18n_get(dom_i18n.PAT_BAG           , el_id);
+        else if(el_id == "sel_bag"              ) el_caption_lang = i18n_get(dom_i18n.SEL_BAG           , el_id);
+
+        else if(el_id == "headsup_w"            ) el_caption_lang = i18n_get(dom_i18n.HEADSUP_W         , el_id);
+        else if(el_id == "headsup"              ) el_caption_lang = i18n_get(dom_i18n.HEADSUP           , el_id);
+        else if(el_id == "headsup_ds"           ) el_caption_lang = i18n_get(dom_i18n.HEADSUP_DS        , el_id);
+        else if(el_id == "dom_traversal"        ) el_caption_lang = i18n_get(dom_i18n.DOM_TRAVERSAL     , el_id);
+        else if(el_id == "headsup_bw"           ) el_caption_lang = i18n_get(dom_i18n.HEADSUP_BW        , el_id);
+        else if(el_id == "headsup_bz"           ) el_caption_lang = i18n_get(dom_i18n.HEADSUP_BZ        , el_id);
+        else if(el_id == "headsup_fs"           ) el_caption_lang = i18n_get(dom_i18n.HEADSUP_FS        , el_id);
+        else if(el_id == "test_panel"           ) el_caption_lang = i18n_get(dom_i18n.TEST_PANEL        , el_id);
+        else if(el_id == "dev_log_map"          ) el_caption_lang = i18n_get(dom_i18n.DEV_LOG_MAP       , el_id);
+        else if(el_id == "transcript1"          ) el_caption_lang = i18n_get(dom_i18n.TRANSCRIPT1       , el_id);
+        else if(el_id == "transcript2"          ) el_caption_lang = i18n_get(dom_i18n.TRANSCRIPT2       , el_id);
+        else if(el_id == "dom_load_tags"        ) el_caption_lang = i18n_get(dom_i18n.DOM_LOAD_TAGS     , el_id);
+
+        else if(el_id == "alt_bag"              ) el_caption_lang = i18n_get(dom_i18n.ALT_BAG           , el_id);
+        else if(el_id == "bak_bag"              ) el_caption_lang = i18n_get(dom_i18n.BAK_BAG           , el_id);
+        else if(el_id == "off_bag"              ) el_caption_lang = i18n_get(dom_i18n.OFF_BAG           , el_id);
+        else if(el_id == "bag_rot"              ) el_caption_lang = i18n_get(dom_i18n.BAG_ROT           , el_id);
+        else if(el_id == "words_bag_rot"        ) el_caption_lang = i18n_get(dom_i18n.BAG_ROT           , el_id);
+        else if(el_id == "bagopen"              ) el_caption_lang = i18n_get(dom_i18n.BAGOPEN           , el_id);
+        else if(el_id == "bag_log"              ) el_caption_lang = i18n_get(dom_i18n.BAG_LOG           , el_id);
+        else if(el_id == "pat_sort"             ) el_caption_lang = i18n_get(dom_i18n.SORT_SELECTION    , el_id);
+
+        else if(el_id == "fly_log"              ) el_caption_lang = i18n_get(dom_i18n.FLY_LOG           , el_id);
+
+        else if(el_id == "scroll_smooth"        ) el_caption_lang = i18n_get(dom_i18n.SCROLL_SMOOTH     , el_id);
+        else if(el_id == "user_lang"            ) el_caption_lang = i18n_get(dom_i18n.USER_LANG         , el_id);
+        else if(el_id == "anchor_freeze"        ) el_caption_lang = i18n_get(dom_i18n.ANCHOR_FREEZE     , el_id);
+        else if(el_id == "containers_hi"        ) el_caption_lang = i18n_get(dom_i18n.CONTAINERS_HI     , el_id);
+        else if(el_id == "deny_or_allow"        ) el_caption_lang = i18n_get(dom_i18n.DENY_OR_ALLOW     , el_id);
+        else if(el_id == "dom_hide1_reset"      ) el_caption_lang = i18n_get(dom_i18n.DOM_HIDE1_RESET   , el_id);
+        else if(el_id == "dom_hide1_undo"       ) el_caption_lang = i18n_get(dom_i18n.DOM_HIDE1_UNDO    , el_id);
+        else if(el_id == t_data.EDIT_OR_STAGE   ) el_caption_lang = i18n_get(dom_i18n.EDIT_OR_STAGE     , el_id);
+        else if(el_id == "log_seekspot"         ) el_caption_lang = i18n_get(dom_i18n.LOG_SEEKSPOT      , el_id);
+
+        else if(el_id == "remove_ads"           ) el_caption_lang = i18n_get(dom_i18n.REMOVE_ADS        , el_id);
+        else if(el_id == "split_wot"            ) el_caption_lang = i18n_get(dom_i18n.SPLIT_WALL_OF_TEXT, el_id);
+        else if(el_id == "lines_wot"            ) el_caption_lang = i18n_get(dom_i18n.LINES_WALL_OF_TEXT, el_id);
+
+        else if(el_id == "mask_or_hide"         ) el_caption_lang = i18n_get(dom_i18n.MASK_OR_HIDE      , el_id);
+        else if(el_id == "overflow_visi"        ) el_caption_lang = i18n_get(dom_i18n.OVERFLOW_VISI     , el_id);
+        else if(el_id == "details_close"        ) el_caption_lang = i18n_get(dom_i18n.DETAILS_CLOSE     , el_id);
+        else if(el_id == "details_open"         ) el_caption_lang = i18n_get(dom_i18n.DETAILS_OPEN      , el_id);
+        else if(el_id == "details_radio"        ) el_caption_lang = i18n_get(dom_i18n.DETAILS_RADIO     , el_id);
+
+        else if(el_id == "pin_seekspot"         ) el_caption_lang = i18n_get(dom_i18n.PIN_SEEKSPOT      , el_id);
+        else if(el_id == "words_recycle"        ) el_caption_lang = i18n_get(dom_i18n.WORDS_RECYCLE     , el_id);
+        else if(el_id == "show_seekzone"        ) el_caption_lang = i18n_get(dom_i18n.SHOW_SEEKZONE     , el_id);
+        else if(el_id == "site_or_page"         ) el_caption_lang = i18n_get(dom_i18n.SITE_OR_PAGE      , el_id);
+        else if(el_id == "theme_dark"           ) el_caption_lang = i18n_get(dom_i18n.THEME_DARK        , el_id);
+        else if(el_id == "tools_tier2"          ) el_caption_lang = i18n_get(dom_i18n.TOOLS_TIER2       , el_id);
+        else if(el_id == "tools_scroll"         ) el_caption_lang = i18n_get(dom_i18n.TOOLS_SCROLL      , el_id);
+        else if(el_id == "tools_trap"           ) el_caption_lang = i18n_get(dom_i18n.TOOLS_TRAP        , el_id);
+
+        else if(el_id == "wording"              ) el_caption_lang = i18n_get(dom_i18n.WORDING           , el_id);
+        else if(el_id == "words_exact"          ) el_caption_lang = i18n_get(dom_i18n.WORDS2_EXACT      , el_id);
+        else if(el_id == "words_segment"        ) el_caption_lang = i18n_get(dom_i18n.WORDS3_SEGMENT    , el_id);
+        else if(el_id == "words_head_tail"      ) el_caption_lang = i18n_get(dom_i18n.WORDS4_HEAD_TAIL  , el_id);
+        else if(el_id == "words_opcycle"        ) el_caption_lang = i18n_get(dom_i18n.WORDS5_OPCYCLE    , el_id);
+        else if(el_id == "words_drop_case"      ) el_caption_lang = i18n_get(dom_i18n.WORDS6_DROP_CASE  , el_id);
+        else if(el_id == "words_drop_ing"       ) el_caption_lang = i18n_get(dom_i18n.WORDS7_DROP_ING   , el_id);
+        else if(el_id == "words_drop_s"         ) el_caption_lang = i18n_get(dom_i18n.WORDS8_DROP_S     , el_id);
+
+        /* TODO .. PANELS TOOLTIP IS CURRENTLY CAPTURED BY THEIR LONG_PRESS MGNIY HANDLER */
+        /*{{{
+            const BODY_WIDTH                 = "BODY .. Fixed Width";
+                    , [ BODY_WIDTH           , "BODY .. Largeur fixe" ]
+            else if(el_id == "headsup_bw"       ) el_caption_lang = i18n_get(dom_i18n.BODY_WIDTH        , el_id);
+            }}}*/
+
+        /*}}}*/
+        /* FROM.SUB-TOOL.CSS_CLASSNAME..............................i18n_get(dom_i18n.GLOSSARY_ENTRY    , el_id) {{{*/
+        else {
+            if     ( el_id.includes("clearpin") ) el_caption_lang = i18n_get(dom_i18n.CLEAR_PANEL       , el_id);
+            else if( el_id.includes("closepin") ) el_caption_lang = i18n_get(dom_i18n.CLOSE_PANEL       , el_id);
+            else if( el_id.includes("push_pin") ) el_caption_lang = i18n_get(dom_i18n.PIN_PANEL         , el_id);
+            else if( el_id.includes("scalepin") ) el_caption_lang = i18n_get(dom_i18n.MAGNIFY_PANEL     , el_id);
+        }
+        /*}}}*/
+    }
+    /*}}}*/
+
+/*{{{*/
+if( log_this)
+    log("%c"+caller+"("+el_id+", user_lang=["+(dom_i18n && dom_i18n.user_lang)+"]): ...return %c"+el_caption_lang, lf6, lbH+lf6);
+/*}}}*/
     return el_caption_lang;
 };
 /*}}}*/
@@ -3335,8 +3986,8 @@ let get_url_domain = function(url)
 
     let domain
         = (url.indexOf("://" ) > 0)
-        ?  url.split  (  '/' )[2]
-        :  url.split  (  '/' )[0]
+        ?  url.split  (  "/" )[2]
+        :  url.split  (  "/" )[0]
     ;
 
     return  domain.replace(regex_DOMAIN, "$1") || parseURL(url).scheme+"://";
@@ -3350,20 +4001,27 @@ const regexp_URL = new RegExp("^([^:]+):\\/\\/(?:([^@]+)@)?([^\\/:]*)?(?::([\\d]
 
 let parseURL = function(url)
 {
-    var result = {};
-    var match  = String(url).match(regexp_URL);
-    if( match ) {
-        result.scheme   = match[1].toLowerCase();
-        result.userinfo = match[2];
-        result.host     = match[3];
-        result.port     = match[4];
-        result.path     = match[5] || "/";
-        result.fragment = match[6];
+    let result = {};
 
-        if(result.userinfo) {
-            let               a = result.userinfo.split(":");
-            result.user     = a[0];
-            result.password = a[1];
+    if(String(url).startsWith("#"))
+    {
+        result.fragment = String(url).substr(1);
+    }
+    else {
+        let match  = String(url).match(regexp_URL);
+        if( match ) {
+            result.scheme   = match[1].toLowerCase();
+            result.userinfo = match[2];
+            result.host     = match[3];
+            result.port     = match[4];
+            result.path     = match[5] || "/";
+            result.fragment = match[6];
+
+            if(result.userinfo) {
+                let               a = result.userinfo.split(":");
+                result.user     = a[0];
+                result.password = a[1];
+            }
         }
     }
 
@@ -3383,11 +4041,11 @@ let t_copy_to_CLIPBOARD = function(copy_content)
     let caller = "t_copy_to_CLIPBOARD";
 let log_this   = LOG_MAP.EV3_UP;
 
-if( log_this) log(caller+"("+ellipsis_short(copy_content)+")");
+if( log_this) log("%c "+caller+"(copy_content):"+LF+"%c"+ellipsis(copy_content)
+                  ,lbH+lf6, lbF+lf6);
 /*}}}*/
     /* [cb_textArea] {{{*/
     if(!cb_textArea) {
-        let shadow_root = t_tools.t_get_shadow_root();
         cb_textArea     = document.createElement("TEXTAREA");
         cb_textArea.id  = "cb_textArea";
         cb_textArea.style.position        = "fixed";
@@ -3396,7 +4054,11 @@ if( log_this) log(caller+"("+ellipsis_short(copy_content)+")");
         cb_textArea.style.width           =  "95%";
         cb_textArea.style.height          = "25em";
         cb_textArea.style.backgroundColor = "salmon";
+/*{{{
+        let shadow_root = get_shadow_root();
         shadow_root.appendChild(cb_textArea);
+}}}*/
+        document.body.appendChild(cb_textArea);
 /*{{{
       document.body.appendChild(cb_textArea);
       cb_textArea.style.display         = "none";
@@ -3411,7 +4073,8 @@ if( log_this) log(caller+"("+ellipsis_short(copy_content)+")");
     /*}}}*/
     /* COPY TO CLIPBOARD {{{*/
     cb_textArea.select();
-if( log_this) log("%c window.getSelection() %c "+window.getSelection(), lbL+lf8, lbR+lf9);
+if( log_this) log("%c window.getSelection():"+LF+"%c"+ellipsis(window.getSelection())
+                  ,lbH+lf8, lbF+lf8);
 
     if( !document.execCommand("copy") )
     {
@@ -3421,7 +4084,7 @@ logXXX("%c USER EVENT CALLBACK REQUIRED ", lbb+lbH+lf2);
 }}}*/
     }
     else {
-if( log_this) log("%c...COPY TO CLIPBOARD: "+cb_textArea.value.length+" characters ", lbR+lf2);
+if( log_this) log("%c...COPY TO CLIPBOARD: "+cb_textArea.value.length+" characters ", lbR+lf6);
 
     }
     /*}}}*/
@@ -3442,10 +4105,10 @@ let log_this = DOM_UTIL_LOG || DOM_UTIL_TAG;
     let bak_arr = alt_arr.splice(10);
     let bin_arr = bak_arr.splice(10);
 
-if(log_this && pat_arr.length) t_log.console_dir(pat_arr,"pat_arr");
-if(log_this && alt_arr.length) t_log.console_dir(alt_arr,"alt_arr");
-if(log_this && bak_arr.length) t_log.console_dir(bak_arr,"bak_arr");
-if(log_this && bin_arr.length) t_log.console_dir(bin_arr,"bin_arr");
+if(log_this && pat_arr.length) t_log.console_dir("pat_arr",pat_arr);
+if(log_this && alt_arr.length) t_log.console_dir("alt_arr",alt_arr);
+if(log_this && bak_arr.length) t_log.console_dir("bak_arr",bak_arr);
+if(log_this && bin_arr.length) t_log.console_dir("bin_arr",bin_arr);
 
     let                result = [];
     if(pat_arr.length) result.push( { key : page_key+".pat_arr" , val : JSON.stringify( pat_arr )} );
@@ -3453,7 +4116,7 @@ if(log_this && bin_arr.length) t_log.console_dir(bin_arr,"bin_arr");
     if(bak_arr.length) result.push( { key : page_key+".bak_arr" , val : JSON.stringify( bak_arr )} );
     if(bin_arr.length) result.push( { key : page_key+".bin_arr" , val : JSON.stringify( bin_arr )} );
 
-if(log_this) t_log.console_dir(result,"result");
+if(log_this) t_log.console_dir("result",result);
     return  result;
 };
 /*}}}*/
@@ -3480,7 +4143,7 @@ logBIG("JSON_parse")
     {
         if(!silent) {
             let     offset = get_int_in_string( ex.message );
-            let     to_err = Math.floor(offset / 100);
+            let     to_err = 100 * Math.floor(offset / 100);
             let    err_str =   json_str.substring(to_err, to_err + 100 );
             let to_err_str = TO_ERR_100.substring(0     ,          offset - to_err       );
             let digits_str = DIGITS_100.substring(0     , Math.max(offset - to_err+2, 10));
@@ -3499,311 +4162,6 @@ logBIG("JSON_parse")
 /*}}}*/
 /*}}}*/
 
-/* I18N */
-/*{{{*/
-/*{{{
-let user_lang                        = "EN";
-}}}*/
-let user_lang                        = "FR"; /*"EN";*/
-/* i18n_get {{{*/
-let i18n_get = function(key, el_id,lang=user_lang)
-{
-let   caller = "i18n_get";
-let log_this = LOG_MAP.T0_STORE;
-
-    if(!i18n_map_FR) i18n_load();
-
-    let     value;
-    switch( lang ) {
-    default  :
-    case "en": case "EN": value = key;                   break;
-    case "fr": case "FR": value =  i18n_map_FR.get(key); break;
-    }
-
-    if(!value) {
-        value = key;
-
-log("%c"+ caller +"%c"+ el_id  +"%c"+ key    +"%c"+ lang   +"%c IS MISSING"
-    ,lbb+lbH+lf8  ,lbb+lbL+lf4  ,lbb+lbC+lf7  ,lbb+lbC+lf8  ,lbb+lbR+lf3   );
-log_caller(2);
-    }
-
-    /* ID ON SECOND LINE */
-    if( el_id )
-        value += LF+ unicode_to_charCode( dom_data.SYMBOL_BLACK_SUN ) +" "+el_id;
-
-if(log_this) log("%c"+caller+"("+el_id+" .. "+key+ ")%c...return "+ value, lbL+lf4, lbR+lf5);
-
-    return value;
-};
-/*}}}*/
-/*_ I18N ID {{{*/
-
-const I18N_PAT_BAG                        = "PAT bag";
-const I18N_SEL_BAG                        = "SEL bag";
-const I18N_HEADSUP_W                      = "Words options";
-const I18N_HEADSUP                        = "Tools options";
-
-const I18N_HEADSUP_DS                     = "Document tools";
-const I18N_DOM_TRAVERSAL                  = "DOM traversal";
-const I18N_HEADSUP_BW                     = "Body width";
-const I18N_HEADSUP_BZ                     = "Body zoom";
-const I18N_HEADSUP_FS                     = "Body font-size";
-
-const I18N_TEST_PANEL                     = "Test PANEL";
-const I18N_DEV_LOG_MAP                    = "DEV [LOG_MAP";
-const I18N_TRANSCRIPT1                    = "Transcript 1";
-const I18N_TRANSCRIPT2                    = "Transcript 2";
-
-const I18N_DOM_LOAD_TAGS                  = "DOM [LOAD_TAGS";
-
-
-const I18N_ALT_BAG                        = "ALT bag";
-const I18N_BAK_BAG                        = "BAK bag";
-const I18N_OFF_BAG                        = "OFF bag";
-
-const I18N_BAGOPEN                        = "Open-Close BAGS";
-const I18N_BAG_LOG                        = "Status details";
-const I18N_BAG_ROT                        = "Rotate bags";
-
-const I18N_CLEAR_PANEL                    = "Clear panel";
-const I18N_CLOSE_PANEL                    = "Close panel";
-const I18N_MAGNIFY_PANEL                  = "Magnify panel";
-const I18N_PIN_PANEL                      = "Pin panel";
-
-const I18N_FLY_LOG                        = "Flying tooltips";
-const I18N_SORT_SELECTION                 = "Sort selection";
-
-
-const I18N_SCROLL_SMOOTH                  = "Smooth or Instant scrolling";
-const I18N_ANCHOR_FREEZE                  = "Disable links navigation";
-const I18N_CONTAINERS_HI                  = "Highlight paragraph containers";
-const I18N_DENY_OR_ALLOW                  = "Deny or Allow (no-op at this time)";
-const I18N_DOM_HIDE1_RESET                = "Reset all hidden containers";
-const I18N_EDIT_OR_STAGE                  = "Edit or Apply hidden containers";
-const I18N_LOG_SEEKSPOT                   = "Log seekspot tool parameters";
-
-const I18N_REMOVE_ADS                     = "Remove Ads Tags";
-const I18N_SPLIT_WALL_OF_TEXT             = "Split Text Panels"+LF+"(i.e. Wall-of-Text)";
-const I18N_LINES_WALL_OF_TEXT             = "Show Wall-of-Text line numbers";
-
-const I18N_MASK_OR_HIDE                   = "Mask or Hide hidden containers";
-const I18N_OVERFLOW_VISI                  = "Force text-overflow visibility";
-const I18N_PIN_SEEKSPOT                   = "Keep last seekspot visible";
-const I18N_WORDS_RECYCLE                  = "Recycle";
-const I18N_WORDS_RECYCLE_CLICK_TO_HIDE    = "Click to hide";
-const I18N_WORDS_RECYCLE_CLICK_TO_DISCARD = "Click to discard all";
-const I18N_STORED_PATTERNS                = "Stored patterns";
-const I18N_SHOW_SEEKZONE                  = "Show lst seek zone area";
-const I18N_SITE_OR_PAGE                   = "Hiding containers at SITE or PAGE level";
-const I18N_THEME_DARK                     = "Dark Theme";
-const I18N_TOOLS_EXTRAS                   =   "EXTRA TOOLS SELECTED"
-    /*.................................*/ +LF+"✔ dom_traversal"
-    /*.................................*/ +LF+"✔ dev_log_map"
-    /*.................................*/ +LF+"✔ test_panel"
-    /*.................................*/ +LF+"✔ dom_load_tags"
-    /*.................................*/ +LF+"☀ t_sync_tools_extras"
-    /*.................................*/ +LF
-    /*.................................*/ +LF+"SEEKER MOVES FASTER"
-    /*.................................*/ +LF+"☀ onMove_5_GRAB_SELECTION"
-    /*.................................*/ +LF+"☀ onMove_6_GRAB_STICKY"
-    /*.................................*/ +LF+"☀ t_seeker_onMove2_ON_NEXT_STICKY"
-    /*.................................*/ +LF
-;
-const I18N_TOOLS_SCROLL                   = "Tools fixed or scrolling with the page";
-const I18N_TOOLS_TRAP                     = "Trap tools in their current quadrant while moving hotspot";
-
-const I18N_1_WORDING                      = "Wording State: FREEZED LINKS and PAGE-COLOR-THEME";
-const I18N_2_WORDS_EXACT                  = "Select whole words only";
-const I18N_3_WORDS_SEGMENT                = "Select word segment";
-const I18N_4_WORDS_HEAD_TAIL              = "Grab words prefix and suffix";
-const I18N_5_WORDS_OPCYCLE                = "Auto-cycle:"+LF+"1 - whole words"+LF+"2 - word segments"+LF+"3 - head and tail"+LF+"4 .. unselected";
-const I18N_6_WORDS_DROP_CASE              = "Ignore case";
-const I18N_7_WORDS_DROP_ING               = "Drop [ing] word terminaisons";
-const I18N_8_WORDS_DROP_S                 = "Drop [s] word treminations";
-
-/*}}}*/
-/*_ I18N STRING {{{*/
-const I18N_AS_SET_BY_USER                   = "As set by user";
-const I18N_BAGS_CONTENT                     = "Current content";
-const I18N_IS_EMPTY                         = " is empty";
-const I18N_COPY_ALL_PARAGRAPHS_TO_CLIPBOARD = "Copy all paragraphs to clipboard";
-const I18N_MONOSPACE                        = "SHOW (and COPY) HTML or TEXT Format";
-const I18N_COPY_PARAGRAPH_TO_CLIPBOARD      = "Copy paragraph to clipboard";
-const I18N_CURRENTLY                        = "Currently";
-const I18N_REVERSED_Z_TO_A                  = "Reversed Z..A";
-const I18N_SCROLL_TO_THIS_PARAGRAPH         = "Scroll to this paragraph";
-const I18N_SORTED_A_TO_Z                    = "Sorted A..Z";
-const I18N_UNORDERED                        = "Unordered";
-const I18N_MOVE_IN_GUTTER_TO_CLEAR_STORAGE
-    = "No data worth storing about this page:"+LF
-    + "---"+LF
-    + "Drag hotspot into gutter"+LF
-    + "to clear tools selection and layout."
-;
-const I18N_ALL_PAGE_LOCAL_STORAGE_REMOVED
-    = "No stored information for this page."+LF
-    +dom_data.SYMBOL_BLACK_SUN+" Local Storage is empty"
-;
-
-/*}}}*/
-/*_ I18N STICKY {{{*/
-const I18N_STICKY_FIX_TOOLTIP               = "DELETE";
-const I18N_STICKY_HAND_MOV_TOOLTIP          = "MOVE";
-const I18N_STICKY_PAD_TOOLTIP               = "LONG PRESS EDIT";
-const I18N_STICKY_PASTE_TOOLTIP             = "PASTE SELECTED TEXT";
-const I18N_STICKY_PEN_TOOLTIP               = "EDIT";
-const I18N_STICKY_REFLOW_TOOLTIP            = "RESIZE";
-const I18N_STICKY_REFONT_TOOLTIP            = "RESIZE FONT";
-const I18N_STICKY_ROTATE                    = "ROTATE";
-
-/*}}}*/
-/*_ I18N_ARRAY_FR .. TODO .. SETUP AN EXTERNAL INITIALIZATION  {{{*/
-const I18N_ARRAY_FR
-    = [ /* ID {{{*/
-        [   I18N_SEL_BAG                          , "Index des mots sélectionnés" ]
-        , [ I18N_PAT_BAG                          , "Liste des mots sélectionnés" ]
-        , [ I18N_ALT_BAG                          , "Liste ALT"                   ]
-        , [ I18N_BAK_BAG                          , "Liste BAK"                   ]
-        , [ I18N_OFF_BAG                          , "Liste OFF"                   ]
-
-        , [ I18N_BAGOPEN                          , "Déployer-Replier les listes" ]
-        , [ I18N_BAG_LOG                          , "Informations détaillées"     ]
-        , [ I18N_BAG_ROT                          , "Rotation des listes"         ]
-
-        , [ I18N_CLEAR_PANEL                      , "Vider le panneau"            ]
-        , [ I18N_CLOSE_PANEL                      , "Déselectionner le panneau"   ]
-        , [ I18N_MAGNIFY_PANEL                    , "Agrandir le panneau"         ]
-        , [ I18N_PIN_PANEL                        , "Épingler le panneau"         ]
-
-        , [ I18N_FLY_LOG                          , "Infos-bulles"                ]
-        , [ I18N_SORT_SELECTION                   , "Classer la sélection"        ]
-
-        , [ I18N_DOM_TRAVERSAL                    , "Exploration du DOM"          ]
-
-        , [ I18N_HEADSUP                          , "Options des outils"          ]
-        , [ I18N_HEADSUP_BW                       , "Body - largeur"              ]
-        , [ I18N_HEADSUP_BZ                       , "Body - zoom"                 ]
-        , [ I18N_HEADSUP_FS                       , "Body - font-size"            ]
-        , [ I18N_HEADSUP_DS                       , "Opérations sur le document"  ]
-        , [ I18N_HEADSUP_W                        , "Sélection des mots"          ]
-
-        , [ I18N_DEV_LOG_MAP                      , "DEV [LOG_MAP]"               ]
-        , [ I18N_DOM_LOAD_TAGS                    , "DOM [LOAD_TAGS]"             ]
-        , [ I18N_TEST_PANEL                       , "Tests"                       ]
-        , [ I18N_TRANSCRIPT1                      , "Panneau de test 1"           ]
-        , [ I18N_TRANSCRIPT2                      , "Panneau de test 2"           ]
-
-        /*}}}*/
-
-        /* STRINGS {{{*/
-        , [ I18N_AS_SET_BY_USER                   , "Positionné par l'utilisateur"                      ]
-        , [ I18N_BAGS_CONTENT                     , "contenu actuel"                                    ]
-        , [ I18N_IS_EMPTY                         , " est vide"                                         ]
-        , [ I18N_COPY_ALL_PARAGRAPHS_TO_CLIPBOARD , "Copier tous les paragraphes dans le presse-papier" ]
-        , [ I18N_MONOSPACE                        , "Affichage (et Copie) au format HTML ou TEXTE"      ]
-        , [ I18N_COPY_PARAGRAPH_TO_CLIPBOARD      , "Copier ce  paragraphe  dans le presse-papier"      ]
-        , [ I18N_CURRENTLY                        , "Actuellement"                                      ]
-        , [ I18N_REVERSED_Z_TO_A                  , "inversé Z..A"                                      ]
-        , [ I18N_SCROLL_TO_THIS_PARAGRAPH         , "Recentrer sur ce paragraphe"                       ]
-        , [ I18N_SORTED_A_TO_Z                    , "ordonné A..Z"                                      ]
-        , [ I18N_UNORDERED                        , "non classé"                                        ]
-        , [ I18N_MOVE_IN_GUTTER_TO_CLEAR_STORAGE  , "Pas d'information à enregistrer pour cette page:"+LF
-            /*...................................*/ + "---"+LF
-            /*...................................*/ + "Glissez le panneau vers une bordure"+LF
-            /*...................................*/ + "pour supprimer les paramètres associés."
-        ]
-        , [ I18N_ALL_PAGE_LOCAL_STORAGE_REMOVED   , "Aucune information enregistrée pour cette page."+LF
-            /*...................................*/ +dom_data.SYMBOL_BLACK_SUN+" Local Storage est vide"]
-
-        , [ I18N_STICKY_FIX_TOOLTIP               , "SUPPRIMER"                   ]
-        , [ I18N_STICKY_HAND_MOV_TOOLTIP          , "DÉPLACER"                    ]
-        , [ I18N_STICKY_PAD_TOOLTIP               , "ÉDITER AVEC UN APPUI LONG"   ]
-        , [ I18N_STICKY_PASTE_TOOLTIP             , "COPIER LE TEXTE SÉLECTIONNÉ" ]
-        , [ I18N_STICKY_PEN_TOOLTIP               , "ÉDITER"                      ]
-        , [ I18N_STICKY_REFLOW_TOOLTIP            , "REDIMENSIONNER"              ]
-        , [ I18N_STICKY_REFONT_TOOLTIP            , "TAILLE DES CARACTÈRES"       ]
-        , [ I18N_STICKY_ROTATE                    , "ORIENTER"                    ]
-
-        , [ I18N_SCROLL_SMOOTH                    , "Défilement progressif ou instantané"                                    ]
-        , [ I18N_ANCHOR_FREEZE                    , "Blocage des liens de navigation"                                        ]
-        , [ I18N_CONTAINERS_HI                    , "Coloration des paragraphes sélectionnés"                                ]
-        , [ I18N_DENY_OR_ALLOW                    , "Deny or Allow (no-op pour le moment)"                                   ]
-        , [ I18N_DOM_HIDE1_RESET                  , "Remise à zéro des sections cachées"                                     ]
-        , [ I18N_EDIT_OR_STAGE                    , "Édition ou Application des section cachées"                             ]
-        , [ I18N_LOG_SEEKSPOT                     , "Log des paramètres du seekspot"                                         ]
-
-        , [ I18N_REMOVE_ADS                       , "Suppression des Tags de Pub"                                            ]
-        , [ I18N_SPLIT_WALL_OF_TEXT               , "Partition des pages de texte"+LF+"(i.e. Wall-of-Text)"                   ]
-        , [ I18N_LINES_WALL_OF_TEXT               , "Numérotation des lignes Wall-of-Text"                                   ]
-
-        , [ I18N_MASK_OR_HIDE                     , "Masquer ou Cacher les sections à cacher"                                ]
-        , [ I18N_OVERFLOW_VISI                    , "Rendre visible les textes en overflow"                                  ]
-        , [ I18N_PIN_SEEKSPOT                     , "Garder le dernier seekspot visible"                                     ]
-        , [ I18N_WORDS_RECYCLE                    , "Recycler"                                                               ]
-        , [ I18N_WORDS_RECYCLE_CLICK_TO_HIDE      , "Click pour les cacher"                                                  ]
-        , [ I18N_WORDS_RECYCLE_CLICK_TO_DISCARD   , "Click pour les supprimer"                                               ]
-        , [ I18N_STORED_PATTERNS                  , "Mots sélectionnés"                                                      ]
-        , [ I18N_SHOW_SEEKZONE                    , "Afficher la dernière zone de sélection"                                 ]
-        , [ I18N_SITE_OR_PAGE                     , "Cacher les containers au niveau SITE ou PAGE"                           ]
-        , [ I18N_THEME_DARK                       , "Theme foncé"                                                            ]
-        , [ I18N_TOOLS_EXTRAS                     , I18N_TOOLS_EXTRAS                                                        ]
-        , [ I18N_TOOLS_SCROLL                     , "Outils fixes à l'écran ou sur la page"                                  ]
-        , [ I18N_TOOLS_TRAP                       , "Outils confinés dans leur quadrant pendant les déplacements du hotspot" ]
-
-        , [ I18N_1_WORDING                        , "Mode de sélection des mots-clés:"+LF+"- Navigation bloquée"+LF+"- Couleurs de la page" ]
-        , [ I18N_2_WORDS_EXACT                    , "Sélectionner des mots entiers"                                          ]
-        , [ I18N_3_WORDS_SEGMENT                  , "Sélectionner des segments de mot"                                       ]
-        , [ I18N_4_WORDS_HEAD_TAIL                , "Sélectionner aussi les prefixes et suffixes"                            ]
-        , [ I18N_5_WORDS_OPCYCLE                  , "Cycle-auto:"+LF+"1 - mots entier"+LF+"2 - segments de mot"+LF+"3 - préfixes et suffixes"+LF+"4 .. désélectionner" ]
-        , [ I18N_6_WORDS_DROP_CASE                , "Ignorer majuscules minuscules"                                          ]
-        , [ I18N_7_WORDS_DROP_ING                 , "Ignorer les terminaisons en [ing]"                                      ]
-        , [ I18N_8_WORDS_DROP_S                   , "Ignorer les terminaisons en [s]"                                        ]
-
-        /*}}}*/
-    ];
-
-let i18n_map_FR;
-/*}}}*/
-/*_ i18n_load {{{*/
-let i18n_load = function()
-{
-let   caller = "i18n_load";
-let log_this = LOG_MAP.T0_STORE;
-
-    let i18n_object_FR             = new Object    ( I18N_ARRAY_FR              ); /* OBJECT ..from.. LITERAL .. TO TEST  */
-    let i18n_object_FR_stringified = JSON.stringify( i18n_object_FR             ); /* STRING ..from.. OBJECT  .. TO STORE */
-    let i18n_object_FR_parsed      = JSON.parse    ( i18n_object_FR_stringified ); /* OBJECT ..from.. STRING  .. TO LOAD  */
-    /**/i18n_map_FR                = new Map       ( i18n_object_FR_parsed      ); /*    MAP ..from.. OBJECT  .. TO RUN   */
-
-/*{{{*/
-if(log_this) {
-    log(caller);
-
-    t_log.console_dir(I18N_ARRAY_FR, "I18N_ARRAY_FR");
-
-    t_log.console_dir(i18n_object_FR    ,   "i18n_object_FR");
-    log_key_val_group("i18n_object_FR"  , i18n_object_FR       ,     lf1, false);
-
-    log("%c i18n_object_FR_stringified"+LF + "%c"+ i18n_object_FR_stringified, lbH+lf2, lbA);
-
-    log_key_val_group("i18n_object_FR_parsed     " , i18n_object_FR_parsed           ,     lf3, false);
-    t_log.console_dir(i18n_object_FR_parsed        ,   "i18n_object_FR_parsed");
-
-    t_log.console_dir(i18n_map_FR      ,   "i18n_map_FR");
-    log_key_val_group("i18n_map_FR"    , i18n_map_FR         ,     lf4, false);
-
-    t_log.console_dir(i18n_map_FR,"i18n_map_FR");
-    i18n_map_FR.forEach(function(value, key) {
-        log("%c"+key +"%c"+ value, lbL+lf4,lbR+lf5);
-    });
-
-}
-/*}}}*/
-};
-/*}}}*/
-/*}}}*/
-
 /* ARRAY */
 /*_ array_equals {{{*/
 let array_equals = function(a1, a2)
@@ -3816,12 +4174,168 @@ let array_equals = function(a1, a2)
 };
 /*}}}*/
 
+/* XPATH */
+/*{{{*/
+/*➔ get_nodeXPath {{{*/
+let get_nodeXPath = function(node)
+{
+    if(node instanceof Document) return "/";
+
+    let  node_type_pos_array;
+    for( node_type_pos_array = []
+    ;    node && !(node instanceof Document)
+    ;    node =   (node.nodeType == Node.ATTRIBUTE_NODE)
+              ?    node.ownerElement
+              :    node.parentNode
+    ) {
+        let node_type_pos = {};
+
+        /* TYPE */
+        switch( node.nodeType ) {
+            case Node.TEXT_NODE                   : node_type_pos.name =                   "text()" ; break;
+            case Node.ATTRIBUTE_NODE              : node_type_pos.name =       "@" + node.nodeName  ; break;
+            case Node.PROCESSING_INSTRUCTION_NODE : node_type_pos.name = "processing-instruction()" ; break;
+            case Node.COMMENT_NODE                : node_type_pos.name =                "comment()" ; break;
+            case Node.ELEMENT_NODE                : node_type_pos.name =             node.nodeName  ; break;
+        }
+
+        /* POS */
+        node_type_pos.position = get_nodeName_rank( node );
+
+        node_type_pos_array.push( node_type_pos );
+    }
+
+    let nodeXPath = "";
+    for(let i=node_type_pos_array.length-1; i >= 0; i -= 1)
+    {
+        let node_type_pos   = node_type_pos_array[i];
+        nodeXPath += node_type_pos.name ? ("/"+node_type_pos.name) : ".";
+        if((node_type_pos.position != null) && (node_type_pos.position != "1"))
+            nodeXPath += "["+ node_type_pos.position+"]";
+    }
+
+    return nodeXPath.toLowerCase();
+};
+/*}}}*/
+/*➔ get_nodeXPath_target {{{*/
+let get_nodeXPath_target = function(nodeXPath)
+{
+    let first_node;
+    try {
+
+        let evaluator  = new XPathEvaluator();
+        let expression = evaluator.createExpression(nodeXPath);
+
+        let result     = expression.evaluate(document, XPathResult.ORDERED_NODE_ITERATOR_TYPE);
+
+        let node;
+        while(node = result.iterateNext())
+        {
+            if(!first_node)
+                first_node = node;
+        }
+
+    }
+    catch(ex) {
+        console.log(ex);
+    }
+    return first_node;
+};
+/*}}}*/
+/*_ get_nodeName_rank {{{*/
+let get_nodeName_rank = function(node)
+{
+    if(node.nodeType == Node.ATTRIBUTE_NODE) return null;
+
+    let rank = 1;
+    for(let prev_node =      node.previousElementSibling
+    ;       prev_node
+    ;       prev_node = prev_node.previousElementSibling
+    ) {
+        if(prev_node.nodeName == node.nodeName)
+            rank += 1;
+    }
+    return rank;
+ };
+/*}}}*/
+/*➔ get_node_sibling_at_offset {{{*/
+let get_node_sibling_at_offset = function(node,offset)
+{
+    if(offset > 0)
+    {
+        for(let next_node  = node.nextElementSibling
+            ;   next_node
+            ;   next_node  = next_node.nextElementSibling
+           ) {
+            if( next_node.nodeName == node.nodeName) {
+                if( offset ) offset -= 1;
+                if(!offset ) return next_node;
+            }
+        }
+    }
+    else {
+        for(let prev_node  = node.previousElementSibling
+            ;   prev_node
+            ;   prev_node  = prev_node.previousElementSibling
+           ) {
+            if( prev_node.nodeName == node.nodeName) {
+                if( offset ) offset += 1;
+                if(!offset ) return prev_node;
+            }
+        }
+    }
+    return null;
+ };
+/*}}}*/
+/*➔ get_parent_tag_id_class_chain {{{*/
+const PREFIX = "                               \u21B3";
+let get_parent_tag_id_class_chain = function(el)
+{
+    let array = [];
+
+    while( el )
+    {
+        let e_class = (el.id || el.className) ? "left"   : ""     ;
+        let i_class = (         el.className) ? "center" : "right";
+        let c_class =                                      "right";
+
+        let el_className = ellipsis_short(el.className);
+
+        let rank         = get_nodeName_rank(el);
+        let el_tagName   = el.tagName+( (rank > 1) ? "["+rank+"]":"");
+
+        array.push(   (               "<em class='tag   "+e_class+"'>" + el_tagName   +"</em>"     ) /* TAG     */
+                   +  (el.id        ? "<em class='id    "+i_class+"'>#"+ el.id        +"</em>" : "") /* ID      */
+                   +  (el_className ? "<em class='class "+c_class+"'>."+ el_className +"</em>" : "") /* CLASS   */
+                  );
+        el = el.parentElement;
+    }
+
+    let parent_id_class_chain = "";
+
+    for(let l=0, i=array.length-1; i>=0; ++l, --i)
+        parent_id_class_chain
+            += ((l>0) ? (LF+" "+PREFIX.slice(-l))+" " : "")
+            +            array[i];
+
+    return parent_id_class_chain;
+};
+/*}}}*/
+/*}}}*/
+
 /* EXPORT */
 /*{{{*/
+let t_util_set_state = function(label,state)
+{
+    return (typeof dom_store == "undefined") ? !!state
+        :   !!dom_store.t_store_set_state(label, state);
+};
+
 return { name : "dom_util"
-    , logging : function(value) { if(value != undefined) DOM_UTIL_LOG = value; dom_store.t_store_set_value("DOM_UTIL_LOG", DOM_UTIL_LOG); return DOM_UTIL_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_UTIL_TAG = value; dom_store.t_store_set_value("DOM_UTIL_TAG", DOM_UTIL_TAG); return DOM_UTIL_TAG; }
+    , logging : (state) => { DOM_UTIL_LOG = dom_util.t_util_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
+    , tagging : (state) => { DOM_UTIL_TAG = dom_util.t_util_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
     , t_util_IMPORT
+    , t_util_set_state
 
     /* DOM */
     /* EVENT {{{*/
@@ -3833,6 +4347,9 @@ return { name : "dom_util"
     , get_el_parent_with_any_event_handler
     , is_event_on_scrollbar
     , send_onchange_event_to
+    ,    get_event_XY
+    ,    t_get_event_target
+    ,    t_prevent_reload
 
     /*}}}*/
     /* XY {{{*/
@@ -3852,10 +4369,13 @@ return { name : "dom_util"
     , intersect_r1_r2
     , intersect_tlbr
     , is_contained_by_parent
+    , is_el_visible
     , is_overflowing_parent
     , t_adjust_panel_transform_origin
+    , t_del_position_fixed
     , t_el_geometry
     , t_get_panel_scale
+    , t_set_position_fixed
 
     /*}}}*/
     /* NODE {{{*/
@@ -3863,6 +4383,7 @@ return { name : "dom_util"
     , get_abs_nodes
     , get_document_el_at_XY
     , get_el_anchor_in_view_array
+    , get_el_parent_fragment
     , get_h_tag
     , get_id_or_node_path_tail
     , get_id_or_tag
@@ -3901,12 +4422,15 @@ return { name : "dom_util"
     , get_el_child_with_tag_class
     , get_el_child_with_tag_first_word
     , get_el_in_view_up_from_el
-    , get_el_parent_child_of_class
-    , get_el_parent_child_of_id
+
+    , get_el_sibling_with_tag
+
+    , get_el_parent_clipped
     , get_el_parent_with_class
     , get_el_parent_with_display_none
     , get_el_parent_with_id
     , get_el_parent_with_tag
+
     , is_a_doc_tool_button
     , is_a_doc_tool_node
     , is_a_doc_tool_panel
@@ -3914,6 +4438,7 @@ return { name : "dom_util"
     , is_el_child_of_id
     , is_el_or_child_of_class
     , is_el_or_child_of_parent_el
+
     , not_an_anchor_target
 
     /*}}}*/
@@ -3929,7 +4454,6 @@ return { name : "dom_util"
     , flip_el_class
     , flip_id_class
     , set_el_class_on_off
-    , set_id_class_on_off
     , set_el_class_removing
 
     , is_marked_to_hide
@@ -3937,6 +4461,14 @@ return { name : "dom_util"
     /* SELECTION {{{*/
     , clearSelection
     , selectNodeContents
+    , log_range
+
+    /*}}}*/
+    /* XPATH {{{*/
+    , get_nodeXPath
+    , get_nodeXPath_target
+    , get_node_sibling_at_offset
+    , get_parent_tag_id_class_chain
 
     /*}}}*/
 
@@ -3948,12 +4480,17 @@ return { name : "dom_util"
     , ellipsis_16
     , ellipsis_short
     , isAlNum
+    , is_hex_string
     , mPadEnd
     , mPadStart
     , object_label
     , rect_toString
+    , string_to_ascii
     , string_to_ms
+    , string_to_utf8
     , truncate
+    , unicode_to_charCode
+
     /*}}}*/
     /* REGEX {{{*/
     /* TRIM {{{*/
@@ -3964,7 +4501,8 @@ return { name : "dom_util"
     , trim_space_lf
 
     /*}}}*/
-    /* STRIP {{{*/
+    /* SHOW-STRIP {{{*/
+    , show_CR_LF
     , strip_CR_LF
     , strip_HTML
     , strip_UL
@@ -4058,109 +4596,11 @@ return { name : "dom_util"
 
     /*}}}*/
 
-    /* I18N  */
-    /* GET {{{*/
-    , i18n_get
-
-    /*}}}*/
-    /*_ I18N ID {{{*/
-
-    , I18N_PAT_BAG
-    , I18N_SEL_BAG
-    , I18N_HEADSUP_W
-    , I18N_HEADSUP
-
-    , I18N_HEADSUP_DS
-    , I18N_DOM_TRAVERSAL
-    , I18N_HEADSUP_BW
-    , I18N_HEADSUP_BZ
-
-    , I18N_TEST_PANEL
-    , I18N_DEV_LOG_MAP
-    , I18N_TRANSCRIPT1
-    , I18N_TRANSCRIPT2
-
-    , I18N_DOM_LOAD_TAGS
-
-
-    , I18N_ALT_BAG
-    , I18N_BAK_BAG
-    , I18N_OFF_BAG
-
-    , I18N_BAGOPEN
-    , I18N_BAG_LOG
-    , I18N_BAG_ROT
-
-    , I18N_CLEAR_PANEL
-    , I18N_CLOSE_PANEL
-    , I18N_MAGNIFY_PANEL
-    , I18N_PIN_PANEL
-
-    , I18N_FLY_LOG
-    , I18N_SORT_SELECTION
-
-
-    , I18N_SCROLL_SMOOTH
-    , I18N_ANCHOR_FREEZE
-    , I18N_CONTAINERS_HI
-    , I18N_DENY_OR_ALLOW
-    , I18N_DOM_HIDE1_RESET
-    , I18N_EDIT_OR_STAGE
-    , I18N_LOG_SEEKSPOT
-    , I18N_MASK_OR_HIDE
-    , I18N_OVERFLOW_VISI
-    , I18N_PIN_SEEKSPOT
-    , I18N_WORDS_RECYCLE
-    , I18N_WORDS_RECYCLE_CLICK_TO_HIDE
-    , I18N_WORDS_RECYCLE_CLICK_TO_DISCARD
-    , I18N_STORED_PATTERNS
-    , I18N_SHOW_SEEKZONE
-    , I18N_SITE_OR_PAGE
-    , I18N_THEME_DARK
-    , I18N_TOOLS_EXTRAS
-    , I18N_TOOLS_SCROLL
-    , I18N_TOOLS_TRAP
-
-    , I18N_1_WORDING
-    , I18N_2_WORDS_EXACT
-    , I18N_3_WORDS_SEGMENT
-    , I18N_4_WORDS_HEAD_TAIL
-    , I18N_5_WORDS_OPCYCLE
-    , I18N_6_WORDS_DROP_CASE
-    , I18N_7_WORDS_DROP_ING
-    , I18N_8_WORDS_DROP_S
-
-    /*}}}*/
-    /*_ I18N STRING {{{*/
-    , I18N_AS_SET_BY_USER
-    , I18N_BAGS_CONTENT
-    , I18N_IS_EMPTY
-    , I18N_COPY_ALL_PARAGRAPHS_TO_CLIPBOARD
-    , I18N_MONOSPACE
-    , I18N_COPY_PARAGRAPH_TO_CLIPBOARD
-    , I18N_CURRENTLY
-    , I18N_REVERSED_Z_TO_A
-    , I18N_SCROLL_TO_THIS_PARAGRAPH
-    , I18N_SORTED_A_TO_Z
-    , I18N_UNORDERED
-    , I18N_MOVE_IN_GUTTER_TO_CLEAR_STORAGE
-    , I18N_ALL_PAGE_LOCAL_STORAGE_REMOVED
-
-    /*}}}*/
-    /*_ I18N TOOLTIP STICKY {{{*/
-    , I18N_STICKY_FIX_TOOLTIP
-    , I18N_STICKY_HAND_MOV_TOOLTIP
-    , I18N_STICKY_PAD_TOOLTIP
-    , I18N_STICKY_PASTE_TOOLTIP
-    , I18N_STICKY_PEN_TOOLTIP
-    , I18N_STICKY_REFLOW_TOOLTIP
-    , I18N_STICKY_REFONT_TOOLTIP
-    , I18N_STICKY_ROTATE
-
-    /*}}}*/
     /* ARRAY */
     /* {{{*/
     , array_equals
+
+    /*}}}*/
 
     /*}}}*/
 
@@ -4169,6 +4609,28 @@ return { name : "dom_util"
 
 }());
 
-/*
+/* ONLINE TOOLS {{{
+
+// RegEx Testing:
+:!start explorer "https://regexr.com/32oeg"
+:!start explorer "https://www.regextester.com/94757"
+
+// DevTools console:
 :!start explorer "https://blog.wax-o.com/2014/11/working-in-the-devtools-you-dont-use-the-console-engouh/"
-*/
+
+// RegexBuddy User’s Guide:
+:!start explorer "https://www.regexbuddy.com/manual.html\#insertrecurse"
+
+// Regular Expression Reference: Quantifiers:
+:!start explorer "https://www.regular-expressions.info/refrepeat.html"
+
+" UNICODE
+:!start explorer "http://xahlee.info/comp/unicode_arrows.html"
+:!start explorer "http://unicode.org/emoji/charts/full-emoji-list.html"
+
+" iwintoo
+:new C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/lib/lib_util.js
+:new C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/XPH/stylesheet/dom_host.css
+
+}}}*/
+

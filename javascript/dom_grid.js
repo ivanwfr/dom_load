@@ -1,46 +1,54 @@
 /* dom_grid_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals window, document, setTimeout, clearTimeout */
+/* globals getComputedStyle */
+/* globals dom_data, dom_log, dom_util, dom_tools */
+
+/* exported dom_grid, DOM_GRID_JS_TAG */
+
+/* eslint-disable complexity     */
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable max-depth */
+/* eslint-disable no-warning-comments */
+
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (200211:16h)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (210928:17h:15)";
+/*}}}*/
 let dom_grid    = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_store, dom_tools */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_GRID_LOG          = false;
 let   DOM_GRID_TAG          = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_grid_IMPORT {{{*/
 /* t_data .. t_tools {{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-/*  t_prop     = {}        ; */ /* 08 */
-/*  t_store    = {}        ; */ /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+/*  t_i18n     = {}        ; */ /* 08 */
+/*  t_prop     = {}        ; */ /* 09 */
+/*  t_store    = {}        ; */ /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /* ...................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /* ...................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_grid_IMPORT  = function(log_this)
@@ -50,31 +58,33 @@ let t_grid_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-/*  t_prop    = dom_prop   ; */ /* 08 */
-/*  t_store   = dom_store  ; */ /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+/*  t_i18n    = dom_i18n   ; */ /* 08 */
+/*  t_prop    = dom_prop   ; */ /* 09 */
+/*  t_store   = dom_store  ; */ /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-/*  t_sticky  = dom_sticky ; */ /* 16 */
-/*  t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     grid_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_GRID_LOG = DOM_GRID_LOG || dom_store.t_store_getBool("DOM_GRID_LOG");
-    DOM_GRID_TAG = DOM_GRID_TAG || dom_store.t_store_getBool("DOM_GRID_TAG");
+    DOM_GRID_LOG = DOM_GRID_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_GRID_LOG")); /* eslint-disable-line no-undef */
+    DOM_GRID_TAG = DOM_GRID_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_GRID_TAG")); /* eslint-disable-line no-undef */
 
     /*}}}*/
 if(log_this) log("%c 19 grid", lbH+lf9);
@@ -111,13 +121,13 @@ let   grid_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
     /* t_tools {{{*/
     hotspot                     = t_tools.t_get_tool("hotspot");
@@ -142,6 +152,7 @@ let   grid_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /* GRID const */
@@ -165,7 +176,7 @@ let t_grid_TOOLS_SELECT = function(e)
 let log_this = LOG_MAP.T2_GRID;
 
     let caller = "t_grid_TOOLS_SELECT";
-    let     el = t_tools.t_get_event_target(e);
+    let     el = t_util.t_get_event_target(e);
     let     caption = el.classList.contains(GRID_CAPTION) ? el : el.parentNode;
 if(log_this) log(caller+": el=["+t_util.get_n_lbl(el)+"]");
 /*
@@ -239,7 +250,7 @@ if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
         map.selected = new_state;
 if(log_this) log("... %c "+(map.selected ? "SELECTING" : "DESELECTING") + ": "+panel.id, lbF+(map.selected ? lb4 : lb1));
 
-        t_tools.t_cache_init_by(caller);
+        t_tools.t_cache_armed_by(caller);
     }
 };
 /*}}}*/
@@ -675,7 +686,7 @@ if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
     if(!tools_map  ) return;
 /*}}}*/
 
-    let   num=0;
+    /*let   num=0;*/
     for(let i=0; i< tools_map.length; ++i)
     {
         /* filter optional tool panels {{{*/
@@ -684,7 +695,7 @@ if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
         if( panel == hotspot) continue;
         if(!panel           ) continue;
 
-        num += 1;
+        /*num += 1;*/
         /*}}}*/
         /* PANEL .. off grid style .. hide not selected panels {{{*/
         if(!map.selected) panel.classList.add( CSS_HIDDEN  );
@@ -881,8 +892,7 @@ if(LOG_MAP.T2_GRID) t_log.console_log(caller);
 
     grid_trace_add(s);
 
-if(LOG_MAP.T2_GRID) t_log.console_log(caller+":");
-if(LOG_MAP.T2_GRID) t_log.console_dir(grid_css);
+if(LOG_MAP.T2_GRID) t_log.console_dir(caller, grid_css);
 };
 /*}}}*/
 /*➔ t_grid_deleteRules {{{*/
@@ -945,11 +955,11 @@ if(LOG_MAP.T2_GRID) t_log.console_log(caller);
     el.type  = "text/css";
     el.rel   = "stylesheet";
 
-    document.getElementsByTagName('head')[0].appendChild(el);
+    document.getElementsByTagName("head")[0].appendChild(el);
     grid_css = el.sheet;
 
     grid_trace(s);
-if(LOG_MAP.T2_GRID) t_log.console_dir(grid_css);
+if(LOG_MAP.T2_GRID) t_log.console_dir(caller, grid_css);
 };
 /*}}}*/
 
@@ -1000,8 +1010,8 @@ let grid_getElement = function(id)
 /* EXPORT */
 /*{{{*/
 return { name : "dom_grid"
-    , logging : function(value) { if(value != undefined) DOM_GRID_LOG = value; dom_store.t_store_set_value("DOM_GRID_LOG", DOM_GRID_LOG); return DOM_GRID_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_GRID_TAG = value; dom_store.t_store_set_value("DOM_GRID_TAG", DOM_GRID_TAG); return DOM_GRID_TAG; }
+    , logging : (state) => { DOM_GRID_LOG = dom_util.t_util_set_state("DOM_GRID_LOG",state); }
+    , tagging : (state) => { DOM_GRID_TAG = dom_util.t_util_set_state("DOM_GRID_TAG",state); }
     ,    t_grid_IMPORT
 
     ,    t_grid_IS_ON_GRID
@@ -1029,3 +1039,6 @@ return { name : "dom_grid"
 /*}}}*/
 
 })();
+/*
+:!start explorer "https://www.smashingmagazine.com/2020/01/understanding-css-grid-container/"
+*/

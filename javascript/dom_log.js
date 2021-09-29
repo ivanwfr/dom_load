@@ -1,19 +1,33 @@
 /* dom_log_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
-const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (200315:14h)";
-let dom_log     = (function() {
-"use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_fly, dom_wording, dom_select, dom_slot, dom_hide, dom_view, dom_sticky, dom_seek, dom_share, dom_grid, dom_gutter, dom_ipc, dom_tools */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals console, setTimeout, clearTimeout */
+/* globals document, window, HTMLElement */
+/* globals dom_data   */
+/* globals dom_select */ /* OPTIONAL */
+/* globals dom_store  */ /* OPTIONAL */
+/* globals dom_tools  */ /* OPTIONAL */
+/* globals dom_util   */
+
+/* exported DOM_LOG_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable prefer-spread */
+/* eslint-disable prefer-rest-params */
+
 /*
-:1,$y *
+:update|1,$y *
 :!start explorer https://jshint.com/
 */
+
+
+const DOM_LOG_JS_ID         = "dom_log_js";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (210928:16h:57)";
 /*}}}*/
+let dom_log     = (function() {
+"use strict";
 let   DOM_LOG_LOG           = false;
 let   DOM_LOG_TAG           = false;
-
 /* IMPORT */
 /*{{{*/
 /*➔ t_log_IMPORT {{{*/
@@ -22,25 +36,26 @@ let   DOM_LOG_TAG           = false;
 let t_data     = {}        ;    /* 05 */
 /*  t_log      = {}        ; */ /* 06 */
 let t_util     = {}        ;    /* 07 */
-/*  t_prop     = {}        ; */ /* 08 */
-/*  t_store    = {}        ; */ /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+/*  t_i18n     = {}        ; */ /* 08 */
+/*  t_prop     = {}        ; */ /* 09 */
+/*  t_store    = {}        ; */ /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /* ...................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /* ...................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-/*  t_tools    = {}        ; */ /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+/*  t_tools    = {}        ; */ /* 23 */
 /*....................................*/
 /*}}}*/
 let t_log_IMPORT  = function(log_this)
@@ -50,31 +65,33 @@ let t_log_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
 /*  t_log     = dom_log    ; */ /* 06 */
     t_util    = dom_util   ;    /* 07 */
-/*  t_prop    = dom_prop   ; */ /* 08 */
-/*  t_store   = dom_store  ; */ /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+/*  t_i18n    = dom_i18n   ; */ /* 08 */
+/*  t_prop    = dom_prop   ; */ /* 09 */
+/*  t_store   = dom_store  ; */ /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-/*  t_sticky  = dom_sticky ; */ /* 16 */
-/*  t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-/*  t_tools   = dom_tools  ; */ /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+/*  t_tools   = dom_tools  ; */ /* 23 */
 /* ...................................*/
 /*}}}*/
     log_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_LOG_LOG = DOM_LOG_LOG || dom_store.t_store_getBool("DOM_LOG_LOG");
-    DOM_LOG_TAG = DOM_LOG_TAG || dom_store.t_store_getBool("DOM_LOG_TAG");
+    DOM_LOG_LOG = DOM_LOG_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_LOG_LOG"));
+    DOM_LOG_TAG = DOM_LOG_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_LOG_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 06 log", lbH+lf6);
@@ -88,7 +105,7 @@ let   L_CHK  =         "✔ "; /* EXPORTED */
 let   L_NEW  =         "☀ "; /* EXPORTED */
 
 let   L_ARD  =         "↓ ";
-let   L_ARL  = "	← "; /* EXPORTED */
+let   L_ARL  = "        ← "; /* EXPORTED */ /* eslint-disable-line no-tabs */
 let   L_ARR  =         "→ "; /* EXPORTED */
 let   L_ARU  =         "↑ ";
 
@@ -99,7 +116,7 @@ let   L_WRN  =         "‼ ";
 /* t_util stubs */
 let add_el_class                = function( ) {  };
 let del_el_class                = function( ) {  };
-let get_n_lbl                   = function(n) { return (n ? n.tagName : "null_node"); };
+let get_n_lbl                   = function(n) { return (n ? n.tagName : "null_node"); }; /* eslint-disable-line no-unused-vars */
 let get_id_or_tag;
 let get_id_or_tag_and_className;
 let mPadStart                   = function(s) { return s; };
@@ -117,6 +134,7 @@ let   log_INTERN = function()
     L_ARL =         dom_data.TAB+ dom_data.SYMBOL_LEFT_ARROW   +" ";
     L_ARR =                       dom_data.SYMBOL_RIGHT_ARROW  +" ";
     L_ARU =                       dom_data.SYMBOL_UP_ARROW     +" ";
+
     L_CHK =                       dom_data.SYMBOL_CHECK_MARK   +" ";
     L_CLR =                       dom_data.SYMBOL_HEAVY_BALLOT +" ";
     L_FNC =                       dom_data.SYMBOL_FUNCTION     +" ";
@@ -125,16 +143,20 @@ let   log_INTERN = function()
 
     /*}}}*/
     /* t_util {{{*/
-    add_el_class                = dom_util.add_el_class;
-    del_el_class                = dom_util.del_el_class;
-    get_n_lbl                   = dom_util.get_n_lbl;
-    get_id_or_tag               = dom_util.get_id_or_tag;
-    get_id_or_tag_and_className = dom_util.get_id_or_tag_and_className;
-    mPadStart                   = dom_util.mPadStart;
-    mPadEnd                     = dom_util.mPadEnd;
-    strip_HTML                  = dom_util.strip_HTML;
-    strip_console_formatting    = dom_util.strip_console_formatting;
-    strip_pat                   = dom_util.strip_pat;
+
+    /* DOM-UTIL */
+    add_el_class                = t_util.add_el_class;
+    del_el_class                = t_util.del_el_class;
+    get_n_lbl                   = t_util.get_n_lbl;
+    get_id_or_tag               = t_util.get_id_or_tag;
+    get_id_or_tag_and_className = t_util.get_id_or_tag_and_className;
+
+    /* STRINGS-UTIL */
+    mPadStart                   = t_util.mPadStart;
+    mPadEnd                     = t_util.mPadEnd;
+    strip_HTML                  = t_util.strip_HTML;
+    strip_console_formatting    = t_util.strip_console_formatting;
+    strip_pat                   = t_util.strip_pat;
 
     /*}}}*/
     log_DEPEND();
@@ -148,38 +170,48 @@ let   log_DEPEND = function()
 /*}}}*/
 /*}}}*/
 /*➔ log_IMPORT {{{*/
-let log_IMPORT = function()
+let log_IMPORT = function() /* eslint-disable-line complexity */
 {
     /*............................................................................*/ let d = "  defined";
     let  s;                                    let l;        let n;          let r;  let u = "undefined";
 
-/* 05 */ s = (typeof dom_data    !== 'undefined');  n="DATA   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 05 %c"+n+"%c"+r, lfX[5], lbH+lfX[5], lfX[l]);
-/* 06 */ s = (typeof dom_log     !== 'undefined');  n="LOG    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 06 %c"+n+"%c"+r, lfX[6], lbH+lfX[6], lfX[l]);
-/* 07 */ s = (typeof dom_util    !== 'undefined');  n="UTIL   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 07 %c"+n+"%c"+r, lfX[7], lbH+lfX[7], lfX[l]);
-/* 08 */ s = (typeof dom_prop    !== 'undefined');  n="PROP   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 08 %c"+n+"%c"+r, lfX[8], lbH+lfX[8], lfX[l]);
-/* 09 */ s = (typeof dom_store   !== 'undefined');  n="STORE  ";  l=s ? 5:2;  r=s ? d:u;  log("%c 09 %c"+n+"%c"+r, lfX[9], lbH+lfX[9], lfX[l]);
-/* 10 */ s = (typeof dom_fly     !== 'undefined');  n="FLY    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 10 %c"+n+"%c"+r, lfX[0], lbH+lfX[0], lfX[l]);
-                                                                                                                                    
-/* 11 */ s = (typeof dom_wording !== 'undefined');  n="WORDING";  l=s ? 5:2;  r=s ? d:u;  log("%c 11 %c"+n+"%c"+r, lfX[1], lbH+lfX[1], lfX[l]);
-/* 12 */ s = (typeof dom_select  !== 'undefined');  n="SELECT ";  l=s ? 5:2;  r=s ? d:u;  log("%c 12 %c"+n+"%c"+r, lfX[2], lbH+lfX[2], lfX[l]);
-/* 13 */ s = (typeof dom_slot    !== 'undefined');  n="SLOT   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 13 %c"+n+"%c"+r, lfX[3], lbH+lfX[3], lfX[l]);
-                                                                                                                                    
-/* 14 */ s = (typeof dom_hide    !== 'undefined');  n="HIDE   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 14 %c"+n+"%c"+r, lfX[4], lbH+lfX[4], lfX[l]);
-/* 15 */ s = (typeof dom_view    !== 'undefined');  n="VIEW   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 15 %c"+n+"%c"+r, lfX[5], lbH+lfX[5], lfX[l]);
-/* 16 */ s = (typeof dom_sticky  !== 'undefined');  n="STICKY ";  l=s ? 5:2;  r=s ? d:u;  log("%c 16 %c"+n+"%c"+r, lfX[6], lbH+lfX[6], lfX[l]);
-/* 17 */ s = (typeof dom_seek    !== 'undefined');  n="SEEK   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 17 %c"+n+"%c"+r, lfX[7], lbH+lfX[7], lfX[l]);
-/* 18 */ s = (typeof dom_share   !== 'undefined');  n="SHARE  ";  l=s ? 5:2;  r=s ? d:u;  log("%c 18 %c"+n+"%c"+r, lfX[8], lbH+lfX[8], lfX[l]);
-                                                                                                                                    
-/* 19 */ s = (typeof dom_grid    !== 'undefined');  n="GRID   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 19 %c"+n+"%c"+r, lfX[9], lbH+lfX[9], lfX[l]);
-/* 20 */ s = (typeof dom_gutter  !== 'undefined');  n="GUTTER ";  l=s ? 5:2;  r=s ? d:u;  log("%c 20 %c"+n+"%c"+r, lfX[0], lbH+lfX[0], lfX[l]);
-                                                                                                                                    
-/* 21 */ s = (typeof dom_ipc     !== 'undefined');  n="IPC    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 21 %c"+n+"%c"+r, lfX[1], lbH+lfX[1], lfX[l]);
-/* 22 */ s = (typeof dom_tools   !== 'undefined');  n="TOOLS  ";  l=s ? 5:2;  r=s ? d:u;  log("%c 22 %c"+n+"%c"+r, lfX[2], lbH+lfX[2], lfX[l]);
+/* 05 */ s = (typeof dom_data    !== "undefined");  n="DATA   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 05 %c"+n+"%c"+r, lfX[5], lbH+lfX[5], lfX[l]);
+/* 06 */ s = (typeof dom_log     !== "undefined");  n="LOG    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 06 %c"+n+"%c"+r, lfX[6], lbH+lfX[6], lfX[l]);
+/* 07 */ s = (typeof dom_util    !== "undefined");  n="UTIL   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 07 %c"+n+"%c"+r, lfX[7], lbH+lfX[7], lfX[l]);
+/* 08 */ s = (typeof dom_prop    !== "undefined");  n="PROP   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 08 %c"+n+"%c"+r, lfX[8], lbH+lfX[8], lfX[l]);
+/* 09 */ s = (typeof dom_store   !== "undefined");  n="STORE  ";  l=s ? 5:2;  r=s ? d:u;  log("%c 09 %c"+n+"%c"+r, lfX[9], lbH+lfX[9], lfX[l]);
+/* 10 */ s = (typeof dom_fly     !== "undefined");  n="FLY    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 10 %c"+n+"%c"+r, lfX[0], lbH+lfX[0], lfX[l]);
+
+/* 11 */ s = (typeof dom_wording !== "undefined");  n="WORDING";  l=s ? 5:2;  r=s ? d:u;  log("%c 11 %c"+n+"%c"+r, lfX[1], lbH+lfX[1], lfX[l]);
+/* 12 */ s = (typeof dom_select  !== "undefined");  n="SELECT ";  l=s ? 5:2;  r=s ? d:u;  log("%c 12 %c"+n+"%c"+r, lfX[2], lbH+lfX[2], lfX[l]);
+/* 12 */ s = (typeof dom_wot     !== "undefined");  n="WOT    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 12 %c"+n+"%c"+r, lfX[2], lbH+lfX[2], lfX[l]);
+/* 13 */ s = (typeof dom_slot    !== "undefined");  n="SLOT   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 13 %c"+n+"%c"+r, lfX[3], lbH+lfX[3], lfX[l]);
+
+/* 14 */ s = (typeof dom_hide    !== "undefined");  n="HIDE   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 14 %c"+n+"%c"+r, lfX[4], lbH+lfX[4], lfX[l]);
+/* 15 */ s = (typeof dom_view    !== "undefined");  n="VIEW   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 15 %c"+n+"%c"+r, lfX[5], lbH+lfX[5], lfX[l]);
+/* 16 */ s = (typeof dom_sticky  !== "undefined");  n="STICKY ";  l=s ? 5:2;  r=s ? d:u;  log("%c 16 %c"+n+"%c"+r, lfX[6], lbH+lfX[6], lfX[l]);
+/* 17 */ s = (typeof dom_seek    !== "undefined");  n="SEEK   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 17 %c"+n+"%c"+r, lfX[7], lbH+lfX[7], lfX[l]);
+/* 18 */ s = (typeof dom_share   !== "undefined");  n="SHARE  ";  l=s ? 5:2;  r=s ? d:u;  log("%c 18 %c"+n+"%c"+r, lfX[8], lbH+lfX[8], lfX[l]);
+
+/* 19 */ s = (typeof dom_grid    !== "undefined");  n="GRID   ";  l=s ? 5:2;  r=s ? d:u;  log("%c 19 %c"+n+"%c"+r, lfX[9], lbH+lfX[9], lfX[l]);
+/* 20 */ s = (typeof dom_gutter  !== "undefined");  n="GUTTER ";  l=s ? 5:2;  r=s ? d:u;  log("%c 20 %c"+n+"%c"+r, lfX[0], lbH+lfX[0], lfX[l]);
+
+/* 21 */ s = (typeof dom_ipc     !== "undefined");  n="IPC    ";  l=s ? 5:2;  r=s ? d:u;  log("%c 21 %c"+n+"%c"+r, lfX[1], lbH+lfX[1], lfX[l]);
+/* 22 */ s = (typeof dom_tools   !== "undefined");  n="TOOLS  ";  l=s ? 5:2;  r=s ? d:u;  log("%c 22 %c"+n+"%c"+r, lfX[2], lbH+lfX[2], lfX[l]);
 
 };
 /*}}}*/
 
-/* CSS {{{*/
+/*➔ dom_log_STRING {{{*/
+const dom_log_STRING
+    = {   L_ARL
+        , L_ARR
+        , L_CHK
+        , L_NEW
+    };
+
+/*}}}*/
+/*➔ dom_log_CSS {{{*/
 const lbA  = "background-color:inherit;   color:inherit;";
 
 const lbF  = "font-size:120%; font-weight:500; border:2px solid white;";
@@ -216,16 +248,38 @@ const lf9  = "color:#FFFFFF;";
 const lf0  = "color:#707070; text-shadow:#000 2px 2px 1px;"; /* offset-x offset-y blur-radius */
 const lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
 
+const dom_log_CSS
+    = {   LOG_BG_ARR : [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ]
+        , LOG_FG_ARR : [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ]
+        , LOG_XX_ARR : [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ]
+    };
 /*}}}*/
-/* CONSOLE {{{*/
-const BACKSLASH     = String.fromCharCode(92);
-const CS            = "color:#99D; background:#004; border:1px solid #99D; border-radius:1em;";
-const FORESLASH     = String.fromCharCode(47);
-const console_clear = function(  msg=null) { console.clear(); if(msg) console.log ("%c CONSOLE CLEARED BY: "+msg,CS);           };
-const console_dir   = function(o,msg=null) {                  if(msg) console.log (       "%c"+msg      ,CS); console.dir  (o); };
-const console_table = function(o,msg=null) {                  if(msg) console.log (       "%c"+msg      ,CS); console.table(o); };
-const console_log   = function(  msg     ) {                          console.log (            msg         );                   };
-const console_warn  = function(  msg=null) {                          console.warn(            msg         );                   };
+/*➔ dom_log_CHAR {{{*/
+const BACKSLASH = String.fromCharCode(92);
+const FORESLASH = String.fromCharCode(47);
+const LF        = String.fromCharCode(10);
+const CS        = "color:#666; background:#111; border:0px solid #445; border-radius:1em;";
+
+const dom_log_CHAR
+    = {   BACKSLASH
+        , FORESLASH
+        , LF
+        , CS
+    };
+
+/*}}}*/
+/*➔ dom_log_console {{{*/
+const console_clear = function(  msg=null) { console.clear(); if(msg) console.log ("%c.. by "+msg,CS);                   };
+const console_dir   = function(a1,a2=null) {
+    let o   = (a2) ? a2 : a1;
+    let msg = (a2) ? a1 : null;
+    if( msg )
+        console.log ("%c"+msg+":",CS);
+    console.dir  (o);
+};
+const console_table = function(o,msg=null) {                  if(msg) console.log ("%c"+msg+":"  ,CS); console.table(o); };
+const console_log   = function(  msg     ) {                          console.log (     msg         );                   };
+const console_warn  = function(  msg=null) {                          console.warn(     msg         );                   };
 /*{{{*/
 const CONSOLE_CLEAR_COOLDOWN_DELAY = 1000;
 
@@ -245,44 +299,46 @@ let console_clear_post = function(msg=null)
                         , CONSOLE_CLEAR_COOLDOWN_DELAY);
     }
 };
+
+const dom_log_console
+    = {   console_clear
+        , console_clear_post
+        , console_dir
+        , console_log
+        , console_table
+        , console_warn
+    };
 /*}}}*/
-/* LF LOG_MAP {{{*/
-const LF     = String.fromCharCode(10);
+/*➔ dom_log_SYM_DIGIT {{{*/
 
-const LOG_MAP = {
+let logSD0 = function(          format, ...args) { _logSD(dom_data.SD0, lf0, format, ...args); };
+let logSD1 = function(          format, ...args) { _logSD(dom_data.SD1, lf1, format, ...args); };
+let logSD2 = function(          format, ...args) { _logSD(dom_data.SD2, lf2, format, ...args); };
+let logSD3 = function(          format, ...args) { _logSD(dom_data.SD3, lf3, format, ...args); };
+let logSD4 = function(          format, ...args) { _logSD(dom_data.SD4, lf4, format, ...args); };
+let logSD5 = function(          format, ...args) { _logSD(dom_data.SD5, lf5, format, ...args); };
+let logSD6 = function(          format, ...args) { _logSD(dom_data.SD6, lf6, format, ...args); };
+let logSD7 = function(          format, ...args) { _logSD(dom_data.SD7, lf7, format, ...args); };
+let logSD8 = function(          format, ...args) { _logSD(dom_data.SD8, lf8, format, ...args); };
+let logSD9 = function(          format, ...args) { _logSD(dom_data.SD9, lf9, format, ...args); };
+let _logSD = function(sym, lfx, format, ...args) { console.log("%c "+sym+"%c"+format, lbS+lfx, lbA, ...args); };
 
-    EV0_LISTEN     : false,
-    EV1_DOWN       : false,
-    EV2_MOVE       : false,
-    EV3_UP         : false,
-    EV4_LONG_PRESS : false,
-    EV5_TOOL_CB    : false,
-    EV6_CHANGED    : false,
-    EV7_DISPATCH   : false,
-    EV8_FLOATLOG   : false,
+const dom_log_SYM_DIGIT
+    = {   logSD0
+        , logSD1
+        , logSD2
+        , logSD3
+        , logSD4
+        , logSD5
+        , logSD6
+        , logSD7
+        , logSD8
+        , logSD9
+    };
 
-    S0_PATTERN     : false,
-    S1_RANGE       : false,
-    S2_SELECT      : false,
-    S3_SLOT        : false,
-    T0_STORE       : false,
+/*}}}*/
 
-    T1_DOM_LOAD    : false,
-    T2_GRID        : false,
-    T3_LAYOUT      : false,
-    T4_PIVOT       : false,
-    T5_SPREAD      : false,
-    T6_SLOT        : false,
-    T7_SHARE       : false,
-    T8_TOOLBAR     : false,
-
-    IPC_LOG        : false
-
-   };
-
-let log_HTML   =  "";
-/* }}} */
-/*  log_caller {{{*/
+/*➔ log_caller {{{*/
 let log_caller = function(level_max)
 {
     let stack_trace = get_callers( level_max );
@@ -365,10 +421,44 @@ log("..match..........=["+match     +"]");
     return match;
 };
 /*}}}*/
-/*  logging_load_LOG_MAP .. f(dom_store) {{{*/
+
+/*➔ dom_LOG_MAP {{{*/
+/* LOG_MAP {{{*/
+const LOG_MAP = {
+
+    EV0_LISTEN     : false,
+    EV1_DOWN       : false,
+    EV2_MOVE       : false,
+    EV3_UP         : false,
+    EV4_LONG_PRESS : false,
+    EV5_TOOL_CB    : false,
+    EV6_CHANGED    : false,
+    EV7_DISPATCH   : false,
+    EV8_FLOATLOG   : false,
+
+    S0_PATTERN     : false,
+    S1_RANGE       : false,
+    S2_SELECT      : false,
+    S3_SLOT        : false,
+    T0_STORE       : false,
+
+    T1_DOM_LOAD    : false,
+    T2_GRID        : false,
+    T3_LAYOUT      : false,
+    T4_PIVOT       : false,
+    T5_SPREAD      : false,
+    T6_SLOT        : false,
+    T7_SHARE       : false,
+    T8_TOOLBAR     : false,
+
+    IPC_LOG        : false
+
+   };
+/* }}} */
+/*➔ logging_load_LOG_MAP .. f(dom_store) {{{*/
 let logging_load_LOG_MAP = function()
 {
-    if(typeof dom_store   === 'undefined') return;
+    if(typeof dom_store   === "undefined") return;
 
     /*.................*/let get = dom_store.t_store_getBool;
 
@@ -400,15 +490,16 @@ let logging_load_LOG_MAP = function()
     LOG_MAP.IPC_LOG        = get( "IPC_LOG"        );
 };
 /*}}}*/
-/*  logging_toggle .. f(dom_store) {{{ */
-let logging_toggle = function(keyword)
+/*➔ logging_toggle .. f(dom_store) {{{ */
+let logging_toggle = function(keyword) /* eslint-disable-line complexity */
 {
 let caller = "logging_toggle("+keyword+")";
 log(caller);
 
-    if(typeof dom_store  === 'undefined') return;
+    if(typeof dom_store  === "undefined") return false;
 
     let changed = ""; /*.....................................................*/ let set = dom_store.t_store_set_state;
+
     switch( keyword ) {
     /* EVENT */
         case "EV0_LISTEN"      : LOG_MAP.EV0_LISTEN     = !LOG_MAP.EV0_LISTEN     ; set("EV0_LISTEN"         , LOG_MAP.EV0_LISTEN     ); changed = keyword+"="+LOG_MAP.EV0_LISTEN    ; break;
@@ -420,14 +511,14 @@ log(caller);
         case "EV6_CHANGED"     : LOG_MAP.EV6_CHANGED    = !LOG_MAP.EV6_CHANGED    ; set("EV6_CHANGED"        , LOG_MAP.EV6_CHANGED    ); changed = keyword+"="+LOG_MAP.EV6_CHANGED   ; break;
         case "EV7_DISPATCH"    : LOG_MAP.EV7_DISPATCH   = !LOG_MAP.EV7_DISPATCH   ; set("EV7_DISPATCH"       , LOG_MAP.EV7_DISPATCH   ); changed = keyword+"="+LOG_MAP.EV7_DISPATCH  ; break;
         case "EV8_FLOATLOG"    : LOG_MAP.EV8_FLOATLOG   = !LOG_MAP.EV8_FLOATLOG   ; set("EV8_FLOATLOG"       , LOG_MAP.EV8_FLOATLOG   ); changed = keyword+"="+LOG_MAP.EV8_FLOATLOG  ; break;
-                                                                                                                                                                                       
-    /* SELECT */                                                                                                                                                                       
+
+    /* SELECT */
         case "S0_PATTERN"      : LOG_MAP.S0_PATTERN     = !LOG_MAP.S0_PATTERN     ; set("S0_PATTERN"         , LOG_MAP.S0_PATTERN     ); changed = keyword+"="+LOG_MAP.S0_PATTERN    ; break;
         case "S1_RANGE"        : LOG_MAP.S1_RANGE       = !LOG_MAP.S1_RANGE       ; set("S1_RANGE"           , LOG_MAP.S1_RANGE       ); changed = keyword+"="+LOG_MAP.S1_RANGE      ; break;
         case "S2_SELECT"       : LOG_MAP.S2_SELECT      = !LOG_MAP.S2_SELECT      ; set("S2_SELECT"          , LOG_MAP.S2_SELECT      ); changed = keyword+"="+LOG_MAP.S2_SELECT     ; break;
         case "S3_SLOT"         : LOG_MAP.S3_SLOT        = !LOG_MAP.S3_SLOT        ; set("S3_SLOT"            , LOG_MAP.S3_SLOT        ); changed = keyword+"="+LOG_MAP.S3_SLOT       ; break;
-                                                                                                                                                                                       
-    /* TOOL */                                                                                                                                                                         
+
+    /* TOOL */
         case "T0_STORE"        : LOG_MAP.T0_STORE       = !LOG_MAP.T0_STORE       ; set("T0_STORE"           , LOG_MAP.T0_STORE       ); changed = keyword+"="+LOG_MAP.T0_STORE      ; break;
         case "T1_DOM_LOAD"     : LOG_MAP.T1_DOM_LOAD    = !LOG_MAP.T1_DOM_LOAD    ; set("T1_DOM_LOAD"        , LOG_MAP.T1_DOM_LOAD    ); changed = keyword+"="+LOG_MAP.T1_DOM_LOAD   ; break;
         case "T2_GRID"         : LOG_MAP.T2_GRID        = !LOG_MAP.T2_GRID        ; set("T2_GRID"            , LOG_MAP.T2_GRID        ); changed = keyword+"="+LOG_MAP.T2_GRID       ; break;
@@ -437,8 +528,8 @@ log(caller);
         case "T6_SLOT"         : LOG_MAP.T6_SLOT        = !LOG_MAP.T6_SLOT        ; set("T6_SLOT"            , LOG_MAP.T6_SLOT        ); changed = keyword+"="+LOG_MAP.T6_SLOT       ; break;
         case "T7_SHARE"        : LOG_MAP.T7_SHARE       = !LOG_MAP.T7_SHARE       ; set("T7_SHARE"           , LOG_MAP.T7_SHARE       ); changed = keyword+"="+LOG_MAP.T7_SHARE      ; break;
         case "T8_TOOLBAR"      : LOG_MAP.T8_TOOLBAR     = !LOG_MAP.T8_TOOLBAR     ; set("T8_TOOLBAR"         , LOG_MAP.T8_TOOLBAR     ); changed = keyword+"="+LOG_MAP.T8_TOOLBAR    ; break;
-                                                                                                                                                                                       
-    /* IPC */                                                                                                                                                                          
+
+    /* IPC */
         case "IPC_LOG"         : LOG_MAP.IPC_LOG        = !LOG_MAP.IPC_LOG        ; set("IPC_LOG"            , LOG_MAP.IPC_LOG        ); changed = keyword+"="+LOG_MAP.IPC_LOG       ; break;
     }
 
@@ -446,7 +537,7 @@ log_TR_LAYOUT_add("<em class='big'>TOGGLE LOGGING ["+ keyword +"] changed=["+cha
     return changed;
 };
 /* }}} */
-/*  logging_something {{{*/
+/*➔ logging_something {{{*/
 let logging_something = function()
 {
 /*{{{
@@ -490,10 +581,24 @@ let logging_something = function()
     ;
 };
 /*}}}*/
-/*  log_key_val {{{*/
-let log_key_val       = function(name, o, lxx       ) { return log_key_val_group(name, o, lxx, true); };
-let log_key_val_group = function(name, o, lxx, group)
+
+const dom_LOG_MAP
+    = {   LOG_MAP
+        , logging_load_LOG_MAP
+        , logging_toggle
+        , logging_something
+    };
+/*}}}*/
+
+/*➔ log_key_val {{{*/
+const LF_HEAD = LF+"    ";
+let log_key_val       = function(name, o, lxx       ) { return log_key_val_group(name, o, lxx, false); };
+let log_key_val_group = function(name, o, lfx=7, group=true)
 {
+    let lxx = (typeof lfx == "number")
+        ?         lfX[lfx]              /* just the index */
+        :             lfx;              /* or an fg color */
+
     if(!o) {
         log(name+": %c null object ", (lxx || lb0));
         return "";
@@ -501,8 +606,9 @@ let log_key_val_group = function(name, o, lxx, group)
 
 /*{{{                  log("%c"+name, lbH+(lxx || lb0)); }}}*/
 
-    if(group) console.groupCollapsed("  %c"+ name+" ...", (lxx || lb0));
-    else      console.log           ("  %c"+ name       , (lxx || lb0));
+    name = mPadEnd(name, 60);
+    if(group) console.groupCollapsed("  %c"+ name+" ...", ((lbH+lxx) || lb0));
+    else      console.log           ("  %c"+ name       , ((lbH+lxx) || lb0));
 
     let result = "";
 
@@ -530,26 +636,35 @@ let log_key_val_group = function(name, o, lxx, group)
         let n = 1;
         Object.keys(o).forEach( /*..................... [OWN PROPERTY] NAMES */
                                 function(key) {
-                                    let val = o[key];
-                                    let lbV =    (val          ==  null        ) ?     lb0 /* NULL      */
-                                        :        (val          ==  undefined   ) ?     lb0 /* UNDEFINED */
-                                        :        (val          ==  "null_node" ) ?     lb0 /* NULL_NODE */
-                                        :        (val          ==  "NO"        ) ?     lf3 /* NOTHING   */
-                                        :        (val          ==  "[]"        ) ?     lf3 /* NOTHING   */
-                                        :        (val          ==  false       ) ?     lf3 /* FALSE     */
-                                        :        (val          ==  true        ) ?     lb5 /* TRUE      */
-                                        :        (typeof val   == "object"     ) ?     lb7 /* OBJECT    */
-                                        :  String(val).startsWith( L_NEW       ) ? lbH+lf9 /* CHANGED   */
-                                        :  String(val).startsWith( L_CHK       ) ?     lf8 /* CHECKED   */
-                                        :  String(val).includes  ( LF          ) ? lbF+lf5 /* SUBSTANCE */
-                                        :  String(val).includes  ( " "         ) ? lbH+lf5 /* ONE_LINER */
-                                        :                                              lf4 /* SOMETHING */
-                                    ;
-                                    let ovf = log_object_val_format(o[key], true);
+                                    let   val = o[key];
+                                    let   lfv = lf2;
+                                    try { lfv =        (val          ==  null        ) ?     lb0 /* NULL      */
+                                              :        (val          ==  undefined   ) ?     lb0 /* UNDEFINED */
+                                              :        (val          ==  "null_node" ) ?     lb0 /* NULL_NODE */
+                                              :        (val          ==  "NO"        ) ?     lf3 /* NOTHING   */
+                                              :        (val          ==  "[]"        ) ?     lf3 /* NOTHING   */
+                                              :        (val          ==  false       ) ?     lf2 /* FALSE     */
+                                              :        (val          ==  true        ) ?     lb5 /* TRUE      */
+                                              :        (typeof val   == "object"     ) ?     lf3 /* OBJECT    */
+                                              :  String(val).startsWith( L_NEW       ) ? lbH+lf9 /* CHANGED   */
+                                              :  String(val).startsWith( L_CHK       ) ?     lf8 /* CHECKED   */
+                                              :  String(val).includes  ( LF          ) ? lbF+lf5 /* SUBSTANCE */
+                                              :  String(val).includes  ( " "         ) ? lbH+lf5 /* ONE_LINER */
+                                              :                                              lf4 /* SOMETHING */
+                                        ;
+                                    } catch(ex) { val = LF+ex.message; lfv = lbb+lb2; }
 
-                                    let laa = ovf.includes("%c") ? lb0 : ""; /* f(log_object_val_format .. parse_ex_stack_FUNC_FILE_LINE_COL) */
+                                    let ovf = log_object_val_format(val, lxx);
 
-                                    log(     " %c|||%c "+mPadStart(   key, 36) +" %c"+ovf, lb0,(lxx || lb0), lbV, laa);
+                                    let lfo = ovf.includes("%c") ? lxx : " "; /* f(log_object_val_format .. parse_ex_stack_FUNC_FILE_LINE_COL) */ /* [" "] prevents Firefox [empty string] */
+/*{{{
+//                                  if((typeof val == "object") && (ovf != "[]"))
+//                                      ovf = LF_HEAD+"┌───────────────────────────────────┐"
+//                                          + LF_HEAD+ ovf
+//                                          + LF_HEAD+"└───────────────────────────────────┘";
+}}}*/
+                                    log(     " %c|||%c "+mPadStart(   key, 36) +" %c"+ovf
+                                             , lb0 ,(lxx || lb0)                ,lfv ,lfo);
 
                                     result +=   "||| "  +             key      +" <em class='cc"+(++n)+"'>"+ ovf   +"</em><br>"+LF       ;
                                 }
@@ -559,38 +674,100 @@ let log_key_val_group = function(name, o, lxx, group)
     return result;
 };
 /*}}}*/
-/*… log_object_val_format {{{*/
+/*➔ log_object_val_format {{{*/
+/*{{{*/
 const TEXT_LENGTH_MAX = 96;
 const regexp_LF = new RegExp("\\n", "g");
 
-let log_object_val_format = function(val, one_liner)
+/*}}}*/
+let log_object_val_format = function(val,lxx)
 {
     let                                           text = String(val);
     if     ( !text                              ) text = "[]";
     else if(          val instanceof HTMLElement) text = get_id_or_tag_and_className(val);
-    else if(  typeof  val         == "object"   ) text = log_json(val, one_liner);
+    else if(  typeof  val         == "object"   ) text = log_json(val, lxx);
     else if(  typeof  val         == "function" ) text = L_FNC +" "+ (val.name || "anonymous");
     else if(  text.includes(         LF        )) text = L_ARD+LF + text.replace(regexp_LF, LF);
 
-    if(       text.includes(        L_ARU      )) text = text.replace(L_ARU, " %c"); /* f(parse_ex_stack_FUNC_FILE_LINE_COL) */
-    else if(  text.length > TEXT_LENGTH_MAX     ) text = t_util.ellipsis(text, TEXT_LENGTH_MAX);
+    if(       text.includes(         L_ARU     )) text = text.replace(L_ARU, " %c"); /* f(parse_ex_stack_FUNC_FILE_LINE_COL) */
+
+    if(      !text.includes(         LF        )
+         &&   text.length > TEXT_LENGTH_MAX     ) text = t_util.ellipsis(text, TEXT_LENGTH_MAX);
 
     return    text;
 };
 /*}}}*/
-/*  log_json {{{*/
+/*➔ log_json {{{*/
 /*{{{*/
-const regexp_BRACES  = new RegExp("^{|}$"                    , "g");
-const regexp_BSLASH  = new RegExp("\\\\"                     , "g");
-const regexp_URL_64  = new RegExp('"url":"([^"]{1,64})[^"]*"', "g");
-const regexp_QUOTE   = new RegExp("[\\u0022\\u0027]"         , "g"); /* "' */
-const regexp_COMMA   = new RegExp(" *, *"                    , "g");
-/*{{{
-const regexp_DECIMAL = new RegExp("\\.\\d+"                  , "g");
-}}}*/
+const regexp_BRACES = new RegExp("^{|}$"                    , "g");
+const regexp_BSLASH = new RegExp("\\\\"                     , "g");
+const regexp_COMMA  = new RegExp(" *, *"                    , "g");
+const regexp_QUOTE  = new RegExp("[\\u0022\\u0027]"         , "g"); /* "' */
+const regexp_URL_64 = new RegExp('"url":"([^"]{1,64})[^"]*"', "g"); /* eslint-disable-line quotes */
 /*}}}*/
-let log_json_one_liner = function(val) { return log_json(val, true); };
-let log_json           = function(val, one_liner=false)
+let log_json = function(val,lxx)
+{
+    if(val == null     ) return "null";
+    if(val == undefined) return "undefined";
+    if(val.id          ) return "#"+val.id;
+    if(val.tagName     ) return     val.tagName;
+
+    let result = "";
+    try {
+        result
+            = JSON.stringify(val);
+
+        if( result.length > 64)
+            result
+                = result
+                .   replace(regexp_URL_64, '"url":"$1..."') /* eslint-disable-line quotes */
+        ;
+        result
+            = result
+            . replace(regexp_BRACES , "")
+            . replace(regexp_QUOTE  , "")
+            . replace(regexp_BSLASH , "")
+            . trim()
+        ;
+
+        result
+            = (". "+result)
+            .  replace(regexp_COMMA    ,        LF_HEAD+". ")
+        ;
+
+        result
+            = result
+            .  replace(/\. *([^:]*):{/g, ".$1:"+LF_HEAD+". ")
+            .  replace(/}/g            , ""                 )
+        ;
+
+        result
+            =(LF_HEAD+ result)
+            .  replace(/^( *\. *)([^:]*):(.*)$/gm, mpad)
+        ;
+
+        result
+            = LF_HEAD+"┌───────────────────────────────────┐"
+            +          result
+            + LF_HEAD+"└───────────────────────────────────┘"
+        ;
+
+    } catch(ex) { result = LF+ex.message; }
+
+    if( lxx )
+        result = "%c"+ result;
+
+    return result;
+};
+
+let mpad = function(match, p1, p2, p3, offset, string) /* eslint-disable-line no-unused-vars */
+{
+    return mPadStart(p1+p2,39) +" : "+ p3;
+};
+
+/*}}}*/
+/*➔ log_json_one_liner {{{*/
+let log_json_one_liner = function(val)
 {
     if(val == null     ) return "null";
     if(val == undefined) return "undefined";
@@ -598,348 +775,19 @@ let log_json           = function(val, one_liner=false)
     if(val.tagName     ) return     val.tagName;
 
     let result = JSON.stringify(val)
-        .        replace(regexp_URL_64 , '"url":"$1..."')
+        .        replace(regexp_URL_64 , '"url":"$1..."') /* eslint-disable-line quotes */
         .        replace(regexp_BRACES , "")
         .        replace(regexp_QUOTE  , "")
         .        replace(regexp_BSLASH , "")
-/*{{{
-        .        replace(regexp_DECIMAL, "") // (kills floating point numbers)
-}}}*/
         .        trim();
 
-    result = result.replace(regexp_COMMA, (one_liner ? " .. " : LF));
+    result = result.replace(regexp_COMMA, " .. ");
 
     return result;
 };
-
-/*}}}*/
-/*  log {{{ */
-/*{{{*/
-const LOG_MAX     = 50000;
-const CLEAR       = "DEFAULT_TO_CLEAR";
-let   log_is_full = false;
-/*}}}*/
-let log = function(first_arg, ...args)
-{
-/*{{{
-console.log((typeof first_arg)+"=["+first_arg+"] .. (first_arg instanceof HTMLElement) .. ["+(first_arg instanceof HTMLElement)+"]");
-}}}*/
-if(DOM_LOG_LOG) log_caller();
-    if     (!first_arg                        ) first_arg = CLEAR;
-    else if( first_arg instanceof HTMLElement ) {
-        console.log("%c"+t_util.get_id_or_tag_and_className(first_arg),lbH+lf9);
-        return;
-    }
-/* DEBUG TRACE TRAP {{{*/
-/*{{{
-if(first_arg.includes("RESIZING")) console.trace();
-}}}*/
-/*}}}*/
-    /* [log_msg] {{{*/
-    let log_msg = !first_arg ? CLEAR : String(first_arg).trim();
-
-    /*}}}*/
-/*{{{
-console.log("@@@")
-console.log("@@@ log_msg=["+log_msg+"]")
-for(let i=0; i < args.length; ++i) console.log("@@@ args["+i+"]=["+args[i]+"]");
-console.log("@@@")
-}}}*/
-    /* [log_level] {{{*/
-    let log_level
-        =   log_is_full              ? "warn"
-        : (!log_HTML && args.length) ? args[0]
-/*{{{
-        : (!log_HTML               ) ? "time"
-        : (!log_HTML               ) ? "groupCollapsed"
-        : (log_msg == CLEAR        ) ? "timeEnd"
-        : (log_msg == CLEAR        ) ? "groupEnd"
-}}}*/
-        :                              "log"
-    ;
-
-    /*}}}*/
-/*{{{
-console.log("@@@ log_level=["+log_level+"]")
-}}}*/
-    /* console {{{*/
-    if(    (log_msg != CLEAR)
-        && ((typeof console) != "undefined")
-    ) {
-        /* if(arguments[0]) arguments[0] = strip_HTML(arguments[0]);*/
-/*{{{
-console.log("@@@")
-console.log("@@@ arguments[0]=["+arguments[0]+"]")
-console.log("@@@")
-}}}*/
-        switch(log_level) {
-            default              : console.log            .apply(console, Array.prototype.slice.call(arguments)); /*console.trace();*/ break;
-
-            case "error"         : console.error          .apply(console, Array.prototype.slice.call(arguments)); break;
-            case "warn"          : console.warn           .apply(console, Array.prototype.slice.call(arguments)); break;
-            case "info"          : console.info           .apply(console, Array.prototype.slice.call(arguments)); break;
-
-            case "time"          : console.time           .apply(console, "selection"                          ); break;
-            case "timeEnd"       : console.timeEnd        .apply(console, "selection"                          ); break;
-            case "groupEnd"      : console.groupEnd       .apply(console                                       ); break;
-            case "group"         : console.group          .apply(console, Array.prototype.slice.call(arguments)); break;
-            case "groupCollapsed": console.groupCollapsed .apply(console, Array.prototype.slice.call(arguments)); break;
-
-        }
-    }
-    /*}}}*/
-    /* CLEAR [log_is_full] {{{*/
-    if(log_msg == CLEAR) {
-        if(log_is_full) {
-            if((typeof console) != "undefined") console.warn("log_is_full");
-            log_is_full = false;
-        }
-        log_HTML = "";
-    }
-    /*}}}*/
-    /* log_HTML ADD {{{*/
-    else {
-        log_HTML += LF+ strip_pat(log_msg,"%c\\log_msg*");
-    }
-    /*}}}*/
-    /* log_is_full {{{*/
-    if(log_HTML.length > LOG_MAX)
-    {
-        /* WARN ONCE .. (until next init)*/
-        if(!log_is_full ) {
-            log_is_full = true;
-            if((typeof console) != "undefined") console.error("log_is_full: ...LOG_MAX=["+LOG_MAX+"]");
-            if(DOM_LOG_LOG) debugger;
-        }
-        return;
-    }
-    /*}}}*/
-/*{{{
-:!start explorer "https://developers.google.com/web/tools/chrome-devtools/console/console-reference"
-}}}*/
-/*{{{
-    log_caller();
-}}}*/
-};
-/*}}}*/
-/*  log_warn {{{*/
-/*{{{*/
-const LOG_WARN_COOLDOWN_DELAY = 2000;
-const LOG_WARN_DIV            = "log_warn_div";
-let   log_warn_timer;
-let   log_warn_div;
-
-/*}}}*/
-let log_warn = function(caller, msg)
-{
-    console.warn("log_warn from %c"+caller+"%c .. %c"+strip_HTML(msg), lbH+lf5, lbA, lbH+lbb+lf4);
-    /* [log_warn_div] {{{*/
-    if(!log_warn_div) {
-        let parent = document.body;
-        if(!parent ) return;
-
-        log_warn_div                          = document.createElement("DIV");
-        log_warn_div.id                       = LOG_WARN_DIV;
-        log_warn_div.className                = "big box_panel";
-        log_warn_div.style.position           = "absolute";
-        log_warn_div.style.background         = "rgba(191,191,191,0.9)";
-        log_warn_div.style.transitionDuration = "250ms";
-        parent.insertBefore(log_warn_div, parent.firstChild);
-    }
-    /*}}}*/
-    /* SHOW {{{*/
-    log_warn_div.innerHTML                    = msg;
-    log_warn_div.style.top                    = "0px";
-    log_warn_div.style.left                   = "0px";
-
-    /*}}}*/
-    /* HIDE {{{*/
-    if(log_warn_timer) clearTimeout(log_warn_timer);
-    log_warn_timer   =   setTimeout(log_warn_handler, LOG_WARN_COOLDOWN_DELAY);
-
-    /*}}}*/
-};
-
-let log_warn_handler = function()
-{
-    log_warn_timer = null;
-    log_warn_div.style.top  = (-2 * log_warn_div.offsetHeight)+"px"  ;
-};
-/*}}}*/
-/*  logXXX {{{*/
-/*{{{*/
-let logXXX_start_MS;
-
-/*}}}*/
-let logXXX = function()
-{
-/*{{{
-    arguments[0] = "XXX "+arguments[0];
-}}}*/
-    /* onDown_MS .. f(dom_tools) {{{*/
-    if((typeof dom_tools) != "undefined")
-    {
-        let onDown_MS = dom_tools.t_get_onDown_MS();
-        let start_MS
-            = (logXXX_start_MS > onDown_MS)
-            ?  logXXX_start_MS
-            :  onDown_MS;
-
-        logXXX_start_MS = new Date().getTime();
-
-        let elapsed_MS
-            = start_MS
-            ? (logXXX_start_MS - start_MS)
-            : 0;
-
-        /*{{{
-        if(elapsed_MS && (elapsed_MS < 50)) {
-            console.log("%c XXX ",lb4);
-            console.trace();
-        }
-        }}}*/
-
-        arguments[0] = "XXX ["+elapsed_MS+"] "+arguments[0];
-    }
-    else {
-        arguments[0] = "XXX "                 +arguments[0];
-    }
-    /*}}}*/
-    console.log.apply(console, Array.prototype.slice.call(arguments));
-};
-/*}}}*/
-/*  logBIG {{{*/
-let logBIG = function(msg, lfx=lf7)
-{
-    console.log("%c "+L_NEW+" %c "+msg, lf3, lbb+lbH+lfx);
-};
-/*}}}*/
-/*  logSD0..9 {{{*/
-
-let logSD0 = function(          format, ...args) { logSDX(dom_data.SD0, lf0, format, ...args); };
-let logSD1 = function(          format, ...args) { logSDX(dom_data.SD1, lf1, format, ...args); };
-let logSD2 = function(          format, ...args) { logSDX(dom_data.SD2, lf2, format, ...args); };
-let logSD3 = function(          format, ...args) { logSDX(dom_data.SD3, lf3, format, ...args); };
-let logSD4 = function(          format, ...args) { logSDX(dom_data.SD4, lf4, format, ...args); };
-let logSD5 = function(          format, ...args) { logSDX(dom_data.SD5, lf5, format, ...args); };
-let logSD6 = function(          format, ...args) { logSDX(dom_data.SD6, lf6, format, ...args); };
-let logSD7 = function(          format, ...args) { logSDX(dom_data.SD7, lf7, format, ...args); };
-let logSD8 = function(          format, ...args) { logSDX(dom_data.SD8, lf8, format, ...args); };
-let logSD9 = function(          format, ...args) { logSDX(dom_data.SD9, lf9, format, ...args); };
-
-let logSDX = function(sym, lfx, format, ...args) { console.log("%c "+sym+"%c"+format, lbS+lfx, lbA, ...args); };
-
-/*}}}*/
-/*  log_label_URDL {{{*/
-let log_label_URDL = function(label, urdl)
-{
-    let { panel, u,r,d,l, x,y, w,h, near_x_min,near_y_min , near_x_max,near_y_max } = (urdl || {});
-
-    let l_u = u ? lb2 : lf8;
-    let l_r = r ? lb3 : lf8;
-    let l_d = d ? lb4 : lf8;
-    let l_l = l ? lb5 : lf8;
-
-    if(!panel) {
-        log("%c"+label+"%c U %c R %c D %c L"
-            ,lbH       ,l_u ,l_r ,l_d ,l_l  );
-    }
-    else {
-        let  l_x
-            = (x <= near_x_min) ? lbR
-            : (x >= near_x_max) ? lbL
-            :                     lbH;
-
-        let  l_y
-            = (y <= near_y_min) ? lbR
-            : (y >= near_y_max) ? lbL
-            :                     lbH;
-
-/*{{{
-        let pid = get_n_lbl(panel);
-}}}*/
-        let pid = get_id_or_tag(panel);
-
-        log(  "%c"+label+"%c"+pid+"%c u %c r %c d %c l"
-              +                                    "%c WH=%c"+w+".."+h
-              +                                                       "%c  X=%c"+near_x_min+" < "+x+" < "+near_x_max
-              +                                                       "%c  Y=%c"+near_y_min+" < "+y+" < "+near_y_max
-              ,lbH       ,lbH+lf0 ,l_u ,l_r ,l_d ,l_l
-              ,                                     lbA  ,lbH+lf8
-              ,                                                        lbA  ,l_x+lf6
-              ,                                                        lbA  ,l_y+lf7
-           );
-    }
-};
-/*}}}*/
-/*_ log_anchor_step {{{*/
-let log_anchor_step = function(sticky, step, msg, anchor_from, anchor_to)
-{
-
-    let from =  t_util.get_node_path_tail( anchor_from);
-    let   to = (anchor_to && (anchor_to != anchor_from))
-        ?       t_util.get_node_path_tail( anchor_to  )
-        :       null;
-
-    let sdx     = t_data.SDX[ step    % 10];
-    let lf_step =        lfX[ step    % 10];       /* this step            */
-    let lf_msg  = to   ?            lf_step : lf8; /* this step .. no-step */
-    let lf_to   = to   ? lfX[(step+1) % 10] : lf8; /* next step .. no-step */
-
-    if(to) {
-        log(   "%c"+sdx
-               +        "%c"+ msg
-               +                  "%c"+ from
-               +                             "%c ➔ %c"+ (to ? to : "...")
-               , lbB+lf_step
-               ,         lbH+lf_msg
-               ,                   lbL+lf_step
-               ,                              lbC+lbA
-               ,                                   lbR+lf_to
-           );
-    }
-    else {
-        log(   "%c"+sdx
-               +        "%c"+ msg
-               +                  "%c"+ from
-               , lbB+lf_step
-               ,         lbH+lf_msg
-               ,                   lbH+lf_step
-           );
-    }
-
-    let new_path
-        = !sticky.skipped_csv
-        ?  (     " .. "+(to || from)    ) /* show first anchor */
-        :  (to ? " .. "+(to        ): "") /* ...hide unchanged */
-    ;
-
-    let s = /*step +" "+*/ msg + new_path;
-
-    sticky.skipped_csv = t_util.csv_add(sticky.skipped_csv, s);
-
-};
-/*}}}*/
-/*_ log_not_an_anchor_target {{{*/
-let log_not_an_anchor_target = function(node)
-{
-    let result = t_util.not_an_anchor_target(node);
-    if( result )
-        log("%c"+t_util.get_node_path(node)+" %c"+result+" .. NOT AN ANCHOR TARGET"
-           ,lf8                              ,lbb+lbH                              );
-};
 /*}}}*/
 
-/*  log_clear .. f(dom_tools) {{{*/
-let log_clear = function(caller)
-{
-    if((typeof dom_tools) !== "undefined")
-        dom_tools.t_clear("log_clear(caller=["+caller+"])");
-};
-/*}}}*/
-
-/* TOP BOT CLR .. (COLLAPSED and NESTED) */
-/*{{{*/
+/*➔ dom_log_log {{{*/
 /*{{{*/
 
 const STYLE_TOP = "font-weight:900; border:0px #000 solid; border-radius:2em 2em .1em .1em; padding:  0 1em 1em 2em; overflow:visible;";
@@ -988,7 +836,210 @@ const SDO = [
 let log_NUM = 0;
 
 /*}}}*/
-/*_ log_TOP {{{*/
+/*➔ log {{{ */
+/*{{{*/
+const LOG_MAX     = 50000;
+const CLEAR       = "DEFAULT_TO_CLEAR";
+
+let   log_HTML    =  "";
+let   log_is_full = false;
+/*}}}*/
+let log = function(first_arg, ...args) /* eslint-disable-line complexity */
+{
+if(DOM_LOG_LOG || DOM_LOG_TAG) log_caller();
+    /* CLEAR {{{*/
+    if     (!first_arg                        ) first_arg = CLEAR;
+    /*}}}*/
+    /* HTMLElement {{{*/
+    else if( first_arg instanceof HTMLElement ) {
+        console.log("%c"+get_id_or_tag_and_className(first_arg),lbH+lf9);
+        return;
+    }
+    /*}}}*/
+/* DEBUG TRACE TRAP {{{*/
+/*{{{
+if(first_arg.includes("RESIZING")) console.trace();
+}}}*/
+/*}}}*/
+    /* [log_msg] {{{*/
+    let log_msg = !first_arg ? CLEAR : String(first_arg).trim();
+
+    /*}}}*/
+/* [args] {{{
+console.log("@@@")
+console.log("@@@ log_msg=["+log_msg+"]")
+for(let i=0; i < args.length; ++i) console.log("@@@ args["+i+"]=["+args[i]+"]");
+console.log("@@@")
+}}}*/
+    /* [log_level] {{{*/
+    let log_level
+        =   log_is_full              ? "warn"
+        : (!log_HTML && args.length) ? args[0]
+/*{{{
+        : (!log_HTML               ) ? "time"
+        : (!log_HTML               ) ? "groupCollapsed"
+        : (log_msg == CLEAR        ) ? "timeEnd"
+        : (log_msg == CLEAR        ) ? "groupEnd"
+}}}*/
+        :                              "log"
+    ;
+
+/*{{{
+console.log("@@@ log_level=["+log_level+"]")
+}}}*/
+    /*}}}*/
+    /* console .. [log error warn info time group] {{{*/
+    if(    (log_msg != CLEAR)
+        && ((typeof console) != "undefined")
+    ) {
+        /* if(arguments[0]) arguments[0] = strip_HTML(arguments[0]);*/
+/*{{{
+console.log("@@@")
+console.log("@@@ arguments[0]=["+arguments[0]+"]")
+console.log("@@@")
+}}}*/
+        switch(log_level) {
+            default              : console.log            .apply(console, Array.prototype.slice.call(arguments)); /*console.trace();*/ break;
+
+            case "error"         : console.error          .apply(console, Array.prototype.slice.call(arguments)); break;
+            case "warn"          : console.warn           .apply(console, Array.prototype.slice.call(arguments)); break;
+            case "info"          : console.info           .apply(console, Array.prototype.slice.call(arguments)); break;
+
+            case "time"          : console.time           .apply(console, "selection"                          ); break;
+            case "timeEnd"       : console.timeEnd        .apply(console, "selection"                          ); break;
+            case "groupEnd"      : console.groupEnd       .apply(console                                       ); break;
+            case "group"         : console.group          .apply(console, Array.prototype.slice.call(arguments)); break;
+            case "groupCollapsed": console.groupCollapsed .apply(console, Array.prototype.slice.call(arguments)); break;
+
+        }
+    }
+    /*}}}*/
+    /* CLEAR .. [log_is_full] {{{*/
+    if(log_msg == CLEAR) {
+        if(log_is_full) {
+            if((typeof console) != "undefined") console.warn("log_is_full");
+            log_is_full = false;
+        }
+        log_HTML = "";
+    }
+    /*}}}*/
+    /* log_HTML ADD {{{*/
+    else {
+        log_HTML += LF+ strip_pat(log_msg,"%c\\log_msg*");
+    }
+    /*}}}*/
+    /* log_is_full {{{*/
+    if(log_HTML.length > LOG_MAX)
+    {
+        /* WARN ONCE .. (until next init)*/
+        if(!log_is_full ) {
+            log_is_full = true;
+            if((typeof console) != "undefined") console.error("log_is_full: ...LOG_MAX=["+LOG_MAX+"]");
+            if(DOM_LOG_LOG) debugger; /* eslint-disable-line no-debugger */
+        }
+        return;
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*➔ log_warn {{{*/
+/*{{{*/
+const LOG_WARN_COOLDOWN_DELAY = 2000;
+const LOG_WARN_DIV            = "log_warn_div";
+let   log_warn_timer;
+let   log_warn_div;
+
+/*}}}*/
+let log_warn = function(caller, msg)
+{
+    console.warn("log_warn from %c"+caller+"%c .. %c"+strip_HTML(msg), lbH+lf5, lbA, lbH+lbb+lf4);
+    /* [log_warn_div] {{{*/
+    if(!log_warn_div) {
+        let parent = document.body;
+        if(!parent ) return;
+
+        log_warn_div                          = document.createElement("DIV");
+        log_warn_div.id                       = LOG_WARN_DIV;
+        log_warn_div.className                = "big box_panel";
+        log_warn_div.style.position           = "absolute";
+        log_warn_div.style.background         = "rgba(191,191,191,0.9)";
+        log_warn_div.style.transitionDuration = "250ms";
+        parent.insertBefore(log_warn_div, parent.firstChild);
+    }
+    /*}}}*/
+    /* SHOW {{{*/
+    log_warn_div.innerHTML                    = msg;
+    log_warn_div.style.top                    = "0px";
+    log_warn_div.style.left                   = "0px";
+
+    /*}}}*/
+    /* HIDE {{{*/
+    if(log_warn_timer) clearTimeout(log_warn_timer);
+    log_warn_timer   =   setTimeout(log_warn_handler, LOG_WARN_COOLDOWN_DELAY);
+
+    /*}}}*/
+};
+
+let log_warn_handler = function()
+{
+    log_warn_timer = null;
+    log_warn_div.style.top  = (-2 * log_warn_div.offsetHeight)+"px"  ;
+};
+/*}}}*/
+/*➔ logBIG {{{*/
+let logBIG = function(msg, lfx=lf7)
+{
+    let lxx = (typeof lfx == "number")
+        ?         lbb+lbH+lfX[lfx]              /* just the index   */
+        :                     lfx;              /* or a color style */
+
+    console.log("%c "+L_NEW+" %c "+msg, lbb+lbH+lf9, lxx);
+};
+/*}}}*/
+/*➔ logXXX {{{*/
+/*{{{*/
+let logXXX_start_MS;
+
+/*}}}*/
+let logXXX = function()
+{
+/*{{{
+    arguments[0] = "XXX "+arguments[0];
+}}}*/
+    /* onDown_MS .. f(dom_tools) {{{*/
+    if((typeof dom_tools) != "undefined")
+    {
+        let onDown_MS = dom_tools.t_get_onDown_MS();
+        let start_MS
+            = (logXXX_start_MS > onDown_MS)
+            ?  logXXX_start_MS
+            :  onDown_MS;
+
+        logXXX_start_MS = new Date().getTime();
+
+        let elapsed_MS
+            = start_MS
+            ? (logXXX_start_MS - start_MS)
+            : 0;
+
+        /*{{{
+        if(elapsed_MS && (elapsed_MS < 50)) {
+            console.log("%c XXX ",lb4);
+            console.trace();
+        }
+        }}}*/
+
+        arguments[0] = "XXX ["+elapsed_MS+"] "+arguments[0];
+    }
+    else {
+        arguments[0] = "XXX "                 +arguments[0];
+    }
+    /*}}}*/
+    console.log.apply(console, Array.prototype.slice.call(arguments));
+};
+/*}}}*/
+
+/*➔ log_TOP {{{*/
 let log_TOP = function(arg_line, lfx)
 {
     /* get color-num from color-array index */
@@ -1011,7 +1062,7 @@ let log_TOP = function(arg_line, lfx)
     console.groupCollapsed( "%c"+sym +"%c "+txt,l_1,l_2);
 };
 /*}}}*/
-/*_ log_BOT {{{*/
+/*➔ log_BOT {{{*/
 let log_BOT = function(arg_line, lfx)
 {
     if(!arg_line) arg_line = "";
@@ -1031,7 +1082,7 @@ let log_BOT = function(arg_line, lfx)
     log_NUM = (log_NUM <= 0) ? 0 : ((log_NUM-1) % 10);
 };
 /*}}}*/
-/*_ log_CLR {{{*/
+/*➔ log_CLR {{{*/
 let log_CLR = function()
 {
     while(log_NUM > 0) log_BOT( L_CLR );
@@ -1039,7 +1090,7 @@ let log_CLR = function()
     log( CLEAR );
 };
 /*}}}*/
-/*_ log_ERR {{{*/
+/*➔ log_ERR {{{*/
 let log_ERR = function(arg_line="")
 {
     if(log_NUM > 0) log_CLR();
@@ -1056,10 +1107,145 @@ let log_ERR = function(arg_line="")
     console.log("%c"+sym+" %c "+txt+" ",l_1,STYLE_ERR);
 };
 /*}}}*/
+
+/*➔ log_clear .. f(dom_tools) {{{*/
+let log_clear = function(caller)
+{
+    if((typeof dom_tools) !== "undefined")
+        dom_tools.t_clear("log_clear(caller=["+caller+"])");
+};
+/*}}}*/
+/*➔ get_log_is_full {{{*/
+let get_log_is_full = function()
+{
+    return log_is_full;
+};
+/*}}}*/
+/*➔ get_log_HTML {{{*/
+let get_log_HTML    = function()
+{
+    return strip_console_formatting( log_HTML );
+};
 /*}}}*/
 
-/* TRANSCRIPT */
-/*{{{*/
+const dom_log_log
+    = {   log
+        , log_warn
+        , logBIG
+        , logXXX
+
+        , log_TOP
+        , log_BOT
+        , log_CLR
+        , log_ERR
+
+        , log_clear
+        , get_log_is_full
+        , get_log_HTML
+    };
+/*}}}*/
+
+/*➔ log_label_URDL {{{*/
+let log_label_URDL = function(label, urdl)
+{
+    let { panel, u,r,d,l, x,y, w,h, near_x_min,near_y_min , near_x_max,near_y_max } = (urdl || {});
+
+    let l_u = u ? lb2 : lf8;
+    let l_r = r ? lb3 : lf8;
+    let l_d = d ? lb4 : lf8;
+    let l_l = l ? lb5 : lf8;
+
+    if(!panel) {
+        log("%c"+label+"%c U %c R %c D %c L"
+            ,lbH       ,l_u ,l_r ,l_d ,l_l  );
+    }
+    else {
+        let  l_x
+            = (x <= near_x_min) ? lbR
+            : (x >= near_x_max) ? lbL
+            :                     lbH;
+
+        let  l_y
+            = (y <= near_y_min) ? lbR
+            : (y >= near_y_max) ? lbL
+            :                     lbH;
+
+/*{{{
+        let pid = get_n_lbl(panel);
+}}}*/
+        let pid = get_id_or_tag(panel);
+
+        log(  "%c"+label+"%c"+pid+"%c u %c r %c d %c l"
+              +                                    "%c WH=%c"+w+".."+h
+              +                                                       "%c  X=%c"+near_x_min+" < "+x+" < "+near_x_max
+              +                                                       "%c  Y=%c"+near_y_min+" < "+y+" < "+near_y_max
+              ,lbH       ,lbH+lf0 ,l_u ,l_r ,l_d ,l_l
+              ,                                     lbA  ,lbH+lf8
+              ,                                                        lbA  ,l_x+lf6
+              ,                                                        lbA  ,l_y+lf7
+           );
+    }
+};
+/*}}}*/
+/*➔ log_anchor_step {{{*/
+let log_anchor_step = function(sticky, step, msg, anchor_from, anchor_to)
+{
+
+    let from =  t_util.get_node_path_tail( anchor_from);
+    let   to = (anchor_to && (anchor_to != anchor_from))
+        ?       t_util.get_node_path_tail( anchor_to  )
+        :       null;
+
+    let sdx     = t_data.SDX[ step    % 10];
+    let lf_step =        lfX[ step    % 10];       /* this step            */
+    let lf_msg  = to   ?            lf_step : lf8; /* this step .. no-step */
+    let lf_to   = to   ? lfX[(step+1) % 10] : lf8; /* next step .. no-step */
+
+    if(to) {
+        log(   "%c"+sdx
+               +        "%c"+ msg
+               +                  "%c"+ from
+               +                             "%c ➔ %c"+ (to ? to : "...")
+               , lbB+lf_step
+               ,         lbH+lf_msg
+               ,                   lbL+lf_step
+               ,                              lbC+lbA
+               ,                                   lbR+lf_to
+           );
+    }
+    else {
+        log(   "%c"+sdx
+               +        "%c"+ msg
+               +                  "%c"+ from
+               , lbB+lf_step
+               ,         lbH+lf_msg
+               ,                   lbH+lf_step
+           );
+    }
+
+    let new_path
+        = !sticky.skipped_csv
+        ?  (     " .. "+(to || from)    ) /* show first anchor */
+        :  (to ? " .. "+(to        ): "") /* ...hide unchanged */
+    ;
+
+    let s = /*step +" "+*/ msg + new_path;
+
+    sticky.skipped_csv = t_util.csv_add(sticky.skipped_csv, s);
+
+};
+/*}}}*/
+/*➔ log_not_an_anchor_target {{{*/
+let log_not_an_anchor_target = function(node)
+{
+    let result = t_util.not_an_anchor_target(node);
+    if( result )
+        log("%c"+t_util.get_node_path(node)+" %c"+result+" .. NOT AN ANCHOR TARGET"
+           ,lf8                              ,lbb+lbH                              );
+};
+/*}}}*/
+
+/*➔ dom_log_transcript {{{*/
 /*{{{*/
 let log_tr1;
 let log_tr2;
@@ -1137,7 +1323,7 @@ log(tr.id+": "+strip_HTML(msg));
 };
 /*}}}*/
 /*…_log_TR_add {{{*/
-let _log_TR_add  = function(tr, msg, ...args)
+let _log_TR_add  = function(tr, msg, ...args) /* eslint-disable-line no-unused-vars */
 {
     if(!msg) msg = "";
 log(tr.id+": "+strip_HTML(msg));
@@ -1154,7 +1340,7 @@ if(msg) console.log("%c _log_TR_add%c"+strip_HTML(msg), lbH+lf8, String(args[0])
     let s = "<table>";
 
     /*}}}*/
-    if(typeof dom_select  !== 'undefined') {
+    if(typeof dom_select  !== "undefined") {
         /* mStartRange {{{*/
         let mStartRange     =  dom_select.get_mStartRange();
         let mStartRange_str = (mStartRange) ? dom_select.rangeToString(mStartRange, "Start Range") : "";
@@ -1179,7 +1365,7 @@ if(msg) console.log("%c _log_TR_add%c"+strip_HTML(msg), lbH+lf8, String(args[0])
             msg = strip_console_formatting(msg);
 
 /*{{{
-console_dir(msg,"_log_TR_add(msg)");
+console_dir("_log_TR_add(msg)",msg);
 }}}*/
         s += ""
             +" <tr><td class='transcript_msg'>"+ msg +"</td></tr>"
@@ -1205,83 +1391,43 @@ let log_TR_SELECT_set  = _log_TR_set1;
 let log_TR_SELECT_add  = _log_TR_add1;
 
 /*}}}*/
+
+const dom_log_transcript
+    = {   log_TR_set_transcripts
+        , log_TR_layout
+
+        , log_TR_EVENT_add
+        , log_TR_LAYOUT_set
+        , log_TR_LAYOUT_add
+        , log_TR_SELECT_set
+        , log_TR_SELECT_add
+
+        , log_TR_RESULT_set
+    };
 /*}}}*/
 
 /* EXPORT */
 /*{{{*/
-let functions
-    = {   log
-        , logBIG
-        , logXXX
-        , log_anchor_step
-        , log_caller
-        , log_json_one_liner
-        , log_key_val
-        , log_key_val_group
-    };
-
 return { name : "dom_log"
-    , logging : function(value) { if(value != undefined) DOM_LOG_LOG = value; dom_store.t_store_set_value("DOM_LOG_LOG", DOM_LOG_LOG); return DOM_LOG_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_LOG_TAG = value; dom_store.t_store_set_value("DOM_LOG_TAG", DOM_LOG_TAG); return DOM_LOG_TAG; }
+    , logging : (state) => DOM_LOG_LOG = dom_util.t_util_set_state("DOM_LOG_LOG",state)
+    , tagging : (state) => DOM_LOG_TAG = dom_util.t_util_set_state("DOM_LOG_TAG",state)
     , t_log_IMPORT
-    /* LOG_MAP {{{*/
-    , LOG_MAP
-    /*}}}*/
-    /* CHAR {{{*/
-    , BACKSLASH
-    , CS
-    , FORESLASH
 
-    /*}}}*/
-    /* STRINGS {{{*/
-    , L_ARL
-    , L_ARR
-    , L_CHK
-    , L_NEW
-
-    /*}}}*/
-    /* EXPORT - CSS {{{*/
-
-    ,  LOG_BG_ARR : [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ]
-    ,  LOG_FG_ARR : [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ]
-    ,  LOG_XX_ARR : [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ]
-
-    /*}}}*/
-    /* ACCESSORS {{{*/
-    , get_log_is_full    : function() { return log_is_full; }
-    , get_log_HTML       : function() { return strip_console_formatting( log_HTML );   }
-
-    /*}}}*/
-    /* DEBUG {{{*/
-    , console_clear
-    , console_clear_post
-    , console_dir
-    , console_log
-    , console_table
-    , console_warn
-
-    /*}}}*/
-    /* functions {{{*/
-    , functions
+    /* MODULES */
+    , ...dom_LOG_MAP
+    , ...dom_log_CHAR
+    , ...dom_log_CSS
+    , ...dom_log_STRING
+    , ...dom_log_SYM_DIGIT
+    , ...dom_log_console
+    , ...dom_log_transcript
+    , ...dom_log_log
 
     , log_IMPORT
-    , log_warn
-    , logging_load_LOG_MAP
-    , logging_something
-    , logging_toggle
 
     , get_callers
     , log_caller
-    , log_clear
 
-    , log
-    , logSD0 , logSD1 , logSD2 , logSD3 , logSD4 , logSD5 , logSD6 , logSD7 , logSD8 , logSD9
-    , logBIG
-    , logXXX
-    , log_BOT
-    , log_CLR
-    , log_ERR
-    , log_TOP
 
     , log_json
     , log_json_one_liner
@@ -1291,24 +1437,13 @@ return { name : "dom_log"
     , log_not_an_anchor_target
     , log_object_val_format
     , log_anchor_step
-
-    /*}}}*/
-    /* TRANSCRIPT {{{*/
-    , log_TR_set_transcripts
-    , log_TR_layout
-
-    , log_TR_EVENT_add
-    , log_TR_LAYOUT_set
-    , log_TR_LAYOUT_add
-    , log_TR_SELECT_set
-    , log_TR_SELECT_add
-
-    , log_TR_RESULT_set
-
-    /*}}}*/
 };
 
 /*}}}*/
 
 })();
+/*{{{
+:!start explorer "https://developers.google.com/web/tools/chrome-devtools/console/console-reference"
+:e C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/lib/lib_log.js
+}}}*/
 

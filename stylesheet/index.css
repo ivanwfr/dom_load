@@ -1,5 +1,5 @@
-
-#index_css_tag  { content: "index_css (200330:16h)"; }
+@charset "utf-8";
+#index_css_tag  { content: "index_css (200908:15h:58)"; }
 
 /* HTML {{{*/
 BODY   { cursor        : url("../images/cursor.png"), pointer; }
@@ -85,7 +85,10 @@ EM {
     padding-right         : 1em;
     background-color      : rgba(255,255,221,0.9);
 }
+
+/*
 .grimm_tale p { font-size : 23px; }
+*/
 
 @media only screen and (min-resolution : 120dpi) {
 .grimm_tale p { font-size : 23px; }

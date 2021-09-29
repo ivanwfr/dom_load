@@ -1,84 +1,125 @@
-/* dom_tools_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
-const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (200410:18h)";
-let dom_tools   = (function() {
-"use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_fly, dom_wording, dom_select, dom_slot, dom_hide, dom_view, dom_sticky, dom_seek, dom_share, dom_grid, dom_gutter, dom_ipc */
-/* globals DOM_LOAD_ID, DOM_LOAD_TAG, DOM_TOOLS_CSS_TAG */
-/* globals DOM_WORDING_JS_TAG , DOM_VIEW_JS_TAG , DOM_UTIL_JS_TAG   , DOM_STORE_JS_TAG , DOM_STICKY_JS_TAG , DOM_SEEK_JS_TAG , DOM_SLOT_JS_TAG , DOM_SHARE_JS_TAG , DOM_SELECT_JS_TAG , DOM_PROP_JS_TAG , DOM_LOG_JS_TAG , DOM_IPC_JS_TAG , DOM_HIDE_JS_TAG , DOM_GUTTER_JS_TAG , DOM_GRID_JS_TAG , DOM_FLY_JS_TAG , DOM_DATA_JS_TAG */
-/* globals dom_prop_notify, playground_prop_CB */
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_tools                                                                │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals DOM_LOAD_ID        */
+/* globals DOM_LOAD_TAG       */
+/* globals DOM_TOOLS_CSS_TAG  */
+/* globals DOM_WORDING_JS_TAG */
+/* globals DOM_VIEW_JS_TAG    */
+/* globals DOM_UTIL_JS_TAG    */
+/* globals DOM_DETAILS_JS_TAG */
+/* globals DOM_WOT_JS_TAG     */
+/* globals DOM_I18N_JS_TAG    */
+/* globals DOM_STORE_JS_TAG   */
+/* globals DOM_STICKY_JS_TAG  */
+/* globals DOM_SEEK_JS_TAG    */
+/* globals DOM_SLOT_JS_TAG    */
+/* globals DOM_SHARE_JS_TAG   */
+/* globals DOM_SELECT_JS_TAG  */
+/* globals DOM_PROP_JS_TAG    */
+/* globals DOM_LOG_JS_TAG     */
+/* globals DOM_IPC_JS_TAG     */
+/* globals DOM_HIDE_JS_TAG    */
+/* globals DOM_GUTTER_JS_TAG  */
+/* globals DOM_GRID_JS_TAG    */
+/* globals DOM_FLY_JS_TAG     */
+/* globals DOM_DATA_JS_TAG    */
+
+/* globals dom_data, dom_log, dom_popup, dom_util, dom_details, dom_i18n, dom_prop, dom_store, dom_fly, dom_wording, dom_select, dom_wot, dom_slot, dom_hide, dom_view, dom_sticky, dom_seek, dom_share, dom_grid, dom_gutter, dom_ipc */
+/* globals dom_prop_notify    */
+/* globals playground_prop_CB */
+
+/* globals window, document, navigator */
+/* globals console, setTimeout, clearTimeout, setInterval, clearInterval */
+/* globals Node, requestAnimationFrame, cancelAnimationFrame */
+/* globals getComputedStyle */
+
+/* eslint-disable no-unused-vars */
+/* eslint-disable complexity     */
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable max-depth */
+/* eslint-disable no-warning-comments */
+
 /*
-:1,$y *
+:update|1,$y *
 :!start explorer https://jshint.com/
 :!start explorer https://cdn.jsdelivr.net/npm/vue/dist/vue.js
 */
+
+const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (210928:19h:34)";
 /*}}}*/
-let   DOM_TOOLS_LOG         = false;
-let   DOM_TOOLS_TAG         = false;
-let   DOM_TOOLS_GLOBALS     = false;  /* .. window.t_tools = dom_tools ... */
-/* IMPORT */
-/*{{{*/
+let dom_tools   = (function() {
+"use strict";
+
+/* IMPORT {{{*/
 /*➔ t_tools_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-let t_store    = {}        ;    /* 09 */
-let t_fly      = {}        ;    /* 10 */
+let t_details  = {}        ;    /* 08 */
+let t_i18n     = {}        ;    /* 09 */
+let t_prop     = {}        ;    /* 10 */
+let t_store    = {}        ;    /* 11 */
+let t_fly      = {}        ;    /* 12 */
 /* ...................................*/
-let t_wording  = {}        ;    /* 11 */
-let t_select   = {}        ;    /* 12 */
-let t_slot     = {}        ;    /* 13 */
+let t_wording  = {}        ;    /* 13 */
+let t_select   = {}        ;    /* 14 */
+let t_wot      = {}        ;    /* 14 */
+let t_slot     = {}        ;    /* 15 */
 /* ...................................*/
-let t_hide     = {}        ;    /* 14 */
-let t_view     = {}        ;    /* 15 */
-let t_sticky   = {}        ;    /* 16 */
-let t_seek     = {}        ;    /* 17 */
-let t_share    = {}        ;    /* 18 */
+let t_hide     = {}        ;    /* 16 */
+let t_view     = {}        ;    /* 17 */
+let t_sticky   = {}        ;    /* 18 */
+let t_seek     = {}        ;    /* 19 */
+let t_share    = {}        ;    /* 20 */
 /* ...................................*/
-let t_grid     = {}        ;    /* 19 */
-let t_gutter   = {}        ;    /* 20 */
+let t_grid     = {}        ;    /* 21 */
+let t_gutter   = {}        ;    /* 22 */
 /* ...................................*/
-let t_ipc      = {}        ;    /* 21 */
-/*➔ t_tools    = {}        ; */ /* 22 */
+let t_ipc      = {}        ;    /* 23 */
+/*➔ t_tools    = {}        ; */ /* 24 */
 /*....................................*/
 /*}}}*/
 let t_tools_IMPORT  = function(log_this)
 {
 /* t_data .. t_tools {{{*/
 /* ...................................*/
-    t_data    = dom_data   ;    /* 05 */
-    t_log     = dom_log    ;    /* 06 */
-    t_util    = dom_util   ;    /* 07 */
-    t_prop    = dom_prop   ;    /* 08 */
-    t_store   = dom_store  ;    /* 09 */
-    t_fly     = dom_fly    ;    /* 10 */
-/* ...................................*/
-    t_wording = dom_wording;    /* 11 */
-    t_select  = dom_select ;    /* 12 */
-    t_slot    = dom_slot   ;    /* 13 */
-/* ...................................*/
-    t_hide    = dom_hide   ;    /* 14 */
-    t_view    = dom_view   ;    /* 15 */
-    t_sticky  = dom_sticky ;    /* 16 */
-    t_seek    = dom_seek   ;    /* 17 */
-    t_share   = dom_share  ;    /* 18 */
-/* ...................................*/
-    t_grid    = dom_grid   ;    /* 19 */
-    t_gutter  = dom_gutter ;    /* 20 */
-/* ...................................*/
-    t_ipc     = dom_ipc    ;    /* 21 */
-/*➔ t_tools   = dom_tools  ; */ /* 22 */
+                                         t_data    = dom_data   ;    /* 05 */
+if(typeof dom_log     != "undefined")    t_log     = dom_log    ;    /* 06 */
+if(typeof dom_util    != "undefined")    t_util    = dom_util   ;    /* 07 */
+if(typeof dom_details != "undefined")    t_details = dom_details;    /* 08 */
+if(typeof dom_i18n    != "undefined")    t_i18n    = dom_i18n   ;    /* 09 */
+if(typeof dom_prop    != "undefined")    t_prop    = dom_prop   ;    /* 10 */
+if(typeof dom_store   != "undefined")    t_store   = dom_store  ;    /* 11 */
+if(typeof dom_fly     != "undefined")    t_fly     = dom_fly    ;    /* 12 */
+                                     /* ...................................*/
+if(typeof dom_wording != "undefined")    t_wording = dom_wording;    /* 13 */
+if(typeof dom_select  != "undefined")    t_select  = dom_select ;    /* 14 */
+if(typeof dom_wot     != "undefined")    t_wot     = dom_wot    ;    /* 14 */
+if(typeof dom_slot    != "undefined")    t_slot    = dom_slot   ;    /* 15 */
+                                     /* ...................................*/
+if(typeof dom_hide    != "undefined")    t_hide    = dom_hide   ;    /* 16 */
+if(typeof dom_view    != "undefined")    t_view    = dom_view   ;    /* 17 */
+if(typeof dom_sticky  != "undefined")    t_sticky  = dom_sticky ;    /* 18 */
+if(typeof dom_seek    != "undefined")    t_seek    = dom_seek   ;    /* 19 */
+if(typeof dom_share   != "undefined")    t_share   = dom_share  ;    /* 20 */
+                                     /* ...................................*/
+if(typeof dom_grid    != "undefined")    t_grid    = dom_grid   ;    /* 21 */
+if(typeof dom_gutter  != "undefined")    t_gutter  = dom_gutter ;    /* 22 */
+                                     /* ...................................*/
+if(typeof dom_ipc     != "undefined")    t_ipc     = dom_ipc    ;    /* 23 */
+                                     /*➔ t_tools   = dom_tools  ; */ /* 24 */
 /* ...................................*/
 /*}}}*/
     tools_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_TOOLS_LOG = DOM_TOOLS_LOG || dom_store.t_store_getBool("DOM_TOOLS_LOG");
-    DOM_TOOLS_TAG = DOM_TOOLS_TAG || dom_store.t_store_getBool("DOM_TOOLS_TAG");
+    DOM_TOOLS_LOG = DOM_TOOLS_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_TOOLS_LOG"));
+    DOM_TOOLS_TAG = DOM_TOOLS_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_TOOLS_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 22 tools", lbH+lf2);
@@ -101,15 +142,20 @@ let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
 let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
 
 /* t_util */
-let get_n_lbl;
-let get_id_or_tag;
-let get_id_or_tag_and_className;
 let add_el_class;
 let del_el_class;
+let get_event_XY;
+let get_id_or_tag;
+let get_id_or_tag_and_className;
+let get_n_lbl;
 let has_el_class;
 let set_el_class;
 let set_el_class_on_off;
 let set_el_class_removing;
+let t_get_event_target;
+
+/* t_i18n */
+let i18n_get;
 
 /* t_prop */
 let prop;
@@ -129,28 +175,34 @@ let   tools_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
     /* t_prop {{{*/
     prop = t_prop;
 
     /*}}}*/
     /* t_util {{{*/
-    get_n_lbl                   = t_util.get_n_lbl;
-    get_id_or_tag               = t_util.get_id_or_tag;
-    get_id_or_tag_and_className = t_util.get_id_or_tag_and_className;
     add_el_class                = t_util.add_el_class;
     del_el_class                = t_util.del_el_class;
+    get_event_XY                = t_util.get_event_XY;
+    get_id_or_tag               = t_util.get_id_or_tag;
+    get_id_or_tag_and_className = t_util.get_id_or_tag_and_className;
+    get_n_lbl                   = t_util.get_n_lbl;
     has_el_class                = t_util.has_el_class;
     set_el_class                = t_util.set_el_class;
     set_el_class_on_off         = t_util.set_el_class_on_off;
     set_el_class_removing       = t_util.set_el_class_removing;
+    t_get_event_target          = t_util.t_get_event_target;
+
+    /*}}}*/
+    /* t_i18n {{{*/
+    i18n_get            = t_i18n.i18n_get;
 
     /*}}}*/
     tools_DEPEND();
@@ -178,6 +230,7 @@ let LONG_PRESS_DELAY;
 /*}}}*/
 let   tools_DEPEND = function()
 {
+
 /* t_data {{{*/
     DIV_MAGNIFY     = "<em class='button_magnify' title='magnify'>"+ t_data.SYMBOL_MAGNIFY_LEFT +"</em>";
     T_ONCLICK_DELAY = t_data.CLICK_DURATION;
@@ -190,11 +243,6 @@ let   tools_DEPEND = function()
 
 /*}}}*/
 /*  TOOL_SET BUNDLE {{{*/
-    TOOL_SET5_MORE /*{{{*/
-    = [   { dom_load_id : ""           , panel_id : "fly_div"       }
-        , { dom_load_id : ""           , panel_id :  t_data.TOOLS_TRAP     }
-    ];
-/*}}}*/
     TOOL_SET1_WORD /*{{{*/
     = [   { dom_load_id : "dom_find"   , panel_id : "headsup_w"     } /* wording exact segment ...   */
 
@@ -226,9 +274,9 @@ let   tools_DEPEND = function()
 /*}}}*/
     TOOL_SET4_PLAY /*{{{*/
     = [   { dom_load_id : "playground" , panel_id : "headsup"       } /* options                                     */
+        , { dom_load_id : "playground" , panel_id : "headsup_fs"    } /* body font-size                              */
         , { dom_load_id : "playground" , panel_id : "headsup_bw"    } /* body width                                  */
         , { dom_load_id : "playground" , panel_id : "headsup_bz"    } /* body zoom                                   */
-        , { dom_load_id : "playground" , panel_id : "headsup_fs"    } /* body font-size                              */
         , { dom_load_id : "playground" , panel_id : "headsup_ds"    } /* tools trap & scroll                         */
         , { dom_load_id : "playground" , panel_id : "headsup_w"     } /* wording exact segment ...                   */
 
@@ -245,13 +293,22 @@ let   tools_DEPEND = function()
 
     ];
 /*}}}*/
+    TOOL_SET5_MORE /*{{{*/
+    = [   { dom_load_id : ""           , panel_id : "fly_div"       }
+        , { dom_load_id : ""           , panel_id :  t_data.TOOLS_TRAP     }
+    ];
+/*}}}*/
 
     TOOL_SET =   TOOL_SET1_WORD
         .concat( TOOL_SET2_SEEK )
         .concat( TOOL_SET3_HIDE )
         .concat( TOOL_SET4_PLAY )
-        .concat( TOOL_SET5_MORE )
+/*
+//      .concat( TOOL_SET5_MORE ) FIXME .. HIDES fly_div
+*/
     ;
+
+    t_set_tools_tiers();
 
 /*}}}*/
     /* DELAY {{{*/
@@ -265,30 +322,33 @@ let   tools_DEPEND = function()
 let   load_IMPORT = function()
 {
 let log_this = DOM_TOOLS_TAG;
-/*....................................................*/
-/*✔ dom_data     EXPORT-ONLY                    /* 05 */
-    dom_log     .t_log_IMPORT     (log_this);   /* 06 */
-    dom_util    .t_util_IMPORT    (log_this);   /* 07 */
-    dom_prop    .t_prop_IMPORT    (log_this);   /* 08 */
-    dom_store   .t_store_IMPORT   (log_this);   /* 09 */
-    dom_fly     .t_fly_IMPORT     (log_this);   /* 10 */
-/*....................................................*/
-    dom_wording .t_wording_IMPORT (log_this);   /* 11 */
-    dom_select  .t_select_IMPORT  (log_this);   /* 12 */
-    dom_slot    .t_slot_IMPORT    (log_this);   /* 13 */
-/*....................................................*/
-    dom_hide    .t_hide_IMPORT    (log_this);   /* 14 */
-    dom_view    .t_view_IMPORT    (log_this);   /* 15 */
-    dom_sticky  .t_sticky_IMPORT  (log_this);   /* 16 */
-    dom_seek    .t_seek_IMPORT    (log_this);   /* 17 */
-    dom_share   .t_share_IMPORT   (log_this);   /* 18 */
-/*....................................................*/
-    dom_grid    .t_grid_IMPORT    (log_this);   /* 19 */
-    dom_gutter  .t_gutter_IMPORT  (log_this);   /* 20 */
-/*....................................................*/
-    dom_ipc     .t_ipc_IMPORT     (log_this);   /* 21 */
-/*➔ dom_tools */ t_tools_IMPORT   (log_this);   /* 22 */
-/*....................................................*/
+/*..........................................................................................*/
+/*....................................... dom_data     EXPORT-ONLY                    /* 05 */
+/*..........................................................................................*/
+if(typeof dom_log     != "undefined")     dom_log     .t_log_IMPORT     (log_this);   /* 06 */
+if(typeof dom_util    != "undefined")     dom_util    .t_util_IMPORT    (log_this);   /* 07 */
+if(typeof dom_details != "undefined")     dom_details .t_details_IMPORT (log_this);   /* 08 */
+if(typeof dom_i18n    != "undefined")     dom_i18n    .t_i18n_IMPORT    (log_this);   /* 09 */
+if(typeof dom_prop    != "undefined")     dom_prop    .t_prop_IMPORT    (log_this);   /* 10 */
+/*..........................................................................................*/
+if(typeof dom_store   != "undefined")     dom_store   .t_store_IMPORT   (log_this);   /* 11 */
+if(typeof dom_fly     != "undefined")     dom_fly     .t_fly_IMPORT     (log_this);   /* 12 */
+if(typeof dom_wording != "undefined")     dom_wording .t_wording_IMPORT (log_this);   /* 13 */
+if(typeof dom_select  != "undefined")     dom_select  .t_select_IMPORT  (log_this);   /* 14 */
+if(typeof dom_wot     != "undefined")     dom_wot     .t_wot_IMPORT     (log_this);   /* 14 */
+if(typeof dom_slot    != "undefined")     dom_slot    .t_slot_IMPORT    (log_this);   /* 15 */
+/*..........................................................................................*/
+if(typeof dom_hide    != "undefined")     dom_hide    .t_hide_IMPORT    (log_this);   /* 16 */
+if(typeof dom_view    != "undefined")     dom_view    .t_view_IMPORT    (log_this);   /* 17 */
+if(typeof dom_sticky  != "undefined")     dom_sticky  .t_sticky_IMPORT  (log_this);   /* 18 */
+if(typeof dom_seek    != "undefined")     dom_seek    .t_seek_IMPORT    (log_this);   /* 19 */
+if(typeof dom_share   != "undefined")     dom_share   .t_share_IMPORT   (log_this);   /* 20 */
+/*..........................................................................................*/
+if(typeof dom_grid    != "undefined")     dom_grid    .t_grid_IMPORT    (log_this);   /* 21 */
+if(typeof dom_gutter  != "undefined")     dom_gutter  .t_gutter_IMPORT  (log_this);   /* 22 */
+if(typeof dom_ipc     != "undefined")     dom_ipc     .t_ipc_IMPORT     (log_this);   /* 23 */
+/*..................................... ✔ dom_tools */ t_tools_IMPORT   (log_this);   /* 24 */
+/*..........................................................................................*/
 /* [globals] DEBUG {{{*/
     if( DOM_TOOLS_GLOBALS )
     {
@@ -325,9 +385,10 @@ t_log.log_IMPORT();
 };
 /*}}}*/
 /*}}}*/
-
-/* CONST */
-/*{{{*/
+/* CONST {{{*/
+let   DOM_TOOLS_LOG         = false;
+let   DOM_TOOLS_TAG         = false;
+let   DOM_TOOLS_GLOBALS     = false;  /* .. window.t_tools = dom_tools ... */
 /* CSS {{{*/
 /* FGX {{{*/
 const CSS_FG0                   = "fg0";
@@ -365,6 +426,7 @@ const CSS_PAUSE_ANIMATION       = "pause_animation";
 const CSS_ON_COOLDOWN           = "on_cooldown";
 
 const CSS_REMOVING              = "removing";
+
 /*}}}*/
 /* PLAYGROUND {{{*/
 const CSS_COLLAPSED             = "collapsed";
@@ -402,7 +464,6 @@ const TOUCH_OFFSET_FACTOR       = 1.5;
 /* PANEL CHILD TOOL {{{*/
 const CSS_TOOLBAG_BUTTON        = "toolbag_button";
 const CSS_EMBEDDED_DOC_TOOL     = "embedded_doc_tool";
-const CSS_BUTTONS_POD           = "buttons_pod";
 
 const CSS_GRID_BAG              = "grid_bag";
 const CSS_HAS_MOVING_CHILD      = "has_moving_child";
@@ -438,20 +499,19 @@ const CSS_BACK                  = "back";
 /*}}}*/
 /* CONTAINERS {{{*/
 
+const CSS_CONTAINER_SELECTED    = "container_selected";
+const CSS_BUTTONS_POD           = "buttons_pod";
 const CSS_BUTTON_COPY           = "button_copy";
 const CSS_BUTTON_MAGNIFY        = "button_magnify";
 const CSS_BUTTON_MONO           = "button_mono";
 const CSS_BUTTON_MONOSPACE      = "button_monospace";
 const CSS_BUTTON_NEXT           = "button_next";
 const CSS_BUTTON_PREV           = "button_prev";
-const CSS_CONTAINER_SELECTED    = "container_selected";
 
 /*}}}*/
 /*}}}*/
 /*}}}*/
-
-/* TOOL_SET */
-/*{{{*/
+/* TOOL_SET {{{*/
 /* PANEL ID {{{
 
      dev_log_map
@@ -503,8 +563,11 @@ const CSS_CONTAINER_SELECTED    = "container_selected";
         anchor_freeze
         containers_hi
         overflow_visi
+        details_close
+        details_open
+        details_radio
         scroll_smooth
-        tools_extras
+        tools_tier2
 
     headsup_bw
         headsup_bw_value
@@ -522,6 +585,7 @@ const CSS_CONTAINER_SELECTED    = "container_selected";
         mask_or_hide
         t_data.EDIT_OR_STAGE
         t_hide.dom_hide1_reset
+        t_hide.dom_hide1_undo
         deny_or_allow
 
     headsup_w
@@ -607,7 +671,7 @@ const FUNCTIONS_TO_IGNORE
          , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone2_show_misclick"   } /* no click    feedback */
          , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone3_show_dblclick"   } /* no click    feedback */
          , { dom_load_id : "dom_hide" , id : "onDown_7_DOC_SELECT_OR_SEEK" } /* no document  wording */
-         , { dom_load_id : "dom_hide" , id : "onUp_6_DOC_CB_CLICK_WORD"    } /* no document  wording */
+         , { dom_load_id : "dom_hide" , id : "onUp_7_DOC_CB_CLICK_WORD"    } /* no document  wording */
          , { dom_load_id : "dom_hide" , id : "onUp_2_SLOT_CONTAINER_CB"    } /* no document  wording */
          , { dom_load_id : "dom_hide" , id : "t_store_patterns_csv"        } /* no document  wording */
 
@@ -684,6 +748,115 @@ if(log_this) {
 /*}}}*/
     cached_entry_selected_item_id[item_id] = feature_to_ignore;
     return !feature_to_ignore;
+};
+/*}}}*/
+
+/*_ t_set_tools_tiers {{{*/
+let t_set_tools_tiers = function()
+{
+/*{{{
+log("t_set_tools_tiers");
+}}}*/
+    for(let index=0; index < TOOL_SET.length; ++index)
+    {
+        let    entry = TOOL_SET[index];
+
+        if(    (entry.panel_id == "headsup"  )
+           ||  (entry.panel_id == "headsup_w")
+          )
+            entry.tier = 1;
+
+        else if(entry.panel_id == "pat_bag"  )
+            entry.tier = 2;
+    }
+};
+/*}}}*/
+/*➔ t_is_a_tools_id_tier {{{*/
+let t_is_a_tools_id_tier = function(id, tier)
+{
+    let    el  = t_get_tool        (id      );
+    return el && is_a_tools_el_tier(el, tier);
+};
+/*}}}*/
+/*_ is_a_tools_el_tier {{{*/
+let is_a_tools_el_tier =   function(el,tier)
+{
+    let result = false;
+
+    for(let index=0; index < TOOL_SET.length; ++index)
+    {
+        let entry = TOOL_SET[index];
+        if( entry.panel_id   == el.id) {
+            result  = (entry.tier <= tier);
+            break;
+        }
+    }
+
+/*{{{
+if(result) log("is_a_tools_el_tier("+el.id+"): ...return %c"+result,lbH+lfX[result ? 4:8])
+}}}*/
+    return result;
+};
+/*}}}*/
+/*_ t_activate_tools_tier1 {{{*/
+let t_activate_tools_tier1 = function(_caller)
+{
+let log_this = LOG_MAP.T2_GRID;
+
+if(log_this) log("t_activate_tools_tier1 .. CALLED BY "+ _caller);
+
+    let some_panel_selected = false;
+    for(let index=0; index < TOOL_SET.length; ++index)
+    {
+        let entry       = TOOL_SET[index];
+        if( entry.tier == 1)
+        {
+            let panel = t_get_tool( entry.panel_id );
+            if(!t_tools_panel_is_selected( panel ))
+            {
+                t_tools_panel_select(panel, true);
+                some_panel_selected = true;
+            }
+        }
+    }
+    if(some_panel_selected)
+    {
+        t_tools_show(true); /* centered (210226) */
+
+        t_TOOL_SET_eval_wide_or_tall_panel();
+    }
+    return some_panel_selected;
+};
+/*}}}*/
+/*_ t_sync_tools_tier2 {{{*/
+let t_sync_tools_tier2 = function(_caller)
+{
+/*{{{*/
+    let caller = "t_sync_tools_tier2";
+let log_this = LOG_MAP.T2_GRID;
+
+    let tools_tier2 = prop.get( t_data.TOOLS_TIER2 );
+
+if(log_this) log("t_sync_tools_tier2: tools_tier2=["+tools_tier2+"] .. CALLED BY "+ _caller);
+/*}}}*/
+
+    for(let index=0; index < TOOL_SET.length; ++index)
+    {
+        let          entry = TOOL_SET[index];
+        let             el = t_get_tool(entry.panel_id);
+        let tools_selected = t_tools_panel_is_selected(el);
+        let  tier_selected = tools_tier2 && (entry.tier <= 2);
+        let     is_showing = tools_selected || tier_selected;
+
+        set_el_class_on_off(el, t_data.CSS_HIDDEN, !is_showing);
+/*
+//log("t_sync_tools_tier2: %c el.id=["+el.id+"]", lbH+lf8) FIXME .. do not hide fly_div here !
+*/
+    }
+
+    t_sync_layout(caller);
+
+    t_TOOL_SET_eval_wide_or_tall_panel();
 };
 /*}}}*/
 /*}}}*/
@@ -765,7 +938,7 @@ if( log_this) logBIG("...some_panel_selected=["+some_panel_selected+"]");
 
     t_get_selected_count( caller );
     /*}}}*/
-    t_cache_init_by(caller);
+    t_cache_armed_by(caller);
 };
 /*}}}*/
 /*_ t_TOOL_SET_set_class_state {{{*/
@@ -785,7 +958,7 @@ if( log_this) log(caller);
     /*}}}*/
 /*_ t_TOOL_SET_eval_wide_or_tall_panel {{{*/
 /*{{{*/
-let            EVAL_WIDE_OR_TALL_DELAY    =  500;
+let            EVAL_WIDE_OR_TALL_DELAY    =  1000;
 
 let t_TOOL_SET_eval_wide_or_tall_timer;
 /*}}}*/
@@ -794,7 +967,11 @@ let t_TOOL_SET_eval_wide_or_tall_panel         = function(_caller)
     if(       t_TOOL_SET_eval_wide_or_tall_timer ) clearTimeout( t_TOOL_SET_eval_wide_or_tall_timer );
               t_TOOL_SET_eval_wide_or_tall_timer = null;
 
-    t_TOOL_SET_eval_wide_or_tall_timer =   setTimeout( t_TOOL_SET_eval_wide_or_tall_panel_handler, EVAL_WIDE_OR_TALL_DELAY);
+    let delay = t_just_loaded("FIRST TOOLS LAYOUT WIDE OR TALL", EVAL_WIDE_OR_TALL_DELAY)
+        ? 3 * EVAL_WIDE_OR_TALL_DELAY
+        :     EVAL_WIDE_OR_TALL_DELAY;
+
+    t_TOOL_SET_eval_wide_or_tall_timer =   setTimeout( t_TOOL_SET_eval_wide_or_tall_panel_handler, delay);
 };
 
 let t_TOOL_SET_eval_wide_or_tall_panel_handler = function()
@@ -808,8 +985,10 @@ t_fly.t_fly_tooltip_add("t_TOOL_SET_eval_wide_or_tall_panel_handler")//TODO PIVO
 }}}*/
     t_TOOL_SET_eval_wide_or_tall_timer = null;
 
-    for(const entry of TOOL_SET) {
+    for(const entry of TOOL_SET)
+    {
         let panel = t_get_tool(  entry.panel_id );
+
         if( t_tools_panel_is_selected( panel) )
             t_eval_wide_or_tall_panel( panel );
     }
@@ -837,13 +1016,17 @@ let log_this = LOG_MAP.T1_DOM_LOAD;
 if(log_this) log(caller, "info");
 /*}}}*/
 
+    /* USER_LANG */
+    dom_i18n.i18n_set_args({ lang: t_store.t_store_getItem(t_data.USER_LANG) , caller });
 
     load0_get_LOADER_ID();
 
     load_MS = new Date().getTime();
 
-    if( load1_SHADOW() ) {
-        log("%c*** TOOLS SHADOWING INCOMPLETE *** %c"+ caller +" INTERRUTED", lbb+lbH+lf3, lbb+lbH+lf2);
+    let interrupted_on_id  = load1_SHADOW();
+    if( interrupted_on_id != "") {
+        log("%c*** TOOLS SHADOWING INCOMPLETE *** %c"+ caller +" INTERRUTED on %c id "+interrupted_on_id
+            ,lbb+lbH+lf3                         ,lbb+lbL+lf8                 ,lbb+lbR+lf2              );
         return;
     }
 
@@ -851,7 +1034,7 @@ if(log_this) log(caller, "info");
 
     load2_TOOLS();
     if(!hotspot) {
-        log("%c*** TOOLS LOADING INCOMPLETE *** %c"+   caller +" INTERRUTED", lbb+lbH+lf3, lbb+lbH+lf2);
+        log("%c*** TOOLS LOADING INCOMPLETE *** %c"+   caller +" INTERRUTED on !hotspot", lbb+lbH+lf3, lbb+lbH+lf2);
         return;
     }
 
@@ -861,9 +1044,18 @@ if(log_this) log(caller, "info");
 
     load6_DOM_TAGS();
 
-    if( prop.get( t_data.REMOVE_ADS ) ) t_util.t_REMOVE_ADS();
-    if( prop.get( t_data.SPLIT_WOT  ) ) t_select.t_SPLIT_WOT();
+    if( prop.get( t_data.REMOVE_ADS ) )
+    {
+        t_util.t_REMOVE_ADS(t_data.REMOVE_ADS);
+    }
+    if( prop.get( t_data.SPLIT_WOT  ) )
+    {
+        t_wot.t_WOT_SPLIT();
+
+    }
     /*........... t_data.LINES_WOT .... is only an option for splitted lines numbering */
+
+    t_details.details_load_open_state(); /* eslint-disable-line no-undef */
 
     load7_GRID();
 
@@ -886,10 +1078,12 @@ let  caller = "t_just_loaded";
     let      this_MS = new Date().getTime();
     let since_t_load = this_MS - load_MS;
     let  just_loaded = (since_t_load < delay);
-    if(  just_loaded && log_this)
-        log(caller+": %c"+action+" .. %c   just_loaded "+just_loaded+"%c since_t_load "+since_t_load+"ms %c delay "+delay+"ms"
-            ,         lb2            ,lbL+(just_loaded ? lf4 : lf8)  ,lbC+lf8                           ,lbR+lf9              );
 
+/*{{{*/
+if(log_this)
+    log(caller+": %c"+action+" .. %c   just_loaded "+just_loaded+"%c since_t_load "+since_t_load+"ms %c delay "+delay+"ms"
+        ,         lb2            ,lbL+(just_loaded ? lf4 : lf8)  ,lbC+lf8                           ,lbR+lf9              );
+/*}}}*/
     return just_loaded;
 };
 /*}}}*/
@@ -937,6 +1131,7 @@ let  caller = "t_reload";
 let log_this = LOG_MAP.T1_DOM_LOAD;
 
 if( log_this) log(caller);
+if( log_this) log_caller();
 /*}}}*/
 if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly(caller);
 
@@ -957,7 +1152,7 @@ let   caller = "load_listener("+event.type+")";
 let log_this = LOG_MAP.T1_DOM_LOAD;
 
 if( log_this) t_fly.t_log_event_status(caller, lbb+lf1);
-if( log_this) t_log.console_dir(event, "event");
+if( log_this) t_log.console_dir("event", event);
 /*}}}*/
     /* [since_t_load] .. the delay since [t_load] was called */ /*{{{*/
     let this_MS = new Date().getTime();
@@ -992,7 +1187,7 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
         all_csv     = t_util.csv_cat(all_csv, bak_csv);
         all_csv     = t_util.csv_cat(all_csv, alt_csv);
 
-        let case1_is_a_reload_request     = (requesting_tool_name    == "reload"                     )
+        let case1_is_a_reload_request     = (requesting_tool_name.includes("reload")                 )
         ||                                  (requesting_tool_name    == t_data.REMOVE_ADS            )
         ||                                  (requesting_tool_name    == t_data.SPLIT_WOT             )
         ||                                  (requesting_tool_name    == t_data.LINES_WOT             )  ;
@@ -1002,6 +1197,7 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
         let case5_user_is_wording         =                   prop.get( t_data.WORDING               )  ; /* WHILE WORKING WITH WORDS */
         let case6_export_tool_clicked     = (onDown_EL && (onDown_EL == t_get_tool("EXPORT"          )));
         let case7_remove_ads_tool_clicked = (onDown_EL && (onDown_EL == t_get_tool(t_data.REMOVE_ADS )));
+        let case8_remove_ads_tool_set     =                              prop.get( t_data.REMOVE_ADS )  ;
 /*{{{
         let user_is_tooling               =  dimm_mask_displayed(         ); // USER IS READING
         let user_is_editing_dom_hide      =  prop.get(t_data.EDIT_OR_STAGE); // EDIT MODE
@@ -1018,8 +1214,8 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
         && !case6_export_tool_clicked
         && !case7_remove_ads_tool_clicked
         &&  (     case2_just_loaded
-               || case4_has_some_csv
 /*{{{
+               || case4_has_some_csv
                || case3_anchor_freezed
                || case5_user_is_wording
                || user_is_tooling
@@ -1028,13 +1224,15 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
 }}}*/
            )
         ;
+        if(case8_remove_ads_tool_set) confirmation_required = true;
+
         let reason_why_not
-        =  confirmation_required        ? ""
-        : !frame_had_a_user_gesture     ? "NO USER GESTURE YET"
-        :  case1_is_a_reload_request    ? requesting_tool_name+" REQUEST"
-        :  case6_export_tool_clicked    ? "EXPORT REQUEST"
+        =  confirmation_required         ? ""
+        : !frame_had_a_user_gesture      ? "NO USER GESTURE YET"
+        :  case1_is_a_reload_request     ? requesting_tool_name+" REQUEST"
+        :  case6_export_tool_clicked     ? "EXPORT REQUEST"
         :  case7_remove_ads_tool_clicked ? "DOM CLEAN REQUEST"
-        :                                 "NOT JUST LOADED and ANCHOR NOT FREEZED and NOT t_data.WORDING";
+        :                                  "NOT JUST LOADED and ANCHOR NOT FREEZED and NOT t_data.WORDING";
 
 /*{{{*/
 if(log_this /*|| confirmation_required*/) {
@@ -1050,6 +1248,7 @@ if(log_this /*|| confirmation_required*/) {
                            , case5_user_is_wording
                            , case6_export_tool_clicked
                            , case7_remove_ads_tool_clicked
+                           , case8_remove_ads_tool_set
 /*{{{
                            , user_is_tooling
                            , user_is_editing_dom_hide
@@ -1177,19 +1376,20 @@ let log_this = DOM_TOOLS_LOG || LOG_MAP.T1_DOM_LOAD;
 if( log_this) log("%c"+t_data.SD1+"%c "+caller, lbS+lf1, lbH+lf1);
 /*}}}*/
     /* [shadow_host] [shadow_root] {{{*/
-    shadow_host     = document.createElement("DIV");
-    shadow_host.id  = "shadow_host";
+    shadow_host                         = document.createElement("DIV");
+    shadow_host.id                      = "shadow_host";
+    shadow_host.style.fontSize          = "initial";
     document.documentElement.appendChild( shadow_host );
 
     if( shadow_host.attachShadow ) {
+        shadow_host.style.zIndex        = t_data.ZINDEX_SHADOW_HOST;
 /*{{{
-        shadow_host.style.zIndex   = t_data.ZINDEX_SHADOW_HOST;
+        shadow_host.style.zIndex        = parseInt((t_util.t_get_divs_style_z_index_max()+1000) / 1000) * 1000;
 }}}*/
-        shadow_host.style.zIndex   = parseInt((t_util.t_get_divs_style_z_index_max()+1000) / 1000) * 1000;
-if( log_this || DOM_TOOLS_TAG) log("%c shadow_host.style.zIndex=["+shadow_host.style.zIndex+"]", lbH+lf1);
-        shadow_host.style.fontSize = t_data.FONT_SIZE_SHADOW_HOST;
+if( log_this || DOM_TOOLS_TAG)    log("%c shadow_host.style.zIndex=["+shadow_host.style.zIndex+"]", lbH+lf1);
+        shadow_host.style.fontSize      = t_data.FONT_SIZE_SHADOW_HOST;
 
-        shadow_root    = shadow_host.attachShadow({mode: "open"});
+        shadow_root =                     shadow_host.attachShadow({mode: "open"});
     }
     else {
         logBIG(caller+": shadow_host.attachShadow is missing");
@@ -1200,6 +1400,18 @@ if( log_this || DOM_TOOLS_TAG) log("%c shadow_host.style.zIndex=["+shadow_host.s
 
     shadow_root.id     = "shadow_root";
     /*}}}*/
+    /* [shadow_root] HEAD charset utf-8 .. (200624: relying on script charset="utf-8" attribute instead) {{{*/
+/*{{{
+    let el = document.createElement("HEAD");
+
+    el.innerHTML
+        = "<head>"
+        + " <meta http-equiv='content-type' content='text/html' charset='utf-8'>"
+        + "</head>"
+
+    shadow_root.appendChild( el );
+}}}*/
+    /*}}}*/
     /* load1_SHADOW_host [CSS HTML JS] {{{*/
 
     let  id;
@@ -1209,14 +1421,18 @@ if( log_this || DOM_TOOLS_TAG) log("%c shadow_host.style.zIndex=["+shadow_host.s
 
     id = "dom_hide_js"   ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_select_js" ; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_wot_js"    ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_wording_js"; if( !load1_SHADOW_host(id) ) return id;
 
     id = "dom_data_js"   ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_log_js"    ; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_popup_js"  ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_prop_js"   ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_store_js"  ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_share_js"  ; if( !load1_SHADOW_host(id) ) return id;
     id = "dom_util_js"   ; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_details_js"; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_i18n_js"   ; if( !load1_SHADOW_host(id) ) return id;
 
     if( load1_SHADOW_host("dom_grid_html", true) ) /* OPTIONAL */
     {
@@ -1241,7 +1457,10 @@ if( log_this) log(caller+"%c"+id, lbH+lf1);
 
     let el = document.querySelector("#"+id);
     if(!el ) {
-        if(!optional) log("%c"+caller+" %c"+id+"%c ELEMENT IS MISSING" , lbH+lf3, lbL+lf2, lbR+lf2);
+        if(!optional) {
+            log("%c"+caller+" %c"+id+"%c ELEMENT IS MISSING" , lbH+lf3, lbL+lf2, lbR+lf2);
+            log_caller();
+        }
         return false;
     }
 
@@ -1249,7 +1468,7 @@ if( log_this) log(caller+"%c"+id, lbH+lf1);
     if(el.proxiedNode)
     {
 if(log_this) log("load1_SHADOW_host: using proxiedNode ["+el.proxiedNode.type+"]:");
-if(log_this) t_log.console_dir(el,"el");
+if(log_this) t_log.console_dir("el",el);
         el = el.proxiedNode;
     }
     /*}}}*/
@@ -1306,6 +1525,15 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id = "headsup"          ;             headsup = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) ) TOOL_panels.push( headsup );
     id = "thumb_p"          ;       toolbar_thumb = t_get_tool(id);
 
+    id =  t_data.USER_LANG         ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    {
+        let el = prop.get_EL(t_data.USER_LANG);
+        if( el ) {
+            let     lang = dom_i18n.i18n_get_user_lang();
+            el.title     = i18n_get(dom_i18n.USER_LANG, dom_i18n.USER_LANG);
+            el.className = "flag bg_"+lang;
+        }
+    }
     id =  t_data.ANCHOR_FREEZE     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.THEME_DARK        ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.WORDING           ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
@@ -1313,9 +1541,14 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id =  t_data.CONTAINERS_HI     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
 
     id =  t_data.OVERFLOW_VISI     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+
+    id =  t_data.DETAILS_CLOSE     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    id =  t_data.DETAILS_OPEN      ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    id =  t_data.DETAILS_RADIO     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+
     id =  t_data.SCROLL_SMOOTH     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
 
-    id =  t_data.TOOLS_EXTRAS      ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    id =  t_data.TOOLS_TIER2       ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
 
     id =  t_data.SHOW_SEEKZONE     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.PIN_SEEKSPOT      ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
@@ -1328,6 +1561,7 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id =  t_data.DENY_OR_ALLOW     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.EDIT_OR_STAGE     ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.DOM_HIDE1_RESET   ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    id =  t_data.DOM_HIDE1_UNDO    ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.MASK_OR_HIDE      ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.SITE_OR_PAGE      ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
 
@@ -1343,8 +1577,8 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id = t_data.WORDS_RECYCLE    ; if(            tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id = t_data.WORDS_BAG_ROT    ; if(            tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
 
-    for(const id of get_words_drop_affix_array())
-        if(                                  tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    for(const iD of get_words_drop_affix_array())
+        if(                                       tool = t_get_tool(iD)) load2_TOOLS_prop_set_EL(iD, tool);
 
     /*}}}*/
     /* PANEL [pat_bag] {{{*/
@@ -1366,12 +1600,12 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id = "headsup_fs"       ;          headsup_fs = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) ) TOOL_panels.push( headsup_fs );
 
     /*}}}*/
-    /* PANEL [headsup_bz] {{{*/
-    id = "headsup_bz"       ;          headsup_bz = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) ) TOOL_panels.push( headsup_bz );
-
-    /*}}}*/
     /* PANEL [headsup_bw] {{{*/
     id = "headsup_bw"       ;          headsup_bw = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) )  TOOL_panels.push( headsup_bw );
+
+    /*}}}*/
+    /* PANEL [headsup_bz] {{{*/
+    id = "headsup_bz"       ;          headsup_bz = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) ) TOOL_panels.push( headsup_bz );
 
     /*}}}*/
     /* ROW #3 */
@@ -1452,6 +1686,7 @@ if( log_this) log("%c"+t_data.SD3+"%c "+caller, lbS+lf3, lbH+lf3);
         t_clone_1_DOC_SLIDER(panel, t_data.MASK_OR_HIDE   , "bg3");
         t_clone_1_DOC_SLIDER(panel, t_data.EDIT_OR_STAGE  , "bg2");
         t_clone_1_DOC_SLIDER(panel, t_data.DOM_HIDE1_RESET, "bg1");
+        t_clone_1_DOC_SLIDER(panel, t_data.DOM_HIDE1_UNDO , "bg1");
         t_clone_1_DOC_SLIDER(panel, t_data.DENY_OR_ALLOW  , "bg0");
     }
     /*}}}*/
@@ -1464,8 +1699,8 @@ if( log_this) log("%c"+t_data.SD3+"%c "+caller, lbS+lf3, lbH+lf3);
         id = "dom_hide1_collect_nodes_2"      ; label = "collect_nodes_2"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3","input",label); if(el) prop.set_EL(id, el);
         id = "dom_hide1_collect_nodes_3"      ; label = "collect_nodes_3"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4","input",label); if(el) prop.set_EL(id, el);
         id = "dom_hide1_collect_nodes_4"      ; label = "collect_nodes_4"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5","input",label); if(el) prop.set_EL(id, el);
-        id = "t_hide.dom_hide1_container_clicked"    ; label = "container_clicked"    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1","input",label); if(el) prop.set_EL(id, el);
-        id = "t_hide.dom_hide4_scroll_to_last_hidden"; label = "scroll to last hidden"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1","input",label); if(el) prop.set_EL(id, el);
+        id = "dom_hide1_container_clicked"    ; label = "container_clicked"    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1","input",label); if(el) prop.set_EL(id, el);
+        id = "dom_hide4_scroll_to_last_hidden"; label = "scroll to last hidden"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1","input",label); if(el) prop.set_EL(id, el);
     }
     /*}}}*/
     /* [dom_hide_store_panel] {{{*/
@@ -1473,10 +1708,10 @@ if( log_this) log("%c"+t_data.SD3+"%c "+caller, lbS+lf3, lbH+lf3);
     {
         let id, label, el;
         if(!panel.innerHTML) panel.innerHTML = "<em class='cc3'>HIDE STORE</em>";
-        id = "t_hide.dom_hide2_store_save"   ; label = "store_save"   ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2","input",label); if(el) prop.set_EL(id, el);
-        id = "t_hide.dom_hide1_reset"        ; label = "store_reset"  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3","input",label); if(el) prop.set_EL(id, el);
-        id = "t_hide.dom_hide2_store_reload" ; label = "store_reload" ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4","input",label); if(el) prop.set_EL(id, el);
-        id = "t_hide.dom_hide5_start_history"; label = "start_history"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6","input",label); if(el) prop.set_EL(id, el);
+        id = "dom_hide2_store_save"   ;         label = "store_save"   ;         el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2","input",label); if(el) prop.set_EL(id, el);
+        id = "dom_hide1_reset"        ;         label = "store_reset"  ;         el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3","input",label); if(el) prop.set_EL(id, el);
+        id = "dom_hide2_store_reload" ;         label = "store_reload" ;         el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4","input",label); if(el) prop.set_EL(id, el);
+        id = "dom_hide5_history_start";         label = "start_history";         el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6","input",label); if(el) prop.set_EL(id, el);
     }
     /*}}}*/
     /* [dom_sticky_panel] {{{*/
@@ -1485,7 +1720,7 @@ if( log_this) log("%c"+t_data.SD3+"%c "+caller, lbS+lf3, lbH+lf3);
         let id, label, el;
         if(!panel.innerHTML) panel.innerHTML = "<em class='cc3'>sticky</em>";
 
-        id = "t_sticky.t_sticky_reorder"  ; label = "REORDER"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2","input",label); if(el) prop.set_EL(id, el);
+        id = "t_sticky_reorder"  ; label = "REORDER"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2","input",label); if(el) prop.set_EL(id, el);
     }
     /*}}}*/
 
@@ -1510,53 +1745,54 @@ if( log_this) log("FOUND NO DOC TOOL CLONES PANEL [playground_clones_panel]");
         return;
     }
 
-if(log_this) t_log.console_dir(playground_clones_panel, caller+": FOUND DOC TOOL CLONES PANEL");
+if(log_this) t_log.console_dir(caller+": FOUND DOC TOOL CLONES PANEL", playground_clones_panel);
     /*}}}*/
     /* add control buttons {{{*/
     let panel = playground_clones_panel;
     let id, el;
-    id = "t_sticky.t_sticky_reorder"     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
-    id = "SEEK"                 ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "em"  );
-    id = t_seek.CSS_SEEK2_ONSLOTEL     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
-    id = t_seek.CSS_SEEK1_ONRESUME     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
-    id = t_seek.CSS_SEEK4_ONJUMPEL     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
-    id = t_seek.CSS_SEEK5_ONSEEKER     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
-    id = t_seek.CSS_SEEK6_ONSTICKY     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = "t_sticky_reorder"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = "SEEK"                     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "em"  );
+    id = t_seek.CSS_SEEK2_ONSLOTEL  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = t_seek.CSS_SEEK1_ONRESUME  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = t_seek.CSS_SEEK4_ONJUMPEL  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = t_seek.CSS_SEEK5_ONSEEKER  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = t_seek.CSS_SEEK6_ONSTICKY  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
 
-    id = "HIDE"                 ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "em"   );
-    id = "container_clicked"    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
-    id = "reset"                ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
-    id = "scroll_to_last_hidden"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
+    id = "HIDE"                     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "em"   );
+    id = "container_clicked"        ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
+    id = "reset"                    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
+    id = "scroll_to_last_hidden"    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
 
-    id = "COLLECT"              ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "em"   );
-    id = "collect_nodes_1"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "input"); if(el) prop.set_EL(id, el);
-    id = "collect_nodes_2"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "input"); if(el) prop.set_EL(id, el);
-    id = "collect_nodes_3"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "input"); if(el) prop.set_EL(id, el);
-    id = "collect_nodes_4"      ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
+    id = "COLLECT"                  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "em"   );
+    id = "collect_nodes_1"          ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "input"); if(el) prop.set_EL(id, el);
+    id = "collect_nodes_2"          ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "input"); if(el) prop.set_EL(id, el);
+    id = "collect_nodes_3"          ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg3", "input"); if(el) prop.set_EL(id, el);
+    id = "collect_nodes_4"          ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg2", "input"); if(el) prop.set_EL(id, el);
 
-    id = "STORE"                ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "em"   );
-    id = "store_reload"         ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "input"); if(el) prop.set_EL(id, el);
-    id = "store_save"           ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "input"); if(el) prop.set_EL(id, el);
-    id = "start_history"        ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "input"); if(el) prop.set_EL(id, el);
+    id = "STORE"                    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "em"   );
+    id = "store_reload"             ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "input"); if(el) prop.set_EL(id, el);
+    id = "store_save"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "input"); if(el) prop.set_EL(id, el);
+    id = "start_history"            ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg4", "input"); if(el) prop.set_EL(id, el);
 
-    id = "MISC1"                ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "em"   );
-    id = "RELOAD"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "EXPORT"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "IMPORT"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "show_seekzone"        ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "pin_seekspot"         ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "log_seekspot"         ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "MISC1"                    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "em"   );
+    id = "RELOAD"                   ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "EXPORT"                   ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "IMPORT"                   ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
 
-    id = "remove_ads"           ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "split_wot"            ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
-    id = "lines_wot"            ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "show_seekzone"            ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "pin_seekspot"             ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "log_seekspot"             ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
 
-    id = "MISC2"                ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "em"   );
-    id = "theme_dark"           ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "input"); if(el) prop.set_EL(id, el);
-    id = "pat_sort"             ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "input"); if(el) prop.set_EL(id, el);
-    id = "t_log.console_clear"        ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "input"); if(el) prop.set_EL(id, el);
+    id = "remove_ads"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "split_wot"                ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
+    id = "lines_wot"                ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg5", "input"); if(el) prop.set_EL(id, el);
 
-    id = "PROPERTIES"           ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg7", "em"   );
+    id = "MISC2"                    ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "em"   );
+    id = "theme_dark"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "input"); if(el) prop.set_EL(id, el);
+    id = "pat_sort"                 ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "input"); if(el) prop.set_EL(id, el);
+    id = "console_clear"            ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg6", "input"); if(el) prop.set_EL(id, el);
+
+    id = "PROPERTIES"               ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg7", "em"   );
 
     /*}}}*/
 };
@@ -1574,24 +1810,29 @@ if( log_this) log("%c"+t_data.SD4+"%c "+caller, lbS+lf4, lbH+lf4);
     /* headsup {{{*/
     let el;
 
-    if( el = toolbar_thumb                 ) { el.style.position   = "absolute"; el.style.left = " 20px"; el.style.top = "  5px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDING         )) { el.style.position   = "absolute"; el.style.left = "  5px"; el.style.top = " 72px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.ANCHOR_FREEZE   )) { el.style.position   = "absolute"; el.style.left = " 30px"; el.style.top = " 20px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.CONTAINERS_HI   )) { el.style.position   = "absolute"; el.style.left = " 85px"; el.style.top = " 33px"; el.style.transform = "" /*"initial"*/; }
+    if( el = toolbar_thumb                        ) { el.style.position   = "absolute"; el.style.left = " 7%"; el.style.top    = "  2%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.USER_LANG       )) { el.style.position   = "absolute"; el.style.left = "45%"; el.style.top    = " 36%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.ANCHOR_FREEZE   )) { el.style.position   = "absolute"; el.style.left = " 0%"; el.style.top    = " 19%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.WORDING         )) { el.style.position   = "absolute"; el.style.left = " 0%"; el.style.top    = " 47%"; el.style.transform = ""; }
 
-    if( el = prop.get_EL( t_data.THEME_DARK      )) { el.style.position   = "absolute"; el.style.left = "135px"; el.style.top = " 15px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.TOOLS_EXTRAS    )) { el.style.position   = "absolute"; el.style.left = "155px"; el.style.top = " 55px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.CONTAINERS_HI   )) { el.style.position   = "absolute"; el.style.left = "28%"; el.style.top    = "  0%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.THEME_DARK      )) { el.style.position   = "absolute"; el.style.left = "42%"; el.style.top    = "  0%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.TOOLS_TIER2     )) { el.style.position   = "absolute"; el.style.left = "85%"; el.style.top    = " 65%"; el.style.transform = ""; }
 
-    if( el = prop.get_EL( t_data.REMOVE_ADS      )) { el.style.position   = "absolute"; el.style.left = "145px"; el.style.top = "115px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.SPLIT_WOT       )) { el.style.position   = "absolute"; el.style.left = "180px"; el.style.top = "100px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.LINES_WOT       )) { el.style.position   = "absolute"; el.style.left = "210px"; el.style.top = "115px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.REMOVE_ADS      )) { el.style.position   = "absolute"; el.style.left = "52%"; el.style.bottom = "  0%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.SPLIT_WOT       )) { el.style.position   = "absolute"; el.style.left = "62%"; el.style.bottom = "  0%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.LINES_WOT       )) { el.style.position   = "absolute"; el.style.left = "73%"; el.style.bottom = "  0%"; el.style.transform = ""; }
 
-    if( el = prop.get_EL( t_data.SCROLL_SMOOTH   )) { el.style.position   = "absolute"; el.style.left = "110px"; el.style.top = " 90px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.OVERFLOW_VISI   )) { el.style.position   = "absolute"; el.style.left = " 60px"; el.style.top = " 85px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.SCROLL_SMOOTH   )) { el.style.position   = "absolute"; el.style.left = "36%"; el.style.bottom = "  0%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.OVERFLOW_VISI   )) { el.style.position   = "absolute"; el.style.left = "18%"; el.style.bottom = "  0%"; el.style.transform = ""; }
 
-    if( el = prop.get_EL( t_data.PIN_SEEKSPOT    )) { el.style.position   = "absolute"; el.style.left = "190px"; el.style.top = "  5px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.SHOW_SEEKZONE   )) { el.style.position   = "absolute"; el.style.left = "210px"; el.style.top = " 45px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.LOG_SEEKSPOT    )) { el.style.position   = "absolute"; el.style.left = "230px"; el.style.top = " 76px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.DETAILS_CLOSE   )) { el.style.position   = "absolute"; el.style.left = "60%"; el.style.top    = "  0%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.DETAILS_OPEN    )) { el.style.position   = "absolute"; el.style.left = "60%"; el.style.top    = " 23%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.DETAILS_RADIO   )) { el.style.position   = "absolute"; el.style.left = "74%"; el.style.top    = " 12%"; el.style.transform = ""; }
+
+    if( el = prop.get_EL( t_data.PIN_SEEKSPOT    )) { el.style.position   = "absolute"; el.style.left = "70%"; el.style.top    = "  5%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.SHOW_SEEKZONE   )) { el.style.position   = "absolute"; el.style.left = "70%"; el.style.top    = " 30%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.LOG_SEEKSPOT    )) { el.style.position   = "absolute"; el.style.left = "70%"; el.style.top    = " 50%"; el.style.transform = ""; }
 
     /*}}}*/
     /* headsup_w {{{*/
@@ -1600,7 +1841,7 @@ if( log_this) log("%c"+t_data.SD4+"%c "+caller, lbS+lf4, lbH+lf4);
     if( el = prop.get_EL( t_data.WORDS_HEAD_TAIL )) { el.style.position   = "absolute"; el.style.left = "100px"; el.style.top = " 52px"; el.style.transform = "" /*"initial"*/; }
     if( el = prop.get_EL( t_data.WORDS_OPCYCLE   )) { el.style.position   = "absolute"; el.style.left =  "55px"; el.style.top = " 85px"; el.style.transform = "" /*"initial"*/; }
     if( el = prop.get_EL( t_data.WORDS_RECYCLE   )) { el.style.position   = "absolute"; el.style.left = "100px"; el.style.top = "100px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDS_BAG_ROT   )) { el.style.position   = "absolute"; el.style.left =  "10px"; el.style.top = "127px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_BAG_ROT   )) { el.style.position   = "absolute"; el.style.left =  "10px"; el.style.top = "125px"; el.style.transform = "" /*"initial"*/; }
 
     let    top =  48; /* MAGIC NUMBER */
     let   left = 155; /* MAGIC NUMBER */
@@ -1622,10 +1863,11 @@ if( log_this) log("%c"+t_data.SD4+"%c "+caller, lbS+lf4, lbH+lf4);
     if( el = prop.get_EL( t_data.TOOLS_SCROLL    )) { el.style.position   = "absolute"; el.style.left =  "80px"; el.style.top =   "5px"; }
 
     if( el = prop.get_EL( t_data.SITE_OR_PAGE    )) { el.style.position   = "absolute"; el.style.left =   "5px"; el.style.top =  "50px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.MASK_OR_HIDE    )) { el.style.position   = "absolute"; el.style.left =  "45px"; el.style.top =  "50px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.EDIT_OR_STAGE   )) { el.style.position   = "absolute"; el.style.left =  "85px"; el.style.top =  "50px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.DOM_HIDE1_RESET )) { el.style.position   = "absolute"; el.style.left = "125px"; el.style.top =  "40px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.DENY_OR_ALLOW   )) { el.style.position   = "absolute"; el.style.left = "120px"; el.style.top =  "75px"; el.style.transform = "scale(0.7)"    ; }
+    if( el = prop.get_EL( t_data.MASK_OR_HIDE    )) { el.style.position   = "absolute"; el.style.left =  "43px"; el.style.top =  "73px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.EDIT_OR_STAGE   )) { el.style.position   = "absolute"; el.style.left =  "80px"; el.style.top =  "50px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.DOM_HIDE1_RESET )) { el.style.position   = "absolute"; el.style.left = "125px"; el.style.top =  "35px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.DOM_HIDE1_UNDO  )) { el.style.position   = "absolute"; el.style.left = "110px"; el.style.top =  "85px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.DENY_OR_ALLOW   )) { el.style.position   = "absolute"; el.style.left = "135px"; el.style.top =  "80px"; el.style.transform = "scale(0.7)"    ; }
 
     /*}}}*/
 };
@@ -1649,24 +1891,27 @@ if( log_this) log("%c"+t_data.SD5+"%c "+caller, lbS+lf5, lbH+lf5);
 /*}}}*/
     /* LOAD STORED USER-SETTINGS {{{*/
 
-    let id, state;
+    let id, state, value;
 
+    id = t_data.USER_LANG            ; value =  t_store.t_store_getItem(id)           ; prop.set(id, value);
     id = t_data.ANCHOR_FREEZE        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.CONTAINERS_HI        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.FLY_DIV_MAGNIFIED    ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.LOG_SEEKSPOT         ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
 
     id = t_data.REMOVE_ADS           ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state, t_REMOVE_ADS_changed);
-    id = t_data.SPLIT_WOT            ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state, t_SPLIT_WOT_changed);
+    id = t_data.SPLIT_WOT            ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state, t_WOT_SPLIT_changed);
     id = t_data.LINES_WOT            ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state, t_LINES_WOT_changed);
 
     id = t_data.OVERFLOW_VISI        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
+    id = t_data.DETAILS_RADIO        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
+
     id = t_data.PIN_SEEKSPOT         ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state, t_PIN_SEEKSPOT_changed);
     id = t_data.PIVOT_MAGNIFIED      ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.SCROLL_SMOOTH        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.SHOW_SEEKZONE        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state, t_SHOW_SEEKZONE_changed);
     id = t_data.THEME_DARK           ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
-    id = t_data.TOOLS_EXTRAS         ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
+    id = t_data.TOOLS_TIER2          ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.TOOLS_SCROLL         ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.TOOLS_TRAP           ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
 /*{{{
@@ -1685,6 +1930,7 @@ if( log_this) log("%c"+t_data.SD5+"%c "+caller, lbS+lf5, lbH+lf5);
     prop.init(  t_data.MASK_OR_HIDE   , false, t_MASK_OR_HIDE_changed   );
     prop.init(  t_data.EDIT_OR_STAGE  , false, t_EDIT_OR_STAGE_changed  );
     prop.init(  t_data.DOM_HIDE1_RESET, false, t_DOM_HIDE1_RESET_changed);
+    prop.init(  t_data.DOM_HIDE1_UNDO , false, t_DOM_HIDE1_UNDO_changed );
 /*{{{
     prop.init(  t_data.DENY_OR_ALLOW  , false, load5_STORAGE_log    );
 }}}*/
@@ -1734,7 +1980,7 @@ logBIG("TODO dom_tools: load5_STORAGE .. hijacked button [deny_or_allow] .. CB s
     /* transcript1 transcript2 {{{*/
     if(transcript1)
     {
-        let panel = transcript1;
+        panel     = transcript1;
         let key   = panel.id +"_pinned";
         let attr  = prop.set(key, t_store.t_store_getBool(key));
         if(!attr.value)
@@ -1748,7 +1994,7 @@ logBIG("TODO dom_tools: load5_STORAGE .. hijacked button [deny_or_allow] .. CB s
     }
     if(transcript2)
     {
-        let panel = transcript2;
+        panel     = transcript2;
         let key   = panel.id +"_pinned";
         let attr  = prop.set(key, t_store.t_store_getBool(key));
         if(!attr.value)
@@ -1766,7 +2012,7 @@ logBIG("TODO dom_tools: load5_STORAGE .. hijacked button [deny_or_allow] .. CB s
     for(const [index , panel] of TOOL_panels.entries())
 }}}*/
     for(let index=0; index < TOOL_panels.length; ++index) {
-        let          panel = TOOL_panels[          index];
+        panel              = TOOL_panels[          index];
 /*{{{
 log("%c panel=["+get_n_lbl(panel)+"]", lbH+lf8)
 }}}*/
@@ -1779,7 +2025,7 @@ log("%c panel=["+get_n_lbl(panel)+"]", lbH+lf8)
         let panel_json = t_store.t_store_getItem(panel.id);
         if(!panel_json ) continue;
 
-        let value = JSON.parse( panel_json );
+        value = JSON.parse( panel_json );
 if( log_this) log_key_val(caller+" "+panel.id+" value", value, lf3);
         /*}}}*/
         /* [pinned] [xy] {{{*/
@@ -1982,34 +2228,39 @@ logBIG(caller+" *** t_get_tool('dom_load_tags') failed");
         + ("LOADER"+LF)
         + ((typeof DOM_LOAD_TAG       == "undefined") ? "<em class='"+m_class+"'>DOM_LOAD_TAG       *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOAD_TAG       ) +"'>"+ DOM_LOAD_TAG        +"</em>")
 
-        + ("DOCUMENT CSS"+LF)
-        + ((typeof DOM_HOST_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_HOST_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HOST_CSS_TAG   ) +"'>"+ DOM_HOST_CSS_TAG    +"</em>")
-
-        + ("HTML"+LF)
+        + ("HTML TOOLS"+LF)
         + ((typeof DOM_TOOLS_HTML_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_HTML_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_HTML_TAG ) +"'>"+ DOM_TOOLS_HTML_TAG  +"</em>")
         + ((typeof DOM_GRID_HTML_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_HTML_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_HTML_TAG  ) +"'>"+ DOM_GRID_HTML_TAG   +"</em>")
 
-        + ("CSS"+LF)
+        + ("CSS STYLE"+LF)
+        + ((typeof DOM_HOST_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_HOST_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HOST_CSS_TAG   ) +"'>"+ DOM_HOST_CSS_TAG    +"</em>")
         + ((typeof DOM_GRID_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_CSS_TAG   ) +"'>"+ DOM_GRID_CSS_TAG    +"</em>")
         + ((typeof DOM_TOOLS_CSS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_CSS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_CSS_TAG  ) +"'>"+ DOM_TOOLS_CSS_TAG   +"</em>")
 
         + ("JS MODULES"+LF)
-        + ((typeof DOM_DATA_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_DATA_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DATA_JS_TAG    ) +"'>"+ DOM_DATA_JS_TAG     +"</em>")
         + ((typeof DOM_LOG_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_LOG_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOG_JS_TAG     ) +"'>"+ DOM_LOG_JS_TAG      +"</em>")
         + ((typeof DOM_UTIL_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_UTIL_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_UTIL_JS_TAG    ) +"'>"+ DOM_UTIL_JS_TAG     +"</em>")
+        + ((typeof DOM_DATA_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_DATA_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DATA_JS_TAG    ) +"'>"+ DOM_DATA_JS_TAG     +"</em>")
         + ((typeof DOM_PROP_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_PROP_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_PROP_JS_TAG    ) +"'>"+ DOM_PROP_JS_TAG     +"</em>")
         + ((typeof DOM_STORE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_STORE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STORE_JS_TAG   ) +"'>"+ DOM_STORE_JS_TAG    +"</em>")
+        + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
+        + ((typeof DOM_I18N_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_I18N_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_I18N_JS_TAG    ) +"'>"+ DOM_I18N_JS_TAG     +"</em>")
 
-        + ((typeof DOM_WORDING_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_WORDING_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WORDING_JS_TAG ) +"'>"+ DOM_WORDING_JS_TAG  +"</em>")
-        + ((typeof DOM_SLOT_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SLOT_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SLOT_JS_TAG    ) +"'>"+ DOM_SLOT_JS_TAG     +"</em>")
+        + ("JS WORDS"+LF)
         + ((typeof DOM_SELECT_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_SELECT_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SELECT_JS_TAG  ) +"'>"+ DOM_SELECT_JS_TAG   +"</em>")
+        + ((typeof DOM_SLOT_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SLOT_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SLOT_JS_TAG    ) +"'>"+ DOM_SLOT_JS_TAG     +"</em>")
+        + ((typeof DOM_WORDING_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_WORDING_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WORDING_JS_TAG ) +"'>"+ DOM_WORDING_JS_TAG  +"</em>")
+        + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
 
+        + ("JS GUI"+LF)
+        + ((typeof DOM_FLY_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_FLY_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_FLY_JS_TAG     ) +"'>"+ DOM_FLY_JS_TAG      +"</em>")
         + ((typeof DOM_HIDE_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_HIDE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HIDE_JS_TAG    ) +"'>"+ DOM_HIDE_JS_TAG     +"</em>")
         + ((typeof DOM_VIEW_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_VIEW_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_VIEW_JS_TAG    ) +"'>"+ DOM_VIEW_JS_TAG     +"</em>")
         + ((typeof DOM_STICKY_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_STICKY_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STICKY_JS_TAG  ) +"'>"+ DOM_STICKY_JS_TAG   +"</em>")
-        + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
-        + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
-        + ((typeof DOM_FLY_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_FLY_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_FLY_JS_TAG     ) +"'>"+ DOM_FLY_JS_TAG      +"</em>")
+
+        + ("JS FOLDING"+LF)
+        + ((typeof DOM_DETAILS_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_DETAILS_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DETAILS_JS_TAG ) +"'>"+ DOM_DETAILS_JS_TAG  +"</em>")
+        + ((typeof DOM_WOT_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_WOT_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WOT_JS_TAG     ) +"'>"+ DOM_WOT_JS_TAG      +"</em>")
 
         + ("JS TOOLS"+LF)
         + ((typeof DOM_GRID_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_JS_TAG    ) +"'>"+ DOM_GRID_JS_TAG     +"</em>")
@@ -2099,8 +2350,8 @@ let load6_TOOL_CSS_RULE = function(el)
         else if(!el.sheet.cssRules[0]) result = "!el.sheet.cssRules[0]";
         else {
             let txt = el.sheet.cssRules[0].cssText;
-            let x_1 = txt.indexOf    ('"');
-            let x_2 = txt.lastIndexOf('"');
+            let x_1 = txt.indexOf    ('"'); /* eslint-disable-line quotes */
+            let x_2 = txt.lastIndexOf('"'); /* eslint-disable-line quotes */
             txt     = txt.substring(x_1+1, x_2);
             tag     = txt.includes(el.id) ? txt : "";
         }
@@ -2140,7 +2391,7 @@ let   caller = "load8_LOG_MAP";
 let log_this = LOG_MAP.T1_DOM_LOAD;
 
 if( log_this) log("%c"+t_data.SD8+"%c "+caller+": dev_log_map=["+get_n_lbl(dev_log_map)+"]", lbS+lf8, lbH+lf8);
-if( log_this) t_log.console_dir(LOG_MAP,"LOG_MAP");
+if( log_this) t_log.console_dir("LOG_MAP",LOG_MAP);
 
 /*}}}*/
     if( !dev_log_map ) return;
@@ -2613,8 +2864,8 @@ if( log_this) log(caller);
     for(let sticky_num = 1; sticky_num <= t_sticky.STICKY_MAX; ++sticky_num) t_store.t_store_add_page_key("sticky_"+sticky_num); /* STICKY */
 
 if( log_this) {
-    t_log.console_dir(t_store.isa_site_key_array, caller+" .store_isa_site_key_array");
-    t_log.console_dir(t_store.isa_page_key_array, caller+" .store_isa_page_key_array");
+    t_log.console_dir(caller+" .store_isa_site_key_array", t_store.isa_site_key_array);
+    t_log.console_dir(caller+" .store_isa_page_key_array", t_store.isa_page_key_array);
 }
 };
 /*}}}*/
@@ -2652,14 +2903,15 @@ let log_this = LOG_MAP.T0_STORE;
 if( log_this) log(caller);
 
 /*{{{
-    key = "window_scrollY"     ; value = scroll_last_scrollY;              t_store.t_store_set_value(key, value);
+    key = "window_scrollY"     ; value = scroll_last_scrollY   ; t_store.t_store_set_value(key, value);
 }}}*/
 
-    key = t_data.ANCHOR_FREEZE ; value = prop.get( t_data.ANCHOR_FREEZE ); t_store.t_store_set_state(key, value);
-    key = t_data.CONTAINERS_HI ; value = prop.get( t_data.CONTAINERS_HI ); t_store.t_store_set_state(key, value);
-    key = t_data.THEME_DARK    ; value = prop.get( t_data.THEME_DARK    ); t_store.t_store_set_state(key, value);
-    key = t_data.TOOLS_TRAP    ; value = prop.get( t_data.TOOLS_TRAP    ); t_store.t_store_set_state(key, value);
-    key = t_data.TOOLS_EXTRAS  ; value = prop.get( t_data.TOOLS_EXTRAS  ); t_store.t_store_set_state(key, value);
+    key = t_data.USER_LANG     ; value = prop.get( key )       ; t_store.t_store_set_value(key, value);
+    key = t_data.ANCHOR_FREEZE ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
+    key = t_data.CONTAINERS_HI ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
+    key = t_data.THEME_DARK    ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
+    key = t_data.TOOLS_TRAP    ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
+    key = t_data.TOOLS_TIER2   ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
 
 };
 /*}}}*/
@@ -2798,9 +3050,10 @@ if(log_this) log_key_val_group("SAVING hotspotXY", hotspotXY, lf5, false);
         /*}}}*/
     }
     /*}}}*/
-    /* SCROLL t_data.OVERFLOW_VISI {{{*/
+    /* SCROLL OVERFLOW DETAILS {{{*/
     key =  t_data.SCROLL_SMOOTH                ; value = prop.get(key); t_store.t_store_set_state(key, value);
     key =  t_data.OVERFLOW_VISI                ; value = prop.get(key); t_store.t_store_set_state(key, value);
+    key =  t_data.DETAILS_RADIO                ; value = prop.get(key); t_store.t_store_set_state(key, value);
 
     key =  t_data.TOOLS_SCROLL                 ; value = prop.get(key); t_store.t_store_set_state(key, value);
     /*}}}*/
@@ -2863,7 +3116,7 @@ let log_this = LOG_MAP.T0_STORE;
 /*}}}*/
     if(!panel) return "";
 
-    /* selected by user or tools_extras */
+    /* selected by user or tools_tier2 */
     let some_change = "";
     let      key    = panel.id;
     let selected    = t_tools_panel_is_selected(panel);
@@ -2921,8 +3174,8 @@ if( log_this) log("%c"+caller, lbH+lf5);
 
     for(const affix of get_words_drop_affix_array())
     {
+        key     =           affix+"_unchecked";
         let val = !prop.get(affix);
-        let key =           affix+"_unchecked";
 
 if( log_this) log("%c SAVING  "+t_util.mPadStart(key,32)+"%c"+val, lbL+lf5, lbR+lfX[val ? 4 : 8]);
         t_store.t_store_set_state(key, val);
@@ -2949,7 +3202,7 @@ if( log_this) log("%c"+caller, lbH+lf6);
 
     for(const affix of get_words_drop_affix_array())
     {
-        let key = affix+"_unchecked";
+        key     = affix+"_unchecked";
         let val = (t_store.t_store_getItem(key) == "true");
 
 if( log_this) log("%c LOADING "+t_util.mPadStart(key,32)+"%c"+val, lbL+lf6, lbR+lfX[val ? 4 : 8]);
@@ -2961,6 +3214,7 @@ if( log_this) log("%c LOADING "+t_util.mPadStart(key,32)+"%c"+val, lbL+lf6, lbR+
 /*}}}*/
 /*➔ t_save_update_post {{{*/
 /*{{{*/
+let WORKING_LOCALSTORAGE_DELAY   =  250;
 let PENDING_LOCALSTORAGE_DELAY   = 1000;
 let FIRST_STORAGE_DELAY          = 5000;
 let CSS_STORE_UPDATE_PENDING     = "store_update_pending";
@@ -2971,7 +3225,7 @@ let t_save_update_timer;
 let t_save_update_callers = "";
 let t_save_update_callers_count   =  0;
 /*}}}*/
-let t_save_update_post = function(_caller)
+let t_save_update_post = function(_caller,delay=WORKING_LOCALSTORAGE_DELAY)
 {
     /*{{{*/
     let caller = "t_save_update_post";
@@ -3009,7 +3263,7 @@ if(log_this && !t_save_update_callers.includes(_caller)) t_save_update_callers +
     }
     /*}}}*/
     /* post or commit handler {{{*/
-    t_save_update_timer = setTimeout(save_update_handler, PENDING_LOCALSTORAGE_DELAY);
+    t_save_update_timer = setTimeout(save_update_handler, delay);
 
     add_el_class(hotspot, CSS_STORE_UPDATE_PENDING);
     /*}}}*/
@@ -3130,9 +3384,9 @@ if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
         }
     }
     /*}}}*/
-    t_hide.dom_hide_set_MASK_OR_HIDE();
+    t_hide.dom_hide3_set_MASK_OR_HIDE();
 
-    if(!t_cache_empty)
+    if( t_cache_has_been_armed() )
         save4_layout(caller);
 /*{{{*/
 if( log_this)
@@ -3152,6 +3406,24 @@ let log_this = LOG_MAP.T3_LAYOUT;
 if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
     t_hide.dom_hide1_reset();
+
+    /* transient state fallback .. not a checkbox */
+    setTimeout(function() { del_el_class(prop.get_EL(id), t_data.CSS_CHECKED); }, 1000);
+
+};
+/*}}}*/
+/*  t_DOM_HIDE1_UNDO_changed {{{*/
+let t_DOM_HIDE1_UNDO_changed = function(id, value)
+{
+/*{{{*/
+let   caller = "t_DOM_HIDE1_UNDO_changed("+id+", "+value+")";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log("%c"+caller, lbH+lf5);
+/*}}}*/
+     t_hide .dom_hide_csv_stack_pop(id);
+
+    t_SITE_OR_PAGE_changed(id, prop.get( t_data.SITE_OR_PAGE ));
 
     /* transient state fallback .. not a checkbox */
     setTimeout(function() { del_el_class(prop.get_EL(id), t_data.CSS_CHECKED); }, 1000);
@@ -3181,11 +3453,14 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
+
+    t_start_DOM_EDITING();
+
     t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight);
 
     let xy = dom_gutter.get_GUTTER_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
-    add_el_class(hotspot  , t_data.DOM_EDITING);
+
 
     set_el_class_removing(hotspot_c, "", t_sticky.CSS_ROTATE_XX);
 
@@ -3194,7 +3469,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
 
     /* ENTER EDIT MODE .. (skipping onchange) */
     prop.set(t_data.MASK_OR_HIDE,  true);
-    t_hide.dom_hide_set_MASK_OR_HIDE();
+    t_hide.dom_hide3_set_MASK_OR_HIDE();
 
     /* ANCHOR FREEZE WHILE EDITING */
     t_sync_wording( caller );
@@ -3210,6 +3485,9 @@ let log_this = LOG_MAP.T3_LAYOUT;
 if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
 
+    prop.set(t_data.EDIT_OR_STAGE, false);
+    t_stop_DOM_EDITING();
+
     t_dom_EDIT_drag_hotspot_off_gutter();
     let xy = dom_gutter.get_WINDOW_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
@@ -3223,8 +3501,8 @@ if( log_this) log("%c"+caller, lbH+lf5);
     prop.set(t_data.SITE_OR_PAGE, false);
 
     /* RELOAD PAGE HIDDEN NODES */
-    t_hide.dom_hide2_store_reload   ("both");
-    t_hide.dom_hide_set_MASK_OR_HIDE( true);
+    t_hide.dom_hide2_store_reload("both");
+    t_hide.dom_hide3_set_MASK_OR_HIDE(true);
 
     /* ANCHOR UNFREEZE AFTER EDITING */
     t_sync_wording( caller );
@@ -3240,15 +3518,37 @@ let log_this = LOG_MAP.T3_LAYOUT;
 if( log_this) log("%c"+caller+"("+x+", "+y+")", lbH+lf5);
 /*}}}*/
 
-    prop.set(t_data.EDIT_OR_STAGE, false);
-
-    del_el_class                    (hotspot , t_data.DOM_EDITING   );
-    del_el_class                    (hotspot , t_data.MARKED_TO_HIDE);
     t_seek.t_seekzone8_hide_gutter();
 
     t_sync_wording(caller); /* ANCHOR (UN)FREEZE */
     t_seek.t_seekzone5_hide("instant");
     t_store_consider_page_items_worth_storing("HOTSPOT OFF GUTTER");
+};
+/*}}}*/
+/*_ t_start_DOM_EDITING {{{*/
+let t_start_DOM_EDITING = function()
+{
+    add_el_class(hotspot, t_data.DOM_EDITING);
+
+    if(    !has_el_class(headsup_ds, t_data.CSS_PINNED)) {
+        t_set_CSS_PINNED(headsup_ds, true);
+
+        headsup_ds.was_pinned = true;
+    }
+};
+/*}}}*/
+/*_ t_stop_DOM_EDITING {{{*/
+let t_stop_DOM_EDITING = function()
+{
+    del_el_class(hotspot, t_data.MARKED_TO_HIDE);
+
+    del_el_class(hotspot, t_data.DOM_EDITING   );
+
+    if(headsup_ds.was_pinned) {
+        t_set_CSS_PINNED(headsup_ds, false);
+
+        delete headsup_ds.was_pinned;
+    }
 };
 /*}}}*/
 /*  t_MASK_OR_HIDE_changed {{{*/
@@ -3262,7 +3562,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
 
     /* [node_to_hide] toggle */
-    t_hide.dom_hide_set_MASK_OR_HIDE();
+    t_hide.dom_hide3_set_MASK_OR_HIDE();
 
     if( prop.get( t_data.MASK_OR_HIDE ) )
         del_el_class(hotspot , t_data.MARKED_TO_HIDE);
@@ -3317,51 +3617,27 @@ if( log_this) log("%c"+caller+"("+id+", "+state+")", lbH+lf5);
     t_sticky.t_sticky_SHOW_SEEKZONE_sync(state);
 
 /*{{{
-    //FIXME CHANGING THE DOM SHOULD CLEAR ALL STICKY ANCHORS
-    if(!prop.get(t_data.SPLIT_WOT ) || t_select.t_SPLIT_WOT_done()) t_sticky.t_sticky_LOAD();
+     FIXME CHANGING THE DOM SHOULD CLEAR ALL STICKY ANCHORS
+    if(!prop.get(t_data.SPLIT_WOT ) || t_wot.t_WOT_SPLIT_done()) t_sticky.t_sticky_LOAD();
     else if(log_this) logBIG(caller+": [t_data.SPLIT_WOT] not done yet: call to [t_sticky.t_sticky_LOAD] canceled", lf2);
 }}}*/
 };
 /*}}}*/
-/*_ t_REMOVE_ADS_changed {{{*/
-let t_REMOVE_ADS_changed = function(id, state)
-{
-    let by_user_or_from_storage = onWork_EL != null;
-/*{{{
-log("t_REMOVE_ADS_changed("+id+" , "+state+") %c"+ (by_user_or_from_storage ? "by_user":"from_storage"), lbH+(by_user_or_from_storage ? lf5 : lf8));
-}}}*/
-    if(!by_user_or_from_storage ) return;
-    t_store.t_store_set_state(id);
-
-    if(state)
-    {
-        t_util.t_REMOVE_ADS();
-
-        t_sticky.t_sticky_LOAD_ANCHORS_CHANGED();
-
-        if( pat_csv ) pat_bag3_reselect( pat_csv );
-    }
-    else if( t_util.t_REMOVE_ADS_results() )
-    {
-        document.location.reload();
-
-    }
-};
-/*}}}*/
-/*_ t_SPLIT_WOT_changed {{{*/
-let t_SPLIT_WOT_changed = function(id, state)
+/*_ t_WOT_SPLIT_changed {{{*/
+let t_WOT_SPLIT_changed = function(id, state)
 {
     let by_user_or_from_storage = onWork_EL != null;
     if(!by_user_or_from_storage ) return;
-    t_store.t_store_set_state(id);
+    t_store.t_store_set_state(id, state);
 
-    if(state && !t_select.t_SPLIT_WOT_done())
+    if(state && !t_wot.t_WOT_SPLIT_done())
     {
-        t_select.t_SPLIT_WOT();
-        t_sticky.t_sticky_LOAD_ANCHORS_CHANGED();
+        t_wot.t_WOT_SPLIT();
+        t_details.details_load_open_state();
+        t_sticky .t_sticky_LOAD_ANCHORS_CHANGED();
         if( pat_csv ) pat_bag3_reselect( pat_csv );
     }
-    else if( t_select.t_SPLIT_WOT_done() )
+    else if( t_wot.t_WOT_SPLIT_done() )
     {
         document.location.reload();
     }
@@ -3386,6 +3662,33 @@ let t_LINES_WOT_changed = function(id, state)
     }
 };
 /*}}}*/
+/*_ t_REMOVE_ADS_changed {{{*/
+let t_REMOVE_ADS_changed = function(id, state)
+{
+    let by_user_or_from_storage = onWork_EL != null;
+/*{{{
+log("t_REMOVE_ADS_changed("+id+" , "+state+") %c"+ (by_user_or_from_storage ? "by_user":"from_storage"), lbH+(by_user_or_from_storage ? lf5 : lf8));
+}}}*/
+    if(!by_user_or_from_storage ) return;
+    t_store.t_store_set_state(id);
+
+    if(state)
+    {
+        t_util.t_REMOVE_ADS(id);
+
+        t_sticky.t_sticky_LOAD_ANCHORS_CHANGED();
+
+        if( pat_csv ) pat_bag3_reselect( pat_csv );
+    }
+/*{{{
+    else if( t_util.t_REMOVE_ADS_results() ) {
+        document.location.reload();
+
+    }
+}}}*/
+};
+/*}}}*/
+
 /*}}}*/
 /* TOOL NODE {{{*/
 /*{{{*/
@@ -3427,7 +3730,7 @@ let transcript2;
 let  ToolPanel = function(panel, selected)
 {
     /*this.init {{{*/
-    this.init = function(panel, selected) {
+    this.init = function() {
         this.x        =        0;
         this.y        =        0;
         this.w        =        0;
@@ -3467,7 +3770,7 @@ let  ToolPanel = function(panel, selected)
 }}}*/
 
     /*}}}*/
-    this.init(panel, selected); /* construction-time-init */
+    this.init(); /* construction-time-init */
 };
 /*_ [tools_map] ARRAY .. set get {{{*/
 
@@ -3528,8 +3831,7 @@ log_caller();
     if(!shadow_root) shadow_root = document.getElementById("shadow_root");
 
     if(shadow_root) {
-if(log_this) log("shadow_root:");
-if(log_this) t_log.console_dir( shadow_root );
+if(log_this) t_log.console_dir("shadow_root:", shadow_root);
     }
      /*}}}*/
     /* [t_tools_loaded] {{{*/
@@ -3728,6 +4030,14 @@ let log_this = LOG_MAP.T2_GRID;
 if( log_this)          caller += "("+get_n_lbl(panel)+", "+state+")";
 if( log_this) log("%c"+caller, lfX[state ? 5:8]);
 /*}}}*/
+    /* not while some TOOLS-TIER is active */
+    if( prop.get( t_data.TOOLS_TIER2 ) )
+    {
+        pulse_id( t_data.TOOLS_TIER2 );
+
+        return;
+    }
+
     let map = t_tools_map_get( panel );
     if(!map) return;
     if( map.selected != state)
@@ -3740,6 +4050,9 @@ if(log_this || DOM_TOOLS_TAG) log((state ? "SHOWING" : "HIDING")+" "+get_n_lbl(p
 
         t_sync_layout(caller);
     }
+
+    /* TOOLS_TIER2 may still apply */
+    t_sync_tools_tier2(caller);
 };
 /*}}}*/
 
@@ -3809,14 +4122,14 @@ let t_get_tool = function(id)
 {
     if( id.includes(" ") ) return null;
     let selector
-        = (id.charAt(0) != '.') && (id.charAt(0) != '#')
+        = (id.charAt(0) != ".") && (id.charAt(0) != "#")
         ?  "#"+id
-        :      id
-    ;
+        :      id;
+
     let el;
     try {
-        if     (shadow_root    ) el = shadow_root.querySelector(selector);
-        else                     el = document   .querySelector(selector);
+        if( shadow_root ) el = shadow_root.querySelector( selector );
+        if(!el          ) el = document   .querySelector( selector );
     }
     catch(ex) { if(DOM_TOOLS_LOG) { console.log("selector=["+selector+"]"); console.warn(ex); } }
 
@@ -4013,6 +4326,16 @@ let t_dom_tools_html_set_el_class_on_off = function(css,state)
     if(dom_tools_html) set_el_class_on_off(dom_tools_html, css, state);
 };
 /*}}}*/
+/*_ t_set_id_class_on_off {{{*/
+let t_set_id_class_on_off = function(id, className, on_off)
+{
+
+    let el = t_get_tool(id);
+    if(!el) return;
+
+    t_util.set_el_class_on_off(el, className, on_off);
+};
+/*}}}*/
 /*}}}*/
 
 /* EVENT LISTENER .. ONDOWN .. PIVOT .. PINNED */
@@ -4066,6 +4389,7 @@ let onUp_MS                = 0;
  :!start explorer "https://www.w3schools.com/jsref/met_element_addeventlistener.asp"
  :!start explorer "https://www.w3schools.com/jsref/dom_obj_event.asp"
  :!start explorer "https://www.w3schools.com/charsets/ref_utf_math.asp"
+ :!start explorer "http://xahlee.info/comp/unicode_arrows.html"
 
  [preventDefault]
  :!start explorer "https://github.com/WICG/EventListenerOptions/blob/gh-pages/explainer.md"
@@ -4083,7 +4407,7 @@ let onUp_MS                = 0;
 }}}*/
 
 /* ADD */
-/*  t_add_input_listener {{{*/
+/*➔ t_add_input_listener {{{*/
 let t_add_input_listener = function(el)
 {
     add_listener_capture_active(el, "keydown", t_input_2_CB);
@@ -4168,10 +4492,10 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
 /*{{{
     if(typeof MWebJS != "undefined") MWebJS.eval("SCROLL OFF");
 }}}*/
-    if( ("ontouchmove"  in document.documentElement))
-        add_listener_capture_active(   window, "touchmove"        , t_PAGE_pointermove_drag);
+    if("ontouchmove"  in document.documentElement)
+        add_listener_capture_active(   window, "touchmove"     , t_PAGE_pointermove_drag);
     else
-        add_listener_capture_active(   window, "mousemove"        , t_PAGE_pointermove_drag);
+        add_listener_capture_active(   window, "mousemove"     , t_PAGE_pointermove_drag);
 };
 /*}}}*/
 /*_ t_add_tool_pointermove_listener {{{*/
@@ -4183,10 +4507,10 @@ let  caller = "t_add_tool_pointermove_listener";
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
 /*}}}*/
-    if( ("ontouchmove"  in document.documentElement))
-        add_listener_capture_active(   window, "touchmove"        , t_TOOL_pointermove_drag);
+    if("ontouchmove"  in document.documentElement)
+        add_listener_capture_active(   window, "touchmove"     , t_TOOL_pointermove_drag);
     else
-        add_listener_capture_active(   window, "mousemove"        , t_TOOL_pointermove_drag);
+        add_listener_capture_active(   window, "mousemove"     , t_TOOL_pointermove_drag);
 };
 /*}}}*/
 
@@ -4240,7 +4564,7 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
 
 /* ADD-REMOVE LISTENER */
 /*_ add_listener_capture_active {{{*/
-let CAPTURE_TRUE_PASSIVE_FALSE  = {capture:true, passive:false};
+let CAPTURE_TRUE_PASSIVE_FALSE  = { capture:true , passive:false };
 
 let add_listener_capture_active = function(el, ev, fn)
 {
@@ -4268,10 +4592,13 @@ let t_acceptBubble = function(e, msg, log_this)
 {
     log_this = log_this || DOM_TOOLS_TAG || DOM_TOOLS_LOG;
     if( log_this )
+    {
         t_fly.t_log_transcript_event_top("<span style='color:yellow;'>"+ t_data.SYMBOL_BLACK_CIRCLE +"</span>"
-            +                      " ACCEPT BUBBLE <em>"+          e.type              +"</em>"
-            +                      " <em>"+                        msg                 +"</em>"
+            +                            " ACCEPT BUBBLE <em>"+          e.type                     +"</em>"
+            +                            " <em>"+                        msg                        +"</em>"
         );
+        log_caller();
+    }
 
     t_select.t_slot_visibility_changed();
 };
@@ -4307,7 +4634,7 @@ if( log_this)
                  }
                  , lbH+lf8
                );
-    t_log.console_dir(event, event.type);
+    t_log.console_dir(e.type, e);
 }
 /*}}}*/
 /* NOTE: {{{
@@ -4318,9 +4645,12 @@ if( log_this)
  *  [e.cancelBubble]               .. depreciated .. (may not reach [outer body])
  *  [e.returnValue]                .. depreciated
  }}}*/
-    if( e.stopPropagation          ) e.stopPropagation         (); /* capturing and bubbling phases */
-    if( e.stopImmediatePropagation ) e.stopImmediatePropagation(); /* other listeners of the same event */
-    if( e.preventDefault           ) e.preventDefault          (); /* browser agent default .. (checkbox toggle) */
+    if(e.cancelable)
+    {
+        if( e.stopPropagation          ) e.stopPropagation         (); /* capturing and bubbling phases */
+        if( e.stopImmediatePropagation ) e.stopImmediatePropagation(); /* other listeners of the same event */
+        if( e.preventDefault           ) e.preventDefault          (); /* browser agent default .. (checkbox toggle) */
+    }
 };
 /*}}}*/
 /*_ t_preventDefault_has_been_called {{{*/
@@ -4402,119 +4732,6 @@ if(t_event_consumed_cause) log("t_event_has_been_consumed(): [%c "+t_event_consu
     t_event_consumed_cause   = "";
 };
 /*}}}*/
-/*_ t_get_event_target {{{*/
-/*{{{*/
-let t_get_event_target_last_e;
-let t_get_event_target_last_e_target;
-
-/*}}}*/
-let t_get_event_target = function(e)
-{
-/*{{{*/
-let caller = "t_get_event_target";
-let log_this = DOM_TOOLS_LOG;
-
-if( log_this) caller += "("+e.type+" on "+get_id_or_tag((e.path ? e.path[0] : e.e_target))+")";
-if( log_this) log("%c"+caller, lbH+lf7);
-/*}}}*/
-    /* SAME THAN LAST EVENT {{{*/
-    if(e === t_get_event_target_last_e)
-    {
-/*{{{*/
-if( log_this)
-    log("%c...returning last target %c"+get_id_or_tag(t_get_event_target_last_e_target), lf8, lbH+lf8);
-
-/*}}}*/
-        return t_get_event_target_last_e_target;
-    }
-    /*}}}*/
-    /* NEW EVENT {{{*/
-/*{{{*/
-if( log_this ) {
-    log_key_val_group("...event path and target"
-                      , { e_path_0                 : e.path[0]
-                        , e_path_1                 : e.path[1]
-                        , e_originalTarget         : e.originalTarget
-                        , e_explicitOriginalTarget : e.explicitOriginalTarget
-                        ,                  callers : t_log.get_callers()
-                      }, lf7, false
-                     );
-
-}
-/*}}}*/
-
-    /*}}}*/
-    /*  e_target .. f(event) {{{*/
-    let e_target;
-    /* [event.target] {{{
-     * A reference to the object that dispatched the event.
-     * It is different from [event.currentTarget]
-     * . when the event handler is called
-     * . during the bubbling
-     * . or capturing phase of the event.
-     }}} */
-    if     (e.path && (e.path[0].tagName != "IMG")) { e_target = e.path[0];                /*log("e.path..................=["+ e.path                   +"]");*/ }
-    else if(e.path &&  e.path[1]                  ) { e_target = e.path[1];                /*log("e.path..................=["+ e.path                   +"]");*/ }
-    else if(e.target                              ) { e_target = e.target ;                /*log("e.target................=["+ e.target                 +"]");*/ }
-    else if(e.originalTarget                      ) { e_target = e.originalTarget;         /*log("e.originalTarget........=["+ e.originalTarget         +"]");*/ }
-    else if(e.explicitOriginalTarget              ) { e_target = e.explicitOriginalTarget; /*log("e.explicitOriginalTarget=["+ e.explicitOriginalTarget +"]");*/ }
-
-    /*}}}*/
-    /* skip proxy el {{{*/
-    let el;
-/*{{{*/
-if( log_this ) {
-    let e_parent = e_target.parentElement;
-    log_key_val_group("...skipping proxy el"
-                      , { e_target_firstElementChild           : e_target ?                         e_target.firstElementChild : ""
-                        , e_target_parentElement               : e_parent ?                         e_parent                   : ""
-                        , e_target_htmlFor                     : e_target ?                         e_target.htmlFor           : ""
-                        , e_target_htmlFor_EL                  : e_target ? document.getElementById(e_target.htmlFor)          : ""
-                        , e_target_parentElement_htmlFor       : e_parent ?                         e_parent.htmlFor           : ""
-                        , e_target_parentElement_htmlFor_EL    : e_parent ? document.getElementById(e_parent.htmlFor)          : ""
-                      }, lf7, false
-                     );
-}
-/*}}}*/
-    e_target
-        = ((el = e_target.firstElementChild) && (el.tagName == "INPUT")) ? e_target.firstElementChild
-        : ((el = e_target                  ) && (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
-        : ((el = e_target.parentElement    ) && (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
-        : /*..........................................................*/   e_target
-    ;
-
-    /*}}}*/
-    /* handled_target .. f(handler delegate) {{{*/
-    if(   (t_get_EL_slot(e_target) < 0)
-       && !t_is_an_embedded_doc_tool(e_target,log_this)
-      ) {
-        let handled_target = get_handled_target(e, e_target, log_this);
-        if( handled_target ) e_target = handled_target;
-    }
-    /*}}}*/
-/*{{{
-onmousedown onmouseup onclick ondblclick
-onkeydown onkeypress onkeyup
-onchange
-onfocus onselect oninput onsubmit onblur TODO
-
-console.dir(e);
-console.dir(e_target);
-
-try { log("e_target.id......=["+e_target.id      +"]"); } catch(ex) { console.warn(ex); console.dir(e_target); }
-try { log("e_target.nodeName=["+e_target.nodeName+"]"); } catch(ex) { console.warn(ex); console.dir(e_target); }
-try { log("e_target.tagName.=["+e_target.tagName +"]"); } catch(ex) { console.warn(ex); console.dir(e_target); }
-}}}*/
-/*{{{*/
-if( log_this)
-    log("%c...return %c"+get_id_or_tag(e_target), lf7, lbH+lf7);
-
-/*}}}*/
-    t_get_event_target_last_e        = e;
-    t_get_event_target_last_e_target = e_target;
-    return e_target;
-};
-/*}}}*/
 /*_ t_is_an_embedded_doc_tool {{{*/
 let t_is_an_embedded_doc_tool = function(e_target,log_this)
 {
@@ -4525,7 +4742,7 @@ let t_is_an_embedded_doc_tool = function(e_target,log_this)
 /*{{{*/
 if( log_this )
     log_key_val_group("t_is_an_embedded_doc_tool("+get_id_or_tag(e_target)+")"
-                      , { t_get_EL_slot                        : t_get_EL_slot              (e_target)
+                      , { get_EL_slot                          : get_EL_slot                (e_target)
                         , has_el_class_CSS_DOC_HANDLER_IGNORED : has_el_class               (e_target, CSS_EMBEDDED_DOC_TOOL)
                         , child_of_CSS_DOC_HANDLER_IGNORED     : t_util.is_el_child_of_class(e_target, CSS_EMBEDDED_DOC_TOOL)
                         ,                               result
@@ -4534,49 +4751,7 @@ if( log_this )
                      );
 
 /*}}}*/
-    return result;
-};
-/*}}}*/
-/*_ get_handled_target {{{*/
-let get_handled_target = function(e, e_target, log_this)
-{
-let caller = "get_handled_target";
-
-    let handled_target;
-    switch(e.type)
-    {
-        /* MOUSE */
-        case "mousedown" :
-        case "mouseup"   :
-        case "touchstart":
-        case "touchend"  :
-        case "click"     :
-        case "dblclick"  :
-        if( !t_util.get_el_mouse_event_handler(e_target) ) handled_target = t_util.get_el_parent_with_any_event_handler(e_target);
-        break;
-        /* KEY */
-        case "keydown"   :
-        case "keypress"  :
-        case "keyup"     :
-        if( !t_util.get_el_onkey_event_handler(e_target) ) handled_target = t_util.get_el_parent_with_any_event_handler(e_target);
-        break;
-        /* INPUT .. (form frame) */
-        case "change"    :
-        case "focus"     :
-        case "select"    :
-        case "input"     :
-        case "submit"    :
-        case "blur"      :
-        if( !t_util.get_el_input_event_handler(e_target) ) handled_target = t_util.get_el_parent_with_any_event_handler(e_target);
-        break;
-        /* NOT HANDLED */
-        default:
-log("%c*** "+caller+": EVENT TYPE ["+e.type+"] NOT HANDLED", lbF+lb2);
-        break;
-    }
-
-if( log_this) log("%c"+caller+"("+e.type+", "+get_id_or_tag(e_target)+") .. return "+get_id_or_tag(handled_target), lbX[handled_target ? 3:0]);
-    return handled_target;
+    return (result == null) ? false : result;
 };
 /*}}}*/
 /*_ t_set_has_moved {{{*/
@@ -4599,7 +4774,7 @@ logBIG("t_clr_has_moved: "+_caller, lbH+lf4);
 let t_set_has_moved = function(_caller)
 {
 /*{{{*/
-let log_this = LOG_MAP.EV0_LISTEN || LOG_MAP.EV1_DOWN || LOG_MAP.EV2_MOVE || LOG_MAP.EV3_UP || LOG_MAP.EV4_LONG_PRESS ;
+let log_this = LOG_MAP.EV0_LISTEN || LOG_MAP.EV1_DOWN || LOG_MAP.EV2_MOVE || LOG_MAP.EV4_LONG_PRESS ;
 
 if( log_this && !has_moved) t_fly.t_log_event_status("t_set_has_moved "+ _caller, lf3);
 /*}}}*/
@@ -4619,6 +4794,7 @@ let   check_has_moved_dx_dy = function(_caller, d_min=MOVED_ENOUGH)
     if( has_moved && (d_min <= MOVED_ENOUGH)) return  true; /* recheck for bigger moves */
     if(!onWork_EL                           ) return false;
     if( onDown_7_STALL_is_pending()         ) return false; /* WAKE UP DELAY */
+    if(onDown_TOUCHES > 1                   ) return false;
 
     /* NOT MOVED ENOUGH */
     let    dx = onMoveDXY.x;
@@ -4640,7 +4816,7 @@ let log_this = LOG_MAP.EV0_LISTEN;
          /* + LF + "...page offset XY: ["+ window       .scrollX    +" "+          window.scrollY +"]" */
          /* + LF + "...body_scroll XY: ["+ document.body.scrollLeft +" "+ document.body.scrollTop +"]" */
         );
-        t_log.console_dir(onWork_EL, _caller);
+        t_log.console_dir(_caller, onWork_EL);
         t_fly.t_log_event_status(_caller+"("+dx_dy+") .. CALLED BY "+ _caller, lf2);
 
     }
@@ -4653,7 +4829,7 @@ const T_EVENT_DEBOUNCE_DELAY = 100;
 let   t_last_handled_event_of_type_MS = {};
 
 /*}}}*/
-let t_is_bouncing_e_type = function(e_type, _caller)
+let t_is_bouncing_e_type = function(e_type, _caller, delay_min=T_EVENT_DEBOUNCE_DELAY)
 {
 let log_this = t_log.logging_something();
 
@@ -4662,11 +4838,11 @@ let log_this = t_log.logging_something();
     let this_MS = new Date().getTime() % 86400000;
     let delay   = this_MS - last_MS;
 
-    let bouncing = (delay < T_EVENT_DEBOUNCE_DELAY);
+    let bouncing = (delay < delay_min);
 
     t_last_handled_event_of_type_MS[e_type] = this_MS;
 
-if(log_this && bouncing) log("t_is_bouncing_e_type(%c "+e_type+" %c) %c .. CALLED BY ["+_caller+"] %c .. DEBOUNCED: ["+Math.floor(delay)+"ms < "+T_EVENT_DEBOUNCE_DELAY+"] .. onWork_EL=["+get_n_lbl(onWork_EL)+"] onWork_PANEL=["+get_n_lbl(onWork_PANEL)+"]",lb5,lbA, lb6,lbA);
+if(log_this && bouncing) log("t_is_bouncing_e_type(%c "+e_type+" %c) %c .. CALLED BY ["+_caller+"] %c .. DEBOUNCED: ["+Math.floor(delay)+"ms < "+delay_min+"] .. onWork_EL=["+get_n_lbl(onWork_EL)+"] onWork_PANEL=["+get_n_lbl(onWork_PANEL)+"]",lb5,lbA, lb6,lbA);
     return bouncing;
 };
 /*}}}*/
@@ -4706,6 +4882,7 @@ if( log_this ) log("%c"+caller+"%c("+get_n_lbl(el)+") %c CALLED BY "+ _caller, l
 
     onDown_EL      = sticky ? sticky : el;
     onWork_EL      = onDown_EL;
+    if(onDown_EL == hotspot) onDown_EL = hotring;
 
     if(!onWork_EL_last_used) set_onWork_EL_last_used( onWork_EL );
 
@@ -4902,9 +5079,9 @@ let set_onWork_EL_pressed = function()
 t_fly.t_log_event_status("set_onWork_EL_pressed: onWork_EL=["+t_util.get_id_or_tag(onWork_EL)+"]", lbb+lf9);
 }}}*/
 
-    if(!onWork_EL                            ) return;
-    if( onWork_EL    == onWork_PANEL         ) return;
-    if( onWork_EL.id == "div_slot_containers") return;
+    if(!onWork_EL                       ) return;
+    if( onWork_EL == onWork_PANEL       ) return;
+    if( onWork_EL == div_slot_containers) return;
 
     del_el_class(onWork_EL     , t_data.CSS_DIMMED);
     add_el_class(onWork_EL     , t_data.CSS_PRESSED);
@@ -4931,9 +5108,9 @@ t_fly.t_log_event_status("set_onWork_EL_pressed: onWork_EL=["+t_util.get_id_or_t
 let clr_onWork_EL_pressed = function()
 {
     /* DON't CLEAR WHEN... */
-    if(!onWork_EL                            ) return;
-    if( onWork_EL    == onWork_PANEL         ) return;
-    if( onWork_EL.id == "div_slot_containers") return;
+    if(!onWork_EL                       ) return;
+    if( onWork_EL == onWork_PANEL       ) return;
+    if( onWork_EL == div_slot_containers) return;
     del_el_class(onWork_EL     , t_data.CSS_PRESSED);
     del_el_class(dom_tools_html, t_data.CSS_PRESSED);
 
@@ -5065,7 +5242,7 @@ let     onDown_XY = { x:0, y:0 };
 let set_onDown_XY = function(e, _caller)
 {
 /*{{{
-console_dir(e,"set_onDown_XY");
+console_dir("set_onDown_XY",e);
 }}}*/
     let      xy = get_event_XY(e);
     onDown_XY.x = xy.x;
@@ -5103,21 +5280,6 @@ let zap_onMoveDXY = function()
     onDown_XY.y += onMoveDXY.y;
     onMoveDXY.x  = 0;
     onMoveDXY.y  = 0;
-};
-/*}}}*/
-/*  get_event_XY {{{*/
-let get_event_XY = function(e)
-{
-    let x, y;
-    if(e.changedTouches) {
-        x = parseInt(e.changedTouches[0].clientX);
-        y = parseInt(e.changedTouches[0].clientY);
-    }
-    else {
-        x = parseInt(                  e.clientX);
-        y = parseInt(                  e.clientY);
-    }
-    return { x:x , y:y };
 };
 /*}}}*/
 /*}}}*/
@@ -5282,7 +5444,7 @@ let t_raise_pivot_PANEL_delayed = function(delay=0, _caller="")
 {
 /*{{{*/
 let   caller = "t_raise_pivot_PANEL_delayed";
-   
+
 let log_this = LOG_MAP.T4_PIVOT;
 
 if(log_this) logBIG(caller+"("+delay+") .. CALLED BY "+_caller);
@@ -5318,7 +5480,7 @@ if(log_this) log(caller+"%c TOOLS ON GRID", lbb+lbH+lf3);
         return;
     }
     /*}}}*/
-    /* div_slot_containers_displayed {{{*/
+    /*  div_slot_containers_displayed {{{*/
     if( div_slot_containers_displayed() ) {
 if(log_this) log(caller+"%c SLOT CONTAINERS DISPLAYED", lbb+lbH+lf4);
 
@@ -5620,7 +5782,7 @@ let t_focus = function(el)
 logBIG("t_focus("+t_util.get_id_or_tag(el)+")")
 logXXX("...behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]")
 log_caller()
-t_log.console_dir(document.activeElement, "document.activeElement");
+t_log.console_dir("document.activeElement", document.activeElement);
 }}}*/
     /*if( !behavior_TOUCH_ELSE_DESKTOP )*/
 
@@ -5640,7 +5802,7 @@ let t_blur = function(el)
 {
 /*{{{
 logBIG("t_blur("+t_util.get_id_or_tag(el)+")")
-t_log.console_dir(document.activeElement, "document.activeElement")
+t_log.console_dir("document.activeElement", document.activeElement)
 log_caller()
 }}}*/
     el.blur();
@@ -5657,7 +5819,7 @@ let caller = "t_focus_clipboard_target("+get_n_lbl(e_target)+") .. CALLED BY ["+
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log( caller );
-if( log_this) t_log.console_dir(e_target, "e_target");
+if( log_this) t_log.console_dir("e_target", e_target);
 /*}}}*/
     /* PERSIST [fly_div] ON SCREEN {{{*/
     t_fly.t_fly_clr_cancel();
@@ -5869,9 +6031,9 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
     /* SET OR TOGGLE STATE {{{*/
     let old_state = panel.classList.contains("magnified");
     switch( new_state ) {
-        case  true: new_state =  new_state; break; /* SET    */
-        case false: new_state =  new_state; break; /* UNSET  */
-        default:    new_state = !old_state; break; /* TOGGLE */
+        case  true: /* new_state =  new_state; */ break; /* SET    */
+        case false: /* new_state =  new_state; */ break; /* UNSET  */
+        default:       new_state = !old_state;    break; /* TOGGLE */
     }
     /*}}}*/
     /* STORE CHANGE {{{*/
@@ -5900,7 +6062,7 @@ let log_this = (LOG_MAP.T4_PIVOT || LOG_MAP.EV4_LONG_PRESS || LOG_MAP.T3_LAYOUT)
 
 /*}}}*/
     /* TOGGLE STATE {{{*/
-    if( !pivot_PANEL ) return;
+    if( !pivot_PANEL ) return false;
 
     let old_state = prop.get                ( t_data.PIVOT_MAGNIFIED );
     new_state     = t_toggle_panel_magnified( pivot_PANEL, new_state);
@@ -5938,11 +6100,11 @@ let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 let tag_this = DOM_TOOLS_TAG || log_this;
 if( log_this) t_log.console_clear(caller);
 if( log_this) log(caller+"("+ get_n_lbl(t_get_event_target(e))+")");
+if( log_this) log("...was_a_click "+was_a_click()+" .. onDown_MS=["+onDown_MS+"]");
 if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 /*}}}*/
     /* DOWN .. times [PMS .. MS] .. modifiers (SHIFT CTRL ALT) {{{*/
     t_log.log_CLR();
-
     onDownPMS = onDown_MS;            /* previous  */
     onDown_MS = new Date().getTime(); /* current   */
 /*{{{
@@ -5977,7 +6139,7 @@ if( tag_this && !mousedown_consumed_by) log("%c"+consumed_by, lbH+consumed_by_cs
     mousedown_consumed_by = consumed_by;
 
     /* consumed_by {{{*/
-if( log_this) t_fly.t_log_event_status(caller+":"+LF+t_data.SYMBOL_RIGHT_ARROW+" "+consumed_by, lbb+consumed_by_css);
+if( log_this) t_fly.t_log_event_status(t_data.SYMBOL_RIGHT_ARROW+" "+consumed_by, lbb+consumed_by_css);
 
     if( t_log.logging_something() )
         t_fly.t_log_transcript_event_top("<span class='big'>"+ t_data.SYMBOL_DOWN_ARROW +"</span>"
@@ -5997,8 +6159,10 @@ let onDown_TOUCHES;
 let onDown_0_MULTITOUCH = function(e)
 {
     onDown_TOUCHES     = e.touches ? e.touches.length : 1;
+/*{{{
     let    consumed_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
     return consumed_by;
+}}}*/
 };
 /*}}}*/
 /*… onDown_1_INIT_CTRL_DEBOUNCE_INPUT {{{*/
@@ -6085,7 +6249,7 @@ if( log_this) log("%c"+consumed_by, lbH+lf8);
         consumed_by = "DOWN ["+t_util.get_id_or_tag(e_target)+"] SCROLLBAR";
         onDown_EL   = e_target;
 
-if( log_this) log("%c"+consumed_by, lbH+lf7);
+if( log_this) log("%c"+consumed_by, lbH+lf1);
         return consumed_by;
     }
     /*}}}*/
@@ -6116,7 +6280,7 @@ if( log_this) log("%c"+consumed_by, lbH+lf7);
 }}}*/
     /*}}}*/
     /* CONSUME CLICK BURST {{{*/
-    if(t_is_bouncing_e_type(e.type, "t_pointerdown_listener"))
+    if(t_is_bouncing_e_type(e.type, "t_pointerdown_listener", T_EVENT_DEBOUNCE_DELAY))
     {
         consumed_by = "BOUNCING [EVENT <= "+T_EVENT_DEBOUNCE_DELAY+" ms]";
 
@@ -6134,16 +6298,16 @@ let onDown_2_slot_fullscreen_DRAG = function(e)
 let   caller = "onDown_2_slot_fullscreen_DRAG";
 let log_this = LOG_MAP.EV1_DOWN ||LOG_MAP.T3_LAYOUT;
 
-if( log_this) log("%c"+caller, lbF+lb3);
+if( log_this) log("%c"+caller, lbF+lb2);
 /*}}}*/
     if(!div_slot_containers_displayed()         ) return "";
     if(!has_el_class(onWork_EL, CSS_FULLSCREEN )) return "";
 
     let consumed_by = "START CONTAINERS FULLSCREEN DRAG";
-if( log_this) logBIG(caller+": "+consumed_by, lf3);
 
     t_add_tool_pointermove_listener(caller);
 
+if( log_this && consumed_by) log("%c"+consumed_by, lf2);
     return consumed_by;
 };
 /*}}}*/
@@ -6157,10 +6321,10 @@ let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 if( log_this) log("%c"+caller, lbF+lb4);
 /*}}}*/
 /* TODO child of [dimm_mask] .. [div_slot_containers fullscreen selected container] */
-    /* ADD LONG PRESS TIMER .. (do not consume) {{{*/
+    /* ADD LONG-PRESS TIMER .. (do not consume) {{{*/
     if( onDown_3_TOOL_PRESS_has_long_press_handler() )
     {
-if( log_this) log("%c ADDING LONG PRESS TIMER:", lbF+lf4);
+if( log_this) log("%c ADDING LONG-PRESS TIMER:", lbF+lf4);
 
         add_long_press_listener("ON DOWN TOOL PRESS "+ get_n_lbl(onWork_EL));
         if( has_el_class(onWork_EL, CSS_TOOLTIP) ) {
@@ -6196,6 +6360,7 @@ let onDown_3_TOOL_PRESS_has_long_press_handler = function()
 /*{{{*/
 let caller = "onDown_3_TOOL_PRESS_has_long_press_handler";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV4_LONG_PRESS;
+let tag_this = DOM_TOOLS_TAG || log_this;
 
 if( log_this) log("%c"+caller, lbH+lb4);
 /*}}}*/
@@ -6225,7 +6390,7 @@ if( log_this) log("%c"+caller, lbH+lb4);
 
     /*}}}*/
 /*{{{*/
-if(log_this) {
+if(tag_this) {
     log_key_val( caller
                  , {   onWork_PANEL                  : get_n_lbl(onWork_PANEL)
                      ,  panel1_is_a_dimm_mask
@@ -6279,7 +6444,7 @@ if(log_this) {
         else if( el4_is_a_scalepin              ) handled_by = onWork_EL.id             ;
         else if( el5_is_a_seek_sticky           ) handled_by = "A [sticky] TO FEED FROM SEL_TEXT";
         else if( el6_is_import_clipboard        ) handled_by = "IMPORT CLIPBOARD PASTE TOOL";
-        else if( el7_has_title                  ) handled_by = "ON LONG PRESS FOR A TOOL WITH TITLE ["+el7_has_title+"]";
+        else if( el7_has_title                  ) handled_by = "ON LONG-PRESS FOR A TOOL WITH TITLE ["+el7_has_title+"]";
 
         /* [pat_bag] */
         else if((onWork_EL    == off_bag       )) handled_by = "A [pat_bag] DIV"        ;
@@ -6297,7 +6462,7 @@ if(log_this) {
     /* ON-SLOT .. ON-STICKY EDIT .. ON-DOC NEW FIRST STICKY {{{*/
     else {
         if     (     el0_onSlotEL               ) why_not    = "ON A SLOT-NODE";
-        else if(     onDown_SEL_TEXT            ) handled_by = "LONG PRESS [NEW sticky]";
+        else if(     onDown_SEL_TEXT            ) handled_by = "LONG-PRESS [NEW sticky]";
         else if(     el5_has_t_sticky_EDIT      ) {
             if     ( el5_pinned_sticky_count < 1) handled_by = "A [sticky] TO ADD FIRST STICKY";
             else if( el5_pinned_sticky_count > 0) handled_by = el5_pinned_sticky_count+" [sticky] TO CHOOSE FROM";
@@ -6305,8 +6470,8 @@ if(log_this) {
     }
     /*}}}*/
     let result = !!handled_by;
-if(log_this) log("%c"+caller+"%c return "+result    +"%c"+(handled_by || why_not)
-                 ,lbL+lf4    ,lbC+(result ? lf4:lf8) ,lbR+lf4                    );
+if(tag_this) log("%c"+caller+"%c return "+result    +"%c"+(handled_by || why_not)
+                 ,lbL+lf4    ,lbC+(result ? lf9:lf8) ,lbR+lf4                    );
     return result;
 };
 /*}}}*/
@@ -6321,9 +6486,12 @@ if( log_this) log("%c"+caller, lbF+lb2);
     if(!onWork_EL) return "";
 /*}}}*/
     let consumed_by = t_sticky.t_sticky_onDown(e);
+
     set_onWork_EL_pressed();
 
-if(consumed_by) t_preventDefault(e, "PREVENTING PAGE SCROLL WHILE "+consumed_by);
+    if(consumed_by) t_preventDefault(e, "PREVENTING PAGE SCROLL WHILE "+consumed_by);
+
+if( log_this && consumed_by) log("%c"+consumed_by, lf4);
     return consumed_by;
 };
 /*}}}*/
@@ -6496,6 +6664,7 @@ if( log_this) log("%c...ACCEPT BUBBLE or PREVENT DEFAULT...", lf5);
         let is_a_tool_dimmed        = t_util.is_el_or_child_of_parent_el(onWork_EL, dimm_mask);
         let is_a_child_of_doc_tools = t_util.is_el_child_of_id(onWork_EL, t_data.DOC_TOOLS_ID);
 
+/*{{{*/
 if( log_this)
         log_key_val(  (onWork_PANEL ? "onWork_PANEL=["+ t_util.get_id_or_tag(onWork_PANEL)+"] .. ":"")
                     +                   " onWork_EL=["+ t_util.get_id_or_tag(onWork_EL   )+"] "
@@ -6511,8 +6680,10 @@ if( log_this)
                       , is_a_tool
                       , is_a_tool_dimmed
                       , is_a_child_of_doc_tools
-                      , t_seeker_has_TARGET      : t_seek.t_seeker_has_TARGET()
+                      , doc_handler_freezed      : t_get_doc_handler_freezed()
+                      , seeker_has_TARGET        : t_seek.t_seeker_has_TARGET()
                     }, lf5);
+/*}}}*/
 
 /*{{{
         let mouse_down_on_a_push_pin    = has_el_class(onWork_EL, CSS_PUSH_PIN);
@@ -6521,36 +6692,37 @@ log("...mouse_down_on_a_push_pin...................: "+ mouse_down_on_a_push_pin
                                                    t_preventDefault(e, "ON DOWN .. TOOL PIN       ["+ onWork_EL_lbl +"]");
 }}}*/
 
-        if     (t_seek.t_seeker_has_TARGET()     ) t_preventDefault(e, "ON DOWN .. SEEK_TARGET   ["+ onWork_EL_lbl +"]");
-        else if(    onWork_MOVABLE_CHILD         ) t_preventDefault(e, "ON DOWN .. MOVE_CHILD    ["+ onWork_EL_lbl +"]");
-        else if(t_touching_a_scrollable_panel(e) ) {
+        if     (!is_a_tool_dimmed && t_seek.t_seeker_has_TARGET()          ) t_preventDefault(e, "ON DOWN .. SEEK_TARGET   ["+ onWork_EL_lbl +"]");
+        else if(    onWork_MOVABLE_CHILD                                   ) t_preventDefault(e, "ON DOWN .. MOVE_CHILD    ["+ onWork_EL_lbl +"]");
+        else if(t_touching_a_scrollable_panel(e)                           ) {
 /*{{{
-        if( behavior_TOUCH_ELSE_DESKTOP          ) t_preventDefault(e, "ON DOWN .. TOOL TOUCHED  ["+ onWork_EL_lbl +"]");
-                                                   t_preventDefault(e, "ON DOWN .. PANNEL SCROLL ["+ onWork_PANEL_lbl +"]");
+        if( behavior_TOUCH_ELSE_DESKTOP                                    ) t_preventDefault(e, "ON DOWN .. TOOL TOUCHED  ["+ onWork_EL_lbl +"]");
+                                                                             t_preventDefault(e, "ON DOWN .. PANNEL SCROLL ["+ onWork_PANEL_lbl +"]");
 }}}*/
             t_set_body_style_overflow_hidden(true);
         }
-        else if( is_a_tool && !is_a_child_of_doc_tools && !is_a_tool_dimmed ) {
-            if     ( has_el_class(e_target, t_data.CSS_MAILTO)                                  ) t_acceptBubble  (e, "ON DOWN .. MAILTO    ["+                  onWork_EL_lbl +"]");
-            else if( e_target.id         == t_data.CSS_FLY_CLIPBOARD                            ) t_acceptBubble  (e, "ON DOWN .. CLIPBOARD ["+                  onWork_EL_lbl +"]");
-            else if( has_handler && !prop.get(t_data.ANCHOR_FREEZE) && !prop.get(t_data.WORDING)) t_acceptBubble  (e, "ON DOWN .. TOOL WITH WORKING HANDLER  ["+ onWork_EL_lbl +"]");
-            else if( has_handler                                                                ) t_preventDefault(e, "ON DOWN .. TOOL WITH FREEZED HANDLER  ["+ onWork_EL_lbl +"]");
-            else                                                                                  t_preventDefault(e, "ON DOWN .. TOOL WITH      NO HANDLER  ["+ onWork_EL_lbl +"]");
+        else if(is_a_tool && !is_a_child_of_doc_tools && !is_a_tool_dimmed ) {
+            if     ( has_el_class(e_target, t_data.CSS_MAILTO)             ) t_acceptBubble  (e, "ON DOWN .. MAILTO    ["+                  onWork_EL_lbl +"]");
+            else if( e_target.id         == t_data.CSS_FLY_CLIPBOARD       ) t_acceptBubble  (e, "ON DOWN .. CLIPBOARD ["+                  onWork_EL_lbl +"]");
+            else if( has_handler         && !t_get_doc_handler_freezed()   ) t_acceptBubble  (e, "ON DOWN .. TOOL WITH WORKING HANDLER  ["+ onWork_EL_lbl +"]");
+            else if( has_handler                                           ) t_preventDefault(e, "ON DOWN .. TOOL WITH FREEZED HANDLER  ["+ onWork_EL_lbl +"]");
+            else                                                             t_preventDefault(e, "ON DOWN .. TOOL WITH      NO HANDLER  ["+ onWork_EL_lbl +"]");
 /*{{{
             else if(behavior_TOUCH_ELSE_DESKTOP ) t_preventDefault(e, "ON DOWN .. TOOL TOUCHED          ["+ onWork_EL_lbl +"]");
 }}}*/
         }
-        else if(    onWork_PANEL                ) {
-            if(     has_handler                 ) t_preventDefault(e, "ON DOWN .. PANEL WITH    HANDLER ["+ onWork_PANEL_lbl +"]");
-            else if(!behavior_TOUCH_ELSE_DESKTOP) t_preventDefault(e, "ON DOWN .. PANEL WITH NO HANDLER ["+ onWork_PANEL_lbl +"]");
+        else if(!is_a_tool_dimmed && onWork_PANEL) {
+            if(     has_handler                  ) t_preventDefault(e, "ON DOWN .. PANEL WITH    HANDLER ["+ onWork_PANEL_lbl +"]");
+            else if(!behavior_TOUCH_ELSE_DESKTOP ) t_preventDefault(e, "ON DOWN .. PANEL WITH NO HANDLER ["+ onWork_PANEL_lbl +"]");
         }
 /* TODO NO SCROLL ON MOBILE{{{
-        else if(prop.get( t_data.ANCHOR_FREEZE )       ) t_preventDefault(e, "ON DOWN .. [anchor_freeze] SET   ["+ onWork_EL_lbl +"]");
+        else if(prop.get( t_data.ANCHOR_FREEZE ) ) t_preventDefault(e, "ON DOWN .. [anchor_freeze] SET   ["+ onWork_EL_lbl +"]");
 }}}*/
-        else if(log_this)                         t_acceptBubble  (e, "ON DOWN .. NOT A PANEL OR TOOL   ["+ onWork_EL_lbl +"]");
+        else if(log_this)                          t_acceptBubble  (e, "ON DOWN .. NOT A PANEL OR TOOL   ["+ onWork_EL_lbl +"]");
 
     }
     /*}}}*/
+if( log_this && consumed_by) log("%c"+consumed_by, lf5);
     return consumed_by;
 };
 /*}}}*/
@@ -6576,7 +6748,7 @@ log("%c onWork_MOVABLE_PANEL.....%c"+ get_n_lbl( onWork_MOVABLE_PANEL ) +"]", lb
        && !onWork_MOVABLE_PANEL       ) return ""; /* NO MOVING TOOL */
     if( call_t_grid_IS_SIZED(caller)  ) return ""; /* ON GRID */
 
-    let consumed_by;
+    let consumed_by = "";
     /*}}}*/
     /* SEEKER ACTIVE HIDE {{{*/
     if( t_seek.t_seeker_PU_is_active() )
@@ -6624,7 +6796,7 @@ if(log_this) log("...%c[mouse_down_on_a_push_pin: "+mouse_down_on_a_push_pin+"]%
 
     /*}}}*/
     /*}}}*/
-if( log_this && consumed_by) logBIG(consumed_by, lf6);
+if( log_this && consumed_by) log("%c"+consumed_by, lf6);
     return consumed_by;
 };
 /*}}}*/
@@ -6666,14 +6838,9 @@ if( log_this) log("%c...pivot_PANEL_changed_since_onDown "+ pivot_PANEL_changed_
     /* 1/2 UNGROUP JUST-PINNED PANEL {{{*/
     if(pinned) {
 if( log_this) log("%c UNGROUP JUST-PINNED TOOL", lf6);
-        if( prop.get( t_data.TOOLS_SCROLL ) ) {
+        if( prop.get( t_data.TOOLS_SCROLL ) )
+            t_util.t_set_position_fixed( onWork_PANEL );
 
-            let x = onWork_PANEL.offsetLeft - window.scrollX;
-            let y = onWork_PANEL.offsetTop  - window.scrollY;
-
-            onWork_PANEL.style.left = x+"px";
-            onWork_PANEL.style.top  = y+"px";
-        }
         onWork_PANEL.style.zIndex = t_data.ZINDEX_PINNED_PANEL_ZERO + onWork_PANEL.tool_rank;
 /*{{{
 t_log_panel_style_zIndex(onWork_PANEL, caller+" [UNGROUP JUST-PINNED TOOL]");
@@ -6734,8 +6901,7 @@ if( log_this) log("%c move_panel #"+move_panel_idx+" "+ TOOL_panels[move_panel_i
             /* LAYOUT GROUPED PANELS AROUND NEW PIVOT PANEL */
             t_tools_set_top_xy(h_x, h_y);
 
-            /* consume [fully_spread_since_onDown] so it may not be cycled without another onDown */
-            fully_spread_since_onDown = true;
+            fully_spread_since_onDown = true; /* so it may not be cycled without another onDown */
         }
     }
     /*}}}*/
@@ -6750,6 +6916,7 @@ if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lbF+lb7);
+if( log_this) t_fly.t_log_event_status(caller, lf7);
     let consumed_by = "";
 /*}}}*/
 /*{{{
@@ -6763,6 +6930,17 @@ logBIG("...onWork_EL=["+t_util.get_id_or_tag(onWork_EL)+"]")
 if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
 
         return "";
+    }
+    /*}}}*/
+    /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
+    let sentence_el        = t_select.t_SENTENCE_get_el_sentence_container(onDown_EL);
+    if( sentence_el )
+    {
+        consumed_by += " .. ON A SENTENCE ELEMENT";
+
+        t_preventDefault(e, consumed_by);
+
+        t_SENTENCE_add_listener(caller);
     }
     /*}}}*/
     /* SELECT WORD -OR- BUBBLE EVENT {{{*/
@@ -6783,9 +6961,8 @@ logXXX("SELECT WORD: onWork_EL.tagName....................=["+ onWork_EL.tagName
         }
         /*}}}*/
         /* CURRENTLY [WORDING] or [ANCHOR_FREEZE] {{{*/
-        else if(prop.get(t_data.WORDING) || prop.get(t_data.ANCHOR_FREEZE))
+        else if( t_get_doc_handler_freezed() )
         {
-            consumed_by = "SELECT WORD";
             if(onWork_EL.tagName == "A")
             {
                 consumed_by += " .. (t_data.WORDING) or (ANCHOR FREEZED)";
@@ -6805,12 +6982,12 @@ logXXX("SELECT WORD: onWork_EL.tagName....................=["+ onWork_EL.tagName
        && !has_el_class(onWork_EL, t_data.CSS_SCROLLING)
        &&  t_seek.t_seeker_has_TARGET()
       ) {
-        consumed_by += "SEEK TOOL ["+t_seek.t_seeker_get_TOOL_label()+"] ON DOC";
+        consumed_by = "SEEK TOOL ["+t_seek.t_seeker_get_TOOL_label()+"] ON DOC";
         add_page_pointermove_listener( caller );
         add_long_press_listener("ON DOWN DOC TOOL");
     }
     /*}}}*/
-if(log_this && consumed_by) log("%c"+caller+": %c"+consumed_by, lf7, lb7);
+if( log_this && consumed_by) log("%c"+consumed_by, lf7);
     return consumed_by;
 };
 /*}}}*/
@@ -6853,6 +7030,36 @@ let onDown_7_STALL_cancel  = function()
     move_on_stall_timer = null;
 };
 /*}}}*/
+/*}}}*/
+/*_ t_get_doc_handler_freezed {{{*/
+let t_get_doc_handler_freezed = function()
+{
+/*{{{*/
+let   caller = "t_get_doc_handler_freezed";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.EV1_DOWN;
+
+/*}}}*/
+    let doc_handler_freezed
+        =  prop.get( t_data.ANCHOR_FREEZE )
+        || prop.get( t_data.WORDING       )
+    ;
+
+    doc_handler_freezed
+        = onDown_CTRL
+        ? !doc_handler_freezed
+        :  doc_handler_freezed;
+
+/*{{{*/
+if( log_this)
+    log_key_val(   caller+": ...return "+ doc_handler_freezed
+               ,{ ANCHOR_FREEZE         :  prop.get( t_data.ANCHOR_FREEZE )
+                , WORDING               :  prop.get( t_data.WORDING       )
+                , onDown_CTRL
+                , callers               : t_log.get_callers()
+               }, lbH+lfX[doc_handler_freezed ? 4:6]);
+/*}}}*/
+    return doc_handler_freezed;
+};
 /*}}}*/
 /*_ t_get_onDown_SCROLL_XY {{{*/
 let t_get_onDown_SCROLL_XY = function()
@@ -6903,7 +7110,7 @@ let onMove_selection_removed;
 /*… t_PAGE_pointermove_drag {{{*/
 let t_PAGE_pointermove_drag = function(e)
 {
-if(e.ctrlKey) { log("%c PAGE POINTER MOVE IGNORED .. f(e.ctrlKey)", lbH+lf2); del_page_and_tool_pointermove_listeners( "e.ctrlKey" ); return; }
+if(e.ctrlKey) { log("%c PAGE POINTER MOVE IGNORED .. f(e.ctrlKey)", lbH+lf2); del_page_and_tool_pointermove_listeners( "e.ctrlKey" ); return false; }
 /* log {{{ */
 let   caller = "t_PAGE_pointermove_drag";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
@@ -6935,6 +7142,8 @@ if( tag_this && (mousemove_consumed_by != consumed_by)) log("%c"+consumed_by, lo
     mousemove_consumed_by = consumed_by;
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("PAGE POINTER MOVED");
+
+    return (mousemove_consumed_by != "");
 };
 /*}}}*/
 /*… t_TOOL_pointermove_drag {{{*/
@@ -7137,24 +7346,25 @@ let   caller = "onMove_1_STICKY_TOOL_SEEK";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
     log_this = log_this && !mousemove_consumed_by; /* LOG FIRST MOVE ONLY */
+    let consumed_by = "";
 /*}}}*/
     /* NO STICKY SEEK TARGET {{{*/
     let sticky = t_sticky.t_sticky_get_SEEK_NEXT(log_this);
     if(!sticky ) {
 
 if( log_this && !mousemove_consumed_by) log("%c"+caller+"%c NO STICKY SEEK TARGET", lbL+lf1, lbR+lb8);
-        return;
+        return consumed_by;
     }
     /*}}}*/
     /* NO GRABBED STICKY {{{*/
     if( sticky != onDown_EL) {
 
 if( log_this && !mousemove_consumed_by) log("%c"+caller+"%c NO GRABBED STICKY", lbL+lf1, lbR+lb8);
-        return;
+        return consumed_by;
     }
     /*}}}*/
     /* SEEKER MOVE TO STICKY {{{*/
-    let consumed_by = caller+": SEEKER MOVE TO STICKY";
+    consumed_by = caller+": SEEKER MOVE TO STICKY";
 if( log_this) t_sticky.t_sticky_LOG(sticky, caller);
 
     t_seek.t_seeker_onMove2_ON_NEXT_STICKY(sticky, onDown_SCROLL_XY);
@@ -7192,7 +7402,7 @@ if(log_this) log("HIDE SEEK TOOL");
     }
     /*}}}*/
     /* RESIZE .. DIR .. MOVE {{{*/
-    let consumed_by;
+    let consumed_by = "";
     if(!consumed_by && t_sticky.t_sticky_is_RESIZING  (   sticky))
         consumed_by = onMove_2_STICKY_TOOL_MOVE_RESIZE(e, sticky, log_this);
 
@@ -7232,7 +7442,7 @@ let onMove_2_STICKY_TOOL_MOVE_RESIZE = function(e,sticky,log_this)
 /*{{{*/
 let   caller = "onMove_2_STICKY_TOOL_MOVE_RESIZE";
 
-    let consumed_by;
+    let consumed_by = "";
 /*}}}*/
     /* TRACK MOUSE WHILE ON COOLDOWN {{{*/
     if( move_cooldown_is_pending() )
@@ -7275,7 +7485,7 @@ let onMove_2_STICKY_TOOL_MOVE_DIR = function(e,sticky,log_this)
 /*{{{*/
 let   caller = "onMove_2_STICKY_TOOL_MOVE_DIR";
 
-    let consumed_by;
+    let consumed_by = "";
 /*}}}*/
     /* MOUSE ON COOLDOWN .. TRACK LAST XY {{{*/
     if( move_cooldown_is_pending() )
@@ -7524,7 +7734,7 @@ if( log_this) logBIG(caller+": pivot_PANEL_changed_since_onDown=["+pivot_PANEL_c
     }
 }}}*/
     /* TRACK MOUSE WHILE ON COOLDOWN .. return {{{*/
-    let consumed_by;
+    let consumed_by = "";
     if( move_cooldown_is_pending() )
     {
         consumed_by = "SELECTION ON COOLDOWN";
@@ -7536,18 +7746,18 @@ if(log_this) logBIG(consumed_by +": "+ move_cooldown_reason);
     /*}}}*/
     /* REQUIRES CURRENT SLOT OR [last_selected_slot] {{{*/
     let slot  = t_get_onWork_EL_slot();
-    if( slot <= 0) return;
+    if( slot <= 0) return consumed_by;
     if(!t_select.t_select_get_ccs_length() )
     {
 if( log_this) log(caller+": SLOT #"+slot+" NOT CURRENLTY INITIALIZED");
 
         if(t_preventDefault_caller) t_restoreDefault("NOT CURRENLTY INITIALIZED");
 
-        return;
+        return consumed_by;
     }
     consumed_by = "SCROLL TO [SLOT NUM]";
     /*}}}*/
-    /* LONG PRESS dismiss {{{*/
+    /* LONG-PRESS dismiss {{{*/
     if( is_long_press_pending() )
         del_long_press_listener("PAGE DRAGGED");
 
@@ -7557,7 +7767,7 @@ if( log_this) log(caller+": SLOT #"+slot+" NOT CURRENLTY INITIALIZED");
     if(!grabbed) {
 /*{{{
         if     (t_seek.t_seeker_isOn_SLOT_EL(onWork_EL   )          ) { t_seek.t_seeker_onMove1_grab("ON SELECTION"); }
-        else if(                      onWork_PANEL == sel_bag) { t_seek.t_seeker_onMove1_grab("ON SEL_BAG"  ); }
+        else if(                             onWork_PANEL == sel_bag) { t_seek.t_seeker_onMove1_grab("ON SEL_BAG"  ); }
 }}}*/
     }
 /*{{{
@@ -7584,7 +7794,7 @@ if( log_this) log(caller+": on_sticky=["+on_sticky+"]");
     /* [quick_move] {{{*/
     let quick_move
         = t_seek.t_seeker_is_seeker_PU_ONSEEKER()
-        || prop.get(t_data.TOOLS_EXTRAS)
+        || prop.get(t_data.TOOLS_TIER2)
     ;
 
     t_seek.t_seeker_set_class(t_data.CSS_QUICK_MOVE, quick_move);
@@ -7597,7 +7807,11 @@ if( log_this) log(caller+": on_sticky=["+on_sticky+"]");
     switch(dir) {
         /* [SEEKER MOVE GRAB] {{{*/
         default:
-        case DIR_GRAB:      { t_seek.t_seeker_onMove1_grab("GRAB SELECTION"); } break;
+        case DIR_GRAB:      {
+            t_seek.t_seeker_onMove1_grab("GRAB SELECTION");
+
+            t_select.slot_visible_num_array_update( to_slot );
+        } break;
         /*}}}*/
         /* RIGHT .. NEXT .. ( num + 1) {{{*/
         case DIR_NUM_NEXT:  {
@@ -7719,6 +7933,63 @@ if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_mo
                   ,lbH+lf5    ,lbL+lf5         ,lbR+lf5           ,lbH+lf4                                );
     return consumed_by;
 };
+/*}}}*/
+/* SENTENCE */
+/*{{{*/
+/*_ t_SENTENCE_add_listener {{{*/
+let t_SENTENCE_add_listener = function(_caller)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_add_listener";
+let log_this = LOG_MAP.EV0_LISTEN;
+
+if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
+/*}}}*/
+    if("ontouchmove"  in document.documentElement) {
+        add_listener_capture_active(   window, "touchmove"     , t_SENTENCE_drag);
+    }
+    else {
+        add_listener_capture_active(   window, "mousemove"     , t_SENTENCE_drag);
+        add_listener_capture_active(   window, "wheel"         , t_SENTENCE_drag);
+    }
+};
+/*}}}*/
+/*_ t_SENTENCE_del_listener {{{*/
+let t_SENTENCE_del_listener = function(_caller)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_del_listener";
+let log_this = LOG_MAP.EV0_LISTEN;
+
+if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf6);
+/*}}}*/
+    if("ontouchmove"  in document.documentElement) {
+        remove_listener_capture_active(window, "touchmove"     , t_SENTENCE_drag);
+    }
+    else {
+        remove_listener_capture_active(window, "mousemove"     , t_SENTENCE_drag);
+        remove_listener_capture_active(window, "wheel"         , t_SENTENCE_drag);
+    }
+
+    t_hotspot_del_status_NOT_MOVED_ENOUGH();
+    t_hotspot_del_status_MOVE_ON_COOLDOWN();
+};
+/*}}}*/
+/*_ t_SENTENCE_drag {{{*/
+let t_SENTENCE_drag = function(event)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_drag";
+
+/*}}}*/
+    get_onMoveDXY(event, caller);
+    if( t_select.t_SENTENCE_drag_DXY( onMoveDXY ) )
+    {
+        zap_onMoveDXY(); /* next move from here */
+        event.preventDefault();
+    }
+};
+/*}}}*/
 /*}}}*/
 /* TOOL PANEL */
 /*… onMove_5_TOOL_PANEL_PINNED {{{*/
@@ -7869,6 +8140,7 @@ let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 if( log_this ) t_log.console_clear(caller);
 }}}*/
 if( log_this ) t_fly.t_log_event_status_if_changed(caller,  lf6 );
+    let consumed_by = "";
 /*}}}*/
     /* NO STICKY GRABBED {{{*/
 /*{{{
@@ -7892,10 +8164,10 @@ if( log_this) {
                       , lfX[l_x], true);
 }
 
-    if(!sticky) return;
+    if(!sticky) return consumed_by;
 
     let onSeekXYL   = t_seek.t_seeker_get_onSeekXYL();
-    let consumed_by = onSeekXYL.label;
+    consumed_by = onSeekXYL.label;
     /*}}}*/
     /* DISMISS LONG_PRESS LISTENER .. f(has_moved) {{{*/
     if( is_long_press_pending() )
@@ -7915,7 +8187,7 @@ if( log_this) log("%c NO SEEK ON STICKY_RING", lf8);
     /* [quick_move] {{{*/
     let quick_move
         =  t_seek.t_seeker_is_seeker_PU_ONSEEKER() /* has_el_class(seeker_PU, t_seek.CSS_SEEK5_ONSEEKER) */
-        || prop.get(t_data.TOOLS_EXTRAS)
+        || prop.get(t_data.TOOLS_TIER2)
     ;
 
     t_seek.t_seeker_set_class(t_data.CSS_QUICK_MOVE, quick_move);
@@ -8064,6 +8336,7 @@ let   caller = "t_pointerup_listener";
 let log_this = !onDown_SHIFT && !onDown_ALT && (LOG_MAP.EV0_LISTEN || LOG_MAP.EV3_UP);
 
 let tag_this = DOM_TOOLS_TAG || log_this;
+
 if( log_this) log("%c"+caller, lbH+lf8);
 if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 /*}}}*/
@@ -8114,7 +8387,7 @@ logXXX(" %c...........scroll_last_scrollY=["+ scroll_last_scrollY         +"%c]"
     if(!has_moved && behavior_TOUCH_ELSE_DESKTOP && has_been_scrolled_by_script)
         t_set_has_moved( has_been_scrolled_by_script );
 
-    let clicked    = is_a_click() && !move_cooldown_is_pending();
+    let clicked    = is_a_click(e) && !move_cooldown_is_pending();
 
     let dblclicked = is_a_dblclick(e, caller);
 
@@ -8150,19 +8423,20 @@ if( log_this) {
     /* EVENT CONSUME OR BUBBLE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     let                consumed_by = "";                                            let consumed_by_css =  "";
     if(!consumed_by) { consumed_by = onUp_0_MULTITOUCH         (e                    ); consumed_by_css = lf9; }
-    if(!consumed_by) { consumed_by = onUp_1_TOOL_GRID_CB       (e, clicked           ); consumed_by_css = lf1; }
+    if(!consumed_by) { consumed_by = onUp_1_TOOL_GRID_TIER_CB  (e, clicked,dblclicked); consumed_by_css = lf1; }
     if(!consumed_by) { consumed_by = onUp_2_SLOT_CONTAINER_CB  (e, clicked           ); consumed_by_css = lf2; }
     if(!consumed_by) { consumed_by = onUp_3_STICKY_TOOL_CB     (e, clicked,dblclicked); consumed_by_css = lf3; }
     if(!consumed_by) { consumed_by = onUp_3_SEEKER_TOOL_CB     (e, clicked,dblclicked); consumed_by_css = lf3; }
     if(!consumed_by) { consumed_by = onUp_3_DOC_TOOL_CB        (e, clicked,dblclicked); consumed_by_css = lf3; }
     if(!consumed_by) { consumed_by = onUp_4_DOC_TOUCH_CB       (e, clicked,dblclicked); consumed_by_css = lf4; }
     if(!consumed_by) { consumed_by = onUp_5_TOOL_ONCLICK       (e, clicked,dblclicked); consumed_by_css = lf5; }
-    if(!consumed_by) { consumed_by = onUp_6_DOC_CB             (e, clicked,dblclicked); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onUp_7_ON_EVENT_CONSUMED  (e                    ); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = e.type+" BUBBLING";                                consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = onUp_7_DOC_SENTENCES      (e, clicked,dblclicked); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onUp_7_DOC_WORDING        (e, clicked,dblclicked); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onUp_8_ON_EVENT_CONSUMED  (e                    ); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = e.type+" BUBBLING";                                consumed_by_css = lf9; }
 if( tag_this && !mouseup_consumed_by) log("%c"+consumed_by, lbH+consumed_by_css);
     mouseup_consumed_by = consumed_by;
-    /*............................*/ onUp_8_ON_MOUSEUP_DONE    (e);
+    /*............................*/ onUp_9_ON_MOUSEUP_DONE    (e);
     /* DONE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
     /* consumed_by {{{*/
@@ -8194,60 +8468,66 @@ if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+
 /*… onUp_0_MULTITOUCH {{{*/
 let onUp_0_MULTITOUCH = function(e)
 {
-
     onUp_MS = new Date().getTime();
 /*{{{
 if( prop.get(t_data.PIN_SEEKSPOT) ) log("%c DOWN-UP %c"+((onUp_MS - onDown_MS) / 1000), lbL+lf4,lbR+lf4);
 }}}*/
+/*{{{
     let    consumed_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
     return consumed_by;
+}}}*/
 };
 /*}}}*/
-/*… onUp_1_TOOL_GRID_CB {{{*/
-let onUp_1_TOOL_GRID_CB = function(e, clicked)
+/*… onUp_1_TOOL_GRID_TIER_CB {{{*/
+let onUp_1_TOOL_GRID_TIER_CB = function(e, clicked, dblclicked)
 {
-/*{{{*/
-let   caller = "onUp_1_TOOL_GRID_CB(clicked "+clicked+")";
+/* [clicked] .. [!EDIT_OR_STAGE] .. [SMALL MOVE] {{{*/
+let   caller = "onUp_1_TOOL_GRID_TIER_CB(clicked "+clicked+")";
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) t_fly.t_log_event_status(caller, lf1);
 
-    if(!clicked                   ) return "";
+    if(!clicked                          ) return "";
 
     if( prop.get( t_data.EDIT_OR_STAGE ) ) return "";
 
-    if(has_moved)
+    let is_on_grid = call_t_grid_IS_ON_GRID(caller);
+
+    let consumed_by = "";
+
+    if(!is_on_grid && has_moved)
     {
         if(check_big_moved(caller) ) {
-if( log_this) logBIG("BIG MOVE", lf2);
-            return;
+if( log_this) logBIG("BIG MOVE .. CLICK DENY", lf2);
+            return consumed_by;
         }
         else {
-if( log_this) logBIG("SMALL MOVE", lf7);
+if( log_this) logBIG("SMALL MOVE .. CLICK ALLOW", lf7);
         }
     }
 
-    let consumed_by = "";
 /*}}}*/
-    /*  MOVING TOOLS ON GRID .. f(hotring) {{{*/
-    if(!call_t_grid_IS_ON_GRID(caller))
+    /* MOVING TOOLS ON GRID .. f(hotring) {{{*/
+    if(!consumed_by && dblclicked && !is_on_grid)
     {
         if(onWork_EL == hotring) {
             consumed_by     = "MOVING TOOLS ON GRID";
 
-            t_move_TOOLS_ON_GRID(caller);
+            t_move_TOOLS_ON_GRID("DOUBLE CLICK");
         }
     }
     /*}}}*/
-    /*  TOOLS ON GRID {{{*/
-    else {
+    /*  TOOLS ARE ON GRID {{{*/
+    if(   !consumed_by
+       &&  is_on_grid
+      ) {
         /* MOVING TOOLS OFF GRID .. f(hotring || dimm_mask) {{{*/
         if((onWork_EL == hotring) || dimm_mask_is(onWork_EL))
         {
             if( !was_a_too_early_last_result() ) {
                 consumed_by = " MOVING TOOLS OFF GRID";
 
-                t_move_TOOLS_OFF_GRID(caller);
+                t_move_TOOLS_OFF_GRID("CLICK");
 
                 t_sync_layout(caller);
             }
@@ -8266,6 +8546,26 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
         /*}}}*/
     }
     /*}}}*/
+    /* NOT ON GRID .. ACTIVATE TIER0 TOOLS {{{*/
+    if(   !consumed_by
+       && !is_on_grid
+       && (onWork_EL == hotring)
+      ) {
+        prop.set(t_data.TOOLS_TIER2, false);
+        if( t_activate_tools_tier1("CLICK") ) {
+            consumed_by = "HOTSPOT CLICKED .. SELECT "+ t_data.TOOLS_TIER2;
+        }
+        else {
+            consumed_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
+            if( dom_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
+                t_tools_show  ();
+            }
+            else {
+                t_tools_hide();
+            }
+        }
+    }
+    /*}}}*/
 if(log_this) log(consumed_by);
     return consumed_by;
 };
@@ -8282,20 +8582,19 @@ if( log_this) caller += "(clicked "+clicked+")";
 if( log_this) t_fly.t_log_event_status(caller, lf2);
 /*}}}*/
     /* ASSERT FEATURE {{{*/
-    if(!clicked                                 ) return "";
-    if(!div_slot_containers_displayed()         ) return "";
-    if( has_moved                               ) return "";
-    if( was_a_too_early_last_result()           )
-    {
-if(log_this) logBIG("TOO EARLY: FOR "+ caller);
-
-        return "";
+    if(                                     !onWork_EL                        ) return "";
+    if(   t_util.is_el_or_child_of_parent_el(onWork_EL, t_fly.t_fly_div_get())) return "";
+    if(                                     (onWork_EL.tagName == "A"         )
+       && t_util.is_el_or_child_of_parent_el(onWork_EL, dimm_mask)            ) return "";
+    if(!clicked                                                               ) return "";
+    if(!div_slot_containers_displayed()                                       ) return "";
+    if( has_moved                                                             ) return "";
+    if( was_a_too_early_last_result()                                         ) {
+if(log_this) logBIG("TOO EARLY: FOR "+ caller);                                 return "";
     }
 
     /*}}}*/
     /* PARSE TARGET ELEMENT AND ITS CONTAINER {{{*/
-    let consumed_by               =  "ON "+ t_util.get_id_or_tag(onWork_EL);
-
     let clicked_COPY_TO_CLIPBOARD = has_el_class(                 onWork_EL, CSS_BUTTON_COPY   ) ? "COPY TO CLIPBOARD" : "";
     let clicked_MAGNIFY_START     = has_el_class(                 onWork_EL, CSS_BUTTON_MAGNIFY) ?           "MAGNIFY" : "";
     let clicked_PREV              = has_el_class(                 onWork_EL, CSS_BUTTON_PREV   ) ?      "MAGNIFY PREV" : "";
@@ -8313,6 +8612,8 @@ if(log_this) logBIG("TOO EARLY: FOR "+ caller);
         : clicked_MAGNIFY_STOP      ? null
         :                             onWork_EL
     ;
+
+    let consumed_by               =  "ON "+ t_util.get_id_or_tag( onWork_EL );
 
 if(log_this) {
     log_key_val(   caller
@@ -8353,7 +8654,7 @@ logXXX("#"+i+" "+child.className+" .. on_grid_top=["+child.on_grid_top+"]");
     else if(clicked_MAGNIFY_STOP                       ) { consumed_by = clicked_MAGNIFY_STOP     +" .. "+consumed_by; t_slot_container_set_fullscreen( clicked_target ); }
     else if(clicked_COPY_TO_CLIPBOARD && clicked_target) { consumed_by = clicked_COPY_TO_CLIPBOARD+" .. "+consumed_by;
         let container_to_copy_from
-            = (clicked_target.id == 'button_COPY_ALL_parent_div')
+            = (clicked_target.id == "button_COPY_ALL_parent_div")
             ?  clicked_target.parentElement
             :  clicked_target
         ;
@@ -8389,8 +8690,8 @@ log(container_to_copy_from.innerHTML)
         dimm_stop( caller );
     }
     /*}}}*/
-if(log_this)  log("%c"+caller+"%c"+consumed_by, lbL+lf2, lbR+lf2);
-    return caller+":"+LF+consumed_by;
+if(log_this)  log("%c"+caller+":%c"+LF+consumed_by, lf2, lbF+lf2);
+    return consumed_by;
 };
 /*}}}*/
 /*… onUp_3_STICKY_TOOL_CB {{{*/
@@ -8418,6 +8719,7 @@ if( log_this) log("%c sticky.touched=["+sticky.touched+"]", lf3);
 if( log_this) log(caller+"%c consumed_by=["+consumed_by+"]", lbH+lf3);
         return consumed_by;
     }
+    let sticky_is_EDITING   = t_sticky.t_sticky_is_EDITING( sticky );
     /*}}}*/
     /*{{{*/
     let onDown_sticky       = sticky && (onDown_EL == sticky) ;
@@ -8426,18 +8728,19 @@ if( log_this) log(caller+"%c consumed_by=["+consumed_by+"]", lbH+lf3);
 if( log_this) {
     let onSeekXYL = t_seek.t_seeker_get_onSeekXYL();
     log_key_val(caller
-                , {   seeker_PU_is_active   :      seeker_PU_is_active
-                    , onDown_sticky         :      onDown_sticky
-                    , onSeekXYL             :      onSeekXYL
-                    , sticky                : "["+ get_n_lbl(sticky             ) +"]"
-                    , onDown_EL             : "["+ get_n_lbl(onDown_EL          ) +"]"
-                    , onWork_EL             : "["+ get_n_lbl(onWork_EL          ) +"]"
-                    , onWork_PANEL          : "["+ get_n_lbl(onWork_PANEL       ) +"]"
-                    , onWork_SEEK_TARGET      : "["+ t_seek.t_seeker_get_TOOL_label()      +"]"
-                    , clicked               :      clicked
-                    , dblclicked            :      dblclicked
-                    , has_moved             :      has_moved
-                    , onDown_SEL_TEXT       : "["+ onDown_SEL_TEXT             +"]"
+                , {   seeker_PU_is_active
+                    , onDown_sticky
+                    , onSeekXYL
+                    , sticky_is_EDITING
+                    , sticky                : "["+ get_n_lbl( sticky       )       +"]"
+                    , onDown_EL             : "["+ get_n_lbl( onDown_EL    )       +"]"
+                    , onWork_EL             : "["+ get_n_lbl( onWork_EL    )       +"]"
+                    , onWork_PANEL          : "["+ get_n_lbl( onWork_PANEL )       +"]"
+                    , onWork_SEEK_TARGET    : "["+ t_seek.t_seeker_get_TOOL_label()+"]"
+                    , clicked
+                    , dblclicked
+                    , has_moved
+                    , onDown_SEL_TEXT       : "["+ onDown_SEL_TEXT                 +"]"
                 }, lf3);
 }
     let rejected_by = "";
@@ -8446,11 +8749,11 @@ if( log_this) {
     if(!consumed_by && onDown_sticky)
     {
         rejected_by
-            = !clicked                    ?     "NO CLICK"
-            :  dblclicked                 ? "DOUBLE CLICK"
-            :  has_moved                  ? "HAS MOVED ["+has_moved+"]"
-            :  prop.get(t_data.EDIT_OR_STAGE)    ? "HIDE EDIT MODE"
-            :                               "NO [sticky] TRANSITION";
+            = !clicked                          ?     "NO CLICK"
+            :  dblclicked                       ? "DOUBLE CLICK"
+            :  has_moved                        ? "HAS MOVED ["+has_moved+"]"
+            :  prop.get(t_data.EDIT_OR_STAGE)   ? "HIDE EDIT MODE"
+            :                                     "NO [sticky] TRANSITION";
 
         if(    clicked
            && !dblclicked
@@ -8467,8 +8770,8 @@ if(log_this) {
     else if(rejected_by) log("%c"+caller+":%c rejected_by %c PAGE "  +rejected_by, lbb+lbH+lf3, lbL, lbb+lbH+lf8);
     else                 log("%c"+caller+":%c NOT CONSUMED"                      , lbb+lbH+lf3,      lbb+lbH+lf8);
 }
-    return consumed_by;
 /*}}}*/
+    return consumed_by;
 };
 /*}}}*/
 /*… onUp_3_SEEKER_TOOL_CB {{{*/
@@ -8503,7 +8806,7 @@ if( log_this) log("%c"+caller, lf3);
     if( dblclicked                  ) return "";
     if( t_event_has_been_consumed() ) return "";
 
-    let consumed_by;
+    let consumed_by = "";
     /*}}}*/
     /* [clicked doc_div] .. (PLAYGROUND EMBEDDED TOOL) {{{*/
     if( clicked )
@@ -8640,7 +8943,7 @@ TODO: already called at this point by move handler
 */
     /*}}}*/
     /* PANEL DRAGGED .. t_sync_layout {{{*/
-/* NO .. onUp_8_TOOLS_LAYOUT_HANDLER should do the job with a delay
+/* NO .. onUp_9_TOOLS_LAYOUT_HANDLER should do the job with a delay
     let pinned = onWork_PANEL && onWork_PANEL.classList.contains(t_data.CSS_PINNED);
     if(!pinned)
         t_sync_layout(caller, 0);
@@ -8819,7 +9122,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 /*{{{*/
 if( log_this)
     log("%c "+caller+"("+get_n_lbl(el)+"): %c ...return "+result   +"%c el=["+get_n_lbl(el)+"]%c parent=["+get_n_lbl(t_util.get_el_parent_with_id(el))+"]%c bag=["+bag_id+"]"
-        ,lbL                                     ,lbR+(result ? lf5 : lf8) ,lbL                            ,lbR+lf7                                                          ,lbC+lf3             );
+        ,lbL                              ,lbR+(result ? lf5 : lf8) ,lbL                     ,lbR+lf7                                                   ,lbC+lf3             );
 /*}}}*/
     return result;
 };
@@ -8837,10 +9140,12 @@ if( log_this) prop.log_MAP(caller);
 /*}}}*/
     if(!id) return false;
     let result
-        =  (id ==  t_data.ANCHOR_FREEZE   )
+        =  (id ==  t_data.USER_LANG       )
+        || (id ==  t_data.ANCHOR_FREEZE   )
         || (id ==  t_data.CONTAINERS_HI   )
         || (id ==  t_data.SCROLL_SMOOTH   )
         || (id ==  t_data.OVERFLOW_VISI   )
+        || (id ==  t_data.DETAILS_RADIO   )
 
         || (id ==  t_data.SHOW_SEEKZONE   )
         || (id ==  t_data.PIN_SEEKSPOT    )
@@ -8853,11 +9158,12 @@ if( log_this) prop.log_MAP(caller);
         || (id ==  t_data.MASK_OR_HIDE    )
         || (id ==  t_data.EDIT_OR_STAGE   )
         || (id ==  t_data.DOM_HIDE1_RESET )
+        || (id ==  t_data.DOM_HIDE1_UNDO  )
         || (id ==  t_data.DENY_OR_ALLOW   )
 
         || (id ==  t_data.THEME_DARK      )
         || (id ==  t_data.TOOLS_TRAP      )
-        || (id ==  t_data.TOOLS_EXTRAS    )
+        || (id ==  t_data.TOOLS_TIER2     )
         || (id ==  t_data.TOOLS_SCROLL    )
 
         || (id ==  t_data.WORDING         )
@@ -8908,7 +9214,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) log("%c"+caller, lbb+lf7);
 /*}}}*/
-    let consumed_by;
+    let consumed_by = "";
     /* MOBILE el_event_handler .. CALLING {{{*/
 
 if( log_this) log("behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]");
@@ -8921,7 +9227,7 @@ if( log_this) log("t_preventDefault_caller=["+t_preventDefault_caller+"]");
         if(t_preventDefault_caller) t_restoreDefault("ON TOUCH UP");
 
         el_event_handler.handler(e);
-        t_cache_init_by( consumed_by );
+        t_cache_armed_by( consumed_by );
     }
     /*}}}*/
     /* DESKTOP DOC EVENT HANDLER .. BUBBLING {{{*/
@@ -8937,33 +9243,220 @@ if( log_this) log("%c"+caller+"%c consumed_by %c"+consumed_by, lbL, lbC, lbR+lf3
     return consumed_by;
 };
 /*}}}*/
-/*… onUp_6_DOC_CB .. t_data.WORDING {{{*/
-let onUp_6_DOC_CB = function(e, clicked, dblclicked)
+
+/*… onUp_7_DOC_SENTENCES {{{*/
+let onUp_7_DOC_SENTENCES = function(e, clicked, dblclicked)
+{
+/*{{{*/
+let   caller = "onUp_7_DOC_SENTENCES";
+let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
+
+if( log_this) t_fly.t_log_event_status(caller, lf7);
+/*}}}*/
+    /* !t_is_a_tool_el .. !has_moved .. !t_seek.t_seeker_PU_is_active {{{*/
+if(!is_a_DOM_LOAD_featured_function(caller)) return "";
+
+    let dismissed_by
+        = (!clicked                           ) ? "!clicked"
+        : ( has_moved                         ) ? has_moved
+        : (onDown_TOUCHES > 1                 ) ? ""
+        : ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
+        : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
+        : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
+        :                                          "";
+if( log_this && dismissed_by) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf7, lbA, lf9);
+    if(dismissed_by) return "";
+
+if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()+"%c onDown_TOUCHES=["+onDown_TOUCHES+"]"
+                   ,lf7        ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8]  ,lbH+lfX[dblclicked ? 5:8]       ,lbH+lf8                               );
+
+    let consumed_by = "";
+    /*}}}*/
+    /* [container   clicked] .. RESTORING CONTAINER SENTENCES .. f(on a sentence container) {{{*/
+    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
+    if(   container )
+    {
+        /* RESTORING MULTIPLE CONTAINERS {{{*/
+        if( cells )
+        {
+            for(let i=0; i < cells.length; ++i)
+                consumed_by
+                    =     t_select.t_SENTENCE_RESTORE( cells[i] )
+                    ||    consumed_by
+            ;
+        }
+
+        /*}}}*/
+        /* RESTORING SINGLE CONTAINER {{{*/
+        if(!consumed_by)
+        {
+            if(!t_util.is_el_child_of_id(onWork_EL, "log_popup_div") )
+            {
+
+                consumed_by = t_select.t_SENTENCE_RESTORE( container );
+            }
+            else {
+                if( t_util.is_el_child_of_class(onWork_EL, "xpath") )
+                {
+                    consumed_by = "CLOSING LOG POPUP";
+
+                    dom_popup.log_popup_hide();
+                }
+                else {
+                    consumed_by = "RESTORING ALL CONTAINERS SENTENCES";
+
+                    t_select.t_SENTENCE_RESTORE_ALL();
+                }
+            }
+        }
+    }
+    /*}}}*/
+    /*}}}*/
+    if( consumed_by )
+        t_event_set_e_consumed_by(e, consumed_by);
+
+if(log_this && consumed_by) log("%c"+consumed_by, lbb+lbH+lf7);
+    return consumed_by;
+};
+/*}}}*/
+/*_ onUp_7_DOC_SENTENCES_get_onDown_EL_container {{{*/
+let onUp_7_DOC_SENTENCES_get_onDown_EL_container = function(el)
+{
+/*{{{*/
+let   caller = "onUp_7_DOC_SENTENCES_get_onDown_EL_container";
+let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
+/*{{{
+// as [onDown_EL] cannot be a TEXT_NODE
+// ... it defaults to  EVENT target parent container
+// XXX that can have a huge textContent XXX
+}}}*/
+
+/*}}}*/
+    let container
+        =  t_util.get_el_parent_with_class(el, "container_light") /* ▼ ordered by priority... */
+        || t_util.get_el_parent_with_class(el, "container_dark" )
+
+    /* LIST */
+        || t_util.get_el_parent_with_tag  (el,  "LI"       )
+        || t_util.get_el_parent_with_tag  (el, "UL"        )
+        || t_util.get_el_parent_with_tag  (el, "OL"        )
+
+    /* DETAILS */
+        || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  )
+        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
+
+    /* GLOSSARY */
+        || t_util.get_el_parent_with_tag  (el,  "DT"       ) /* single cell Term        */
+        || t_util.get_el_parent_with_tag  (el,  "DD"       ) /* single cell Description */
+        || t_util.get_el_parent_with_tag  (el, "DL"        ) /*        cell collection  .. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl */
+
+    /* TABLE */
+        || t_util.get_el_parent_with_tag  (el,  "TH"       ) /* single cell             */
+        || t_util.get_el_parent_with_tag  (el,  "TD"       ) /* single cell             */
+        || t_util.get_el_parent_with_tag  (el,  "THEAD"    ) /*        cell collection  */
+        || t_util.get_el_parent_with_tag  (el,  "TFOOT"    ) /*        cell collection  */
+        || t_util.get_el_parent_with_tag  (el,  "COLGROUP" ) /*        cell collection  */
+        || t_util.get_el_parent_with_tag  (el,  "CAPTION"  ) /*        cell collection  */
+        || t_util.get_el_parent_with_tag  (el,  "TBODY"    ) /*        cell collection  */
+        || t_util.get_el_parent_with_tag  (el, "TABLE"     ) /*        cell collection  */
+
+    /* COMPOSITION */
+        || t_util.get_el_parent_with_tag  (el, "PRE"       )
+        || t_util.get_el_parent_with_tag  (el, "P"         )
+        || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE")
+        || t_util.get_el_parent_with_tag  (el, "DIR"       )
+        || t_util.get_el_parent_with_tag  (el, "DIV"       )
+    ;
+
+    if(!container) return "";
+
+    /* [CLICKED TITLE] ➔ [TITLE + DL] */
+    let c_next = container              .nextElementSibling;
+
+    let p_next = container.parentElement
+        ?        container.parentElement.nextElementSibling
+        :        null
+    ;
+
+    let group
+        = (!container)                          ? null
+        : ( c_next && (c_next.tagName == "DL")) ? [ container               , c_next ]
+        : ( p_next && (p_next.tagName == "DL")) ? [ container.parentElement , p_next ]
+        :                                         null
+    ;
+
+    /* [CLICKED DT] ➔ [CONTAINING DL] */
+    let dlist
+        = (!container)                        ? null
+        : ( container.nodeName == "DL"      ) ? container
+        : ( container.nodeName == "DT"      ) ? container.parentElement
+        :                                       null
+    ;
+
+    let table
+        = (!container)                        ? null
+        : ( container.nodeName ==  "THEAD"  ) ? container.parentElement
+        : ( container.nodeName ==  "TFOOT"  ) ? container.parentElement
+        : ( container.nodeName ==  "TBODY"  ) ? container.parentElement
+        : ( container.nodeName ==  "CAPTION") ? container.parentElement
+        : ( container.nodeName == "TABLE"   ) ? container
+        :                                      null
+    ;
+
+    let cells
+        =   group ?                        group
+        :   dlist ? dlist.querySelectorAll("DIV,DT,DD,TEMPLATE")
+        :   table ? table.querySelectorAll(    "TH,TD,CAPTION")
+        :           null
+    ;
+/*{{{*/
+if( log_this )
+    log_key_val_group(caller
+                      , {   el
+                          ,                   el_tagName : el.tagName
+                          , container
+                          , container_textContent_length : container.textContent.length
+                          , table
+                          , dlist
+                          , group
+                          , cells
+                      }, lbH+lf4, false);
+
+/*}}}*/
+    return { container , cells };
+};
+/*}}}*/
+/*… onUp_7_DOC_WORDING {{{*/
+let onUp_7_DOC_WORDING = function(e, clicked, dblclicked)
 {
     /* !t_is_a_tool_el .. !has_moved .. !t_seek.t_seeker_PU_is_active {{{*/
-let   caller = "onUp_6_DOC_CB";
+let   caller = "onUp_7_DOC_WORDING";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
 
     let dismissed_by
-        = ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
+        = (!clicked                           ) ? "!clicked"
+        : ( has_moved                         ) ? has_moved
+        : (onDown_TOUCHES > 1                 ) ? ""
+        : ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
-        : ( has_moved                         ) ?   has_moved
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
-if( log_this && dismissed_by) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf6, lbA, lf9);
+if( log_this && dismissed_by) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf7, lbA, lf9);
     if(dismissed_by) return "";
 
-if( log_this) log("%c"+caller, lf6);
+if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()
+                  ,lf7         ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8] ,lbH+lfX[dblclicked ? 5:8]     );
 
-    let consumed_by;
+    let consumed_by = "";
     /*}}}*/
-    /* DOC CLICK {{{*/
-    if(clicked && !dblclicked)
+    /* DOC [clicked   ] .. WORD SELECTION {{{*/
+    if(!consumed_by && !(dblclicked || (onDown_TOUCHES > 1)))
     {
         if( was_a_misclick() )
         {
 if(log_this) logBIG("WAS A MISSCLICK", lf3);
+
             consumed_by = "DOC MISSCLICK";
 
         }
@@ -8980,21 +9473,8 @@ if(log_this) logBIG("WAS A MISSCLICK", lf3);
             /* 2/3 -!t_data.EDIT_OR_STAGE ON HOTSPOT IN GUTTER .. HIDE CONTAINER {{{ */
             if(!consumed_by && prop.get( t_data.EDIT_OR_STAGE ))
             {
-                let range = t_select.get_range_from_XY(onDown_XY.x, onDown_XY.y);
-                if( range.startContainer )
-                {
-                    let    container  = t_select.get_text_container( range.startContainer );
-                    if(    container
-                           && (container != document.body)
-                           && (container != document.documentElement)
-                      ) {
-/*{{{                   consumed_by = "DOC CLICK .. t_hide.dom_hide1_container_clicked("+get_n_lbl(container)+")"; }}}*/
-                        consumed_by = "DOC CLICK .. HIDE CONTAINER ["+get_n_lbl(container)+"]";
+                consumed_by = t_tools_hide_onDown_XY();
 
-                        t_window_getSelection_removeAllRanges(caller);
-                        t_hide.dom_hide1_container_clicked( container );
-                    }
-                }
             }
             /*}}}*/
             /* 3/3 - ON A DOC WORD .. ADD A SELECTION {{{*/
@@ -9020,7 +9500,7 @@ if( log_this) log_key_val(    "ON A DOC WORD"
 
                     /* no default to prevent from */
 
-                    onUp_6_DOC_CB_CLICK_WORD(consumed_by);
+                    onUp_7_DOC_CB_CLICK_WORD(consumed_by);
                 }
                 /*}}}*/
                 /* [EVENT HANDLER FREEZED OR BUBBLE TO] .. OR .. [CLICK WORD] {{{*/
@@ -9037,7 +9517,7 @@ if(log_this) log("DOC CLICK .. NOT CONSUMED .. EMBEDDED DOC TOOL "+get_id_or_tag
 
                         t_preventDefault(e, caller+" "+consumed_by);
 
-                        onUp_6_DOC_CB_CLICK_WORD(consumed_by);
+                        onUp_7_DOC_CB_CLICK_WORD(consumed_by);
                     }
                     else {
                         /* NOTE: [anchor_freeze should have been processed by onUp_4_DOC_TOUCH_CB] */
@@ -9052,28 +9532,34 @@ if(log_this) log("DOC CLICK .. NOT CONSUMED .. EMBEDDED DOC TOOL "+get_id_or_tag
         }
     }
     /*}}}*/
-if(log_this && consumed_by) log("%c"+consumed_by, lbb+lbH+lf6);
+if(log_this && consumed_by) log("%c"+consumed_by, lbb+lbH+lf7);
     return consumed_by;
 };
 /*}}}*/
-/*… onUp_6_DOC_CB_CLICK_WORD .. t_data.WORDING {{{*/
-let onUp_6_DOC_CB_CLICK_WORD = function(doc_click_context)
+/*… onUp_7_DOC_CB_CLICK_WORD .. t_data.WORDING {{{*/
+let onUp_7_DOC_CB_CLICK_WORD = function(doc_click_context)
 {
 /*{{{*/
-let   caller = "onUp_6_DOC_CB_CLICK_WORD";
-if(!is_a_DOM_LOAD_featured_function(caller)) return "";
+let   caller = "onUp_7_DOC_CB_CLICK_WORD";
+if(!is_a_DOM_LOAD_featured_function(caller)) return;
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) caller += "("+doc_click_context+")";
 /*}}}*/
     /* SEARCH DOC {{{*/
+/*{{{
+console.profile("call_touchedWord");
+}}}*/
     call_touchedWord(onDown_XY.x, onDown_XY.y);
+/*{{{
+console.profileEnd();
+}}}*/
 
     /*}}}*/
     /* GOT NO SELECTION RANGE {{{*/
     if( !t_select.get_touchedWord_range_parent() )
     {
-if( log_this) log("%c "+caller+" %c NO SELECTION RANGE",lbL+lf6  ,lbR+lf2);
+if( log_this) log("%c "+caller+" %c NO SELECTION RANGE",lbL+lf7  ,lbR+lf2);
 
         return;
     }
@@ -9082,24 +9568,28 @@ if( log_this) log("%c "+caller+" %c NO SELECTION RANGE",lbL+lf6  ,lbR+lf2);
     let  touchedWord_slot = t_select.get_touchedWord_slot();
     if( !touchedWord_slot )
     {
-if( log_this) log("%c "+caller+" %c NO TOUCHED WORD SLOT",lbL+lf6  ,lbR+lf2);
+if( log_this) log("%c "+caller+" %c NO TOUCHED WORD SLOT",lbL+lf7  ,lbR+lf2);
 
         return;
     }
     /*}}}*/
+/*{{{
+console.log("touchedWord_slot=["+touchedWord_slot+"]")
+console.dir(t_select.ccs)
+}}}*/
     /* GOT NO SLOT PATTERN .. RESELECTING ALL PATTERNS {{{*/
     if( !t_select.ccs[touchedWord_slot].pattern )
     {
-if( log_this) log("%c "+caller+" %c NO TOUCHED WORD PATTERN: RESELECTING",lbL+lf6  ,lbR+lf2);
+if( log_this) log("%c "+caller+" %c NO TOUCHED WORD PATTERN: RESELECTING",lbL+lf7  ,lbR+lf2);
 
         t_pat_bag3_reselect_all();
 /*{{{
-logXXX("%c "+caller+" %c NO TOUCHED WORD PATTERN: NOT RESELECTING", lbL+lf6, lbR+lf2);
+logXXX("%c "+caller+" %c NO TOUCHED WORD PATTERN: NOT RESELECTING", lbL+lf7, lbR+lf2);
 }}}*/
         return;
     }
     /*}}}*/
-if( log_this) log("%c"+caller+" %c touchedWord_slot %c "+touchedWord_slot, lbL+lf6, lbC, lbR+lfX[touchedWord_slot]);
+if( log_this) log("%c"+caller+" %c touchedWord_slot %c "+touchedWord_slot, lbL+lf7, lbC, lbR+lfX[touchedWord_slot]);
     /* SYNC CONTAINER AND BAGS {{{*/
 /*{{{
     t_set_touchedWord_startContainer();
@@ -9109,30 +9599,31 @@ if( log_this) log("%c"+caller+" %c touchedWord_slot %c "+touchedWord_slot, lbL+l
     /*}}}*/
 };
 /*}}}*/
-/*… onUp_7_ON_EVENT_CONSUMED {{{*/
-let onUp_7_ON_EVENT_CONSUMED = function(e)
+
+/*… onUp_8_ON_EVENT_CONSUMED {{{*/
+let onUp_8_ON_EVENT_CONSUMED = function(e)
 {
-let   caller = "onUp_7_ON_EVENT_CONSUMED";
+let   caller = "onUp_8_ON_EVENT_CONSUMED";
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
-if( log_this) log("%c"+caller +" "+t_event_consumed_cause, lf7);
+if( log_this) log("%c"+caller +" "+t_event_consumed_cause, lf8);
 
     return t_event_has_been_consumed();
 };
 /*}}}*/
-/*… onUp_8_ON_MOUSEUP_DONE {{{*/
+/*… onUp_9_ON_MOUSEUP_DONE {{{*/
 /*{{{*/
 const   TOOLS_LAYOUT_ON_MOUSEUP_HANDLER_DELAY = 500;
 
 let   t_tools_layout_on_mouseup_timer;
 /*}}}*/
-let onUp_8_ON_MOUSEUP_DONE = function(e)
+let onUp_9_ON_MOUSEUP_DONE = function(e)
 {
 /*{{{*/
-let   caller = "onUp_8_ON_MOUSEUP_DONE";
+let   caller = "onUp_9_ON_MOUSEUP_DONE";
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
-if( log_this) t_fly.t_log_event_status(caller, lf8);
+if( log_this) t_fly.t_log_event_status(caller, lf9);
 /*}}}*/
     t_check_onModalMS(caller);
 
@@ -9185,7 +9676,7 @@ if(log_this) {
                  , was_a_dblclick : was_a_dblclick()
                  ,      has_moved
                  ,       CONSUMED : t_event_consumed_cause
-                 }, lf8);
+                 }, lf9);
 }
 /*}}}*/
     }
@@ -9207,7 +9698,7 @@ if(log_this) {
     /* STICKY SCROLLING MSG CSS {{{*/
     if(sticky && has_el_class(sticky, t_data.CSS_SCROLLING))
     {
-if( log_this) log("%c AFTER SCROLLING STICKY "+sticky.id+" %c REMOVING STICKY SCROLL CSS", lbb+lbL+lf8, lbb+lbR+lf5);
+if( log_this) log("%c AFTER SCROLLING STICKY "+sticky.id+" %c REMOVING STICKY SCROLL CSS", lbb+lbL+lf9, lbb+lbR+lf5);
 
         del_el_class(sticky, t_data.CSS_SCROLLING);
     }
@@ -9215,7 +9706,7 @@ if( log_this) log("%c AFTER SCROLLING STICKY "+sticky.id+" %c REMOVING STICKY SC
     /* STICKY PASTE TARGET INDICATORS {{{*/
     if(sticky && has_el_class(sticky, t_data.CSS_HAS_FOCUS))
     {
-if( log_this) log("%c WHILE EDITING STICKY "+sticky.id+" %c IGNORING STICKY PASTE TARGET INDICATORS", lbb+lbL+lf8, lbb+lbR+lf5);
+if( log_this) log("%c WHILE EDITING STICKY "+sticky.id+" %c IGNORING STICKY PASTE TARGET INDICATORS", lbb+lbL+lf9, lbb+lbR+lf5);
 
     }
     else {
@@ -9232,7 +9723,7 @@ if( log_this) log( "SHOWING STICKY PASTE TARGET INDICATORS");
         else {
             let some_paste_indicator_changed = t_sticky.t_sticky_set_SEL_PASTE_TARGET_STATE(false);
 
-if( log_this && some_paste_indicator_changed) log("%c NO CURRENT SELECTION %c HIDING STICKY PASTE TARGET INDICATORS", lbb+lbL+lf8, lbb+lbR+lf6);
+if( log_this && some_paste_indicator_changed) log("%c NO CURRENT SELECTION %c HIDING STICKY PASTE TARGET INDICATORS", lbb+lbL+lf9, lbb+lbR+lf6);
         }
     }
     /*}}}*/
@@ -9240,7 +9731,7 @@ if( log_this && some_paste_indicator_changed) log("%c NO CURRENT SELECTION %c HI
     let import_clipboard = t_share.t_share_get_import_clipboard();
     if( import_clipboard && (import_clipboard.parentElement != null))
     {
-if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf8);
+if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf9);
 
         let focus_in_msg = "PASTE EXPORTED MAIL MESSAGE HERE";
         t_focus_clipboard_target(import_clipboard, focus_in_msg, caller);
@@ -9262,7 +9753,7 @@ if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf8);
     /*}}}*/
     /* POST EVENT DONE HANDLER {{{*/
     if(has_moved || call_t_grid_IS_ON_GRID(caller) || cached_user_options_map.length) {
-        t_tools_layout_on_mouseup_timer = setTimeout(onUp_8_TOOLS_LAYOUT_HANDLER, TOOLS_LAYOUT_ON_MOUSEUP_HANDLER_DELAY);
+        t_tools_layout_on_mouseup_timer = setTimeout(onUp_9_TOOLS_LAYOUT_HANDLER, TOOLS_LAYOUT_ON_MOUSEUP_HANDLER_DELAY);
     }
     else {
         clr_onWork_EL(caller);
@@ -9271,6 +9762,13 @@ if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf8);
 
     onWork_MOVABLE_CHILD = null;
     /*}}}*/
+    /* SENTENCE CONTAINER ➔ REMOVE FONT-SIZE WHEEL LISTENER {{{*/
+    if( t_select.t_SENTENCE_GET_CONTAINERS() )
+    {
+        t_SENTENCE_del_listener(caller);
+
+    }
+    /*}}}*/
 /*{{{
 t_fly.t_fly_tooltip_add(caller)//TODO PIVOT
 }}}*/
@@ -9278,11 +9776,11 @@ t_fly.t_fly_tooltip_add(caller)//TODO PIVOT
     onLong_press_scroll_freezed = false;
 };
 /*}}}*/
-/*… onUp_8_TOOLS_LAYOUT_HANDLER {{{*/
-let onUp_8_TOOLS_LAYOUT_HANDLER = function()
+/*… onUp_9_TOOLS_LAYOUT_HANDLER {{{*/
+let onUp_9_TOOLS_LAYOUT_HANDLER = function()
 {
 /*{{{*/
-let caller   = "onUp_8_TOOLS_LAYOUT_HANDLER";
+let caller   = "onUp_9_TOOLS_LAYOUT_HANDLER";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV0_LISTEN || LOG_MAP.EV3_UP);
 
     if( call_t_grid_IS_ON_GRID(caller)             ) { clr_onWork_EL(caller); return; }
@@ -9299,16 +9797,15 @@ t_fly.t_fly_tooltip_add(caller+": "+get_n_lbl(onWork_PANEL)+" NEAR VIEWPORT [BOT
 
 }}}*/
     /* TOOL PANELS LAYOUT {{{*/
-    if( t_cache_changed( caller) ) {
-        t_cache_layout("Tools layout adjusted");
+    if( t_cache_armed( caller) ) {
+        t_cache_sync("Tools layout adjusted");
 /*{{{
 t_fly.t_fly_tooltip_add( "Tools layout adjusted")//TODO PIVOT
 }}}*/
-        t_tools_set_top_xy(h_x, h_y);
     }
     t_set_onWork_EL(null, caller);
     t_seek.t_seeker_set_TOOL(onWork_EL);
-if( log_this) t_fly.t_log_event_status(caller, lbb+lf8);
+if( log_this) t_fly.t_log_event_status(caller, lbb+lf9);
 
 /*{{{
     t_raise_pivot_PANEL(caller);//TODO PIVOT
@@ -9330,7 +9827,7 @@ if( log_this) t_fly.t_log_event_status(caller, lbb+lf8);
     t_reinstate_USER_OPTIONS( caller );
 
     /*}}}*/
-        clr_onWork_EL(caller);
+    clr_onWork_EL(caller);
 };
 /*}}}*/
 /*}}}*/
@@ -9418,14 +9915,14 @@ if( log_this) log_caller();
 
     rearm_long_press_timer = null;
 
-    /* Remember [LAST LONG PRESS CALLER] */
+    /* Remember [LAST LONG-PRESS CALLER] */
     long_press_caller = _caller;
 
-    /* Clear pending [LONG PRESS TIMER] */
+    /* Clear pending [LONG-PRESS TIMER] */
     if(long_press_timer) clearTimeout(long_press_timer);
     /*.............................*/ long_press_timer = null;
 
-    /* Replace [LONG PRESS ARM TIMER] */
+    /* Replace [LONG-PRESS ARM TIMER] */
     if(long_press_arm_timer) clearTimeout(long_press_arm_timer);
     long_press_arm_timer =     setTimeout(long_press_arm_handler, LONG_PRESS_ARM_DELAY);
 };
@@ -9482,7 +9979,7 @@ if( log_this) log("%c IN GUTTER "+_caller+" (onWork_EL == null) .. DELETING long
         clearTimeout( long_press_arm_timer );
         /*.........*/ long_press_arm_timer = null;
 
-        /* HIDE PENDING [LONG PRESS ARM SCHEDULED] */
+        /* HIDE PENDING [LONG-PRESS ARM SCHEDULED] */
         t_seek.t_seeker_PU_disarm();
 
         if(long_press_timer == null) {
@@ -9505,7 +10002,7 @@ if( log_this) log("%c...long press DISARMED by: "+ _caller, lf3);
 
         if(log_this)
             t_fly.t_log_transcript_event_bot( "<span style='color:white;'>"+t_data.SYMBOL_HEAVY_BALLOT+"</span>"
-                +                      " <span style='text-decoration:line-through;'>LONG PRESS</span> CANCELED: "
+                +                      " <span style='text-decoration:line-through;'>LONG-PRESS</span> CANCELED: "
                 +                      " <em>"+ _caller +"</em>"
             );
 if( log_this) log("%c...long press CANCELED by: "+_caller, lf2);
@@ -9546,18 +10043,18 @@ let log_this = LOG_MAP.EV4_LONG_PRESS;
 if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 /*}}}*/
 
-    /* [LONG PRESS ARM DONE] */
+    /* [LONG-PRESS ARM DONE] */
     long_press_arm_timer = null;
 
-    /* SHOW LONG PRESS SCHEDULED */
+    /* SHOW LONG-PRESS SCHEDULED */
     t_seek.t_seeker_PU_arm();
 
-    /* Replace [LONG PRESS TIMER] */
+    /* Replace [LONG-PRESS TIMER] */
     if(long_press_timer) clearTimeout(long_press_timer);
     long_press_timer     = setTimeout(long_press_handler, LONG_PRESS_DELAY);
 
     /* TRANSCRIPT LOG {{{*/
-if( log_this) log("%c"+caller+": ADDING LONG PRESS LISTENER ON %c"+get_onWork_TOOL_label(), lbH+lf4, lbH+lf3);
+if( log_this) log("%c"+caller+": ADDING LONG-PRESS LISTENER ON %c"+get_onWork_TOOL_label(), lbH+lf4, lbH+lf3);
 
 if( log_this)
     t_fly.t_log_transcript_event_top("<span style='color:yellow;'>"+ t_data.SYMBOL_BLACK_CIRCLE +"</span>"
@@ -9575,24 +10072,27 @@ let log_this = DOM_TOOLS_LOG || LOG_MAP.EV4_LONG_PRESS;
 let tag_this = DOM_TOOLS_TAG || log_this;
 if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 /*}}}*/
-    /* [LONG PRESS DONE] */
+    /* [LONG-PRESS DONE] */
     long_press_timer = null;
 
-    /* HIDE PENDING [LONG PRESS ARM SCHEDULED] */
+    /* HIDE PENDING [LONG-PRESS ARM SCHEDULED] */
     t_seek.t_seeker_PU_disarm();
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     let                consumed_by = "";                               let consumed_by_css =  "";
-    if(!consumed_by) { consumed_by = onLong_press1_HOTSPOT_IN_GUTTER   (); consumed_by_css = lf1; }
+    if(!consumed_by) { consumed_by = onLong_press1_HOTSPOT             (); consumed_by_css = lf1; }
     if(!consumed_by) { consumed_by = onLong_press2_TOOLS_ON_GRID       (); consumed_by_css = lf2; }
-    if(!consumed_by) { consumed_by = onLong_press3_TOOL_EL             (); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onLong_press4_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf4; }
-    if(!consumed_by) { consumed_by = onLong_press5_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf5; }
-    if(!consumed_by) { consumed_by = onLong_press6_SLOTTED_WORD        (); consumed_by_css = lf6; }
+    if(!consumed_by) { consumed_by = onLong_press3_EDIT_OR_STAGE       (); consumed_by_css = lf3; }
+    if(!consumed_by) { consumed_by = onLong_press4_TOOL_EL             (); consumed_by_css = lf4; }
+    if(!consumed_by) { consumed_by = onLong_press5_TOOL_TOOLTIP        (); consumed_by_css = lf6; }
+    if(!consumed_by) { consumed_by = onLong_press6_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onLong_press7_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = onLong_press8_SLOTTED_WORD        (); consumed_by_css = lf9; }
+    if(!consumed_by) { consumed_by = onLong_press9_SENTENCE            (); consumed_by_css = lf5; }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    /* NO LONG PRESS ACTION FOR [onWork_EL]  {{{*/
+    /* NO LONG-PRESS ACTION FOR [onWork_EL]  {{{*/
     if(!consumed_by) {
-        consumed_by = "NO LONG PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
+        consumed_by = "NO LONG-PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
 
 if(tag_this) log("%c "+caller+" %c *** "+consumed_by+" ***", lbb+lbL+lf9, lbb+lbR+lf2);
 if(tag_this) t_fly.t_log_event_status(caller+": "+consumed_by);
@@ -9609,19 +10109,48 @@ if( tag_this && !mouselong_press_consumed_by) log("%c"+consumed_by, lbH+consumed
     /*}}}*/
 if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+consumed_by, consumed_by_css);
 
-    if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("LONG PRESS");
+    if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("LONG-PRESS");
 };
 /*}}}*/
-/*… onLong_press1_HOTSPOT_IN_GUTTER {{{*/
-let onLong_press1_HOTSPOT_IN_GUTTER = function()
+/*… onLong_press1_HOTSPOT {{{*/
+let onLong_press1_HOTSPOT = function()
 {
+/* hotspot in_gutter is_on_grid {{{*/
+    let caller = "onLong_press1_HOTSPOT";
+
     if(  onWork_PANEL != hotspot ) return "";
     if(  onWork_EL    != hotring ) return "";
-    if(!dom_gutter.is_hotspot_IN(hotspot, "LONG PRESS IN GUTTER") ) return "";
+    let in_gutter      = dom_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
+    let while_editing  =  prop.get( t_data.EDIT_OR_STAGE );
+    let is_on_grid     = call_t_grid_IS_ON_GRID(caller);
+    let consumed_by    = "";
+/*}}}*/
+    /* IN GUTTER WHILE EDITING {{{*/
+    if(!consumed_by && in_gutter && while_editing) {
 
-    prop.toggle( t_data.EDIT_OR_STAGE ); /* START EDITING */
+        prop.toggle( t_data.EDIT_OR_STAGE );
 
-    return "NODE HIDING: HOTSPOT DRAGGED IN GUTTER";
+        consumed_by = t_data.EDIT_OR_STAGE +" done .. HOTSPOT LONG-PRESS IN GUTTER .. WHILE EDITING";
+    }
+    /*}}}*/
+    /* MOVING TOOLS ON GRID {{{*/
+    if(!consumed_by && !is_on_grid)
+    {
+        consumed_by = "HOTSPOT LONG-PRESS MOVING TOOLS ON GRID";
+
+        t_move_TOOLS_ON_GRID("LONG-PRESS");
+    }
+    /*}}}*/
+    /* OR ACTIVATE TIER1 TOOLS {{{*/
+    if(!consumed_by &&  is_on_grid)
+    {
+        prop.set(t_data.TOOLS_TIER2, false);
+        t_activate_tools_tier1("LONG-PRESS");
+
+        consumed_by = "HOTSPOT LONG-PRESS .. SELECT "+ t_data.TOOLS_TIER2;
+    }
+    /*}}}*/
+    return consumed_by;
 };
 /*}}}*/
 /*… onLong_press2_TOOLS_ON_GRID {{{*/
@@ -9630,33 +10159,49 @@ let onLong_press2_TOOLS_ON_GRID = function()
 /* {{{*/
 let   caller = "onLong_press2_TOOLS_ON_GRID";
 
+    let consumed_by = "";
 /*}}}*/
     if( !dimm_mask_displayed() ) return "";
 
-    if( call_t_grid_IS_ON_GRID(caller) )
+    if(!consumed_by && call_t_grid_IS_ON_GRID(caller))
     {
-        t_move_TOOLS_OFF_GRID(caller);
+        t_move_TOOLS_OFF_GRID("LONG-PRESS");
 
-        return "MOVING TOOLS OFF GRID";
+        consumed_by = "MOVING TOOLS OFF GRID";
     }
 
-    if( has_el_class(pat_bag, CSS_OPEN_BAG) )
+    if(!consumed_by && has_el_class(pat_bag, CSS_OPEN_BAG))
     {
         t_pat_bag_close(caller,caller);
 
         dimm_stop(caller);
 
-        return "CLOSING [pat_bag]";
+        consumed_by = "CLOSING [pat_bag]";
     }
 
-    return "";
+    return consumed_by;
 };
 /*}}}*/
-/*… onLong_press3_TOOL_EL {{{*/
-let onLong_press3_TOOL_EL = function()
+/*… onLong_press3_EDIT_OR_STAGE {{{*/
+let onLong_press3_EDIT_OR_STAGE = function()
 {
 /*{{{*/
-let   caller = "onLong_press3_TOOL_EL";
+let   caller = "onLong_press3_EDIT_OR_STAGE";
+let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.T3_LAYOUT);
+
+if( log_this) t_fly.t_log_event_status(caller, lf6);
+/*}}}*/
+
+    if(!prop.get( t_data.EDIT_OR_STAGE )) return "";
+
+    return t_tools_hide_onDown_XY_parent();
+};
+/*}}}*/
+/*… onLong_press4_TOOL_EL {{{*/
+let onLong_press4_TOOL_EL = function()
+{
+/*{{{*/
+let   caller = "onLong_press4_TOOL_EL";
 let log_this = LOG_MAP.EV4_LONG_PRESS;
 
 /*{{{
@@ -9678,7 +10223,7 @@ if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP
     if( el_slot > 0) {
 if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT CONSUMED", lf8);
 
-        return;
+        return consumed_by;
     }
     /*}}}*/
     /* 1 - [sticky] {{{*/
@@ -9691,7 +10236,7 @@ if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT CONSUMED", lf8);
 if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
         }
         else {
-            consumed_by = onLong_press3_TOOL_STICKY(log_this);
+            consumed_by = onLong_press4_TOOL_STICKY(log_this);
 
         }
     }
@@ -9702,14 +10247,14 @@ if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
        && (   (onWork_EL.id == t_data.bag_rot      )
            || (onWork_EL.id == t_data.WORDS_BAG_ROT))
       ) {
-        consumed_by = "HANDLING LONG PRESS ON "+bag_rot.id;
+        consumed_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
 if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbH+lf5);
 
         t_fly.t_fly_tooltip_update(bag_rot.title, bag_rot.id);
     }
     /*}}}*/
     /* 3 - [div_slot_containers child] {{{*/
-    let div_slot_containers_child_pressed = t_util.is_el_or_child_of_parent_el(onWork_EL,  div_slot_containers);
+    let div_slot_containers_child_pressed = t_util.is_el_or_child_of_parent_el(onWork_EL, div_slot_containers);
     if(!consumed_by && div_slot_containers_child_pressed)
     {
         consumed_by = "START CONTAINERS CHILD DRAG";
@@ -9719,34 +10264,27 @@ if( log_this) t_log.logSD6("%c"+caller+"%c"+consumed_by, lbH+lf6);
         t_add_tool_pointermove_listener(caller);
     }
     /*}}}*/
-    /* 4 - [onWork_EL] .. TOOLTIP {{{*/
-    if(!consumed_by && t_is_a_tool_el(onWork_EL, caller))
-    {
-        consumed_by = onLong_press3_TOOL_TOOLTIP(log_this);
-
-    }
-    /*}}}*/
     /* XXX [dimm_mask] .. t_slot_container_set_fullscreen {{{*/
 /*{{{ TODO [dimm_mask] has no children
     let                dimm_mask_child_pressed = t_util.is_el_or_child_of_parent_el(onWork_EL,  dimm_mask);
     if(!consumed_by && dimm_mask_child_pressed )
     {
-        consumed_by = "LONG PRESS ON SLOT CONTAINER .. [t_slot_container_set_fullscreen]";
+        consumed_by = "LONG-PRESS ON SLOT CONTAINER .. [t_slot_container_set_fullscreen]";
 if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
 
         t_slot_container_set_fullscreen( onWork_EL );
     }
 }}}*/
     /*}}}*/
-if(log_this && !consumed_by) logBIG(caller+": NOT CONSUMED", lf8);
+if(log_this && !consumed_by) log("%c"+caller+"%c NOT CONSUMED", lbL+lf3, lbR+lf8);
     return consumed_by;
 };
 /*}}}*/
-/*… onLong_press3_TOOL_STICKY {{{*/
-let onLong_press3_TOOL_STICKY = function(log_this)
+/*… onLong_press4_TOOL_STICKY {{{*/
+let onLong_press4_TOOL_STICKY = function(log_this)
 {
 /*{{{*/
-let   caller = "onLong_press3_TOOL_STICKY";
+let   caller = "onLong_press4_TOOL_STICKY";
 
 /*}}}*/
 /* PRESSED CONTEXT .. sel_text sticky {{{*/
@@ -9770,12 +10308,12 @@ if( log_this) {
 
     let consumed_by         = "";
 /*}}}*/
-    /* XXX 1 - LONG PRESS ON [sticky] .. EDIT [msg] {{{*/
+    /* XXX 1 - LONG-PRESS ON [sticky] .. EDIT [msg] {{{*/
 /*{{{
     if(sticky && t_sticky.t_sticky_is_EDITING(sticky) )
     {
         if(is_a_DOM_LOAD_featured_function("t_sticky.t_sticky_EDIT")) {
-            consumed_by = "LONG PRESS ON ["+sticky.id+"] .. TO EDIT CONTENT";
+            consumed_by = "LONG-PRESS ON ["+sticky.id+"] .. TO EDIT CONTENT";
 if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbL+lf1,lbR+lf1);
 
             t_seek.t_seeker_PU_hide("instant");
@@ -9785,14 +10323,14 @@ if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbL+lf1,lbR+lf1);
     }
 }}}*/
     /*}}}*/
-    /* 1 - LONG PRESS WITH [onDown_SEL_TEXT] .. NEW STICKY FROM PAGE-SELECTION {{{*/
+    /* 1 - LONG-PRESS WITH [onDown_SEL_TEXT] .. NEW STICKY FROM PAGE-SELECTION {{{*/
     if(!consumed_by && (current_sel_text || onDown_SEL_TEXT))
     {
         if(!onDown_SEL_TEXT && !current_sel_text)
             clr_SELECTION_PROGRESS("NEW STICKY FROM PAGE-SELECTION", log_this);
 
         if(pinned_sticky_count < t_sticky.STICKY_MAX) {
-            consumed_by = onLong_press3_TOOL_STICKY_SEL_TEXT(log_this);
+            consumed_by = onLong_press4_TOOL_STICKY_SEL_TEXT(log_this);
 if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
         }
         else {
@@ -9803,29 +10341,29 @@ if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
     /* 2 - LONG PRES ON MSG .. FORMAT {{{*/
     if(!consumed_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
     {
-        consumed_by         = "LONG PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
+        consumed_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
 if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
 
         t_sticky.t_sticky_format_pad(sticky);
     }
     /*}}}*/
-    /* 3 - LONG PRESS ON TOOL .. SHOW TOOLTIP {{{*/
+    /* 3 - LONG-PRESS ON TOOL .. SHOW TOOLTIP {{{*/
     if(!consumed_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
     {
-        consumed_by         = "LONG PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
+        consumed_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
 if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
 
         return "";
     }
     /*}}}*/
-    /* XXX 4 - LONG PRESS .. ON PAGE BACKGROUND (no page selection) .. STICKY RING {{{*/
+    /* XXX 4 - LONG-PRESS .. ON PAGE BACKGROUND (no page selection) .. STICKY RING {{{*/
 /*{{{
     if(   !consumed_by
        &&  sticky
        && !t_sticky.t_sticky_is_MOVING   (sticky)
        && !t_sticky.t_sticky_is_ORIENTING(sticky)
       ) {
-        consumed_by         = "LONG PRESS ON PAGE BACKGROUND .. SHOW STICKY RING .. x"+pinned_sticky_count+" PINNED STICKY";
+        consumed_by         = "LONG-PRESS ON PAGE BACKGROUND .. SHOW STICKY RING .. x"+pinned_sticky_count+" PINNED STICKY";
 if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf4);
 
         t_seek.t_seeker_PU_hide("instant");
@@ -9834,11 +10372,11 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf4);
     }
 }}}*/
     /*}}}*/
-    /* XXX 5 - LONG PRESS ON [PAGE EMPTY AREA] .. [NO onWork_PANEL] .. ADD FIRST STICKY {{{*/
+    /* XXX 5 - LONG-PRESS ON [PAGE EMPTY AREA] .. [NO onWork_PANEL] .. ADD FIRST STICKY {{{*/
 /*{{{
     if(!consumed_by && !sticky && !onWork_PANEL)
     {
-        consumed_by         = "LONG PRESS ON PAGE BACKGROUND .. ADD FIRST EMPTY STICKY";
+        consumed_by         = "LONG-PRESS ON PAGE BACKGROUND .. ADD FIRST EMPTY STICKY";
 if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf5,lbR+lf5);
 
         sticky = t_sticky.t_sticky_NEW_XY_SEL_TEXT(onDown_XY.x, onDown_XY.y, t_data.SYMBOL_DIRECT_HIT);
@@ -9848,23 +10386,26 @@ if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf5,lbR+lf5);
 
         t_add_tool_pointermove_listener(caller);
 
-        if( prop.get( t_data.SHOW_SEEKZONE ) ) t_sticky.t_sticky_LOG_TOOLTIP(sticky, "LONG PRESS");
+        if( prop.get( t_data.SHOW_SEEKZONE ) ) t_sticky.t_sticky_LOG_TOOLTIP(sticky, "LONG-PRESS");
     }
 }}}*/
     /*}}}*/
     return consumed_by;
 };
 /*}}}*/
-/*… onLong_press3_TOOL_STICKY_SEL_TEXT {{{*/
-let onLong_press3_TOOL_STICKY_SEL_TEXT_timer;
-let onLong_press3_TOOL_STICKY_SEL_TEXT = function(log_this=true)
+/*… onLong_press4_TOOL_STICKY_SEL_TEXT {{{*/
+/*{{{*/
+let onLong_press4_TOOL_STICKY_SEL_TEXT_timer;
+
+/*}}}*/
+let onLong_press4_TOOL_STICKY_SEL_TEXT = function(log_this=true)
 {
 /*{{{*/
-let   caller = "onLong_press3_TOOL_STICKY_SEL_TEXT";
+let   caller = "onLong_press4_TOOL_STICKY_SEL_TEXT";
 
     let      consumed_by = "";
 /*}}}*/
-    /* CLR .. LONG PRESS RELEASED {{{*/
+    /* CLR .. LONG-PRESS RELEASED {{{*/
 /*{{{
 log("%c onDown_MS=["+((onDown_MS                       ) / 1000)+"]", lbH+lf7);
 log("%c .DOWN-UP.=["+((  onUp_MS            - onDown_MS) / 1000)+"]", lbH+lf7);
@@ -9872,12 +10413,12 @@ log("%c .DOWN-NOW=["+((new Date().getTime() - onDown_MS) / 1000)+"]", lbH+lf7);
 }}}*/
     if(onUp_MS > onDown_MS)
     {
-        consumed_by     = "LONG PRESS RELEASED .. SELECTION DROPPED";
+        consumed_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
 if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
                     ,lbH+lf2                     );
 
         clr_SELECTION_PROGRESS(consumed_by, log_this);
-        return;
+        return consumed_by;
     }
     /*}}}*/
     /* TIC .. SELECTION CHANGE .. START CHECK INTERVAL {{{*/
@@ -9888,7 +10429,7 @@ if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
     {
         tic_SELECTION_PROGRESS();
         /* START TIC INTERVAL {{{*/
-        consumed_by     = "LONG PRESS .. SELECTION CHANGED";
+        consumed_by     = "LONG-PRESS .. SELECTION CHANGED";
 if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
                         +"%c"+LF+"FROM %c"+ t_util.ellipsis_short(t_util.strip_CR_LF( last_sel_text))
                         +"%c"+LF+"TO.. %c"+ t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
@@ -9899,8 +10440,8 @@ if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
 
         set_last_sel_text( current_sel_text );
 
-        if(!onLong_press3_TOOL_STICKY_SEL_TEXT_timer)
-            onLong_press3_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press3_TOOL_STICKY_SEL_TEXT(log_this); }, SEL_TEXT_TIC_TOC_INTERVAL);
+        if(!onLong_press4_TOOL_STICKY_SEL_TEXT_timer)
+            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press4_TOOL_STICKY_SEL_TEXT(log_this); }, SEL_TEXT_TIC_TOC_INTERVAL);
         /*}}}*/
     }
     /*}}}*/
@@ -9911,20 +10452,20 @@ if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
         /* TOC COUNT .. NEXT INTERVAL {{{*/
         if( unchanged_countdown )
         {
-            consumed_by     = "LONG PRESS .. SELECTION STEADY";
+            consumed_by     = "LONG-PRESS .. SELECTION STEADY";
 if( log_this) t_log.log("%c"+caller+": "+ consumed_by+"%c unchanged x"+unchanged_countdown
                         ,lbH+lf2                      ,lbb+lbH+lfX[    unchanged_countdown]);
 
             let next_interval = SEL_TEXT_TIC_TOC_INTERVAL / 3;
 
-            clearInterval( onLong_press3_TOOL_STICKY_SEL_TEXT_timer );
-            onLong_press3_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press3_TOOL_STICKY_SEL_TEXT(log_this); }, next_interval);
+            clearInterval( onLong_press4_TOOL_STICKY_SEL_TEXT_timer );
+            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press4_TOOL_STICKY_SEL_TEXT(log_this); }, next_interval);
         }
         /*}}}*/
         /* TOC DONE: .. SELECTION ADD STICKY {{{*/
         else if(last_sel_text)
         {
-            consumed_by = "LONG PRESS .. SELECTION ADD STICKY";
+            consumed_by = "LONG-PRESS .. SELECTION ADD STICKY";
 if(log_this) t_log.logSD2( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
                     +"%c"+LF+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
                     ,lbH+lf2
@@ -9932,12 +10473,12 @@ if(log_this) t_log.logSD2( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
 
             clr_SELECTION_PROGRESS(consumed_by, log_this);
 
-            onLong_press3_STICKY_ADD_NEW(current_sel_text, log_this);
+            onLong_press5_STICKY_ADD_NEW(current_sel_text, log_this);
         }
         /*}}}*/
         /* TOC DONE: .. SELECTION IS EMPTY {{{*/
         else {
-            consumed_by = "LONG PRESS .. SELECTION IS EMPTY";
+            consumed_by = "LONG-PRESS .. SELECTION IS EMPTY";
 if(log_this) t_log.logSD2("%c"+caller+": "+consumed_by
                     ,lbH+lf9                    );
 
@@ -9949,11 +10490,11 @@ if(log_this) t_log.logSD2("%c"+caller+": "+consumed_by
     return consumed_by;
 };
 /*}}}*/
-/*_ onLong_press3_STICKY_ADD_NEW {{{*/
-let onLong_press3_STICKY_ADD_NEW = function(current_sel_text, log_this)
+/*_ onLong_press5_STICKY_ADD_NEW {{{*/
+let onLong_press5_STICKY_ADD_NEW = function(current_sel_text, log_this)
 {
 /*{{{*/
-let   caller = "onLong_press3_STICKY_ADD_NEW";
+let   caller = "onLong_press5_STICKY_ADD_NEW";
 
 if(log_this) log(caller+"%c"+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text)), lbH+lf3);
 /*}}}*/
@@ -9980,12 +10521,53 @@ if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf2);
     t_add_tool_pointermove_listener(caller);
 };
 /*}}}*/
-/*… onLong_press3_TOOL_TOOLTIP {{{*/
-let onLong_press3_TOOL_TOOLTIP = function(log_this)
+/*… onLong_press9_SENTENCE {{{*/
+let onLong_press9_SENTENCE = function(e)
 {
 /*{{{*/
-let   caller = "onLong_press3_TOOL_TOOLTIP";
+let   caller = "onLong_press9_SENTENCE";
+let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
 
+if( log_this) t_fly.t_log_event_status(caller, lf6);
+    let consumed_by = "";
+/*}}}*/
+    /* SPLITTING CONTAINER SENTENCES {{{*/
+    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
+    if(   container )
+    {
+        /* SPLITTING MULTIPLE CELLS */
+        if( cells )
+        {
+            consumed_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
+
+            for(let i=0; i < cells.length; ++i)
+            {
+                t_select.t_SENTENCE_SPLIT( cells[i] );
+            }
+        }
+
+        /* SPLITTING SINGLE CELL */
+        if(!consumed_by)
+        {
+            consumed_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
+
+            t_select.t_SENTENCE_SPLIT( container );
+        }
+    }
+    /*}}}*/
+
+if( log_this && consumed_by) log("%c"+consumed_by, lf7);
+    return consumed_by;
+};
+/*}}}*/
+/*… onLong_press5_TOOL_TOOLTIP {{{*/
+let onLong_press5_TOOL_TOOLTIP = function(log_this)
+{
+/*{{{*/
+let   caller = "onLong_press5_TOOL_TOOLTIP";
+
+    let onWork_EL_is_a_tool = t_is_a_tool_el     (onWork_EL, caller);
+    let onWork_EL_has_title = t_util.get_el_title(onWork_EL);
 if( log_this)
     log_key_val(      caller
                 , {   t_fly_div_get       : t_fly.t_fly_div_get()
@@ -9995,6 +10577,8 @@ if( log_this)
 }}}*/
                     , onWork_PANEL
                     , onWork_EL
+                    , onWork_EL_is_a_tool
+                    , onWork_EL_has_title
                 }, lf3);
 if( log_this) t_fly.t_log_event_status(caller, lf3);
 
@@ -10004,8 +10588,8 @@ if( log_this) t_fly.t_log_event_status(caller, lf3);
     let sticky  =     t_sticky.t_sticky_get_onWork_STICKY();
     if( sticky && (sticky == t_seek.t_seeker_get_STICKY())) return   ;
 }}}*/
-    if(onWork_PANEL == t_fly.t_fly_div_get()             ) return ""; /* HAS MAGNIFY LONG-PRESS */
-    if(onWork_PANEL == onWork_EL                   ) return ""; /* HAS MAGNIFY LONG-PRESS */
+    if(onWork_PANEL == t_fly.t_fly_div_get()     ) return ""; /* HAS MAGNIFY LONG-PRESS */
+    if(onWork_PANEL == onWork_EL                 ) return ""; /* HAS MAGNIFY LONG-PRESS */
 
     let title
         =           has_el_class(onWork_EL, t_data.CSS_STICKY_TOOL)
@@ -10014,7 +10598,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf3);
     ;
 
     if( title ) {
-        consumed_by = "SHOWING TOOLTIP ["+title+"]";
+        consumed_by = "SHOWING TOOLTIP ["+t_util.ellipsis_short(t_util.strip_CR_LF(title))+"]";
 
         t_fly.t_fly_tooltip( title );
     }
@@ -10022,11 +10606,11 @@ if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
     return consumed_by;
 };
 /*}}}*/
-/*… onLong_press4_TOOL_PANEL_MAGNIFY {{{*/
-let onLong_press4_TOOL_PANEL_MAGNIFY = function()
+/*… onLong_press6_TOOL_PANEL_MAGNIFY {{{*/
+let onLong_press6_TOOL_PANEL_MAGNIFY = function()
 {
 /* {{{*/
-let   caller = "onLong_press4_TOOL_PANEL_MAGNIFY";
+let   caller = "onLong_press6_TOOL_PANEL_MAGNIFY";
 
 /*}}}*/
     /* MAGNIFY [fly_div] {{{*/
@@ -10034,7 +10618,7 @@ let   caller = "onLong_press4_TOOL_PANEL_MAGNIFY";
     {
         let el6_is_import_clipboard = (onWork_EL && (onWork_EL.id == t_data.CSS_FLY_CLIPBOARD));
         if( el6_is_import_clipboard )
-            return "LONG PRESS ON A CLIPBOARD CUT-PASTE TOOL";
+            return "LONG-PRESS ON A CLIPBOARD CUT-PASTE TOOL";
 
 /*{{{
         let dx = onDown_XY.x - onDown_PANEL_XY.x;
@@ -10065,13 +10649,14 @@ let   caller = "onLong_press4_TOOL_PANEL_MAGNIFY";
         return t_toggle_onWork_PANEL_magnified(caller);
     }
     /*}}}*/
+    return "";
 };
 /*}}}*/
-/*… onLong_press5_HOTSPOT_PANEL_UNHIDE {{{*/
-let onLong_press5_HOTSPOT_PANEL_UNHIDE = function()
+/*… onLong_press7_HOTSPOT_PANEL_UNHIDE {{{*/
+let onLong_press7_HOTSPOT_PANEL_UNHIDE = function()
 {
 /* {{{*/
-let   caller = "onLong_press5_HOTSPOT_PANEL_UNHIDE";
+let   caller = "onLong_press7_HOTSPOT_PANEL_UNHIDE";
 
 /*}}}*/
 
@@ -10089,19 +10674,19 @@ let   caller = "onLong_press5_HOTSPOT_PANEL_UNHIDE";
     return "UNHIDING PANELS";
 };
 /*}}}*/
-/*… onLong_press6_SLOTTED_WORD {{{*/
-let onLong_press6_SLOTTED_WORD = function()
+/*… onLong_press8_SLOTTED_WORD {{{*/
+let onLong_press8_SLOTTED_WORD = function()
 {
 /*{{{*/
-let   caller = "onLong_press6_SLOTTED_WORD";
+let   caller = "onLong_press8_SLOTTED_WORD";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV2_MOVE);
 
-if( log_this) t_fly.t_log_event_status(caller+"(_caller)", lf4);
+if( log_this) t_fly.t_log_event_status(caller, lf6);
 /*}}}*/
 
     let      slot = t_get_onWork_EL_slot();
-    if(     !slot  ) return;
-    if(!t_select.ccs[ slot] ) return;
+    if(     !slot           ) return "";
+    if(!t_select.ccs[ slot] ) return "";
 
     /* SET PARAGRAPH TO OUTLINE */
     t_select.ccs[slot].num_selected = t_get_onWork_EL_num();
@@ -10111,6 +10696,13 @@ if( log_this) t_fly.t_log_event_status(caller+"(_caller)", lf4);
         t_slot_containers_display(slot);
 
     return "SHOWING SLOT ["+slot+"] CONTAINERS";
+};
+/*}}}*/
+/*_ t_get_mouselong_press_consumed_by {{{*/
+let t_get_mouselong_press_consumed_by = function()
+{
+    return mouselong_press_consumed_by;
+
 };
 /*}}}*/
 /*}}}*/
@@ -10212,25 +10804,35 @@ t_fly.t_log_event_status(caller, lf8);
 }}}*/
 /*}}}*/
     let this_MS      = new Date().getTime();
-    let clicks_MS    =             onDown_MS - onDownPMS;
+    let clicks_MS    =             onDown_MS - onDownPMS; /* previous */
     let pressMS      = (this_MS -  onDown_MS);
     let downs_MS     =             onDown_MS ? pressMS : 0;
     let quick_enough = (downs_MS < t_data.DBLCLICK_DELAY);
     let multi_click  = e.detail ? (e.detail > 1) : (clicks_MS < t_data.DBLCLICK_DELAY);
     let misclick     = is_a_misclick(e, multi_click, pressMS);
-    let dblclick     = !misclick  && multi_click && quick_enough;
+    let dblclick     = !misclick  &&    multi_click && quick_enough;
 /*{{{*/
 if(log_this) {
-    let                                                  cause  = "";
-    if     ( misclick                                  ) cause += "misclick";
-    if     ( e.type == "mouseup"                       ) cause += "click count "+ e.detail;
-    else if(!dblclick && !multi_click ) cause += "not multi_click";
-    else if(!dblclick && !quick_enough) cause += "not quick_enough";
+    console.dir(e);
+
+    let                                 cause  = "";
+    if     ( misclick                 ) cause += "misclick ";
+    if     ( e.type == "mouseup"      ) cause += "click count "+ e.detail+" ";
+    else if(!dblclick && !multi_click ) cause += "not multi_click  ";
+    else if(!dblclick && !quick_enough) cause += "not quick_enough ";
 
     let lfx = (dblclick ? lf4 : lf8);
 
-    log("%c"+caller+": ...%c return "+dblclick +" %c"+cause +"%c e.type ["+e.type+"] %c downs_MS ["+ downs_MS +"] %c clicks_MS ["+clicks_MS+"] %c onWork_PANEL ["+t_util.get_id_or_tag(onWork_PANEL)+"]"
-        ,lbL+lf3         ,lbR+lfx                ,lbH+lfx    ,lb0                   ,lf6                         ,lf7                         ,lf3);
+    let multi = "";
+    if( multi_click )
+        multi +=  "multi_click"
+            +(       (e.detail > 1)
+                   ? (   " e.detail=["+ e.detail                                     +"]")
+                   : (  " clicks_MS=["+ clicks_MS        +" < "+t_data.DBLCLICK_DELAY+"]")
+             );
+
+    log("%c"+caller+": ...%c return "+dblclick +" %c "+ multi +" %c"+cause +"%c e.type ["+e.type+"] %c downs_MS ["+ downs_MS +"] %c clicks_MS ["+clicks_MS+"] %c onWork_PANEL ["+t_util.get_id_or_tag(onWork_PANEL)+"]"
+        ,lbL+lf3         ,lbC+lfx                ,lbR+lfx       ,lbH+lfx    ,lb0                   ,lf6                         ,lf7                         ,lf3                                                      );
 }
 /*}}}*/
 
@@ -10447,7 +11049,7 @@ if( log_this) pattern_log_bag_csv(caller);
 /*{{{
 if( log_this) t_fly.t_log_event_status(caller, lf1);
 }}}*/
-    let consumed_by;
+    let consumed_by = "";
 /*}}}*/
     /* [test_panel] {{{*/
     let                 e_target_name  = e_target.id.toLowerCase();
@@ -10462,7 +11064,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf1);
 
     if(!consumed_by && (e_target_name == "export"         ))             { consumed_by = e_target.id;       t_share.t_share1_EXPORT   (e_target);
         /*...............................................................................................*/ t_share.t_share2_MAILTO_UI(e_target); }
-    if(!consumed_by && has_el_class(e_target, t_data.CSS_MAILTO)) { consumed_by = t_data.CSS_MAILTO; t_share.t_share2_MAILTO_UI(e_target); }
+    if(!consumed_by && has_el_class(e_target, t_data.CSS_MAILTO))        { consumed_by = t_data.CSS_MAILTO; t_share.t_share2_MAILTO_UI(e_target); }
 
     /*}}}*/
     /* 1/6 CB BAG PIN  {{{*/
@@ -10503,7 +11105,7 @@ logXXX("%c bag_id=["+bag_id+"]", lbH+lf8);
         case "headsup_bz"   : t_body_zoom_CB        (e_target         ); consumed_by = bag_id; break;
         case "headsup_fs"   : t_body_font_size_CB   (e_target         ); consumed_by = bag_id; break;
 
-        case "dom_traversal": t_dom_traversal_CB    (e_target, "click"); consumed_by = bag_id; break;
+        case "dom_traversal": if(t_dom_traversal_CB (e_target, "click")) consumed_by = bag_id; break;
 
         case "dev_log_map"  :
         case "prop_bag"     : if(      prop_tools_CB(e_target)        )  consumed_by = bag_id; break;
@@ -10525,16 +11127,16 @@ if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lb
 
     }
     /*}}}*/
-    /* 5/6 EXTRA [e_target] CB {{{*/
+    /* 5/6 CB EXTRA [e_target] {{{*/
     if(!consumed_by)
     {
         switch(e_target.id)
         {
-        case "pat_sort"     : t_handle_1_pat_bag_sort_cycle(); consumed_by = e_target.id; break;
+        case "pat_sort"            : t_handle_1_pat_bag_sort_cycle(); consumed_by = e_target.id; break;
 
-        case "t_log.console_clear": t_log.console_clear   (caller); consumed_by = e_target.id; break;
+        case "t_log.console_clear" : t_log.console_clear   (caller); consumed_by = e_target.id; break;
 
-        case "dimm_mask"    : {
+        case "dimm_mask"           : {
             if( !was_a_too_early_last_result() ) {
                 dimm_stop(caller);
                 if(has_el_class(dimm_mask, "dimm_sticky"))
@@ -10544,13 +11146,13 @@ if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lb
         consumed_by = e_target.id;
         break;
 
-        case t_data.WORDS_RECYCLE : t_wording_3_CB    (e_target, "click"); consumed_by = e_target.id; break;
-        case t_data.WORDS_BAG_ROT : t_handle_1_pat_bag(e_target         ); consumed_by = e_target.id; break;
-        case t_data.WORDS_FILTER  : t_wording_3_CB    (e_target, "click"); consumed_by = e_target.id; break;
+        case t_data.WORDS_RECYCLE  : t_wording_3_CB    (e_target, "click"); consumed_by = e_target.id; break;
+        case t_data.WORDS_BAG_ROT  : t_handle_1_pat_bag(e_target         ); consumed_by = e_target.id; break;
+        case t_data.WORDS_FILTER   : t_wording_3_CB    (e_target, "click"); consumed_by = e_target.id; break;
 
         default:
 if(log_this) log("%c"+caller+"%c NO EXTRA HANDLER FOR %c e_target=["+get_n_lbl(e_target)+"]"
-            ,    lbL        ,lbR+lf2                 ,lbH+lf4                               );
+            ,     lbL        ,lbR+lf2                ,lbH+lf4                               );
         break;
         }
     }
@@ -10588,24 +11190,24 @@ if( log_this) t_fly.t_log_event_status(caller, lf5);
     if( has_el_class(e_target, CSS_CLEARPIN)               ) { t_click_panel_pin_CB(onWork_PANEL, e_target); return true; }
     /*}}}*/
     /* transcript {{{*/
-    if( e_target.id == "transcript1_clearpin"              ) {                               t_clear_panel_pined_innerHTML(transcript1); return true; }
-    if( e_target.id == "transcript2_clearpin"              ) {                               t_clear_panel_pined_innerHTML(transcript2); return true; }
+    if( e_target.id == "transcript1_clearpin"              ) {                                      t_clear_panel_pined_innerHTML(transcript1); return true; }
+    if( e_target.id == "transcript2_clearpin"              ) {                                      t_clear_panel_pined_innerHTML(transcript2); return true; }
     if( t_util.is_el_or_child_of_parent_el(e_target, transcript1) ) { if(is_a_dblclick_last_result) t_clear_panel_pined_innerHTML(transcript1); return true; }
     if( t_util.is_el_or_child_of_parent_el(e_target, transcript2) ) { if(is_a_dblclick_last_result) t_clear_panel_pined_innerHTML(transcript2); return true; }
 
      /*}}}*/
     /* [dom_hide] {{{*/
-    if( e_target.id == "t_hide.dom_hide1_reset"                 ) { t_hide.dom_hide1_reset                ( ); return true; }
-    if( e_target.id == "t_hide.dom_hide2_store_reload"          ) { t_hide.dom_hide2_store_reload         ( ); return true; }
-    if( e_target.id == "t_hide.dom_hide2_store_save"            ) { t_hide.dom_hide2_store_save           ( ); return true; }
-    if( e_target.id == "t_hide.dom_hide4_scroll_to_last_hidden" ) { t_hide.dom_hide4_scroll_to_last_hidden( ); return true; }
-    if( e_target.id == "t_hide.dom_hide5_start_history"         ) { t_hide.dom_hide5_start_history        ( ); return true; }
+    if( e_target.id == "dom_hide1_reset"                 ) { t_hide.dom_hide1_reset                ( ); return true; }
+    if( e_target.id == "dom_hide2_store_reload"          ) { t_hide.dom_hide2_store_reload         ( ); return true; }
+    if( e_target.id == "dom_hide2_store_save"            ) { t_hide.dom_hide2_store_save           ( ); return true; }
+    if( e_target.id == "dom_hide4_scroll_to_last_hidden" ) { t_hide.dom_hide4_scroll_to_last_hidden( ); return true; }
+    if( e_target.id == "dom_hide5_history_start"         ) { t_hide.dom_hide5_history_start        ( ); return true; }
 
     if( e_target.id == "dom_hide1_collect_nodes_1"       ) { t_hide.dom_hide1_collect_nodes        (1); return true; }
     if( e_target.id == "dom_hide1_collect_nodes_2"       ) { t_hide.dom_hide1_collect_nodes        (2); return true; }
     if( e_target.id == "dom_hide1_collect_nodes_3"       ) { t_hide.dom_hide1_collect_nodes        (3); return true; }
     if( e_target.id == "dom_hide1_collect_nodes_4"       ) { t_hide.dom_hide1_collect_nodes        (4); return true; }
-    if( e_target.id == "t_hide.dom_hide1_container_clicked"     ) { t_hide.dom_hide1_container_clicked    ( ); return true; }
+    if( e_target.id == "dom_hide1_container_clicked"     ) { t_hide.dom_hide1_container_clicked    ( ); return true; }
 
     /*}}}*/
     /* [dom_grid] .. () {{{*/
@@ -10613,6 +11215,9 @@ if( log_this) t_fly.t_log_event_status(caller, lf5);
     if( e_target.id == "dom_grid_close_em"               ) { e_target.parentElement     .style.display =    "none"; t_grid.t_grid_logging_toggle(false); return true; }
 
     /*}}}*/
+    if( e_target.id == "details_open"                    ) { t_details.details_open_closed (); return true; }
+    if( e_target.id == "details_close"                   ) { t_details.details_close_opened(); return true; }
+
     return false;
 };
 /*}}}*/
@@ -10761,11 +11366,11 @@ if( log_this) log(caller+":%c "+t_data.SYMBOL_CHECK_MARK+" MODAL TIMER CLEARED B
 /*➔ t_which_onModal_EL {{{*/
 let t_which_onModal_EL = function()
 {
-    return onWork_EL
-        && (     t_seek.t_seeker_is_seeker_PU( onWork_EL   )
-            || ( hotring                    == onWork_EL   )
-            || ( dimm_mask                  == onWork_EL   )
-            || ("div_slot_containers"       == onWork_EL.id)
+    return                                     onWork_EL
+        && (     t_seek.t_seeker_is_seeker_PU( onWork_EL)
+            || ( hotring                    == onWork_EL)
+            || ( dimm_mask                  == onWork_EL)
+            || ( div_slot_containers        == onWork_EL)
            )
         ?   onWork_EL.id
         :   false
@@ -10789,7 +11394,7 @@ let   caller = "t_input_2_CB";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) log(caller+"("+e.type+", "+listener_tag+"): on "+get_n_lbl(e_target));
-if( log_this) t_log.console_dir(e.target, e.type+t_data.SYMBOL_RIGHT_ARROW+"target");
+if( log_this) t_log.console_dir(e.type+t_data.SYMBOL_RIGHT_ARROW+"target", e.target);
 /*}}}*/
 
     switch(e.type)
@@ -10909,7 +11514,7 @@ log("%c.t_focus(shadow_root.activeElement ) .. SET TOOLS    FOCUS", lbH+lf5);
     /*}}}*/
     /* [CTRL-SHIFT-F] .. [FIND IN PAGE] {{{*/
     case CHAR_CODE_F:
-if( log_this) log("%c type=["+e.type+"] e_target=["+e_target+"] modifiers "+t_log.log_json(modifiers, false), lbH+lf3);
+if( log_this) log("%c type=["+e.type+"] e_target=["+e_target+"] modifiers "+t_log.log_json(modifiers), lbH+lf3);
     if(modifiers.control && modifiers.shift && words_filter_input)
     {
 if( log_this) log("%c CTRL F %c FIND IN PAGE",lbL,lbR+lf2);
@@ -10984,8 +11589,8 @@ if( log_this) log("%c RETURN %c SUBMIT",lbb+lbL,lbb+lbR+lf2);
     /*}}}*/
 /*{{{
     default:
-    if     (e_target.id == "words_node_input"  ) t_util.set_id_class_on_off(e_target.id, "focussed", (e_target.value != tools_node  ));
-    else if(e_target.id == "words_filter_input") t_util.set_id_class_on_off(e_target.id, "focussed", (e_target.value != tools_filter));
+    if     (e_target.id == "words_node_input"  ) t_set_id_class_on_off(e_target.id, "focussed", (e_target.value != tools_node  ));
+    else if(e_target.id == "words_filter_input") t_set_id_class_on_off(e_target.id, "focussed", (e_target.value != tools_filter));
 }}}*/
     }
     /* [CTRL UP-DOWN] .. (keyboard shortcut to navigate all patterns csv) {{{*/
@@ -11076,7 +11681,7 @@ if( log_this) log(caller);
     {
         consumed_by ="ESCAPE FROM TOOLS ON GRID";
 
-        t_move_TOOLS_OFF_GRID(caller);
+        t_move_TOOLS_OFF_GRID("ESCAPE");
     }
     /*}}}*/
     /* SLOT CONTAINERS DISPLAYED {{{*/
@@ -11128,8 +11733,11 @@ if( log_this) log("%c"+caller+": %c"+consumed_by, lbH+lf4, lbH+lf4);
 /*}}}*/
 /* WORDING {{{*/
 /*_ t_wording_3_CB {{{*/
-let T_WORDING_3_CB_DELAY   =  500;
+/*{{{*/
+const T_WORDING_3_CB_DELAY =  100;
+
 let t_wording_3_CB_timout;
+/*}}}*/
 let t_wording_3_CB         = function(e_target, action)
 {
     if(t_wording_3_CB_timout) clearTimeout(t_wording_3_CB_timout);
@@ -11209,7 +11817,7 @@ if(log_this) log("%c WORDS NEW-SELECT",lb4);
             }
             /*}}}*/
         }
-        break;
+        break; /* eslint-disable-line no-unreachable */
          /*}}}*/
         /* case click : (ignored) {{{*/
         case "click":
@@ -11221,7 +11829,7 @@ if(log_this) log("...%c case ACTION "+action+":", lf3);
             t_focus( words_filter_input );
             return;
         }
-        break;
+        break; /* eslint-disable-line no-unreachable */
         /*}}}*/
         }
     }
@@ -11292,7 +11900,7 @@ if(log_this) log("...default: %c keyword=["+keyword+"]", lf3);
         /*}}}*/
     }
     /*}}}*/
-    t_cache_init_by(caller);
+    t_cache_armed_by(caller);
 };
 /*}}}*/
 /*_   wording_3_CB_WORDS_RECYCLE_next_action {{{*/
@@ -11448,10 +12056,10 @@ if( log_this) t_fly.t_log_event_status(caller, lbb+lf3);
                           :                                                "cc8"
                           ,                                                t_data.CCX_CLASSLIST);
 
-/*{{{//FIXME i18n
-t_util.i18n_get(t_util.I18N_STORED_PATTERNS)
-t_util.i18n_get(t_util.I18N_WORDS_RECYCLE_CLICK_TO_DISCARD);
-t_util.i18n_get(t_util.I18N_WORDS_RECYCLE_CLICK_TO_HIDE   );
+/*{{{FIXME i18n
+t_i18n.i18n_get(t_i18n.STORED_PATTERNS)
+t_i18n.i18n_get(t_i18n.WORDS_RECYCLE_CLICK_TO_DISCARD);
+t_i18n.i18n_get(t_i18n.WORDS_RECYCLE_CLICK_TO_HIDE   );
 }}}*/
 };
 /*}}}*/
@@ -11485,7 +12093,7 @@ let   toc_SELECTION_PROGRESS = function()
     if(sel_text_unchanged_count == 0)
     {
         tic_SELECTION_PROGRESS();
-        return;
+        return sel_text_unchanged_count;
     }
     /* STEADY COUNT */
     sel_text_unchanged_count          -= 1;
@@ -11520,8 +12128,8 @@ if(log_this) t_log.logSD9("%c clr_SELECTION_PROGRESS %c"+_caller, lbb+lbL+lf0,lb
 if(sel_text_unchanged_count != SEL_TEXT_UNCHANGED_COUNT) log("%c SELECTION CLEAR %c"+sel_text_unchanged_count, lbH,lbb+lbH+lfX[sel_text_unchanged_count]);
 }}}*/
     sel_text_unchanged_count           = 0;
-    if( onLong_press3_TOOL_STICKY_SEL_TEXT_timer ) clearInterval( onLong_press3_TOOL_STICKY_SEL_TEXT_timer );
-        onLong_press3_TOOL_STICKY_SEL_TEXT_timer = null;
+    if( onLong_press4_TOOL_STICKY_SEL_TEXT_timer ) clearInterval( onLong_press4_TOOL_STICKY_SEL_TEXT_timer );
+        onLong_press4_TOOL_STICKY_SEL_TEXT_timer = null;
 };
 /*}}}*/
 /*➔   get_SELECTION_PROGRESS {{{*/
@@ -11734,6 +12342,7 @@ let   caller = "prop_tools_CB(e_target=["+get_n_lbl(e_target)+"]";
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbb+lbH+lf7);
+    let consumed_by = "";
 /*}}}*/
     /* [has_moved] [t_preventDefault_has_been_called] [t_event_has_been_consumed] {{{*/
     let keyword = ""; try { keyword = e_target.id                ; } catch(ex) {}
@@ -11752,17 +12361,16 @@ if( log_this) {
 }
 }}}*/
 
-    if( has_moved                          ) return;
+    if( has_moved                          ) return consumed_by;
 /*{{{
-    if( t_preventDefault_has_been_called() ) return;
+    if( t_preventDefault_has_been_called() ) return consumed_by;
 }}}*/
 /*{{{
-    if( e_target.tagName != "EM"           ) return;
-    if( t_event_has_been_consumed()        ) return;
+    if( e_target.tagName != "EM"           ) return consumed_by;
+    if( t_event_has_been_consumed()        ) return consumed_by;
 }}}*/
     /*}}}*/
     /* parse [keyword] {{{*/
-    let consumed_by;
     if(t_log.logging_toggle( keyword ))
     {
 log("%c "+caller+": %c TOGGLED keyword=["+ keyword +"]",lb9, lbF);
@@ -11808,7 +12416,7 @@ let call_setEndXY           = function( x,   y) { log(); log( "call_setEndXY"   
 let t_dom_traversal_CB = function(e_target, e_type)
 {
 /*{{{
-if( t_preventDefault_has_been_called() ) return;
+if( t_preventDefault_has_been_called() ) return false;
 }}}*/
     /* log {{{*/
     let caller   = "t_dom_traversal_CB("+get_n_lbl(e_target)+", e_type=["+e_type+"])";
@@ -11817,9 +12425,9 @@ let log_this = LOG_MAP.EV5_TOOL_CB;
 if( log_this) t_fly.t_log_event_status(caller, lf5);
     /*}}}*/
     /* [has_moved] [INPUT] {{{*/
-    if( has_moved                   ) return;
-    if(e_target.tagName == "INPUT"  ) return;
-    if( t_event_has_been_consumed() ) return;
+    if( has_moved                   ) return false;
+    if(e_target.tagName == "INPUT"  ) return false;
+//  if( t_event_has_been_consumed() ) return false; // .. set by onUp_5_TOOL_ONCLICK
 
     /*}}}*/
     /* [focussed] [t_clear] {{{*/
@@ -11887,14 +12495,15 @@ if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SET</em> : <em>tools_node 
         /* default: {{{*/
         default: {
             if(log_this) log("...default: keyword=["+keyword+"]");
-            return;
+            return false;
         }
         /*}}}*/
     }
     /* APPLY [tools_node + tools_filter] */
     t_call_dom_traversal();
 
-t_cache_init_by(caller+": keyword=["+keyword+"]");
+t_cache_armed_by(caller+": keyword=["+keyword+"]");
+    return true;
 };
 /*}}}*/
 /*_ t_call_dom_traversal {{{*/
@@ -11910,7 +12519,7 @@ let log_this = LOG_MAP.T3_LAYOUT;
     /* [pattern] {{{*/
     let user_pattern   = t_get_tool_id_value(t_data.WORDS_FILTER);
     if(!user_pattern) {
-if( log_this) log("%c"+caller+": NO user_pattern", lbH+lf4);
+logBIG(caller+": "+current_traversal+" ➔ NO user_pattern", 2);
         return;
     }
 
@@ -11965,11 +12574,13 @@ let t_log_option_changes = function(changes)
         +"<tr><th>OPTIONS:</th></tr>"+LF
         +"<tr>"
         +" <td>"+ get_log_option_state( t_data.TOOLS_SCROLL       , prop.get( t_data.TOOLS_SCROLL      ) ) +"</td>"
+        +" <td>"+ get_log_option_state( t_data.USER_LANG          , prop.get( t_data.USER_LANG         ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.ANCHOR_FREEZE      , prop.get( t_data.ANCHOR_FREEZE     ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.CONTAINERS_HI      , prop.get( t_data.CONTAINERS_HI     ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.SCROLL_SMOOTH      , prop.get( t_data.SCROLL_SMOOTH     ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.OVERFLOW_VISI      , prop.get( t_data.OVERFLOW_VISI     ) ) +"</td>"
-        +" <td>"+ get_log_option_state( t_data.TOOLS_EXTRAS       , prop.get( t_data.TOOLS_EXTRAS      ) ) +"</td>"
+        +" <td>"+ get_log_option_state( t_data.DETAILS_RADIO      , prop.get( t_data.DETAILS_RADIO     ) ) +"</td>"
+        +" <td>"+ get_log_option_state( t_data.TOOLS_TIER2        , prop.get( t_data.TOOLS_TIER2       ) ) +"</td>"
         +"</tr>"+LF
         +"<tr>"
         +" <td>"+ get_log_option_value("WORDS OPTIONS"     , words_options_symbol(options) )
@@ -12032,10 +12643,10 @@ if(log_this) log(caller+": ...overriding "+key+" option from %c "+cached_user_op
 };
 /*}}}*/
 /*_ t_reinstate_USER_OPTIONS .. (called when done .. by onDown_1_INIT_CTRL_DEBOUNCE_INPUT) {{{*/
-let t_reinstate_USER_OPTIONS = function(key)
+let t_reinstate_USER_OPTIONS = function(_caller)
 {
 /*{{{*/
-let   caller = "t_reinstate_USER_OPTIONS("+key+")";
+let   caller = "t_reinstate_USER_OPTIONS("+_caller+")";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 
 if( log_this) log(caller);
@@ -12076,13 +12687,9 @@ if(log_this) log(caller+"(e_target=["+get_n_lbl(e_target)+"]) ..%c CALLED BY "+ 
 /*}}}*/
     /* [slot] from [id] or [className] {{{*/
     let slot  = get_slot_from_id_or_className(e_target);
-    if( slot <= 0) {
-        result = "NO SLOT FOR "+get_n_lbl(e_target);
-
-    }
     /*}}}*/
     /* [num] from slot and [id] or [className] {{{*/
-    else {
+    if( slot > 0) {
         if(!t_select.ccs[slot].thumbs) t_select.ccs[slot].thumbs = [];
 
         /* num */
@@ -12109,6 +12716,9 @@ if(log_this) t_log.log_TR_SELECT_add(".NEXT num=<em>"+num+"</em>");
 
         result = "TO THUMB slot=["+slot+"] num=["+num+"]";
     }
+    else {
+        result = "NO SLOT FOR "+get_n_lbl(e_target);
+    }
     /*}}}*/
 if(log_this) t_log.log_TR_SELECT_add("<em class='cc4'>"+result+"</em>");
     return result;
@@ -12121,7 +12731,7 @@ let cached_user_options_map = [];
 
 let cached_user_options_map_set = function(key,val)
 {
-    cached_user_options_map.push({ key:key , val:val });
+    cached_user_options_map.push({key , val});
 };
 
 let cached_user_options_map_get = function(key)
@@ -12313,7 +12923,7 @@ if(log_this) log("XXX fall through case default...");
         /* falls through */
         /*}}}*/
         /* CLEAR : default .. (transcript1 transcript2 doc_evt_div doc_log_div) {{{*/
-        default:
+        default: /* eslint-disable-line no-fallthrough */
 /*{{{
 if(!LOG_MAP.EV3_UP) t_log.console_clear_post(caller + (onWork_PANEL ? " on "+get_n_lbl(onWork_PANEL) : ""));
 }}}*/
@@ -12338,7 +12948,7 @@ if( LOG_MAP.EV3_UP) log("%c t_clear("+caller+") console logs preserved for %c LO
     }
     t_outline_clear();
     /* CACHE */
-    t_cache_init_by(caller);
+    t_cache_armed_by(caller);
 
 /*{{{
     t_fly.t_fly_tooltip_clear(t_data.CSS_STICKY_LOG);
@@ -12385,9 +12995,9 @@ let log_this = LOG_MAP.T3_LAYOUT || LOG_MAP.EV5_TOOL_CB;
 if( log_this) t_fly.t_log_event_status(caller, lf5);
 /*}}}*/
     /* SET TOOL checked attribute {{{*/
-    let tool_el       = t_get_tool         (id); if(log_this && tool_el    ) t_log.console_dir(tool_el      , "...tool_el"      );
-    let tool_clone    = get_tool_clone   (id); if(log_this && tool_clone   ) t_log.console_dir(tool_clone   , "...tool_clone"   );
-    let tool_embedded = get_tool_embedded(id); if(log_this && tool_embedded) t_log.console_dir(tool_embedded, "...tool_embedded");
+    let tool_el       = t_get_tool         (id); if(log_this && tool_el    ) t_log.console_dir("...tool_el"      , tool_el      );
+    let tool_clone    = get_tool_clone   (id); if(log_this && tool_clone   ) t_log.console_dir("...tool_clone"   , tool_clone   );
+    let tool_embedded = get_tool_embedded(id); if(log_this && tool_embedded) t_log.console_dir("...tool_embedded", tool_embedded);
 
     if( tool_clone    ) tool_clone   .checked = checked;
     if( tool_el       ) tool_el      .checked = checked;
@@ -12426,6 +13036,11 @@ if( log_this) log("...return %c"+state, lbX[state ? 4 : 6]);
 };
 /*}}}*/
 /*…   prop_id_toggle {{{*/
+/*{{{*/
+const TOGGLE_LANG_RELOAD_DELAY = 2000; /* ALLOWING TO SELECT THE RIGHT LANG FLAG */
+
+let   location_reload_timeout;
+/*}}}*/
 let   prop_id_toggle = function(keyword)
 {
 /*{{{*/
@@ -12448,7 +13063,7 @@ if( log_this) log(caller);
     else if( t_preventDefault_has_been_called() ) dismissed_by = t_preventDefault_caller;
 */
 
-    if(log_this && dismissed_by) log(caller+": %c dismissed_by ["+ dismissed_by+"]", lb2);
+if(log_this && dismissed_by) log(caller+": %c dismissed_by ["+ dismissed_by+"]", lb2);
     if(dismissed_by) {
 if(log_this) console.trace();
         return;
@@ -12459,13 +13074,71 @@ if(log_this) console.trace();
         keyword = t_data.SQUEEZE_CYCLE;
 
     /*}}}*/
-    /* (keyword) (changes) {{{*/
+    /* CHANGES... {{{*/
     let changes = "";
     switch(keyword)
     {
+    case  t_data.USER_LANG       : changes += keyword;
+    {
+        let  user_lang = dom_i18n.i18n_get_user_lang();
+        let       lang = user_lang;
+
+        let      array = dom_i18n.i18n_get_LANGUAGES();
+        for(let i=0; i<array.length; ++i)
+        {
+            if(array[i] == user_lang) /* current */
+            {
+                lang =    ((i+1) < array.length) /* next */
+                    ? array[i+1] : array[ 0 ];
+                break;
+            }
+        }
+
+
+        /* CHANGE USER_LANG */
+        dom_i18n.i18n_set_args({ lang , caller });
+
+        /* SYNC UI */
+        let el = prop.get_EL(t_data.USER_LANG);
+        if( el ) {
+            el.title     = i18n_get(dom_i18n.USER_LANG, dom_i18n.USER_LANG);
+            el.className = "flag bg_"+lang;
+        }
+
+        /* STORE */
+        prop.set(t_data.USER_LANG, lang);
+        t_store.t_store_set_value(t_data.USER_LANG, lang);
+
+        /* RELOAD */
+        let lang_applied  = dom_i18n.i18n_get_user_lang_applied();
+        if( lang_applied != lang)
+        {
+logBIG("RELOADING: changing from "+lang_applied+" to "+lang, 7);
+            if( el ) t_util.add_el_class(el, "reloading");
+
+            if( location_reload_timeout ) clearTimeout( location_reload_timeout );
+            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, TOGGLE_LANG_RELOAD_DELAY);
+        }
+        else {
+            if( el ) t_util.del_el_class(el, "reloading");
+
+            if( location_reload_timeout ) clearTimeout( location_reload_timeout );
+logBIG("RELOAD CANCELED ..back to: "+lang, 8);
+        }
+/*{{{*/
+if( log_this)
+    log_key_val_group(caller
+                      , { user_lang
+                        , array
+                        , lang
+                        , TOGGLE_LANG_RELOAD_DELAY
+                      } , lf5, false);
+/*}}}*/
+    }
+    break;
 
     case t_data.ANCHOR_FREEZE:
-    if(!prop.get(t_data.WORDING) ) changes += keyword; prop.toggle( t_data.ANCHOR_FREEZE    ); break;
+    if(!prop.get(t_data.WORDING) ) changes += keyword; prop.toggle( keyword          ); break;
 
     case  t_data.TOOLS_TRAP      : changes += keyword; prop.toggle( keyword          ); break;
 
@@ -12478,6 +13151,7 @@ if(log_this) console.trace();
     case  t_data.CONTAINERS_HI   : changes += keyword; prop.toggle( keyword          ); break;
     case  t_data.SCROLL_SMOOTH   : changes += keyword; prop.toggle( keyword          ); break;
     case  t_data.OVERFLOW_VISI   : changes += keyword; prop.toggle( keyword          ); break;
+    case  t_data.DETAILS_RADIO   : changes += keyword; prop.toggle( keyword          ); break;
 
     case  t_data.SHOW_SEEKZONE   : changes += keyword; prop.toggle( keyword          ); break;
     case  t_data.PIN_SEEKSPOT    : changes += keyword; prop.toggle( keyword          ); break;
@@ -12491,9 +13165,10 @@ if(log_this) console.trace();
     case  t_data.SITE_OR_PAGE    : changes += keyword; prop.toggle( keyword          ); break;
     case  t_data.EDIT_OR_STAGE   : changes += keyword; prop.toggle( keyword          ); break;
     case  t_data.DOM_HIDE1_RESET : changes += keyword; prop.toggle( keyword          ); break;
+    case  t_data.DOM_HIDE1_UNDO  : changes += keyword; prop.toggle( keyword          ); break;
     case  t_data.DENY_OR_ALLOW   : changes += keyword; prop.toggle( keyword          ); break;
 
-    case  t_data.TOOLS_EXTRAS    : changes += keyword; prop.toggle( keyword          ); break;
+    case  t_data.TOOLS_TIER2     : changes += keyword; prop.toggle( keyword          ); break;
 
     case  t_data.WORDS_EXACT     : changes += keyword; prop.set   ( keyword   ,  true); break;
     case  t_data.WORDS_SEGMENT   : changes += keyword; prop.set   ( keyword   ,  true); break;
@@ -12506,18 +13181,20 @@ if(log_this) console.trace();
 
     default               :
     /* DYNAMIC KEYWORDS {{{*/
-    let keyword_array = get_words_drop_affix_array();
-    for(let i=0; i < keyword_array.length; ++i)
     {
-        let id  = keyword_array[i];
-        if( id == keyword) {
-            changes += keyword;
-            prop.toggle(keyword);
-            break;
+        let keyword_array = get_words_drop_affix_array();
+        for(let i=0; i < keyword_array.length; ++i)
+        {
+            let id        = keyword_array[i];
+            if( id       == keyword) {
+                changes  += keyword;
+                prop.toggle(keyword);
+                break;
+            }
         }
     }
     /*}}}*/
-if(!changes) log("%c "+caller+" %c "+keyword+" %c *** not handled ***", lbH+lf4, lbb+lbL+lf2, lbb+lbR+lf2);
+    if(!changes) log("%c "+caller+" %c "+keyword+" %c *** not handled ***", lbH+lf4, lbb+lbL+lf2, lbb+lbR+lf2);
     }
 /*{{{
 logXXX("changes=["+changes+"]");
@@ -12531,8 +13208,9 @@ if(log_this) t_log_option_changes(changes);
     }
     /*}}}*/
     /* SITE AND PAGE {{{*/
-    /* t_data.OVERFLOW_VISI t_data.SCROLL_SMOOTH */
+    /* OVERFLOW DETAILS SCROLL */
     if(         changes.includes( t_data.OVERFLOW_VISI  )
+            ||  changes.includes( t_data.DETAILS_RADIO  )
             ||  changes.includes( t_data.SCROLL_SMOOTH  )
             ||  changes.includes( t_data.PIN_SEEKSPOT   )
       ) {
@@ -12544,7 +13222,7 @@ if(log_this) t_log_option_changes(changes);
             ||  changes.includes( t_data.CONTAINERS_HI  )
             ||  changes.includes( t_data.THEME_DARK     )
             ||  changes.includes( t_data.TOOLS_TRAP     )
-            ||  changes.includes( t_data.TOOLS_EXTRAS   )
+            ||  changes.includes( t_data.TOOLS_TIER2    )
           ) {
             save2_theme();
         }
@@ -12560,7 +13238,7 @@ if(log_this) t_log_option_changes(changes);
         }
     }
     /*}}}*/
-    /* t_data.SHOW_SEEKZONE {{{*/
+    /* SEEKZONE SEEKSPOT{{{*/
     if( prop.get( t_data.SHOW_SEEKZONE ))
     {
         if(     changes.includes( t_data.LOG_SEEKSPOT   )
@@ -12573,13 +13251,7 @@ if(log_this) t_log_option_changes(changes);
         }
     }
     /*}}}*/
-    /* t_data.TOOLS_SCROLL {{{*/
-    if(         changes.includes( t_data.TOOLS_SCROLL   ))
-    {
-        save4_layout(t_data.TOOLS_SCROLL);
-    }
-    /*}}}*/
-    /* t_select.t_sync_containers_hi {{{*/
+    /* CONTAINERS_HI THEME_DARK {{{*/
     if(         changes.includes( t_data.CONTAINERS_HI  )
            ||   changes.includes( t_data.THEME_DARK     )
            ||   changes.includes("theme_DARK"           )
@@ -12588,7 +13260,7 @@ if(log_this) t_log_option_changes(changes);
         t_select.t_sync_containers_hi();
 
     /*}}}*/
-    /* t_sync_wording {{{*/
+    /* WORDING {{{*/
     if(         changes.includes( t_data.ANCHOR_FREEZE  )
            ||   changes.includes( t_data.THEME_DARK     )
            ||   changes.includes( t_data.WORDING        )
@@ -12609,18 +13281,24 @@ if(log_this) t_log_option_changes(changes);
     }
     else if( log_this) logBIG("NO PATTERN TO RE-SELECT");
     /*}}}*/
-    /* t_sync_TOOLS_SCROLL t_sync_layout t_sync_tools_extras {{{*/
+    /* TOOLS_SCROLL {{{*/
     if(         changes.includes( t_data.TOOLS_SCROLL   ) ) t_sync_TOOLS_SCROLL();
-    if(         changes.includes( t_data.TOOLS_SCROLL   ) ) t_sync_layout(caller);
-    if(         changes.includes( t_data.TOOLS_EXTRAS   ) ) t_sync_layout(caller);
-    if(         changes.includes( t_data.TOOLS_EXTRAS   ) ) t_sync_tools_extras(caller);
+    if(         changes.includes( t_data.TOOLS_SCROLL   )) save4_layout(t_data.TOOLS_SCROLL);
 
     /*}}}*/
-    /* t_sync_styles {{{*/
-    t_sync_styles(caller);
+    /* TOOLS_TIER2 {{{*/
+    if(         changes.includes( t_data.TOOLS_TIER2    ) ) t_sync_tools_tier2 (caller);
 
     /*}}}*/
-    /* SYNC TOOL CLONES {{{*/
+    /* TOOLS XY {{{*/
+    t_tools_sync_top_xy();
+
+    /*}}}*/
+    /* TOOLS STYLE {{{*/
+    t_sync_styles( caller );
+
+    /*}}}*/
+    /* TOOL CLONES {{{*/
     t_sync_tool_clones_state( caller );
 
 /*{{{
@@ -12730,12 +13408,12 @@ if(log_this) log_caller();
 
     t_update_TOOLS_MAP_GEOMETRY(caller,0);
 
-    t_cache_init_by(caller);
+    t_cache_armed_by(caller);
 
-    t_cache_layout("Layout changed");
+    t_cache_sync("Layout changed");
     /*}}}*/
     /* 1/3 - TOOLS GRID-SYNC {{{*/
-    if( call_t_grid_IS_SIZED() )
+    if(     call_t_grid_IS_SIZED() )
     {
         if(has_el_class(dimm_mask, "dimm_sticky"))
             t_sticky.t_sticky_RING_stop(caller);
@@ -12748,20 +13426,16 @@ if(log_this) log_caller();
     {
         div_slot_containers.style.minHeight = window.innerHeight+"px";
 
-        if(t_scrollIntoView_EL) t_scrollIntoView_EL.scrolledIntoViewHandled = false;
+        if(t_scrollIntoView_EL) delete t_scrollIntoView_EL.scrolledIntoViewHandled;
 
         t_scroll_div_slot_containers_in_viewport();
     }
     /*}}}*/
     /* 3/3 - STICKY RING-MENU LAYOUT {{{*/
-    else
+    else if(dimm_mask_displayed() && has_el_class(dimm_mask, "dimm_sticky"))
     {
-        let sticky = t_sticky.t_sticky_get_onWork_STICKY();
-        if( sticky && dimm_mask_displayed() && has_el_class(dimm_mask, "dimm_sticky"))
-        {
-            if(has_el_class(dimm_mask, "dimm_sticky"))
-                t_sticky.t_sticky_RING_layout();
-        }
+        t_sticky.t_sticky_RING_layout();
+
     }
     /*}}}*/
     /* SYNC [dimm_mask] {{{*/
@@ -12809,8 +13483,6 @@ let t_scroll_div_slot_containers_in_viewport_timeout;
 let t_window_scrollTo_last_call_MS;
 
 /*}}}*/
-
-/*}}}*/
 /* t_scroll_listener {{{*/
 /*{{{*/
 let has_scrolled;
@@ -12820,9 +13492,9 @@ let t_scroll_listener = function(e)
 {
 /*{{{*/
 let caller = "t_scroll_listener";
-let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV3_UP;
+let log_this = LOG_MAP.EV1_DOWN;
 
-if(log_this || LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
+if(log_this || LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status_if_changed_filter(caller, "scroll", lf6);
     let scrolled_by_script = "";
 /*}}}*/
     has_scrolled = true;
@@ -12834,7 +13506,7 @@ if(log_this || LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
         return;
     }
     /*}}}*/
-    /* div_slot_containers_displayed .. f(SCROLLED_INTO_VIEW) {{{*/
+    /*  div_slot_containers_displayed .. f(SCROLLED_INTO_VIEW) {{{*/
     if( div_slot_containers_displayed() )
     {
         if(!has_el_class(div_slot_containers, SCROLLED_INTO_VIEW) )
@@ -13019,6 +13691,10 @@ let t_window_scrollTo = function(x, y, scrollBehavior)
     y *= (body_zoom_percent  / 100);
     window.scrollTo(x, y);
 
+/*
+ :!start explorer "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView"
+*/
+
     /* restore user behavior */
     if(sync_scroll_smooth_timeout) clearTimeout( sync_scroll_smooth_timeout );
     sync_scroll_smooth_timeout   =   setTimeout( sync_scroll_smooth, MAX_SCROLL_SMOOTH_DURATION);
@@ -13083,7 +13759,7 @@ if( log_this) log(caller +": ["+ window.scrollX +" "+ window.scrollY +"]"+ (scro
     if( div_slot_containers_displayed() )
     {
         /* div_slot_containers {{{*/
-        if(dimm_mask.firstElementChild.id == "div_slot_containers")
+        if(dimm_mask.firstElementChild == div_slot_containers)
         {
             /* SCROLLED BY SCRIPT */
             if( scrolled_by_script )
@@ -13265,6 +13941,8 @@ let t_get_consumed_by_table = function()
 };
 /*}}}*/
 /*}}}*/
+/*}}}*/
+
 
 /* LAYOUT */
 /*{{{*/
@@ -13334,10 +14012,12 @@ if(log_this) log(caller+"...position....=[%c "+position    +" %c]", lb5,lbA);
     let position_has_changed = (hotspot.style.position != position);
     if( position_has_changed)
     {
-        t_cache_init_by(caller);
-        t_cache_layout("t_data.TOOLS_SCROLL "+prop.get( t_data.TOOLS_SCROLL ));
+        t_cache_armed_by(caller);
+        t_cache_sync("t_data.TOOLS_SCROLL "+prop.get( t_data.TOOLS_SCROLL ));
 
         t_sync_tools_position(caller, position_has_changed);
+
+        t_sync_layout(caller);
     }
 };
 /*}}}*/
@@ -13501,27 +14181,27 @@ log_caller(2);
     if(!tool_panel.offsetWidth || !tool_panel.offsetHeight) return;
 
     /* HAS NO PIN TOOLS */
-    if(   !t_util.get_el_child_with_class(tool_panel,    CSS_PUSH_PIN  )
-       && !t_util.get_el_child_with_class(tool_panel,    CSS_CLOSEPIN  )
-       && !t_util.get_el_child_with_class(tool_panel,    CSS_SCALEPIN  )
-       && !t_util.get_el_child_with_class(tool_panel,    CSS_CLEARPIN  )
+    if(   !t_util.get_el_child_with_class(tool_panel, CSS_PUSH_PIN  )
+       && !t_util.get_el_child_with_class(tool_panel, CSS_CLOSEPIN  )
+       && !t_util.get_el_child_with_class(tool_panel, CSS_SCALEPIN  )
+       && !t_util.get_el_child_with_class(tool_panel, CSS_CLEARPIN  )
       ) {
-        del_el_class(tool_panel,                  CSS_WIDE_PANEL);
-        del_el_class(tool_panel,                  CSS_TALL_PANEL);
+        del_el_class(tool_panel,                      CSS_WIDE_PANEL);
+        del_el_class(tool_panel,                      CSS_TALL_PANEL);
     }
     /* TOP OR RIGHT PIN TOOLS */
     else {
 
         /* RIGHT PADDING */
         if(tool_panel.offsetWidth   > tool_panel.offsetHeight) {
-            if(!has_el_class(         tool_panel, CSS_WIDE_PANEL)) {
-                set_el_class_removing(tool_panel, CSS_WIDE_PANEL, [CSS_TALL_PANEL]);
+            if(!has_el_class(         tool_panel,     CSS_WIDE_PANEL)) {
+                set_el_class_removing(tool_panel,     CSS_WIDE_PANEL, [CSS_TALL_PANEL]);
             }
         }
         /* TOP   PADDING */
         else {
-            if(!has_el_class(         tool_panel, CSS_TALL_PANEL)) {
-                set_el_class_removing(tool_panel, CSS_TALL_PANEL, [CSS_WIDE_PANEL]);
+            if(!has_el_class(         tool_panel,     CSS_TALL_PANEL)) {
+                set_el_class_removing(tool_panel,     CSS_TALL_PANEL, [CSS_WIDE_PANEL]);
             }
         }
     }
@@ -13617,7 +14297,7 @@ let t_add_scalepin_on_panel = function(tool_panel)
     let     prevpin;
     if     (prevpin = t_util.get_el_child_with_class(tool_panel, CSS_CLOSEPIN)) tool_panel.insertBefore(scalepin, prevpin.nextElementSibling);
     else if(prevpin = t_util.get_el_child_with_class(tool_panel, CSS_PUSH_PIN)) tool_panel.insertBefore(scalepin, prevpin.nextElementSibling);
-    else {  prevpin = tool_panel.firstElementChild;                      tool_panel.insertBefore(scalepin, prevpin            ); }
+    else {  prevpin = tool_panel.firstElementChild;                             tool_panel.insertBefore(scalepin, prevpin                   ); }
 
     add_el_class(tool_panel, CSS_PIN_ON_PANEL);
     /*}}}*/
@@ -13646,7 +14326,7 @@ let t_add_clearpin_on_panel = function(tool_panel)
     if     (prevpin = t_util.get_el_child_with_class(tool_panel, CSS_SCALEPIN)) tool_panel.insertBefore(clearpin, prevpin.nextElementSibling);
     else if(prevpin = t_util.get_el_child_with_class(tool_panel, CSS_CLOSEPIN)) tool_panel.insertBefore(clearpin, prevpin.nextElementSibling);
     else if(prevpin = t_util.get_el_child_with_class(tool_panel, CSS_PUSH_PIN)) tool_panel.insertBefore(clearpin, prevpin.nextElementSibling);
-    else {  prevpin = tool_panel.firstElementChild;                      tool_panel.insertBefore(clearpin, prevpin                   ); }
+    else {  prevpin = tool_panel.firstElementChild;                             tool_panel.insertBefore(clearpin, prevpin                   ); }
 
     add_el_class(tool_panel, CSS_PIN_ON_PANEL);
     /*}}}*/
@@ -13695,12 +14375,12 @@ let log_this = LOG_MAP.EV5_TOOL_CB;
 if( log_this) log("%c"+caller+"%c"+get_n_lbl(panel)+"%c"+get_n_lbl(pin)+"])"
         ,          lbL+lf5    ,lbC+lf3              ,lbR+lf4                );
 /*}}}*/
-    /*.........................................................................*/ let action;
-    if     (                panel.id == "fly_div"    ) { action = "FLY CLOSE PIN"   ; t_fly.t_fly_init(action);                 }
-    else if( has_el_class(pin , CSS_CLOSEPIN) ) { action = "PANEL UNSELECTED"; t_tools_panel_select(panel, false); }
-    else if( has_el_class(pin , CSS_CLEARPIN) ) { action = "PANEL CLEARED"   ; t_clear(action);                    }
-    else if( has_el_class(pin , CSS_PUSH_PIN) ) { action = "PANEL "+(has_el_class(onWork_PANEL, t_data.CSS_PINNED   ) ?    "PINNED" : "UNPINNED" );                                          }
-    else if( has_el_class(pin , CSS_SCALEPIN) ) { action = "PANEL "+(has_el_class(onWork_PANEL, CSS_MAGNIFIED) ? "MAGNIFIED" : "SCALE 1:1"); t_toggle_onWork_PANEL_magnified(action); }
+    /*.....................................*/ let action;
+    if     ( panel.id == "fly_div"            ) { action = "FLY CLOSE PIN"   ; t_fly.t_fly_init    ( action      ); }
+    else if( has_el_class(pin , CSS_CLOSEPIN) ) { action = "PANEL UNSELECTED"; t_tools_panel_select( panel, false); }
+    else if( has_el_class(pin , CSS_CLEARPIN) ) { action = "PANEL CLEARED"   ; t_clear             ( action      ); }
+    else if( has_el_class(pin , CSS_PUSH_PIN) ) { action = "PANEL "+(has_el_class(onWork_PANEL, t_data.CSS_PINNED) ?    "PINNED" : "UNPINNED" );                                          }
+    else if( has_el_class(pin , CSS_SCALEPIN) ) { action = "PANEL "+(has_el_class(onWork_PANEL, CSS_MAGNIFIED    ) ? "MAGNIFIED" : "SCALE 1:1"); t_toggle_onWork_PANEL_magnified(action); }
 
 if(log_this && action) log("t_click_panel_pin_CB %c"+action, lbH+lf5);
 };
@@ -13769,8 +14449,8 @@ if( log_this) log("...pivot_PANEL=["+ t_util.get_id_or_tag(pivot_PANEL) +"]");
 }}}*/
         if(!t_tools_panel_is_selected(panel)) continue;
 
-        if(! next_visible_panel && pivot_PANEL_idx) {  next_visible_panel_idx = i;  next_visible_panel    = panel; }
-        if(               panel == pivot_PANEL    ) {         pivot_PANEL_idx = i;                                 }
+        if(!next_visible_panel && pivot_PANEL_idx) {  next_visible_panel_idx = i;  next_visible_panel    = panel; }
+        if(              panel == pivot_PANEL    ) {         pivot_PANEL_idx = i;                                 }
 
         if(  next_visible_panel ) break;
     }
@@ -13811,13 +14491,13 @@ if( log_this) t_log_TOOL_panels(caller, lf4);
 /*}}}*/
 /* CACHE {{{*/
 /* {{{*/
-const CACHE_EMPTY = "CACHE_EMPTY";
+const CACHE_NEVER_ARMED = "CACHE_NEVER_ARMED";
 let w_W = 1280, w_H = 1024;
 let p_W = 1280, p_H = 1024;
 let h_W =   32, h_H =   32;
 let hsR = { top:0 , left:0 , right:0 , bottom:0 };
 
-let t_cache_layout_callers = CACHE_EMPTY;
+let t_cache_armed_callers = CACHE_NEVER_ARMED;
 /*}}}*/
 /*_ t_cache_wph_WH {{{*/
 let t_cache_wph_WH = function()
@@ -13867,54 +14547,56 @@ console.dir(window)
 
 };
 /*}}}*/
-/*_ t_cache_init_by {{{*/
-let t_cache_init_by = function(_caller)
+/*_ t_cache_armed_by {{{*/
+let t_cache_armed_by = function(_caller)
 {
     let log_this = LOG_MAP.EV5_TOOL_CB;
 
-    t_cache_layout_callers
-        = (t_cache_layout_callers)
-        ?  t_cache_layout_callers+" + "+_caller
-        :                               _caller
+    t_cache_armed_callers
+        = (t_cache_armed_callers)
+        ?  t_cache_armed_callers+LF+ _caller
+        :                              _caller
     ;
 
 if(log_this) log("%c CACHE INIT BY "+ _caller, lbF+lb7);
 
 };
 /*}}}*/
-/*_ t_cache_empty {{{*/
-let t_cache_empty = function(_caller)
+/*_ t_cache_has_been_armed {{{*/
+let t_cache_has_been_armed = function(_caller)
 {
     let log_this = LOG_MAP.EV5_TOOL_CB;
 
-if(log_this) log("t_cache_empty: t_cache_layout_callers = %c "+t_cache_layout_callers+" %c", lbF+lb7,lbA);
+if(log_this) log("t_cache_has_been_armed: t_cache_armed_callers = %c "+t_cache_armed_callers+" %c", lbF+lb7,lbA);
 
-    return (t_cache_layout_callers == CACHE_EMPTY);
+    return (t_cache_armed_callers != CACHE_NEVER_ARMED);
 };
 /*}}}*/
-/*_ t_cache_changed {{{*/
-let t_cache_changed = function(_caller)
+/*_ t_cache_armed {{{*/
+let t_cache_armed = function(_caller)
 {
     let log_this = LOG_MAP.EV5_TOOL_CB;
 
-if(log_this) log("t_cache_changed: %c [t_cache_init_by] HAS BEEN CALLED BY ["+t_cache_layout_callers+"] %c .. CALLED BY "+ _caller, lbF+lb7,lbA);
+if(log_this) log("t_cache_armed: %c CALLED BY "+ _caller    , lbF+lb7);
+if(log_this) log("%c t_cache_armed_callers:%c"+LF+t_cache_armed_callers, lb7, lf7);
 
-    return (t_cache_layout_callers != "");
+    return (t_cache_armed_callers != "");
 };
 /*}}}*/
-/*_ t_cache_layout .. [w_WH .. p_WH .. h_H .. tools_map.WH] {{{*/
-let t_cache_layout = function(_caller)
+/*_ t_cache_sync .. [w_WH .. p_WH .. h_H .. tools_map.WH] {{{*/
+let t_cache_sync = function(_caller)
 {
 /*_ log_this {{{*/
 let log_this = LOG_MAP.EV5_TOOL_CB;
 
 /*{{{
-    if(!t_cache_layout_callers) {
-if(log_this) log("%c t_cache_layout: ** NO CHANGE SET"   +" .. CALLED BY "+ _caller, lbF+lb2);
+    if(!t_cache_armed_callers) {
+if(log_this) log("%c t_cache_sync: ** NO CHANGE SET"   +" .. CALLED BY "+ _caller, lbF+lb2);
         return;
     }
 }}}*/
-if(log_this) log("%c t_cache_layout .. CALLED BY "+ _caller,lbF+lb5);
+if(log_this) log("%c t_cache_sync .. CALLED BY "+ _caller,lbF+lb5);
+if(log_this) log("%c t_cache_armed_callers:%c"+LF+t_cache_armed_callers, lb5, lf5);
 /*}}}*/
     /* [hotring] {{{*/
     if(hotring) {
@@ -13925,13 +14607,13 @@ if(log_this) log("...HOTSPOT %c "+ h_W+" x "+h_H +" ", lb7);
     }
     /*}}}*/
     /* TOOLS GEOMETRY {{{*/
-    t_update_TOOLS_MAP_GEOMETRY("t_cache_layout .. CALLED BY "+ _caller);
+    t_update_TOOLS_MAP_GEOMETRY("t_cache_sync .. CALLED BY "+ _caller);
 
 /*
 if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_log_stage_msg(t_fly.STAGE_2_ACTION,"<em class='cc0'>LAYOUT</em> Window <em class='cc8'>"+w_H+"x"+w_W+"</em>  Page <em class='cc8'>"+p_H+"</em>");
 */
     /*}}}*/
-    t_cache_layout_callers = "";
+    t_cache_armed_callers = "";
 };
 /*}}}*/
 /*_   is_el_off_screen {{{*/
@@ -13967,6 +14649,12 @@ if(LOG_MAP.EV0_LISTEN) log(caller+": ...return "+result+" %c "+reject_reason,lb2
 /*}}}*/
 /*}}}*/
 /* MOVE {{{*/
+/*_ t_tools_sync_top_xy {{{*/
+let t_tools_sync_top_xy = function()
+{
+    t_tools_set_top_xy(h_x, h_y);
+};
+/*}}}*/
 /*_ t_tools_set_top_xy {{{*/
 /*{{{*/
 const BOX_MARGIN   =  24;
@@ -14081,7 +14769,7 @@ if( log_this) log(caller+": dom_gutter.get_GUTTER_XY() .. xy=["+xy.x+" "+xy.y+"]
 };
 /*}}}*/
 /*_ t_tools_show {{{*/
-let t_tools_show = function()
+let t_tools_show = function(centered)
 {
 let   caller = "t_tools_show";
 let log_this = LOG_MAP.T5_SPREAD;
@@ -14089,7 +14777,7 @@ let log_this = LOG_MAP.T5_SPREAD;
     let xy = dom_gutter.get_WINDOW_XY();
 if( log_this) log(caller+": dom_gutter.get_WINDOW_XY() .. xy=["+xy.x+" "+xy.y+"]");
 
-    if(!xy.x && !xy.y) { xy.x = window.innerWidth  / 2; xy.y = window.innerHeight / 2; }
+    if(centered || (!xy.x && !xy.y)) { xy.x = window.innerWidth  / 2; xy.y = window.innerHeight / 2; }
 
     enter_CSS_SLOW_REGROUP("SHOWING HOTSPOT");
 
@@ -14314,7 +15002,7 @@ if(log_this)
       ) {
 if(log_this) log_key_val_group("MOVING hotspotXY", hotspotXY, lf4, true);
 
-        t_save_update_post(caller);
+        t_save_update_post(caller, PENDING_LOCALSTORAGE_DELAY);
     }
     /*}}}*/
 };
@@ -14327,6 +15015,15 @@ const HOTSPOT_HIDE_SHOW_DELAY = 1000;
 /*}}}*/
 let t_hide_hotspot = function(delay/* ms,0,undefined */)
 {
+/* CALLERS of t_hide_hotspot: {{{
+./dom_prop.html:843  unfold_this:860:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+./intro.html:3683  intro_load_current_snapshot_id:3687:     dom_tools.t_hide_hotspot(0);
+./intro.html:7704  unfold_this:7721:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+javascript/dom_share.js:996  share9_IMPORT:1089:     if(data_keys == 0) t_tools.t_hide_hotspot();
+javascript/dom_tools.js:23476  t_void_SNAPSHOT:23488:     t_hide_hotspot(0);
+./playground.html:3641  unfold_this:3658:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+./screenshots.html:950  unfold_this:967:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+}}}*/
     if(delay === undefined) delay = HOTSPOT_HIDE_SHOW_DELAY;
 
     let x = /*hotspotXY.x_in_gutter ||*/ HOTSPOT_STANDBY_X;
@@ -14367,7 +15064,7 @@ let   caller = "t_drag_hotspot_xy_delay";
 let log_this = DOM_TOOLS_LOG;
 
 let tag_this = DOM_TOOLS_TAG || log_this;
-if( log_this) log("%c "+caller("+x+" , "+y+"), lf1);
+if( log_this) log("%c "+caller+"("+x+" , "+y+")", lf1);
 /*}}}*/
 
     if( hotspot.drag_hotspot_request ) drag_HOTSPOT_cancel();
@@ -14407,7 +15104,7 @@ let   drag_HOTSPOT_AnimationFrame = function(timestamp)
 {
     /* canceled before this call */
     if(!hotspot.drag_hotspot_request)
-        return false;
+        return;
 
     /* next step .. or destination reached */
     if( drag_HOTSPOT_XY() ) hotspot.drag_hotspot_request.requestID = requestAnimationFrame( drag_HOTSPOT_AnimationFrame );
@@ -14475,7 +15172,7 @@ if( log_this) t_fly.t_log_event_status(caller+"("+x.toFixed(0)+" "+y.toFixed(0)+
     let x_sign = (x < pivotXY.x) ? 1 : -1;
     let y_sign = (y < pivotXY.y) ? 1 : -1;
 
-    if( !!hotspotXY.gutter_urdl ) { x_sign *= -1; y_sign *= -1; }
+    if( !!hotspotXY.gutter_urdl ) { x_sign *= -1; y_sign *= -1; } /* eslint-disable-line no-extra-boolean-cast */
 
     x += x_sign * h_W / 2;
     y += y_sign * h_H / 2;
@@ -14498,7 +15195,7 @@ logBIG("xy_ratio=["+xy_ratio.x+" "+xy_ratio.y+"]", lf4)
 
     /*}}}*/
     /*  fully_spread .. (while moving pivot_PANEL) {{{*/
-    if(!fully_spread_since_onDown && (onWork_PANEL == pivot_PANEL))
+    if(has_moved && !fully_spread_since_onDown && (onWork_PANEL == pivot_PANEL))
     {
         let fully_spread = ((spread_ratio.x >= 0.99) || (spread_ratio.y >= 0.99));
 if( log_this) log("%c"+(fully_spread ? "@@@ fully_spread" : "not fully_spread"), lbH+(fully_spread ? lf4 : lf8));
@@ -14506,13 +15203,13 @@ if( log_this) log("%c"+(fully_spread ? "@@@ fully_spread" : "not fully_spread"),
         if( fully_spread ) {
 if( log_this) t_fly.t_log_event_status(caller, lf2);
 
-            fully_spread_since_onDown = true;
+            fully_spread_since_onDown = true; /* so it may not be cycled without another onDown */
             t_cycle_pivot_panel();
         }
     }
     /*}}}*/
     /* SPREAD TOOLS AWAY FROM HOTSPOT {{{*/
-    let xy = { x:x , y:y };
+    let xy = {x , y};
 
     for(let i=1; i < TOOL_panels.length; ++i)
     {
@@ -14570,7 +15267,7 @@ logXXX(caller+"("+x+","+y+") has_moved=["+has_moved+"] spread_ratio.x=["+spread_
     /* unchanged {{{*/
     let unchanged
         =   spread_ratio.x
-        && !has_moved 
+        && !has_moved
         && !hotspot.drag_hotspot_request;
 
     if( unchanged ) {
@@ -14599,7 +15296,7 @@ log(caller+"%c"+moving_panel.id+"%c FROM "+parseInt(100 * spread_ratio.x)+" x "+
         spread_ratio.x = x_ratio;
         spread_ratio.y = y_ratio;
 
-        if(!save_update_is_pending()) t_save_update_post(caller);
+        if(!save_update_is_pending()) t_save_update_post(caller, PENDING_LOCALSTORAGE_DELAY);
     }
     /*}}}*/
 /*{{{
@@ -14733,7 +15430,7 @@ let t_tools_spread_panel_xy = function(panel, map, xy_ratio, x_sign, y_sign)
     x += x_sign * Math.min(w, Math.abs(dx));
     y += y_sign * Math.min(h, Math.abs(dy));
 
-    return { x:x , y:y };
+    return {x , y};
     /*}}}*/
 };
 /*}}}*/
@@ -14800,7 +15497,7 @@ if( log_this) console.time(caller);
                 let left = w_2 + d_x *  OUTLINE_SCAN_SIGN_MAX[dir].x ;
                 let top  = h_2 + d_y *  OUTLINE_SCAN_SIGN_MAX[dir].y ;
 
-if( log_this)   t_outline_dot(left, top, num);
+if( log_this)   t_outline_dot(num, left, top);
 
                 let range;
                 if( range = t_select.get_range_from_caret (left, top))
@@ -14822,7 +15519,7 @@ let t_outline_range = function(range, left, top, num)
 let caller = "t_outline_range";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) t_select.log_range(range, caller);
+if( log_this) t_util.log_range(range, caller);
 /*}}}*/
     /* container {{{*/
     let el = range.startContainer;
@@ -14876,7 +15573,7 @@ if( log_this) t_select.log_range(range, caller);
 };
 /*}}}*/
 /*_ t_outline_dot {{{*/
-let t_outline_dot = function(left, top, num)
+let t_outline_dot = function(num,left,top)
 {
     /* new dot {{{*/
     let div = outlined_dots[outlined_dots_used_since_t_outline_clear];
@@ -14928,36 +15625,6 @@ let t_outline_clear = function()
 /*}}}*/
 /*}}}*/
 /* STATE {{{*/
-/*_ t_is_a_tools_extras {{{*/
-let t_is_a_tools_extras = function(el)
-{
-    return     el
-        && (  (el == dom_traversal)
-           || (el == dev_log_map  )
-           || (el == test_panel   )
-           || (el == dom_load_tags)
-          )
-    ;
-};
-/*}}}*/
-/*_ t_sync_tools_extras {{{*/
-let t_sync_tools_extras = function(_caller)
-{
-let log_this = LOG_MAP.T2_GRID;
-
-    let tools_extras = prop.get( t_data.TOOLS_EXTRAS );
-
-if(log_this) log("t_sync_tools_extras: tools_extras=["+tools_extras+"] .. CALLED BY "+ _caller);
-
-    let el;
-    if( el = dom_traversal) t_util.set_id_class_on_off(el.id, t_data.CSS_HIDDEN, tools_extras || !t_tools_panel_is_selected(el));
-    if( el = dev_log_map  ) t_util.set_id_class_on_off(el.id, t_data.CSS_HIDDEN, tools_extras || !t_tools_panel_is_selected(el));
-    if( el = test_panel   ) t_util.set_id_class_on_off(el.id, t_data.CSS_HIDDEN, tools_extras || !t_tools_panel_is_selected(el));
-    if( el = dom_load_tags) t_util.set_id_class_on_off(el.id, t_data.CSS_HIDDEN, tools_extras || !t_tools_panel_is_selected(el));
-
-    t_TOOL_SET_eval_wide_or_tall_panel();
-};
-/*}}}*/
 /*_ t_sync_wording {{{*/
 let t_sync_wording = function(_caller)
 {
@@ -15103,9 +15770,9 @@ if( log_this) log(caller);
     t_sync_styles_timer      = null;
     t_sync_styles_caller_csv = "";
     /* CHECKBOXES {{{*/
-    prop.get_MAP().forEach( function(prop,index,array)
+    prop.get_MAP().forEach( function(p,index,array)
                             {
-                                if(prop.id) t_util.set_id_class_on_off(prop.id, t_data.CSS_CHECKED,  prop.value);
+                                if(p.id) t_set_id_class_on_off(p.id, t_data.CSS_CHECKED,  p.value);
                             });
 
     /*}}}*/
@@ -15113,32 +15780,33 @@ if( log_this) log(caller);
     let state, id, el;
     state = prop.get( t_data.THEME_DARK );
 
-    t_TOOL_SET_set_class_state      (                 t_data.CSS_DARK    , state);
-    t_set_tool_class_theme_state    (t_data.CSS_STICKY_TOOL, t_data.CSS_DARK    , state);
-    t_set_tool_class_theme_state    (CSS_TRANSCRIPT , t_data.CSS_DARK    , state);
-    t_set_doc_tool_class_theme_state(CSS_TRANSCRIPT , t_data.CSS_DARK    , state);
+    t_TOOL_SET_set_class_state      (                        t_data.CSS_DARK   , state);
+    t_set_tool_class_theme_state    (t_data.CSS_STICKY_TOOL, t_data.CSS_DARK   , state);
+    t_set_tool_class_theme_state    (CSS_TRANSCRIPT        , t_data.CSS_DARK   , state);
+    t_set_doc_tool_class_theme_state(CSS_TRANSCRIPT        , t_data.CSS_DARK   , state);
     /*}}}*/
     /* UI [scrolled or fixed] {{{*/
     state = prop.get( t_data.TOOLS_SCROLL );
 
-    t_TOOL_SET_set_class_state      (                 t_data.TOOLS_SCROLL, state);
+    t_TOOL_SET_set_class_state      (                        t_data.TOOLS_SCROLL, state);
     t_set_tool_class_theme_state    (t_data.CSS_STICKY_TOOL, t_data.TOOLS_SCROLL, state);
-    t_set_doc_tool_class_theme_state(CSS_TRANSCRIPT , t_data.TOOLS_SCROLL, state);
+    t_set_doc_tool_class_theme_state(CSS_TRANSCRIPT        , t_data.TOOLS_SCROLL, state);
     /*}}}*/
     /* UI [trapped or pivoting] {{{*/
     state = prop.get( t_data.TOOLS_TRAP );
 
-    if(el = hotspot_c )                            set_el_class_on_off(el, t_data.CSS_TRAPPED, state);
-    if(el = pivspot_c )                            set_el_class_on_off(el, t_data.CSS_TRAPPED, state);
-    id    = t_data.TOOLS_TRAP; if(el = prop.get_EL(id))   t_util.set_id_class_on_off(id, t_data.CSS_TRAPPED, state);
+    if(el = hotspot_c )                                   set_el_class_on_off(el, t_data.CSS_TRAPPED, state);
+    if(el = pivspot_c )                                   set_el_class_on_off(el, t_data.CSS_TRAPPED, state);
+    id    = t_data.TOOLS_TRAP; if(el = prop.get_EL(id)) t_set_id_class_on_off(id, t_data.CSS_TRAPPED, state);
 
 /*{{{
-    id = t_data.TOOLS_TRAP    ; if(el = prop.get_EL(id))   t_util.set_id_class_on_off(id, t_data.CSS_CHECKED,  prop.get( t_data.TOOLS_TRAP    ));
+    id = t_data.TOOLS_TRAP   ; if(el = prop.get_EL(id))   t_set_id_class_on_off(id, t_data.CSS_CHECKED,  prop.get( t_data.TOOLS_TRAP    ));
 }}}*/
 
     /*}}}*/
     /* t_data.SCROLL_SMOOTH & OVERFLOW {{{*/
     el = document.getElementsByTagName("HTML")[0]; set_el_class_on_off(el,  t_data.OVERFLOW_VISI, prop.get( t_data.OVERFLOW_VISI ));
+    el = document.getElementsByTagName("HTML")[0]; set_el_class_on_off(el,  t_data.DETAILS_RADIO, prop.get( t_data.DETAILS_RADIO ));
     el = document.getElementsByTagName("HTML")[0]; set_el_class_on_off(el,  t_data.SCROLL_SMOOTH, prop.get( t_data.SCROLL_SMOOTH ));
 
     t_seek.t_seeker_set_class(t_data.SCROLL_SMOOTH, prop.get( t_data.SCROLL_SMOOTH ));
@@ -15147,14 +15815,14 @@ if( log_this) log(caller);
     if(el = prop.get_EL( t_data.THEME_DARK   )) el.innerHTML = (prop.get( t_data.THEME_DARK   )) ? t_data.SYMBOL_THEME_DARK_IS_ON  : t_data.SYMBOL_THEME_DARK_IS_OFF;
     if(el = prop.get_EL( t_data.TOOLS_SCROLL )) el.innerHTML = (prop.get( t_data.TOOLS_SCROLL )) ? t_data.SYMBOL_UP_AND_DOWN_ARROW : t_data.SYMBOL_ANCHOR           ;
     if(el = prop.get_EL( t_data.WORDING      )) el.innerHTML = (prop.get( t_data.WORDING      )) ? t_data.SYMBOL_WORDING_IS_ON     : t_data.SYMBOL_WORDING_IS_OFF   ;
-    if(el = prop.get_EL( t_data.TOOLS_EXTRAS )) el.innerHTML = (prop.get( t_data.TOOLS_EXTRAS )) ? t_data.SYMBOL_TOOLS_EXTRA_ON    : t_data.SYMBOL_TOOLS_EXTRA_OFF  ;
+    if(el = prop.get_EL( t_data.TOOLS_TIER2  )) el.innerHTML = (prop.get( t_data.TOOLS_TIER2  )) ? t_data.SYMBOL_TOOLS_TIER2_ON    : t_data.SYMBOL_TOOLS_TIER2_OFF  ;
 
     id    = t_data.ANCHOR_FREEZE;
     if(el = prop.get_EL(id)) {
         state = (prop.get( t_data.WORDING ) || prop.get( t_data.ANCHOR_FREEZE ))
             &&  (typeof dom_wording != "undefined")
         ;
-        t_util.set_id_class_on_off(id,  t_data.CSS_CHECKED,  state);
+        t_set_id_class_on_off(id,  t_data.CSS_CHECKED,  state);
         el.innerHTML
             = state
             ? t_data.SYMBOL_NO_ENTRY
@@ -15211,7 +15879,7 @@ let is_dom_grid_loaded = function()
 let t_move_TOOLS_ON_GRID = function(_caller)
 {
 /*{{{
-logXXX("t_move_TOOLS_ON_GRID .. CALLED BY "+_caller+"");
+logXXX("t_move_TOOLS_ON_GRID .. CALLED BY "+_caller+"")
 }}}*/
     call_t_grid_ON_OFF_CB(true);
 };
@@ -15220,7 +15888,7 @@ logXXX("t_move_TOOLS_ON_GRID .. CALLED BY "+_caller+"");
 let t_move_TOOLS_OFF_GRID = function(_caller)
 {
 /*{{{
-logXXX("t_move_TOOLS_OFF_GRID .. CALLED BY "+_caller+"");
+logXXX("t_move_TOOLS_OFF_GRID .. CALLED BY "+_caller+"")
 }}}*/
     call_t_grid_ON_OFF_CB(false);
 
@@ -15300,6 +15968,11 @@ let call_t_grid_add_observer = function()
 };
 /*}}}*/
 /*_ t_IS_ON_GRID_observerCB {{{*/
+/*{{{*/
+const OFF_GRID_MARGIN_X = 64;
+const OFF_GRID_MARGIN_Y = 64;
+
+/*}}}*/
 let t_IS_ON_GRID_observerCB = function(on_grid)
 {
 /*{{{*/
@@ -15308,7 +15981,7 @@ let log_this = LOG_MAP.T2_GRID;
 
 if( log_this) log(caller);
 /*}}}*/
-    /* TOOLS STAGING PHASE {{{*/
+    /* TOOLS STAGING ON-GRID PHASE {{{*/
     if( on_grid )
     {
         t_sticky.t_sticky_RING_stop(caller);
@@ -15318,14 +15991,25 @@ if( log_this) log(caller);
             t_flash_unpinned_panels(caller);
     }
     /*}}}*/
-    /* TOOLS SHOWING PHASE {{{*/
+    /* TOOLS SHOWING OFF-GRID PHASE {{{*/
     else {
 /*{{{
         dimm_stop(caller); // already called by t_grid.t_grid_ON_OFF_CB
 }}}*/
 
-        t_grid_TOOLS_MAP_changed();
+        let          xy    = dom_gutter.get_WINDOW_XY();
+        if((Math.abs(xy.x) < OFF_GRID_MARGIN_X)) xy.x = OFF_GRID_MARGIN_X;
+        if((Math.abs(xy.y) < OFF_GRID_MARGIN_Y)) xy.y = OFF_GRID_MARGIN_Y;
+/*{{{
+      //spread_ratio.x = 1;
+      //spread_ratio.y = 1;
+      //pivotXY.x      = OFF_GRID_MARGIN_X * 2;
+      //pivotXY.y      = OFF_GRID_MARGIN_Y * 2;
+}}}*/
 
+        t_tools_set_top_xy(xy.x, xy.y);
+
+        t_grid_TOOLS_MAP_changed();
         t_TOOL_SET_eval_wide_or_tall_panel(caller);
     }
     /*}}}*/
@@ -15408,7 +16092,7 @@ let dimm_start_pat_bag         = function(_caller) { dimm_start(_caller, t_data.
 let dimm_start_grid            = function(_caller) { dimm_start(_caller, t_data.ZINDEX_TOOL_PANEL_ZERO  , "dimm_grid"          ,  "dimm_light", "fixed"    ); };
 let dimm_start_sticky          = function(_caller) { dimm_start(_caller, t_data.ZINDEX_ABOVE_TOOLS      , "dimm_sticky"        ,  "dimm_dark" , "fixed"    ); };
 let dimm_start_slot_containers = function(_caller) { dimm_start(_caller, t_data.ZINDEX_ABOVE_TOOLS      , "div_slot_containers",            "", ""         ); };
-let dimm_start                 = function(                      _caller, zIndex                  , dimm_class=""        , dimm_style="", position="")
+let dimm_start                 = function(                      _caller, zIndex                         , dimm_class=""        , dimm_style="", position="")
 {
 /*_ log_this {{{*/
 let log_this = LOG_MAP.T2_GRID;
@@ -15459,7 +16143,7 @@ if( log_this) log("...dimm_mask.className=["+dimm_mask.className+"]");
     /* width height .. content width {{{*/
     dimm_mask.style.width      = window.innerWidth +"px";
 
-    if( !div_slot_containers_displayed() ) /* TODO .. EXPLAIN WHY */
+    if(!div_slot_containers_displayed() ) /* TODO .. EXPLAIN WHY */
         dimm_mask.style.height = window.innerHeight+"px";
 
     /*}}}*/
@@ -15559,14 +16243,10 @@ let dimm_mask_displayed = function()
 /*_ div_slot_containers_displayed {{{*/
 let div_slot_containers_displayed = function()
 {
-    div_slot_containers
-        =   dimm_mask
+    return  dimm_mask                   && div_slot_containers
         &&  dimm_mask.firstElementChild
-        && (dimm_mask.firstElementChild.id == "div_slot_containers")
-        ?   dimm_mask.firstElementChild
-        :   null
+        && (dimm_mask.firstElementChild == div_slot_containers)
     ;
-    return (div_slot_containers != null);
 };
 /*}}}*/
 /*_ dimm_mask_is {{{*/
@@ -15641,7 +16321,7 @@ if(log_this) log("- POSTPONING .. %c EVENT HANDING IN PROGRESS: %c ["+get_n_lbl(
     /*}}}*/
     /*}}}*/
     /* 2. TOOLS INITIAL LAYOUT {{{*/
-    if(dom_tools_html && t_cache_empty())
+    if(dom_tools_html && !t_cache_has_been_armed())
     {
         t_sync2_initial_tools_layout();
 
@@ -15895,8 +16575,8 @@ if(log_this) log("......TO BB %c TL "+ bb_dx_dy.t  +" "+ bb_dx_dy.l  +" %c BR "+
     {
 if(log_this) log(caller+": %c SOME TOOLS TO UNHIDE: %c "+some_tools_to_unhide, lbL, lbR);
 
-        t_cache_init_by(caller);
-        t_cache_layout("Showing some tools");
+        t_cache_armed_by(caller);
+        t_cache_sync("Showing some tools");
         t_tools_set_top_xy(h_x, h_y);
 
         t_save_update_post("SOME TOOLS TO UNHIDE");
@@ -15930,8 +16610,8 @@ if(log_this) log("- %c NO TOOLS WITHIN VIEWPORT: BOUNDING BOX: EXPANDED: %c "+t_
 if(log_this) log(                 "...hotspot: FROM %c XY "+  h_x +" "+  h_y, lbH);
 if(log_this) log(                 "...hotspot: TO   %c XY "+ xy.x +" "+ xy.y, lbH);
 if(log_this) log(caller+": %c CONFINE hotspot WITHIN VIEWPORT: t_tools_set_top_xy("+ xy.x  +" "+ xy.y +")", lbH);
-        t_cache_init_by(caller);
-        t_cache_layout("Layout viewport");
+        t_cache_armed_by(caller);
+        t_cache_sync("Layout viewport");
         let position =  prop.get( t_data.TOOLS_SCROLL )  ? "absolute" : "fixed";
         t_tools_set_top_xy(xy.x, xy.y, position);
 
@@ -16279,15 +16959,15 @@ let log_this = LOG_MAP.T2_GRID;
     let      map = panel? t_tools_map_get(panel):null;   let reject_reason = ""; let accept_reason; let  lfx = lf4;
     if     (!map                                         ) { reject_reason = "NO SUCH PANEL"; lfx = lf2; }
     else if(!map.selected) {
-        let      tools_extras = prop.get(t_data.TOOLS_EXTRAS);
-        let is_a_tools_extras = t_is_a_tools_extras( panel  );
+        let      tools_tier2  =  prop.get(t_data.TOOLS_TIER2);
+        let is_a_tools_tier2  =  is_a_tools_el_tier(panel,2);
 
-        if     (!tools_extras &&  is_a_tools_extras)       { reject_reason = "EXTRA TOOLS NOT SELECTED"; lfx = lf6; }
-        else if( tools_extras && !is_a_tools_extras)       { reject_reason = "NOT AN EXTRA TOOL"       ; lfx = lf7; }
-        else if( tools_extras &&  is_a_tools_extras)       { accept_reason = "IS AN EXTRA TOOL"        ; lfx = lf7; }
-        else                                               { reject_reason = "NOT SELECTED"            ; lfx = lf0; }
+        if     (!tools_tier2 &&  is_a_tools_tier2)       { reject_reason =       "TIER2 TOOLS NOT SELECTED"; lfx = lf6; }
+        else if( tools_tier2 && !is_a_tools_tier2)       { reject_reason = "NOT A TIER2 TOOL"              ; lfx = lf7; }
+        else if( tools_tier2 &&  is_a_tools_tier2)       { accept_reason =  "IS A TIER2 TOOL"              ; lfx = lf7; }
+        else                                             { reject_reason = "NOT SELECTED"                  ; lfx = lf0; }
 
-        if(!reject_reason) accept_reason = ".. [tools_extras "+tools_extras+"] .. [is_a_tools_extras "+is_a_tools_extras+"]";
+        if(!reject_reason) accept_reason = ".. [tools_tier2 "+tools_tier2+"] .. [is_a_tools_tier2 "+is_a_tools_tier2+"]";
     }
     let selected = (reject_reason == "");
 if( log_this && (reject_reason || accept_reason)) log(caller+" %c"+t_util.mPadStart(get_n_lbl(panel),18)+"%c"+t_util.mPadEnd(reject_reason || "SELECTED",15)+" "+(accept_reason || ""), lbH, lbH+lfx);
@@ -16483,19 +17163,22 @@ let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoViewHandled "+el.scrolledIntoViewHandled+"%c delay "+delay
                   ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoViewHandled ? 5 : 6]                ,lbH+lf9         );
+/*{{{
 if( log_this) t_log.console_dir(el);
 if( log_this) log_caller();
+}}}*/
 /*}}}*/
 
     scrollIntoViewIfNeeded_cancel(caller);
 
-    t_scrollIntoView_EL                         = el;
-    t_scrollIntoView_EL.scrolledIntoViewHandled = false;
-    t_scrollIntoView_EL.to_the_top              = to_the_top;
-
+    t_scrollIntoView_EL                 = el;
     if(t_scrollIntoView_EL)
     {
-        if( delay == undefined) delay = SCROLL_INTO_VIEW_DELAY;
+        t_scrollIntoView_EL.to_the_top  = to_the_top;
+        delete t_scrollIntoView_EL.scrolledIntoViewHandled;
+
+        if( delay == undefined)   delay = SCROLL_INTO_VIEW_DELAY;
+
         if( delay ) t_scrollIntoViewIfNeeded_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay); /* async */
         else                                                    scrollIntoViewIfNeeded_handler();       /* sync */
     }
@@ -16516,6 +17199,7 @@ let   scrollIntoViewIfNeeded_is_pending = function()
 let   scrollIntoViewIfNeeded_cancel = function(_caller)
 {
 /*{{{*/
+let   caller = "scrollIntoViewIfNeeded_cancel";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 /*}}}*/
@@ -16526,18 +17210,20 @@ let log_this = LOG_MAP.EV0_LISTEN;
         t_scrollIntoView_EL = null;
     }
 
+    if( t_scrollIntoViewIfNeeded_timer )
+    {
+if( log_this) log(caller+": PENDING SCROLL INTERRUPTED BY "+ _caller);
+        clearTimeout( t_scrollIntoViewIfNeeded_timer );
+    }
+
     if( t_scroll_recenter_timer )
     {
-if( log_this) log("PENDING RECENTER INTERRUPTED BY "+ _caller);
+if( log_this) log(caller+": PENDING RECENTER INTERRUPTED BY "+ _caller);
         clearTimeout(t_scroll_recenter_timer);
         t_scroll_recenter_timer = null;
     }
 
-    if( t_scrollIntoViewIfNeeded_timer )
-    {
-if( log_this) log("PENDING SCROLL INTERRUPTED BY "+ _caller);
-        clearTimeout( t_scrollIntoViewIfNeeded_timer );
-    }
+    t_seek.t_seeker_move_above_XY_cancel(caller);
 
 };
 /*}}}*/
@@ -16553,15 +17239,26 @@ let   caller = "scrollIntoViewIfNeeded_handler";
 let log_this = LOG_MAP.EV0_LISTEN;
 
     t_scrollIntoViewIfNeeded_timer   = null;
-    if(     !t_scrollIntoView_EL) return;
+    if(!t_scrollIntoView_EL) return;
 
     let el = t_scrollIntoView_EL;
 if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoViewHandled "+el.scrolledIntoViewHandled
                   ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoViewHandled ? 5 : 6]        );
 /*}}}*/
     /* [? scrolledIntoViewHandled]  {{{*/
-    if(el.scrolledIntoViewHandled) return;
-    el   .scrolledIntoViewHandled = true;
+    if( el.scrolledIntoViewHandled )
+    {
+        let      this_MS = new Date().getTime();
+        let since_handled = this_MS - el.scrolledIntoViewHandled;
+        let  just_handled = (since_handled < SCROLL_RECENTER_DELAY*3);
+
+if( log_this) log("%c  just_handled=["+just_handled+"]", lbH+lfX[just_handled ? 8:7]);
+
+        if( just_handled ) return;
+    }
+
+    el.scrolledIntoViewHandled = new Date().getTime();
+if( log_this) log("%c el.scrolledIntoViewHandled=["+el.scrolledIntoViewHandled+"]", lbH+lf6);
 
     /*}}}*/
     /* SCROLL WHERE {{{*/
@@ -16629,7 +17326,7 @@ let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(t_scrollIntoView_EL), lbL+lf6,lbR+lf6);
 /*}}}*/
-    /* RECENTER DONE .. POINTER STILL DOWN .. REARM A LONG PRESS {{{*/
+    /* RECENTER DONE .. POINTER STILL DOWN .. REARM A LONG-PRESS {{{*/
     if( t_seek.t_seeker_PU_is_looking_somewhere() )
         rearm_long_press_listener_onScrollIntoView();
 
@@ -16700,6 +17397,7 @@ let   scrollIntoViewIfNeeded_get_scrollXY_with_options = function({ container, w
 let caller = "scrollIntoViewIfNeeded_get_scrollXY_with_options";
 let log_this = LOG_MAP.T3_LAYOUT;
 
+if( log_this) t_fly.t_log_event_status(caller+"(container=["+t_util.get_id_or_tag(container)+"] , [with_margin "+with_margin+"])", lf5);
 /*{{{
 container.scrollIntoView(true);
 - opt_center: (if false): aligned to the nearest edge of the visible area of the scrollable ancestor
@@ -16708,8 +17406,8 @@ container.scrollIntoViewIfNeeded(true);
 }}}*/
     /*}}}*/
     /* VIEW {{{*/
-    let w_W = window.innerWidth ;
-    let w_H = window.innerHeight;
+    w_W = window.innerWidth ;
+    w_H = window.innerHeight;
     let view_rect
         = {   left   : window.scrollX       + (with_margin ? t_data.VIEWPORT_MARGIN.left   : 16)
             , top    : window.scrollY       + (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
@@ -16764,6 +17462,7 @@ log_caller()
     let over_left      = (container_rect.left    < view_rect.left  );
     let over_bottom    = (container_rect.bottom  > view_rect.bottom);
     let over_right     = (container_rect.right   > view_rect.right );
+    let on_sentence    = has_el_class(container, t_select.CSS_SENTENCE_CONTAINER);
 
     let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
 
@@ -16771,6 +17470,7 @@ log_caller()
 if(log_this) {
     log_key_val_group("to_the_top .. over_something=["+over_something+"]"
                       , {   container
+                          , on_sentence
                           , added_seeker_height_atop
                           , container_rect
                           , e_H
@@ -16782,7 +17482,7 @@ if(log_this) {
 
     /*}}}*/
     /* NOT NEEDED .. (return null) {{{*/
-    if(!!!over_something) return null; /* falsy coerced */
+    if(!!!over_something) return null; /* falsy coerced */ /* eslint-disable-line no-extra-boolean-cast */
 
     /*}}}*/
     /* scrollX scrollY {{{*/
@@ -16793,7 +17493,8 @@ if(log_this) {
         :                                          window.scrollX;
 
     let scrollY
-        = (over_top    ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
+        = (on_sentence ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
+        : (over_top    ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
         : (over_bottom ) ? container_rect.bottom - window.innerHeight + (with_margin ? t_data.VIEWPORT_MARGIN.bottom : 32)
         :                                          window.scrollY;
 
@@ -16863,21 +17564,21 @@ if( log_this) log(caller);
 
     /* SLOT CONTAINERS CURRENTLY DISPLAYED */
     let containers                      =  dimm_mask.firstElementChild;
-if( log_this) t_log.console_dir(containers    , "dimm_mask.firstElementChild");
+if( log_this) t_log.console_dir("dimm_mask.firstElementChild", containers    );
 
-    if(!containers                                               ) return;
-    if( containers.id                  != "div_slot_containers"  ) return;
+    if(!containers                       ) return;
+    if( containers != div_slot_containers) return;
 
     /* FIRST CONTAINER */
     let                       container =  containers.firstElementChild;
-if( log_this) t_log.console_dir(    container , "containers.firstElementChild");
+if( log_this) t_log.console_dir("containers.firstElementChild",     container );
 
     /* SELECTED CONTAINER */
     while(container && !has_el_class(container , CSS_CONTAINER_SELECTED))
         container =                  container .  nextElementSibling;
 
     /* SCROLL INTO VIEW IF NEEDED */
-if( log_this) t_log.console_dir(container, "container");
+if( log_this) t_log.console_dir("container", container);
     if(container &&  has_el_class(container, CSS_CONTAINER_SELECTED)) scrollIntoViewIfNeeded( container );
 
     t_scrollIntoViewIfNeeded_dimm_mask_container_selected_timer = null;
@@ -16908,12 +17609,13 @@ let t_get_tools_status_object = function()
 {
 
 /*{{{
+    //..NAME SPACE ACCESS
     let onWork_EL            = t_get_onWork_EL();
     let onDown_EL            = t_get_onDown_EL();
     let onWork_EL_last_used  = t_get_onWork_EL_last_used();
     let onWork_MOVABLE_PANEL = t_get_onWork_MOVABLE_PANEL();
     let onWork_PANEL         = t_get_onWork_PANEL();
-    let onWork_SEEK_TARGET     = t_get_onWork_SEEK_TOOL();
+    let onWork_SEEK_TARGET   = t_get_onWork_SEEK_TOOL();
     let onWork_MOVABLE_CHILD = t_get_onWork_MOVABLE_CHILD();
     let pivot_PANEL          = t_get_pivot_PANEL();
 }}}*/
@@ -16943,6 +17645,50 @@ let t_get_tools_status_object = function()
     };
 
 };
+/*}}}*/
+/* NOT_MOVED_ENOUGH {{{*/
+/*{{{*/
+const CSS_NOT_MOVED_ENOUGH = "not_moved_enough";
+
+/*}}}*/
+/*_ t_hotspot_add_status_NOT_MOVED_ENOUGH {{{*/
+let t_hotspot_add_status_NOT_MOVED_ENOUGH   = function()
+{
+    add_el_class(hotspot, CSS_NOT_MOVED_ENOUGH);
+};
+/*}}}*/
+/*_ t_hotspot_del_status_NOT_MOVED_ENOUGH {{{*/
+let t_hotspot_del_status_NOT_MOVED_ENOUGH   = function()
+{
+    del_el_class(hotspot, CSS_NOT_MOVED_ENOUGH);
+};
+/*}}}*/
+/*}}}*/
+/* MOVE_ON_COOLDOWN {{{*/
+/*{{{*/
+const CSS_MOVE_ON_COOLDOWN = "move_on_cooldown";
+
+let move_on_cooldown_timer;
+/*}}}*/
+/*_ t_hotspot_add_status_MOVE_ON_COOLDOWN {{{*/
+let t_hotspot_add_status_MOVE_ON_COOLDOWN   = function(time_left)
+{
+
+    add_el_class(hotspot, CSS_MOVE_ON_COOLDOWN);
+
+    if(!move_on_cooldown_timer)
+        move_on_cooldown_timer = setTimeout(move_on_cooldown_handler, time_left);
+
+};
+/*}}}*/
+/*_ move_on_cooldown_handler {{{*/
+let move_on_cooldown_handler = function()
+{
+    move_on_cooldown_timer = null;
+    t_hotspot_del_status_MOVE_ON_COOLDOWN();
+};
+/*}}}*/
+let t_hotspot_del_status_MOVE_ON_COOLDOWN   = function() { del_el_class(hotspot, CSS_MOVE_ON_COOLDOWN); };
 /*}}}*/
 /*}}}*/
 
@@ -17040,10 +17786,31 @@ if( log_this) log_key_val( caller+"("+pattern+"):  return [ "+sel_text+" , "+wor
 /*➔ t_pattern_del_words_option_sfx {{{*/
 let t_pattern_del_words_option_sfx = function(pattern)
 {
-    if(pattern.lastIndexOf(PATTERN_SEPARATOR) != (pattern.length -PATTERN_SEPARATOR_LEN -1))
+    let expected_idx = pattern.length -1   -PATTERN_SEPARATOR_LEN ;
+    let          idx = pattern.lastIndexOf( PATTERN_SEPARATOR    );
+    if(         (idx < 0)
+       ||       (idx != expected_idx)
+      )
         return pattern;
     else
         return pattern.substring(0, pattern.length -PATTERN_SEPARATOR_LEN -1);
+};
+/*}}}*/
+/*➔ t_pattern_del_words_extension {{{*/
+let t_pattern_del_words_extension = function(pattern)
+{
+    let proot = t_pattern_del_words_option_sfx(pattern);
+
+    /* filter extension */
+    let plural = proot.endsWith("(s)?");
+
+    /* remove extension */
+    let idx    = proot.indexOf("(");
+    if( idx > 0) proot = proot.substring(0, idx);
+
+    /* format proot */
+    if( plural ) return proot+"s";
+    else         return proot;
 };
 /*}}}*/
 /*➔ pattern_fallback_to_current_words_option_sfx {{{*/
@@ -17056,6 +17823,7 @@ let pattern_fallback_to_current_words_option_sfx = function(pattern,words_option
     case    t_data.WORDS_EXACT    : return pattern +PATTERN_SEPARATOR +"E";
     case    t_data.WORDS_SEGMENT  : return pattern +PATTERN_SEPARATOR +"S";
     case    t_data.WORDS_HEAD_TAIL: return pattern +PATTERN_SEPARATOR +"H";
+    default                       : return pattern;
     }
 };
 /*}}}*/
@@ -17210,8 +17978,11 @@ log("%c .....cycling=["+ cycling      +"]", lbH+lf8);
 /*}}}*/
 let t_set_el_pat_words_option = function(el, pat)
 {
-    let [/*sel_text*/, words_option ] = t_pattern_to_sel_text_words_option( pat );
+    let [ sel_text , words_option ] = t_pattern_to_sel_text_words_option( pat );
+
     set_el_class_removing(el, words_option  , WORDS_CLASSLIST);
+
+    el.title = t_util.t_get_htmlEntities(sel_text) + t_data.LF + words_option;
 
 /*{{{
 log("t_set_el_pat_words_option("+get_n_lbl(el)+","+pat+"): %c el.className=["+el.className+"]", lbH+lf8);
@@ -17423,26 +18194,28 @@ let button_MONO;
 */
 
 /*}}}*/
-/*_ get_div_slot_containers {{{*/
-let get_div_slot_containers = function()
+/*_ build_div_slot_containers {{{*/
+let build_div_slot_containers = function()
 {
+    if( div_slot_containers ) return div_slot_containers;
+
     div_slot_containers    = document.createElement("DIV");
     div_slot_containers.id = "div_slot_containers";
 
-    button_PREV            = t_slot_containers_get_button("button_prev", t_data.SYMBOL_HEAVY_RIGHT_ARROW);
+    button_PREV            = t_slot_containers_get_button(CSS_BUTTON_PREV, t_data.SYMBOL_HEAVY_RIGHT_ARROW);
 /*{{{
-            button_PREV_LEFT       = t_slot_containers_get_button("button_prev", t_data.SYMBOL_HEAVY_RIGHT_ARROW);
+            button_PREV_LEFT       = t_slot_containers_get_button(CSS_BUTTON_PREV, t_data.SYMBOL_HEAVY_RIGHT_ARROW);
             add_el_class(button_PREV_LEFT, t_data.CSS_LEFT);
 }}}*/
 
-    button_NEXT            = t_slot_containers_get_button("button_next", t_data.SYMBOL_HEAVY_RIGHT_ARROW);
+    button_NEXT            = t_slot_containers_get_button(CSS_BUTTON_NEXT, t_data.SYMBOL_HEAVY_RIGHT_ARROW);
 /*{{{
-            button_NEXT_LEFT       = t_slot_containers_get_button("button_next", t_data.SYMBOL_HEAVY_RIGHT_ARROW);
+            button_NEXT_LEFT       = t_slot_containers_get_button(CSS_BUTTON_NEXT, t_data.SYMBOL_HEAVY_RIGHT_ARROW);
             add_el_class(button_NEXT_LEFT, t_data.CSS_LEFT);
 }}}*/
 
-    button_MONO            = t_slot_containers_get_button("button_mono", t_data.SYMBOL_MENU             );
-    button_MONO.title = t_util.i18n_get(t_util.I18N_MONOSPACE);
+    button_MONO            = t_slot_containers_get_button(CSS_BUTTON_MONO, t_data.SYMBOL_MENU             );
+    button_MONO.title      = t_i18n.i18n_get(t_i18n.MONOSPACE);
 
     return div_slot_containers;
 };
@@ -17517,7 +18290,7 @@ if(log_this) log("...content_is_too_big..........: "+ content_is_too_big +"] .. 
                 = (num <= num_selected) && (num_selected <= num_last);
 
             let tooltip
-                = t_data.SYMBOL_SCISSORS+" "+num_from_to+" "+t_util.i18n_get(t_util.I18N_COPY_PARAGRAPH_TO_CLIPBOARD);
+                = t_data.SYMBOL_SCISSORS+" "+num_from_to+" "+t_i18n.i18n_get(t_i18n.COPY_PARAGRAPH_TO_CLIPBOARD);
 
             let div_class
                 = "class_s_"+slot+"_"+num      + " note"+(container_count % 10)
@@ -17543,7 +18316,7 @@ if(log_this) log("...content_is_too_big..........: "+ content_is_too_big +"] .. 
 
             /*}}}*/
             /* html {{{*/
-            let title_div = t_util.i18n_get( t_util.I18N_SCROLL_TO_THIS_PARAGRAPH );
+            let title_div = t_i18n.i18n_get( t_i18n.SCROLL_TO_THIS_PARAGRAPH );
             innerHTML
                 += " <div class='"+  div_class              +"' style='"+css+"' title='"+title_div+"'>"+LF
 
@@ -17587,8 +18360,14 @@ if(log_this) log("...content_is_too_big..........: "+ content_is_too_big +"] .. 
 
         /*}}}*/
         /* [button_COPY_ALL_parent_div] {{{*/
+        let pattern
+            = t_pattern_del_words_option_sfx( t_select.ccs[slot].pattern );
+
+        let patroot
+            = t_pattern_del_words_extension( pattern );
+
         let tooltip
-            = t_data.SYMBOL_SCISSORS+" "+t_util.i18n_get(t_util.I18N_COPY_ALL_PARAGRAPHS_TO_CLIPBOARD);
+            = t_data.SYMBOL_SCISSORS+" "+t_i18n.i18n_get(t_i18n.COPY_ALL_PARAGRAPHS_TO_CLIPBOARD);
 
         let button_COPY_ALL_parent_div
             =  " <div     id='button_COPY_ALL_parent_div'>" +LF
@@ -17597,23 +18376,24 @@ if(log_this) log("...content_is_too_big..........: "+ content_is_too_big +"] .. 
 
             +  "  <div class='"    + CSS_BUTTON_COPY        +"' title='"+tooltip+"'>"+LF
             +  "  "                + t_data.SYMBOL_CLIPBOARD
-            +  "   <em>"           + t_select.ccs[slot].pattern      +"</em>"
+            +  "   <em>"           + pattern +"</em>"
             +  "   <em>#1 to "     + num_max +"</em>"
             +  "  </div>"                                   +LF
 
             +  "  <div class='div_copy_content'>"
-            +  "  "+ container_count+" Paragraphs containing <em class='cc"+slot+"'>"+ t_select.ccs[slot].pattern +"</em>"
+            +  "   "+ container_count+" Paragraphs containing <em class='cc"+slot+"'>"+              pattern +"</em><br>"+LF
+            +  "   <a target='atilf' href='https://www.cnrtl.fr/definition/"+patroot+"'>&#x1F4D6; "+ patroot +" &#x1F4D6;</a>"
             +  "  </div>"+LF
             +  " </div>"+LF
         ;
         /*}}}*/
         /* [div_slot_containers create ] {{{*/
         if(!div_slot_containers)
-            get_div_slot_containers();
+            build_div_slot_containers();
 
         /*}}}*/
         /* [div_slot_containers content] {{{*/
-        div_slot_containers.innerHTML         = ""; /* removes all children */
+        div_slot_containers.innerHTML = ""; /* removes all children */
 
         div_slot_containers.insertAdjacentHTML("beforeend", button_COPY_ALL_parent_div);
         div_slot_containers.insertAdjacentHTML("beforeend", innerHTML                 );
@@ -17645,10 +18425,10 @@ if( log_this) log("dimm_mask XY=["+dimm_mask.style.left+" "+dimm_mask.style.top+
 
 if( log_this) log("div_slot_containers XY=["+div_slot_containers.style.left+" "+div_slot_containers.style.top+"] WminH=["+div_slot_containers.style.width+" "+div_slot_containers.style.minHeight+"]");
 
-        dimm_mask.appendChild( div_slot_containers      );
-        dimm_mask.appendChild( button_NEXT ); /*dimm_mask.appendChild( button_NEXT_LEFT );*/
-        dimm_mask.appendChild( button_PREV ); /*dimm_mask.appendChild( button_PREV_LEFT );*/
-        dimm_mask.appendChild( button_MONO );
+        dimm_mask.appendChild( div_slot_containers );
+        dimm_mask.appendChild( button_NEXT         ); /*dimm_mask.appendChild( button_NEXT_LEFT );*/
+        dimm_mask.appendChild( button_PREV         ); /*dimm_mask.appendChild( button_PREV_LEFT );*/
+        dimm_mask.appendChild( button_MONO         );
         /*}}}*/
         t_seek.t_seeker_PU_hide("instant");
     }
@@ -17684,13 +18464,17 @@ if( log_this) t_fly.t_log_event_status(caller+"("+(t_util.get_id_or_tag(clicked_
 /*}}}*/
     /* [slot_container] .. f(clicked_target) {{{*/
     /* EVENT  TARGET */ let slot_container = clicked_target;
-    /* MAGNIFY START */ if     (has_el_class(clicked_target, CSS_BUTTON_MAGNIFY         )) slot_container = clicked_target.parentElement;
-    /* MAGNIFY STOP  */ else if(            (clicked_target == fullscreen_slot_container)) slot_container = clicked_target;
-    /* MAGNIFY PREV  */ else if(has_el_class(clicked_target, CSS_BUTTON_PREV            )) slot_container = fullscreen_slot_container.previousElementSibling || fullscreen_slot_container;
-    /* MAGNIFY NEXT  */ else if(has_el_class(clicked_target, CSS_BUTTON_NEXT            )) slot_container = fullscreen_slot_container.nextElementSibling     || fullscreen_slot_container;
-    /* MONSPACE      */ else if(has_el_class(clicked_target, CSS_BUTTON_MONO            )) {
-if(log_this) log("...t_util.flip_el_class(div_slot_containers, CSS_BUTTON_MONOSPACE)");
-        t_util.flip_el_class(div_slot_containers, CSS_BUTTON_MONOSPACE);
+    /* MAGNIFY START */ if     (has_el_class(clicked_target     , CSS_BUTTON_MAGNIFY       )) slot_container = clicked_target.parentElement;
+    /* MAGNIFY STOP  */ else if(            (clicked_target    == fullscreen_slot_container)) slot_container = clicked_target;
+    /* MAGNIFY PREV  */ else if(has_el_class(clicked_target     , CSS_BUTTON_PREV          )) slot_container = fullscreen_slot_container.previousElementSibling || fullscreen_slot_container;
+    /* MAGNIFY NEXT  */ else if(has_el_class(clicked_target     , CSS_BUTTON_NEXT          )) slot_container = fullscreen_slot_container.nextElementSibling     || fullscreen_slot_container;
+    /* MONSPACE      */ else if(has_el_class(clicked_target     , CSS_BUTTON_MONO          ))
+    {
+        let text_or_html =     !has_el_class(div_slot_containers, CSS_BUTTON_MONOSPACE);
+if( log_this) log("...text_or_html=["+text_or_html+"]");
+
+        t_util.set_el_class_on_off(div_slot_containers          , CSS_BUTTON_MONOSPACE, text_or_html);
+        t_util.set_el_class_on_off(button_MONO                  , CSS_BUTTON_MONOSPACE, text_or_html);
 
         return;
     }
@@ -17810,13 +18594,13 @@ if(log_this) log("%c #"+(i+1)+" "+(first ? "first" : (last ? "last" : "center"))
 
     button_PREV.style.display = display_prev; /*button_PREV_LEFT.style.display = display_prev;*/
     button_NEXT.style.display = display_next; /*button_NEXT_LEFT.style.display = display_next;*/
-    button_MONO.style.display = display_prev;
+    button_MONO.style.display = "inline";
 
     /*}}}*/
     /* END FULLSCREEN .. SCROLL [last_fullscreen_slot_container] INTO VIEW {{{*/
     if(!fullscreen_slot_container && last_fullscreen_slot_container)
     {
-        last_fullscreen_slot_container.scrolledIntoViewHandled = false;
+        delete last_fullscreen_slot_container.scrolledIntoViewHandled;
 /*{{{
 logBIG("...SCROLLING INTO VIEW: last_fullscreen_slot_container=["+get_n_lbl(last_fullscreen_slot_container)+"]");
 }}}*/
@@ -17864,24 +18648,16 @@ let t_slot_containers_copy_to_clipboard           = function(el, outer_or_inner)
     let caller = "t_slot_containers_copy_to_clipboard";
 let log_this   = LOG_MAP.EV3_UP;
 
-if( log_this) caller += "("+get_n_lbl(el)+", "+outer_or_inner+")";
-if( log_this) log("%c"+caller, lbR+lf2);
-if( log_this) log("%c"+(outer_or_inner ? "outerHTML" : "innerHTML")+"%c "+ (outer_or_inner ? el.outerHTML : el.innerHTML), lbL, lbR);
 /*}}}*/
-    /* A CSS_BUTTON_COPY {{{*/
-if( log_this) t_log.console_dir(el, "el should be a ["+CSS_BUTTON_COPY+"]");
+    /* COPY PARAGRAPHE .. OR COPY ALL {{{*/
+    if(    (el != div_slot_containers)
+        && (el.parentElement.id == "button_COPY_ALL_parent_div")
+      )
+        el = dimm_mask.firstElementChild;
 
     /*}}}*/
-    /* A COPY ALL BUTTON {{{*/
-if( log_this) log("...el.id=["+(el.id == 'button_COPY_ALL_parent_div')+"]");
-    if(el.id == 'button_COPY_ALL_parent_div')
-    {
-        el = dimm_mask.firstElementChild;
-    }
-    /*}}}*/
-    /* CONTENT {{{*/
+    /* CONTENT [text_or_html] {{{*/
     let text_or_html = has_el_class(div_slot_containers, CSS_BUTTON_MONOSPACE);
-if( log_this) log("...text_or_html=["+text_or_html+"]");
 
     let copy_content
         = (outer_or_inner)
@@ -17889,6 +18665,18 @@ if( log_this) log("...text_or_html=["+text_or_html+"]");
         :  (text_or_html ? el.innerText : el.innerHTML)
     ;
     /*}}}*/
+if( log_this)
+    log_key_val_group(    caller
+                      , { outer_or_inner
+                        , text_or_html
+                        , el           : t_util.get_id_or_node_path_tail(el)
+                        , copy_content : t_util.ellipsis(copy_content)
+                        ,       length :                 copy_content.length
+                        ,      callers : t_log.get_callers()
+                      } , lf5, false);
+
+    t_fly.t_fly_tooltip(t_data.SYMBOL_CLIPBOARD+" "+t_data.SYMBOL_LEFT_CHEVRON+" "+copy_content.length+" chars");
+
     t_util.t_copy_to_CLIPBOARD( copy_content );
 };
 /*}}}*/
@@ -17902,13 +18690,62 @@ let log_this = LOG_MAP.T0_STORE;
 if( log_this) log("%c"+caller+":"+LF+"%c"+(innerHTML ? innerHTML : "CLIPBOARD CLEARED"), lb3, lbF+lf3);
 /*}}}*/
     /* USE A PARENTED CONTAINER TO FILL THE CLIPBOARD FROM */
-    let el = get_div_slot_containers();
+    if(!div_slot_containers)
+        build_div_slot_containers();
 
-    el.innerHTML = innerHTML;
+    div_slot_containers.innerHTML = innerHTML;
 
-    t_slot_containers_copy_to_clipboard_innerHTML( el );
+    t_slot_containers_copy_to_clipboard_innerHTML( div_slot_containers );
 
-    el.innerHTML = "";
+    div_slot_containers.innerHTML = "";
+};
+/*}}}*/
+/*}}}*/
+/* CONTAINER HIDING {{{*/
+/*_ t_tools_hide_onDown_XY {{{*/
+let t_tools_hide_onDown_XY = function(hide_parent)
+{
+/*{{{*/
+let   caller = "t_tools_hide_onDown_XY";
+let log_this = (LOG_MAP.T3_LAYOUT || LOG_MAP.EV4_LONG_PRESS);
+
+if( log_this) log(caller+"(hide_parent "+hide_parent+")");
+/*}}}*/
+    /* SELECT CLOSEST CONTAINER TO HIDE {{{*/
+    let range = t_select.get_range_from_XY(onDown_XY.x, onDown_XY.y);
+if(log_this)t_log.console_dir("range",range);
+    if(!range.startContainer )
+        return "";
+
+    let    container  = t_select.get_text_container( range.startContainer );
+if(log_this)t_log.console_dir("container",container);
+    if(   !container
+       && (container == document.body)
+       && (container == document.documentElement)
+      )
+        return "";
+    /*}}}*/
+    /* HIDDEN CONTAINER PARENT TO HIDE {{{*/
+    if( hide_parent )
+    {
+        container = t_hide.get_node_hidden_parentElement( container );
+if(log_this)t_log.console_dir("get_node_hidden_parentElement",container);
+
+        if(!container) return "";
+    }
+    /*}}}*/
+    /* HIDE OR UNHIDE CONTAINER {{{*/
+    t_window_getSelection_removeAllRanges( caller );
+    t_hide.dom_hide1_container_clicked(container, hide_parent);
+
+    /*}}}*/
+    return "DOC CLICK .. HIDE CONTAINER ["+get_n_lbl(container)+"]";
+};
+/*}}}*/
+/*_ t_tools_hide_onDown_XY_parent {{{*/
+let t_tools_hide_onDown_XY_parent = function()
+{
+    return t_tools_hide_onDown_XY( true );
 };
 /*}}}*/
 /*}}}*/
@@ -17920,7 +18757,7 @@ if( log_this) log("%c"+caller+":"+LF+"%c"+(innerHTML ? innerHTML : "CLIPBOARD CL
 /*➔ t_get_onWork_EL_slot {{{*/
 let t_get_onWork_EL_slot = function()
 {
-    return t_get_EL_slot( onWork_EL );
+    return get_EL_slot( onWork_EL );
 };
 /*}}}*/
 /*➔ t_get_onWork_EL_num {{{*/
@@ -17951,11 +18788,11 @@ log("t_get_onWork_EL_container("+get_n_lbl(onWork_EL)+"): ...return ["+t_util.ge
     return container;
 };
 /*}}}*/
-/*➔ t_get_EL_slot {{{*/
-let t_get_EL_slot = function(el)
+/*_ get_EL_slot {{{*/
+let get_EL_slot = function(el)
 {
 /*{{{*/
-let   caller = "t_get_EL_slot";
+let   caller = "get_EL_slot";
 let log_this = LOG_MAP.T6_SLOT;
 
 /*}}}*/
@@ -18343,7 +19180,7 @@ let t_build_bag_tools = function()
     /* bag_rot {{{*/
     bag_rot  = document.createElement("DIV"); bag_rot.id = "bag_rot" ;
 
-    set_bag_rot_title("..."+t_util.i18n_get( t_util.I18N_BAGS_CONTENT ));
+    set_bag_rot_title("..."+t_i18n.i18n_get( t_i18n.BAGS_CONTENT ));
     /*}}}*/
     /* bag_swap {{{*/
 /*{{{
@@ -18445,7 +19282,7 @@ let   set_bag_rot_title = function(title)
     let bag_rot_title
         = title
         + (count ? ("x"+count) : "")
-        + (content || t_util.I18N_IS_EMPTY)
+        + (content || t_i18n.IS_EMPTY)
     ;
 
 /*{{{
@@ -18497,11 +19334,11 @@ let t_sync_pat_buttons = function(_caller)
         ;
 
         t_util.set_el_caption(  pat_sort
-                       , ".. "+            t_util.i18n_get( t_util.I18N_CURRENTLY       )+" "
-                       + (  pat_user_set ? t_util.i18n_get( t_util.I18N_AS_SET_BY_USER  )
-                          : sel_sorted   ? t_util.i18n_get( t_util.I18N_SORTED_A_TO_Z   )
-                          : sel_reversed ? t_util.i18n_get( t_util.I18N_REVERSED_Z_TO_A )
-                          :                t_util.i18n_get( t_util.I18N_UNORDERED       ))
+                       , ".. "+            t_i18n.i18n_get( t_i18n.CURRENTLY       )+" "
+                       + (  pat_user_set ? t_i18n.i18n_get( t_i18n.AS_SET_BY_USER  )
+                          : sel_sorted   ? t_i18n.i18n_get( t_i18n.SORTED_A_TO_Z   )
+                          : sel_reversed ? t_i18n.i18n_get( t_i18n.REVERSED_Z_TO_A )
+                          :                t_i18n.i18n_get( t_i18n.UNORDERED       ))
                     );
 
         set_el_class_on_off(pat_sort, t_data.CSS_CHECKED , (sel_sorted || sel_reversed));
@@ -18687,7 +19524,7 @@ if(msg) if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_log_stage_
         t_sync_pat_csv_to_bag();
 }}}*/
 
-        t_cache_layout(msg);
+        t_cache_sync(msg);
     }
     /*}}}*/
 };
@@ -18753,7 +19590,7 @@ let log_this = LOG_MAP.S0_PATTERN || LOG_MAP.S2_SELECT;
             t_sync_pat_csv_to_bag();
 }}}*/
 
-            t_cache_layout("t_pat_bag_close_handler");
+            t_cache_sync("t_pat_bag_close_handler");
         }
         /*}}}*/
 /*{{{*/
@@ -19044,11 +19881,11 @@ let t_hov_rect = function(moving_rect, hovered_rect)
 let t_pat_bag_mov_div_is_xy_hovering_bag = function(x,y,hov_div)
 {
     /* RECT: moving object rectangle */
-    let mov_div_rect = {
-        top    : y                                        ,
-        left   : x                                        ,
-        bottom : y                  + mov_div.offsetHeight,
-        right  : x                  + mov_div.offsetWidth ,
+    let mov_div_rect
+        = { top    : y
+        ,   left   : x
+        ,   bottom : y                  + mov_div.offsetHeight
+        ,   right  : x                  + mov_div.offsetWidth
     };
 
     /* RECT: container accepting moving object */
@@ -19056,11 +19893,11 @@ let t_pat_bag_mov_div_is_xy_hovering_bag = function(x,y,hov_div)
     let hov_div_top  = (hov_div == pat_bag) ? 0 : hov_div.offsetTop ;
     let hov_div_left = (hov_div == pat_bag) ? 0 : hov_div.offsetLeft;
 
-    let hov_div_rect = {
-        top    : hov_div_top                              ,
-        left   : hov_div_left                             ,
-        bottom : hov_div_top        + hov_div.offsetHeight,
-        right  : hov_div_left       + hov_div.offsetWidth ,
+    let hov_div_rect
+        = { top    : hov_div_top
+          , left   : hov_div_left
+          , bottom : hov_div_top        + hov_div.offsetHeight
+          , right  : hov_div_left       + hov_div.offsetWidth
     };
 
     let overlapping
@@ -19169,120 +20006,6 @@ if(log_this) {
 
     t_pat_bag_open_or_close_layout();
     /*}}}*/
-
-/*{{{
-    switch(div) {
-        case bak_bag: {
-            bak_bag_place_holder.style.display =  "none";
-            off_bag_place_holder.style.display = "block";
-            pat_bag_place_holder.style.display = "block";
-        }
-        break;
-        case off_bag: {
-            bak_bag_place_holder.style.display = "block";
-            off_bag_place_holder.style.display =  "none";
-            pat_bag_place_holder.style.display = "block";
-        }
-        break;
-        case pat_bag: {
-            bak_bag_place_holder.style.display = "block";
-            off_bag_place_holder.style.display = "block";
-            pat_bag_place_holder.style.display =  "none";
-        }
-        break;
-    }
-}}}*/
-/*{{{
-    switch(div) {
-        case bak_bag:
-        if(  bak_bag_place_holder.parentNode) bak_bag.removeChild ( bak_bag_place_holder, bak_bag.firstElementChild );
-        if( !off_bag_place_holder.parentNode) off_bag.insertBefore( off_bag_place_holder, off_bag.firstElementChild );
-        if( !pat_bag_place_holder.parentNode) pat_bag.insertBefore( pat_bag_place_holder, off_bag.nextElementSibling);
-        break;
-        case off_bag:
-        if( !bak_bag_place_holder.parentNode) bak_bag.insertBefore( bak_bag_place_holder, bak_bag.firstElementChild );
-        if(  off_bag_place_holder.parentNode) off_bag.removeChild ( off_bag_place_holder                     );
-        if( !pat_bag_place_holder.parentNode) pat_bag.insertBefore( pat_bag_place_holder, off_bag.nextElementSibling);
-        break;
-        case pat_bag:
-        if( !bak_bag_place_holder.parentNode) bak_bag.insertBefore( bak_bag_place_holder, bak_bag.firstElementChild );
-        if( !off_bag_place_holder.parentNode) off_bag.insertBefore( off_bag_place_holder, off_bag.firstElementChild );
-        if(  pat_bag_place_holder.parentNode) pat_bag.removeChild ( pat_bag_place_holder                     );
-        break;
-    }
-}}}*/
-/*{{{
-    if(mov_dst.parentNode) mov_dst.parentNode.removeChild( mov_dst );
-    if     (div == pat_bag) div.insertBefore(mov_dst, off_bag.nextElementSibling);
-    else                    div.insertBefore(mov_dst,     div.firstElementChild );
-}}}*/
-/*{{{
-    switch(div) {
-        case bak_bag:
-        if( !bak_bag_place_holder.parentNode) bak_bag.insertBefore( bak_bag_place_holder, bak_bag.firstElementChild );
-        break;
-
-        case off_bag:
-        if( !off_bag_place_holder.parentNode) off_bag.insertBefore( off_bag_place_holder, off_bag.firstElementChild );
-        break;
-
-        case pat_bag:
-        if( !pat_bag_place_holder.parentNode) pat_bag.insertBefore( pat_bag_place_holder, off_bag.nextElementSibling);
-        break;
-
-    }
-}}}*/
-/*{{{
-    let place_holder_line
-        = "<span class='pat_span place_holder'><em class='num_em'>"+t_data.SYMBOL_CHECK_MARK+"</em>&nbsp;"
-        + "<em class='cc1'>&nbsp;</em>"
-        + "</span>"
-    ;
-    switch(div) {
-        case bak_bag:
-        bak_bag_place_holder.innerHTML = mov_dst.innerHTML;
-        off_bag_place_holder.innerHTML = place_holder_line;
-        pat_bag_place_holder.innerHTML = place_holder_line;
-        break;
-
-        case off_bag:
-        bak_bag_place_holder.innerHTML = place_holder_line;
-        off_bag_place_holder.innerHTML = mov_dst.innerHTML;
-        pat_bag_place_holder.innerHTML = place_holder_line;
-        break;
-
-        case pat_bag:
-        bak_bag_place_holder.innerHTML = place_holder_line;
-        off_bag_place_holder.innerHTML = place_holder_line;
-        pat_bag_place_holder.innerHTML = mov_dst.innerHTML;
-        break;
-    }
-}}}*/
-/* accepting place_holder opacity {{{*/
-/*
-    switch(div) {
-        case bak_bag: {
-            bak_bag_place_holder.style.opacity = (div == mov_src_div) ? 0 : 1.0;
-            off_bag_place_holder.style.opacity = 0.2;
-            pat_bag_place_holder.style.opacity = 0.2;
-        }
-        break;
-        case off_bag: {
-            bak_bag_place_holder.style.opacity = 0.2;
-            off_bag_place_holder.style.opacity = (div == mov_src_div) ? 0 : 1.0;
-            pat_bag_place_holder.style.opacity = 0.2;
-        }
-        break;
-        case pat_bag: {
-            bak_bag_place_holder.style.opacity = 0.2;
-            off_bag_place_holder.style.opacity = 0.2;
-            pat_bag_place_holder.style.opacity = (div == mov_src_div) ? 0 : 1.0;
-        }
-        break;
-    }
-*/
-/*}}}*/
-
 };
 /*}}}*/
 /*… reorder_pat_csv {{{*/
@@ -19630,7 +20353,6 @@ logBIG("is_pat_bag_visible....=["+ is_pat_bag_visible  +"]",lf7);
 }}}*/
         if( is_pat_bag_visible ) {
             t_handle_1_pat_bag_rotating( true);
-            let off_bag = t_get_tool("off_bag");
             let      cs = window.getComputedStyle(off_bag);
             let      ms = t_util.string_to_ms(cs.animationDuration);
 /*{{{
@@ -19668,9 +20390,6 @@ if( log_this) log("...[fly_log] CLICK");
 /*➔ rot_move_all_pat_spans_to_off_bag {{{*/
 let rot_move_all_pat_spans_to_off_bag = function()
 {
-    let pat_bag = t_get_tool("pat_bag");
-    let off_bag = t_get_tool("off_bag");
-
     t_select.t_collect_el_class_from_into("pat_span", pat_bag, pat_spans);
 
     for(let pat_span_index = pat_spans.length-1; pat_span_index >= 0; --pat_span_index)
@@ -20684,12 +21403,12 @@ if( log_this) log("%c "+caller, lbB+lf5);
     }
 if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_log_stage_msg(t_fly.STAGE_2_ACTION, t_data.SYMBOL_HID+" x"+count+" <em class='cc8'>"+ t_util.ellipsis_short(patterns) +"</em>");
 
-    /*}}}*/ 
+    /*}}}*/
     /* unslot all patterns {{{*/
     let cleared_csv = t_select.t_clear_slot_all();
 if( log_this) log("...cleared_csv=["+cleared_csv+"]");
 
-    /*}}}*/ 
+    /*}}}*/
     /* .. t_slot.t_clear_slot
      * .. t_clear_slot_sync
      * .. t_select.t_onPatternUpdate
@@ -20797,26 +21516,26 @@ add_el_class(onWork_EL  , CSS_MOV_SRC    );
     /* on grab layout rectangles {{{*/
     pat_bag_was_grid_whenGrabbed = has_el_class(pat_bag, CSS_GRID_BAG);
 
-    off_bag_rect = {
-        top    : off_bag.offsetTop                        ,
-        left   : off_bag.offsetLeft                       ,
-        bottom : off_bag.offsetTop  + off_bag.offsetHeight,
-        right  : off_bag.offsetLeft + off_bag.offsetWidth ,
-    };
+    off_bag_rect
+        = { top    : off_bag.offsetTop
+          , left   : off_bag.offsetLeft
+          , bottom : off_bag.offsetTop  + off_bag.offsetHeight
+          , right  : off_bag.offsetLeft + off_bag.offsetWidth
+        };
 
-    alt_bag_rect = {
-        top    : alt_bag.offsetTop                        ,
-        left   : alt_bag.offsetLeft                       ,
-        bottom : alt_bag.offsetTop  + alt_bag.offsetHeight,
-        right  : alt_bag.offsetLeft + alt_bag.offsetWidth ,
-    };
+    alt_bag_rect
+        = { top    : alt_bag.offsetTop
+          , left   : alt_bag.offsetLeft
+          , bottom : alt_bag.offsetTop  + alt_bag.offsetHeight
+          , right  : alt_bag.offsetLeft + alt_bag.offsetWidth
+        };
 
-    bak_bag_rect = {
-        top    : bak_bag.offsetTop                        ,
-        left   : bak_bag.offsetLeft                       ,
-        bottom : bak_bag.offsetTop  + bak_bag.offsetHeight,
-        right  : bak_bag.offsetLeft + bak_bag.offsetWidth ,
-    };
+    bak_bag_rect
+        = { top    : bak_bag.offsetTop
+          , left   : bak_bag.offsetLeft
+          , bottom : bak_bag.offsetTop  + bak_bag.offsetHeight
+          , right  : bak_bag.offsetLeft + bak_bag.offsetWidth
+        };
 
     /*}}}*/
     /* DIM BG (light) {{{*/
@@ -20895,7 +21614,6 @@ logXXX("pat_bag.scale=["+pat_bag.scale+"]");
     if     (bag_at_xy == bak_bag) t_pat_bag_hover_div_accept( bak_bag, at_bag_top);
     else if(bag_at_xy == alt_bag) t_pat_bag_hover_div_accept( alt_bag, at_bag_top);
     else if(bag_at_xy == off_bag) t_pat_bag_hover_div_accept( off_bag, at_bag_top);
-    else if(bag_at_xy == pat_bag) t_pat_bag_hover_div_accept( pat_bag            );
     else if(bag_at_xy == pat_bag) t_pat_bag_hover_div_accept( pat_bag            );
     else                          t_pat_bag_hover_div_accept( mov_src_div        );
 
@@ -21513,7 +22231,7 @@ log_caller();
         :  sticky_count      ?            sticky_count      +" Personal Note"+sticky_s
 /*      :  split_wot         ?            sticky_count      +" SPLIT WOT"    +split_wot */
         :  hotspot_EDITING   ? "Editing"
-        : !hotspot_in_gutter ? t_util.i18n_get( t_util.I18N_MOVE_IN_GUTTER_TO_CLEAR_STORAGE )
+        : !hotspot_in_gutter ? t_i18n.i18n_get( t_i18n.MOVE_IN_GUTTER_TO_CLEAR_STORAGE )
         :                      ""
     ;
 
@@ -21556,7 +22274,7 @@ let prev_state;
 let t_page_item_get_state_change = function(curr_state)
 {
 /*{{{
-t_log.console_dir(curr_state, "curr_state");
+t_log.console_dir("curr_state", curr_state);
 let s = log_key_val("t_page_item_get_state_change", curr_state, lf7);
 }}}*/
     if(!prev_state) {
@@ -21609,7 +22327,7 @@ let t_store_show_all_page_items_removed = function()
     hotring.title
         =  page_items_worth_storing
         ?  page_items_worth_storing
-        :  t_util.i18n_get( t_util.I18N_ALL_PAGE_LOCAL_STORAGE_REMOVED)
+        :  t_i18n.i18n_get( t_i18n.ALL_PAGE_LOCAL_STORAGE_REMOVED)
     ;
 
     /* UPDATE STATE */
@@ -21717,7 +22435,6 @@ let t_pattern2_set_sel_bag_innerHTML = function()
     let caller = "t_pattern2_set_sel_bag_innerHTML";
 let log_this = LOG_MAP.S3_SLOT;
 
-    let sel_bag = t_get_tool("sel_bag");
     if(!sel_bag) return;
     let sel_bag_innerHTML = "";
 
@@ -21834,12 +22551,6 @@ if( log_this) logBIG(caller, lf4);
 if( log_this) pattern_log_bag_csv(caller);
 /*}}}*/
 /* BAG TOOLS {{{*/
-    let pat_bag = t_get_tool("pat_bag");
-    let off_bag = t_get_tool("off_bag");
-    let bak_bag = t_get_tool("bak_bag");
-    let alt_bag = t_get_tool("alt_bag");
-    let bot_div = t_get_tool("bot_div");
-
     if(!pat_bag) return;
 
     let pat_bag_is_opened = has_el_class( pat_bag, "open_bag");
@@ -21884,11 +22595,11 @@ if(log_this) for(let i=0; i < pat_spans.length; ++i) log((i+1)+" %c["+pat_spans[
     bin_moved_to_count = 0;
 
     /*}}}*/
-    pattern4_bin_remove_all_trashed_pat_spans(bin_csv);
+    pattern4_bin_remove_all_trashed_pat_spans();
     pattern5_bak_innerHTML();
     pattern6_alt_innerHTML();
     pattern7_pat_csv_to_bag();
-    pattern8_off_bak_innerHTML(pat_csv); /* .. move any remaining [pat_span] into [bak_bag] */
+    pattern8_off_bak_innerHTML(); /* .. move any remaining [pat_span] into [bak_bag] */
     pattern9_adjust_pat_span_num();
     /* LOG {{{*/
     if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG))
@@ -21994,7 +22705,7 @@ if(log_this) {
 /*}}}*/
 
 /*…   pattern4_bin_remove_all_trashed_pat_spans {{{*/
-let   pattern4_bin_remove_all_trashed_pat_spans = function(bin_csv)
+let   pattern4_bin_remove_all_trashed_pat_spans = function()
 {
     for(let pos = 1; pos <= t_util.csv_count(bin_csv); ++pos)
     {
@@ -22016,8 +22727,6 @@ let   pattern4_bin_remove_all_trashed_pat_spans = function(bin_csv)
 /*…   pattern5_bak_innerHTML {{{*/
 let   pattern5_bak_innerHTML = function()
 {
-    let bak_bag = t_get_tool("bak_bag");
-    let mov_div = t_get_tool("mov_div");
     for(let pos = 1; pos <= t_util.csv_count(bak_csv); ++pos)
     {
         let pat             = t_util.csv_get(bak_csv,    pos);
@@ -22067,8 +22776,6 @@ if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly("MOVED TO <em 
 /*…   pattern6_alt_innerHTML {{{*/
 let   pattern6_alt_innerHTML = function()
 {
-    let alt_bag = t_get_tool("alt_bag");
-    let mov_div = t_get_tool("mov_div");
     for(let pos = 1; pos<= t_util.csv_count(alt_csv); ++pos)
     {
         let pat            = t_util.csv_get(alt_csv, pos);
@@ -22149,11 +22856,6 @@ if(log_this) {
     log("%c bin_csv %c"+bin_csv, lbL+lf8,lbR+lf8);
 }
 /*}}}*/
-    let pat_bag = t_get_tool("pat_bag");
-    let off_bag = t_get_tool("off_bag");
-    let bak_bag = t_get_tool("bak_bag");
-    let alt_bag = t_get_tool("alt_bag");
-    let mov_div = t_get_tool("mov_div");
     for(let pos = 1; pos<= t_util.csv_count(pat_csv); ++pos)
     {
         /* pat in_<off pat bak>_csv {{{*/
@@ -22334,10 +23036,8 @@ if( log_this)
 };
 /*}}}*/
 /*…   pattern8_off_bak_innerHTML {{{*/
-let   pattern8_off_bak_innerHTML = function(pat_csv)
+let   pattern8_off_bak_innerHTML = function()
 {
-    let off_bag = t_get_tool("off_bag");
-    let bak_bag = t_get_tool("bak_bag");
     /* [pat_spans] unmoved .. fall back [MOVED_TO bak] */
     for(let pat_span_index=0; pat_span_index < pat_spans.length; ++pat_span_index)
     {
@@ -22377,12 +23077,6 @@ if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly("MOVED TO <em 
 /*…   pattern9_adjust_pat_span_num {{{*/
 let   pattern9_adjust_pat_span_num = function()
 {
-    let pat_spans;
-
-    let pat_bag = t_get_tool("pat_bag");
-    let off_bag = t_get_tool("off_bag");
-    let bak_bag = t_get_tool("bak_bag");
-    let alt_bag = t_get_tool("alt_bag");
     pat_spans=[];
     t_select.t_collect_el_class_from_into("pat_span", pat_bag, pat_spans);
     for(let pat_span_index=0; pat_span_index < pat_spans.length; ++pat_span_index)
@@ -22542,7 +23236,7 @@ let pulse_id_get_alias = function(id)
 /*}}}*/
 /*_ pulse_id_start {{{*/
 /*{{{*/
-const PULSE_START_DELAY = 1000;
+const PULSE_START_DELAY = 200;
 let   pulse_id_timer    = null;
 
 /*}}}*/
@@ -22583,7 +23277,7 @@ if(LOG_MAP.T3_LAYOUT) log(".pulse_id_next_handler: .. pulsing_id=["+pulsing_id+"
 
     pulsing_id_csv = t_util.csv_del(pulsing_id_csv, pulsing_id);
 
-    t_util.set_id_class_on_off(pulsing_id, "pulse_in" , true );
+    t_set_id_class_on_off(pulsing_id, "pulse_in" , true );
 
     setTimeout(pulse_id_out_handler, PULSE_IN_DURATION);
 };
@@ -22594,8 +23288,8 @@ let pulse_id_out_handler  = function()
     if(!pulsing_id) return;
 if(LOG_MAP.T3_LAYOUT) log("..pulse_id_out_handler: pulsing_id=["+pulsing_id+"]");
 
-    t_util.set_id_class_on_off(pulsing_id, "pulse_in"    , false);
-    t_util.set_id_class_on_off(pulsing_id, "pulse_id_out", true );
+    t_set_id_class_on_off(pulsing_id, "pulse_in"    , false);
+    t_set_id_class_on_off(pulsing_id, "pulse_id_out", true );
 
     setTimeout(pulse_id_done_handler, PULSE_OUT_DURATION);
 };
@@ -22606,7 +23300,7 @@ let pulse_id_done_handler = function()
     if(!pulsing_id) return;
 if(LOG_MAP.T3_LAYOUT) log("...pulse_id_done_handler: pulsing_id=["+pulsing_id+"]");
 
-    t_util.set_id_class_on_off(pulsing_id, "pulse_id_out", false);
+    t_set_id_class_on_off(pulsing_id, "pulse_id_out", false);
 
     pulse_id_next_handler();
 };
@@ -22755,7 +23449,7 @@ let log_this = LOG_MAP.T3_LAYOUT || LOG_MAP.EV5_TOOL_CB;
 /*}}}*/
     /* SLIDER TRACK + THUMB {{{*/
     let clone_el = document.getElementById(id);
-    if(!clone_el ) return false;
+    if(!clone_el ) return;
 
     let el_thumb = clone_el.labels ? clone_el.labels[0] : null;
     let el_track = clone_el.labels ? clone_el.labels[1] : null;
@@ -22800,7 +23494,7 @@ let t_clone_2_id_state_CB_PULSE = function(input_id, checked)
 {
     let       checkbox = document.getElementById(input_id);
 /*{{{
-t_log.console_dir(checkbox,"t_clone_2_id_state_CB_PULSE("+input_id+", "+checked+")");
+t_log.console_dir("+checked+")", checkbox,"t_clone_2_id_state_CB_PULSE("+input_id+");
 }}}*/
 
     checkbox.checked = true;
@@ -22867,7 +23561,7 @@ if( log_this) log("%c"+caller+"%c TOOL ALREADY EMBEDDED ["+id+"]", lbL+lf8, lbR+
 
     el = div.firstElementChild.firstElementChild;
 
-if( log_this) t_log.console_dir(el, caller+" ...return:");
+if( log_this) t_log.console_dir(caller+" ...return:", el);
     return  el;
 };
 /*}}}*/
@@ -22883,7 +23577,7 @@ let get_tool_clone = function(id)
         : null;
 
 /*{{{
-if(el) t_log.console_dir(el, "get_tool_clone("+id+") ...return:");
+if(el) t_log.console_dir("get_tool_clone("+id+") ...return:", el);
 }}}*/
     return el;
 };
@@ -22899,7 +23593,7 @@ let get_doc_tool_diplayed_id_prefix = function(id_prefix)
     {
         let doc_tool = get_tool_embedded(id_prefix+(i ? ("_"+i): ""));
         if(!doc_tool ) break;
-        let    buttons_pod = t_util.get_el_parent_with_class(doc_tool, "buttons_pod");
+        let    buttons_pod = t_util.get_el_parent_with_class(doc_tool, CSS_BUTTONS_POD);
         if(    buttons_pod
                &&  buttons_pod.style.display
                && (buttons_pod.style.display != "none")
@@ -22923,7 +23617,7 @@ let get_tool_embedded = function(id)
     ;
 
 /*{{{
-if(el) t_log.console_dir(el, "get_tool_embedded("+id+") ...return:");
+if(el) t_log.console_dir("get_tool_embedded("+id+") ...return:", el);
 }}}*/
     return el;
 };
@@ -22964,60 +23658,61 @@ if( log_this) log(caller);
 
     let id, el;
 
-    id = "EV0_LISTEN"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV0_LISTEN        ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV1_DOWN"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV1_DOWN          ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV2_MOVE"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV2_MOVE          ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV3_UP"                ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV3_UP            ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV4_LONG_PRESS"        ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV4_LONG_PRESS    ? CSS_CC4 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV5_TOOL_CB"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV5_TOOL_CB       ? CSS_CC5 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV6_CHANGED"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV6_CHANGED       ? CSS_CC6 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV7_DISPATCH"          ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV7_DISPATCH      ? CSS_CC7 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id = "EV8_FLOATLOG"          ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV8_FLOATLOG      ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV0_LISTEN"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV0_LISTEN     ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV1_DOWN"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV1_DOWN       ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV2_MOVE"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV2_MOVE       ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV3_UP"                ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV3_UP         ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV4_LONG_PRESS"        ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV4_LONG_PRESS ? CSS_CC4 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV5_TOOL_CB"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV5_TOOL_CB    ? CSS_CC5 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV6_CHANGED"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV6_CHANGED    ? CSS_CC6 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV7_DISPATCH"          ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV7_DISPATCH   ? CSS_CC7 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id = "EV8_FLOATLOG"          ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.EV8_FLOATLOG   ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  "S0_PATTERN"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. S0_PATTERN       ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "S1_RANGE"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. S1_RANGE         ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "S2_SELECT"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. S2_SELECT        ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "S3_SLOT"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. S3_SLOT          ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "S0_PATTERN"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.S0_PATTERN     ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "S1_RANGE"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.S1_RANGE       ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "S2_SELECT"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.S2_SELECT      ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "S3_SLOT"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.S3_SLOT        ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  "T0_STORE"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T0_STORE         ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T1_DOM_LOAD"          ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T1_DOM_LOAD      ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T2_GRID"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T2_GRID          ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T3_LAYOUT"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T3_LAYOUT        ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T4_PIVOT"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T4_PIVOT         ? CSS_CC4 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T5_SPREAD"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T5_SPREAD        ? CSS_CC5 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T6_SLOT"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T6_SLOT          ? CSS_CC6 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T7_SHARE"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T7_SHARE         ? CSS_CC7 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  "T8_TOOLBAR"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP. T8_TOOLBAR       ? CSS_CC0 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T0_STORE"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T0_STORE       ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T1_DOM_LOAD"          ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T1_DOM_LOAD    ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T2_GRID"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T2_GRID        ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T3_LAYOUT"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T3_LAYOUT      ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T4_PIVOT"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T4_PIVOT       ? CSS_CC4 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T5_SPREAD"            ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T5_SPREAD      ? CSS_CC5 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T6_SLOT"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T6_SLOT        ? CSS_CC6 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T7_SHARE"             ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T7_SHARE       ? CSS_CC7 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "T8_TOOLBAR"           ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.T8_TOOLBAR     ? CSS_CC0 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  "IPC_LOG"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.IPC_LOG           ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  "IPC_LOG"              ; if(el = document.getElementById(id)) set_el_class_removing(el, LOG_MAP.IPC_LOG        ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  t_data.CONTAINERS_HI   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)       ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.WORDS_EXACT     ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)       ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.WORDS_SEGMENT   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)       ? CSS_CC4 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.WORDS_HEAD_TAIL ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)       ? CSS_CC5 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.WORDS_OPCYCLE   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)       ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.CONTAINERS_HI   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC1 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.WORDS_EXACT     ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC3 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.WORDS_SEGMENT   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC4 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.WORDS_HEAD_TAIL ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC5 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.WORDS_OPCYCLE   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
 
     let id_array = get_words_drop_affix_array();
     for(let i=0; i < id_array.length; ++i)
     {
-        id = id_array[i]         ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
+        id = id_array[i]         ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC9 : CSS_CC8, t_data.CCX_CLASSLIST);
     }
 
-    id =  t_data.SCROLL_SMOOTH   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.SCROLL_SMOOTH   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  t_data.SHOW_SEEKZONE   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get( t_data.SHOW_SEEKZONE ) ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.PIN_SEEKSPOT    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get( t_data.PIN_SEEKSPOT  ) ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.LOG_SEEKSPOT    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get( t_data.LOG_SEEKSPOT  ) ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.SHOW_SEEKZONE   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.PIN_SEEKSPOT    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.LOG_SEEKSPOT    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  t_data.REMOVE_ADS      ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get( t_data.REMOVE_ADS    ) ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.SPLIT_WOT       ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get( t_data.SPLIT_WOT     ) ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.LINES_WOT       ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get( t_data.LINES_WOT     ) ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.REMOVE_ADS      ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.SPLIT_WOT       ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.LINES_WOT       ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
 
-    id =  t_data.DENY_OR_ALLOW   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.EDIT_OR_STAGE   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.DOM_HIDE1_RESET ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.MASK_OR_HIDE    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
-    id =  t_data.SITE_OR_PAGE    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)              ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.DENY_OR_ALLOW   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.EDIT_OR_STAGE   ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.DOM_HIDE1_RESET ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.DOM_HIDE1_UNDO  ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.MASK_OR_HIDE    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
+    id =  t_data.SITE_OR_PAGE    ; if(el = document.getElementById(id)) set_el_class_removing(el, prop.get(id)           ? CSS_CC2 : CSS_CC8, t_data.CCX_CLASSLIST);
 
     /* [dom_grid] .. (DOC TOOLS PLAYGROUND) */
     id = "dom_grid_headsup"      ; if(el = document.getElementById(id)) set_el_class(el, CSS_COLLAPSED, LOG_MAP.T2_GRID);
@@ -23295,9 +23990,11 @@ log("t_show_SNAPSHOT: snapshot_mail_body=["+t_util.ellipsis(snapshot_mail_body)+
 
 /* EXPORT tools */
 /*{{{*/
+/* eslint-disable object-shorthand */
+
 return { name : "dom_tools"
-    , logging : function(value) { if(value != undefined) DOM_TOOLS_LOG = value; dom_store.t_store_set_value("DOM_TOOLS_LOG", DOM_TOOLS_LOG); return DOM_TOOLS_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_TOOLS_TAG = value; dom_store.t_store_set_value("DOM_TOOLS_TAG", DOM_TOOLS_TAG); return DOM_TOOLS_TAG; }
+    , logging : function(state) { return DOM_TOOLS_LOG = dom_util.t_util_set_state("DOM_TOOLS_LOG",state); }
+    , tagging : function(state) { return DOM_TOOLS_TAG = dom_util.t_util_set_state("DOM_TOOLS_TAG",state); }
     , t_tools_IMPORT
 
     /* CSS {{{*/
@@ -23329,37 +24026,36 @@ return { name : "dom_tools"
 
     /* ACCESSORS */
 
-    ,    t_get_all_csv                 : function() { return [ pat_csv, off_csv, alt_csv, bak_csv, bin_csv ]; }
-    ,    t_get_pat_csv                 : function() { return   pat_csv; }
-    ,    t_get_off_csv                 : function() { return   off_csv; }
-    ,    t_get_alt_csv                 : function() { return   alt_csv; }
-    ,    t_get_bak_csv                 : function() { return   bak_csv; }
-    ,    t_get_bin_csv                 : function() { return   bin_csv; }
+    ,    t_get_all_csv               : function() { return [ pat_csv, off_csv, alt_csv, bak_csv, bin_csv ]; }
+    ,    t_get_pat_csv               : function() { return   pat_csv; }
+    ,    t_get_off_csv               : function() { return   off_csv; }
+    ,    t_get_alt_csv               : function() { return   alt_csv; }
+    ,    t_get_bak_csv               : function() { return   bak_csv; }
+    ,    t_get_bin_csv               : function() { return   bin_csv; }
 
-    ,    t_get_body_zoom_percent      : function() { return body_zoom_percent;                }
-    ,    t_get_dimm_mask              : function() { return dimm_mask;                        }
-    ,    t_get_fly_log                : function() { return     fly_log;                      }
-    ,    t_get_has_moved              : function() { return has_moved;                        }
-    ,    t_get_onDown_EL              : function() { return onDown_EL;                        }
-    ,    t_get_onDown_MS              : function() { return onDown_MS;                        }
-    ,    t_get_onWork_EL              : function() { return onWork_EL;                        }
-    ,    t_get_onWork_EL_last_used    : function() { return onWork_EL_last_used;              }
-    ,    t_get_onWork_MOVABLE_CHILD   : function() { return onWork_MOVABLE_CHILD ;            }
-    ,    t_get_onWork_MOVABLE_PANEL   : function() { return onWork_MOVABLE_PANEL;             }
-    ,    t_get_onWork_PANEL           : function() { return onWork_PANEL;                     }
-    ,    t_get_onWork_SEEK_TOOL       : function() { return t_seek.t_seeker_get_TOOL_label(); }
-    ,    t_get_pivot_PANEL            : function() { return pivot_PANEL;                      }
-    ,    t_get_shadow_root            : function() { return shadow_root;                      }
-    ,    t_get_transcript1            : function() { return transcript1;                      }
-    ,    t_get_transcript2            : function() { return transcript2;                      }
-    ,    t_tools_IN_WEBVIEW           : function() { return  IN_WEBVIEW;                      }
+    ,    t_get_body_zoom_percent     : function() { return body_zoom_percent;                }
+    ,    t_get_dimm_mask             : function() { return dimm_mask;                        }
+    ,    t_get_fly_log               : function() { return     fly_log;                      }
+    ,    t_get_has_moved             : function() { return has_moved;                        }
+    ,    t_get_onDown_EL             : function() { return onDown_EL;                        }
+    ,    t_get_onDown_MS             : function() { return onDown_MS;                        }
+    ,    t_get_onWork_EL             : function() { return onWork_EL;                        }
+    ,    t_get_onWork_EL_last_used   : function() { return onWork_EL_last_used;              }
+    ,    t_get_onWork_MOVABLE_CHILD  : function() { return onWork_MOVABLE_CHILD ;            }
+    ,    t_get_onWork_MOVABLE_PANEL  : function() { return onWork_MOVABLE_PANEL;             }
+    ,    t_get_onWork_PANEL          : function() { return onWork_PANEL;                     }
+    ,    t_get_onWork_SEEK_TOOL      : function() { return t_seek.t_seeker_get_TOOL_label(); }
+    ,    t_get_pivot_PANEL           : function() { return pivot_PANEL;                      }
+    ,    t_get_shadow_root           : function() { return shadow_root;                      }
+    ,    t_get_transcript1           : function() { return transcript1;                      }
+    ,    t_get_transcript2           : function() { return transcript2;                      }
+    ,    t_tools_IN_WEBVIEW          : function() { return  IN_WEBVIEW;                      }
+    ,    t_is_a_handled_tool         : function(e_target) { return ((get_EL_slot(e_target) > 0) || t_is_an_embedded_doc_tool(e_target)); }
 
     ,    add_sel_csv
     ,    csv_pattern_mov_to_off
     ,    csv_pattern_mov_to_pat
     ,    del_page_and_tool_pointermove_listeners
-    ,    get_div_slot_containers
-    ,    get_event_XY
     ,    get_onDown_SELECTION
     ,    t_get_tool
     ,    get_tool_clone
@@ -23373,7 +24069,7 @@ return { name : "dom_tools"
     ,    t_add_input_listener
     ,    t_add_tool_pointermove_listener
     ,    t_blur
-    ,    t_cache_init_by
+    ,    t_cache_armed_by
     ,    t_cache_wph_WH
     ,    t_clear_slot_sync
     ,    t_clr_container_selected
@@ -23388,12 +24084,10 @@ return { name : "dom_tools"
     ,    t_dom_tools_html_set_el_class_on_off
     ,    t_focus
     ,    t_get_EL_num
-    ,    t_get_EL_slot
     ,    t_get_consumed_by_table
     ,    t_get_container_selected
     ,    t_get_current_sel_text
     ,    t_get_event_status_object
-    ,    t_get_event_target
     ,    t_get_onDown_SCROLL_XY
     ,    t_get_onDown_SEL_TEXT
     ,    t_get_onDown_XY
@@ -23403,9 +24097,10 @@ return { name : "dom_tools"
     ,    t_get_shadow_tool
     ,    t_get_tools_status_object
     ,    t_handle_1_pat_bag_rotation_update_UI
+    ,    t_is_a_click                 : function(e) { return /*!has_moved &&*/ is_a_click(e); }
+    ,    t_is_a_drag                  : function(e) { return                   is_a_drag (e); }
     ,    t_is_a_quick_drag
     ,    t_is_a_tool_el
-    ,    t_is_an_embedded_doc_tool
     ,    t_is_panel_magnified
     ,    t_just_loaded
     ,    t_load
@@ -23417,6 +24112,7 @@ return { name : "dom_tools"
     ,    t_pat_bag1_hide_pattern
     ,    t_pat_bag_open
     ,    t_pattern2_get_sel_bag_thumbs_EM
+    ,    t_pattern_del_words_extension
     ,    t_pattern_del_words_option_sfx
     ,    t_pattern_to_sel_text_words_option
     ,    t_pin_panel_at_XY
@@ -23427,6 +24123,7 @@ return { name : "dom_tools"
     ,    t_seek_set_container_selected
     ,    t_set_CSS_PINNED
     ,    t_set_el_pat_words_option
+    ,    t_set_id_class_on_off
     ,    t_set_onWork_EL
     ,    t_slot_containers_copy_to_clipboard_innerHTML
     ,    t_some_tool_clicked
@@ -23442,14 +24139,13 @@ return { name : "dom_tools"
     ,    t_update_TOOLS_MAP_GEOMETRY
     ,    t_was_a_click                : was_a_click
     ,    t_was_a_misclick             : was_a_misclick
-    ,    t_is_a_click                 : function(e) { return /*!has_moved &&*/ is_a_click(e); }
-    ,    t_is_a_drag                  : function(e) { return                   is_a_drag (e); }
     ,    t_window_getSelection_removeAllRanges
     ,    t_window_scrollTo
     ,    t_words_option_select
     ,    t_words_option_tooltip
     ,    t_words_regex_no_match
     ,    t_words_regex_reset
+    ,    t_is_bouncing_e_type
 
     , t_pattern1_sync_csv_from_ccs
     , t_pattern2_set_sel_bag_innerHTML
@@ -23458,11 +24154,11 @@ return { name : "dom_tools"
     , t_store_del_patterns_csv
 
     /* PROXY .. (for missplaced functions) */
-    , t_log_event_status            : dom_fly.t_log_event_status
-    , t_log_event_status_get        : dom_fly.t_log_event_status_get
-    , t_log_event_status_if_changed : dom_fly.t_log_event_status_if_changed
-    , t_log_tools_status_get        : dom_fly.t_log_tools_status_get
-    , t_seeker_isOn_SLOT_EL         : dom_seek.t_seeker_isOn_SLOT_EL
+    , t_log_event_status            : (typeof dom_fly  == "undefined") ? null : dom_fly.t_log_event_status
+    , t_log_event_status_get        : (typeof dom_fly  == "undefined") ? null : dom_fly.t_log_event_status_get
+    , t_log_event_status_if_changed : (typeof dom_fly  == "undefined") ? null : dom_fly.t_log_event_status_if_changed
+    , t_log_tools_status_get        : (typeof dom_fly  == "undefined") ? null : dom_fly.t_log_tools_status_get
+    , t_seeker_isOn_SLOT_EL         : (typeof dom_seek == "undefined") ? null : dom_seek.t_seeker_isOn_SLOT_EL
 
     /* INTERNALS EXPOSED */
     , add_listener_capture_active
@@ -23474,6 +24170,7 @@ return { name : "dom_tools"
     , t_preventDefault
     , wording_3_CB_WORDS_RECYCLE
     , zap_onMoveDXY
+    , scrollIntoViewIfNeeded_cancel
 
     /* UNUSED YET */
     , are_p1_p2_in_same_quadrant_and_p2_in_corner
@@ -23527,21 +24224,11 @@ return { name : "dom_tools"
     , t_take_SNAPSHOT
     , t_void_SNAPSHOT
 
-    /* DEBUG */
-    , load5_STORAGE_hotspot
-    , t_drag_hotspot_xy_delay
-    , t_flash_unpinned_panels
-    , t_raise_pivot_PANEL
-    , t_raise_pivot_PANEL_layout
-    , t_tools_pointermove_drag_hotspot
-    , t_tools_spread_xy
-
     , t_clear
     , t_handle_1_pat_bag_sort_cycle
     , t_pat_bag3_reselect_all
     , t_pat_bag_close
     , t_sel_pat_bag_all
-    , t_sync_tools_extras
     , t_tools_hide
     , t_tools_set_hotspot_xy
     , t_tools_show
@@ -23561,6 +24248,45 @@ return { name : "dom_tools"
     , get_onDown_SHIFT    : function()  { return onDown_SHIFT; }
     , get_onDown_CTRL     : function()  { return onDown_CTRL ; }
     , get_onDown_ALT      : function()  { return onDown_ALT  ; }
+    , t_get_mouselong_press_consumed_by
+
+    /* STATUS INDICATOR */
+    , t_hotspot_add_status_NOT_MOVED_ENOUGH
+    , t_hotspot_del_status_NOT_MOVED_ENOUGH
+    , t_hotspot_add_status_MOVE_ON_COOLDOWN
+    , t_hotspot_del_status_MOVE_ON_COOLDOWN
+
+/* DEBUG */
+, TOOL_SET
+, dimm_mask_displayed
+, div_slot_containers_displayed
+, hotspot
+, load5_STORAGE_hotspot
+, t_IS_ON_GRID_observerCB
+, t_MASK_OR_HIDE_changed
+, t_click_panel_pin_CB
+, t_drag_hotspot_xy_delay
+, t_flash_unpinned_panels
+, t_is_a_tools_id_tier
+, t_outline_viewport_top_containers
+, t_raise_pivot_PANEL
+, t_raise_pivot_PANEL_layout
+, t_sync_layout
+, t_sync_styles
+, t_sync_tools_position
+, t_sync_tools_tier2
+, t_tools_pointermove_drag_hotspot
+, t_tools_sync_top_xy
+
+/*
+    , t_storage_list : function()
+    {
+        chrome.storage.local.get(null, function(items) { for (key in items) {
+            console.log(key+"=["+items[key]+"]");
+            }
+        });
+    }
+*/
 };
 
 /*}}}*/
@@ -23571,37 +24297,34 @@ document.addEventListener("DOMContentLoaded", function(e) { console.log(DOM_TOOL
 
 /* IPC */
 /*{{{*/
-/* dom_log {{{*/
-let LOG_MAP = dom_log.LOG_MAP;
-let lb0     = dom_log.lb0;
-let lb6     = dom_log.lb6;
-let lbA     = dom_log.lbA;
-let lbF     = dom_log.lbF;
-let lbH     = dom_log.lbH;
-
-let lf5     = dom_log.lf5;
-/*}}}*/
 /*{{{*/
-let IPC_LOG          = LOG_MAP.IPC_LOG;
-let IPC_EXTENSION_ID = "background_js";
 let IPC_SCRIPT_ID    = DOM_TOOLS_JS_ID;
-let IPC_LOG_COLOR    = lb6;
-let IPC_MSG_COLOR    = lbF+IPC_LOG_COLOR;
+let IPC_EXTENSION_ID = "background_js";
+
+let IPC_LOG          = dom_log.LOG_MAP.IPC_LOG;
+let IPC_LOG_COLOR    = dom_log.lb6;
+let IPC_MSG_COLOR    = dom_log.lbF+IPC_LOG_COLOR;
+let IPC_LBA_COLOR    = dom_log.lbA;
+let IPC_LBF_COLOR    = dom_log.lbF;
+let IPC_LBH_COLOR    = dom_log.lbH;
+let IPC_LF5_COLOR    = dom_log.lf5;
+let IPC_LB0_COLOR    = dom_log.lb0;
 /*}}}*/
 /*… t_handle_ipc_message {{{*/
 let t_handle_ipc_message = function(ipc)
 {
+"use strict";
 let log_this = IPC_LOG;
-if( log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_handle_ipc_message(ipc)"                        , IPC_LOG_COLOR, lbA);
+if( log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_handle_ipc_message(ipc)"                        , IPC_LOG_COLOR, IPC_LBA_COLOR);
 
     /* [ipc.start] .. (ON-OFF) {{{*/
     if((typeof ipc.start != "undefined"))
     {
-        if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c EXTENSION INSTRUCTION DETECTED"            , IPC_LOG_COLOR, lbF);
+        if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c EXTENSION INSTRUCTION DETECTED"            , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
         let script_loaded = t_ipc_handle_start(ipc.start);
 
-        if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c TOOLS LOADED AND WAITING "+script_loaded   , IPC_LOG_COLOR, lbF);
+        if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c TOOLS LOADED AND WAITING "+script_loaded   , IPC_LOG_COLOR, IPC_LBF_COLOR);
     }
     /*}}}*/
     /* [ipc.theme] {{{*/
@@ -23615,14 +24338,15 @@ if( log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_handle_ipc_message(ipc)"   
 /*… t_ipc_handle_start {{{*/
 let t_ipc_handle_start = function(start)
 {
+"use strict";
 let log_this = IPC_LOG;
-    if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_start("+start+")"                 , IPC_LOG_COLOR, lbA);
+    if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_start("+start+")"                 , IPC_LOG_COLOR, IPC_LBA_COLOR);
     /* ON {{{*/
     if(start == "ON")
     {
         if(!dom_ipc.t_ipc_is_IPC_SCRIPT_loaded() )
         {
-            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c LOADING "                              , IPC_LOG_COLOR, lbF);
+            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c LOADING "                              , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
             dom_tools.t_load();
             let script_loaded = ((typeof DOM_TOOLS_CSS_TAG != "undefined") && DOM_TOOLS_CSS_TAG);
@@ -23637,12 +24361,12 @@ if(log_this) console.log(".......script_loaded=["+ script_loaded     +"]");
             let dom_tools_html =   dom_tools.t_get_tool("dom_tools_html");
             if( dom_tools_html && (dom_tools_html.style.visibility == "hidden"))
             {
-                if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c RELOADING "                        , IPC_LOG_COLOR, lbF);
+                if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c RELOADING "                        , IPC_LOG_COLOR, IPC_LBF_COLOR);
                 dom_tools.t_reload();
             }
             /* ALREADY LOADED */
             else {
-                if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c ALREADY LOADED .. RE-SENDING "+dom_tools.TOOLS4_DEPLOYED    , IPC_LOG_COLOR, lbF);
+                if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c ALREADY LOADED .. RE-SENDING "+dom_tools.TOOLS4_DEPLOYED    , IPC_LOG_COLOR, IPC_LBF_COLOR);
                 let ipc
                     = { dom_tools_t_load : dom_tools.TOOLS4_DEPLOYED
                       ,           caller : DOM_TOOLS_JS_TAG+".t_ipc_handle_start"
@@ -23658,12 +24382,12 @@ if(log_this) console.log(".......script_loaded=["+ script_loaded     +"]");
     else {
         if( dom_ipc.t_ipc_is_IPC_SCRIPT_loaded() )
         {
-            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c UNLOADING "                            , IPC_LOG_COLOR, lbF);
+            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c UNLOADING "                            , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
             dom_tools.t_unload();
         }
         else {
-            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c NOT YET LOADED"                        , IPC_LOG_COLOR, lbF);
+            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c NOT YET LOADED"                        , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
             dom_ipc.t_wait_for_startup_message_from_extension( DOM_TOOLS_JS_ID );
         }
@@ -23676,27 +24400,34 @@ if(log_this) console.log(".......script_loaded=["+ script_loaded     +"]");
 /*… t_ipc_handle_theme {{{*/
 let t_ipc_handle_theme = function(theme)
 {
+"use strict";
 let log_this = IPC_LOG;
-if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_theme("+theme+")"                 , IPC_LOG_COLOR, lbA);
+if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_theme("+theme+")"                 , IPC_LOG_COLOR, IPC_LBA_COLOR);
 
     let t_theme = "theme_"+theme.toUpperCase();
-if(log_this) console.log("%c "+DOM_LOAD_ID+" calling dom_load", lbH+lf5);
+if(log_this) console.log("%c "+DOM_LOAD_ID+" calling dom_load", IPC_LBH_COLOR+IPC_LF5_COLOR.lf5);
     dom_tools.prop_id_toggle( t_theme );
 };
 /*}}}*/
 /*}}}*/
 
 /* STAND-ALONE .. EXTENSION STARTUP MESSAGE RECEIVED {{{*/
-if(IPC_LOG) console.log("%c "+DOM_TOOLS_JS_ID+" LOADING DONE ", lbH+lf5);
+if(IPC_LOG) console.log("%c "+DOM_TOOLS_JS_ID+" LOADING DONE ", IPC_LBH_COLOR+IPC_LF5_COLOR.lf5);
 
 let extension_signature
     = document.body.attributes[IPC_EXTENSION_ID]
     ? document.body.attributes[IPC_EXTENSION_ID].textContent
     : "";
-if(IPC_LOG) console.log("%c["+IPC_EXTENSION_ID+"]%c = %c"+extension_signature, IPC_MSG_COLOR, lbA, lbF+lb0);
+if(IPC_LOG) console.log("%c["+IPC_EXTENSION_ID+"]%c = %c"+extension_signature, IPC_MSG_COLOR, IPC_LBA_COLOR, IPC_LBF_COLOR+IPC_LB0_COLOR);
 
-if(IPC_LOG) console.log("%c "+DOM_TOOLS_JS_ID+" calling t_load", lbH+lf5);
+if(IPC_LOG) console.log("%c "+DOM_TOOLS_JS_ID+" calling t_load", IPC_LBH_COLOR+IPC_LF5_COLOR.lf5);
 
+/*{{{
+console.profile("t_load");
+}}}*/
 dom_tools.t_load();
+/*{{{
+console.profileEnd();
+}}}*/
 /*}}}*/
 

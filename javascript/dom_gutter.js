@@ -1,7 +1,7 @@
 /* dom_gutter_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_GUTTER_JS_ID      = "dom_gutter_js";
-const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (200206:14h)";
+const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (200910:17h:33)";
 let dom_gutter  = (function() {
 "use strict";
 /* JSHint {{{*/
@@ -22,25 +22,26 @@ let   DOM_GUTTER_TAG        = false;
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-/*  t_prop     = {}        ; */ /* 08 */
-/*  t_store    = {}        ; */ /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+let t_i18n     = {}        ;    /* 08 */
+/*  t_prop     = {}        ; */ /* 09 */
+/*  t_store    = {}        ; */ /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /* ...................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /* ...................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_gutter_IMPORT  = function(log_this)
@@ -50,31 +51,33 @@ let t_gutter_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-/*  t_prop    = dom_prop   ; */ /* 08 */
-/*  t_store   = dom_store  ; */ /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+    t_i18n    = dom_i18n   ;    /* 08 */
+/*  t_prop    = dom_prop   ; */ /* 09 */
+/*  t_store   = dom_store  ; */ /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-/*  t_sticky  = dom_sticky ; */ /* 16 */
-/*  t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     gutter_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_GUTTER_LOG = DOM_GUTTER_LOG || dom_store.t_store_getBool("DOM_GUTTER_LOG");
-    DOM_GUTTER_TAG = DOM_GUTTER_TAG || dom_store.t_store_getBool("DOM_GUTTER_TAG");
+    DOM_GUTTER_LOG = DOM_GUTTER_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_GUTTER_LOG"));
+    DOM_GUTTER_TAG = DOM_GUTTER_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_GUTTER_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 20 gutter", lbH+lf0);
@@ -100,13 +103,13 @@ let   gutter_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
     gutter_DEPEND();
 };
@@ -410,8 +413,8 @@ let log_gutter = function(_caller, lfx=lf7)
 /* EXPORT */
 /*{{{*/
 return { name : "dom_gutter"
-    , logging : function(value) { if(value != undefined) DOM_GUTTER_LOG = value; dom_store.t_store_set_value("DOM_GUTTER_LOG", DOM_GUTTER_LOG); return DOM_GUTTER_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_GUTTER_TAG = value; dom_store.t_store_set_value("DOM_GUTTER_TAG", DOM_GUTTER_TAG); return DOM_GUTTER_TAG; }
+    , logging : function(state) { return DOM_GUTTER_LOG = dom_util.t_util_set_state("DOM_GUTTER_LOG",state); }
+    , tagging : function(state) { return DOM_GUTTER_TAG = dom_util.t_util_set_state("DOM_GUTTER_TAG",state); }
     , t_gutter_IMPORT
 
     /* const */

@@ -16,6 +16,81 @@ if(some_are_tagging) log("%c TAGGING: "+some_are_tagging, lbb+lbH+lf8);
         dom_util.del_el_class(document.getElementById("doc_tools"), "minimized");
         dom_util.del_el_class(document.getElementById("div_above"), "folded"   );
     }
+
+    build_svg_X();
+};
+/*}}}*/
+/*_ build_svg_X {{{*/
+let build_svg_X = function()
+{
+//logXXX("build_svg_X")
+    /* [svg_X] path {{{*/
+    let svg_X           = document.getElementById("svg_X");
+    if(!svg_X) return;
+    let d = ""
+        +"M443.6,387.1"
+        +"L312.4,255.4"
+        +"l131.5-130"
+        +"c5.4-5.4,5.4-14.2,0-19.6"
+        +"l-37.4-37.6"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        + ""
+        +"L256,197.8"
+        +"L124.9,68.3"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        +"L68,105.9"
+        +"c-5.4,5.4-5.4,14.2,0,19.6"
+        +"l131.5,130"
+        +"L68.4,387.1"
+        + " "
+        +"c-2.6,2.6-4.1,6.1-4.1,9.8"
+        +"c0,3.7,1.4,7.2,4.1,9.8"
+        +"l37.4,37.6"
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"L256,313.1"
+        +"l130.7,131.1"
+        + " "
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"l37.4-37.6"
+        +"c2.6-2.6,4.1-6.1,4.1-9.8"
+        +"C447.7,393.2,446.2,389.7,443.6,387.1"
+        +"z"
+        ;
+    svg_X.innerHTML     = "<path d='"+d+"'></path>";
+
+//console_dir(svg_X,"svg_X")
+    /*}}}*/
+    /* [svg_32] CLONE {{{*/
+    let svg_32          = svg_X.cloneNode(true);
+    svg_32.style.width  = "32px";
+    svg_32.style.height = "32px";
+    svg_32.style.backgroundColor  = "rgba(255,000,255,0.3)";
+    svg_32.style.borderColor      = "rgba(255,000,255,0.5)";
+    svg_32.style.borderStyle      = "outset";
+    svg_32.style.borderRadius     = "32px";
+    svg_32.style.borderWidth      =  "2px";
+    svg_32.style.padding          =  "2px";
+    svg_32.style.transform        =  "rotate(45deg)";
+//console_dir(svg_32,"svg_32")
+
+    svg_X.parentElement.appendChild(svg_32);
+    /*}}}*/
+    /* [data:image/svg+xml] parent div cursor {{{*/
+    let cursor
+//      = "url('stylesheet/svg_32.svg') 16 16, pointer";
+        = "url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnDQppZCAgICAgICAgICA9ICJzdmdfWCINCnhtbDpzcGFjZSAgID0gInByZXNlcnZlIg0KeG1sbnM6eGxpbmsgPSAiaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCnhtbG5zICAgICAgID0gImh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIg0KdmVyc2lvbiAgICAgPSAiMS4xIg0Kd2lkdGggICAgICAgPSAiMzJweCINCmhlaWdodCAgICAgID0gIjMycHgiDQp2aWV3Qm94ICAgICA9ICIwIDAgNTEyIDUxMiINCnN0eWxlICAgICAgID0gIg0KICAgIHdpZHRoICAgICAgICAgICAgOiAzMnB4Ow0KICAgIGhlaWdodCAgICAgICAgICAgOiAzMnB4Ow0KLyoNCiAgICBiYWNrZ3JvdW5kLWNvbG9yIDogI0YwRjQ7DQogICAgYm9yZGVyLWNvbG9yICAgICA6ICNGMEY4Ow0KICAgIGJvcmRlci1zdHlsZSAgICAgOiBvdXRzZXQ7DQogICAgYm9yZGVyLXJhZGl1cyAgICA6IDMycHg7DQogICAgYm9yZGVyLXdpZHRoICAgICA6IDJweDsNCiAgICBwYWRkaW5nICAgICAgICAgIDogMnB4Ow0KKi8NCiINCj4NCjxwYXRoIGQ9ICJNNDQzLjYsMzg3LjFMMzEyLjQsMjU1LjRsMTMxLjUtMTMwYzUuNC01LjQsNS40LTE0LjIsMC0xOS42bC0zNy40LTM3LjZjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDQNCiAgICBMMjU2LDE5Ny44TDEyNC45LDY4LjNjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDRMNjgsMTA1LjljLTUuNCw1LjQtNS40LDE0LjIsMCwxOS42bDEzMS41LDEzMEw2OC40LDM4Ny4xDQogICAgYy0yLjYsMi42LTQuMSw2LjEtNC4xLDkuOGMwLDMuNywxLjQsNy4yLDQuMSw5LjhsMzcuNCwzNy42YzIuNywyLjcsNi4yLDQuMSw5LjgsNC4xYzMuNSwwLDcuMS0xLjMsOS44LTQuMUwyNTYsMzEzLjFsMTMwLjcsMTMxLjENCiAgICBjMi43LDIuNyw2LjIsNC4xLDkuOCw0LjFjMy41LDAsNy4xLTEuMyw5LjgtNC4xbDM3LjQtMzcuNmMyLjYtMi42LDQuMS02LjEsNC4xLTkuOEM0NDcuNywzOTMuMiw0NDYuMiwzODkuNyw0NDMuNiwzODcuMXoiLz4NCjwvc3ZnPg=='), pointer";
+//console_dir(cursor, "cursor")
+
+    svg_X.parentElement.style.cursor = cursor;
+
+//console_dir(svg_X.parentElement             ,"svg_X.parentElement"             )
+//console_dir(svg_X.parentElement.style       ,"svg_X.parentElement.style"       )
+//console_dir(svg_X.parentElement.style.cursor,"svg_X.parentElement.style.cursor")
+    /*}}}*/
 };
 /*}}}*/
 /*_ check_modules_state {{{*/
@@ -27,16 +102,19 @@ let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LO
     /* COLLECT LOADED MODULES {{{*/
     if(!DOM_MODULES) {
         DOM_MODULES
-            = [   { name : "dom_loader" , module : dom_loader }
-                , { name : "dom_fly"    , module : dom_fly    }
-                , { name : "dom_prop"   , module : dom_prop   }
-                , { name : "dom_seek"   , module : dom_seek   }
-                , { name : "dom_share"  , module : dom_share  }
-                , { name : "dom_select" , module : dom_select }
-                , { name : "dom_sticky" , module : dom_sticky }
-                , { name : "dom_store"  , module : dom_store  }
-                , { name : "dom_util"   , module : dom_util   }
-                , { name : "dom_tools"  , module : dom_tools  }
+            = [   { name : "dom_loader"  , module : dom_loader  } /* 00 */
+                , { name : "dom_log"     , module : dom_log     } /* 06 */
+                , { name : "dom_util"    , module : dom_util    } /* 07 */
+                , { name : "dom_details" , module : dom_details } /* 07 */
+                , { name : "dom_i18n"    , module : dom_i18n    } /* 08 */
+                , { name : "dom_prop"    , module : dom_prop    } /* 09 */
+                , { name : "dom_store"   , module : dom_store   } /* 10 */
+                , { name : "dom_fly"     , module : dom_fly     } /* 11 */
+                , { name : "dom_select"  , module : dom_select  } /* 13 */
+                , { name : "dom_sticky"  , module : dom_sticky  } /* 17 */
+                , { name : "dom_seek"    , module : dom_seek    } /* 18 */
+                , { name : "dom_share"   , module : dom_share   } /* 19 */
+                , { name : "dom_tools"   , module : dom_tools   } /* 23 */
             ];
 
     }
@@ -121,8 +199,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(value) { if(value != undefined) DOM_LOADER_LOG = value; dom_store.t_store_set_value("DOM_LOADER_LOG", DOM_LOADER_LOG); return DOM_LOADER_LOG; }
-        , tagging : function(value) { if(value != undefined) DOM_LOADER_TAG = value; dom_store.t_store_set_value("DOM_LOADER_TAG", DOM_LOADER_TAG); return DOM_LOADER_TAG; }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 
@@ -133,15 +211,14 @@ if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 /*}}}*/
 </script>
 <!--}}}-->
-<span id="doc_tools_html_tag" style="display:none">doc_tools_html (200318:16h)</span>
 <!--      doc_tools {{{-->
-<div  id="doc_tools" title="doc_tools" class="round_el doc_tool user_select_none minimized">
+<div  id="doc_tools" title="doc_tools_html_tag (210923:21h:20)" class="round_el doc_tool user_select_none minimized">
     <!-- STYLE {{{-->
     <style>
 /* doc_tools {{{*/
 #doc_tools {
     user-select      : none;
-    position         : fixed; bottom:0.2em; right:5%;
+    position         : fixed; bottom:0.2em; right:15%;
     margin           : 0;
     z-index          : 101; /* above dom_tools */
     border           : none                  !important;
@@ -245,7 +322,7 @@ background       : rgba(255,255,255,0.1);
     #div_bellow {
         margin-top       : 0;
         border-radius    : 0   0   1em 1em;
-        padding          : 0.5em 1em 0.5em 1em;
+        padding          : 0.5em 2em !important;
     }
     #div_bellow>a {
         font-size : 120%;
@@ -255,10 +332,10 @@ background       : rgba(255,255,255,0.1);
     <!--}}}-->
     <!-- SCRIPT {{{-->
     <script>
-        /* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+        /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
         "use strict";
 /* JSHint {{{*/
-/* globals dom_util, log, lbH, lf2, lf3, lf4, lf6, lf7 */
+/* globals dom_util, dom_i18n, log, lbH, lf2, lf3, lf4, lf6, lf7 */
 /* exported toggle_this */
 /*
 :?script>?+,/script>/-y *
@@ -364,31 +441,37 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
             <div id="div_logging" onclick='dom_loader.toggle_module_state(event.target);'
                 > <!--{{{-->
                 <span style="pointer-events:none;">logging</span>
-                <a title="logging dom_loader" class="em1 small">LOADER</a>
-                <a title="logging dom_fly"    class="em2 small">fly   </a>
-                <a title="logging dom_prop"   class="em3 small">prop  </a>
-                <a title="logging dom_seek"   class="em4 small">seek  </a>
-                <a title="logging dom_share"  class="em5 small">share </a>
-                <a title="logging dom_select" class="em4 small">select</a>
-                <a title="logging dom_sticky" class="em6 small">sticky</a>
-                <a title="logging dom_store"  class="em7 small">store </a>
-                <a title="logging dom_util"   class="em8 small">util  </a>
-                <a title="logging dom_tools"  class="em9 small">TOOLS </a>
+                <a title="logging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="logging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="logging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="logging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="logging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="logging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="logging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="logging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="logging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="logging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="logging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="logging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
             <div id="div_tagging" onclick='dom_loader.toggle_module_state(event.target);'
                 > <!--{{{-->
                 <span style="pointer-events:none;">tagging</span>
-                <a title="tagging dom_loader" class="em1 small">LOADER</a>
-                <a title="tagging dom_fly"    class="em2 small">fly   </a>
-                <a title="tagging dom_prop"   class="em3 small">prop  </a>
-                <a title="tagging dom_seek"   class="em4 small">seek  </a>
-                <a title="tagging dom_share"  class="em5 small">share </a>
-                <a title="tagging dom_select" class="em4 small">select</a>
-                <a title="tagging dom_sticky" class="em6 small">sticky</a>
-                <a title="tagging dom_store"  class="em7 small">store </a>
-                <a title="tagging dom_util"   class="em8 small">util  </a>
-                <a title="tagging dom_tools"  class="em9 small">TOOLS </a>
+                <a title="tagging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="tagging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="tagging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="tagging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="tagging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="tagging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="tagging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="tagging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="tagging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="tagging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="tagging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="tagging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="tagging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
         </div>
@@ -397,11 +480,16 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
     <div id     ="div_bellow"
          onclick='if(event.target == this) toggle_this(event,this);'
          >
-            <a title="page top"            class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
-            <a title="page bottom"         class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
-            <a title="dump csv and sticky" class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
-            <a title="reset"               class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
-            <a title="reset & reload"      class="em2 action" onclick='document.location.reload();'                 >&#8634;</a>
+<!--{{{
+            <a id="details_close" title="details_close"          class="em5 action" onclick='dom_details.details_close_opened();     '>                         <label>▲</label></a>
+            <a id="details_open"  title="details_open"           class="em5 action" onclick='dom_details.details_open_closed ();     '>                         <label>▼</label></a>
+            <a id="details_radio" title="details radio behavior" class="em5 action" onclick='dom_details.details_radio_toggle(event);'><input type="checkbox" /><label>&#x25B6;</label></a>
+}}}-->
+            <a                    title="page top"               class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
+            <a                    title="page bottom"            class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
+            <a                    title="dump csv and sticky"    class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
+            <a                    title="reset"                  class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
+            <a                    title="reset & reload"         class="em2 action" onclick='document.location.reload();'                 >&#x21BB;</a>
     </div>
     <!--}}}-->
 </div>

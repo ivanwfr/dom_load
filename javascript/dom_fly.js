@@ -1,13 +1,27 @@
 /* dom_fly */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (200402:00h)";
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (210928:15h:56)"; /* eslint-disable-line no-unused-vars */
 let dom_fly     = (function() {
 "use strict";
 /* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_select, dom_tools */
+/* globals console, setTimeout, clearTimeout */
+/* globals window, document */
+/* globals dom_data   */
+/* globals dom_i18n   */
+/* globals dom_log    */
+/* globals dom_prop   */
+/* globals dom_select */
+/* globals dom_store  */
+/* globals dom_tools  */
+/* globals dom_util   */
+
+/* exported dom_fly, DOM_FLY_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable dot-notation        */
 /*
-:1,$y *
+:update|1,$y *
 :!start explorer https://jshint.com/
 */
 /*}}}*/
@@ -16,31 +30,33 @@ let   DOM_FLY_TAG           = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_fly_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-let t_store    = {}        ;    /* 09 */
-/*➔ t_fly      = {}        ; */ /* 10 */
+let t_i18n     = {}        ;    /* 08 */
+let t_prop     = {}        ;    /* 09 */
+let t_store    = {}        ;    /* 10 */
+/*➔ t_fly      = {}        ; */ /* 11 */
 /*....................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-let t_select   = {}        ;    /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+let t_select   = {}        ;    /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /*....................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /*....................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /*....................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_fly_IMPORT    = function(log_this)
@@ -49,30 +65,32 @@ let t_fly_IMPORT    = function(log_this)
     t_data    = dom_data   ;   /* 05 */
     t_log     = dom_log    ;   /* 06 */
     t_util    = dom_util   ;   /* 07 */
-    t_prop    = dom_prop   ;   /* 08 */
-    t_store   = dom_store  ;   /* 09 */
-/*➔ t_fly     = dom_fly    ;*/ /* 10 */
+    t_i18n    = dom_i18n   ;   /* 08 */
+    t_prop    = dom_prop   ;   /* 09 */
+    t_store   = dom_store  ;   /* 10 */
+/*➔ t_fly     = dom_fly    ;*/ /* 11 */
 
-/*  t_wording = dom_wording;*/ /* 11 */
-    t_select  = dom_select ;   /* 12 */
-/*  t_slot    = dom_slot   ;*/ /* 13 */
+/*  t_wording = dom_wording;*/ /* 12 */
+    t_select  = dom_select ;   /* 13 */
+/*  t_wot     = dom_wot    ;*/ /* 14 */
+/*  t_slot    = dom_slot   ;*/ /* 14 */
 
-/*  t_hide    = dom_hide   ;*/ /* 14 */
-/*  t_view    = dom_view   ;*/ /* 15 */
-/*  t_sticky  = dom_sticky ;*/ /* 16 */
-/*  t_seek    = dom_seek   ;*/ /* 17 */
-/*  t_share   = dom_share  ;*/ /* 18 */
+/*  t_hide    = dom_hide   ;*/ /* 15 */
+/*  t_view    = dom_view   ;*/ /* 16 */
+/*  t_sticky  = dom_sticky ;*/ /* 17 */
+/*  t_seek    = dom_seek   ;*/ /* 18 */
+/*  t_share   = dom_share  ;*/ /* 19 */
 
-/*  t_grid    = dom_grid   ;*/ /* 19 */
-/*  t_gutter  = dom_gutter ;*/ /* 20 */
+/*  t_grid    = dom_grid   ;*/ /* 20 */
+/*  t_gutter  = dom_gutter ;*/ /* 21 */
 
-/*  t_ipc     = dom_ipc    ;*/ /* 21 */
-    t_tools   = dom_tools  ;   /* 22 */
+/*  t_ipc     = dom_ipc    ;*/ /* 22 */
+    t_tools   = dom_tools  ;   /* 23 */
 /*}}}*/
     fly_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_FLY_LOG = DOM_FLY_LOG || dom_store.t_store_getBool("DOM_FLY_LOG");
-    DOM_FLY_TAG = DOM_FLY_TAG || dom_store.t_store_getBool("DOM_FLY_TAG");
+    DOM_FLY_LOG = DOM_FLY_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_FLY_LOG"));
+    DOM_FLY_TAG = DOM_FLY_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_FLY_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 10 FLY", lbH+lf0);
@@ -96,13 +114,13 @@ let   fly_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
 
     /*}}}*/
 
@@ -134,6 +152,7 @@ let   fly_DEPEND = function()
         };
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /* STATE LOG */
@@ -161,6 +180,8 @@ let t_fly_div_get = function()
     let fly_div_parent = get_fly_div_parent();
 
     fly_div_parent.appendChild( fly_div );
+
+    return fly_div;
 };
 /*}}}*/
 /*… get_fly_div_parent {{{*/
@@ -204,13 +225,13 @@ let   caller = "t_fly_log_set_state("+state+")";
         :             t_data.SYMBOL_MENU        /* OFF-SESSION      */
     ;
     fly_log.title
-        = t_util.i18n_get(t_util.I18N_FLY_LOG)
+        = t_i18n.i18n_get(t_i18n.FLY_LOG)
         + (  LOG_MAP.EV8_FLOATLOG
            ?  t_data.LF+"LOG_MAP.EV8_FLOATLOG"
            :  "")
     ;
 
-    t_util.set_id_class_on_off(fly_log.id, t_data.CSS_CHECKED , state);
+    t_tools.t_set_id_class_on_off(fly_log.id, t_data.CSS_CHECKED , state);
 
     /* TOOLS UI */
     t_util.set_el_class_on_off(fly_div   , t_tools.CSS_FLOATLOG, state);
@@ -226,7 +247,7 @@ let   caller = "t_fly_log_set_state("+state+")";
 };
 /*}}}*/
 /*➔ t_fly_onlayout {{{*/
-let t_fly_onlayout = function(_caller)
+let t_fly_onlayout = function(_caller) /* eslint-disable-line no-unused-vars */
 {
     if(!fly_div) return;
 
@@ -267,7 +288,7 @@ t_log.log_key_val_group( "t_fly_onlayout"
                     , off_bottom
                   } , lf5, false);
 
-console_dir(fly_div, "fly_div");
+console_dir("fly_div", fly_div);
 }}}*/
 };
 /*}}}*/
@@ -341,7 +362,7 @@ const SAME_TOOLS_STATUS = ".. same TOOLS";
 }}}*/
 
 /*}}}*/
-let t_log_stage_msg = function(stage, msg)
+let t_log_stage_msg = function(stage, msg) /* eslint-disable-line complexity */
 {
     /*{{{*/
 let log_this = LOG_MAP.EV8_FLOATLOG;
@@ -520,7 +541,7 @@ let t_log_regex = function()
     let ruler_tens = "_________1_________2_________3_________4_________5_________6_________7_________8_________9_______100_______110___";
     let ruler_unit = "123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_123";
     let ruler_off  = "|_|_____|___|_____|___|_____|___|__|_|_____|___|_____||___|||______|___|___________________________________|___||";
-    sample         = "Le papillon qui est la forme 'adulte' de la chenille, ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©clos durant l'ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ©tÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© entre juin et septembre selon le climat.";
+    sample         = "Le papillon qui est la forme 'adulte' de la chenille, éclos durant l'été entre juin et septembre selon le climat.";
 
     if( !t_tools.t_tools_IN_WEBVIEW ) ruler_off = t_util.vbar_to_up_arrow(           ruler_off );
 /*
@@ -680,11 +701,21 @@ let t_log_event_status_if_changed = function(_caller="console", l_x=undefined)
 
 };
 /*}}}*/
-
-/*➔ t_log_tools_status_get_if_changed {{{*/
-let t_log_tools_status_get_if_changed = function()
+/*➔ t_log_event_status_if_changed_filter {{{*/
+let t_log_event_status_if_changed_filter = function(_caller="console", filter="", l_x=undefined)
 {
-    let tools_status  = log_get_tools_status_string();
+    if(    t_log_tools_status_get_if_changed(filter)
+        || t_log_event_status_get_if_changed(filter)
+      )
+        t_log_event_status(_caller+(filter ? (" [filter "+filter+"]") : ""), l_x);
+
+};
+/*}}}*/
+
+/*_ t_log_tools_status_get_if_changed {{{*/
+let t_log_tools_status_get_if_changed = function(filter)
+{
+    let tools_status  = log_get_tools_status_string(filter);
 
     if( tools_status != t_last_tools_status) {
         t_last_tools_status  = tools_status;
@@ -704,10 +735,10 @@ let t_log_tools_status_get = function()
 };
 /*}}}*/
 
-/*➔ t_log_event_status_get_if_changed {{{*/
-let t_log_event_status_get_if_changed = function()
+/*_ t_log_event_status_get_if_changed {{{*/
+let t_log_event_status_get_if_changed = function(filter)
 {
-    let event_status  = log_get_event_status_string();
+    let event_status  = log_get_event_status_string(filter);
     if( event_status != t_last_event_status) {
         t_last_event_status  = event_status;
         return                 event_status;
@@ -727,36 +758,39 @@ let t_log_event_status_get = function()
 /*}}}*/
 
 /*… log_get_tools_status_string {{{*/
-let log_get_tools_status_string = function()
+let log_get_tools_status_string = function(filter) /* eslint-disable-line no-unused-vars */
 {
     let o = log_get_tools_status_object();
 
     let tools_status
-        = " ...........onWork_EL: "+ o.onWork_EL+" "+o.tool_details + t_data.LF
-        + " ....onWork_SEEK_TARGET: "+ o.onWork_SEEK_TARGET             + t_data.LF
-        + " ........onWork_PANEL: "+ o.onWork_PANEL                 + t_data.LF
-        + " .........pivot_PANEL: "+ o. pivot_PANEL                 + t_data.LF
-        + " onWork_MOVABLE_PANEL: "+ o.onWork_MOVABLE_PANEL
+        =       " onWork_EL...........: "+ o.onWork_EL+" "+o.tool_details + t_data.LF
+        +       " onWork_SEEK_TARGET..: "+ o.onWork_SEEK_TARGET           + t_data.LF
+        +       " onWork_PANEL........: "+ o.onWork_PANEL                 + t_data.LF
+        +       " .pivot_PANEL........: "+ o. pivot_PANEL                 + t_data.LF
+        +       " onWork_MOVABLE_PANEL: "+ o.onWork_MOVABLE_PANEL
     ;
+    /* filter .. yet unused */
 
     return tools_status;
 };
 /*}}}*/
 /*… log_get_event_status_string {{{*/
-let log_get_event_status_string = function()
+let log_get_event_status_string = function(filter)
 {
     let o = log_get_event_status_object();
 
     let event_status
-        =  "EVENT CAPTURED BY "              + o.captured_by                 + t_data.LF
-        +  "EVENT CONSUMED BY "              + o.consumed_by                 + t_data.LF
-        +  ".....................has_moved: "+ o.has_moved                   + t_data.LF
-        +  "...................was_a_click: "+ o.was_a_click                 + t_data.LF
-        +  "............selection_progress: "+ o.selection_progress          + t_data.LF
-        +  "...has_been_scrolled_by_script: "+ o.has_been_scrolled_by_script + t_data.LF
-        +  "................window.scrollY: "+ o.window_scrollY              + t_data.LF
-        +  ".....................onSeekXYL: "+ o.onSeekXYL                   + t_data.LF
+        =       "EVENT CAPTURED BY "              + o.captured_by                 + t_data.LF
+        +       "EVENT CONSUMED BY "              + o.consumed_by                 + t_data.LF
+        +       "...................was_a_click: "+ o.was_a_click                 + t_data.LF
+        +       "............selection_progress: "+ o.selection_progress          + t_data.LF
+        +       ".....................onSeekXYL: "+ o.onSeekXYL                   + t_data.LF
     ;
+    if(!filter || !filter.includes("scroll"))
+        event_status
+            +=  ".....................has_moved: "+ o.has_moved                   + t_data.LF
+            +   "................window.scrollY: "+ o.window_scrollY              + t_data.LF
+            +   "...has_been_scrolled_by_script: "+ o.has_been_scrolled_by_script + t_data.LF;
 
     return event_status;
 };
@@ -947,7 +981,7 @@ let t_doc_div_clear = function(div_id)
 /*… t_doc_div_add {{{*/
 let t_doc_div_add = function(div_id, html)
 {
-    if( !html.trim()) return;
+    if( !html.trim()      ) return false;
 
     let doc_div = null;
     switch(div_id)
@@ -1043,7 +1077,7 @@ let   fly_get_tooltip_pre_with_html = function(html)
 let t_log_all_csv_prev;
 
 /*}}}*/
-let t_fly_all_csv = function(phase_update_pushed_staged, have_want_done)
+let t_fly_all_csv = function(phase_update_pushed_staged, have_want_done) /* eslint-disable-line complexity */
 {
     /* t_util.csv_count [pat off bak bin] {{{*/
     let [ pat_csv, off_csv, alt_csv, bak_csv, bin_csv] = t_tools.t_get_all_csv();
@@ -1059,7 +1093,7 @@ let t_fly_all_csv = function(phase_update_pushed_staged, have_want_done)
     switch(phase_update_pushed_staged)
     {
         case t_data.SYMBOL_UPDATE: {
-            t_log_all_csv_prev = { pat_c:pat_c , off_c:off_c , alt_c:alt_c , bak_c:bak_c , bin_c:bin_c };
+            t_log_all_csv_prev = { pat_c , off_c , alt_c , bak_c , bin_c };
         }
         break;
 
@@ -1072,7 +1106,7 @@ let t_fly_all_csv = function(phase_update_pushed_staged, have_want_done)
             )
                 same_result_msg = "AS ASSIGNED";
             else
-                t_log_all_csv_prev = { pat_c:pat_c , off_c:off_c , alt_c:alt_c , bak_c:bak_c , bin_c:bin_c };
+                t_log_all_csv_prev = { pat_c , off_c , alt_c , bak_c , bin_c };
         }
         break;
 
@@ -1166,7 +1200,7 @@ let t_fly_tooltip_clear = function(category_className)
 };
 /*}}}*/
 /*➔ t_fly_tooltip_update {{{*/
-let t_fly_tooltip_update = function(tooltip, category_className)
+let t_fly_tooltip_update = function(tooltip, category_className) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "t_fly_tooltip_update";
@@ -1334,8 +1368,6 @@ let t_fly_tooltip_add = function(msg)
 /*… t_fly_tooltip_add_report_function {{{*/
 let t_fly_tooltip_add_report_function = function( report_function )
 {
-/* CALLERS:
-*/
     if(!t_fly_tooltip_report_functions || !t_fly_tooltip_report_functions.includes( report_function ))
         t_fly_tooltip_report_functions.push( report_function );
 };
@@ -1647,22 +1679,22 @@ let   fly_clr_FADE_OR_REMOVE = function()
 
     if( fly_div.children.length )
     {
-        t_util.add_el_class(fly_div,           t_tools.CSS_PAUSE_ANIMATION    );
-        t_util.add_el_class(fly_div,           t_tools.CSS_STACKING           );
+        t_util.add_el_class(fly_div,            t_tools.CSS_PAUSE_ANIMATION    );
+        t_util.add_el_class(fly_div,            t_tools.CSS_STACKING           );
 
         if(fly_clr_FADE_OR_REMOVE_timer) clearTimeout(fly_clr_FADE_OR_REMOVE_handler);
         fly_clr_FADE_OR_REMOVE_timer   =   setTimeout(function() { fly_clr_FADE_OR_REMOVE_handler("SCHEDULED CLEANUP: SOMETHING DISPLAYED"); }, T_FLY_CLR_DELAY);
     }
     else {
-        t_util.del_el_class(fly_div,           t_tools.CSS_PAUSE_ANIMATION    );
-        t_util.del_el_class(fly_div,           t_tools.CSS_STACKING           );
+        t_util.del_el_class(fly_div,            t_tools.CSS_PAUSE_ANIMATION    );
+        t_util.del_el_class(fly_div,            t_tools.CSS_STACKING           );
 
         t_tools.t_del_pin_css_on_panel(fly_div, t_tools.CSS_CLOSEPIN           ); /* IS  EMPTY .. remove close pin */
     }
 };
 /*}}}*/
 /*…   fly_clr_FADE_OR_REMOVE_handler {{{*/
-let   fly_clr_FADE_OR_REMOVE_handler = function(reason)
+let   fly_clr_FADE_OR_REMOVE_handler = function(reason) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "fly_clr_FADE_OR_REMOVE_handler";
@@ -1802,7 +1834,7 @@ if(log_this) t_log.log_caller();
 };
 /*}}}*/
 /*…   fly_clr_REMOVE_handler {{{*/
-let   fly_clr_REMOVE_handler = function(reason="TIMER")
+let   fly_clr_REMOVE_handler = function(reason="TIMER") /* eslint-disable-line complexity */
 {
 /*{{{*/
 let caller = "fly_clr_REMOVE_handler";
@@ -1956,8 +1988,8 @@ if(DOM_FLY_LOG) t_log.log("fly_tooltip_category_className_array: adding %c["+cat
 /*{{{*/
 
 return { name : "dom_fly"
-    , logging : function(value) { if(value != undefined) DOM_FLY_LOG = value; dom_store.t_store_set_value("DOM_FLY_LOG", DOM_FLY_LOG); return DOM_FLY_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_FLY_TAG = value; dom_store.t_store_set_value("DOM_FLY_TAG", DOM_FLY_TAG); return DOM_FLY_TAG; }
+    , logging : (state) => DOM_FLY_LOG = dom_util.t_util_set_state("DOM_FLY_LOG",state)
+    , tagging : (state) => DOM_FLY_TAG = dom_util.t_util_set_state("DOM_FLY_TAG",state)
     , t_fly_IMPORT
 
     /* CONSTANTS {{{*/
@@ -1974,8 +2006,8 @@ return { name : "dom_fly"
     /*}}}*/
 
     /* ACCESSORS {{{*/
-    , t_doc_evt_div_get : function() { return doc_evt_div; }
-    , t_doc_log_div_get : function() { return doc_log_div; }
+    , t_doc_evt_div_get : () => doc_evt_div
+    , t_doc_log_div_get : () => doc_log_div
     , t_doc_div_clear
 
     /*}}}*/
@@ -2007,10 +2039,12 @@ return { name : "dom_fly"
 
     , t_event_LOG_TOOLTIP
 
+    , t_fly_clr_status
     , t_log_behavior
     , t_log_event_status
     , t_log_event_status_get
     , t_log_event_status_if_changed
+    , t_log_event_status_if_changed_filter
     , t_log_regex
     , t_log_stage
     , t_log_stage_msg
@@ -2018,7 +2052,6 @@ return { name : "dom_fly"
     , t_log_transcript_event_bot
     , t_log_transcript_event_top
     , t_log_transcript_info
-    , t_fly_clr_status
 
     , fclear : fly_clr_REMOVE_handler
 };

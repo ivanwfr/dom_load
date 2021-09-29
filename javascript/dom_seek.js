@@ -1,46 +1,65 @@
 /* dom_seek_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals window, document */
+/* globals setTimeout, clearTimeout */
+/* globals dom_data   */
+/* globals dom_i18n   */
+/* globals dom_log    */
+/* globals dom_prop   */
+/* globals dom_select */
+/* globals dom_slot   */
+/* globals dom_sticky */
+/* globals dom_store  */
+/* globals dom_tools  */
+/* globals dom_util   */
+
+/* exported dom_seek, DOM_SEEK_JS_TAG */
+
+/*
+:update|1,$y *
+:!start explorer https://jshint.com/
+:!start explorer https://cdn.jsdelivr.net/npm/vue/dist/vue.js
+*/
+
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (200216:16h)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (210923:17h:29)";
+/*}}}*/
 let dom_seek    = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop, dom_store,  dom_select,  dom_slot, dom_sticky,  dom_tools */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_SEEK_LOG          = false;
 let   DOM_SEEK_TAG          = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_seek_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-/*  t_store    = {}        ; */ /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+/*  t_details  ............. OPTIONAL */
+let t_i18n     = {}        ;    /* 08 */
+let t_prop     = {}        ;    /* 09 */
+/*  t_store    = {}        ; */ /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /*....................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-let t_select   = {}        ;    /* 12 */
-let t_slot     = {}        ;    /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+let t_select   = {}        ;    /* 13 */
+let t_slot     = {}        ;    /* 14 */
 /*....................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-let t_sticky   = {}        ;    /* 16 */
-/*➔ t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+let t_sticky   = {}        ;    /* 17 */
+/*➔ t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /*....................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /*....................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_seek_IMPORT   = function(log_this)
@@ -50,31 +69,34 @@ let t_seek_IMPORT   = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_prop    = dom_prop   ;    /* 08 */
-/*  t_store   = dom_store  ; */ /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+/*  t_details  ............. OPTIONAL */
+    t_i18n    = dom_i18n   ;    /* 08 */
+    t_prop    = dom_prop   ;    /* 09 */
+/*  t_store   = dom_store  ; */ /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-    t_select  = dom_select ;    /* 12 */
-    t_slot    = dom_slot   ;    /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+    t_select  = dom_select ;    /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+    t_slot    = dom_slot   ;    /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-    t_sticky  = dom_sticky ;    /* 16 */
-/*➔ t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+    t_sticky  = dom_sticky ;    /* 17 */
+/*➔ t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     seek_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_SEEK_LOG = DOM_SEEK_LOG || DOM_SEEK_LOG || dom_store.t_store_getBool("DOM_SEEK_LOG");
-    DOM_SEEK_TAG = DOM_SEEK_TAG || DOM_SEEK_TAG || dom_store.t_store_getBool("DOM_SEEK_TAG");
+    DOM_SEEK_LOG = DOM_SEEK_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SEEK_LOG"));
+    DOM_SEEK_TAG = DOM_SEEK_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SEEK_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 17 SEEK", lbH+lf7);
@@ -100,13 +122,13 @@ let   seek_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
 
     seek_DEPEND();
@@ -117,7 +139,7 @@ let   seek_INTERN = function()
 
 let CSS_SEEKZONE_ARRAY;
 let CSS_CORNER_ARRAY;
-/*}}}*/ 
+/*}}}*/
 let   seek_DEPEND = function()
 {
     /* DEPEND {{{*/
@@ -139,9 +161,10 @@ let   seek_DEPEND = function()
             , t_data.CSS_CORNER_D_L
             , t_data.CSS_CORNER_L_U
         ];
-    /*}}}*/ 
+    /*}}}*/
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /* CONST */
@@ -268,7 +291,7 @@ log( onSeekXYLT )
 /*}}}*/
 
  /*…   seektool_state_transition {{{*/
-let    seektool_state_transition = function(onWork_EL)
+let    seektool_state_transition = function(onWork_EL) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let caller = "seektool_state_transition";
@@ -295,7 +318,7 @@ if( log_this) t_tools.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" 
     let slot_hasCCS
         = !!t_select.t_select_get_slot_pattern(slot)
     ;
-if(slot && !slot_hasCCS) log("%c slot=["+slot+"] .. slot_hasCCS=["+slot_hasCCS+"] .. ["+t_select.t_select_get_slot_pattern(slot)+"]", lbH+lf2);
+if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS", 2);
 
     let seeker_isOn_SLOT_EL = t_seeker_isOn_SLOT_EL(onWork_EL); /* onWork_EL has a slot */
     /*}}}*/
@@ -382,7 +405,7 @@ if(slot && !slot_hasCCS) log("%c slot=["+slot+"] .. slot_hasCCS=["+slot_hasCCS+"
         : seeker_isOn_SLOT_EL ? TARGET_TYPE_SELECT
         :                       TARGET_TYPE_RESUME;
 
-    /*}}}*/ 
+    /*}}}*/
 /*{{{*/
     let lfx
         =   seek6_onSticky ? lf6
@@ -414,7 +437,7 @@ if( log_this || DOM_SEEK_TAG) {
                        , onWork_PANEL        : t_util.get_n_lbl(t_tools.t_get_onWork_PANEL())
                        , onWork_SEEK_TARGET  : t_util.get_n_lbl(onWork_SEEK_TARGET)
                        , sticky              : t_util.get_n_lbl(sticky)
-                       , seek7_PUactive      : seek7_PUactive
+                       , seek7_PUactive
 
                        , SLOT_NUM            : "----------------------------------------"
                        , slot                : "slot="+slot+" .. changed="+slot_changed+" .. last="+(onWork_SEEK_TARGET ? onWork_SEEK_TARGET.last_slot : 0)
@@ -466,7 +489,7 @@ if( log_this || DOM_SEEK_TAG) {
     /* CLEAR SELECTED CONTAINER {{{*/
     t_tools.t_clr_container_selected();
 
-    /*}}}*/ 
+    /*}}}*/
     let onDown_XY = t_tools.t_get_onDown_XY();
     let xy
         = {   x : onDown_XY.x + window.scrollX
@@ -605,8 +628,10 @@ if( log_this) log("%c"+t_data.SYMBOL_RIGHT_ARROW_HOOK+" "+caller, lfx);
     let slot = t_tools.t_get_onWork_EL_slot();
     if( slot > 0)
     {
+/*{{{
 logBIG(caller+": SEEKER DONE WITH onWork_EL slot #"+slot+" //FIXME .. find out why all this");
 log_caller();
+}}}*/
 
         let onWork_EL = t_tools.t_get_onWork_EL();
         let onDown_EL = t_tools.t_get_onDown_EL();
@@ -778,12 +803,11 @@ if( log_this) t_tools.t_log_event_status(caller, lf8);
 /*}}}*/
     /* STICKY {{{*/
 
-    /*}}}*/ 
+    /*}}}*/
     /* SELECTION [slot] [num] {{{*/
 /*{{{
    if( !seeker_CU                       ) return;
 
-    let             slot = t_tools.t_get_EL_slot( onWork_SEEK_TARGET );
     let              num = t_tools.t_get_EL_num ( onWork_SEEK_TARGET );
     let             slot = onWork_SEEK_TARGET.last_slot;
     let              num = onWork_SEEK_TARGET.last_num;
@@ -836,7 +860,7 @@ if( log_this) caller += "(slot=["+slot+"] , num=["+num+"] , dir=["+dir+"])";
      */
 
     for(let i = 1; i <= t_select.SELECT_SLOT_MAX; ++i)
-        t_util.set_id_class_on_off(seeker_PU.id, "slot_color"+i, false);
+        t_tools.t_set_id_class_on_off(seeker_PU.id, "slot_color"+i, false);
 
     let slot_color = slot;
     if((dir == t_tools.DIR_SLOT_PREV) || (dir == t_tools.DIR_SLOT_NEXT))
@@ -850,7 +874,7 @@ if( log_this) log(caller+": ...pre_or_next_slot %c"+ pre_or_next_slot, lbb+lbH+(
         if(pre_or_next_slot)
             slot_color = pre_or_next_slot;
     }
-    t_util.set_id_class_on_off(seeker_PU.id, "slot_color"+slot_color, true);
+    t_tools.t_set_id_class_on_off(seeker_PU.id, "slot_color"+slot_color, true);
     t_util.set_el_class_on_off(seeker_PU,  t_data.SHOW_SEEKZONE , t_prop.get( t_data.SHOW_SEEKZONE ));
     /*}}}*/
 };
@@ -861,16 +885,18 @@ let seeker_thumbs;
 let last_seeked_slot_num = { slot:-1 , num:-1 };
 
 /*}}}*/
-let t_seeker_onMove3_ON_SLOT_NUM = function(slot, num)
+let t_seeker_onMove3_ON_SLOT_NUM = function(slot, num) /* eslint-disable-line complexity */
 {
 /* {{{*/
 let   caller = "t_seeker_onMove3_ON_SLOT_NUM";
 let log_this = DOM_SEEK_LOG || LOG_MAP.EV5_TOOL_CB;
 
-if( log_this)
+if( log_this) {
     log("%c"+caller+"%c slot "+slot+"%c num "+num
         ,lbL+lf5    ,lbC+lfX[slot]  ,lbR+lfX[num]);
 
+    log_caller();
+}
 if( !seeker_PU || !seeker_PD || !seeker_CD || !seeker_CU) return;
 /*}}}*/
     /* [visible] {{{*/
@@ -893,12 +919,16 @@ if( log_this) log("%c...visible=["+visible+"]", lfX[visible ? 5:3]);
             +"<sup>/"+ slot_nodes_length +"</sup>";
     }
     else {
-        let rank = t_select.t_get_slot_num_visible_rank(slot,num);
+        let visible_num = t_select.t_get_slot_num_visible_num(slot,num);
 
-        seeker_CU.innerHTML
-            = (rank || num)
-            +"<sup>/"+ num_visible_count +"</sup>"
-            +"<sub>..."+ slot_nodes_length +"</sup>";
+        if(visible)
+            seeker_CU.innerHTML
+                =  visible_num         +"<sup>/"+   num_visible_count +"</sup>"
+                +                       "<sub>..."+ slot_nodes_length +"</sub>";
+        else
+            seeker_CU.innerHTML
+                =                       "<sup>"+    num               +"</sup>"
+                +                       "<sup> / "+ slot_nodes_length +"</sup>";
     }
     /*}}}*/
     /* [seeker_CU] style {{{*/
@@ -937,56 +967,24 @@ if( log_this) log("...seeker_thumbs_includes_slot_first_id=["+seeker_thumbs_incl
             seeker_thumbs.innerHTML = t_tools.t_pattern2_get_sel_bag_thumbs_EM(slot,"thumb_s");
     }
     /*}}}*/
-    /* SEEKER ON invisible node {{{*/
-    if(!visible) {
+    /* [!visible] .. SEEKER JERK ON invisible node {{{*/
+    if( !visible ) {
         t_util.add_el_class(seeker_PU, t_data.CSS_ON_HIDDEN_NODE);
         t_util.add_el_class(seeker_PD, t_data.CSS_ON_HIDDEN_NODE);
     }
     /*}}}*/
-    /* MOVE TO .. (visible node) {{{*/
+    /* [ visible] .. SEEKER MOVE TO visible node {{{*/
     else {
         let node = t_select.t_select_get_slot_num_node(slot, num);
-        if( node )
-        {
-/*{{{
-            let xy = t_util.get_el_xy(node, caller);
-            let  x = xy.x;
-            let  y = xy.y;
-}}}*/
-            /* transform safe */
-            let bcr = node.getBoundingClientRect();
-            let   x = bcr.x + window.scrollX;
-            let   y = bcr.y + window.scrollY;
-
-            if((x > 0) || (y > 0))
+        if( node ) {
+            if(typeof dom_details != "undefined")
             {
-                let node_W = node.offsetWidth;
-                let node_H = node.offsetHeight;
-
-                let node_L = x;
-                let node_C = node_L + node_W/2;
-                let node_T = y;
-                let node_B = node_T + node_H;
-
-                /* show at least one seeker */
-                if(!t_seeker_PU_is_active() && seeker_onClick_PD_is_hiding())
-                    t_seeker_PU_show();
-
-                /* [seeker_PU] ABOVE */
-                let no_room_above = (node_T < 1.5 * seeker_PU.offsetHeight);
-                if( no_room_above )     seeker_move_below_XY(seeker_PU, { x:node_C , y:node_B }, node);
-                else                    seeker_move_above_XY(seeker_PU, { x:node_C , y:node_T }, node);
-
-                /* [seeker_PD] BELOW */
-                if(!seeker_onClick_PD_is_hiding()) {
-                    if( no_room_above ) seeker_move_below_XY(seeker_PD, { x:node_C , y:node_B+seeker_PU.offsetHeight}, node);
-                    else                seeker_move_below_XY(seeker_PD, { x:node_C , y:node_B                       }, node);
-                }
-
-                t_util.del_el_class(seeker_PU, t_data.CSS_ON_HIDDEN_NODE);
-                t_util.del_el_class(seeker_PD, t_data.CSS_ON_HIDDEN_NODE);
-
+                if( dom_details.details_has_closed_el_parent ( node )) /* eslint-disable-line no-undef */
+                    dom_details.details_open_closed_el_parent( node ); /* eslint-disable-line no-undef */
             }
+
+            /* move async to support DETAILS radio open-close behavior */
+            setTimeout(function() { t_seeker_onMove3_ON_SLOT_NUM_handler(node); }, 0);
         }
     }
     /*}}}*/
@@ -1009,6 +1007,61 @@ if( log_this) log("...seeker_thumbs_includes_slot_first_id=["+seeker_thumbs_incl
                           }, lf3, false);
 
     t_seeker_sync_SEL_BACK(caller);
+};
+/*}}}*/
+/*_ t_seeker_onMove3_ON_SLOT_NUM_handler {{{*/
+let t_seeker_onMove3_ON_SLOT_NUM_handler = function(node)
+{
+/* {{{*/
+let   caller = "t_seeker_onMove3_ON_SLOT_NUM_handler";
+let log_this = DOM_SEEK_LOG || LOG_MAP.EV5_TOOL_CB;
+let tag_this = DOM_SEEK_TAG || log_this;
+
+/*}}}*/
+    /* TRANSFORM SAFE */
+    let bcr = node.getBoundingClientRect();
+    let   x = bcr.x + window.scrollX;
+    let   y = bcr.y + window.scrollY;
+/*{{{*/
+if( tag_this)
+    log_key_val_group(  caller+" "+x.toFixed(0)+"@"+y.toFixed(0)+""
+                        ,{ node
+                            ,  bcr
+                            ,  window_scrollX : window.scrollX
+                            ,  window_scrollY : window.scrollY
+                            ,  x
+                            ,  y
+                        }, lf7, true);
+/*}}}*/
+    if((x > 0) || (y > 0))
+    {
+        let node_W = node.offsetWidth;
+        let node_H = node.offsetHeight;
+
+        let node_L = x;
+        let node_C = node_L + node_W/2;
+        let node_T = y;
+        let node_B = node_T + node_H;
+
+        /* show at least one seeker */
+        if(!t_seeker_PU_is_active() && seeker_onClick_PD_is_hiding())
+            t_seeker_PU_show();
+
+        /* [seeker_PU] ABOVE */
+        let no_room_above = (node_T < 1.5 * seeker_PU.offsetHeight);
+        if( no_room_above )     seeker_move_below_XY(seeker_PU, { x:node_C , y:node_B }, node);
+        else                    seeker_move_above_XY(seeker_PU, { x:node_C , y:node_T }, node);
+
+        /* [seeker_PD] BELOW */
+        if(!seeker_onClick_PD_is_hiding()) {
+            if( no_room_above ) seeker_move_below_XY(seeker_PD, { x:node_C , y:node_B+seeker_PU.offsetHeight}, node);
+            else                seeker_move_below_XY(seeker_PD, { x:node_C , y:node_B                       }, node);
+        }
+
+        t_util.del_el_class(seeker_PU, t_data.CSS_ON_HIDDEN_NODE);
+        t_util.del_el_class(seeker_PD, t_data.CSS_ON_HIDDEN_NODE);
+
+    }
 };
 /*}}}*/
 /*➔ t_seeker_onMove2_ON_NEXT_STICKY {{{*/
@@ -1042,7 +1095,7 @@ if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(sticky)+")", lbH+lf1);
     let sticky_num = t_sticky.t_sticky_GET_NUM(sticky);
 
     seeker_CU.innerHTML
-        = (t_prop.get(t_data.TOOLS_EXTRAS) ? "<sup>"+t_data.SYMBOL_LEFT_CHEVRON+"</sup>" : "")
+        = (t_prop.get(t_data.TOOLS_TIER2) ? "<sup>"+t_data.SYMBOL_LEFT_CHEVRON+"</sup>" : "")
         + sticky_num
     ;
     /*}}}*/
@@ -1070,6 +1123,11 @@ let t_seeker_get_last_seeked_slot_num = function()
 };
 /*}}}*/
 /*…   seeker_move_above_XY {{{*/
+/*{{{*/
+let SEEKER_MOVE_ABOVE_XY_DELAY = 2000;
+
+let seeker_move_above_XY_timer;
+/*}}}*/
 let   seeker_move_above_XY = function(tool, xy, node)
 {
 /* {{{*/
@@ -1097,8 +1155,35 @@ if( log_this) log(caller+"("+t_util.get_n_lbl(tool)+", "+x+" "+y+"): body_zoom_p
     t_util.del_el_class(tool, "seek_bellow");
     t_util.add_el_class(tool, "seek_above" );
 
-    node.scrolledIntoViewHandled = false;
+    delete node.scrolledIntoViewHandled;
     t_tools.t_scrollIntoViewIfNeeded(node,0);
+
+    /* COPE WITH NEW NODE POSITION WHEN SCROLLED {{{*/
+    if( seeker_move_above_XY_timer ) clearTimeout( seeker_move_above_XY_timer );
+    seeker_move_above_XY_timer     =   setTimeout( function() { t_tools.t_scrollIntoViewIfNeeded(node,0); }, SEEKER_MOVE_ABOVE_XY_DELAY);
+
+/*
+ :!start explorer "https://www.franceculture.fr/programmes"
+*/
+    /*}}}*/
+};
+/*}}}*/
+/*_ t_seeker_move_above_XY_cancel {{{*/
+let t_seeker_move_above_XY_cancel = function(_caller)
+{
+/* {{{*/
+let   caller = "t_seeker_move_above_XY_cancel";
+let log_this = DOM_SEEK_LOG || LOG_MAP.EV5_TOOL_CB;
+
+/*}}}*/
+    if( seeker_move_above_XY_timer )
+    {
+if( log_this) log(caller+": PENDING RECENTER INTERRUPTED BY "+ _caller);
+
+        clearTimeout(seeker_move_above_XY_timer);
+        seeker_move_above_XY_timer = null;
+    }
+
 };
 /*}}}*/
 /*…   seeker_move_below_XY {{{*/
@@ -1126,7 +1211,7 @@ if( log_this) log(caller+"("+t_util.get_n_lbl(tool)+", "+x+" "+y+"): body_zoom_p
     t_util.del_el_class(tool, "seek_above" );
     t_util.add_el_class(tool, "seek_bellow");
 
-    node.scrolledIntoViewHandled = false;
+    delete node.scrolledIntoViewHandled;
     t_tools.t_scrollIntoViewIfNeeded(node,0);
 };
 /*}}}*/
@@ -1145,10 +1230,10 @@ let   seeker3_PU_clear = function()
 let   seeker3_PU_sync_look_dir = function( dir )
 {
     /* URDL */
-    t_util.set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU2_LOOK_UP   , (dir == t_tools.DIR_SLOT_PREV));
-    t_util.set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU3_LOOK_RIGHT, (dir == t_tools.DIR_NUM_NEXT ));
-    t_util.set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU4_LOOK_DOWN , (dir == t_tools.DIR_SLOT_NEXT));
-    t_util.set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU5_LOOK_LEFT , (dir == t_tools.DIR_NUM_PREV ));
+    t_tools.t_set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU2_LOOK_UP   , (dir == t_tools.DIR_SLOT_PREV));
+    t_tools.t_set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU3_LOOK_RIGHT, (dir == t_tools.DIR_NUM_NEXT ));
+    t_tools.t_set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU4_LOOK_DOWN , (dir == t_tools.DIR_SLOT_NEXT));
+    t_tools.t_set_id_class_on_off(seeker_PU.id, t_data.CSS_SEEKER_PU5_LOOK_LEFT , (dir == t_tools.DIR_NUM_PREV ));
 };
 /*}}}*/
 
@@ -1157,7 +1242,7 @@ let   seeker3_PU_sync_look_dir = function( dir )
 /*}}}*/
 /* UP {{{*/
 /*➔ t_seeker_onUp8_ON_MOUSEUP_DONE {{{*/
-let t_seeker_onUp8_ON_MOUSEUP_DONE = function(e)
+let t_seeker_onUp8_ON_MOUSEUP_DONE = function(e) /* eslint-disable-line no-unused-vars */
 {
 /*{{{*/
 let   caller = "t_seeker_onUp8_ON_MOUSEUP_DONE";
@@ -1231,7 +1316,7 @@ if( log_this) logBIG("REVIVE SEEKER .. f(t_tools.LONG_PRESS_ARM)");
     /*}}}*/
     /* SEEKER COLOR .. (COLOR AND SCALE) .. [seeker_PU] {{{*/
     for(let i = 1; i <= t_select.SELECT_SLOT_MAX; ++i)
-        t_util.set_id_class_on_off(seeker_PU.id, "slot_color"+i, false);
+        t_tools.t_set_id_class_on_off(seeker_PU.id, "slot_color"+i, false);
 
     t_util.set_el_class_on_off(seeker_PU,  t_data.SHOW_SEEKZONE , false);
     /*}}}*/
@@ -1245,7 +1330,7 @@ if( log_this) logBIG("REVIVE SEEKER .. f(t_tools.LONG_PRESS_ARM)");
 /*}}}*/
 /* CLICK {{{*/
 /*➔ t_seeker_onClick {{{*/
-let t_seeker_onClick = function()
+let t_seeker_onClick = function() /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "t_seeker_onClick";
@@ -1271,7 +1356,8 @@ if( log_this) log("%c "+caller+": %c onDown_EL ["+t_util.get_n_lbl(onDown_EL)+"]
             }
             /*}}}*/
             /* SHOW seeker_PD {{{*/
-            else if((onDown_EL == seeker_CU) && seeker_onClick_PD_is_hiding() && !t_seeker_is_onSticky())
+/*{{{
+            else if(!t_seeker_is_onSticky())
             {
 if(log_this) t_log.log_TR_EVENT_add("_<em class='cc5'>SHOW seeker_PD</em> "+onSeekXYLT.label);
 
@@ -1281,6 +1367,7 @@ if(log_this) t_log.log_TR_EVENT_add("_<em class='cc5'>SHOW seeker_PD</em> "+onSe
 
                 result = "SHOW seeker_PD";
             }
+}}}*/
             /*}}}*/
             /* HIDE seeker_PU {{{*/
             else if( t_seeker_PU_is_active() )
@@ -1352,7 +1439,7 @@ if(log_this) t_log.log_TR_EVENT_add("_<em class='cc8'>HIDE seeker_PD</em>");
 };
 /*}}}*/
 /*…   seeker_onClick_move_on_last_highlight_slot_num {{{*/
-let   seeker_onClick_move_on_last_highlight_slot_num = function()
+let   seeker_onClick_move_on_last_highlight_slot_num = function() /* eslint-disable-line no-unused-vars */
 {
 let   caller = "seeker_onClick_move_on_last_highlight_slot_num()";
 let log_this = DOM_SEEK_LOG || LOG_MAP.EV5_TOOL_CB;
@@ -1365,7 +1452,7 @@ if( log_this) log(caller);
 };
 /*}}}*/
 /*…   seeker_onClick_PD_show {{{*/
-let   seeker_onClick_PD_show = function()
+let   seeker_onClick_PD_show = function() /* eslint-disable-line no-unused-vars */
 {
 let caller = "seeker_onClick_PD_show";
 let log_this = DOM_SEEK_LOG || LOG_MAP.EV5_TOOL_CB;
@@ -1395,8 +1482,8 @@ let   seeker_onClick_PD_hide = function()
 {
     if( !seeker_PD ) return;
 
-    if(seeker_onClick_PD_hide_timer) clearTimeout(seeker_onClick_PD_hide_timer);
-    seeker_onClick_PD_hide_timer   =   setTimeout(seeker_onClick_PD_hide_handler, SEEKER_ONCLICK_PD_HIDE_DELAY);
+    if(seeker_onClick_PD_hide_timer) clearTimeout( seeker_onClick_PD_hide_timer  );
+    seeker_onClick_PD_hide_timer   =   setTimeout( seeker_onClick_PD_hide_handler, SEEKER_ONCLICK_PD_HIDE_DELAY);
 };
 /*}}}*/
 /*…   seeker_onClick_PD_hide_handler {{{*/
@@ -1493,7 +1580,7 @@ if( log_this) log("%c"+caller+"("+msg+"): t_data.LOG_SEEKSPOT OFF .. HISTORY CLE
 /*}}}*/
 /*_   seek_show_handler {{{*/
 let   seekspot_U_or_D;
-let   seek_show_handler = function()
+let   seek_show_handler = function() /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "seek_show_handler";
@@ -1571,7 +1658,6 @@ if( log_this) logBIG("aborted by t_prop.get(t_data.SHOW_SEEKZONE)");
         t_util.add_el_class(seekzone, t_data.CSS_ON_CONTAINER);
     }
     else {
-        let onDown_XY = t_tools.t_get_onDown_XY();
         seekzone.style.left         = (onDown_XY.x                      ) +"px";
         seekzone.style.top          = (onDown_XY.y                      ) +"px";
         seekzone.style.width        = (              seek_W             ) +"px";
@@ -1603,7 +1689,6 @@ if( log_this) logBIG("aborted by t_prop.get(t_data.SHOW_SEEKZONE)");
 }}}*/
             let ccx = (++t_seeker_show_msg_num) % 10;
 log("t_data.SHOW_SEEKZONE %c"+t_seeker_show_msg_num +"%c"+ msg, lbH+lfX[ccx], lbH+lf9);
-            let onDown_XY = t_tools.t_get_onDown_XY();
             seekspot_U_or_D.innerHTML
                 = "<pre><em class='big cc"+ccx+"'>"+t_seeker_show_msg_num+"</em> "+(msg ? ("<em class='big cc7'>"+msg+"</em>") : "")
                 +          (t_prop.get( t_data.PIN_SEEKSPOT ) ? " <em class='cc8' style='float:right;'>"+t_data.SYMBOL_PUSH_PIN+"</em>" : "")
@@ -1733,7 +1818,7 @@ logXXX("seekzone %c"+seekzone.className,lbH+lf7);
 };
 /*}}}*/
 /*➔ t_seekzone3_show_dblclick {{{*/
-let t_seekzone3_show_dblclick = function(pressMS, misclick_MS)
+let t_seekzone3_show_dblclick = function(pressMS, misclick_MS) /* eslint-disable-line no-unused-vars */
 {
 /*{{{*/
 let  caller = "t_seekzone3_show_dblclick";
@@ -1817,7 +1902,7 @@ let   seekzone5_hide_cancel = function()
 {
     if(!t_seekzone5_hide_timer   ) return;
 
-    clearTimeout(t_seekzone5_hide_timer);
+    clearTimeout( t_seekzone5_hide_timer );
 
     t_seekzone5_hide_timer = null;
 };
@@ -2055,8 +2140,8 @@ let t_seeker_sync = function()
 {
     if(!seeker_PU) return;
 
-    if(t_seeker_sync_timer) clearTimeout(t_seeker_sync_timer);
-    t_seeker_sync_timer   =   setTimeout(seeker_sync_handler, T_SEEKER_SYNC_DELAY);
+    if(t_seeker_sync_timer) clearTimeout( t_seeker_sync_timer );
+    t_seeker_sync_timer   =   setTimeout( seeker_sync_handler , T_SEEKER_SYNC_DELAY);
 };
 /*}}}*/
 /*➔ t_seeker_sync_is_pending {{{*/
@@ -2245,17 +2330,17 @@ if( log_this) log(caller+": onWork_EL=["+t_util.get_n_lbl(t_tools.t_get_onWork_E
     t_util.add_el_class(seeker_PU, t_data.CSS_HIDING);
     seeker_PU.style.display = "none";
 
-    /*}}}*/ 
+    /*}}}*/
     /* DISMISS HIDING SEEK TOOL {{{*/
     seek_TOOL.t_seektool_clr_TARGET();
 
-    /*}}}*/ 
+    /*}}}*/
     /* HIDE SEEKZONE {{{*/
     if(!t_prop.get( t_data.SHOW_SEEKZONE ) || !t_prop.get( t_data.PIN_SEEKSPOT ) || t_tools.t_dimm_mask_displayed())
     {
         t_seekzone5_hide("instant");
     }
-    /*}}}*/ 
+    /*}}}*/
     /* OR JUST SEEKSPOT {{{*/
     else {
         seekspot_A.style.display = "none";
@@ -2267,7 +2352,7 @@ if( log_this) log(caller+": onWork_EL=["+t_util.get_n_lbl(t_tools.t_get_onWork_E
 }}}*/
     }
 
-    /*}}}*/ 
+    /*}}}*/
     /* CLEAR SELECTED STICKY {{{*/
     t_sticky.t_sticky_clr_SEEK_NEXT();
 
@@ -2275,16 +2360,16 @@ if( log_this) log(caller+": onWork_EL=["+t_util.get_n_lbl(t_tools.t_get_onWork_E
     /* CLEAR SELECTED CONTAINER {{{*/
     t_tools.t_clr_container_selected();
 
-    /*}}}*/ 
+    /*}}}*/
     /* CLEAR SELECTED SLOT {{{*/
     t_seeker_SELECT_CLEAR(caller);
 
     t_select.clear_last_selected_slot();
-    /*}}}*/ 
+    /*}}}*/
     /* RESET GRAB CYCLE {{{*/
     t_seeker_onMove1_grab( false ); /* FIRST MOVE IS A GRAB */
 
-    /*}}}*/ 
+    /*}}}*/
 if( log_this) log("%c RELEASING LAST SEEKED SLOT", lbH+lf5);
 };
 /*}}}*/
@@ -2437,13 +2522,13 @@ let   seeker_sync_SEL_BACK_timeout;
 
 /*}}}*/
 /*➔ t_seeker_sync_SEL_BACK {{{*/
-let t_seeker_sync_SEL_BACK = function(_caller)
+let t_seeker_sync_SEL_BACK = function(_caller) /* eslint-disable-line no-unused-vars */
 {
 /*{{{
 logXXX("%c t_seeker_sync_SEL_BACK("+_caller+")", lbH+lf7);
 }}}*/
-    if(seeker_sync_SEL_BACK_timeout) clearTimeout(seeker_sync_SEL_BACK_timeout);
-    seeker_sync_SEL_BACK_timeout   =   setTimeout(seeker_sync_SEL_BACK_handle, SEEKER_SYNC_SEL_BACK_DELAY);
+    if(seeker_sync_SEL_BACK_timeout) clearTimeout( seeker_sync_SEL_BACK_timeout );
+    seeker_sync_SEL_BACK_timeout   =   setTimeout( seeker_sync_SEL_BACK_handle  , SEEKER_SYNC_SEL_BACK_DELAY);
 };
 /*}}}*/
 /*…   seeker_sync_SEL_BACK_handle {{{*/
@@ -2524,7 +2609,7 @@ let t_seeker_set_CSS_ON_COOLDOWN = function( state )
 /* SELECT */
 /*{{{*/
 /*_ t_seeker_SELECT_CLEAR {{{*/
-let t_seeker_SELECT_CLEAR = function(_caller)
+let t_seeker_SELECT_CLEAR = function(_caller) /* eslint-disable-line no-unused-vars */
 {
     /* del t_tools.CSS_NUM_SELECTED {{{*/
     let                      ccs_length = t_select.t_select_get_ccs_length();
@@ -2553,7 +2638,7 @@ let caller = "t_seeker_SELECT_onWork_EL";
 logBIG(caller+": SLOT #"+slot+" NOT CURRENLTY INITIALIZED");
 
         if(t_tools.t_preventDefault_caller) t_tools.t_restoreDefault("NOT CURRENLTY INITIALIZED");
-        return;
+        return false;
     }
     /*}}}*/
     /* [num] {{{*/
@@ -2645,8 +2730,8 @@ logBIG(caller+"(FROM ["+from_slot+" "+from_num+"] TO ["+to_slot+" "+to_num+"]", 
 /* EXPORT */
 /*{{{*/
 return { name : "dom_seek"
-    , logging : function(value) { if(value != undefined) DOM_SEEK_LOG = value; dom_store.t_store_set_value("DOM_SEEK_LOG", DOM_SEEK_LOG); return DOM_SEEK_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_SEEK_TAG = value; dom_store.t_store_set_value("DOM_SEEK_TAG", DOM_SEEK_TAG); return DOM_SEEK_TAG; }
+    , logging : (state) => DOM_SEEK_LOG = dom_util.t_util_set_state("DOM_SEEK_LOG",state)
+    , tagging : (state) => DOM_SEEK_TAG = dom_util.t_util_set_state("DOM_SEEK_TAG",state)
     , t_seek_IMPORT
 
     ,    CSS_SEEK0_ONDOC
@@ -2724,8 +2809,9 @@ return { name : "dom_seek"
 
     ,    t_seeker_sync_SEL_BACK
     ,    t_seeker_get_last_seeked_slot_num
+    ,    t_seeker_move_above_XY_cancel
 
-    ,    t_seeker_get_seeker_PU_height : function() { return seeker_PU ? seeker_PU.offsetHeight : 0; }
+    ,    t_seeker_get_seeker_PU_height : () => (seeker_PU ? seeker_PU.offsetHeight : 0)
 
 };
 /*}}}*/

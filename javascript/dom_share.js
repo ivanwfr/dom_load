@@ -1,46 +1,59 @@
 /* dom_share_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+/* globals console */
+/* globals window, document, localStorage */
+
+/* globals dom_data    */
+/* globals dom_fly     */
+/* globals dom_log     */
+/* globals dom_prop    */
+/* globals dom_sticky */
+/* globals dom_store   */
+/* globals dom_tools   */
+/* globals dom_util    */
+
+/* exported dom_share, DOM_SHARE_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable dot-notation        */
+
 const DOM_SHARE_JS_ID       = "dom_share_js";
-const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (200312:19h)";
+const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (210928:18h:42)";
+/*}}}*/
 let dom_share   = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_fly, dom_sticky, dom_tools */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_SHARE_LOG         = false;
 let   DOM_SHARE_TAG         = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_share_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-let t_store    = {}        ;    /* 09 */
-let t_fly      = {}        ;    /* 10 */
+/*t t_i18n     = {}        ; */ /* 08 */
+let t_prop     = {}        ;    /* 09 */
+let t_store    = {}        ;    /* 10 */
+let t_fly      = {}        ;    /* 11 */
 /*....................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /*....................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-let t_sticky   = {}        ;    /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+let t_sticky   = {}        ;    /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /*....................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /*....................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_share_IMPORT  = function(log_this)
@@ -50,31 +63,33 @@ let t_share_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_prop    = dom_prop   ;    /* 08 */
-    t_store   = dom_store  ;    /* 09 */
-    t_fly     = dom_fly    ;    /* 10 */
+/*  t_i18n    = dom_i18n   ; */ /* 08 */
+    t_prop    = dom_prop   ;    /* 09 */
+    t_store   = dom_store  ;    /* 10 */
+    t_fly     = dom_fly    ;    /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-    t_sticky  = dom_sticky ;    /* 16 */
-/*  t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+    t_sticky  = dom_sticky ;    /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     share_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_SHARE_LOG = DOM_SHARE_LOG || dom_store.t_store_getBool("DOM_SHARE_LOG");
-    DOM_SHARE_TAG = DOM_SHARE_TAG || dom_store.t_store_getBool("DOM_SHARE_TAG");
+    DOM_SHARE_LOG = DOM_SHARE_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SHARE_LOG"));
+    DOM_SHARE_TAG = DOM_SHARE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SHARE_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 18 SHARE", lbH+lf8);
@@ -122,13 +137,13 @@ let   share_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
 
     share_DEPEND();
@@ -140,6 +155,7 @@ let   share_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /* CONST */
@@ -151,8 +167,6 @@ const regex_JSON_R = new RegExp("\\n*\\]\\n*",  "");
 }}}*/
 
 /*{{{
-:!start explorer "https://regexr.com/32oeg"
-:!start explorer "https://www.regexbuddy.com/manual.html\#insertrecurse"
 :!start explorer "https://www.lucidchart.com/techblog/2014/12/02/definitive-guide-copying-pasting-javascript/"
 }}}*/
 /*}}}*/
@@ -238,11 +252,11 @@ if(log_this) {
                           ,     "href" : window.location.href
                           , "protocol" : window.location.protocol
                           ,   "origin" : window.location.origin
-                          ,   "domain" : domain
+                          ,              domain
                           , "hostname" : window.location.hostname
                           , "pathname" : window.location.pathname
-                          , "site_pfx" : site_pfx
-                          , "page_pfx" : page_pfx
+                          ,              site_pfx
+                          ,              page_pfx
                       }
                       , lf1
                       , true);
@@ -323,7 +337,7 @@ if( log_this) t_log.log_BOT(caller, lf1);
 let export_mail_body;
 
 /*}}}*/
-let t_share2_MAILTO_UI = function(e_target)
+let t_share2_MAILTO_UI = function(e_target) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "t_share2_MAILTO_UI";
@@ -370,7 +384,7 @@ if( log_this) log("%c export_key_val_array.push({"+key+", "+val+"})", lf4);
     /* TOOLTIP BAGS .. [pat off alt bak] {{{*/
 if(log_this || DOM_SHARE_TAG) {
     tooltip_keys         = tooltip_keys        .sort();
-    tooltip_keys.forEach( key => {
+    tooltip_keys.forEach( (key) => {
         let       val = localStorage[key];
         let       csv = (val == null) ? "" : JSON.parse(val).join(",");
         let className = "";
@@ -413,7 +427,7 @@ if(log_this || DOM_SHARE_TAG) {
 
         export_key_val_array_string_multiline = share2_MAILTO_CLIPBOARD( export_key_val_array );
     }
-    /*}}}*/ 
+    /*}}}*/
     /* ... unless NOTHING TO EXPORT {{{*/
     else {
         if( e_target) {
@@ -428,7 +442,7 @@ if(log_this || DOM_SHARE_TAG) {
         t_fly.t_fly("<em class='big cc2'>"+msg+"</em>");
 if( log_this) log("%c"+msg, lbH+lf2);
     }
-    /*}}}*/ 
+    /*}}}*/
 if( log_this) t_log.log_BOT(caller, lf2);
     return export_key_val_array_string_multiline;
 };
@@ -562,7 +576,7 @@ let log_this = DOM_SHARE_LOG || LOG_MAP.T7_SHARE;
 /*}}}*/
 if( log_this) t_log.log_TOP(caller, lf5);
     /* PASTE CLIPBOARD DATA {{{*/
-    let data_text = (event.clipboardData || window.clipboardData).getData('text');
+    let data_text = (event.clipboardData || window.clipboardData).getData("text");
     if( data_text.length > DATA_TEXT_LENGH_MAX) data_text = data_text.substring(0,DATA_TEXT_LENGH_MAX);
 
 if( log_this) log("data_text:"+LF+"%c"+data_text, lf5);
@@ -681,7 +695,7 @@ if( log_this) log("%c import_key_val_array.length=["+import_key_val_array.length
 };
 /*}}}*/
 /*_ share6_PATCH {{{*/
-let share6_PATCH = function(import_key_val_array_string)
+let share6_PATCH = function(import_key_val_array_string) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "share6_PATCH";
@@ -696,7 +710,7 @@ if( log_this) t_log.log_TOP(caller, lf6);
 if( log_this) log("%c REMOVING LEADING COMMA", lbb+lf8);
     }
     /*}}}*/
-if( log_this) t_log.console_dir(import_key_val_array_string, "import_key_val_array_string");
+if( log_this) t_log.console_dir("import_key_val_array_string", import_key_val_array_string);
     /* obvious start patching .. (selected line with LEADING BRACE) {{{*/
     if( import_key_val_array_string.startsWith("{")) {
         import_key_val_array_string = "["+import_key_val_array_string;
@@ -786,7 +800,7 @@ let log_this = DOM_SHARE_LOG || LOG_MAP.T7_SHARE;
 if( log_this) t_log.log_TOP(caller, lf7);
     /* JSON PARSE IMPORTED ITEMS {{{*/
     let silent = !(log_this || DOM_SHARE_TAG);
-    let import_key_val_array = t_util.JSON_parse(key_val_array_string, silent);
+    let import_key_val_array = t_util.JSON_parse(key_val_array_string, silent); /* eslint-disable-line new-cap */
 
     if(!Array.isArray( import_key_val_array ))
         import_key_val_array = [];
@@ -845,7 +859,7 @@ if( log_this) t_log.log_BOT(caller, lf8);
 let removed_items_key_array = [];
 
 /*}}}*/
-let share8_REMOVE = function(free_form_user_keywords)
+let share8_REMOVE = function(free_form_user_keywords) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let log_this = DOM_SHARE_LOG || LOG_MAP.T7_SHARE;
@@ -993,7 +1007,7 @@ if( log_this) t_log.log_BOT(caller, lf8);
 
 /* IMPORT */
 /*_ share9_IMPORT {{{*/
-let share9_IMPORT = function(import_key_val_array, data_hostname, data_page_pfx)
+let share9_IMPORT = function(import_key_val_array, data_hostname, data_page_pfx) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let   caller = "share9_IMPORT";
@@ -1094,7 +1108,7 @@ if( log_this) t_store.t_store_log_site_and_page();
 /*}}}*/
 
 /*_ share_FILTER {{{*/
-let share_FILTER = function(key,val)
+let share_FILTER = function(key,val) /* eslint-disable-line no-unused-vars */
 {
 /*{{{*/
 let   caller = "share_FILTER";
@@ -1212,15 +1226,15 @@ if( log_this) log_key_val_group(caller, { data_hostname , data_page_pfx });
 /* EXPORT */
 /*{{{*/
 return { name : "dom_share"
-    , logging : function(value) { if(value != undefined) DOM_SHARE_LOG = value; dom_store.t_store_set_value("DOM_SHARE_LOG", DOM_SHARE_LOG); return DOM_SHARE_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_SHARE_TAG = value; dom_store.t_store_set_value("DOM_SHARE_TAG", DOM_SHARE_TAG); return DOM_SHARE_TAG; }
+    , logging : (state) => DOM_SHARE_LOG = dom_util.t_util_set_state("DOM_SHARE_LOG",state)
+    , tagging : (state) => DOM_SHARE_TAG = dom_util.t_util_set_state("DOM_SHARE_TAG",state)
     , t_share_IMPORT
 
     , t_share1_EXPORT
     , t_share2_MAILTO_UI
     , t_share3_IMPORT_UI
     , t_share4_IMPORT_TEXT
-    , t_share_get_import_clipboard : function() { return import_clipboard; }
+    , t_share_get_import_clipboard : () => import_clipboard
     /* DEBUG */
     , share_FILTER
 };

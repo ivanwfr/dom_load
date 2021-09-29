@@ -1,47 +1,63 @@
 /* dom_hide_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
-const DOM_HIDE_JS_ID        = "dom_hide_js";
-const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (200206:14h)";
-let dom_hide    = (function() {
-"use strict";
-/* JSHint {{{*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
 /* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_tools */
 /* globals playground_notify */
+/* globals dom_i18n, */
+
+/* globals window, document */
+/* globals console, setTimeout, clearTimeout */
+
+/* exported dom_hide */
+
+/* eslint-disable complexity     */
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable max-depth */
+/* eslint-disable no-warning-comments */
+
 /*
-:1,$y *
+:update|1,$y *
 :!start explorer https://jshint.com/
+:!start explorer https://cdn.jsdelivr.net/npm/vue/dist/vue.js
 */
+
+const DOM_HIDE_JS_ID        = "dom_hide_js";
+const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (210928:15h:58)"; /* eslint-disable-line no-unused-vars */
 /*}}}*/
+let dom_hide    = (function() {
+"use strict";
 let   DOM_HIDE_LOG          = false;
 let   DOM_HIDE_TAG          = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_hide_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-let t_store    = {}        ;    /* 09 */
-/*  t_fly      = {}        ; */ /* 10 */
+let t_i18n     = {}        ;    /* 08 */
+let t_prop     = {}        ;    /* 09 */
+let t_store    = {}        ;    /* 10 */
+/*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /* ...................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-/*  t_view     = {}        ; */ /* 15 */
-/*  t_sticky   = {}        ; */ /* 16 */
-/*  t_seek     = {}        ; */ /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+/*  t_view     = {}        ; */ /* 16 */
+/*  t_sticky   = {}        ; */ /* 17 */
+/*  t_seek     = {}        ; */ /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /* ...................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_hide_IMPORT   = function(log_this)
@@ -51,31 +67,33 @@ let t_hide_IMPORT   = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_prop    = dom_prop   ;    /* 08 */
-    t_store   = dom_store  ;    /* 09 */
-/*  t_fly     = dom_fly    ; */ /* 10 */
+    t_i18n    = dom_i18n   ;    /* 08 */
+    t_prop    = dom_prop   ;    /* 09 */
+    t_store   = dom_store  ;    /* 10 */
+/*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-/*  t_view    = dom_view   ; */ /* 15 */
-/*  t_sticky  = dom_sticky ; */ /* 16 */
-/*  t_seek    = dom_seek   ; */ /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+/*  t_view    = dom_view   ; */ /* 16 */
+/*  t_sticky  = dom_sticky ; */ /* 17 */
+/*  t_seek    = dom_seek   ; */ /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     hide_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_HIDE_LOG = DOM_HIDE_LOG || dom_store.t_store_getBool("DOM_HIDE_LOG");
-    DOM_HIDE_TAG = DOM_HIDE_TAG || dom_store.t_store_getBool("DOM_HIDE_TAG");
+    DOM_HIDE_LOG = DOM_HIDE_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_HIDE_LOG"));
+    DOM_HIDE_TAG = DOM_HIDE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_HIDE_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 14 hide", lbH+lf8);
@@ -103,13 +121,13 @@ let   hide_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
     /* t_prop {{{*/
     prop = t_prop;
@@ -125,732 +143,10 @@ let   hide_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
-/* DOM_HIDE1_SELECT */
-/*{{{*/
-/*  dom_hide1_container_clicked .. (called by onUp_6_DOC_CB.[DOC CLICKED]) {{{*/
-let dom_hide1_container_clicked = function( container )
-{
-/*{{{*/
-let   caller = "dom_hide1_container_clicked"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(container)+")", lbH+lf2);
-    if(!container) return;
-/*{{{
-if( log_this) t_log.console_clear_post(caller);
-}}}*/
-/*}}}*/
-    let          hiding = !prop.get( t_data.MASK_OR_HIDE );
-    let     node_hidden = _dom_hide_mark_container( container );
-    while(  node_hidden && (node_hidden != document.body))
-    {
-        if(!_dom_hide_all_siblings_hidden( node_hidden ))
-        {
-            if( hiding )  _dom_hide_set_visibility( node_hidden,  true);
-            break;
-        }
-        else {
-            node_hidden = _dom_hide_mark_container( node_hidden.parentElement );
-        }
-    }
-};
-/*}}}*/
-/*  dom_hide1_collect_nodes {{{*/
-/*{{{*/
-let  children_collection = [];
-
-/*}}}*/
-let dom_hide1_collect_nodes = function(child_level, _parent, parent_level)
-{
-/*{{{*/
-let   caller = "dom_hide1_collect_nodes(child_level=["+child_level+"], _parent=["+t_util.get_n_lbl(_parent)+"], parent_level=["+parent_level+"])";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-/*}}}*/
-    /* walk body tree nodes {{{*/
-    let parent = _parent;
-    if(!parent || (parent == document.body)) {
-        children_collection = [];
-        parent              = document.body;
-        parent_level        = 0;
-    }
-    /*}}}*/
-    /* build [children_collection] {{{*/
-    let child_collected_count = 0;
-    for(let num=0; num < parent.children.length; ++num)
-    {
-        let child = parent.children[num];
-        /* reached child_level .. collect children_collection */
-        if(parent_level == (child_level-1))
-        {
-            if( _dom_hide_is_node_maskable(child, num) )
-            {
-                children_collection.push( child );
-                child_collected_count += 1;
-            }
-        }
-        /* or step down one level */
-        else
-            dom_hide1_collect_nodes(child_level,  child, parent_level+1);
-
-    }
-    /*}}}*/
-/*{{{*/
-if(log_this && (parent_level == (child_level-1)) && parent.children.length)
-    log(caller+": %c level"+child_level+" %c"+t_util.get_parentage(parent)+" %c "+ child_collected_count +" children"
-        ,        lbH                     ,lbL+lf9                    ,lbR+lf7);
-
-if(log_this && (parent == document.body))
-    log("%c "+children_collection.length+" %c level "+child_level+" nodes"
-        ,lbH+lbb+lf7                      ,lbH+lf7);
-/*}}}*/
-    /* hide [children_collection] {{{*/
-    _dom_hide_add_children_collection();
-    /*}}}*/
-};
-/*}}}*/
-/*  _dom_hide_is_node_maskable {{{*/
-let _dom_hide_is_node_maskable = function(node, num)
-{
-/*{{{*/
-let   caller = "_dom_hide_is_node_maskable";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-/*}}}*/
-    let                                             not_maskable = "";                    let lfX =  "";
-    if(                      !node.clientWidth  ) { not_maskable = "HAS NO WIDTH";            lfX = lf5; }
-    if(                      !node.clientHeight ) { not_maskable = "HAS NO HEIGHT";           lfX = lf6; }
-    if( t_util.is_a_doc_tool_panel ( node )            ) { not_maskable = "IS A DOC TOOL PANEL";     lfX = lf3; }
-    if( t_util.is_a_doc_tool_button( node )            ) { not_maskable = "IS A DOC TOOL BUTTON";    lfX = lf4; }
-
-    let result = (not_maskable == "");
-if(log_this && !result) log(caller+": %c #"+num+" %c"+t_util.get_parentage(node)+"%c"+not_maskable
-    ,                                 lbL+lf2    ,lbC+lf9                 ,lbR+lfX         );
-    return (not_maskable == "");
-};
-/*}}}*/
-/*  _dom_hide_add_children_collection {{{*/
-let _dom_hide_add_children_collection = function()
-{
-/*{{{*/
-let   caller = "_dom_hide_add_children_collection";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller+": "+children_collection.length+" nodes");
-/*}}}*/
-    _dom_hide_freeze_history(true, caller);
-/*
-    for(let i=0                           ; i <  children_collection.length; ++i) dom_hide1_container_clicked(children_collection[i]);
-*/
-    for(let i=children_collection.length-1; i >= 0                         ; --i) dom_hide1_container_clicked(children_collection[i]);
-
-    _dom_hide_freeze_history(false);
-    _dom_hide_csv_stack_push("AFTER _dom_hide_add_children_collection");
-};
-/*}}}*/
-/*  dom_hide1_reset .. (called by onUp_5_TOOL_CB) {{{*/
-let dom_hide1_reset = function()
-{
-/*{{{*/
-let   caller = "dom_hide1_reset"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) console.trace();
-/*{{{
-if( log_this) log(caller);
-if( log_this) t_log.console_clear_post(caller);
-}}}*/
-/*}}}*/
-    _dom_hide_csv_stack_clear_history();
-    _dom_hide_clear_csv_and_store();
-    _dom_hide_clear_display();
-
-    _site_page_or_both_label
-        = "ALL RESET"
-    ;
-    _dom_hide__sync_DOM_HIDE1_RESET();
-};
-/*}}}*/
-/*  _dom_hide_all_siblings_hidden {{{*/
-let _dom_hide_all_siblings_hidden = function( node )
-{
-    if( !node                                ) return false;
-    if( !node.parentElement                  ) return false;
-    if(  node               == document.body ) return false;
-    if(  node.parentElement == document.body ) return false;
-
-    let all_siblings_hidden = true;
-    for(let i=0;    i < node.parentElement.childNodes.length; ++i)
-    {
-        let     child = node.parentElement.childNodes[i];
-        if(    !child.classList ) continue; /* TEXT have none */
-
-        if(    !child.classList.contains( NODE_TO_HIDE_NOT_VISIBLE )
-            && !child.node_mask
-          ) {
-            all_siblings_hidden = false;
-/*{{{
-console.dir(child)
-}}}*/
-            break;
-        }
-    }
-
-/*{{{
-logXXX("_dom_hide_all_siblings_hidden("+t_util.get_node_id_or_tag(node)+"): ...return "+all_siblings_hidden+"")
-}}}*/
-    return all_siblings_hidden;
-};
-/*}}}*/
-/*  _dom_hide_mark_container {{{*/
-let _dom_hide_mark_container = function( container )
-{
-/*{{{*/
-let   caller = "_dom_hide_mark_container";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(container)+")", lbH+lf2);
-/*{{{
-if(log_this) t_log.console_clear_post(caller);
-}}}*/
-/*}}}*/
-    /* [node_hidden] [node_mask] {{{*/
-    let node_hidden
-        = container.node_hidden ? container.node_hidden /* container is a mask        .. with a link to its hidden node */
-        : container.node_mask   ? container             /* container is a hidden node .. with a link to its mask */
-        :                         container
-    ;
-if(log_this) t_log.console_dir(node_hidden, "node_hidden");
-
-    let node_mask
-        = container.node_hidden ? container             /* container is the mask      .. with a link to its hidden node */
-        : container.node_mask   ? container.node_mask   /* container is a hidden node .. with a link to its mask */
-        :                         null
-    ;
-
-if(log_this) t_log.console_dir(node_mask, "node_mask");
-
-    /*}}}*/
-    /* NO  MASK .. ADD ONE {{{*/
-    if( !node_mask ) {
-if( log_this) log("...NO  MASK .. ADD ONE");
-        /* ADD CSV ...return if already stored {{{*/
-        if( !_dom_hide_add_csv ( node_hidden )) return;
-
-        /*}}}*/
-        /* DISPLAY {{{*/
-        _dom_hide_add_node_mask( node_hidden );
-
-        let hiding = !prop.get( t_data.MASK_OR_HIDE );
-        if( hiding ) {
-            _dom_hide_set_visibility(node_hidden, false);
-        }
-        /*}}}*/
-        /* CLEAR SUBTREE .. (may clear some container hidden children) {{{*/
-        if( _dom_hide_clear_subtree( node_hidden ) )
-        {
-            /* SYNC CSV .. (container hidden children (possibly) cleared) */
-            _dom_hide_rebuild_csv_from_hidden_and_masked_nodes();
-
-            let count = t_util.csv_count( node_to_hide_csv );
-            let em_class = count ? "cc"+(count % 10) : "done cc9";
-            _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" HIDDEN SUBTREE NODES</em> <em class='cc2'>SUBTREE REBUILT</em>");
-        }
-        else {
-            let count = t_util.csv_count( node_to_hide_csv );
-            let em_class = count ? "cc"+(count % 10) : "done cc9";
-            _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" NODES MARKED TO HIDE</em>");
-        }
-        /*}}}*/
-    }
-    /*}}}*/
-    /* HAS MASK .. REMOVE IT {{{*/
-    else {
-if( log_this) log("...HAS MASK .. REMOVE IT");
-        if( t_util.has_el_class(node_hidden, LAST_HIDDEN) )
-        {
-if( log_this) log("...t_util.has_el_class(node_hidden, LAST_HIDDEN)");
-            t_util.del_el_class(node_hidden, LAST_HIDDEN);
-            /* TRASH MASK AND UNHIDE NODE {{{*/
-            _dom_hide_del_node_mask( node_hidden );
-
-            /*}}}*/
-
-            _dom_hide_csv_stack_pop("REMOVING LAST_HIDDEN"); /* TODO history tool */
-        }
-        else {
-            /* TRASH MASK AND UNHIDE NODE {{{*/
-            _dom_hide_del_node_mask( node_hidden );
-
-            /*}}}*/
-            /* DEL CSV {{{*/
-            _dom_hide_del_csv      ( node_hidden );
-
-            /*}}}*/
-        }
-        let count = t_util.csv_count( node_to_hide_csv );
-        let em_class = count ? "cc"+(count % 10) : "done cc9";
-        _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" NODES MARKED TO HIDE</em>");
-    }
-    /*}}}*/
-    /* HIGHLIGHT LAST HIDDEN {{{*/
-    _dom_hide_highlight_last_hidden();
-
-    /*}}}*/
-/*{{{
-    let site_page_or_both
-        = (          node_to_hide_csv   ? t_util.csv_count(node_to_hide_csv) : "NO"  )
-        + (prop.get( t_data.SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
-    ;
-}}}*/
-    _dom_hide__sync_DOM_HIDE1_RESET();
-    return node_hidden;
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE2_STORE */
-/*{{{*/
-/*  dom_hide2_store_reload .. (called by t_store_page_site) {{{*/
-let dom_hide2_store_reload = function(site_or_page_or_both="both")
-{
-/*{{{*/
-let   caller = "dom_hide2_store_reload"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log("%c"+caller+"("+site_or_page_or_both+")", lbH+lf2);
-/*}}}*/
-
-    _dom_hide_csv_stack_clear_history();
-
-    _dom_hide_clear_display();
-
-    _dom_hide_localStorage_load( site_or_page_or_both );            /* SITE and-or PAGE */
-
-};
-/*}}}*/
-/*  dom_hide2_store_save {{{*/
-let dom_hide2_store_save = function()
-{
-/*{{{*/
-let   caller = "dom_hide2_store_save"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller);
-/*}}}*/
-
-    let key
-        = prop.get( t_data.SITE_OR_PAGE )
-        ? "site_node_to_hide_arr"
-        : "page_node_to_hide_arr";
-
-    let arr_JSON =         node_to_hide_csv
-        ?   JSON.stringify(node_to_hide_csv.split(","))
-        :   ""
-    ;
-    _notify_hide_store(key, arr_JSON);
-
-    /* NOTE: node_to_hide_csv_STACK csv history not saved */
-};
-/*}}}*/
-/*  _dom_hide_localStorage_load {{{*/
-/*{{{*/
-let loaded_site_csv_count    = 0; /* TODO rename to better reflect dom_hide attribute */
-let loaded_page_csv_count    = 0; /* TODO rename to better reflect dom_hide attribute */
-
-let _site_page_or_both_label = "";
-/*}}}*/
-let _dom_hide_localStorage_load = function(site_or_page_or_both)
-{
-/*{{{*/
-let   caller = "_dom_hide_localStorage_load("+site_or_page_or_both+")";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller);
-/*}}}*/
-    /* [site_csv] [site_label] {{{*/
-    let site_csv   = "";
-    let site_label = "";
-    if((site_or_page_or_both == "site") || (site_or_page_or_both == "both"))
-    {
-        let    key = "site_node_to_hide_arr";
-        let    arr = t_store.t_store_getItem(key, "site"); site_csv = (arr == null) ? "" : JSON.parse(arr).join(",");
-
-        loaded_site_csv_count =  t_util.csv_count(site_csv);
-        site_label = (site_csv ? loaded_site_csv_count : "NO")+" SITE";
-    }
-    /*}}}*/
-    /* [page_csv] [page_label] {{{*/
-    let page_csv   = "";
-    let page_label = "";
-    if((site_or_page_or_both == "page") || (site_or_page_or_both == "both"))
-    {
-        let    key = "page_node_to_hide_arr";
-        let    arr = t_store.t_store_getItem(key, "page"); page_csv = (arr == null) ? "" : JSON.parse(arr).join(",");
-
-        loaded_page_csv_count =  t_util.csv_count(page_csv);
-        page_label = (page_csv ? loaded_page_csv_count : "NO")+" PAGE";
-    }
-    /*}}}*/
-
-    /* [node_to_hide_csv] = [site_csv + page_csv] {{{*/
-    if((site_or_page_or_both == "site"))
-    {
-        node_to_hide_csv =  site_csv;
-
-if(log_this) t_util.csv_log(node_to_hide_csv, "SITE");
-    }
-    else if((site_or_page_or_both == "page"))
-    {
-        node_to_hide_csv = page_csv;
-
-if(log_this) t_util.csv_log(node_to_hide_csv, "PAGE");
-    }
-    else {
-        node_to_hide_csv = page_csv;
-
-        let csv_array =  site_csv.split(",");
-        site_label    = (site_csv ? t_util.csv_count(site_csv) : "NO")+" SITE";
-
-        for(let i = csv_array.length-1; i >= 0; --i)
-            node_to_hide_csv = t_util.csv_ins(node_to_hide_csv, csv_array[i]);
-    }
-if(log_this) t_util.csv_log(node_to_hide_csv, "CURRENT");
-    /*}}}*/
-
-    _dom_hide_csv_stack_clear_history();
-
-    _site_page_or_both_label
-        = (site_label && page_label) ? (site_label+" and "+page_label)
-        :                site_label  ?  site_label
-        :                page_label  ?  page_label
-        : ""
-    ;
-    _dom_hide__sync_DOM_HIDE1_RESET();
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE3_OR_MASK */
-/*{{{*/
-/*  dom_hide_set_MASK_OR_HIDE {{{*/
-let dom_hide_set_MASK_OR_HIDE = function(_hiding)
-{
-/*{{{*/
-let   caller = "dom_hide_set_MASK_OR_HIDE"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-/*}}}*/
-    /* HIDE OR MASK SELECTED NODES {{{*/
-    let hiding = _hiding || !prop.get( t_data.MASK_OR_HIDE );
-if( log_this) log("%c HIDE OR MASK %c "+(hiding ? "HIDE" : "MASK"), lbL, lbR);
-
-if( log_this) t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
-
-    let invisible_count = 0;
-    if(                         !node_to_hide_csv       ) return;
-    let                          node_to_hide_csv_array = node_to_hide_csv.split(","); /* pre_0|div_2 , ul_23|li_8 */
-    for(let n_num = 1; n_num <=  node_to_hide_csv_array.length; ++n_num)
-    {
-        let node_path         =  node_to_hide_csv_array[n_num-1];
-        let node              = t_util.get_node_path_target(node_path, n_num);
-        if( node ) {
-            if( hiding ) {
-                _dom_hide_MARKED_TO_HIDE                   ( node,  true);
-                _dom_hide_set_visibility                   ( node, false); ++invisible_count;
-            }
-            else {
-                if(!node.node_mask) _dom_hide_add_node_mask( node );
-                else                _dom_hide_fit_node_mask( node );
-                _dom_hide_set_visibility(                    node, true);
-            }
-        }
-    }
-    /*}}}*/
-    /* NOTIFY INFO {{{*/
-    let       hidden_count = document.querySelectorAll("."+t_data.MARKED_TO_HIDE   ).length;
-    let       masked_count = document.querySelectorAll("."+NODE_TO_HIDE_MASK).length;
-    let              count = t_util.csv_count(node_to_hide_csv);
-    let                ccx = hiding ? 7 : 2;
-    let  hiding_or_masking = hiding ? "HIDING" : "MASKING";
-
-    _notify_hide_info(            " <em class='cc"+ccx         +"'>"+ hiding_or_masking            +      "</em>"
-                      +           " <em class='cc"+(count % 10)+"'>"+ (count || "No")              +" Nodes</em>"
-                      + (!hidden_count    ? "" : " <em class='cc9'>hidden_count="+ hidden_count    +      "</em>")
-                      + (!masked_count    ? "" : " <em class='cc9'>masked_count="+ masked_count    +      "</em>")
-                      + (!invisible_count ? "" : " <em class='cc0'> not visible="+ invisible_count +      "</em>")
-                     );
-
-    /*}}}*/
-    /* HIGHLIGHT LAST HIDDEN {{{*/
-    if(!hiding )
-        _dom_hide_highlight_last_hidden();
-
-    /*}}}*/
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE4_SCROLL */
-/*{{{*/
-/*{{{*/
-const SCROLL_TO_LAST_HIDDEN_DELAY =  250;
-
-let _dom_hide_scroll_to_last_hidden_timer;
-let _dom_hide_scroll_to_last_hidden_DONE_MS;
-let _dom_hide_scroll_to_last_hidden_el;
-
-/*}}}*/
-/*  dom_hide4_scroll_to_last_hidden .. (called by t_tools.t_seek_set_container_selected) {{{*/
-let dom_hide4_scroll_to_last_hidden = function( node )
-{
-/*{{{*/
-let   caller = "dom_hide4_scroll_to_last_hidden"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller);
-/*}}}*/
-    _dom_hide_scroll_to_last_hidden_el = node;
-
-    if(      _dom_hide_scroll_to_last_hidden_timer ) clearTimeout(_dom_hide_scroll_to_last_hidden_timer);
-
-    if(node) _dom_hide_scroll_to_last_hidden_timer  =  setTimeout(_dom_hide_scroll_to_last_hidden_handler, SCROLL_TO_LAST_HIDDEN_DELAY);
-    else     _dom_hide_scroll_to_last_hidden_timer  = null;
-};
-/*}}}*/
-/*  dom_hide4_scroll_to_last_hidden_is_pending .. (called by scroll_listener to cancel pending scroll) {{{*/
-let dom_hide4_scroll_to_last_hidden_is_pending = function()
-{
-    return (_dom_hide_scroll_to_last_hidden_timer != null);
-};
-/*}}}*/
-/*  dom_hide4_scroll_to_last_hidden_handled_recently .. (called by scroll_listener to differentiate SCRIPTED and USER scroll) {{{*/
-let dom_hide4_scroll_to_last_hidden_handled_recently = function(delay)
-{
-    if(_dom_hide_scroll_to_last_hidden_DONE_MS == 0)
-        return false;
-
-    let           this_MS = new Date().getTime();
-    let elapsed = this_MS - _dom_hide_scroll_to_last_hidden_DONE_MS;
-
-    _dom_hide_scroll_to_last_hidden_DONE_MS = 0;
-
-/*{{{
-    _notify_hide_info("<em class='cc7'>SCROLLED TO LAST HIDDEN NODE</em>");
-}}}*/
-
-    return (elapsed < delay);
-};
-/*}}}*/
-/*  _dom_hide_scroll_to_last_hidden_handler {{{*/
-let _dom_hide_scroll_to_last_hidden_handler = function()
-{
-    _dom_hide_scroll_to_last_hidden_timer   = null;
-
-    _dom_hide_scroll_to_last_hidden_DONE_MS = new Date().getTime();
-
-    let xy = t_tools.t_scrollIntoViewIfNeeded_get_scrollXY_with_margin( _dom_hide_scroll_to_last_hidden_el );
-    if( xy ) {
-        let dx = (xy.x - window.scrollX);
-        let dy = (xy.y - window.scrollY);
-        if(dx || dy) t_tools.t_window_scrollTo(xy.x, xy.y);
-    }
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE5_START_HISTORY */
-/*{{{*/
-/*  dom_hide5_start_history {{{*/
-let dom_hide5_start_history = function()
-{
-/*{{{*/
-let   caller = "dom_hide5_start_history"; if(typeof playground_notify != "undefined") playground_notify(caller);
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller);
-/*}}}*/
-if( log_this) t_util.csv_log(node_to_hide_csv, "REBUILDING STACK HISTORY FROM node_to_hide_csv:");
-
-    node_to_hide_csv_STACK = [];
-    let        count       = t_util.csv_count( node_to_hide_csv );
-    let      tmp_csv       =            node_to_hide_csv;
-    node_to_hide_csv       =            "";
-
-    for(let step = 1; step <= count; ++step)
-    {
-        let    node_path = t_util.csv_get(         tmp_csv, step);
-        node_to_hide_csv = t_util.csv_add(node_to_hide_csv, node_path);
-
-        if(step < count) /* stack all but last */
-            _dom_hide_csv_stack_push("INIT");
-    }
-if( log_this) t_util.csv_log(node_to_hide_csv, "REBUILT STACK HISTORY");
-
-/*{{{
-    let site_page_or_both
-        = (          node_to_hide_csv   ? t_util.csv_count(node_to_hide_csv) : "NO"  )
-        + (prop.get( t_data.SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
-    ;
-}}}*/
-    _dom_hide__sync_DOM_HIDE1_RESET();
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE6_OBSERVERS */
-/*{{{*/
-/*  dom_hide6_add_container_observer .. (t_tools.t_seek_set_container_selected) {{{*/
-/*{{{*/
-let hide_container_observers = [];
-
-/*}}}*/
-let dom_hide6_add_container_observer = function(observer)
-{
-/*{{{
-logXXX("dom_hide6_add_container_observer("+observer.name+")")
-}}}*/
-    if(!hide_container_observers.includes( observer ))
-        hide_container_observers.push    ( observer );
-};
-let _notify_hide_container = function(container, _caller, msg)
-{
-/*{{{
-logXXX("_notify_hide_container("+container+", "+_caller+", "+msg+")")
-}}}*/
-    for(let i=0; i < hide_container_observers.length; ++i)
-        hide_container_observers[i](container, _caller, msg);
-};
-/*}}}*/
-/*  dom_hide6_add_t_store_set_value_observer .. (t_store.t_store_set_value) {{{*/
-/*{{{*/
-let hide_t_store_set_value_observers = [];
-
-/*}}}*/
-let dom_hide6_add_t_store_set_value_observer = function(observer)
-{
-/*{{{
-logXXX("dom_hide6_add_t_store_set_value_observer("+observer.name+")")
-}}}*/
-    if(!hide_t_store_set_value_observers.includes( observer ))
-        hide_t_store_set_value_observers.push    ( observer );
-};
-let _notify_hide_store = function(key,value)
-{
-/*{{{
-logXXX("_notify_hide_store("+key+", "+value+")")
-}}}*/
-    for(let i=0; i < hide_t_store_set_value_observers.length; ++i)
-        hide_t_store_set_value_observers[i](key, value);
-};
-/*}}}*/
-/*  dom_hide6_add_info_observer .. (t_fly) {{{*/
-/*{{{*/
-let hide_info_observers = [];
-
-/*}}}*/
-let dom_hide6_add_info_observer = function(observer)
-{
-/*{{{
-logXXX("dom_hide6_add_info_observer("+observer.name+")")
-}}}*/
-    if(!hide_info_observers.includes( observer ))
-        hide_info_observers.push    ( observer );
-};
-let _notify_hide_info = function(info)
-{
-/*{{{*/
-    let caller = "node_to_hide_csv("+info+")";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller);
-/*}}}*/
-    for(let i=0; i < hide_info_observers.length; ++i)
-        hide_info_observers[i](info);
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE8_LOG */
-/*{{{*/
-/*  dom_hide_log_settings .. (called by log_saved_settings) {{{*/
-/*{{{*/
-let _transcript = null;
-let last_logged_node_to_hide_csv;
-let last_log_was_site_or_page;
-
-let missing_transcript_notified_once;
-/*}}}*/
-let dom_hide_log_settings = function()
-{
-/*{{{
-logBIG("dom_hide_log_settings: "+ (prop.get(t_data.SITE_OR_PAGE) ? "SITE" : "PAGE"));;
-log_caller();
-}}}*/
-    /* [dom_hide_log] .. (log transcript) {{{*/
-    if( _transcript == null) _transcript = document.getElementById("dom_hide_log");
-    if(!_transcript) {
-        if( !missing_transcript_notified_once) {
-logBIG("HTML HAS NO [dom_hide_log] TRANSCRIPT TO LOG TO", lbH+lf3);
-            missing_transcript_notified_once = true;
-        }
-        return;
-    }
-    /*}}}*/
-    /* [t_data.SITE_OR_PAGE] */
-    let    this_log_is_site_or_page      = prop.get(   t_data.SITE_OR_PAGE);
-    if(   (last_log_was_site_or_page    == this_log_is_site_or_page)
-       && (last_logged_node_to_hide_csv == node_to_hide_csv)
-      ) return;
-
-/*{{{
-logBIG("dom_hide_log_settings("+_caller+") .. "+ (this_log_is_site_or_page ? "SITE" : "PAGE"));;
-}}}*/
-
-    let children_collection_length    =            children_collection   .length ;
-    let csv_count_node_to_hide_csv    = t_util.csv_count( node_to_hide_csv             );
-    let node_to_hide_csv_stack_length =            node_to_hide_csv_STACK.length ;
-
-    /* save first transcript sub-tool */
-    let firstElementChild = _transcript.firstElementChild;
-    let             scope = this_log_is_site_or_page ? "SITE" : "PAGE";
-    let               ccX = this_log_is_site_or_page ? "cc2"  :  "cc6";
-
-    _transcript.innerHTML
-        = "<em class='big "+ccX+"'>"+ scope + "</em><br>"
-        + "COLLECTION    <em class='big cc8'>"+ children_collection_length    +"</em><br>"
-        + "NODES TO HIDE <em class='big cc9'>"+ csv_count_node_to_hide_csv    +"</em><br>"
-        + "HISTORY       <em class='big cc7'>"+ node_to_hide_csv_stack_length +"</em><br>"
-        + _dom_hide_csv_to_html( node_to_hide_csv )
-    ;
-
-    /* restore first sub-tool */
-    if(       firstElementChild
-       && (   firstElementChild.classList.contains( t_tools.CSS_CLEARPIN )
-           || firstElementChild.classList.contains( t_tools.CSS_CLOSEPIN )
-           || firstElementChild.classList.contains( t_tools.CSS_PUSH_PIN )
-           || firstElementChild.classList.contains( t_tools.CSS_SCALEPIN )
-           || firstElementChild.classList.contains("toolbag_button")
-         )
-      )
-        _transcript.insertBefore(firstElementChild, _transcript.firstElementChild);
-
-    last_logged_node_to_hide_csv = node_to_hide_csv;
-    last_log_was_site_or_page    = this_log_is_site_or_page;
-};
-/*}}}*/
-
-/*}}}*/
-
-/* DOM_HIDE9_PRIVATE */
+/* PRIVATE */
 /* {{{*/
 const LAST_HIDDEN               = "last_hidden";
 const NODE_TO_HIDE_MASK         = "node_to_hide_mask";
@@ -859,23 +155,23 @@ const NODE_TO_HIDE_NOT_VISIBLE  = "node_to_hide_not_visible";
 let node_to_hide_csv            = "";
 /*}}}*/
 /* UI */ /*{{{*/
-/*  _dom_hide__sync_DOM_HIDE1_RESET {{{*/
+/*  _dom_hide_sync_UI {{{*/
 /*{{{*/
-const DOM_HIDE__SYNC_DOM_HIDE1_RESET_DELAY = 500;
+const DOM_HIDE_SYNC_UI_DELAY = 500;
 
-let _dom_hide__sync_DOM_HIDE1_RESET_timer;
+let _dom_hide_sync_UI_timer;
 /*}}}*/
-let _dom_hide__sync_DOM_HIDE1_RESET = function()
+let _dom_hide_sync_UI = function()
 {
-    if(_dom_hide__sync_DOM_HIDE1_RESET_timer) clearTimeout(_dom_hide__sync_DOM_HIDE1_RESET_timer);
-    _dom_hide__sync_DOM_HIDE1_RESET_timer   =   setTimeout(_dom_hide__sync_DOM_HIDE1_RESET_handler, DOM_HIDE__SYNC_DOM_HIDE1_RESET_DELAY);
+    if(_dom_hide_sync_UI_timer) clearTimeout(_dom_hide_sync_UI_timer);
+    _dom_hide_sync_UI_timer   =   setTimeout(_dom_hide_sync_UI_handler, DOM_HIDE_SYNC_UI_DELAY);
 };
 /*}}}*/
-/*  _dom_hide__sync_DOM_HIDE1_RESET_handler {{{*/
-let _dom_hide__sync_DOM_HIDE1_RESET_handler = function()
+/*  _dom_hide_sync_UI_handler {{{*/
+let _dom_hide_sync_UI_handler = function()
 {
 /*{{{
-logBIG("_dom_hide__sync_DOM_HIDE1_RESET_handler: _site_page_or_both_label=["+_site_page_or_both_label+"]", lf3);
+logBIG("_dom_hide_sync_UI_handler: _site_page_or_both_label=["+_site_page_or_both_label+"]", lf3);
 }}}*/
 
     let count = t_util.csv_count(node_to_hide_csv);
@@ -884,10 +180,16 @@ logBIG("_dom_hide__sync_DOM_HIDE1_RESET_handler: _site_page_or_both_label=["+_si
     let el = prop.get_EL(t_data.DOM_HIDE1_RESET);
     if( el )
         el.title
-            = _site_page_or_both_label
-            + t_data.LF+" HIDDEN CONTAINERS"
-            + t_data.LF+" TO UNHIDE"
+            = t_i18n.i18n_get(t_i18n.DOM_HIDE1_RESET, t_data.DOM_HIDE1_RESET)
+            + t_data.LF
+            + t_data.LF+ _site_page_or_both_label
+            + t_data.LF+"HIDDEN CONTAINERS"
+            + t_data.LF+"TO UNHIDE"
     ;
+
+    el = prop.get_EL(t_data.DOM_HIDE1_UNDO);
+    if( el )
+        el.innerHTML = _dom_hide_node_to_hide_csv_STACK_length();
 
 /*{{{
     t_util.set_el_class_on_off(prop.get_EL( t_data.DOM_HIDE1_RESET ), t_data.CSS_CHECKED, have_node_to_hide_csv);
@@ -1070,10 +372,11 @@ if( node.style) {
 }}}*/
 };
 /*}}}*/
-/*  _dom_hide_is_at_xy {{{*/
-let _dom_hide_is_at_xy = function(node, x, y)
+/*  _dom_hide_is_at_xy (yet unused) {{{*/
+let _dom_hide_is_at_xy = function(node, x, y) /* eslint-disable-line no-unused-vars */
 {
-    let caller = "_dom_hide_is_at_xy";
+let caller = "_dom_hide_is_at_xy";
+
     if(!node.offsetTop              ) return false;
     if( node.style.display == "none") return false;
 
@@ -1353,7 +656,7 @@ if(log_this) log("...hidden_count=["+hidden_count+"]");
         let node_hidden   =  node_mask_list[i].node_hidden;
         let     node_path = t_util.get_node_path( node_hidden );
 if(log_this) log("...node_path=["+node_path+"]");
-        node_to_hide_csv = t_util.csv_add(node_to_hide_csv, node_path);
+        node_to_hide_csv  = t_util.csv_add(node_to_hide_csv, node_path);
         masked_count += 1;
     }
 if(log_this) log("...masked_count=["+masked_count+"]");
@@ -1367,23 +670,631 @@ if(log_this) _dom_hide_csv_dump();
 };
 /*}}}*/
 /*}}}*/
-/* HISTORY */ /*{{{*/
+/* LOG {{{*/
+/* _dom_hide_csv_dump {{{*/
+let _dom_hide_csv_dump = function()
+{
+    if(!node_to_hide_csv) return;
+
+    let node_to_hide_csv_array = node_to_hide_csv.split(",");               /* pre_0|div_2 , ul_23|li_8 */
+    for(let n_num = 1; n_num  <= node_to_hide_csv_array.length; ++n_num)
+    {
+        let     node_path = node_to_hide_csv_array[n_num-1];
+
+        t_util.get_node_path_target(node_path, n_num);
+    }
+};
+/*}}}*/
+/*}}}*/
+
+/* DOM_HIDE1_SELECT */
+/*{{{*/
+/*  dom_hide1_container_clicked .. (called by onUp_6_DOC_CB.[DOC CLICKED]) {{{*/
+let dom_hide1_container_clicked = function(container,hide_parent)
+{
+/*{{{*/
+let   caller = "dom_hide1_container_clicked"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller+"%c"+t_util.get_node_id_or_tag(container)+"%c hide_parent "+hide_parent, lbL+lf2, lbR+lfX[hide_parent ? 3:8]);
+    if(!container) return;
+/*{{{
+if( log_this) t_log.console_clear_post(caller);
+}}}*/
+/*}}}*/
+    let          hiding = !prop.get( t_data.MASK_OR_HIDE );
+    let     node_hidden = _dom_hide_mark_container( container );
+    while(  node_hidden && (node_hidden != document.body))
+    {
+        if( hide_parent ) {
+            _dom_hide_history_freeze(true, caller);
+
+            for(let num = 0; num   < node_hidden.parentElement.children.length; ++num) {
+                let el  = node_hidden.parentElement.children[num];
+                if( el != node_hidden)
+                    _dom_hide_mark_container( el );
+            }
+
+            _dom_hide_history_freeze(false);
+        }
+
+        if( _dom_hide_all_siblings_hidden( node_hidden ) )
+        {
+            node_hidden = _dom_hide_mark_container( node_hidden.parentElement );
+            if( hide_parent ) break;
+        }
+        else {
+            if( hiding )  _dom_hide_set_visibility( node_hidden,  true);
+            break;
+        }
+    }
+};
+/*}}}*/
+/*  dom_hide1_collect_nodes {{{*/
+/*{{{*/
+let  children_collection = [];
+
+/*}}}*/
+let dom_hide1_collect_nodes = function(child_level, _parent, parent_level)
+{
+/*{{{*/
+let   caller = "dom_hide1_collect_nodes(child_level=["+child_level+"], _parent=["+t_util.get_n_lbl(_parent)+"], parent_level=["+parent_level+"])";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+/*}}}*/
+    /* walk body tree nodes {{{*/
+    let parent = _parent;
+    if(!parent || (parent == document.body)) {
+        children_collection = [];
+        parent              = document.body;
+        parent_level        = 0;
+    }
+    /*}}}*/
+    /* build [children_collection] {{{*/
+    let child_collected_count = 0;
+    for(let num=0; num < parent.children.length; ++num)
+    {
+        let child = parent.children[num];
+        /* reached child_level .. collect children_collection */
+        if(parent_level == (child_level-1))
+        {
+            if( _dom_hide_is_node_maskable(child, num) )
+            {
+                children_collection.push( child );
+                child_collected_count += 1;
+            }
+        }
+        /* or step down one level */
+        else
+            dom_hide1_collect_nodes(child_level,  child, parent_level+1);
+
+    }
+    /*}}}*/
+/*{{{*/
+if(log_this && (parent_level == (child_level-1)) && parent.children.length)
+    log(caller+": %c level"+child_level+" %c"+t_util.get_parentage(parent)+" %c "+ child_collected_count +" children"
+        ,        lbH                     ,lbL+lf9                    ,lbR+lf7);
+
+if(log_this && (parent == document.body))
+    log("%c "+children_collection.length+" %c level "+child_level+" nodes"
+        ,lbH+lbb+lf7                      ,lbH+lf7);
+/*}}}*/
+    /* hide [children_collection] {{{*/
+    _dom_hide_add_children_collection();
+    /*}}}*/
+};
+/*}}}*/
+/*  _dom_hide_is_node_maskable {{{*/
+let _dom_hide_is_node_maskable = function(node, num)
+{
+/*{{{*/
+let   caller = "_dom_hide_is_node_maskable";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+/*}}}*/
+    let                                                    not_maskable = "";                    let lfx =  "";
+    if(                             !node.clientWidth  ) { not_maskable = "HAS NO WIDTH";            lfx = lf5; }
+    if(                             !node.clientHeight ) { not_maskable = "HAS NO HEIGHT";           lfx = lf6; }
+    if( t_util.is_a_doc_tool_panel ( node )            ) { not_maskable = "IS A DOC TOOL PANEL";     lfx = lf3; }
+    if( t_util.is_a_doc_tool_button( node )            ) { not_maskable = "IS A DOC TOOL BUTTON";    lfx = lf4; }
+
+    let result = (not_maskable == "");
+if(log_this && !result) log(caller+": %c #"+num+" %c"+t_util.get_parentage(node)+"%c"+not_maskable
+    ,                                 lbL+lf2    ,lbC+lf9                 ,lbR+lfx         );
+    return (not_maskable == "");
+};
+/*}}}*/
+/*  _dom_hide_add_children_collection {{{*/
+let _dom_hide_add_children_collection = function()
+{
+/*{{{*/
+let   caller = "_dom_hide_add_children_collection";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller+": "+children_collection.length+" nodes");
+/*}}}*/
+    _dom_hide_history_freeze(true, caller);
+/*
+    for(let i=0                           ; i <  children_collection.length; ++i) dom_hide1_container_clicked(children_collection[i]);
+*/
+    for(let i=children_collection.length-1; i >= 0                         ; --i) dom_hide1_container_clicked(children_collection[i]);
+
+    _dom_hide_history_freeze(false);
+    _dom_hide_csv_stack_push("AFTER _dom_hide_add_children_collection");
+};
+/*}}}*/
+/*  dom_hide1_reset .. (called by onUp_5_TOOL_CB) {{{*/
+let dom_hide1_reset = function()
+{
+/*{{{*/
+let   caller = "dom_hide1_reset"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) console.trace();
+/*{{{
+if( log_this) log(caller);
+if( log_this) t_log.console_clear_post(caller);
+}}}*/
+/*}}}*/
+    _dom_hide_csv_stack_clear_history();
+    _dom_hide_clear_csv_and_store();
+    _dom_hide_clear_display();
+
+    _site_page_or_both_label
+        = "ALL RESET"
+    ;
+    _dom_hide_sync_UI();
+};
+/*}}}*/
+/*  _dom_hide_all_siblings_hidden {{{*/
+let _dom_hide_all_siblings_hidden = function( node )
+{
+    if( !node                                ) return false;
+    if( !node.parentElement                  ) return false;
+    if(  node               == document.body ) return false;
+    if(  node.parentElement == document.body ) return false;
+
+    let all_siblings_hidden = true;
+    for(let i=0;    i < node.parentElement.childNodes.length; ++i)
+    {
+        let     child = node.parentElement.childNodes[i];
+        if(    !child.classList ) continue; /* TEXT have none */
+
+        if(    !child.classList.contains( NODE_TO_HIDE_NOT_VISIBLE )
+            && !child.node_mask
+          ) {
+            all_siblings_hidden = false;
+            break;
+        }
+    }
+
+/*{{{
+logXXX("_dom_hide_all_siblings_hidden("+t_util.get_node_id_or_tag(node)+"): ...return "+all_siblings_hidden+"")
+}}}*/
+    return all_siblings_hidden;
+};
+/*}}}*/
+/*  _dom_hide_mark_container {{{*/
+let _dom_hide_mark_container = function(container,toggle_marked=true)
+{
+/*{{{*/
+let   caller = "_dom_hide_mark_container";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller+"%c("+t_util.get_node_id_or_tag(container)+")", lbH+lf2);
+/*{{{
+if(log_this) t_log.console_clear_post(caller);
+}}}*/
+/*}}}*/
+    /* [node_hidden] [node_mask] {{{*/
+    let node_hidden
+        = container.node_hidden ? container.node_hidden /* container is a mask        .. with a link to its hidden node */
+        : container.node_mask   ? container             /* container is a hidden node .. with a link to its mask */
+        :                         container
+    ;
+if(log_this) t_log.console_dir("node_hidden", node_hidden);
+
+    let node_mask
+        = container.node_hidden ? container             /* container is the mask      .. with a link to its hidden node */
+        : container.node_mask   ? container.node_mask   /* container is a hidden node .. with a link to its mask */
+        :                         null
+    ;
+
+if(log_this) t_log.console_dir("node_mask", node_mask);
+
+    /*}}}*/
+    /* NO  MASK .. ADD ONE {{{*/
+    if( !node_mask ) {
+if( log_this) log("...NO  MASK .. ADD ONE");
+        /* ADD CSV ...return if already stored {{{*/
+        if( !_dom_hide_add_csv ( node_hidden )) return null;
+
+        /*}}}*/
+        /* DISPLAY {{{*/
+        _dom_hide_add_node_mask( node_hidden );
+
+        let hiding = !prop.get( t_data.MASK_OR_HIDE );
+        if( hiding ) {
+            _dom_hide_set_visibility(node_hidden, false);
+        }
+        /*}}}*/
+        /* CLEAR SUBTREE .. (may clear some container hidden children) {{{*/
+        if( _dom_hide_clear_subtree( node_hidden ) )
+        {
+            /* SYNC CSV .. (container hidden children (possibly) cleared) */
+            _dom_hide_rebuild_csv_from_hidden_and_masked_nodes();
+
+            let count = t_util.csv_count( node_to_hide_csv );
+            let em_class = count ? "cc"+(count % 10) : "done cc9";
+            _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" HIDDEN SUBTREE NODES</em> <em class='cc2'>SUBTREE REBUILT</em>");
+        }
+        else {
+            let count = t_util.csv_count( node_to_hide_csv );
+            let em_class = count ? "cc"+(count % 10) : "done cc9";
+            _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" NODES MARKED TO HIDE</em>");
+        }
+        /*}}}*/
+    }
+    /*}}}*/
+    /* HAS MASK .. REMOVE IT .. f(toggle_marked) {{{*/
+    else if( toggle_marked ) {
+if( log_this) log("...HAS MASK .. REMOVE IT");
+        if( t_util.has_el_class(node_hidden, LAST_HIDDEN) )
+        {
+if( log_this) log("...t_util.has_el_class(node_hidden, LAST_HIDDEN)");
+            t_util.del_el_class(node_hidden, LAST_HIDDEN);
+            /* TRASH MASK AND UNHIDE NODE {{{*/
+            _dom_hide_del_node_mask( node_hidden );
+
+            /*}}}*/
+
+            dom_hide_csv_stack_pop("REMOVING LAST_HIDDEN"); /* TODO history tool */
+        }
+        else {
+            /* TRASH MASK AND UNHIDE NODE {{{*/
+            _dom_hide_del_node_mask( node_hidden );
+
+            /*}}}*/
+            /* DEL CSV {{{*/
+            _dom_hide_del_csv      ( node_hidden );
+
+            /*}}}*/
+        }
+        let count = t_util.csv_count( node_to_hide_csv );
+        let em_class = count ? "cc"+(count % 10) : "done cc9";
+        _notify_hide_info("<em class='"+em_class+"'>"+(count || "NO")+" NODES MARKED TO HIDE</em>");
+    }
+    /*}}}*/
+    /* HIGHLIGHT LAST HIDDEN {{{*/
+    _dom_hide_highlight_last_hidden();
+
+    /*}}}*/
+/*{{{
+    let site_page_or_both
+        = (          node_to_hide_csv   ? t_util.csv_count(node_to_hide_csv) : "NO"  )
+        + (prop.get( t_data.SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
+    ;
+}}}*/
+    _dom_hide_sync_UI();
+    return node_hidden;
+};
+/*}}}*/
+/*_ get_node_hidden_parentElement {{{*/
+let get_node_hidden_parentElement = function(container)
+{
+    return container
+        && container.node_hidden
+        && container.node_hidden.parentElement
+        ?  container.node_hidden.parentElement
+        :  null
+    ;
+};
+/*}}}*/
+
+/*}}}*/
+
+/* DOM_HIDE2_STORE */
+/*{{{*/
+/*  dom_hide2_store_reload .. (called by t_store_page_site) {{{*/
+let dom_hide2_store_reload = function(site_or_page_or_both="both")
+{
+/*{{{*/
+let   caller = "dom_hide2_store_reload"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log("%c"+caller+"("+site_or_page_or_both+")", lbH+lf2);
+/*}}}*/
+
+    _dom_hide_clear_display();
+
+    _dom_hide_localStorage_load( site_or_page_or_both );            /* SITE and-or PAGE */
+
+};
+/*}}}*/
+/*  dom_hide2_store_save {{{*/
+let dom_hide2_store_save = function()
+{
+/*{{{*/
+let   caller = "dom_hide2_store_save"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller);
+/*}}}*/
+
+    let key
+        = prop.get( t_data.SITE_OR_PAGE )
+        ? "site_node_to_hide_arr"
+        : "page_node_to_hide_arr";
+
+    let arr_JSON =         node_to_hide_csv
+        ?   JSON.stringify(node_to_hide_csv.split(","))
+        :   ""
+    ;
+    _notify_hide_store(key, arr_JSON);
+
+    /* NOTE: history csv not yet saved */
+};
+/*}}}*/
+/*  _dom_hide_localStorage_load {{{*/
+/*{{{*/
+let loaded_site_csv_count    = 0; /* TODO rename to better reflect dom_hide attribute */
+let loaded_page_csv_count    = 0; /* TODO rename to better reflect dom_hide attribute */
+
+let _site_page_or_both_label = "";
+/*}}}*/
+let _dom_hide_localStorage_load = function(site_or_page_or_both)
+{
+/*{{{*/
+let   caller = "_dom_hide_localStorage_load("+site_or_page_or_both+")";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller);
+/*}}}*/
+    /* [site_csv] [site_label] {{{*/
+    let site_csv   = "";
+    let site_label = "";
+    if((site_or_page_or_both == "site") || (site_or_page_or_both == "both"))
+    {
+        let    key = "site_node_to_hide_arr";
+        let    arr = t_store.t_store_getItem(key, "site"); site_csv = (arr == null) ? "" : JSON.parse(arr).join(",");
+
+        loaded_site_csv_count =  t_util.csv_count(site_csv);
+        site_label = (site_csv ? loaded_site_csv_count : "NO")+" SITE";
+    }
+    /*}}}*/
+    /* [page_csv] [page_label] {{{*/
+    let page_csv   = "";
+    let page_label = "";
+    if((site_or_page_or_both == "page") || (site_or_page_or_both == "both"))
+    {
+        let    key = "page_node_to_hide_arr";
+        let    arr = t_store.t_store_getItem(key, "page"); page_csv = (arr == null) ? "" : JSON.parse(arr).join(",");
+
+        loaded_page_csv_count =  t_util.csv_count(page_csv);
+        page_label = (page_csv ? loaded_page_csv_count : "NO")+" PAGE";
+    }
+    /*}}}*/
+
+    /* [node_to_hide_csv] = [site_csv + page_csv] {{{*/
+    if((site_or_page_or_both == "site"))
+    {
+        node_to_hide_csv =  site_csv;
+
+if(log_this) t_util.csv_log(node_to_hide_csv, "SITE");
+    }
+    else if((site_or_page_or_both == "page"))
+    {
+        node_to_hide_csv = page_csv;
+
+if(log_this) t_util.csv_log(node_to_hide_csv, "PAGE");
+    }
+    else {
+        node_to_hide_csv = page_csv;
+
+        let csv_array =  site_csv.split(",");
+        site_label    = (site_csv ? t_util.csv_count(site_csv) : "NO")+" SITE";
+
+        for(let i = csv_array.length-1; i >= 0; --i)
+            node_to_hide_csv = t_util.csv_ins(node_to_hide_csv, csv_array[i]);
+    }
+if(log_this) t_util.csv_log(node_to_hide_csv, "CURRENT");
+    /*}}}*/
+
+    _site_page_or_both_label
+        = (site_label && page_label) ? (site_label+" and "+page_label)
+        :                site_label  ?  site_label
+        :                page_label  ?  page_label
+        : ""
+    ;
+    _dom_hide_sync_UI();
+};
+/*}}}*/
+
+/*}}}*/
+
+/* DOM_HIDE3_OR_MASK */
+/*{{{*/
+/*  dom_hide3_set_MASK_OR_HIDE {{{*/
+let dom_hide3_set_MASK_OR_HIDE = function(_hiding)
+{
+/*{{{*/
+let   caller = "dom_hide3_set_MASK_OR_HIDE"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+/*}}}*/
+    /* HIDE OR MASK SELECTED NODES {{{*/
+    let hiding = _hiding || !prop.get( t_data.MASK_OR_HIDE );
+if( log_this) log("%c HIDE OR MASK %c "+(hiding ? "HIDE" : "MASK"), lbL, lbR);
+
+if( log_this) t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
+
+    let invisible_count = 0;
+    if(                         !node_to_hide_csv       ) return;
+    let                          node_to_hide_csv_array = node_to_hide_csv.split(","); /* pre_0|div_2 , ul_23|li_8 */
+    for(let n_num = 1; n_num <=  node_to_hide_csv_array.length; ++n_num)
+    {
+        let node_path         =  node_to_hide_csv_array[n_num-1];
+        let node              = t_util.get_node_path_target(node_path, n_num);
+        if( node ) {
+            if( hiding ) {
+                _dom_hide_MARKED_TO_HIDE                   ( node,  true);
+                _dom_hide_set_visibility                   ( node, false); ++invisible_count;
+            }
+            else {
+                if(!node.node_mask) _dom_hide_add_node_mask( node );
+                else                _dom_hide_fit_node_mask( node );
+                _dom_hide_set_visibility(                    node, true);
+            }
+        }
+    }
+    /*}}}*/
+    /* NOTIFY INFO {{{*/
+    let       hidden_count = document.querySelectorAll("."+t_data.MARKED_TO_HIDE   ).length;
+    let       masked_count = document.querySelectorAll("."+NODE_TO_HIDE_MASK).length;
+    let              count = t_util.csv_count(node_to_hide_csv);
+    let                ccx = hiding ? 7 : 2;
+    let  hiding_or_masking = hiding ? "HIDING" : "MASKING";
+
+    _notify_hide_info(            " <em class='cc"+ccx         +"'>"+ hiding_or_masking            +      "</em>"
+                      +           " <em class='cc"+(count % 10)+"'>"+ (count || "No")              +" Nodes</em>"
+                      + (!hidden_count    ? "" : " <em class='cc9'>hidden_count="+ hidden_count    +      "</em>")
+                      + (!masked_count    ? "" : " <em class='cc9'>masked_count="+ masked_count    +      "</em>")
+                      + (!invisible_count ? "" : " <em class='cc0'> not visible="+ invisible_count +      "</em>")
+                     );
+
+    /*}}}*/
+    /* HIGHLIGHT LAST HIDDEN {{{*/
+    if(!hiding )
+        _dom_hide_highlight_last_hidden();
+
+    /*}}}*/
+};
+/*}}}*/
+
+/*}}}*/
+
+/* DOM_HIDE4_SCROLL */
+/*{{{*/
+/*{{{*/
+const SCROLL_TO_LAST_HIDDEN_DELAY =  250;
+
+let _dom_hide_scroll_to_last_hidden_timer;
+let _dom_hide_scroll_to_last_hidden_DONE_MS;
+let _dom_hide_scroll_to_last_hidden_el;
+
+/*}}}*/
+/*  dom_hide4_scroll_to_last_hidden .. (called by t_tools.t_seek_set_container_selected) {{{*/
+let dom_hide4_scroll_to_last_hidden = function( node )
+{
+/*{{{*/
+let   caller = "dom_hide4_scroll_to_last_hidden"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller);
+/*}}}*/
+    _dom_hide_scroll_to_last_hidden_el = node;
+
+    if(      _dom_hide_scroll_to_last_hidden_timer ) clearTimeout(_dom_hide_scroll_to_last_hidden_timer);
+
+    if(node) _dom_hide_scroll_to_last_hidden_timer  =  setTimeout(_dom_hide_scroll_to_last_hidden_handler, SCROLL_TO_LAST_HIDDEN_DELAY);
+    else     _dom_hide_scroll_to_last_hidden_timer  = null;
+};
+/*}}}*/
+/*  dom_hide4_scroll_to_last_hidden_is_pending .. (called by scroll_listener to cancel pending scroll) {{{*/
+let dom_hide4_scroll_to_last_hidden_is_pending = function()
+{
+    return (_dom_hide_scroll_to_last_hidden_timer != null);
+};
+/*}}}*/
+/*  dom_hide4_scroll_to_last_hidden_handled_recently .. (called by scroll_listener to differentiate SCRIPTED and USER scroll) {{{*/
+let dom_hide4_scroll_to_last_hidden_handled_recently = function(delay)
+{
+    if(_dom_hide_scroll_to_last_hidden_DONE_MS == 0)
+        return false;
+
+    let           this_MS = new Date().getTime();
+    let elapsed = this_MS - _dom_hide_scroll_to_last_hidden_DONE_MS;
+
+    _dom_hide_scroll_to_last_hidden_DONE_MS = 0;
+
+/*{{{
+    _notify_hide_info("<em class='cc7'>SCROLLED TO LAST HIDDEN NODE</em>");
+}}}*/
+
+    return (elapsed < delay);
+};
+/*}}}*/
+/*  _dom_hide_scroll_to_last_hidden_handler {{{*/
+let _dom_hide_scroll_to_last_hidden_handler = function()
+{
+    _dom_hide_scroll_to_last_hidden_timer   = null;
+
+    _dom_hide_scroll_to_last_hidden_DONE_MS = new Date().getTime();
+
+    let xy = t_tools.t_scrollIntoViewIfNeeded_get_scrollXY_with_margin( _dom_hide_scroll_to_last_hidden_el );
+    if( xy ) {
+        let dx = (xy.x - window.scrollX);
+        let dy = (xy.y - window.scrollY);
+        if(dx || dy) t_tools.t_window_scrollTo(xy.x, xy.y);
+    }
+};
+/*}}}*/
+
+/*}}}*/
+
+/* DOM_HIDE5_HISTORY */
+/*{{{*/
+/*➔ dom_hide5_history_start {{{*/
+let dom_hide5_history_start = function()
+{
+/*{{{*/
+let   caller = "dom_hide5_history_start"; if(typeof playground_notify != "undefined") playground_notify(caller);
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller);
+/*}}}*/
+if( log_this) t_util.csv_log(node_to_hide_csv, "REBUILDING STACK HISTORY FROM node_to_hide_csv:");
+
+    _dom_hide_csv_stack_clear_history();
+
+    let        count      = t_util.csv_count( node_to_hide_csv );
+    let      tmp_csv      =                   node_to_hide_csv;
+    node_to_hide_csv      =                   "";
+    for(let step=1; step <= count; ++step)
+    {
+        let    node_path  = t_util.csv_get(         tmp_csv, step);
+        node_to_hide_csv  = t_util.csv_add(node_to_hide_csv, node_path);
+
+        if(step < count) /* stack all but last */
+            _dom_hide_csv_stack_push("INIT");
+    }
+if( log_this) t_util.csv_log(node_to_hide_csv, "REBUILT STACK HISTORY");
+
+/*{{{
+    let site_page_or_both
+        = (          node_to_hide_csv   ? t_util.csv_count(node_to_hide_csv) : "NO"  )
+        + (prop.get( t_data.SITE_OR_PAGE     ) ?                      "SITE" : "PAGE")
+    ;
+}}}*/
+    _dom_hide_sync_UI();
+};
+/*}}}*/
+/*  _dom_hide_history_freeze {{{*/
+let _dom_hide_history_freeze_caller;
+let _dom_hide_history_freeze = function(state, caller)
+{
+    if(state) _dom_hide_history_freeze_caller = caller;
+    else      _dom_hide_history_freeze_caller =     "";
+};
+/*}}}*/
 /*{{{*/
 let node_to_hide_csv_STACK = [];
 
 /*}}}*/
-/*   _dom_hide_csv_stack_clear_history {{{*/
+/*  _dom_hide_csv_stack_clear_history {{{*/
 let _dom_hide_csv_stack_clear_history = function()
 {
     node_to_hide_csv_STACK = [];
-};
-/*}}}*/
-/*_ _dom_hide_freeze_history {{{*/
-let _dom_hide_freeze_history_caller;
-let _dom_hide_freeze_history = function(state, caller)
-{
-    if(state) _dom_hide_freeze_history_caller = caller;
-    else      _dom_hide_freeze_history_caller =     "";
 };
 /*}}}*/
 /*  _dom_hide_csv_stack_push {{{*/
@@ -1397,10 +1308,10 @@ if( log_this) log("%c"+caller+"(%c "+reason+"):"
                   ,lbH         ,lbL+lf3);
 /*}}}*/
     /* PUSH ON TOP OF STACK {{{*/
-    if( _dom_hide_freeze_history_caller )
+    if( _dom_hide_history_freeze_caller )
     {
 
-if( log_this) log("...%c HISTORY FREEZED BY "+ _dom_hide_freeze_history_caller, lbH+lf8);
+if( log_this) log("...%c HISTORY FREEZED BY "+ _dom_hide_history_freeze_caller, lbH+lf8);
     }
     else if(    (                       node_to_hide_csv_STACK.length > 0)
              && (node_to_hide_csv_STACK[node_to_hide_csv_STACK.length - 1] == node_to_hide_csv))
@@ -1416,14 +1327,14 @@ if( log_this) t_util.csv_log(node_to_hide_csv,t_util.csv_count(node_to_hide_csv)
     /*}}}*/
 };
 /*}}}*/
-/*  _dom_hide_csv_stack_pop {{{*/
-let _dom_hide_csv_stack_pop = function(reason)
+/*  dom_hide_csv_stack_pop {{{*/
+let dom_hide_csv_stack_pop = function(_caller)
 {
 /*{{{*/
-let caller = "_dom_hide_csv_stack_pop";
+let caller = "dom_hide_csv_stack_pop";
 let log_this = LOG_MAP.T3_LAYOUT;
 
-if( log_this) log("%c"+caller+" %c "+reason, lbL+lf3,lbR+lf3);
+if( log_this) log("%c"+caller+" %c "+_caller, lbL+lf3,lbR+lf3);
 /*{{{
 t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
 }}}*/
@@ -1433,18 +1344,34 @@ t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
 /*{{{
 t_util.csv_log(popped_csv, "popped_csv")
 }}}*/
-
     if(popped_csv) {
-if(log_this) log("%c HISTORY BACK", lbH+lf7);
-
+/*{{{*/
+if(log_this) {
+    let from_count = t_util.csv_count(node_to_hide_csv       );
+    let   to_count = t_util.csv_count(popped_csv             );
+    log("%c HISTORY BACK (from "+from_count+" to "+to_count+")", lbH+lfX[from_count % 10]);
+}
+/*}}}*/
         node_to_hide_csv = popped_csv;
     }
     else {
-if(log_this) log("%c LAST DROPPED", lbH+lf3);
-
-        node_to_hide_csv = t_util.csv_del_last(node_to_hide_csv);
+        if( t_util.csv_count(node_to_hide_csv) ) {
+/*{{{*/
+if(log_this) {
+    let from_count = t_util.csv_count(node_to_hide_csv       );
+    log("%c DROPPING LAST (from "+from_count+")", lbH+lfX[from_count % 10]);
+}
+/*}}}*/
+            node_to_hide_csv = t_util.csv_del_last(node_to_hide_csv);
+        }
+        else {
+/*{{{*/
+if(log_this) {
+    log("%c HISTORY IS EMPTY", lbH+lf8);
+}
+/*}}}*/
+        }
     }
-
 /*{{{
 t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
 }}}*/
@@ -1457,8 +1384,157 @@ t_util.csv_log(node_to_hide_csv, "node_to_hide_csv");
     _dom_hide_highlight_last_hidden();
 
     /*}}}*/
+    _dom_hide_sync_UI();
+};
+/*}}}*/
+/*  _dom_hide_node_to_hide_csv_STACK_length {{{*/
+let _dom_hide_node_to_hide_csv_STACK_length = function()
+{
+    return node_to_hide_csv_STACK.length;
+};
+/*}}}*/
+/*}}}*/
 
-    dom_hide_set_MASK_OR_HIDE();
+/* DOM_HIDE6_OBSERVERS */
+/*{{{*/
+/*  dom_hide6_add_container_observer .. (t_tools.t_seek_set_container_selected) {{{*/
+/*{{{*/
+let hide_container_observers = [];
+
+/*}}}*/
+let dom_hide6_add_container_observer = function(observer)
+{
+/*{{{
+logXXX("dom_hide6_add_container_observer("+observer.name+")")
+}}}*/
+    if(!hide_container_observers.includes( observer ))
+        hide_container_observers.push    ( observer );
+};
+let _notify_hide_container = function(container, _caller, msg)
+{
+/*{{{
+logXXX("_notify_hide_container("+container+", "+_caller+", "+msg+")")
+}}}*/
+    for(let i=0; i < hide_container_observers.length; ++i)
+        hide_container_observers[i](container, _caller, msg);
+};
+/*}}}*/
+/*  dom_hide6_add_t_store_set_value_observer .. (t_store.t_store_set_value) {{{*/
+/*{{{*/
+let hide_t_store_set_value_observers = [];
+
+/*}}}*/
+let dom_hide6_add_t_store_set_value_observer = function(observer)
+{
+/*{{{
+logXXX("dom_hide6_add_t_store_set_value_observer("+observer.name+")")
+}}}*/
+    if(!hide_t_store_set_value_observers.includes( observer ))
+        hide_t_store_set_value_observers.push    ( observer );
+};
+let _notify_hide_store = function(key,value)
+{
+/*{{{
+logXXX("_notify_hide_store("+key+", "+value+")")
+}}}*/
+    for(let i=0; i < hide_t_store_set_value_observers.length; ++i)
+        hide_t_store_set_value_observers[i](key, value);
+};
+/*}}}*/
+/*  dom_hide6_add_info_observer .. (t_fly) {{{*/
+/*{{{*/
+let hide_info_observers = [];
+
+/*}}}*/
+let dom_hide6_add_info_observer = function(observer)
+{
+/*{{{
+logXXX("dom_hide6_add_info_observer("+observer.name+")")
+}}}*/
+    if(!hide_info_observers.includes( observer ))
+        hide_info_observers.push    ( observer );
+};
+let _notify_hide_info = function(info)
+{
+/*{{{*/
+    let caller = "node_to_hide_csv("+info+")";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller);
+/*}}}*/
+    for(let i=0; i < hide_info_observers.length; ++i)
+        hide_info_observers[i](info);
+};
+/*}}}*/
+
+/*}}}*/
+
+/* DOM_HIDE8_LOG */
+/*{{{*/
+/*  dom_hide_log_settings .. (called by log_saved_settings) {{{*/
+/*{{{*/
+let _transcript = null;
+let last_logged_node_to_hide_csv;
+let last_log_was_site_or_page;
+
+let missing_transcript_notified_once;
+/*}}}*/
+let dom_hide_log_settings = function()
+{
+/*{{{
+logBIG("dom_hide_log_settings: "+ (prop.get(t_data.SITE_OR_PAGE) ? "SITE" : "PAGE"));;
+log_caller();
+}}}*/
+    /* [dom_hide_log] .. (log transcript) {{{*/
+    if( _transcript == null) _transcript = document.getElementById("dom_hide_log");
+    if(!_transcript) {
+        if( !missing_transcript_notified_once) {
+logBIG("HTML HAS NO [dom_hide_log] TRANSCRIPT TO LOG TO", lbH+lf3);
+            missing_transcript_notified_once = true;
+        }
+        return;
+    }
+    /*}}}*/
+    /* [t_data.SITE_OR_PAGE] */
+    let    this_log_is_site_or_page      = prop.get(   t_data.SITE_OR_PAGE);
+    if(   (last_log_was_site_or_page    == this_log_is_site_or_page)
+       && (last_logged_node_to_hide_csv == node_to_hide_csv)
+      ) return;
+
+/*{{{
+logBIG("dom_hide_log_settings("+_caller+") .. "+ (this_log_is_site_or_page ? "SITE" : "PAGE"));;
+}}}*/
+
+    let children_collection_length    = children_collection.length;
+    let csv_count_node_to_hide_csv    = t_util.csv_count( node_to_hide_csv );
+    let node_to_hide_csv_stack_length = _dom_hide_node_to_hide_csv_STACK_length();
+
+    /* save first transcript sub-tool */
+    let firstElementChild = _transcript.firstElementChild;
+    let             scope = this_log_is_site_or_page ? "SITE" : "PAGE";
+    let               ccX = this_log_is_site_or_page ? "cc2"  :  "cc6";
+
+    _transcript.innerHTML
+        = "<em class='big "+ccX+"'>"+ scope + "</em><br>"
+        + "COLLECTION    <em class='big cc8'>"+ children_collection_length    +"</em><br>"
+        + "NODES TO HIDE <em class='big cc9'>"+ csv_count_node_to_hide_csv    +"</em><br>"
+        + "HISTORY       <em class='big cc7'>"+ node_to_hide_csv_stack_length +"</em><br>"
+        + _dom_hide_csv_to_html( node_to_hide_csv )
+    ;
+
+    /* restore first sub-tool */
+    if(       firstElementChild
+       && (   firstElementChild.classList.contains( t_tools.CSS_CLEARPIN )
+           || firstElementChild.classList.contains( t_tools.CSS_CLOSEPIN )
+           || firstElementChild.classList.contains( t_tools.CSS_PUSH_PIN )
+           || firstElementChild.classList.contains( t_tools.CSS_SCALEPIN )
+           || firstElementChild.classList.contains("toolbag_button")
+         )
+      )
+        _transcript.insertBefore(firstElementChild, _transcript.firstElementChild);
+
+    last_logged_node_to_hide_csv = node_to_hide_csv;
+    last_log_was_site_or_page    = this_log_is_site_or_page;
 };
 /*}}}*/
 /*  _dom_hide_csv_to_html {{{*/
@@ -1497,6 +1573,10 @@ let _dom_hide_csv_to_html = function(csv)
 };
 /*}}}*/
 
+/*}}}*/
+
+/* DOM_HIDE9_HIGHLIGHT */
+/*{{{*/
 /* _dom_hide_highlight_last_hidden {{{*/
 /*{{{*/
 const NODE_TO_HIDE_HIGHLIGHT_LAST_HIDDEN_DELAY = 500;
@@ -1546,43 +1626,25 @@ logXXX("node_path=["+node_path+"]");
     if(!node) return;
 
 /*{{{
-t_log.console_dir(     node          , "NODE");
+t_log.console_dir("NODE", node);
 }}}*/
     t_util.add_el_class(node          , LAST_HIDDEN);
     t_util.add_el_class(node.node_mask, LAST_HIDDEN);
 /*{{{
-t_log.console_dir(     node.node_mask, "MASK");
+t_log.console_dir("MASK",      node.node_mask);
 }}}*/
 
     _notify_hide_container(node, caller, "LAST HIDDEN "+t_util.get_id_or_tag(node));
 };
 /*}}}*/
 /*}}}*/
-/* LOG */ /*{{{*/
-/* _dom_hide_csv_dump {{{*/
-let _dom_hide_csv_dump = function()
-{
-    if(!node_to_hide_csv) return;
-
-    let node_to_hide_csv_array = node_to_hide_csv.split(",");               /* pre_0|div_2 , ul_23|li_8 */
-    for(let n_num = 1; n_num  <= node_to_hide_csv_array.length; ++n_num)
-    {
-        let     node_path = node_to_hide_csv_array[n_num-1];
-
-        t_util.get_node_path_target(node_path, n_num);
-    }
-};
-/*}}}*/
-/*}}}*/
 
 /* EXPORT */
 /*{{{*/
-return { name : "dom_hide"
-    , logging : function(value) { if(value != undefined) DOM_HIDE_LOG = value; dom_store.t_store_set_value("DOM_HIDE_LOG", DOM_HIDE_LOG); return DOM_HIDE_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_HIDE_TAG = value; dom_store.t_store_set_value("DOM_HIDE_TAG", DOM_HIDE_TAG); return DOM_HIDE_TAG; }
-    , t_hide_IMPORT
-
-    ,    get_node_to_hide_csv_count : function() { return loaded_site_csv_count + loaded_page_csv_count; }
+return { name    : "dom_hide"
+    ,    logging : (state) => DOM_HIDE_LOG = dom_util.t_util_set_state("DOM_HIDE_LOG",state)
+    ,    tagging : (state) => DOM_HIDE_TAG = dom_util.t_util_set_state("DOM_HIDE_TAG",state)
+    ,    t_hide_IMPORT
 
     /* DOM_HIDE1_SELECT */
     ,    dom_hide1_collect_nodes
@@ -1594,15 +1656,16 @@ return { name : "dom_hide"
     ,    dom_hide2_store_save
 
     /* DOM_HIDE3_OR_MASK */
-    ,    dom_hide_set_MASK_OR_HIDE
+    ,    dom_hide3_set_MASK_OR_HIDE
 
     /* DOM_HIDE4_SCROLL */
     ,    dom_hide4_scroll_to_last_hidden
     ,    dom_hide4_scroll_to_last_hidden_handled_recently
     ,    dom_hide4_scroll_to_last_hidden_is_pending
 
-    /* DOM_HIDE5_START_HISTORY */
-    ,    dom_hide5_start_history
+    /* DOM_HIDE5_HISTORY */
+    ,    dom_hide5_history_start
+    ,    dom_hide_csv_stack_pop
 
     /* DOM_HIDE6_OBSERVERS */
     ,    dom_hide6_add_container_observer
@@ -1612,8 +1675,13 @@ return { name : "dom_hide"
     /* DOM_HIDE8_LOG */
     ,    dom_hide_log_settings
 
-    /* YET UNUSED */
-    ,    _dom_hide_is_at_xy
+    /* DOM_HIDE9_GET */
+    ,    get_node_hidden_parentElement
+    ,    get_node_to_hide_csv_count : ()   => loaded_site_csv_count + loaded_page_csv_count
+
+    /* DEBUG ONLY */
+    , _dom_hide_sync_UI
+    , _dom_hide_csv_stack_clear_history
 
 };
 

@@ -1,46 +1,63 @@
-/* dom_sticky_js */
-/* jshint esversion: 6, laxbreak:true, laxcomma:true, boss:true */
-const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (200303:18h)";
-let dom_sticky  = (function() {
-"use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_fly, dom_view, dom_seek, dom_tools */
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_sticky                                                               │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals dom_data, dom_log, dom_util, dom_i18n, dom_prop, dom_store, dom_fly, dom_view, dom_seek, dom_tools */
+
+/* globals console, window, document, Node */
+/* globals setTimeout, clearTimeout */
+/* globals requestAnimationFrame, cancelAnimationFrame */
+
+/* exported dom_sticky DOM_STICKY_JS_TAG, dom_sticky */
+
+/* eslint-disable complexity           */
+/* eslint-disable max-depth            */
+/* eslint-disable new-cap              */
+/* eslint-disable no-return-assign     */
+/* eslint-disable no-unused-vars       */
+/* eslint-disable no-warning-comments  */
+/* eslint-disable object-shorthand     */
+/* eslint-disable prefer-object-spread */
+
 /*
 :1,$y *
 :!start explorer https://jshint.com/
 */
-/*}}}*/
-let   DOM_STICKY_LOG        = false;
-let   DOM_STICKY_TAG        = false;
 
-/* IMPORT */
-/*{{{*/
+const DOM_STICKY_JS_ID      = "dom_sticky_js";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (210928:16h:01)";
+/*}}}*/
+let dom_sticky  = (function() {
+"use strict";
+
+/* IMPORT {{{*/
 /*➔ t_sticky_IMPORT {{{*/
 /* t_data .. t_tools {{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_prop     = {}        ;    /* 08 */
-let t_store    = {}        ;    /* 09 */
-let t_fly      = {}        ;    /* 10 */
+let t_i18n     = {}        ;    /* 08 */
+let t_prop     = {}        ;    /* 09 */
+let t_store    = {}        ;    /* 10 */
+let t_fly      = {}        ;    /* 11 */
 /*....................................*/
-/*  t_wording  = {}        ; */ /* 11 */
-/*  t_select   = {}        ; */ /* 12 */
-/*  t_slot     = {}        ; */ /* 13 */
+/*  t_wording  = {}        ; */ /* 12 */
+/*  t_select   = {}        ; */ /* 13 */
+/*  t_slot     = {}        ; */ /* 14 */
 /*....................................*/
-/*  t_hide     = {}        ; */ /* 14 */
-let t_view     = {}        ;    /* 15 */
-/*➔ t_sticky   = {}        ; */ /* 16 */
-let t_seek     = {}        ;    /* 17 */
-/*  t_share    = {}        ; */ /* 18 */
+/*  t_hide     = {}        ; */ /* 15 */
+let t_view     = {}        ;    /* 16 */
+/*➔ t_sticky   = {}        ; */ /* 17 */
+let t_seek     = {}        ;    /* 18 */
+/*  t_share    = {}        ; */ /* 19 */
 /*....................................*/
-/*  t_grid     = {}        ; */ /* 19 */
-/*  t_gutter   = {}        ; */ /* 20 */
+/*  t_grid     = {}        ; */ /* 20 */
+/*  t_gutter   = {}        ; */ /* 21 */
 /*....................................*/
-/*  t_ipc      = {}        ; */ /* 21 */
-let t_tools    = {}        ;    /* 22 */
+/*  t_ipc      = {}        ; */ /* 22 */
+let t_tools    = {}        ;    /* 23 */
 /*....................................*/
 /*}}}*/
 let t_sticky_IMPORT = function(log_this)
@@ -50,31 +67,33 @@ let t_sticky_IMPORT = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_prop    = dom_prop   ;    /* 08 */
-    t_store   = dom_store  ;    /* 09 */
-    t_fly     = dom_fly    ;    /* 10 */
+    t_i18n    = dom_i18n   ;    /* 08 */
+    t_prop    = dom_prop   ;    /* 09 */
+    t_store   = dom_store  ;    /* 10 */
+    t_fly     = dom_fly    ;    /* 11 */
 /* ...................................*/
-/*  t_wording = dom_wording; */ /* 11 */
-/*  t_select  = dom_select ; */ /* 12 */
-/*  t_slot    = dom_slot   ; */ /* 13 */
+/*  t_wording = dom_wording; */ /* 12 */
+/*  t_select  = dom_select ; */ /* 13 */
+/*  t_wot     = dom_wot    ; */ /* 13 */
+/*  t_slot    = dom_slot   ; */ /* 14 */
 /* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 14 */
-    t_view    = dom_view   ;    /* 15 */
-/*➔ t_sticky  = dom_sticky ; */ /* 16 */
-    t_seek    = dom_seek   ;    /* 17 */
-/*  t_share   = dom_share  ; */ /* 18 */
+/*  t_hide    = dom_hide   ; */ /* 15 */
+    t_view    = dom_view   ;    /* 16 */
+/*➔ t_sticky  = dom_sticky ; */ /* 17 */
+    t_seek    = dom_seek   ;    /* 18 */
+/*  t_share   = dom_share  ; */ /* 19 */
 /* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 19 */
-/*  t_gutter  = dom_gutter ; */ /* 20 */
+/*  t_grid    = dom_grid   ; */ /* 20 */
+/*  t_gutter  = dom_gutter ; */ /* 21 */
 /* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 21 */
-    t_tools   = dom_tools  ;    /* 22 */
+/*  t_ipc     = dom_ipc    ; */ /* 22 */
+    t_tools   = dom_tools  ;    /* 23 */
 /* ...................................*/
 /*}}}*/
     sticky_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_STICKY_LOG = DOM_STICKY_LOG || dom_store.t_store_getBool("DOM_STICKY_LOG");
-    DOM_STICKY_TAG = DOM_STICKY_TAG || dom_store.t_store_getBool("DOM_STICKY_TAG");
+    DOM_STICKY_LOG = DOM_STICKY_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_STICKY_LOG"));
+    DOM_STICKY_TAG = DOM_STICKY_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_STICKY_TAG"));
 
     /*}}}*/
 if(log_this) log("%c 16 STICKY", lbH+lf6);
@@ -126,15 +145,6 @@ let log_anchor_step;
 /*}}}*/
 /* t_util {{{*/
 
-let I18N_STICKY_FIX_TOOLTIP;
-let I18N_STICKY_HAND_MOV_TOOLTIP;
-let I18N_STICKY_PAD_TOOLTIP;
-let I18N_STICKY_PASTE_TOOLTIP;
-let I18N_STICKY_PEN_TOOLTIP;
-let I18N_STICKY_REFLOW_TOOLTIP;
-let I18N_STICKY_REFONT_TOOLTIP;
-let I18N_STICKY_RESIZE;
-let I18N_STICKY_ROTATE;
 let JSON_parse;
 let add_el_class;
 let atob_msg;
@@ -226,26 +236,17 @@ let   sticky_INTERN = function()
     [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
     [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
 
-    log                 = t_log.functions.log;
-    logBIG              = t_log.functions.logBIG;
-    logXXX              = t_log.functions.logXXX;
-    log_caller          = t_log.functions.log_caller;
-    log_json_one_liner  = t_log.functions.log_json_one_liner;
-    log_key_val         = t_log.functions.log_key_val;
-    log_key_val_group   = t_log.functions.log_key_val_group;
-    log_anchor_step     = t_log.functions.log_anchor_step;
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
+    log_anchor_step     = t_log.log_anchor_step;
     /*}}}*/
     /* t_util {{{*/
 
-    I18N_STICKY_FIX_TOOLTIP         = t_util.I18N_STICKY_FIX_TOOLTIP;
-    I18N_STICKY_HAND_MOV_TOOLTIP    = t_util.I18N_STICKY_HAND_MOV_TOOLTIP;
-    I18N_STICKY_PAD_TOOLTIP         = t_util.I18N_STICKY_PAD_TOOLTIP;
-    I18N_STICKY_PASTE_TOOLTIP       = t_util.I18N_STICKY_PASTE_TOOLTIP;
-    I18N_STICKY_PEN_TOOLTIP         = t_util.I18N_STICKY_PEN_TOOLTIP;
-    I18N_STICKY_REFLOW_TOOLTIP      = t_util.I18N_STICKY_REFLOW_TOOLTIP;
-    I18N_STICKY_REFONT_TOOLTIP      = t_util.I18N_STICKY_REFONT_TOOLTIP;
-    I18N_STICKY_RESIZE              = t_util.I18N_STICKY_RESIZE;
-    I18N_STICKY_ROTATE              = t_util.I18N_STICKY_ROTATE;
     JSON_parse                      = t_util.JSON_parse;
     add_el_class                    = t_util.add_el_class;
     atob_msg                        = t_util.atob_msg;
@@ -278,7 +279,6 @@ let   sticky_INTERN = function()
     get_xy_tlbr_dist                = t_util.get_xy_tlbr_dist;
     has_el_class                    = t_util.has_el_class;
     has_scrollbar                   = t_util.has_scrollbar;
-    i18n_get                        = t_util.i18n_get;
     is_contained_by_parent          = t_util.is_contained_by_parent;
     is_el_or_child_of_parent_el     = t_util.is_el_or_child_of_parent_el;
     is_event_on_scrollbar           = t_util.is_event_on_scrollbar;
@@ -292,6 +292,11 @@ let   sticky_INTERN = function()
     strip_contentEditable           = t_util.strip_contentEditable;
     t_TEXT_LINES_to_COLORED_HTML    = t_util.t_TEXT_LINES_to_COLORED_HTML;
     vbar_to_LF                      = t_util.vbar_to_LF;
+
+    /*}}}*/
+    /* t_i18n {{{*/
+
+    i18n_get                        = t_i18n.i18n_get;
 
     /*}}}*/
     sticky_DEPEND();
@@ -416,9 +421,9 @@ let   sticky_DEPEND = function()
 };
 /*}}}*/
 /*}}}*/
-
-/* CONST */
-/*{{{*/
+/* CONST {{{*/
+let   DOM_STICKY_LOG        = false;
+let   DOM_STICKY_TAG        = false;
 /* DIR {{{*/
 const CSS_LAYOUT_NE             = "layout_NE";
 const CSS_LAYOUT_NW             = "layout_NW";
@@ -518,7 +523,7 @@ let onWork_STICKY;
 /*}}}*/
 /*}}}*/
 
-/* CREATE .. UPDATE */
+/* CREATE..UPDATE */
 /*{{{*/
 /*➔ t_sticky_NEW_XY_SEL_TEXT {{{*/
 let t_sticky_NEW_XY_SEL_TEXT = function(x, y, sel_text)
@@ -532,7 +537,7 @@ if( log_this) log_caller();
 /*}}}*/
 
     let sticky = sticky_NEW(x, y);
-    if(!sticky ) return;
+    if(!sticky ) return null;
 
     /* update changed time .. set msg .. layout sticky_pad content */
     sticky_NEW_XY_SEL_TEXT_MSG(sticky, escapeHTML(sel_text));
@@ -593,7 +598,7 @@ if( log_this) log(caller);
                            );
 
         t_sticky_CHOOSE();
-        return;
+        return null;
     }
     /*}}}*/
     /* PLACE AND DIMM A NEW OR UNPINNED [sticky] {{{*/
@@ -744,8 +749,8 @@ let t_sticky_GET_NUM = function(el)
 /*}}}*/
 let get_sticky_hand     = function(sticky) { return sticky.firstElementChild; };
 let get_sticky_pad      = function(sticky) { return sticky.lastElementChild;  };
-let get_sticky_pad_msg  = function(sticky) { return sticky.querySelectorAll("."+STICKY_PAD_MSG  )[0]; };
-let get_sticky_pad_num  = function(sticky) { return sticky.querySelectorAll("."+STICKY_PAD_NUM  )[0]; };
+let get_sticky_pad_msg  = function(sticky) { return sticky.querySelector("."+STICKY_PAD_MSG); };
+let get_sticky_pad_num  = function(sticky) { return sticky.querySelector("."+STICKY_PAD_NUM); };
 /*}}}*/
 
 /* STORE .. LOAD */
@@ -917,6 +922,10 @@ if( log_this) t_sticky_LOG(sticky);
 /*…   sticky_get_value {{{*/
 let   sticky_get_value = function(sticky)
 {
+/* CALLERS:
+javascript/dom_sticky.js:767  t_sticky_STORE:809:         let value = sticky_get_value( sticky );
+javascript/dom_sticky.js:2893  sticky_onLayout_handler:2918:         let value = sticky_get_value( sticky );
+*/
 /*{{{*/
 let   caller = "sticky_get_value";
 let log_this = DOM_STICKY_LOG || LOG_MAP.T0_STORE;
@@ -954,6 +963,10 @@ if( log_this) log_key_val(caller+" "+sticky.num+"=["+ellipsis_16(sticky.msg)+"] 
 /*}}}*/
 /*XXX*/
 /*…   sticky_set_value {{{*/
+/*{{{*/
+let last_set_fontSize;
+
+/*}}}*/
 let   sticky_set_value = function(sticky,value)
 {
 /*{{{*/
@@ -1026,6 +1039,7 @@ if( log_this) log("%c xy=["+x+" "+y+"] .. (MAGNET TO GRID)", lbH+lf8);
     /*}}}*/
     /* FONT {{{*/
     sticky.msg_fontSize = value.msg_fontSize;
+    last_set_fontSize   = sticky.msg_fontSize;
 
 if( log_this) log("%c msg_fontSize=["+sticky.msg_fontSize+"]", lbH+lf8);
     /*}}}*/
@@ -1346,7 +1360,7 @@ if( log_this) log("%c TOUCHED "+sticky.touched+"%c sticky_dimmed=["+sticky_dimme
 /*{{{
     let sticky_dimmed_off = has_el_class(sticky, CSS_DIMMED_OFF);
 log("...sticky_dimmed_off=["+sticky_dimmed_off+"]");
-console_dir(sticky.className,"sticky.className");
+console_dir("sticky.className",sticky.className);
 }}}*/
     /*}}}*/
     /* [EDITING    or IGNORE] .. WHILE EDITING {{{*/
@@ -1421,7 +1435,7 @@ if( tag_this) log("%c DONE EDITING "+sticky.id, lbH+lf5);
         if( change_layout ) {
             consumed_by = "RESIZING STICKY "+sticky.id;
 
-            let xy = t_tools.get_event_XY(e);
+            let xy = t_util.get_event_XY(e);
             onDown_XY.x = xy.x;
             onDown_XY.y = xy.y;
 
@@ -1511,6 +1525,7 @@ if( log_this) log("%c"+caller+" %c "+zIndex_on_top+" %c "+sticky_on_top.id
     }
 };
 /*}}}*/
+
 /*➔ t_sticky_onMove {{{*/
 let t_sticky_onMove = function(x,y)
 {
@@ -1519,7 +1534,7 @@ let   caller = "t_sticky_onMove";
 let log_this = DOM_STICKY_LOG;
 
     let sticky = onWork_STICKY;
-    if(!sticky ) return "";
+    if(!sticky ) return;
 
 log_this = log_this && !sticky_was_moved; /* FIRST MOVE ONLY */
     sticky_was_moved = true;
@@ -1975,6 +1990,7 @@ if( log_this) log("%c "+caller, lf3);
         if(contained_V || shrinking) {
             sticky.msg_fontSize    = fontSize_next;
             pad_msg.style.fontSize = fontSize_next+"px";
+            last_set_fontSize      = sticky.msg_fontSize;
         }
         if(contained_V) fontSize_contained = fontSize_next;
     }
@@ -2551,7 +2567,8 @@ console.time(caller);
 
     /*}}}*/
     /* SET GEOMETRY .. f(fontSize) {{{*/
-    pad_msg.style.fontSize = sticky.msg_fontSize+"px";
+    if( sticky.msg_fontSize )
+        pad_msg.style.fontSize = sticky.msg_fontSize+"px";
 
     /*}}}*/
     /* GET [------ --- NUM MSG DAT] .. (get other children geometry) {{{*/
@@ -2738,15 +2755,17 @@ let log_this = DOM_STICKY_LOG;
 
 let tag_this = DOM_STICKY_TAG || log_this;
 if( log_this) caller += "("+(sticky ? sticky.id:"")+")";
-if( log_this) log(caller, lbH+lf0);
+if( log_this) log("%c"+caller, lbH+lf0);
+if( log_this) t_fly.t_log_event_status(caller, lf1);
 /*}}}*/
     /*  sel_text .. f(STICKY_SEL_TEXT_LEN_MAX) {{{*/
     let sel_text = t_tools.t_get_current_sel_text() || t_tools.t_get_onDown_SEL_TEXT();
 
     /*}}}*/
     /*  state {{{*/
-    let state0_is_editing           =  t_sticky_is_EDITING();
-    let state0_clicked_page         = !t_tools.t_some_tool_clicked();
+    let state0_is_bouncing_EDIT     =  dom_tools.t_is_bouncing_e_type("STICKY_DONE", caller, 500);
+    let state0_is_editing           = !state0_is_bouncing_EDIT && t_sticky_is_EDITING();
+    let state0_clicked_tool_panel   = !t_tools.t_some_tool_clicked();
     let state1_sticky_ring_deployed =  t_tools.t_dimm_mask_displayed();
     let state2_sticky_has_focus     =  has_el_class(sticky  , CSS_HAS_FOCUS   );
     let state3_clicked_hand         =  sticky  && (sticky.touched == STICKY_HAND     );
@@ -2766,7 +2785,7 @@ if( log_this) log(caller, lbH+lf0);
     let action0_sticky_ring_select      =  state6_clicked_sticky_ring && !state5_clicked_sticky_fix;
     let action1_sel_text_on_touched     = !state6_clicked_sticky_ring &&  state3_onSticky_touched && (sel_text != "");
     let action2_pad_not_fixed_choose    = !state6_clicked_sticky_ring &&  state4_clicked_pad  && !state7_target_fixed && !state8_target_dimmed;
-    let action3_clicked_pen_EDITING     = !state6_clicked_sticky_ring &&  state3_clicked_pen  && !state2_sticky_has_focus && !state0_is_editing;
+    let action3_clicked_pen_EDITING     = !state0_is_bouncing_EDIT    &&  state3_clicked_pen && !state0_is_editing;
     let action4_sticky_fix_unpin        =  state5_clicked_sticky_fix;
     let action5_clicked_handle_or_fixed = !state6_clicked_sticky_ring && (state3_clicked_hand || state3_clicked_rotate || state7_target_fixed);
 
@@ -2786,7 +2805,9 @@ if(tag_this)
 {
     log_key_val(  "CLICK"
               , { className : "["+(sticky ? sticky.className : "")+"]"
-                , state0_clicked_page
+                , state0_is_bouncing_EDIT
+                , state0_is_editing
+                , state0_clicked_tool_panel
                 , state1_sticky_ring_deployed
                 , state2_sticky_has_focus
                 , state3_clicked_hand
@@ -2917,7 +2938,7 @@ if( log_this) log("%c"+caller, lbH+lf4);
     {
         /* SKIP UNPINNED AND FIXED {{{*/
         let sticky = sticky_array[sticky_num];
-        if(!sticky                                 ) continue;
+        if(!sticky                          ) continue;
 
         set_el_class_on_off(sticky, t_data.SHOW_SEEKZONE, show_seekzone);
 
@@ -3005,8 +3026,7 @@ if( log_this) log("SORT ON POSITION");
 }}}*/
     /* Rebuild sorted collection {{{*/
     sticky_array = [];
-    let sticky_num = 0;
-    for(let  i = 0; i < targets.length; ++i)
+    for(let sticky_num= 0, i= 0; i < targets.length; ++i)
     {
         let sticky                    =   targets[i];
         sticky.num                    = ++sticky_num;
@@ -3973,9 +3993,9 @@ if( log_this) log("%c"+t_data.SD1+"%c "+caller+"%c "+x+" "+y+" %c"+ get_n_lbl(st
         sticky_transformOrigin_XY = { x:xy[0] , y:xy[1] };
 }}}*/
 /*{{{
-        t_log.console_dir(cs,"cs");
-        t_log.console_dir(px,"px");
-        t_log.console_dir(xy,"xy");
+        t_log.console_dir("cs",cs);
+        t_log.console_dir("px",px);
+        t_log.console_dir("xy",xy);
 }}}*/
         sticky_transformOrigin_XY = get_el_transformOrigin(sticky);
 /*{{{
@@ -4416,7 +4436,7 @@ let log_this = DOM_STICKY_LOG;
 
 if( log_this) t_fly.t_log_event_status(caller, lf7);
 /*
-t_log.console_dir(sticky_target,"sticky_target");
+t_log.console_dir("sticky_target",sticky_target);
 let onDown_SELECTION = t_tools.get_onDown_SELECTION(); if(onDown_SELECTION) log("onDown_SELECTION=["+onDown_SELECTION+"]");
 let current_sel_text = t_tools.t_get_current_sel_text    (); if(current_sel_text) log("current_sel_text=["+current_sel_text+"]");
 */
@@ -4482,19 +4502,47 @@ let log_this = DOM_STICKY_LOG;
 
 let tag_this = DOM_STICKY_TAG || log_this;
 if( log_this) log(caller+": onWork_STICKY=["+get_n_lbl(onWork_STICKY)+"] .. HAS FOCUS: "+has_el_class(onWork_STICKY, CSS_HAS_FOCUS));
-/*}}}*/
-    /* INPUT FOCUS RELEASE {{{*/
-    if(!onWork_STICKY) return false;
 
+    if(!onWork_STICKY) return false;
+/*}}}*/
+    /* NOT DONE IF EMPTY {{{*/
+    let sticky_pad_msg = get_sticky_pad_msg( onWork_STICKY );
+    if(!sticky_pad_msg || !sticky_pad_msg.textContent.trim())
+    {
+logBIG(caller+": onWork_STICKY has no msg");
+
+        return false;
+    }
+    /*}}}*/
+    /* DONE BY TOUCHING PEN OR FIX {{{*/
+logBIG(caller+": sticky.touched=["+onWork_STICKY.touched+"]");
+    let touched_DONE
+        =  (onWork_STICKY.touched == STICKY_PEN)
+        || (onWork_STICKY.touched == STICKY_FIX); /* i.e. delete sticky */
+
+    if(!touched_DONE) {
+/*{{{
+clearSelection();
+let sticky_pad_msg = get_sticky_pad_msg( onWork_STICKY );
+selectNodeContents( sticky_pad_msg );
+window.getSelection().collapse(onWork_STICKY,0);
+window.getSelection().collapseToStart();
+window.getSelection().empty();
+          //sticky_pad_msg.focus();
+}}}*/
+
+        let selection            = window.getSelection();
+        if( selection.anchorNode ) selection.collapseToEnd();
+        else                       selectNodeContents(sticky_pad_msg);
+
+        return false;
+    }
+    dom_tools.t_is_bouncing_e_type("STICKY_DONE", caller); /* STICKY EDIT COOLODOWN START */
+
+    /*}}}*/
+    /* INPUT FOCUS RELEASE {{{*/
     if( has_el_class(onWork_STICKY, CSS_HAS_FOCUS))
         del_el_class(onWork_STICKY, CSS_HAS_FOCUS);
-
-    let sticky_pad_msg = get_sticky_pad_msg( onWork_STICKY );
-    if(!sticky_pad_msg) {
-if(log_this) logBIG(caller+": onWork_STICKY has no msg");
-
-        return;
-    }
 
     t_tools.t_blur( sticky_pad_msg );
     /*}}}*/
@@ -4657,7 +4705,7 @@ if( log_this) log(caller+"("+state+")");
 /*}}}*/
     let sticky_title
         = state
-        ?  i18n_get( I18N_STICKY_PASTE_TOOLTIP )
+        ?  i18n_get( t_i18n.STICKY_PASTE_TOOLTIP )
         :  "";
 
     let some_paste_indicator_changed;
@@ -4730,15 +4778,15 @@ let sticky_RESIZE_last_edited = function()
 /*➔ t_sticky_get_tooltip {{{*/
 let t_sticky_get_tooltip = function(sticky)
 {
-    return has_el_class(sticky,       CSS_PASTE_TARGET ) ? i18n_get( I18N_STICKY_PASTE_TOOLTIP    )
-        :                     (sticky.touched == STICKY_FIX   ) ? i18n_get( I18N_STICKY_FIX_TOOLTIP      )
-        :                     (sticky.touched == STICKY_HAND  ) ? i18n_get( I18N_STICKY_HAND_MOV_TOOLTIP )
-        :                     (sticky.touched == STICKY_PAD   ) ? i18n_get( I18N_STICKY_PAD_TOOLTIP      )
-        :                     (sticky.touched == STICKY_PEN   ) ? i18n_get( I18N_STICKY_PEN_TOOLTIP      )
-        :                     (sticky.touched == STICKY_REFLOW) ? i18n_get( I18N_STICKY_REFLOW_TOOLTIP   )
-        :                     (sticky.touched == STICKY_REFONT) ? i18n_get( I18N_STICKY_REFONT_TOOLTIP   )
-        :                     (sticky.touched == STICKY_RESIZE) ? i18n_get( I18N_STICKY_RESIZE           )
-        :                     (sticky.touched == STICKY_ROTATE) ? i18n_get( I18N_STICKY_ROTATE           )
+    return has_el_class(sticky,              CSS_PASTE_TARGET ) ? i18n_get( t_i18n.STICKY_PASTE_TOOLTIP    )
+        :                     (sticky.touched == STICKY_FIX   ) ? i18n_get( t_i18n.STICKY_FIX_TOOLTIP      )
+        :                     (sticky.touched == STICKY_HAND  ) ? i18n_get( t_i18n.STICKY_HAND_MOV_TOOLTIP )
+        :                     (sticky.touched == STICKY_PAD   ) ? i18n_get( t_i18n.STICKY_PAD_TOOLTIP      )
+        :                     (sticky.touched == STICKY_PEN   ) ? i18n_get( t_i18n.STICKY_PEN_TOOLTIP      )
+        :                     (sticky.touched == STICKY_REFLOW) ? i18n_get( t_i18n.STICKY_REFLOW_TOOLTIP   )
+        :                     (sticky.touched == STICKY_REFONT) ? i18n_get( t_i18n.STICKY_REFONT_TOOLTIP   )
+        :                     (sticky.touched == STICKY_RESIZE) ? i18n_get( t_i18n.STICKY_RESIZE           )
+        :                     (sticky.touched == STICKY_ROTATE) ? i18n_get( t_i18n.STICKY_ROTATE           )
         :                                                         sticky.title
     ;
 };
@@ -4828,7 +4876,7 @@ let log_this = DOM_STICKY_LOG;
 
 if( log_this)
     log("%c"+caller+"("+sticky.id+") %c num=["+sticky.num+"] %c msg=["+encode_LF(ellipsis_short(strip_HTML(sticky.msg)))+"]"
-        ,lbH+lf8                    ,lbL+lf3                ,lbR+lf3                                                                             );
+        ,lbH+lf8                    ,lbL+lf3                ,lbR+lf3                                                        );
 /*}}}*/
     /* [SHOW_SEEKZONE] .. [sticky_format_pad_anchor_path] {{{*/
     let show_seekzone = t_prop.get(t_data.SHOW_SEEKZONE);
@@ -4938,6 +4986,14 @@ let log_this = DOM_STICKY_LOG || LOG_MAP.T0_STORE;
 let tag_this = DOM_STICKY_TAG || log_this;
 if( log_this) caller +="("+sticky.id+")";
 /*}}}*/
+    /* [fontSize] apply last user selected-adjusted {{{*/
+    if( last_set_fontSize )
+    {
+        if( tag_this) log("%c...applying last set font size: "+ last_set_fontSize +"px", lbH+lf8);
+
+        sticky.msg_fontSize = last_set_fontSize;
+    }
+    /*}}}*/
     /* [sticky_pad_msg  WH] current {{{*/
     let sticky_pad_msg = get_sticky_pad_msg( sticky );
 
@@ -4964,7 +5020,7 @@ if( tag_this) log("%c NO [WH] TO KEEP for ["+sticky.pad_flow+"] "+caller, lbH+lf
     }
     else {
         /* KEEPING WIDTH {{{*/
-        let sticky_pad_msg = get_sticky_pad_msg( sticky ); /* sticky_pad_msg from just built innerHTML */
+        sticky_pad_msg = get_sticky_pad_msg( sticky ); /* sticky_pad_msg from just built innerHTML */
 
         if(sticky.pad_flow == CSS_WS_NOWRAP)
         {
@@ -5448,7 +5504,7 @@ log("%c LOG "+msg+"%c "+arg_type+" %c from "+from+" %c to "+to+" %c out of "+STI
 
     /*}}}*/
     /* LIST {{{*/
-    for(let sticky_num = from; sticky_num <= to; ++sticky_num)
+    for(sticky_num = from; sticky_num <= to; ++sticky_num)
     {
         let sticky     =  sticky_array[ sticky_num ];
 
@@ -5486,9 +5542,9 @@ log("%c LOG "+msg+"%c "+arg_type+" %c from "+from+" %c to "+to+" %c out of "+STI
                            , lfX[sticky_num]
                            , true);
 /*{{{
-t_log.console_dir(sticky,"sticky")
-t_log.console_dir(clone,"clone")
-if(sticky.anchor_node) t_log.console_dir(sticky.anchor_node,"sticky.anchor_node");
+t_log.console_dir("sticky",sticky)
+t_log.console_dir("clone",clone)
+if(sticky.anchor_node) t_log.console_dir("sticky.anchor_node",sticky.anchor_node);
 }}}*/
         if(from != to) log("...");
     }
@@ -5639,8 +5695,8 @@ if( log_this) log("%c msg_pos_anchor_lines: %c"+t_data.LF+strip_HTML(msg_pos_anc
 /* EXPORT */
     /*{{{*/
 return { name : "dom_sticky"
-    , logging : function(value) { if(value != undefined) DOM_STICKY_LOG = value; dom_store.t_store_set_value("DOM_STICKY_LOG", DOM_STICKY_LOG); return DOM_STICKY_LOG; }
-    , tagging : function(value) { if(value != undefined) DOM_STICKY_TAG = value; dom_store.t_store_set_value("DOM_STICKY_TAG", DOM_STICKY_TAG); return DOM_STICKY_TAG; }
+    , logging : function(state) { return DOM_STICKY_LOG = dom_util.t_util_set_state("DOM_STICKY_LOG",state); }
+    , tagging : function(state) { return DOM_STICKY_TAG = dom_util.t_util_set_state("DOM_STICKY_TAG",state); }
     , t_sticky_IMPORT
 
         /* CONST {{{*/
