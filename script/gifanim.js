@@ -12,7 +12,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_GIFANIM_JS_ID     = "dom_gifanim_js";
-const DOM_GIFANIM_JS_TAG    =  DOM_GIFANIM_JS_ID+" (210928:18h:31)";
+const DOM_GIFANIM_JS_TAG    =  DOM_GIFANIM_JS_ID+" (211119:17h:51)";
 /*}}}*/
 /*{{{*/
 let LOG_THROTTLE_IMG_ONLOAD_DELAY = 2000;
@@ -760,9 +760,9 @@ let caller = "on1_document_onDOMContentLoaded_defer_gifanim";
     /* eslint-disable no-undef */
     if(typeof dom_log != "undefined")
     {
-        [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log.LOG_BG_ARR;
-        [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log.LOG_XX_ARR;
-        [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log.LOG_FG_ARR;
+        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
 
 ({ logBIG } = dom_log);
 logBIG(DOM_GIFANIM_JS_ID+": [dom_log]", 3);

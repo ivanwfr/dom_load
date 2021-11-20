@@ -12,16 +12,19 @@
 /* globals dom_util                     */
 /* globals dom_store                    */
 
-
 /* exported dom_details, DOM_DETAILS_JS_TAG */
 
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (210928:19h:58)";  /* eslint-disable-line no-unused-vars */
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211119:17h:51)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_details         = (function() {
 "use strict";
 let   DOM_DETAILS_LOG   = false;
 let   DOM_DETAILS_TAG   = false;
+/*{{{*/
+const DETAILS_RADIO_ID = "details_radio";
+
+/*}}}*/
 
 /*➔ t_details_IMPORT {{{*/
 /* eslint-disable no-unused-vars */
@@ -53,7 +56,7 @@ let get_el_sibling_with_tag;
 let get_id_or_tag;
 let get_id_or_tag_and_className;
 let get_nodeXPath;
-let has_el_class;
+let get_tool;
 let is_el_or_child_of_parent_el;
 
 /*}}}*/
@@ -76,14 +79,14 @@ let caller = "details_INTERN";
     let dom_log_js
         = (typeof dom_log != "undefined")
         ?         dom_log
-        :         dom_details_log;  /* javascript/dom_details_log.js */ /* eslint-disable-line no-undef */
+        :         dom_details_log;  /* script/dom_details_log.js */ /* eslint-disable-line no-undef */
 
     if( dom_log_js )
     {
-        if(dom_log_js.LOG_BG_ARR) {
-            [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log_js.LOG_BG_ARR;
-            [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log_js.LOG_XX_ARR;
-            [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log_js.LOG_FG_ARR;
+        if(dom_log_js.LOG_BG_CSS) {
+            ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log_js.LOG_BG_CSS);
+            ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log_js.LOG_FG_CSS);
+            ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log_js.LOG_XX_CSS);
         }
 
         ({  log
@@ -107,7 +110,7 @@ logBIG(caller+": [dom_log UNDEFINED]"   , 2);
     let dom_util_js
         = (typeof dom_util != "undefined")
         ?         dom_util
-        :         dom_details_util; /* javascript/dom_details_util.js */ /* eslint-disable-line no-undef */
+        :         dom_details_util; /* script/dom_details_util.js */ /* eslint-disable-line no-undef */
 
     if( dom_util_js )
     {
@@ -118,7 +121,7 @@ logBIG(caller+": [dom_log UNDEFINED]"   , 2);
          ,  get_id_or_tag
          ,  get_id_or_tag_and_className
          ,  get_nodeXPath
-         ,  has_el_class
+         ,  get_tool
          ,  is_el_or_child_of_parent_el
         } = dom_util_js);
 
@@ -145,32 +148,36 @@ if(DOM_DETAILS_LOG || DOM_DETAILS_TAG) logBIG(caller+": ["+dom_store.name+"]"   
 /*}}}*/
 
 /*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ ➔ ONLOAD RESTORE SAVED DETAILS OPEN STATE                                │*/
+/*│ 1. LISTEN TOGGLE DETAILS OPEN STATE       [localStorage details_id_open] │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
- /*➔ details_load_open_state {{{*/
-let  details_load_open_state = function(container=document)
+let details_handler = (function() {
+/*➔ details_onload {{{*/
+let details_onload = function()
 {
 /*{{{*/
-let caller = "details_load_open_state";
+let caller = "details_onload";
+let log_this = DOM_DETAILS_LOG;
 
-if(DOM_DETAILS_LOG) logBIG(caller, 8);
+if(log_this) logBIG(caller, 8);
 /*}}}*/
     /* ➔ RESTORE ONLOAD [open] STATE .. f(localStorage) {{{*/
-    let        details_array = container.querySelectorAll("DETAILS");
-
+    let        details_array = document.querySelectorAll("DETAILS");
     Array.from(details_array).forEach( (el) => {
-        let open = (el.id) && localStorage_getItem(el.id+"_open");
+        let open = el.id && localStorage_getItem(el.id+"_open");
         if( open ) {
             el.open = true;
-if(DOM_DETAILS_LOG) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
+if(log_this) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
         }
     });
+
     /*}}}*/
-    /* 1. LISTEN TOGGLE DETAILS OPEN STATE {{{*/
+    /* 1. LISTEN TO DETAILS EVENT {{{*/
     Array.from(details_array).forEach( (el) => {
         if(!el.id) return;
-        el.addEventListener("toggle", details_ontoggle);
+        el.addEventListener("mousedown", details_onmousedown);
+        el.addEventListener("toggle"   , details_ontoggle   );
     });
+
     /*}}}*/
     /* 2. DETAILS RADIO-BEHAVIOR {{{*/
     details_radio_set_from_localStorage();
@@ -182,74 +189,164 @@ if(DOM_DETAILS_LOG) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
     /*}}}*/
 };
 /*}}}*/
+ /*_ details_onmousedown {{{*/
+/*{{{*/
+ let details_onmousedown_shiftKey;
+ let details_onmousedown_altKey;
 
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ 1. LISTEN TOGGLE DETAILS OPEN STATE       [localStorage details_id_open] │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
+/*}}}*/
+ let details_onmousedown = function(e)
+ {
+     details_onmousedown_shiftKey  = e.shiftKey;
+     details_onmousedown_altKey    = e.altKey;
+//log("➔ details_onmousedown_shiftKey=["+ details_onmousedown_shiftKey +"]")
+//log("➔ details_onmousedown_altKey..=["+ details_onmousedown_altKey   +"]")
+ };
+ /*}}}*/
 /*_ details_ontoggle {{{*/
+/*{{{*/
+const DETAILS_ONTOGGLE_COOLDOWN = 500;
+
+let   details_ontoggle_timeStamp;
+/*}}}*/
 let details_ontoggle = function(e)
 {
 if(details_ontoggle_listener_mutex) return;
 /*{{{*/
 let caller = "details_ontoggle";
-if(DOM_DETAILS_LOG) log(caller+"("+e.target.tagName+") .. open=["+e.target.open+"]");
+let log_this= DOM_DETAILS_LOG;
 
-     let details_el = e.target;
-/*   if(!details_el ) return; .. why is this required ? */
+    let details_el = e.target;
+    if(!details_el ) return;
 
-if(DOM_DETAILS_LOG) log("➔ details_el=["+(details_el.id || details_el.firstElementChild.textContent)+"] .. open=["+details_el.open+"]");
+if( log_this) log(caller+"("+e.target.tagName+") .. open=["+e.target.open+"] ➔ details_el=["+(details_el.id || details_el.firstElementChild.textContent)+"] .. open=["+details_el.open+"]");
+/*}}}*/
+    /* STORAGE {{{*/
+    if(details_el.id) {
+        // [localStorage]
+        if(details_el.open) localStorage_setItem(details_el.id+"_open", "true");
+        else                localStorage_delItem(details_el.id+"_open"        );
+
+        // [COOKIE]
+//      if(details_el.open) set_cookie(details_el.id+"_open", "true");
+//      else                del_cookie(details_el.id+"_open"        );
+    }
+    /*}}}*/
+    /* IGNORE TOGGLE PROPAGATION CALLBACKS {{{*/
+    //   let this_MS      = new Date().getTime();
+    let elapsed      = (e.timeStamp - details_ontoggle_timeStamp).toFixed(0);
+    if( elapsed      < DETAILS_ONTOGGLE_COOLDOWN)
+    {
+if(log_this) log("%c...ON COOLDOWN: elapsed=["+elapsed+"ms]", "color:#888;");
+
+        return;
+    }
+if(log_this) log("%c..."+details_el.tagName+" #"+details_el.id+" .. open "+details_el.open+" .. elapsed=["+elapsed+"]" , (details_el.open ? "color:lightgreen;":"color:red;"));
+
+    details_ontoggle_timeStamp = e.timeStamp;
+    /*}}}*/
+    /* ONLOAD ➔ DO NOT CLOSE OTHERS .. return {{{*/
+    if(details_onmousedown_shiftKey == undefined) return;
+
+    /*}}}*/
+    /* 1/2 - ALT ➔ PROPAGATE SAME OPEN STATE TO OTHERS {{{*/
+    if( details_onmousedown_altKey )
+    {
+        let state = details_el.open ? "open" : "close";
+
+        details_ontoggle_set_siblings_state(details_el, state);
+    }
+    /*}}}*/
+    /* 2/2 - JUST CLOSED OR SHIFT-MODIFIER ➔ DO NOT CLOSE OTHERS {{{*/
+    else {
+
+        let close_others_behavior
+            =  details_radio_el
+            && (    details_radio_el.checked
+                 || details_radio_el              .classList.contains("checked")
+                 || details_radio_el.parentElement.classList.contains("checked")
+               );
+
+        let reversed
+            =   close_others_behavior && details_onmousedown_shiftKey;
+
+        let close_others
+            =  (close_others_behavior && ( details_el.open && !reversed)) ? "OPENED ➔ [NO SHIFT] ➔ CLOSE OTHERS"
+            :  (close_others_behavior && (!details_el.open &&  reversed)) ? "CLOSED ➔ [++ SHIFT] ➔ CLOSE OTHERS"
+            :  false;
+
+/*{{{*/
+if(log_this) {
+    let style =           "border: "+(close_others_behavior ? "2px solid orange" : "1px solid gray")+";"
+        +                  "color: "+(close_others          ?              "red" : "gray"          )+";"
+        +       "background-color: "+(reversed              ?             "#808" : "black"         )+";"
+    ;
+    log(" ➔ %c["+ close_others +"]", style);
+}
 /*}}}*/
 
-    if(!details_el.id) return;
-
-    /*...................................*/ let key = details_el.id+"_open";
-    if( details_el.open ) localStorage_setItem( key , "true");
-    else                  localStorage_delItem( key         );
-
-    if( details_el.open ) details_ontoggle_apply_radio_behavior( details_el );
-    else                  details_ontoggle_close_children      ( details_el );
+        if     (!details_el.open ) details_ontoggle_close_children    ( details_el         );
+        else if( close_others    ) details_ontoggle_set_siblings_state( details_el, "close");
+    }
+    /*}}}*/
 };
- /*}}}*/
-/*_ details_ontoggle_apply_radio_behavior {{{*/
-let details_ontoggle_apply_radio_behavior = function(details_el)
+/*}}}*/
+/*_ details_ontoggle_set_siblings_state {{{*/
+let details_ontoggle_set_siblings_state = function(details_el,state)
 {
 /*{{{*/
-let caller = "details_ontoggle_apply_radio_behavior";
+let   caller = "details_ontoggle_set_siblings_state";
+let log_this = DOM_DETAILS_LOG;
 
-    let details_radio  = localStorage_getItem( DETAILS_RADIO_ID );
-if(DOM_DETAILS_LOG || DOM_DETAILS_TAG) logBIG(caller+": details_radio=["+details_radio+"]", 4);
+if(log_this || DOM_DETAILS_TAG) logBIG(caller+"("+get_id_or_tag_and_className(details_el)+", "+state+")");
 /*}}}*/
-    if(!details_radio ) return;
+    /* [details_parent] {{{*/
+    let details_parent
+        = (details_el.parentElement.tagName == "LI")
+        ?  details_el.parentElement.parentElement // hop to OL or UL
+        :  details_el.parentElement;
 
-    let parent = details_el.parentElement;
-    for(let i=0; i<parent.children.length; ++i)
+if(log_this) log("%c...details_parent: ["+(details_parent.id || details_parent.tagName)+"]", "background-color:#800;");
+    /*}}}*/
+    /* set siblings state {{{*/
+    for(let i=0; i<details_parent.children.length; ++i)
     {
-        /* skip originating target */
-        let sibling  = parent.children[i];
-        if( sibling == details_el) continue;
+        //  details_sibling {{{
+        let details_sibling  = details_parent.children[i];
+        if( details_sibling.tagName == "LI") details_sibling = details_sibling.children[0];
+//log("...["+ details_sibling.tagName + (details_sibling.id ? (" "+details_sibling.id) : "")+"]")
 
-        /* close other sibling */
-        if((sibling.tagName == "DETAILS") && sibling.open)
+        //}}}
+        // skip just opened or closed details_el {{{
+        if(details_sibling == details_el) continue;
+
+        //}}}
+        /* close other sibling {{{*/
+        if(details_sibling.tagName == "DETAILS")
         {
-if(DOM_DETAILS_LOG) log("...close sibling=["+(sibling.id || sibling.firstElementChild.textContent)+"]");
+            details_sibling.open = (state == "open");
 
-            sibling.open = false;
-
-            /* store identified open state */
-            if(sibling.id)
-                localStorage_delItem(sibling.id+"_open");
+            if(details_sibling.id)
+            {
+                if(details_sibling.open) localStorage_setItem(details_sibling.id+"_open", "true");
+                else                     localStorage_delItem(details_sibling.id+"_open"        );
+//              del_cookie(          details_sibling.id+"_open");
+            }
         }
+        /*}}}*/
     }
+    /*}}}*/
 };
 /*}}}*/
 /*_ details_ontoggle_close_children {{{*/
 let details_ontoggle_close_children = function(parent_details)
 {
-    /*{{{*/
-    let caller = "details_ontoggle_close_children";
-    if(DOM_DETAILS_LOG) logBIG(caller+"("+get_id_or_tag_and_className(parent_details)+") .. open=["+parent_details.open+"]", 2);
+/*{{{*/
+let   caller = "details_ontoggle_close_children";
+let log_this = DOM_DETAILS_LOG;
 
-    /*}}}*/
+if( log_this) logBIG(caller+"("+get_id_or_tag_and_className(parent_details)+") .. open=["+parent_details.open+"]", 2);
+/*}}}*/
 
     let el_array
         = Array.from( parent_details.querySelectorAll("DETAILS[open]") );
@@ -266,30 +363,30 @@ let details_ontoggle_close_children = function(parent_details)
     });
 };
 /*}}}*/
+return { details_onload };
+})();
 
 /*┌──────────────────────────────────────────────────────────────────────────┐*/
 /*│ 2. DETAILS RADIO-BEHAVIOR                   [localStorage details_radio] │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
-/*{{{*/
-const DETAILS_RADIO_ID = "details_radio";
-
-/*}}}*/
 /*➔ details_radio_toggle {{{*/
 let details_radio_toggle = function(e)
 {
-//console.log("details_radio_toggle")
-//console.log("DOM_DETAILS_LOG=["+DOM_DETAILS_LOG+"]")
+/*{{{*/
+//log("details_radio_toggle")
+//log("DOM_DETAILS_LOG=["+DOM_DETAILS_LOG+"]")
 
 if(DOM_DETAILS_LOG) log("details_radio_toggle("+e.target.tagName+")");
+/*}}}*/
     /* INPUT {{{*/
-    let { input , details_radio_el } = details_radio_get_input(e);
+    let { input , details_radio_el } = get_details_radio_checkbox(e);
 
     /*}}}*/
     /* GET CURRENT STATE {{{*/
     let state
         = input
         ? ((e.target != input) ? input.checked : !input.checked)
-        : has_el_class(details_radio_el, "checked");
+        : details_radio_el.classList.includes("checked");
 
     /*}}}*/
     /* NEW TOGGLE STATE {{{*/
@@ -308,8 +405,8 @@ if(DOM_DETAILS_LOG) log("details_radio_toggle("+e.target.tagName+")");
 
     /*}}}*/
     /* STORE NEW STATE {{{*/
-    if(state) localStorage_setItem(DETAILS_RADIO_ID,  "true");
-    else      localStorage_setItem(DETAILS_RADIO_ID,   null );
+    if(state) localStorage_setItem(DETAILS_RADIO_ID, "true");
+    else      localStorage_delItem(DETAILS_RADIO_ID        );
 
     /*}}}*/
 /*{{{*/
@@ -334,7 +431,7 @@ if(DOM_DETAILS_LOG) log("details_radio_set_from_localStorage");
 
 /*}}}*/
     /* UI [input] [details_radio_el] {{{*/
-    let { input , details_radio_el } = details_radio_get_input();
+    let { input , details_radio_el } = get_details_radio_checkbox();
 
     if(!input) return;
     /*}}}*/
@@ -343,9 +440,8 @@ if(DOM_DETAILS_LOG) log("details_radio_set_from_localStorage");
 
     /*}}}*/
     /* SHOW STATE {{{*/
-    if( input ) {
+    if( input )
         input.checked = state;
-    }
 
     if(state) add_el_class(input.parentElement, "checked");
     else      del_el_class(input.parentElement, "checked");
@@ -362,18 +458,25 @@ if(DOM_DETAILS_LOG)
 /*}}}*/
 };
 /*}}}*/
-/*_ details_radio_get_input {{{*/
-let details_radio_get_input = function(e)
-{
+/*_ get_details_radio_checkbox {{{*/
 /*{{{*/
-let caller = "details_radio_get_input";
+let details_radio_el;
 
 /*}}}*/
-    /* DETAILS_RADIO_ID .. f(event target) .. tools .. document {{{*/
+let get_details_radio_checkbox = function(e)
+{
+/*{{{*/
+let caller = "get_details_radio_checkbox";
+
+/*}}}*/
+    /* Clicked target or DETAILS_RADIO_ID {{{*/
+    if(!details_radio_el)
+        details_radio_el = get_tool( DETAILS_RADIO_ID );
+
     let el
         = (e)
         ?  e.target
-        :  document.querySelector("#"+DETAILS_RADIO_ID);
+        :  details_radio_el;
 
 if(DOM_DETAILS_LOG) log(caller+": ["+DETAILS_RADIO_ID+"] ➔ el=["+get_id_or_tag(el)+"]");
     if(!el) return {};
@@ -381,20 +484,10 @@ if(DOM_DETAILS_LOG) log(caller+": ["+DETAILS_RADIO_ID+"] ➔ el=["+get_id_or_tag
     /*}}}*/
     /* [input] {{{*/
     let input
-        =                                  ((el.tagName == "INPUT") && el)
+        =                         ((el.tagName == "INPUT") && el)
         || get_el_child_with_tag  ( el          , "INPUT")
         || get_el_sibling_with_tag( el          , "INPUT");
 
-
-    /*}}}*/
-    /* [details_radio_el] {{{*/
-    let details_radio_el
-        = input
-        ? input.parentElement
-        : document.querySelector("#"+DETAILS_RADIO_ID);
-
-    if(!details_radio_el)
-        details_radio_el = document.getElementById( DETAILS_RADIO_ID );
 
     /*}}}*/
 /*{{{*/
@@ -442,7 +535,7 @@ let details_has_closed_el_parent = function(el)
                 return true;
         }
         /*}}}*/
-        details_el   = details_el.parentElement;
+        details_el = details_el.parentElement;
     }
     return false;
 };
@@ -463,7 +556,7 @@ if(DOM_DETAILS_LOG) logBIG("details_open_closed_el_parent("+get_id_or_tag_and_cl
                 details_el.open = true;
             }
         }
-        details_el   = details_el.parentElement;
+        details_el = details_el.parentElement;
     }
     el.open = true;
 };
@@ -578,7 +671,7 @@ if(DOM_DETAILS_LOG) logBIG("restore_details_ontoggle_listener",6);
 
 /* EXPORT */
 /*{{{*/
-/*_ t_details_set_state {{{*/
+/*➔ t_details_set_state {{{*/
 let t_details_set_state = function(label,state)
 {
     if(    state != undefined)
@@ -592,26 +685,24 @@ let t_details_set_state = function(label,state)
     }
 };
 /*}}}*/
-
 return { name    : "dom_details"
     ,    logging : (state) => { DOM_DETAILS_LOG = dom_details.t_details_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
     ,    tagging : (state) => { DOM_DETAILS_TAG = dom_details.t_details_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
     ,    t_details_IMPORT
     ,    t_details_set_state
-
     /*   --------------------------------- CALLERS:       */
-
-    ,    details_load_open_state        /* TOGGLE-EVENT   */
+    ,    details_onload                 : details_handler.details_onload
     ,    details_radio_toggle           /* RADIO-BEHAVIOR */
-
     ,    details_has_closed_el_parent   /* dom_seek       */
     ,    details_open_closed_el_parent  /* dom_seek       */
-
     ,    details_close_opened           /* HTML TOOL      */
     ,    details_open_closed            /* HTML TOOL      */
-
 };
 /*}}}*/
-
 }());
+
+/*
+:e  $APROJECTS/XPH/lib/t_details.js
+:cd %:h/..|pwd
+*/
 

@@ -1,22 +1,22 @@
 /* dom_slot_js */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals document */
+/* globals dom_data, dom_log, dom_util, dom_store, dom_prop, dom_select, dom_tools */
+
+/* exported dom_slot, DOM_SLOT_JS_TAG */
+
 const DOM_SLOT_JS_ID        = "dom_slot_js";
-const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (210630:02h:07)";
+const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (211119:18h:04)";
+/*}}}*/
 let dom_slot    = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_store, dom_prop, dom_select, dom_tools */
-/* globals unescape */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_SLOT_LOG          = false;
 let   DOM_SLOT_TAG          = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_slot_IMPORT {{{*/
 /* t_data .. t_tools {{{*/
 /*....................................*/
@@ -105,9 +105,9 @@ let   slot_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -133,11 +133,14 @@ let   slot_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /** SLOT */
 /*{{{*/
+/*{{{
 let last_cleared_slot           =   1;
+}}}*/
 /*  get_slotted_pattern_count {{{*/
 let get_slotted_pattern_count = function()
 {
@@ -274,8 +277,9 @@ let   caller = "t_clear_slot";
 let log_this = DOM_SLOT_LOG || LOG_MAP.S3_SLOT;
 
 /*}}}*/
-
+/*{{{
     last_cleared_slot = slot;
+}}}*/
 
     let ccX       = slot % t_select.SELECT_SLOT_MAX;
     let sel_class = t_select.SEL_CLASS_PREFIX + ccX;
@@ -337,12 +341,12 @@ let get_next_populated_slot = function(slot)
 /* EXPORT */
 /*{{{*/
 return { name : "dom_slot"
-    , logging : function(state) { return DOM_SLOT_LOG = dom_util.t_util_set_state("DOM_SLOT_LOG",state); }
-    , tagging : function(state) { return DOM_SLOT_TAG = dom_util.t_util_set_state("DOM_SLOT_TAG",state); }
+    , logging : (state) => DOM_SLOT_LOG = dom_util.t_util_set_state("DOM_SLOT_LOG",state)
+    , tagging : (state) => DOM_SLOT_TAG = dom_util.t_util_set_state("DOM_SLOT_TAG",state)
     , t_slot_IMPORT
 
     /* PATTERN */
-    , get_last_cleared_pattern : function() { return last_cleared_pattern; }
+    , get_last_cleared_pattern : () => last_cleared_pattern
 
     /* SLOT */
     , get_next_populated_slot

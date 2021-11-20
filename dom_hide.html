@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
- <head>
-  <title>dom_find</title>
+ 
+ head>
+  <title>dom_hide</title>
   <!-- META {{{ -->
   <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
   <meta                         http-equiv="Cache-control" content="no-cache">
@@ -20,7 +21,12 @@
 
  </head>
  <body onload='set_title();'>
-  <!-- h1 {{{--> <h1 style="clear:right; margin:1em;">dom_find playground</h1>
+  <!-- h1 {{{-->
+  <h1 style="clear:right; margin:1em;">
+   PLAYGROUND:
+   <br>...should have been populated by <</em> set_title</</em> 
+   <br>with the value of <em>DOM_LOAD_TAG</em>
+  </h1>
   <!--}}}-->
 
  <!-- HTML   .. [words_1 .. words_A] {{{-->
@@ -39,7 +45,7 @@
  </div>
  <!--}}}-->
  <!-- words_1 .. words_A {{{-->
- <div  id="words"   class="left_div round_el" style="display:grid; align-items:start;">
+ <div  id="words"   class="left_div round_el" style="display:grid; align-items:start; clear:left;">
   <div id="words_1" style="background-color: rgba(150,  75,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_1</code></li></ol></div>
   <div id="words_2" style="background-color: rgba(255,   0,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
   <div id="words_3" style="background-color: rgba(255, 165,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
@@ -53,20 +59,76 @@
  </div>
  <!--}}}-->
   <!--}}}-->
-<!-- dom_prop {{{-->
-<br style="clear:both;">
-<pre style="word-wrap: break-word; white-space: pre-wrap;">
-<!--
-script/dom_prop.js
--->
-escape(`
-`
-</pre>
-<!--}}}-->
+ <!-- UI     DOC TOOLS {{{-->
+ <!--{{{-->
+ <br style="clear:both;">
+ <div id="dom_hide_tools_panel"  class="transcript" ></div> <br>
+ <div id="dom_hide_select_panel" class="transcript" ></div> <br>
+ <div id="dom_hide_store_panel"  class="transcript" ></div> <br>
+ <div id="dom_sticky_panel"      class="transcript" ></div> <br>
+ <!--}}}-->
+   <!-- [parked checked magnified] {{{-->
+  <div class="transcript" style="font-size:100%;" style="float:left;">
+   <em class='cc8'>CONTROLS</em>
+   <!-- PARK ALL PANELS (checked) {{{-->
+   <div class="box cb_filled_pin bg1"
+        onclick='
+        let     input = dom_util.get_el_child_with_tag(this, "INPUT");
+        input.checked = !input.checked;
+        dom_util.set_el_class_on_off(input, "checked", input.checked);
+        park_all_input( input.checked );
+        '
+        >
+        <input  id="park_all" type="checkbox" name="check" checked />
+        <label for="park_all">
+         <div class="small middle">PARKED</div>
+        </label>
+   </div>
+   <!--}}}-->
+   <!-- ALL PANELS CHECKED (not checked) {{{-->
+   <div class="box cb_filled_pin bg2"
+        onclick='
+        let     input = dom_util.get_el_child_with_tag(this, "INPUT");
+        input.checked = !input.checked;
+        dom_util.set_el_class_on_off(input, "checked", input.checked);
+        _dom_hide_log_check_all_handler( input.checked );
+        '
+        >
+        <input  id="check_all" type="checkbox" name="check"/>
+        <label for="check_all">
+         <div class="small middle">CHECKED</div>
+        </label>
+   </div>
+   <!--}}}-->
+  </div>
+  <!--}}}-->
+  <!-- [transcript top_right] {{{-->
+  <div id="dom_hide_log" class="transcript top_right squeezed_1_0" >
+  <!-- squeeze_cycle_dom_hide_log {{{-->
+  <div class="box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input type="checkbox" id="squeeze_cycle_dom_hide_log" />
+   <label for="squeeze_cycle_dom_hide_log"><div  class="magpin">&#x1F50D;</div></label>
+  </div>
+  <!--}}}-->
 
+  </div>
+   <!--}}}-->
+ <!-- [playground_clones_panel bottom_right] {{{-->
+ <div id="playground_clones_panel" class="transcript bottom_right squeezed_0_1">
+  <!-- [magpin_div] {{{-->
+  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input  id="squeeze_cycle_playground_clones_panel"            type="checkbox" />
+   <label for="squeeze_cycle_playground_clones_panel">
+    <pre>&#x25E4; &#x25E5;<br>&#x25E3; &#x25E2;</pre>
+   </label>
+  </div>
+  <!--}}}-->
+ </div>
+ <!--}}}-->
+ <!--}}}-->
  <!-- SCRIPT {{{ -->
  <script>
-  DOM_LOAD_ID       = "dom_find";       DOM_LOAD_TAG  = DOM_LOAD_ID+" (211120:15h:41)";
+  DOM_LOAD_ID       = "dom_hide";       DOM_LOAD_TAG  = DOM_LOAD_ID+" (211120:16h:06)";
   DOM_LOAD_PANELS   = "";
   document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
   /* set_title {{{*/
@@ -86,6 +148,145 @@ escape(`
 //console.log("load_html("+id+") ...done");
   };
   /*}}}*/
+    //{{{
+    let playground_notify_callers = [];
+    let unpark_all_timer;
+    let park_all_timer;
+    //}}}
+    let  playground_prop_CB = function(key, val) { //{{{
+      let  el = document.getElementById( key );
+      if(  el ) {
+//console.log("playground_prop_CB("+key+", "+val+")")
+       el.checked = ((val == true) || (val == key)) ? "checked" : "";
+       el.parentNode.classList.remove("parked");
+      }
+    };//}}}
+    let  playground_notify = function(caller) { //{{{
+/*{{{
+logXXX("playground_notify("+caller+")")
+}}}*/
+     //if(park_all_timer) park_all_input(); // force parked all
+     // post unpark {{{
+     playground_notify_callers.push(caller);
+     if(unpark_all_timer) clearTimeout(unpark_all_timer     );
+     unpark_all_timer =     setTimeout(unpark_all, 500);
+
+     //}}}
+    };//}}}
+    let unpark_all = function() { //{{{
+//console.log("unpark_all: playground_notify_callers.length=["+playground_notify_callers.length+"]")
+     // handle unpark {{{
+      let caller = "";
+     if( playground_notify_callers.length )
+     {
+      caller = playground_notify_callers.shift();
+      if((   idx = caller.indexOf("(")) > 0) caller = caller.substring(0,idx);
+//console.log("unpark_all: caller=["+caller+"]")
+
+      let  el = document.getElementById(caller);
+      if(  el ) {
+//logBIG(el.id)
+
+       el.checked = "checked";
+       el.parentNode.classList.remove("parked");
+      }
+
+      if(playground_notify_callers.length) unpark_all_timer = setTimeout(unpark_all, 500);
+      else                                 unpark_all_timer = null;
+     }
+     //}}}
+     // post parked all {{{
+     if(park_all_timer) clearTimeout(park_all_timer        );
+     park_all_timer =     setTimeout(park_all_input, 1000);
+     //}}}
+     unpark_all_timer = null;
+     //dom_hide_log_settings();
+    }; //}}}
+   let park_all_input = function(parked=true) { //{{{
+    // handle parked all {{{
+
+     let node_list = document.querySelectorAll("INPUT");
+     for(let i=0; i < node_list.length; ++i)
+     {
+      let el = node_list[i];
+      if( el.parentElement.classList.contains("cb_slider_cap") ) continue;
+      el.checked = "";
+      if(parked) el.parentNode.classList.add   ("parked");
+      else       el.parentNode.classList.remove("parked");
+     } //}}}
+
+     let el = document.getElementById("park_all");
+     if( el) el.checked = parked;
+
+     park_all_timer = null;
+    }; //}}}
+   let _dom_hide_log_check_all_handler = function(checked=true) { //{{{
+     // handle check all {{{
+
+     let node_list = document.querySelectorAll("INPUT");
+     for(let i=0; i < node_list.length; ++i)
+     {
+      let     el = node_list[i];
+      if( el.parentElement.classList.contains("cb_slider_cap") ) continue;
+      el.checked = checked;
+
+      if(checked) el.parentNode.classList.add   ("checked");
+      else        el.parentNode.classList.remove("checked");
+     } //}}}
+
+    let el = document.getElementById("check_all");
+    if( el) el.checked = checked;
+
+     _dom_hide_log_check_all_timer = null;
+    }; //}}}
+ </script>
+ <!--}}}-->
+ <!-- SCRIPT #2{{{ -->
+ <script>
+  /* INIT .. [scope localStorage observers] {{{*/
+  let sandbox_init = function()
+  {
+   dom_hide_log(DOM_LOAD_TAG+".sandbox_init:");
+   console.log("...calling   t_load");
+   t_load();
+   if(                       !t_get_tool("#dom_load_tags")) {
+    logBIG("sandbox_init: *** t_get_tool('#dom_load_tags') failed");
+    return;
+   }
+   /* LOAD SETTINGS */
+   dom_hide_localStorage_load();
+
+   /* INIT SCOPE [PAGE] [SITE] */
+/*{{{
+   t_store_add_site_key("node_to_hide_csv")
+   t_store_add_page_key("node_to_hide_csv");
+}}}*/
+
+   /* INIT UI */
+   dom_hide_hide_all();
+
+   /* INIT OBSERVERS */
+   dom_hide_add_container_observer      ( container_observer         );
+   dom_hide_add_info_observer           ( info_observer              );
+   dom_hide_add_t_store_set_value_observer( t_store_set_value_observer   );
+   dom_hide_add_mark_observer           ( hide_mark_observer         );
+  };
+  /*}}}*/
+  /* OBSERVERS .. [mark container info store] {{{*/
+  let       container_observer = function(container, _caller, msg="") { logBIG(DOM_LOAD_ID+" .........container_observer("+container+", "+_caller+", "+msg+")"); console.trace(DOM_LOAD_ID); };
+  let            info_observer = function(info                      ) { logBIG(DOM_LOAD_ID+" ..............info_observer("+info            + ")"); console.trace(DOM_LOAD_ID); };
+  let t_store_set_value_observer = function(key, value                ) { logBIG(DOM_LOAD_ID+" ...t_store_set_value_observer("+key+", ["+value +"])"); console.trace(DOM_LOAD_ID); };
+  let       hide_mark_observer = function(marked_or_hidden          ) { logBIG(DOM_LOAD_ID+" .........hide_mark_observer("+marked_or_hidden+ ")"); console.trace(DOM_LOAD_ID); };
+  /*}}}*/
+ /*  dom_hide_log {{{*/
+ let dom_hide_log = function(innerHTML) {
+  let el = document.getElementById("dom_hide_log");
+  if( el ) {
+   let firstElementChild = el.firstElementChild;
+   el.innerHTML = el.firstElementChild.innerHTML + innerHTML;
+  }
+ }
+ /*}}}*/
  </script>
  <!--}}}-->
 
@@ -113,15 +314,15 @@ escape(`
   <script id="dom_details_js" src="script/dom_details.js" XXXdefer></script>
   <script id="dom_i18n_js"    src="script/dom_i18n.js"    XXXdefer></script>
   <script id="dom_store_js"   src="script/dom_store.js"      defer></script>
-  <script id="dom_prop_js"    src="script/dom_prop.js"       defer></script>
-  <script id="dom_hide_js"    src="script/dom_hide.js"       defer></script>
+  <script id="dom_prop_js"    src="script/dom_prop.js"    XXXdefer></script>
   <script id="dom_grid_js"    src="script/dom_grid.js"       defer></script>
+  <script id="dom_hide_js"    src="script/dom_hide.js"    XXXdefer></script>
   <script id="dom_share_js"   src="script/dom_share.js"      defer></script>
   <script id="dom_view_js"    src="script/dom_view.js"       defer></script>
   <script id="dom_wording_js" src="script/dom_wording.js"    defer></script>
   <script id="dom_slot_js"    src="script/dom_slot.js"       defer></script>
   <script id="dom_select_js"  src="script/dom_select.js"     defer></script>
-  <script id="dom_sentence"   src="script/dom_sentence.js"   defer></script>
+  <script id="dom_sentence_js"  src="script/dom_sentence.js"     defer></script>
   <script id="dom_wot_js"     src="script/dom_wot.js"        defer></script>
   <script id="dom_gutter_js"  src="script/dom_gutter.js"     defer></script>
   <!-- TOOLS HTML [dom_tools_html_data] {{{-->
@@ -132,7 +333,7 @@ script/dom_tools.html
 dom_tools_html_data = escape(`
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210929:21h:31)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210809:16h:32)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -144,9 +345,6 @@ dom_tools_html_data = escape(`
  <!--}}}-->
  <!-- headsup {{{ -->
  <div id="headsup"         class="transcript hidden"        title="headsup">
-
-  <em  id="user_lang"      class="toolbag_button cc9"       title="user_lang">&nbsp;</em>
-
   <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
   <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
   <em  id="wording"        class="toolbag_button cc3"       title="wording">WORDING</em>
@@ -155,17 +353,15 @@ dom_tools_html_data = escape(`
   <em  id="overflow_visi"  class="toolbag_button cc9"       title="overflow_visi">&nbsp;</em>
   <em  id="scroll_smooth"  class="toolbag_button cc9"       title="scroll_smooth">&nbsp;</em>
 
-  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&#x25B2;</em>
-  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&#x25BC;</em>
+  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&nbsp;</em>
+  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&nbsp;</em>
   <em  id="details_radio"  class="toolbag_button cc9"       title="details_radio">&nbsp;</em>
 
   <em  id="tools_tier2"    class="toolbag_button cc9"       title="tools_tier2">&#x2630;</em>
 
-<!--{{{
   <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
   <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
   <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
-}}}-->
 
   <em  id="remove_ads"     class="toolbag_button cc9"       title="remove_ads">&nbsp;</em>
   <em  id="split_wot"      class="toolbag_button cc9"       title="split_wot">&nbsp;</em>
@@ -245,14 +441,10 @@ dom_tools_html_data = escape(`
  <!-- dom_traversal {{{ -->
  <div id="dom_traversal"   class="transcript hidden"        title="dom_traversal">
  <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
-  <em class = "toolbag_button cc5">NodeIterator</em><br>
-  <em class = "toolbag_button cc6">TreeWalker</em><br>
-  <em class = "toolbag_button cc7">childNodes</em><br>
-  <em class = "toolbag_button cc7">tagNodes</em><br>
-
-  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
-  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
-  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+  <em class = "toolbag_button cc5">NodeIterator</em>
+  <em class = "toolbag_button cc6">TreeWalker</em>
+  <em class = "toolbag_button cc7">childNodes</em>
+  <em class = "toolbag_button cc7">tagNodes</em>
   <!-- }}} -->
   <!-- tools_node {{{ -->
   <table>
@@ -330,7 +522,7 @@ load_html('dom_tools_html', dom_tools_html_data);
   <script id="dom_fly_js"     src="script/dom_fly.js"        defer></script>
   <script id="dom_ipc_js"     src="script/dom_ipc.js"        defer></script>
   <script id="dom_tools_js"   src="script/dom_tools.js"      defer></script>
-
+  <!--ipt id="dom_ondown_js"  src="script/dom_ondown.js"    defer></script-->
 
 
 
@@ -338,7 +530,63 @@ load_html('dom_tools_html', dom_tools_html_data);
 
 
   <hr style="clear:both;">
+<!-- PROP_TOOLS .. (DOC EMBEDDED CHECKBOX CLONES) {{{-->
+<div class="transcript prop_bag"
+ style="
+ font-size   : 50%;
+ cursor      : pointer;
+ display     : grid;
+ grid-gap    : 0.5em;
+ align-items : start;
+ ">
+                                                                       
+ <em class="toolbag_button    " id="EV0_LISTEN"      style="grid-row:2"> EV0_LISTEN     </em>
+ <em class="toolbag_button    " id="EV1_DOWN"        style="grid-row:2"> EV1_DOWN       </em>
+ <em class="toolbag_button    " id="EV2_MOVE"        style="grid-row:2"> EV2_MOVE       </em>
+ <em class="toolbag_button    " id="EV3_UP"          style="grid-row:2"> EV3_UP         </em>
+ <em class="toolbag_button    " id="EV4_LONG_PRESS"  style="grid-row:2"> EV4_LONG_PRESS </em>
+ <em class="toolbag_button    " id="EV5_TOOL_CB"     style="grid-row:2"> EV5_TOOL_CB    </em>
+ <em class="toolbag_button    " id="EV6_CHANGED"     style="grid-row:2"> EV6_CHANGED    </em>
+ <em class="toolbag_button    " id="EV7_DISPATCH"    style="grid-row:2"> EV7_DISPATCH   </em>
+ <em class="toolbag_button    " id="EV8_FLOATLOG"    style="grid-row:2"> EV8_FLOATLOG   </em>
+                                                                       
+ <em class="toolbag_button    " id="S0_PATTERN"      style="grid-row:3"> S0_PATTERN     </em>
+ <em class="toolbag_button    " id="S1_RANGE"        style="grid-row:3"> S1_RANGE       </em>
+ <em class="toolbag_button    " id="S2_SELECT"       style="grid-row:3"> S2_SELECT      </em>
+ <em class="toolbag_button    " id="S3_SLOT"         style="grid-row:3"> S3_SLOT        </em>
+                                                                       
+ <em class="toolbag_button    " id="T0_STORE"        style="grid-row:4"> T0_STORE       </em>
+ <em class="toolbag_button    " id="T1_DOM_LOAD"     style="grid-row:4"> T1_DOM_LOAD    </em>
+ <em class="toolbag_button    " id="T2_GRID"         style="grid-row:4"> T2_GRID        </em>
+ <em class="toolbag_button    " id="T3_LAYOUT"       style="grid-row:4"> T3_LAYOUT      </em>
+ <em class="toolbag_button    " id="T4_PIVOT"        style="grid-row:4"> T4_PIVOT       </em>
+ <em class="toolbag_button    " id="T5_SPREAD"       style="grid-row:4"> T5_SPREAD      </em>
+ <em class="toolbag_button    " id="T6_SLOT"         style="grid-row:4"> T6_SLOT        </em>
+ <em class="toolbag_button    " id="T7_SHARE"        style="grid-row:4"> T7_SHARE       </em>
+ <em class="toolbag_button    " id="T8_TOOLBAR"      style="grid-row:4"> T8_TOOLBAR     </em>
 
+ <em class="toolbag_button    " id="IPC_LOG"         style="grid-row:4"> IPC_LOG        </em>
+
+ <em class="toolbag_button    " id="containers_hi"   style="grid-row:5" title="containers_hi"  >&#x00A7;</em>
+ <em class="toolbag_button    " id="words_exact"     style="grid-row:5" title="words_exact"    >&#x2261;</em>
+ <em class="toolbag_button    " id="words_segment"   style="grid-row:5" title="words_segment"  >&#x2282;</em>
+ <em class="toolbag_button    " id="words_head_tail" style="grid-row:5" title="words_head_tail">&#x2208;</em>
+ <em class="toolbag_button    " id="words_opcycle"   style="grid-row:5" title="words_opcycle"  >&#x27F3;</em>
+
+ <em class="toolbag_button big" id="RELOAD"          style="grid-row:6" title="RELOAD"         >&#x21BB;</em>
+ <em class="toolbag_button big" id="scroll_smooth"   style="grid-row:6" title="scroll_smooth"  >scroll_smooth</em>
+ <em class="toolbag_button big" id="show_seekzone"   style="grid-row:6" title="show_seekzone"  >&#x2191;</em>
+ <em class="toolbag_button big" id="pin_seekspot"    style="grid-row:6" title="pin_seekspot"   >&#x1F4CC;</em>
+ <em class="toolbag_button big" id="log_seekspot"    style="grid-row:6" title="log_seekspot"   >log_seekspot</em>
+ <em class="toolbag_button big" id="split_wot"       style="grid-row:6" title="split_wot"      >split_wot</em>
+ <em class="toolbag_button big" id="lines_wot"       style="grid-row:6" title="lines_wot"      >lines_wot</em>
+
+ <em class="toolbag_button big" id="theme_dark"      style="grid-row:6" title="theme_dark"     >&#x2600; &#x263D;</em>
+ <em class="toolbag_button big" id="pat_sort"        style="grid-row:6" title="pat_sort"       >&#x2191;</em>
+ <em class="toolbag_button big"                      style="grid-row:6" title="console.clear()" onclick='console.clear("DOC");'>clear</em>
+
+</div>
+<!--}}}-->
 
 
 
@@ -362,9 +610,9 @@ load_html('dom_tools_html', dom_tools_html_data);
    console.log("%c"+DOM_LOAD_TAG, lbH+lf5);
    let id;                                   let missing_ids  = "";
    if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ;
-   if(typeof DOM_LOG_JS_TAG     === 'un') missing_ids += "\n DOM_LOG_JS_TAG"      ;
-   if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ;
    if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ;
+   if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ;
+   if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ;
    if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ;
    if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ;
    if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ;
@@ -375,23 +623,7 @@ load_html('dom_tools_html', dom_tools_html_data);
    if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ;
    if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ;
  //if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// id =     "dom_tools_html_tag" ;               missing_ids +=     check_missing_id(id) ;
+   id =     "dom_tools_html_tag" ;               missing_ids +=     check_missing_id(id) ;
  //id =     "dom_grid_html_tag"  ;               missing_ids +=     check_missing_id(id) ;
 
    if(missing_ids) {
@@ -404,11 +636,12 @@ load_html('dom_tools_html', dom_tools_html_data);
 
   function check_missing_id(id)
   {
-   let      shadow_root = tools.t_get_shadow_root();
+   let      shadow_root = dom_tools.t_get_shadow_root();
    let el = shadow_root
        ?    shadow_root.querySelector("#"+id)
        :    document   .querySelector("#"+id);
    if(!el ) return "\n#"+id;
+   let lf8  = "color:#A0A0A0;";
    console.log("%c"+dom_data.SYMBOL_CHECK_MARK+"%c"+el.textContent,lbH+lf8,lf8);
    return "";
   }

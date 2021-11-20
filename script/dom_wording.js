@@ -1,23 +1,20 @@
-/* dom_wording */
-/* eslint-disable quotes */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-return-assign */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
-const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (210928:19h:56)';
-let dom_wording = (function() {
-"use strict";
-/* JSHint {{{*/
+/* dom_wording_js */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 /* globals dom_log, dom_util, dom_data, dom_store, dom_i18n, dom_tools */
 /* globals document, console */
 /* exported dom_wording */
-/*
-:update|1,$y *
-:!start explorer https://jshint.com/
-*/
+
+/* eslint-disable quotes */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-return-assign */
+
+const DOM_WORDING_JS_ID     = 'dom_wording_js';
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211119:17h:52)';
 /*}}}*/
-var   DOM_WORDING_LOG       = false; /* eslint-disable-line no-var */
-var   DOM_WORDING_TAG       = false; /* eslint-disable-line no-var */
+let dom_wording = (function() {
+"use strict";
+let   DOM_WORDING_LOG       = false;
+let   DOM_WORDING_TAG       = false;
 
 /* IMPORT */
 /*{{{*/
@@ -106,9 +103,9 @@ let   wording_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;

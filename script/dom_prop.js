@@ -1,21 +1,22 @@
-/* dom_prop_js */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_prop                                                                 │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+/* globals  console */
+/* globals  dom_data, dom_log, dom_util, dom_store */
+/* globals  dom_prop_notify */
+/* exported dom_prop, DOM_PROP_JS_TAG */
 const DOM_PROP_JS_ID        = "dom_prop_js";
-const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (200910:17h:33)";
+const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (211119:17h:52)";
+
+/*}}}*/
 let dom_prop    = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_store */
-/* globals dom_prop_notify */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_PROP_LOG          = false;
 let   DOM_PROP_TAG          = false;
 
 /* IMPORT */
+/* eslint-disable no-unused-vars */
 /*{{{*/
 /*➔ t_prop_IMPORT {{{*/
 /* t_data .. t_tools {{{*/
@@ -105,9 +106,9 @@ let   prop_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -135,6 +136,7 @@ let   prop_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 /* const {{{*/
 const C_LEN_PREFIX     = 10;
@@ -266,12 +268,12 @@ if( log_this) {
         let map_length = Prop_Map.length;
         let map_sorted = Prop_Map.sort( function(a,b) { return (a.id > b.id) ? 1 : -1; } );
         map_sorted.forEach(
-                           function(prop,index,array)
+                           function(each_prop,index/*,array*/)
                            {
-                               if(filter_id_to_match && !prop.id.includes( identifier ))      return; /* unmatched IDs always loose */
+                               if(filter_id_to_match && !each_prop.id.includes( identifier ))      return; /* unmatched IDs always loose */
 
-                               let has_onchange = !unfiltered && ( filter_onchange && prop.onchange); /* unfiltered always win */
-                               let    has_value = !unfiltered && ( filter_value    == prop.value   ); /* unfiltered always win */
+                               let has_onchange = !unfiltered && ( filter_onchange && each_prop.onchange); /* unfiltered always win */
+                               let    has_value = !unfiltered && ( filter_value    == each_prop.value   ); /* unfiltered always win */
 
                                if(   filter_id_to_match
                                   || unfiltered
@@ -279,7 +281,7 @@ if( log_this) {
                                   || has_value
                                  ) {
                                    let prefix = mPadStart(index+1+" / "+map_length, C_LEN_PREFIX);
-                                   prop.log( prefix );
+                                   each_prop.log( prefix );
                                }
                            });
         /*{{{
@@ -311,7 +313,7 @@ let Prop = function(id, value, onchange)
     /* this.toString {{{*/
     this.toString = function()
     {
-        let onchange
+        let onchange_name
             = this.onchange ? this.onchange.name
             :  Prop_CB      ? Prop_CB      .name
             :                 ""
@@ -322,8 +324,8 @@ let Prop = function(id, value, onchange)
             :  " "
         ;
 
-        return       mPadStart(this.id  +" "+this.value, 24)
-            + " … "+ mPadStart(el_name  +    onchange  , 24)+" "
+        return       mPadStart(this.id  +" "+this.value   , 24)
+            + " … "+ mPadStart(el_name  +    onchange_name, 24)+" "
         ;
 
     };
@@ -387,7 +389,7 @@ if( log_this) log("%c _prop_set %c"+id+" %c "+value         +" %c "+(onchange ? 
     if(             (prop.value     != value    )) { prop.value = (value == "toggle") ? !prop.value : value ; }
     else if( log_this) log("...unchanged");
 
-    if(Prop_CB) Prop_CB(id, prop.value);
+    if(Prop_CB) Prop_CB(id, prop.value); /* eslint-disable-line new-cap */
 
     return prop;
 };
@@ -451,8 +453,8 @@ if( log_this) prop.log(caller);
 /*{{{*/
 
 return { name : "dom_prop"
-    , logging : function(state) { return DOM_PROP_LOG = dom_util.t_util_set_state("DOM_PROP_LOG",state); }
-    , tagging : function(state) { return DOM_PROP_TAG = dom_util.t_util_set_state("DOM_PROP_TAG",state); }
+    , logging : (state) => { DOM_PROP_LOG = dom_util.t_util_set_state("DOM_PROP_LOG",state); }
+    , tagging : (state) => { DOM_PROP_TAG = dom_util.t_util_set_state("DOM_PROP_TAG",state); }
     , t_prop_IMPORT
 
     , init          : prop_init

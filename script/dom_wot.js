@@ -16,7 +16,7 @@
 /* exported dom_wot, DOM_WOT_JS_TAG */
 
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (210928:19h:58)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (211119:18h:11)";
 /*}}}*/
 let dom_wot             = (function() {
 "use strict";
@@ -93,14 +93,14 @@ let caller = "wot_INTERN";
     let dom_log_js
         = (typeof dom_log != "undefined")
         ?         dom_log
-        :         dom_wot_log;      /* javascript/dom_wot_log.js */ /* eslint-disable-line no-undef */
+        :         dom_wot_log;      /* script/dom_wot_log.js */ /* eslint-disable-line no-undef */
 
     if( dom_log_js )
     {
-        if(dom_log_js.LOG_BG_ARR) {
-            [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log_js.LOG_BG_ARR;
-            [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log_js.LOG_XX_ARR;
-            [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log_js.LOG_FG_ARR;
+        if(dom_log_js.LOG_BG_CSS) {
+            ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+            ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+            ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
         }
 
         ({  log
@@ -124,7 +124,7 @@ logBIG(caller+": [dom_log UNDEFINED]"   , 2);
     let dom_util_js
         = (typeof dom_util != "undefined")
         ?         dom_util
-        :         dom_wot_util;     /* javascript/dom_wot_util.js */ /* eslint-disable-line no-undef */
+        :         dom_wot_util;     /* script/dom_wot_util.js */ /* eslint-disable-line no-undef */
 
     if( dom_util_js )
     {

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>dom_sticky</title>
+  <!-- META {{{ -->
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
+  <meta                         http-equiv="Cache-control" content="no-cache">
+  <meta                         http-equiv="pragma"        content="no-cache">
+  <!-- }}} -->
+  <!-- [link] CSS {{{-->
+  <link id='grid_container' type='text/css' href='stylesheet/grid_container.css' rel='stylesheet'/>
+  <link id='ecc_css'        type='text/css' href='stylesheet/ecc.css'            rel='stylesheet'/>
+  <link id="index"          type="text/css" href="stylesheet/index.css"          rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css"     rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"       rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"       rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"       rel="stylesheet"/>
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"      rel="stylesheet"/>
+  <!--}}}-->
+ </head>
+ <body onload='set_title();'>
+
+<!-- HTML .. [dom_sticky] {{{-->
+  <!-- H1 {{{-->
+  <h1 style="clear:right; margin:1em; user-select:none;" title="onclick .. reload" onclick='document.location.reload();'>...</h1>
+  <!--}}}-->
+<!-- dom_sticky.html {{{-->
+<!-- BUTTONS {{{-->
+  <div style="user-select:none;">
+
+   <b                                                  >UP</b>
+   <br>ADD A NEW STICKY
+   <br>
+   <br>
+   <b onclick="console.clear();"                       >&#x2699; clear console</b>
+   <i>...results in console log</i>
+   <br>
+   <br>
+   <b onclick='document.location.reload();' class="em2">&#x2699; reload</b>
+
+
+  </div>
+<!--}}}-->
+  <!-- HTML {{{-->
+  <div style="display:grid; grid-template-columns : 1fr 1fr;">
+   <p style="margin:0; font-size:200px; background-color:#F002; border-radius:5%; text-align:center;">1
+   <p style="margin:0; font-size:200px; background-color:#0F02; border-radius:5%; text-align:center;">2
+  </div>
+  <!--}}}-->
+ <!-- SCRIPT set_title load_html {{{ -->
+ <script>
+  DOM_LOAD_ID       = "dom_sticky"; DOM_LOAD_TAG  = DOM_LOAD_ID+" (211120:16h:21)";
+  DOM_LOAD_PANELS   = "";
+  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
+  }
+  /*}}}*/
+  /*  load_html {{{*/
+  let load_html = function(id, html) {
+   if( document.getElementById(id) ) return;
+   let el       = document.createElement("DIV");
+   el.id        = id;
+   el.title     = id;
+   el.innerHTML = unescape(html);
+   document.body.appendChild(el);
+//console.log("load_html("+id+") ...done")
+  };
+  /*}}}*/
+ </script>
+ <!--}}}-->
+<!-- dom_sticky.html }}}-->
+<!-- dom_sticky.html }}}-->
+
+<!-- [tools] STUB {{{-->
+ <script>
+
+/* [tools] STUB */
+/*   tools {{{*/
+let _tools = (function() {
+    return {
+        /* EVENTS {{{*/
+        t_add_tool_pointermove_listener           : function(_caller) {
+            if(("ontouchmove" in document.documentElement)) tools.add_listener_capture_active(window, "touchmove", l_pointermove_listener);
+            else                                            tools.add_listener_capture_active(window, "mousemove", l_pointermove_listener);
+        }
+        , add_listener_capture_active             : function(el, ev, fn) { el.addEventListener(ev, fn, {capture:true, passive:false}); }
+
+        , del_page_and_tool_pointermove_listeners : function(_caller) {
+            tools.remove_listener_capture_active(    window, "mousemove", l_pointermove_listener);
+            tools.remove_listener_capture_active(    window, "touchmove", l_pointermove_listener);
+        }
+        , remove_listener_capture_active          : function(el, ev, fn, uc) { el.removeEventListener(ev, fn, {capture:true, passive:false}); }
+
+        , t_some_tool_clicked                     : function(     ) { /*log("dummy %c t_save_update_post", lbH);*/ return false;}
+        /*}}}*/
+        /* LAYOUT {{{*/
+        , t_cache_wph_WH : function() { /*log("dummy %c t_cache_wph_WH", lbH);*/ }
+        , t_get_wph_WH   : function() {
+            return { w_W :   window.innerWidth
+                ,    w_H :   window.innerHeight
+                ,    p_H : document.body.parentElement.scrollHeight
+                ,    p_W : document.body.parentElement.scrollWidth
+                ,    h_W : 32
+                ,    h_H : 32
+            };
+        }
+        , t_pin_panel_at_XY   : function(panel,x,y     ) {
+            panel.style.left = x+"px"  ;
+            panel.style.top  = y+"px"  ;
+            dom_util.add_el_class(panel, dom_data.CSS_PINNED);
+        }
+        , t_pin_tool_at_XY    : function(tool_el, x, y ) { tool_el.style.left = x+"px";        tool_el.style.top  = y+"px"  ; }
+        , t_set_CSS_PINNED    : function(tool_el, state) { dom_util.set_el_class_on_off(tool_el, dom_data.CSS_PINNED, state); }
+
+        /*}}}*/
+        /* SELECTION {{{*/
+        , t_get_current_sel_text : function() { return String( window.getSelection() ).trim(); }
+        , t_get_onDown_SEL_TEXT  : function() { return String( window.getSelection() ).trim(); }
+
+        /*}}}*/
+        /* STORE {{{*/
+        , t_save_update_post : function() { /*log("dummy %c t_save_update_post", lbH);*/ }
+
+        /*}}}*/
+        /* TOOLS {{{*/
+        , t_dom_tools_html_appendChild : function(child    ) { document.body.appendChild( child ); }
+        , t_fly_add_innerHTML          : function(innerHTML) { console.warn(dom_util.strip_HTML(innerHTML)); }
+        , t_seeker_PU_is_active        : function(         ) { return false; }
+
+        , t_dimm_mask_displayed        : function() { /*log("dummy %c t_dimm_mask_displayed", lbH);*/ return true; }
+        , t_dimm_start_sticky          : function() { /*log("dummy %c t_dimm_start_sticky"  , lbH);*/              }
+        , t_dimm_stop                  : function() { /*log("dummy %c t_dimm_stop"          , lbH);*/              }
+        /*}}}*/
+    };
+}());
+/*}}}*/
+
+/* EVENT LAYOUT */
+/*  l_orient_listener {{{*/
+let l_orient_listener = function(e)
+{
+    l_layout_changed();
+};
+/*}}}*/
+/*  l_resize_listener {{{*/
+let l_resize_listener = function(e)
+{
+    l_layout_changed();
+};
+/*}}}*/
+/*  l_layout_changed {{{*/
+let l_layout_changed_timer;
+
+let l_layout_changed = function()
+{
+    if(l_layout_changed_timer )   clearTimeout(l_layout_changed_timer);
+    l_layout_changed_timer =        setTimeout(l_layout_changed_handler, 200);
+};
+/*}}}*/
+/*_ l_layout_changed_handler {{{*/
+let l_layout_changed_handler = function()
+{
+    tools.t_cache_wph_WH();
+    dom_sticky.t_sticky_RING_layout();
+    dom_sticky.t_sticky_onLayout();
+};
+/*}}}*/
+
+/* EVENT DOWN */
+/*  l_pointerdown_listener {{{*/
+let l_pointerdown_listener = function(e)
+{
+if(e.altKey ) { log(); console.clear(); e.preventDefault(); return; }
+if(e.ctrlKey) return;
+let caller = e.shiftKey ? "SHIFT DOWN" : "DOWN";
+/*{{{
+console.log(caller);
+}}}*/
+
+    if( l_get_onDown_STICKY(e) )
+        tools.t_add_tool_pointermove_listener(caller);
+};
+/*}}}*/
+/*_ l_get_onDown_STICKY {{{*/
+/*{{{*/
+/*{{{
+const STICKY_HAND = "sticky_hand";
+const STICKY_FIX  = "sticky_fix";
+const STICKY_PAD  = "sticky_pad";
+}}}*/
+
+/*}}}*/
+let l_get_onDown_STICKY = function(e)
+{
+let caller = "l_get_onDown_STICKY";
+
+    onWork_STICKY = dom_util.get_el_parent_with_class(e.target, "sticky");
+
+    let xy = l_get_event_XY(e);
+    if( onWork_STICKY ) {
+        onWork_STICKY.onDown_X = xy.x;
+        onWork_STICKY.onDown_Y = xy.y;
+        onWork_STICKY.onDown_L = onWork_STICKY.offsetLeft;
+        onWork_STICKY.onDown_T = onWork_STICKY.offsetTop ;
+        onWork_STICKY.touched
+            =                              dom_util.get_el_parent_with_class(e.target, dom_sticky.STICKY_HAND)
+            ?    dom_sticky.STICKY_HAND : (dom_util.has_el_class            (e.target, dom_sticky.STICKY_FIX )
+               ? dom_sticky.STICKY_FIX
+               : dom_sticky.STICKY_PAD
+              );
+
+        onWork_STICKY.moved    = "";
+
+/*{{{
+        dom_sticky.t_sticky_LOG(onWork_STICKY, caller, lfX[onWork_STICKY.num]);
+}}}*/
+    }
+    return onWork_STICKY;
+};
+/*}}}*/
+/*_ l_get_event_XY {{{*/
+let l_get_event_XY = function(e)
+{
+    let x, y;
+    if(e.changedTouches) {
+        x = parseInt(e.changedTouches[0].clientX);
+        y = parseInt(e.changedTouches[0].clientY);
+    }
+    else {
+        x = parseInt(                  e.clientX);
+        y = parseInt(                  e.clientY);
+    }
+    return { x:x , y:y };
+};
+/*}}}*/
+
+/* EVENT MOVE */
+/*  l_pointermove_listener {{{*/
+let l_pointermove_listener = function(e)
+{
+if(e.altKey ) return;
+if(e.ctrlKey) return;
+    if( onWork_STICKY ) {
+        let xy = l_get_event_XY(e);
+        l_move_onDown_STICKY_XY(onWork_STICKY, xy.x, xy.y);
+    }
+};
+/*}}}*/
+/*_ l_move_onDown_STICKY_XY {{{*/
+let t_sticky_reorder_timeout;
+let l_move_onDown_STICKY_XY = function(onWork_STICKY, x, y)
+{
+    let d_x = x - onWork_STICKY.onDown_X;
+    let d_y = y - onWork_STICKY.onDown_Y;
+
+    let moved = (Math.abs(d_x) >= 16) || (Math.abs(d_y) >= 16);
+    onWork_STICKY.moved |= moved;
+
+    if(onWork_STICKY.touched == dom_sticky.STICKY_PAD) 
+    {
+        if( moved ) {
+            let  dir = (Math.abs(d_x) > Math.abs(d_y)) ? ((d_x > 0) ? "RIGHT" : "LEFT")
+                :                                        ((d_y > 0) ?  "DOWN" : "UP"  )
+            ;
+            dom_sticky.t_sticky_TRACK_DIR(onWork_STICKY, dir);
+        }
+    }
+    else {
+        let                x = d_x + onWork_STICKY.onDown_L;
+        let                y = d_y + onWork_STICKY.onDown_T;
+        onWork_STICKY.style.left = x+"px";
+        onWork_STICKY.style.top  = y+"px";
+        if(!t_sticky_reorder_timeout)
+            t_sticky_reorder_timeout
+                = setTimeout(function() {
+                    t_sticky_reorder_timeout = null; dom_sticky.t_sticky_reorder();
+                }, 100);
+
+    }
+};
+/*}}}*/
+
+/* EVENT UP */
+/*  l_pointerup_listener {{{*/
+let l_pointerup_listener  = function(e)
+{
+if(e.altKey ) return;
+if(e.ctrlKey) return;
+/*{{{
+let caller = "l_pointerup_listener";
+console.log(caller);
+console.dir(e);
+}}}*/
+
+    if(onWork_STICKY) {
+        l_onDown_STICKY_clicked(onWork_STICKY);
+    }
+    else {
+        let xy = l_get_event_XY(e);
+        l_add_new_sticky_at_XY(xy.x, xy.y);
+    }
+};
+/*}}}*/
+/*_ l_onDown_STICKY_clicked {{{*/
+
+let CALL_STICKY_CLICK_CB = false;
+let lfX = ["brown", "red", "orange", "yellow"];
+
+let l_onDown_STICKY_clicked  = function(sticky)
+{
+let caller = "l_onDown_STICKY_clicked";
+
+    tools.del_page_and_tool_pointermove_listeners();
+
+    let msg; let l_x;
+
+    if( sticky.moved ) {
+        msg = "MOVED";
+        l_x = 4;
+    }
+    else if( CALL_STICKY_CLICK_CB )
+    {
+        msg = "t_sticky_CLICK_CB";
+        l_x = 7;
+        dom_sticky.t_sticky_CLICK_CB(sticky);
+    }
+    else if( sticky.id.startsWith("sticky_ring") ) {
+        msg = " TOUCHED "+sticky.touched;
+        l_x = 4;
+
+        dom_sticky.t_sticky_RING_stop(caller);
+    }
+    else if(sticky.touched == dom_sticky.STICKY_HAND) {
+        msg = " TOUCHED "+sticky.touched;
+        l_x = 3;
+
+        dom_util.flip_el_class(sticky, "fixed");
+    }
+    else if(sticky.touched == dom_sticky.STICKY_FIX) {
+        msg = " TOUCHED "+sticky.touched;
+        l_x = 2;
+
+        dom_sticky.t_sticky_unpin_sticky_num( sticky.num );
+    }
+    else {
+        msg = " TOUCHED "+sticky.touched;
+        l_x = 1;
+
+        dom_sticky.t_sticky_CHOOSE();
+    }
+
+    console.log("%c ID "  + sticky.id
+       +"%c NUM " + sticky.num
+       +"%c "     + msg
+       , lfX[l_x]
+       , lfX[l_x]
+       , lfX[l_x]
+       );
+
+    dom_sticky.t_sticky_STORE_NOW();
+};
+/*}}}*/
+/*_ l_add_new_sticky_at_XY .. NEW STICKY {{{*/
+let l_add_new_sticky_at_XY = function(x,y)
+{
+let caller = "l_add_new_sticky_at_XY";
+/*{{{
+console.log(caller);
+console.log("...calling t_sticky_NEW(x, y)");
+}}}*/
+
+    let sticky = dom_sticky.t_sticky_NEW_XY_SEL_TEXT(x, y, "sel_text")
+    if( sticky ) {
+        sticky.style.display = "block";
+    }
+    else {
+        console.log("!sticky");
+    }
+}
+/*}}}*/
+
+/* EVENT LOAD */
+/* LOAD {{{*/
+console.log(DOM_LOAD_ID+" LOADING DONE" );
+
+console.log("ADDING LISTENERS");
+/*_ l_add_LISTENERS {{{*/
+let l_add_listener_capture_active = function(el, ev, fn) { el.addEventListener(ev, fn, {capture:true, passive:false}); };
+let l_add_LISTENERS = function()
+{
+    if( ("ontouchstart" in document.documentElement) ) {
+        l_add_listener_capture_active(   window, "touchstart"       , l_pointerdown_listener);
+        l_add_listener_capture_active(   window, "touchend"         , l_pointerup_listener);
+    }
+    else {
+        l_add_listener_capture_active(   window, "mousedown"        , l_pointerdown_listener);
+        l_add_listener_capture_active(   window, "mouseup"          , l_pointerup_listener);
+    }
+    l_add_listener_capture_active(       window, "orientationchange", l_orient_listener);
+    l_add_listener_capture_active(       window, "resize"           , l_resize_listener);
+/*{{{
+    t_layout_changed();
+}}}*/
+};
+/*}}}*/
+l_add_LISTENERS();
+
+console.log("INITIAL LAYOUT");
+l_layout_changed();
+/*}}}*/
+
+ </script>
+<!-- dom_sticky.html }}}-->
+  <!-- SCRIPT UNDER TEST .. [dom_sticky_js] .. DEPENDENCIES {{{-->
+
+  <script id="dom_data_js"    src="script/dom_data.js"    defer></script> <!-- DATA    05 DATA                          -->
+  <script id="dom_log_js"     src="script/dom_log.js"     defer></script> <!-- LOG     06 data LOG util                 -->
+  <script id="dom_popup_js"   src="script/dom_popup.js"   defer></script> <!-- POPUP           log                      -->
+  <script id="dom_util_js"    src="script/dom_util.js"    defer></script> <!-- UTIL    07 data log UTIL(i18n)           -->
+  <script id="dom_details_js" src="script/dom_details.js" defer></script> <!-- DETAILS         log UTIL                 -->
+  <script id="dom_i18n_js"    src="script/dom_i18n.js"    defer></script> <!-- I18N    08 data log util I18N            -->
+  <script id="dom_prop_js"    src="script/dom_prop.js"    defer></script> <!-- PROP    09 data log util PROP            -->
+  <script id="dom_store_js"   src="script/dom_store.js"   defer></script> <!-- STORE   10 data log util      STORE      -->
+  <script id="dom_fly_js"     src="script/dom_fly.js"     defer></script> <!-- FLY     11 data log util prop store FLY  -->
+
+  <script id="dom_wording_js" src="script/dom_wording.js" defer></script> <!-- WORDING 12      log                        WORDING               -->
+  <script id="dom_select_js"  src="script/dom_select.js"  defer></script> <!-- SELECT  13 data log util prop       fly            SELECT  slot  -->
+  <script id="dom_wot_js"     src="script/dom_wot.js"     defer></script>
+  <script id="dom_slot_js"    src="script/dom_slot.js"    defer></script> <!-- SLOT    14 data log      prop                      select  SLOT  -->
+
+  <script id="dom_hide_js"    src="script/dom_hide.js"    defer></script> <!-- HIDE    15 data log util prop store                             HIDE                          -->
+  <script id="dom_view_js"    src="script/dom_view.js"    defer></script> <!-- VIEW    16 data log util prop                                         VIEW                    -->
+  <script id="dom_sticky_js"  src="script/dom_sticky.js"  defer></script> <!-- STICKY  17 data log util prop store                                   view STICKY seek        -->
+  <script id="dom_seek_js"    src="script/dom_seek.js"    defer></script> <!-- SEEK    18 data log util prop                      select                  sticky SEEK        -->
+  <script id="dom_share_js"   src="script/dom_share.js"   defer></script> <!-- SHARE   19 data log util      store fly                                    sticky      SHARE  -->
+
+  <script id="dom_grid_js"    src="script/dom_grid.js"    defer></script> <!-- GRID    20 data log util                                                                       GRID         -->
+  <script id="dom_gutter_js"  src="script/dom_gutter.js"  defer></script> <!-- GUTTER  21 data log util prop                                                                       GUTTER  -->
+
+  <script id="dom_ipc_js"     src="script/dom_ipc.js"     defer></script> <!-- IPC     22 log                                                                                               IPC        -->
+  <script id="dom_tools_js"   src="script/dom_tools.js"   defer></script> <!-- TOOLS   23 data log util prop store fly            select        hide view sticky seek share   grid          ipc TOOLS  -->
+
+  <script>let tools = _tools;</script>
+<!--{{{
+  <script>let dom_slot           = {};/* GLOBAL IMPORT */              </script>
+  <script>let dom_select         = {};/* GLOBAL IMPORT */              </script>
+  <script>let dom_wot            = {};/* GLOBAL IMPORT */              </script>
+  <script>let dom_share          = {};/* GLOBAL IMPORT */              </script>
+  <script>let dom_hide           = {};/* GLOBAL IMPORT */              </script>
+  <script id="dom_tools_js"   src="script/dom_tools.js"      defer></script>
+}}}-->
+
+ <!--}}}-->
+
+
+
+ </body>
+<!-- check_load_html_results {{{ -->
+ <script>
+  function check_load_html_results()
+  {
+        /* CSS {{{*/
+        const lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+        const lbH = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+        const lf2 = "color:#F00;";
+        const lf5 = "color:#0F0;";
+        const lf8 = "color:#AAA;";
+        const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
+        const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
+
+        /*}}}*/
+   console.log("%c"+DOM_LOAD_TAG, lbH+lf5);
+   let id;                                   let missing_ids  = "";
+ //id =     "dom_tools_html_tag";                missing_ids +=     check_missing_id(id) ;
+ //id =     "dom_grid_html_tag" ;                missing_ids +=     check_missing_id(id) ;
+
+   if(typeof DOM_DATA_JS_TAG    === 'undefined') missing_ids += "\n DOM_DATA_JS_TAG"     ;
+   if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ;
+   if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ;
+   if(typeof DOM_I18N_JS_TAG    === 'undefined') missing_ids += "\n DOM_I18N_JS_TAG"     ;
+   if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ;
+   if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ;
+
+ //if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ;
+ //if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ;
+ //if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ;
+
+ //if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ;
+ //if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ;
+ //if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ;
+ //if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ;
+
+ //if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ;
+ //if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ;
+ //if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ;
+
+   if(missing_ids) {
+    let lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+    let lf2 = "color:#FF0000;";
+    console.log("%c"+dom_data.SYMBOL_NOT_CHECKED+"%c"+missing_ids+"%c is missing", lbH+lf2, lf2, lf8);
+    alert(         "MISSING IDs:\n"+missing_ids);
+   }
+  }
+
+  function check_missing_id(id)
+  {
+   let      shadow_root = tools.t_get_shadow_root();
+   let el = shadow_root
+       ?    shadow_root.querySelector("#"+id)
+       :    document   .querySelector("#"+id);
+   if(!el ) return "\n#"+id;
+   console.log("%c"+dom_data.SYMBOL_CHECK_MARK+"%c"+el.textContent,lbH+lf8,lf8);
+   return "";
+  }
+
+  setTimeout(check_load_html_results, 500);
+ </script>
+<!--}}}-->
+</html>
+<!--
+ vim: sw=4
+-->
+

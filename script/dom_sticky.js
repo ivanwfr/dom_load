@@ -20,13 +20,8 @@
 /* eslint-disable object-shorthand     */
 /* eslint-disable prefer-object-spread */
 
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-
 const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (210928:16h:01)";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (211119:18h:05)";
 /*}}}*/
 let dom_sticky  = (function() {
 "use strict";
@@ -232,9 +227,9 @@ let   sticky_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -922,10 +917,6 @@ if( log_this) t_sticky_LOG(sticky);
 /*…   sticky_get_value {{{*/
 let   sticky_get_value = function(sticky)
 {
-/* CALLERS:
-javascript/dom_sticky.js:767  t_sticky_STORE:809:         let value = sticky_get_value( sticky );
-javascript/dom_sticky.js:2893  sticky_onLayout_handler:2918:         let value = sticky_get_value( sticky );
-*/
 /*{{{*/
 let   caller = "sticky_get_value";
 let log_this = DOM_STICKY_LOG || LOG_MAP.T0_STORE;

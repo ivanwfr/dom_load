@@ -22,7 +22,7 @@
 
 
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (210928:16h:57)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211119:17h:47)";
 /*}}}*/
 let dom_log     = (function() {
 "use strict";
@@ -249,9 +249,9 @@ const lf0  = "color:#707070; text-shadow:#000 2px 2px 1px;"; /* offset-x offset-
 const lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
 
 const dom_log_CSS
-    = {   LOG_BG_ARR : [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ]
-        , LOG_FG_ARR : [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ]
-        , LOG_XX_ARR : [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ]
+    = {   LOG_BG_CSS : { lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX }
+        , LOG_FG_CSS : { lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX }
+        , LOG_XX_CSS : { lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           }
     };
 /*}}}*/
 /*➔ dom_log_CHAR {{{*/

@@ -2,7 +2,7 @@
 <html>
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (210928:19h:07)";
+  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (211119:18h:28)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
@@ -84,7 +84,7 @@ min-height          : 50px         !important;
  title="Bookmarklet à activer sur des pages en ligne
 
 ...peut-être copié ou glissé dans les favoris"
- href="javascript:(function(){var%20s=document.createElement('script'); s.id='dom_load'; s.type='text/javascript'; s.src='https://remotetabs.com/dev/rtabs/javascript/dom_load.js'; s.title='dom_load'; document.body.appendChild(s); })();"
+ href="javascript:(function(){var%20s=document.createElement('script'); s.id='dom_load'; s.type='text/javascript'; s.src='https://remotetabs.com/dev/rtabs/script/dom_load.js'; s.title='dom_load'; document.body.appendChild(s); })();"
  onclick="confirm(this.title); return false;"
  ><i style="font-size:13px; vertical-align:middle;">RTabs</i></a>
 </div>
@@ -375,9 +375,9 @@ The better to eat you with.
     /* dom_log {{{*/
       log = dom_log;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
 
     log                 = dom_log.log;
     logBIG              = dom_log.logBIG;
@@ -410,46 +410,47 @@ log("%c 23 "+DOM_LOAD_ID, lbH+lf3);
 
 
 
-  <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] .. [defer] {{{-->
-  <script id="dom_data_js"    src="javascript/dom_data.js"    charset="utf-8" defer></script>
-  <script id="dom_log_js"     src="javascript/dom_log.js"     charset="utf-8" defer></script>
-  <script id="dom_popup_js"   src="javascript/dom_popup.js"   charset="utf-8" defer></script>
-  <script id="dom_util_js"    src="javascript/dom_util.js"    charset="utf-8" defer></script>
-  <script id="dom_details_js" src="javascript/dom_details.js" charset="utf-8" defer></script>
-  <script id="dom_i18n_js"    src="javascript/dom_i18n.js"    charset="utf-8" defer></script>
-  <script id="dom_prop_js"    src="javascript/dom_prop.js"    charset="utf-8" defer></script>
-  <script id="dom_store_js"   src="javascript/dom_store.js"   charset="utf-8" defer></script>
-  <script id="dom_fly_js"     src="javascript/dom_fly.js"     charset="utf-8" defer></script>
+  <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] ............. [defer] {{{-->
+  <script id="dom_data_js"     src="script/dom_data.js"     charset="utf-8" defer></script>
+  <script id="dom_log_js"      src="script/dom_log.js"      charset="utf-8" defer></script>
+  <script id="dom_popup_js"    src="script/dom_popup.js"    charset="utf-8" defer></script>
+  <script id="dom_util_js"     src="script/dom_util.js"     charset="utf-8" defer></script>
+  <script id="dom_details_js"  src="script/dom_details.js"  charset="utf-8" defer></script>
+  <script id="dom_i18n_js"     src="script/dom_i18n.js"     charset="utf-8" defer></script>
+  <script id="dom_prop_js"     src="script/dom_prop.js"     charset="utf-8" defer></script>
+  <script id="dom_store_js"    src="script/dom_store.js"    charset="utf-8" defer></script>
+  <script id="dom_fly_js"      src="script/dom_fly.js"      charset="utf-8" defer></script>
 
-  <script id="dom_wording_js" src="javascript/dom_wording.js" charset="utf-8" defer></script>
-  <script id="dom_select_js"  src="javascript/dom_select.js"  charset="utf-8" defer></script>
-  <script id="dom_wot_js"     src="javascript/dom_wot.js"     charset="utf-8" defer></script>
-  <script id="dom_slot_js"    src="javascript/dom_slot.js"    charset="utf-8" defer></script>
+  <script id="dom_wording_js"  src="script/dom_wording.js"  charset="utf-8" defer></script>
+  <script id="dom_select_js"   src="script/dom_select.js"   charset="utf-8" defer></script>
+  <script id="dom_wot_js"      src="script/dom_wot.js"      charset="utf-8" defer></script>
+  <script id="dom_sentence_js" src="script/dom_sentence.js" charset="utf-8" defer></script> <!-- SENTENCE 23  data   log popup util   i18n  prop                                                                                      [SENTENCE]                      tools  -->
+  <script id="dom_slot_js"     src="script/dom_slot.js"     charset="utf-8" defer></script>
 
-  <script id="dom_hide_js"    src="javascript/dom_hide.js"    charset="utf-8" defer></script>
-  <script id="dom_view_js"    src="javascript/dom_view.js"    charset="utf-8" defer></script>
-  <script id="dom_sticky_js"  src="javascript/dom_sticky.js"  charset="utf-8" defer></script>
-  <script id="dom_seek_js"    src="javascript/dom_seek.js"    charset="utf-8" defer></script>
-  <script id="dom_share_js"   src="javascript/dom_share.js"   charset="utf-8" defer></script>
+  <script id="dom_hide_js"     src="script/dom_hide.js"     charset="utf-8" defer></script>
+  <script id="dom_view_js"     src="script/dom_view.js"     charset="utf-8" defer></script>
+  <script id="dom_sticky_js"   src="script/dom_sticky.js"   charset="utf-8" defer></script>
+  <script id="dom_seek_js"     src="script/dom_seek.js"     charset="utf-8" defer></script>
+  <script id="dom_share_js"    src="script/dom_share.js"    charset="utf-8" defer></script>
 
-  <script id="dom_grid_js"    src="javascript/dom_grid.js"    charset="utf-8" defer></script>
-  <script id="dom_gutter_js"  src="javascript/dom_gutter.js"  charset="utf-8" defer></script>
+  <script id="dom_grid_js"     src="script/dom_grid.js"     charset="utf-8" defer></script>
+  <script id="dom_gutter_js"   src="script/dom_gutter.js"   charset="utf-8" defer></script>
 
-  <script id="dom_ipc_js"     src="javascript/dom_ipc.js"     charset="utf-8" defer></script>
-  <script id="dom_tools_js"   src="javascript/dom_tools.js"   charset="utf-8" defer></script>
+  <script id="dom_ipc_js"      src="script/dom_ipc.js"      charset="utf-8" defer></script>
+  <script id="dom_tools_js"    src="script/dom_tools.js"    charset="utf-8" defer></script>
 
-  <script id="gifanim_js"     src="javascript/gifanim.js"     charset="utf-8" defer></script>
+  <script id="gifanim_js"      src="script/gifanim.js"      charset="utf-8" defer></script>
  <!--}}}-->
 
 <!-- [tools] HTML [dom_tools_html_data] {{{-->
 <script>
 /*
-javascript/dom_tools.html
+script/dom_tools.html
 */
 dom_tools_html_data = escape(`
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:19h:26)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:21h:29)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -472,8 +473,8 @@ dom_tools_html_data = escape(`
   <em  id="overflow_visi"  class="toolbag_button cc9"       title="overflow_visi">&nbsp;</em>
   <em  id="scroll_smooth"  class="toolbag_button cc9"       title="scroll_smooth">&nbsp;</em>
 
-  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&#x25B6;</em>
-  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&#x25B6;</em>
+  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&#x25B2;</em>
+  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&#x25BC;</em>
   <em  id="details_radio"  class="toolbag_button cc9"       title="details_radio">&nbsp;</em>
 
   <em  id="tools_tier2"    class="toolbag_button cc9"       title="tools_tier2">&#x2630;</em>
@@ -646,7 +647,7 @@ load_html("dom_tools_html", dom_tools_html_data);
 <script>let snapshot_id;</script>
 
 <!--
-j:r javascript/doc_tools.html
+j:r script/doc_tools.html
 -->
 <!-- [doc_tools.html] {{{-->
 <!-- script {{{-->

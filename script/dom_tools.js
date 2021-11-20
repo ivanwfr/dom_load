@@ -3,38 +3,49 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals DOM_LOAD_ID        */
-/* globals DOM_LOAD_TAG       */
-/* globals DOM_TOOLS_CSS_TAG  */
-/* globals DOM_WORDING_JS_TAG */
-/* globals DOM_VIEW_JS_TAG    */
-/* globals DOM_UTIL_JS_TAG    */
-/* globals DOM_DETAILS_JS_TAG */
-/* globals DOM_WOT_JS_TAG     */
-/* globals DOM_I18N_JS_TAG    */
-/* globals DOM_STORE_JS_TAG   */
-/* globals DOM_STICKY_JS_TAG  */
-/* globals DOM_SEEK_JS_TAG    */
-/* globals DOM_SLOT_JS_TAG    */
-/* globals DOM_SHARE_JS_TAG   */
-/* globals DOM_SELECT_JS_TAG  */
-/* globals DOM_PROP_JS_TAG    */
-/* globals DOM_LOG_JS_TAG     */
-/* globals DOM_IPC_JS_TAG     */
-/* globals DOM_HIDE_JS_TAG    */
-/* globals DOM_GUTTER_JS_TAG  */
-/* globals DOM_GRID_JS_TAG    */
-/* globals DOM_FLY_JS_TAG     */
-/* globals DOM_DATA_JS_TAG    */
-
-/* globals dom_data, dom_log, dom_popup, dom_util, dom_details, dom_i18n, dom_prop, dom_store, dom_fly, dom_wording, dom_select, dom_wot, dom_slot, dom_hide, dom_view, dom_sticky, dom_seek, dom_share, dom_grid, dom_gutter, dom_ipc */
-/* globals dom_prop_notify    */
-/* globals playground_prop_CB */
+/* globals DOM_DATA_JS_TAG     */
+/* globals DOM_DETAILS_JS_TAG  */
+/* globals DOM_FLY_JS_TAG      */
+/* globals DOM_GRID_JS_TAG     */
+/* globals DOM_GUTTER_JS_TAG   */
+/* globals DOM_HIDE_JS_TAG     */
+/* globals DOM_I18N_JS_TAG     */
+/* globals DOM_IPC_JS_TAG      */
+/* globals DOM_LOAD_ID         */
+/* globals DOM_LOAD_TAG        */
+/* globals DOM_LOG_JS_TAG      */
+/* globals DOM_POPUP_JS_TAG    */
+/* globals DOM_PROP_JS_TAG     */
+/* globals DOM_SEEK_JS_TAG     */
+/* globals DOM_SELECT_JS_TAG   */
+/* globals DOM_SENTENCE_JS_TAG */
+/* globals DOM_SHARE_JS_TAG    */
+/* globals DOM_SLOT_JS_TAG     */
+/* globals DOM_STICKY_JS_TAG   */
+/* globals DOM_STORE_JS_TAG    */
+/* globals DOM_TOOLS_CSS_TAG   */
+/* globals DOM_UTIL_JS_TAG     */
+/* globals DOM_VIEW_JS_TAG     */
+/* globals DOM_WORDING_JS_TAG  */
+/* globals DOM_WOT_JS_TAG      */
 
 /* globals window, document, navigator */
 /* globals console, setTimeout, clearTimeout, setInterval, clearInterval */
 /* globals Node, requestAnimationFrame, cancelAnimationFrame */
 /* globals getComputedStyle */
+
+/*┌─────── DOM MODULES ──────────────────────────────────────────────────────┐*/
+/* globals dom_data,    dom_details, dom_fly,    dom_grid,     dom_gutter     */
+/* globals dom_hide,    dom_i18n,    dom_ipc,    dom_log,      dom_popup      */
+/* globals dom_prop,    dom_seek,    dom_select, dom_sentence, dom_share      */
+/* globals dom_slot,    dom_sticky,  dom_store,  dom_util,     dom_view       */
+/* globals dom_wording, dom_wot                                               */
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+
+/*┌─────── OPTIONAL CALLBACKS─┐*/
+/* globals dom_prop_notify     */
+/* globals playground_prop_CB  */
+/*└───────────────────────────┘*/
 
 /* eslint-disable no-unused-vars */
 /* eslint-disable complexity     */
@@ -42,14 +53,8 @@
 /* eslint-disable max-depth */
 /* eslint-disable no-warning-comments */
 
-/*
-:update|1,$y *
-:!start explorer https://jshint.com/
-:!start explorer https://cdn.jsdelivr.net/npm/vue/dist/vue.js
-*/
-
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (210928:19h:34)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211120:16h:20)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -57,19 +62,18 @@ let dom_tools   = (function() {
 /* IMPORT {{{*/
 /*➔ t_tools_IMPORT {{{*/
 /*{{{*/
-/*....................................*/
 let t_data     = {}        ;    /* 05 */
+/*....................................*/
 let t_log      = {}        ;    /* 06 */
-let t_util     = {}        ;    /* 07 */
-let t_details  = {}        ;    /* 08 */
+let t_popup    = {}        ;    /* 07 */
+let t_util     = {}        ;    /* 08 */
 let t_i18n     = {}        ;    /* 09 */
 let t_prop     = {}        ;    /* 10 */
+/* ...................................*/
 let t_store    = {}        ;    /* 11 */
 let t_fly      = {}        ;    /* 12 */
-/* ...................................*/
 let t_wording  = {}        ;    /* 13 */
 let t_select   = {}        ;    /* 14 */
-let t_wot      = {}        ;    /* 14 */
 let t_slot     = {}        ;    /* 15 */
 /* ...................................*/
 let t_hide     = {}        ;    /* 16 */
@@ -78,42 +82,48 @@ let t_sticky   = {}        ;    /* 18 */
 let t_seek     = {}        ;    /* 19 */
 let t_share    = {}        ;    /* 20 */
 /* ...................................*/
-let t_grid     = {}        ;    /* 21 */
-let t_gutter   = {}        ;    /* 22 */
+let t_details  = {}        ;    /* 21 */
+let t_wot      = {}        ;    /* 22 */
+let t_sentence = {}        ;    /* 23 */
+let t_grid     = {}        ;    /* 24 */
+let t_gutter   = {}        ;    /* 25 */
 /* ...................................*/
-let t_ipc      = {}        ;    /* 23 */
-/*➔ t_tools    = {}        ; */ /* 24 */
+let t_ipc      = {}        ;    /* 26 */
+/*➔ t_tools    = {}        ; */ /* 27 */
 /*....................................*/
 /*}}}*/
 let t_tools_IMPORT  = function(log_this)
 {
 /* t_data .. t_tools {{{*/
 /* ...................................*/
-                                         t_data    = dom_data   ;    /* 05 */
-if(typeof dom_log     != "undefined")    t_log     = dom_log    ;    /* 06 */
-if(typeof dom_util    != "undefined")    t_util    = dom_util   ;    /* 07 */
-if(typeof dom_details != "undefined")    t_details = dom_details;    /* 08 */
-if(typeof dom_i18n    != "undefined")    t_i18n    = dom_i18n   ;    /* 09 */
-if(typeof dom_prop    != "undefined")    t_prop    = dom_prop   ;    /* 10 */
-if(typeof dom_store   != "undefined")    t_store   = dom_store  ;    /* 11 */
-if(typeof dom_fly     != "undefined")    t_fly     = dom_fly    ;    /* 12 */
-                                     /* ...................................*/
-if(typeof dom_wording != "undefined")    t_wording = dom_wording;    /* 13 */
-if(typeof dom_select  != "undefined")    t_select  = dom_select ;    /* 14 */
-if(typeof dom_wot     != "undefined")    t_wot     = dom_wot    ;    /* 14 */
-if(typeof dom_slot    != "undefined")    t_slot    = dom_slot   ;    /* 15 */
-                                     /* ...................................*/
-if(typeof dom_hide    != "undefined")    t_hide    = dom_hide   ;    /* 16 */
-if(typeof dom_view    != "undefined")    t_view    = dom_view   ;    /* 17 */
-if(typeof dom_sticky  != "undefined")    t_sticky  = dom_sticky ;    /* 18 */
-if(typeof dom_seek    != "undefined")    t_seek    = dom_seek   ;    /* 19 */
-if(typeof dom_share   != "undefined")    t_share   = dom_share  ;    /* 20 */
-                                     /* ...................................*/
-if(typeof dom_grid    != "undefined")    t_grid    = dom_grid   ;    /* 21 */
-if(typeof dom_gutter  != "undefined")    t_gutter  = dom_gutter ;    /* 22 */
-                                     /* ...................................*/
-if(typeof dom_ipc     != "undefined")    t_ipc     = dom_ipc    ;    /* 23 */
-                                     /*➔ t_tools   = dom_tools  ; */ /* 24 */
+                                         t_data    = dom_data    ;    /* 05 */
+                                     /* ........................ ...........*/
+if(typeof dom_log     != "undefined")    t_log     = dom_log     ;    /* 06 */
+if(typeof dom_popup   != "undefined")    t_popup   = dom_popup   ;    /* 07 */
+if(typeof dom_util    != "undefined")    t_util    = dom_util    ;    /* 08 */
+if(typeof dom_i18n    != "undefined")    t_i18n    = dom_i18n    ;    /* 09 */
+if(typeof dom_prop    != "undefined")    t_prop    = dom_prop    ;    /* 10 */
+                                     /* ........................ ...........*/
+if(typeof dom_store   != "undefined")    t_store   = dom_store   ;    /* 11 */
+if(typeof dom_fly     != "undefined")    t_fly     = dom_fly     ;    /* 12 */
+if(typeof dom_wording != "undefined")    t_wording = dom_wording ;    /* 13 */
+if(typeof dom_select  != "undefined")    t_select  = dom_select  ;    /* 14 */
+if(typeof dom_slot    != "undefined")    t_slot    = dom_slot    ;    /* 15 */
+                                     /* ........................ ...........*/
+if(typeof dom_hide    != "undefined")    t_hide    = dom_hide    ;    /* 16 */
+if(typeof dom_view    != "undefined")    t_view    = dom_view    ;    /* 17 */
+if(typeof dom_sticky  != "undefined")    t_sticky  = dom_sticky  ;    /* 18 */
+if(typeof dom_seek    != "undefined")    t_seek    = dom_seek    ;    /* 19 */
+if(typeof dom_share   != "undefined")    t_share   = dom_share   ;    /* 20 */
+                                     /* ........................ ...........*/
+if(typeof dom_details != "undefined")    t_details = dom_details ;    /* 21 */
+if(typeof dom_wot     != "undefined")    t_wot     = dom_wot     ;    /* 22 */
+if(typeof dom_sentence!= "undefined")    t_sentence= dom_sentence;    /* 23 */
+if(typeof dom_grid    != "undefined")    t_grid    = dom_grid    ;    /* 24 */
+if(typeof dom_gutter  != "undefined")    t_gutter  = dom_gutter  ;    /* 25 */
+                                     /* ........................ ...........*/
+if(typeof dom_ipc     != "undefined")    t_ipc     = dom_ipc     ;    /* 26 */
+                                     /*➔ t_tools   = dom_tools   ; */ /* 27 */
 /* ...................................*/
 /*}}}*/
     tools_INTERN();
@@ -171,9 +181,9 @@ let   tools_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -304,7 +314,7 @@ let   tools_DEPEND = function()
         .concat( TOOL_SET3_HIDE )
         .concat( TOOL_SET4_PLAY )
 /*
-//      .concat( TOOL_SET5_MORE ) FIXME .. HIDES fly_div
+        .concat( TOOL_SET5_MORE ) FIXME .. HIDES fly_div
 */
     ;
 
@@ -325,28 +335,29 @@ let log_this = DOM_TOOLS_TAG;
 /*..........................................................................................*/
 /*....................................... dom_data     EXPORT-ONLY                    /* 05 */
 /*..........................................................................................*/
-if(typeof dom_log     != "undefined")     dom_log     .t_log_IMPORT     (log_this);   /* 06 */
-if(typeof dom_util    != "undefined")     dom_util    .t_util_IMPORT    (log_this);   /* 07 */
-if(typeof dom_details != "undefined")     dom_details .t_details_IMPORT (log_this);   /* 08 */
-if(typeof dom_i18n    != "undefined")     dom_i18n    .t_i18n_IMPORT    (log_this);   /* 09 */
-if(typeof dom_prop    != "undefined")     dom_prop    .t_prop_IMPORT    (log_this);   /* 10 */
-/*..........................................................................................*/
-if(typeof dom_store   != "undefined")     dom_store   .t_store_IMPORT   (log_this);   /* 11 */
-if(typeof dom_fly     != "undefined")     dom_fly     .t_fly_IMPORT     (log_this);   /* 12 */
-if(typeof dom_wording != "undefined")     dom_wording .t_wording_IMPORT (log_this);   /* 13 */
-if(typeof dom_select  != "undefined")     dom_select  .t_select_IMPORT  (log_this);   /* 14 */
-if(typeof dom_wot     != "undefined")     dom_wot     .t_wot_IMPORT     (log_this);   /* 14 */
-if(typeof dom_slot    != "undefined")     dom_slot    .t_slot_IMPORT    (log_this);   /* 15 */
-/*..........................................................................................*/
-if(typeof dom_hide    != "undefined")     dom_hide    .t_hide_IMPORT    (log_this);   /* 16 */
-if(typeof dom_view    != "undefined")     dom_view    .t_view_IMPORT    (log_this);   /* 17 */
-if(typeof dom_sticky  != "undefined")     dom_sticky  .t_sticky_IMPORT  (log_this);   /* 18 */
-if(typeof dom_seek    != "undefined")     dom_seek    .t_seek_IMPORT    (log_this);   /* 19 */
-if(typeof dom_share   != "undefined")     dom_share   .t_share_IMPORT   (log_this);   /* 20 */
-/*..........................................................................................*/
-if(typeof dom_grid    != "undefined")     dom_grid    .t_grid_IMPORT    (log_this);   /* 21 */
-if(typeof dom_gutter  != "undefined")     dom_gutter  .t_gutter_IMPORT  (log_this);   /* 22 */
-if(typeof dom_ipc     != "undefined")     dom_ipc     .t_ipc_IMPORT     (log_this);   /* 23 */
+if(typeof dom_log      != "undefined")    dom_log     .t_log_IMPORT     (log_this);   /* 06 */
+if(typeof dom_util     != "undefined")    dom_util    .t_util_IMPORT    (log_this);   /* 07 */
+if(typeof dom_details  != "undefined")    dom_details .t_details_IMPORT (log_this);   /* 08 */
+if(typeof dom_i18n     != "undefined")    dom_i18n    .t_i18n_IMPORT    (log_this);   /* 09 */
+if(typeof dom_prop     != "undefined")    dom_prop    .t_prop_IMPORT    (log_this);   /* 10 */
+/*.................... .....................................................................*/
+if(typeof dom_store    != "undefined")    dom_store   .t_store_IMPORT   (log_this);   /* 11 */
+if(typeof dom_fly      != "undefined")    dom_fly     .t_fly_IMPORT     (log_this);   /* 12 */
+if(typeof dom_wording  != "undefined")    dom_wording .t_wording_IMPORT (log_this);   /* 13 */
+if(typeof dom_select   != "undefined")    dom_select  .t_select_IMPORT  (log_this);   /* 14 */
+if(typeof dom_sentence != "undefined")    dom_sentence.t_sentence_IMPORT(log_this);   /* 14 */
+if(typeof dom_wot      != "undefined")    dom_wot     .t_wot_IMPORT     (log_this);   /* 14 */
+if(typeof dom_slot     != "undefined")    dom_slot    .t_slot_IMPORT    (log_this);   /* 15 */
+/*.................... .....................................................................*/
+if(typeof dom_hide     != "undefined")    dom_hide    .t_hide_IMPORT    (log_this);   /* 16 */
+if(typeof dom_view     != "undefined")    dom_view    .t_view_IMPORT    (log_this);   /* 17 */
+if(typeof dom_sticky   != "undefined")    dom_sticky  .t_sticky_IMPORT  (log_this);   /* 18 */
+if(typeof dom_seek     != "undefined")    dom_seek    .t_seek_IMPORT    (log_this);   /* 19 */
+if(typeof dom_share    != "undefined")    dom_share   .t_share_IMPORT   (log_this);   /* 20 */
+/*.................... .....................................................................*/
+if(typeof dom_grid     != "undefined")    dom_grid    .t_grid_IMPORT    (log_this);   /* 21 */
+if(typeof dom_gutter   != "undefined")    dom_gutter  .t_gutter_IMPORT  (log_this);   /* 22 */
+if(typeof dom_ipc      != "undefined")    dom_ipc     .t_ipc_IMPORT     (log_this);   /* 23 */
 /*..................................... ✔ dom_tools */ t_tools_IMPORT   (log_this);   /* 24 */
 /*..........................................................................................*/
 /* [globals] DEBUG {{{*/
@@ -363,6 +374,7 @@ logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
 
         window.t_wording = t_wording;
         window.t_select  = t_select;
+        window.t_sentence= t_sentence;
         window.t_slot    = t_slot;
 
         window.t_hide    = t_hide;
@@ -850,7 +862,7 @@ if(log_this) log("t_sync_tools_tier2: tools_tier2=["+tools_tier2+"] .. CALLED BY
 
         set_el_class_on_off(el, t_data.CSS_HIDDEN, !is_showing);
 /*
-//log("t_sync_tools_tier2: %c el.id=["+el.id+"]", lbH+lf8) FIXME .. do not hide fly_div here !
+log("t_sync_tools_tier2: %c el.id=["+el.id+"]", lbH+lf8) .. FIXME .. do not hide fly_div here !
 */
     }
 
@@ -981,7 +993,7 @@ logBIG("t_TOOL_SET_eval_wide_or_tall_panel_handler", lf5);
 }}}*/
 
 /*{{{
-t_fly.t_fly_tooltip_add("t_TOOL_SET_eval_wide_or_tall_panel_handler")//TODO PIVOT
+t_fly.t_fly_tooltip_add("t_TOOL_SET_eval_wide_or_tall_panel_handler") .. TODO PIVOT
 }}}*/
     t_TOOL_SET_eval_wide_or_tall_timer = null;
 
@@ -1055,7 +1067,7 @@ if(log_this) log(caller, "info");
     }
     /*........... t_data.LINES_WOT .... is only an option for splitted lines numbering */
 
-    t_details.details_load_open_state(); /* eslint-disable-line no-undef */
+    t_details.details_onload(); /* eslint-disable-line no-undef */
 
     load7_GRID();
 
@@ -1112,8 +1124,7 @@ if( log_this) log("HIDE TOOLS");
         dom_tools_html.style.visibility = t_data.CSS_HIDDEN;
 
 if( log_this) log("SET t_data.WORDING OFF");
-    if(typeof dom_wording != "undefined")
-        dom_wording.dom_wording_cycle("OFF", false);
+    t_wording.dom_wording_cycle("OFF", false);
 
 if( log_this) log("SEND IPC UNLOAD MESSAGE");
     let ipc = {    t_load : TOOLS5_UNLOADED
@@ -1164,12 +1175,12 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
     case "beforeunload":
     /*{{{*/
     {
-    /* == [beforeunload] .. (MDN web docs) ========================================= {{{
-     * THE BROWSER MAY ASK THE USER
-     * ABOUT PREVENTING A SNEAKY UNLOAD
-     * WITH A CONFIRMATION DIALOGS
-     :!start explorer "https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload"
-     * ============================================================================== }}}*/
+/* == [beforeunload] .. (MDN web docs) ========================================= {{{
+ * THE BROWSER MAY ASK THE USER
+ * ABOUT PREVENTING A SNEAKY UNLOAD
+ * WITH A CONFIRMATION DIALOGS
+ :!start explorer "https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload"
+ * ============================================================================== }}}*/
         /* COMMIT PENDING STORAGE ➔ .. (before leaving this page) {{{*/
         t_sticky.t_sticky_STORE_NOW();
 
@@ -1199,9 +1210,9 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
         let case7_remove_ads_tool_clicked = (onDown_EL && (onDown_EL == t_get_tool(t_data.REMOVE_ADS )));
         let case8_remove_ads_tool_set     =                              prop.get( t_data.REMOVE_ADS )  ;
 /*{{{
-        let user_is_tooling               =  dimm_mask_displayed(         ); // USER IS READING
-        let user_is_editing_dom_hide      =  prop.get(t_data.EDIT_OR_STAGE); // EDIT MODE
-        let dom_load_is_bookmarklet       = (DOM_LOAD_ID != "dom_load")    ; // TODO : GENERICITY
+        let user_is_tooling               =  dimm_mask_displayed(         ); .. USER IS READING
+        let user_is_editing_dom_hide      =  prop.get(t_data.EDIT_OR_STAGE); .. EDIT MODE
+        let dom_load_is_bookmarklet       = (DOM_LOAD_ID != "dom_load")    ; .. TODO : GENERICITY
 }}}*/
 
         /*}}}*/
@@ -2121,7 +2132,7 @@ if( log_this) log_caller();
     xy.x = Math.min(        xy.x, w_W );
     xy.y = Math.min(        xy.y, w_H );
 
-    if(xy.x || xy.y) dom_gutter.set_WINDOW_XY(xy.x, xy.y);
+    if(xy.x || xy.y) t_gutter.set_WINDOW_XY(xy.x, xy.y);
 if(log_this) logBIG(caller+": hotspotXY IN-WINDOW ["+xy.x+" "+xy.y+"]");
     /*}}}*/
     /* hotspotXY .. IN-GUTTER POSITION {{{*/
@@ -2131,7 +2142,7 @@ if(log_this) logBIG(caller+": hotspotXY IN-WINDOW ["+xy.x+" "+xy.y+"]");
     xy.x = Math.min(        xy.x, w_W );
     xy.y = Math.min(        xy.y, w_H );
 
-    if(xy.x || xy.y) dom_gutter.set_GUTTER_XY(xy.x, xy.y);
+    if(xy.x || xy.y) t_gutter.set_GUTTER_XY(xy.x, xy.y);
 
 if(log_this) logBIG("hotspotXY_in_gutter=["+xy.x+" "+xy.y+"]");
     /*}}}*/
@@ -2200,7 +2211,7 @@ let load6_DOM_TAGS = function()
 {
 /*{{{*/
     let caller = "load6_DOM_TAGS";
-let log_this = LOG_MAP.T1_DOM_LOAD;
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
 
 if( log_this) log("%c"+t_data.SD6+"%c "+caller+" COLOR-STAMPING MODULE TAGS", lbS+lf6, lbH+lf6);
 /*}}}*/
@@ -2225,48 +2236,53 @@ logBIG(caller+" *** t_get_tool('dom_load_tags') failed");
     let m_class = "em_missing";
     dom_load_tags_el.innerHTML = ""
 
-        + ("LOADER"+LF)
++ ("LOADER"+LF)
         + ((typeof DOM_LOAD_TAG       == "undefined") ? "<em class='"+m_class+"'>DOM_LOAD_TAG       *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOAD_TAG       ) +"'>"+ DOM_LOAD_TAG        +"</em>")
 
-        + ("HTML TOOLS"+LF)
-        + ((typeof DOM_TOOLS_HTML_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_HTML_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_HTML_TAG ) +"'>"+ DOM_TOOLS_HTML_TAG  +"</em>")
-        + ((typeof DOM_GRID_HTML_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_HTML_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_HTML_TAG  ) +"'>"+ DOM_GRID_HTML_TAG   +"</em>")
++ ("HTML TOOLS"+LF)
+        + ((typeof DOM_TOOLS_HTML_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_HTML_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_HTML_TAG ) +"'>"+ DOM_TOOLS_HTML_TAG  +"</em>")
+        + ((typeof DOM_GRID_HTML_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_HTML_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_HTML_TAG  ) +"'>"+ DOM_GRID_HTML_TAG   +"</em>")
 
-        + ("CSS STYLE"+LF)
-        + ((typeof DOM_HOST_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_HOST_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HOST_CSS_TAG   ) +"'>"+ DOM_HOST_CSS_TAG    +"</em>")
-        + ((typeof DOM_GRID_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_CSS_TAG   ) +"'>"+ DOM_GRID_CSS_TAG    +"</em>")
-        + ((typeof DOM_TOOLS_CSS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_CSS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_CSS_TAG  ) +"'>"+ DOM_TOOLS_CSS_TAG   +"</em>")
++ ("CSS STYLE"+LF)
+        + ((typeof DOM_HOST_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_HOST_CSS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HOST_CSS_TAG   ) +"'>"+ DOM_HOST_CSS_TAG    +"</em>")
+        + ((typeof DOM_GRID_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_CSS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_CSS_TAG   ) +"'>"+ DOM_GRID_CSS_TAG    +"</em>")
+        + ((typeof DOM_TOOLS_CSS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_CSS_TAG  ) +"'>"+ DOM_TOOLS_CSS_TAG   +"</em>")
 
-        + ("JS MODULES"+LF)
-        + ((typeof DOM_LOG_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_LOG_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOG_JS_TAG     ) +"'>"+ DOM_LOG_JS_TAG      +"</em>")
-        + ((typeof DOM_UTIL_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_UTIL_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_UTIL_JS_TAG    ) +"'>"+ DOM_UTIL_JS_TAG     +"</em>")
-        + ((typeof DOM_DATA_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_DATA_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DATA_JS_TAG    ) +"'>"+ DOM_DATA_JS_TAG     +"</em>")
-        + ((typeof DOM_PROP_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_PROP_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_PROP_JS_TAG    ) +"'>"+ DOM_PROP_JS_TAG     +"</em>")
-        + ((typeof DOM_STORE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_STORE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STORE_JS_TAG   ) +"'>"+ DOM_STORE_JS_TAG    +"</em>")
-        + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
-        + ((typeof DOM_I18N_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_I18N_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_I18N_JS_TAG    ) +"'>"+ DOM_I18N_JS_TAG     +"</em>")
++ ("JS MODULES 05"+LF)
+        + ((typeof DOM_DATA_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_DATA_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DATA_JS_TAG    ) +"'>"+ DOM_DATA_JS_TAG     +"</em>")
 
-        + ("JS WORDS"+LF)
-        + ((typeof DOM_SELECT_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_SELECT_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SELECT_JS_TAG  ) +"'>"+ DOM_SELECT_JS_TAG   +"</em>")
-        + ((typeof DOM_SLOT_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SLOT_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SLOT_JS_TAG    ) +"'>"+ DOM_SLOT_JS_TAG     +"</em>")
-        + ((typeof DOM_WORDING_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_WORDING_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WORDING_JS_TAG ) +"'>"+ DOM_WORDING_JS_TAG  +"</em>")
-        + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
++ ("JS MODULES 06..10"+LF)
+        + ((typeof DOM_LOG_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_LOG_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOG_JS_TAG     ) +"'>"+ DOM_LOG_JS_TAG      +"</em>")
+        + ((typeof DOM_POPUP_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_POPUP_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_POPUP_JS_TAG   ) +"'>"+ DOM_POPUP_JS_TAG    +"</em>")
+        + ((typeof DOM_UTIL_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_UTIL_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_UTIL_JS_TAG    ) +"'>"+ DOM_UTIL_JS_TAG     +"</em>")
+        + ((typeof DOM_I18N_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_I18N_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_I18N_JS_TAG    ) +"'>"+ DOM_I18N_JS_TAG     +"</em>")
+        + ((typeof DOM_PROP_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_PROP_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_PROP_JS_TAG    ) +"'>"+ DOM_PROP_JS_TAG     +"</em>")
 
-        + ("JS GUI"+LF)
-        + ((typeof DOM_FLY_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_FLY_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_FLY_JS_TAG     ) +"'>"+ DOM_FLY_JS_TAG      +"</em>")
-        + ((typeof DOM_HIDE_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_HIDE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HIDE_JS_TAG    ) +"'>"+ DOM_HIDE_JS_TAG     +"</em>")
-        + ((typeof DOM_VIEW_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_VIEW_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_VIEW_JS_TAG    ) +"'>"+ DOM_VIEW_JS_TAG     +"</em>")
-        + ((typeof DOM_STICKY_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_STICKY_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STICKY_JS_TAG  ) +"'>"+ DOM_STICKY_JS_TAG   +"</em>")
++ ("JS MODULES 11..15"+LF)
+        + ((typeof DOM_STORE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_STORE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STORE_JS_TAG   ) +"'>"+ DOM_STORE_JS_TAG    +"</em>")
+        + ((typeof DOM_FLY_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_FLY_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_FLY_JS_TAG     ) +"'>"+ DOM_FLY_JS_TAG      +"</em>")
+        + ((typeof DOM_WORDING_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_WORDING_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WORDING_JS_TAG ) +"'>"+ DOM_WORDING_JS_TAG  +"</em>")
+        + ((typeof DOM_SELECT_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_SELECT_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SELECT_JS_TAG  ) +"'>"+ DOM_SELECT_JS_TAG   +"</em>")
+        + ((typeof DOM_SLOT_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SLOT_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SLOT_JS_TAG    ) +"'>"+ DOM_SLOT_JS_TAG     +"</em>")
 
-        + ("JS FOLDING"+LF)
-        + ((typeof DOM_DETAILS_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_DETAILS_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DETAILS_JS_TAG ) +"'>"+ DOM_DETAILS_JS_TAG  +"</em>")
-        + ((typeof DOM_WOT_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_WOT_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WOT_JS_TAG     ) +"'>"+ DOM_WOT_JS_TAG      +"</em>")
 
-        + ("JS TOOLS"+LF)
-        + ((typeof DOM_GRID_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_JS_TAG    ) +"'>"+ DOM_GRID_JS_TAG     +"</em>")
-        + ((typeof DOM_GUTTER_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GUTTER_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GUTTER_JS_TAG  ) +"'>"+ DOM_GUTTER_JS_TAG   +"</em>")
-        + ((typeof DOM_IPC_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_IPC_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_IPC_JS_TAG     ) +"'>"+ DOM_IPC_JS_TAG      +"</em>")
-        + ((typeof DOM_TOOLS_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_JS_TAG   ) +"'>"+ DOM_TOOLS_JS_TAG    +"</em>")
++ ("JS MODULES 16..20"+LF)
+        + ((typeof DOM_HIDE_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_HIDE_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HIDE_JS_TAG    ) +"'>"+ DOM_HIDE_JS_TAG     +"</em>")
+        + ((typeof DOM_VIEW_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_VIEW_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_VIEW_JS_TAG    ) +"'>"+ DOM_VIEW_JS_TAG     +"</em>")
+        + ((typeof DOM_STICKY_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_STICKY_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STICKY_JS_TAG  ) +"'>"+ DOM_STICKY_JS_TAG   +"</em>")
+        + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
+        + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
+
++ ("JS MODULES 21..15"+LF)
+        + ((typeof DOM_DETAILS_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_DETAILS_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DETAILS_JS_TAG ) +"'>"+ DOM_DETAILS_JS_TAG  +"</em>")
+        + ((typeof DOM_WOT_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_WOT_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WOT_JS_TAG     ) +"'>"+ DOM_WOT_JS_TAG      +"</em>")
+        + ((typeof DOM_SENTENCE_JS_TAG== "undefined") ? "<em class='"+m_class+"'>DOM_SENTENCE_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SENTENCE_JS_TAG) +"'>"+ DOM_SENTENCE_JS_TAG +"</em>")
+        + ((typeof DOM_GRID_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_JS_TAG    ) +"'>"+ DOM_GRID_JS_TAG     +"</em>")
+        + ((typeof DOM_GUTTER_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GUTTER_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GUTTER_JS_TAG  ) +"'>"+ DOM_GUTTER_JS_TAG   +"</em>")
+
++ ("JS MODULES 26..27"+LF)
+        + ((typeof DOM_IPC_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_IPC_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_IPC_JS_TAG     ) +"'>"+ DOM_IPC_JS_TAG      +"</em>")
+        + ((typeof DOM_TOOLS_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_JS_TAG   ) +"'>"+ DOM_TOOLS_JS_TAG    +"</em>")
     ;
 if(LOG_MAP.T3_LAYOUT) log(t_util.strip_HTML(dom_load_tags_el.innerHTML));
 
@@ -2275,96 +2291,80 @@ if(LOG_MAP.T3_LAYOUT) log(t_util.strip_HTML(dom_load_tags_el.innerHTML));
 /*… load6_DOC_CSS {{{*/
 let load6_DOC_CSS = function(id)
 {
+/*{{{*/
+let   caller = "load6_DOC_CSS";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
+
+if( log_this) log("%c"+caller+"("+id+")", lbH+lf1);
+/*}}}*/
+    /* look for a DOCUMENT-HTMLElement with this id {{{*/
     let tag = "";
 
-    /* check or provide a target DOCUMENT-HTMLElement for this id */
-    let el = document.getElementById(id+"_tag");
-    if(!el) {
-        el               = document.createElement("SPAN");
-        el.id            = id+"_tag";
-        el.style.display = "none";
-        document.body.appendChild( el );
-    }
+    let el = document.getElementById(id);
+    if( el ) {
+        tag = load6_CSS_TAG_FROM_CSSRULES(el);
 
-    /* return the content property value applied by the defined CSS ID selector */
-    try {
-        let style = getComputedStyle(el);
-        let   txt = t_util.strip_pat(style.getPropertyValue("content"), t_data.DOUBLE_QUOTE);
-        tag       = txt.includes(id) ? txt : "";
     }
-    catch(ex) {
-/*{{{
-console.trace("load6_DOC_CSS("+id+"): "+ ex);
-}}}*/
-    }
-
-/*{{{
-logXXX(caller+": ...return %c "+tag, lbH+lf1);
-}}}*/
+    /*}}}*/
+if( log_this) log("%c...return: tag=["+tag+"]", lf1);
     return tag;
 };
 /*}}}*/
 /*… load6_TOOL_CSS {{{*/
 let load6_TOOL_CSS = function(id)
 {
+/*{{{*/
+let   caller = "load6_TOOL_CSS";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
+
+if( log_this) log("%c"+caller+"("+id+")", lbH+lf3);
+/*}}}*/
+    /* look for a SHADOW-HTMLElement with this id {{{*/
     let tag = "";
+    let el  = t_get_tool(id)  ;
+if( log_this) log("...el=["+t_util.get_node_id_or_tag(el)+"]");
+    if( el ) {
+        tag = load6_CSS_TAG_FROM_CSSRULES(el);
 
-    /* check the target HTMLElement for this id */
-    let el       = t_get_tool(id)  ;
-    if( el ) tag = load6_TOOL_CSS_RULE(el);
-
-    /* ...or provide a target SHADOW-HTMLElement for this id */
-    if(!tag) {
-        el               = document.createElement("SPAN");
-        el.id            = id+"_tag";
-        el.style.display = "none";
-        shadow_root.appendChild( el );
-
-        try {
-            let style = getComputedStyle(el);
-            let   txt = t_util.strip_pat(style.getPropertyValue("content"), t_data.DOUBLE_QUOTE);
-            tag       = txt.includes(id) ? "SHADOW: "+txt : "";
-        }
-        catch(ex) {
-/*{{{
-console.trace("load6_TOOL_CSS("+id+"): "+ ex);
-}}}*/
-        }
     }
-/*{{{
-logXXX("load6_TOOL_CSS("+id+"): ...return %c "+tag, lbH+lf2);
-}}}*/
+    /*}}}*/
+if( log_this) log("%c...return: tag=["+tag+"]", lf3);
     return tag;
 };
 /*}}}*/
-/*… load6_TOOL_CSS_RULE {{{*/
-let load6_TOOL_CSS_RULE = function(el)
+/*… load6_CSS_TAG_FROM_CSSRULES {{{*/
+let load6_CSS_TAG_FROM_CSSRULES = function(el)
 {
+/*{{{*/
+let   caller = "load6_CSS_TAG_FROM_CSSRULES";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
 
-    let tag = "";
+if( log_this) log("%c"+caller+"("+t_util.get_id_or_tag_and_className(el)+")", lf6);
+/*}}}*/
+    let    tag = ""; let result = "";
 
-    let                                result = "";
-    try {
-        if(     !el.sheet            ) result = "!el.sheet";
-        else if(!el.sheet.cssRules   ) result = "!el.sheet.cssRules";
-        else if(!el.sheet.cssRules[0]) result = "!el.sheet.cssRules[0]";
-        else {
-            let txt = el.sheet.cssRules[0].cssText;
-            let x_1 = txt.indexOf    ('"'); /* eslint-disable-line quotes */
-            let x_2 = txt.lastIndexOf('"'); /* eslint-disable-line quotes */
-            txt     = txt.substring(x_1+1, x_2);
-            tag     = txt.includes(el.id) ? txt : "";
+    if(document.location.origin == "file://") /* see https://stackoverflow.com/questions/48753691/cannot-access-cssrules-from-local-css-file-in-chrome-64/49160760#49160760 */
+    {
+        tag = el.id+" ("+document.location.origin+")";
+/*      el.title = "file scheme location has a CORS policy\n...preventing access to style.sheet.cssrules content signature";*/
+    }
+    else {
+        try {
+            if(     !el.sheet            ) result = "!el.sheet";
+            else if(!el.sheet.cssRules   ) result = "!el.sheet.cssRules";
+            else if(!el.sheet.cssRules[0]) result = "!el.sheet.cssRules[0]";
+            else {
+                let txt = el.sheet.cssRules[0].cssText;
+                let x_1 = txt.indexOf    ('"'); /* eslint-disable-line quotes */
+                let x_2 = txt.lastIndexOf('"'); /* eslint-disable-line quotes */
+                txt     = txt.substring(x_1+1, x_2);
+                tag     = txt.includes(el.id) ? txt : "";
+            }
         }
+        catch(ex) { result = ex; }              /* [Cannot access rules] */
     }
-    catch(ex) {
-        result = ex;
-/*{{{
-console.trace()
-}}}*/
-    }
-/*{{{
-logXXX("load6_TOOL_CSS_RULE("+el.id+"): ...return: %c"+(tag || result), lbH+lf3);
-}}}*/
+
+if( log_this) log("%c...return: "+(tag || result), (tag ? lf5:lf2));
     return tag;
 };
 /*}}}*/
@@ -2745,6 +2745,7 @@ if(log_this) log("..%c"+ get_n_lbl(el)+" ", lbH+lf4);
 /*}}}*/
 
 /*}}}*/
+
 /* TOOL SETTINGS {{{*/
 
 /* TODO GENERALIZE THE HANDLING OF [UNDECIDED NUMBER OF MULTIPLE-ITEMS-PROPERTY (e.g. words suffix) ] */
@@ -2996,9 +2997,9 @@ if( log_this) log("...NO PAGE DATA WORTH REMEMBERING");
         h_x                      = hotspot.offsetLeft;
         h_y                      = hotspot.offsetTop;
 
-        hotspotXY.gutter_urdl    = dom_gutter.get_XY_URDL(h_x, h_y, caller);
+        hotspotXY.gutter_urdl    = t_gutter.get_XY_URDL(h_x, h_y, caller);
 
-        dom_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
+        t_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
 
         /*}}}*/
         /* SET LAST SAVED [IN-GUTTER] POSITION {{{*/
@@ -3006,7 +3007,7 @@ if( log_this) log("...NO PAGE DATA WORTH REMEMBERING");
             hotspotXY.x_in_gutter = h_x;
             hotspotXY.y_in_gutter = h_y;
 
-            dom_gutter.set_GUTTER_XY(h_x, h_y);
+            t_gutter.set_GUTTER_XY(h_x, h_y);
         }
         /*}}}*/
         /* SET LAST SAVED [IN-WINDOW] POSITION {{{*/
@@ -3014,7 +3015,7 @@ if( log_this) log("...NO PAGE DATA WORTH REMEMBERING");
             hotspotXY.x           = h_x;
             hotspotXY.y           = h_y;
 
-            dom_gutter.set_WINDOW_XY(h_x, h_y);
+            t_gutter.set_WINDOW_XY(h_x, h_y);
         }
         /*}}}*/
 if(log_this) log_key_val_group("SAVING hotspotXY", hotspotXY, lf5, false);
@@ -3155,7 +3156,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
 
     let key, value;
 /*{{{
-// replaced by store_set_patterns_csv
+.. replaced by store_set_patterns_csv
     key = "sel_csv"            ; value = sel_csv               ; t_store.t_store_set_value(key, value);
     key = "pat_csv"            ; value = pat_csv               ; t_store.t_store_set_value(key, value);
     key = "off_csv"            ; value = off_csv               ; t_store.t_store_set_value(key, value);
@@ -3458,7 +3459,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
 
     t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight);
 
-    let xy = dom_gutter.get_GUTTER_XY();
+    let xy = t_gutter.get_GUTTER_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
 
@@ -3489,7 +3490,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
     t_stop_DOM_EDITING();
 
     t_dom_EDIT_drag_hotspot_off_gutter();
-    let xy = dom_gutter.get_WINDOW_XY();
+    let xy = t_gutter.get_WINDOW_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
     t_seek.t_seekzone5_hide("instant");
@@ -3633,7 +3634,7 @@ let t_WOT_SPLIT_changed = function(id, state)
     if(state && !t_wot.t_WOT_SPLIT_done())
     {
         t_wot.t_WOT_SPLIT();
-        t_details.details_load_open_state();
+        t_details.details_onload();
         t_sticky .t_sticky_LOAD_ANCHORS_CHANGED();
         if( pat_csv ) pat_bag3_reselect( pat_csv );
     }
@@ -3982,7 +3983,7 @@ if( log_this) log(caller+"("+msg+")");
         /* STORAGE {{{*/
         let panel_json = t_store.t_store_getItem(panel.id);
 /*{{{
-        if(!panel_json) continue; // de-select instead of letting as is .. (200131)
+        if(!panel_json) continue; .. de-select instead of letting as is .. (200131)
 }}}*/
 
         /*}}}*/
@@ -4011,7 +4012,7 @@ if( log_this) log(caller+"("+msg+")");
     /* MOVE HOTSPOT INTO VIEW {{{*/
     /* DEFAULT TO WINDOW CENTER */
 /*{{{
-    let xy = dom_gutter.get_WINDOW_XY();
+    let xy = t_gutter.get_WINDOW_XY();
 
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 }}}*/
@@ -4858,7 +4859,7 @@ let t_log_clr_status = function()
 
 /*}}}*/
 /* DOWN {{{*/
-/* javascript/dom_ondown.js */
+/* script/dom_ondown.js */
 /* onDown_EL onWork_EL onWork_PANEL {{{*/
 
 /*➔ t_set_onWork_EL .. [onWork_EL  onWork_PANEL] {{{*/
@@ -5199,7 +5200,7 @@ let t_get_current_sel_text = function()
         :   "";
 
 /*{{{
-//  RETURNS A SINGLE LINE
+..  RETURNS A SINGLE LINE
     return (selection && (selection.rangeCount > 0))
         ?   selection.getRangeAt(0).toString().trim()
         :   ""
@@ -5334,7 +5335,7 @@ if( log_this) log("pivot_PANEL_changed_since_onDown=["+pivot_PANEL_changed_since
     if(pivot_PANEL) t_set_CSS_PIVOT_PANEL(pivot_PANEL, false);
 
 /*{{{
-t_fly.t_fly_tooltip_add     (t_log.get_callers(3)+LF         +"..pivot_PANEL=["+get_n_lbl(pivot_PANEL)+"]"    )//TODO PIVOT
+t_fly.t_fly_tooltip_add     (t_log.get_callers(3)+LF         +"..pivot_PANEL=["+get_n_lbl(pivot_PANEL)+"]") .. TODO PIVOT
 }}}*/
     pivot_PANEL = panel;
 
@@ -6482,7 +6483,7 @@ let onDown_4_STICKY_PICK = function(e)
 let   caller = "onDown_4_STICKY_PICK";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 
-if( log_this) log("%c"+caller, lbF+lb2);
+if( log_this) log("%c"+caller, lbF+lb4);
     if(!onWork_EL) return "";
 /*}}}*/
     let consumed_by = t_sticky.t_sticky_onDown(e);
@@ -6786,7 +6787,7 @@ if(log_this) log("...%c[mouse_down_on_a_push_pin: "+mouse_down_on_a_push_pin+"]%
     if( hotspotXY.gutter_urdl )
     {
 /*{{{
-        t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight); // full screen obfuscation ?
+        t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight); .. full screen obfuscation ?
 }}}*/
 
     }
@@ -6933,7 +6934,7 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
     }
     /*}}}*/
     /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
-    let sentence_el        = t_select.t_SENTENCE_get_el_sentence_container(onDown_EL);
+    let sentence_el        = t_sentence.t_SENTENCE_get_el_sentence_container(onDown_EL);
     if( sentence_el )
     {
         consumed_by += " .. ON A SENTENCE ELEMENT";
@@ -7252,7 +7253,7 @@ if( log_this) log(caller);
     if( hotspotXY.gutter_urdl )
     {
 /*{{{
-        t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight); // full screen obfuscation ?
+        t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight); .. full screen obfuscation ?
 }}}*/
 
 /*{{{
@@ -7606,7 +7607,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
     if(   (onWork_PANEL == hotspot)
        && (onWork_EL    == hotring)
     ) {
-        if( !dom_gutter.get_XY_URDL(onDown_HSPOT_XY.x, onDown_HSPOT_XY.y, "NO LAG DRAGGING [hotspot] IN-WINDOW") )
+        if( !t_gutter.get_XY_URDL(onDown_HSPOT_XY.x, onDown_HSPOT_XY.y, "NO LAG DRAGGING [hotspot] IN-WINDOW") )
         {
             t_set_has_moved(caller+": no lag for [hotring] when not IN GUTTER");
 
@@ -7725,7 +7726,7 @@ if( log_this) t_log.console_clear(caller);
 if( log_this) t_fly.t_log_event_status(caller, lbH+lf5);
 /*}}}*/
 /*{{{
-// TODO .. SHOULD NOT HAPPEN .. AS LONG AS A TOOL HANDLING WOULD NOT GET HERE
+.. TODO .. SHOULD NOT HAPPEN .. AS LONG AS A TOOL HANDLING WOULD NOT GET HERE
     if( pivot_PANEL_changed_since_onDown )
     {
 if( log_this) logBIG(caller+": pivot_PANEL_changed_since_onDown=["+pivot_PANEL_changed_since_onDown+"]", lbH+lf2);
@@ -7820,7 +7821,7 @@ if( log_this) log(caller+": on_sticky=["+on_sticky+"]");
             if((to_num < num) && quick_move) {
                 to_num = num;
 /*{{{
-t_log.logSD1("%c NO BAKWARD NUM  wrapscan on quick_move", lbb+lbH+lf1);
+t_log.logSD5("%c NO BAKWARD NUM  wrapscan on quick_move", lbb+lbH+lf1);
 }}}*/
             }
         }
@@ -7833,7 +7834,7 @@ t_log.logSD1("%c NO BAKWARD NUM  wrapscan on quick_move", lbb+lbH+lf1);
             if((to_num  > num) && quick_move) {
                 to_num = num;
 /*{{{
-t_log.logSD2("%c NO FORWARD NUM  wrapscan on quick_move", lbb+lbH+lf2);
+t_log.logSD5("%c NO FORWARD NUM  wrapscan on quick_move", lbb+lbH+lf2);
 }}}*/
             }
         }
@@ -7845,7 +7846,7 @@ t_log.logSD2("%c NO FORWARD NUM  wrapscan on quick_move", lbb+lbH+lf2);
             if((to_slot  < slot) && quick_move) {
                 to_slot  = slot;
 /*{{{
-t_log.logSD3("%c NO BACKWARD SLOT wrapscan on quick_move", lbb+lbH+lf3);
+t_log.logSD5("%c NO BACKWARD SLOT wrapscan on quick_move", lbb+lbH+lf3);
 }}}*/
             }
 
@@ -7863,7 +7864,7 @@ t_log.logSD3("%c NO BACKWARD SLOT wrapscan on quick_move", lbb+lbH+lf3);
             {
                 to_slot  = slot;
 /*{{{
-t_log.logSD4("%c NO FORWARD SLOT wrapscan on quick_move", lbb+lbH+lf4);
+t_log.logSD5("%c NO FORWARD SLOT wrapscan on quick_move", lbb+lbH+lf4);
 }}}*/
             }
 
@@ -7983,7 +7984,7 @@ let   caller = "t_SENTENCE_drag";
 
 /*}}}*/
     get_onMoveDXY(event, caller);
-    if( t_select.t_SENTENCE_drag_DXY( onMoveDXY ) )
+    if( t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
     {
         zap_onMoveDXY(); /* next move from here */
         event.preventDefault();
@@ -8557,7 +8558,7 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
         }
         else {
             consumed_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
-            if( dom_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
+            if( t_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
                 t_tools_show  ();
             }
             else {
@@ -8980,7 +8981,7 @@ logXXX(caller+": ...dblclicked=["+dblclicked+"]");
     /* CLICKED .. [hotspot] .. [t_data.EDIT_OR_STAGE] .. [dom_hide] {{{*/
     if(   (hotspot == onWork_PANEL)
        &&  prop.get( t_data.EDIT_OR_STAGE )
-/*     &&  dom_gutter.get_XY_URDL(h_x, h_y, "[hotspot] clicked during t_data.EDIT_OR_STAGE") */
+/*     &&  t_gutter.get_XY_URDL(h_x, h_y, "[hotspot] clicked during t_data.EDIT_OR_STAGE") */
       ) {
         if( clicked ) {
             prop.toggle( t_data.MASK_OR_HIDE );
@@ -9281,7 +9282,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         {
             for(let i=0; i < cells.length; ++i)
                 consumed_by
-                    =     t_select.t_SENTENCE_RESTORE( cells[i] )
+                    =     t_sentence.t_SENTENCE_RESTORE( cells[i] )
                     ||    consumed_by
             ;
         }
@@ -9293,19 +9294,19 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
             if(!t_util.is_el_child_of_id(onWork_EL, "log_popup_div") )
             {
 
-                consumed_by = t_select.t_SENTENCE_RESTORE( container );
+                consumed_by = t_sentence.t_SENTENCE_RESTORE( container );
             }
             else {
                 if( t_util.is_el_child_of_class(onWork_EL, "xpath") )
                 {
                     consumed_by = "CLOSING LOG POPUP";
 
-                    dom_popup.log_popup_hide();
+                    t_popup.log_popup_hide();
                 }
                 else {
                     consumed_by = "RESTORING ALL CONTAINERS SENTENCES";
 
-                    t_select.t_SENTENCE_RESTORE_ALL();
+                    t_sentence.t_SENTENCE_RESTORE_ALL();
                 }
             }
         }
@@ -9326,9 +9327,9 @@ let onUp_7_DOC_SENTENCES_get_onDown_EL_container = function(el)
 let   caller = "onUp_7_DOC_SENTENCES_get_onDown_EL_container";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
 /*{{{
-// as [onDown_EL] cannot be a TEXT_NODE
-// ... it defaults to  EVENT target parent container
-// XXX that can have a huge textContent XXX
+.. as [onDown_EL] cannot be a TEXT_NODE
+.. ... it defaults to  EVENT target parent container
+.. XXX that can have a huge textContent XXX
 }}}*/
 
 /*}}}*/
@@ -9340,10 +9341,6 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG
         || t_util.get_el_parent_with_tag  (el,  "LI"       )
         || t_util.get_el_parent_with_tag  (el, "UL"        )
         || t_util.get_el_parent_with_tag  (el, "OL"        )
-
-    /* DETAILS */
-        || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  )
-        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
 
     /* GLOSSARY */
         || t_util.get_el_parent_with_tag  (el,  "DT"       ) /* single cell Term        */
@@ -9366,6 +9363,10 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG
         || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE")
         || t_util.get_el_parent_with_tag  (el, "DIR"       )
         || t_util.get_el_parent_with_tag  (el, "DIV"       )
+
+    /* DETAILS */
+        || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  )
+        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
     ;
 
     if(!container) return "";
@@ -9635,7 +9636,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf9);
     /* EDITING DONE */
     if(    has_moved && (onWork_PANEL == hotspot)
        &&  prop.get( t_data.EDIT_OR_STAGE )
-       && !dom_gutter.get_XY_URDL(h_x, h_y, "EDITING DONE .. dragging [hotspot] back IN-WINDOW")
+       && !t_gutter.get_XY_URDL(h_x, h_y, "EDITING DONE .. dragging [hotspot] back IN-WINDOW")
       ) {
         t_dom_EDIT_drag_hotspot_off_gutter(h_x, h_y);
     }
@@ -9714,7 +9715,7 @@ if( log_this) log("%c WHILE EDITING STICKY "+sticky.id+" %c IGNORING STICKY PAST
         {
 if( log_this) log( "SHOWING STICKY PASTE TARGET INDICATORS");
 /*
-//let sticky_in_viewport_array = t_sticky_get_sticky_in_viewport_array;//TODO
+let sticky_in_viewport_array = t_sticky_get_sticky_in_viewport_array; .. TODO
 */
             t_sticky.t_sticky_set_SEL_PASTE_TARGET_STATE(true);
 
@@ -9763,14 +9764,14 @@ if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf9);
     onWork_MOVABLE_CHILD = null;
     /*}}}*/
     /* SENTENCE CONTAINER ➔ REMOVE FONT-SIZE WHEEL LISTENER {{{*/
-    if( t_select.t_SENTENCE_GET_CONTAINERS() )
+    if( t_sentence.t_SENTENCE_GET_CONTAINERS() )
     {
         t_SENTENCE_del_listener(caller);
 
     }
     /*}}}*/
 /*{{{
-t_fly.t_fly_tooltip_add(caller)//TODO PIVOT
+t_fly.t_fly_tooltip_add(caller) .. TODO PIVOT
 }}}*/
     clr_click_last_result();
     onLong_press_scroll_freezed = false;
@@ -9787,20 +9788,20 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV0_LISTEN || LOG_MAP.EV3_UP);
     if( has_el_class(pat_bag, CSS_OPEN_BAG) ) { clr_onWork_EL(caller); return; }
 /*}}}*/
 /*{{{
-// TODO: see onMove_2_STICKY_TOOL_MOVE to create a generic function for detecting viewport nearing
+.. TODO: see onMove_2_STICKY_TOOL_MOVE to create a generic function for detecting viewport nearing
     let xy = t_util.get_el_xy(onWork_PANEL, caller);
-t_fly.t_fly_tooltip_add(caller+": "+get_n_lbl(onWork_PANEL)+" NEAR VIEWPORT [TOP LEFT  .. "+xy.x+" "+xy.y+"]"+ t_view.t_view2_is_xy_near_viewport(xy.x, xy.y))//TODO PIVOT
+t_fly.t_fly_tooltip_add(caller+": "+get_n_lbl(onWork_PANEL)+" NEAR VIEWPORT [TOP LEFT  .. "+xy.x+" "+xy.y+"]"+ t_view.t_view2_is_xy_near_viewport(xy.x, xy.y)) .. ODO PIVOT
 
     xy.x += onWork_PANEL.offsetWidth;
     xy.y += onWork_PANEL.offsetHeight;
-t_fly.t_fly_tooltip_add(caller+": "+get_n_lbl(onWork_PANEL)+" NEAR VIEWPORT [BOT RIGHT .. "+xy.x+" "+xy.y+"]"+ t_view.t_view2_is_xy_near_viewport(xy.x, xy.y))//TODO PIVOT
+t_fly.t_fly_tooltip_add(caller+": "+get_n_lbl(onWork_PANEL)+" NEAR VIEWPORT [BOT RIGHT .. "+xy.x+" "+xy.y+"]"+ t_view.t_view2_is_xy_near_viewport(xy.x, xy.y)) .. ODO PIVOT
 
 }}}*/
     /* TOOL PANELS LAYOUT {{{*/
     if( t_cache_armed( caller) ) {
         t_cache_sync("Tools layout adjusted");
 /*{{{
-t_fly.t_fly_tooltip_add( "Tools layout adjusted")//TODO PIVOT
+t_fly.t_fly_tooltip_add( "Tools layout adjusted") .. TODO PIVOT
 }}}*/
     }
     t_set_onWork_EL(null, caller);
@@ -9808,8 +9809,8 @@ t_fly.t_fly_tooltip_add( "Tools layout adjusted")//TODO PIVOT
 if( log_this) t_fly.t_log_event_status(caller, lbb+lf9);
 
 /*{{{
-    t_raise_pivot_PANEL(caller);//TODO PIVOT
-    t_toggle_pivot_PANEL_magnified( prop.get( t_data.PIVOT_MAGNIFIED ) );//TODO PIVOT
+    t_raise_pivot_PANEL(caller); .. TODO PIVOT
+    t_toggle_pivot_PANEL_magnified( prop.get( t_data.PIVOT_MAGNIFIED ) ); .. TODO PIVOT
 }}}*/
 
     /*}}}*/
@@ -9958,8 +9959,8 @@ if( log_this) t_fly.t_log_event_status(caller+"("+_caller+")", lf4);
 else if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 /*}}}*/
     /* [hotspot] IN GUTTER .. PRESERVE long_press_listener {{{*/
-/*{{{ // COMMENT USAGE
-    if((onWork_PANEL == hotspot) && dom_gutter.get_XY_URDL(h_x, h_y, "PRESERVE long_press_listener when IN-GUTTER"))
+/*{{{ .. COMMENT USAGE
+    if((onWork_PANEL == hotspot) && t_gutter.get_XY_URDL(h_x, h_y, "PRESERVE long_press_listener when IN-GUTTER"))
     {
         if(_caller != MOUSEUP) {
 if( log_this) log("%c IN GUTTER "+_caller+" (onWork_EL != null) .. PRESERVE long_press_listener", lbb+lbH+lf7);
@@ -10083,12 +10084,12 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
     if(!consumed_by) { consumed_by = onLong_press1_HOTSPOT             (); consumed_by_css = lf1; }
     if(!consumed_by) { consumed_by = onLong_press2_TOOLS_ON_GRID       (); consumed_by_css = lf2; }
     if(!consumed_by) { consumed_by = onLong_press3_EDIT_OR_STAGE       (); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onLong_press4_TOOL_EL             (); consumed_by_css = lf4; }
-    if(!consumed_by) { consumed_by = onLong_press5_TOOL_TOOLTIP        (); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onLong_press6_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = onLong_press7_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf8; }
-    if(!consumed_by) { consumed_by = onLong_press8_SLOTTED_WORD        (); consumed_by_css = lf9; }
-    if(!consumed_by) { consumed_by = onLong_press9_SENTENCE            (); consumed_by_css = lf5; }
+    if(!consumed_by) { consumed_by = onLong_press4_SENTENCE            (); consumed_by_css = lf3; }
+    if(!consumed_by) { consumed_by = onLong_press5_TOOL_EL             (); consumed_by_css = lf4; }
+    if(!consumed_by) { consumed_by = onLong_press6_TOOL_TOOLTIP        (); consumed_by_css = lf6; }
+    if(!consumed_by) { consumed_by = onLong_press7_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onLong_press8_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = onLong_press9_SLOTTED_WORD        (); consumed_by_css = lf9; }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     /* NO LONG-PRESS ACTION FOR [onWork_EL]  {{{*/
     if(!consumed_by) {
@@ -10112,6 +10113,13 @@ if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("LONG-PRESS");
 };
 /*}}}*/
+/*……t_get_mouselong_press_consumed_by {{{*/
+let t_get_mouselong_press_consumed_by = function()
+{
+    return mouselong_press_consumed_by;
+
+};
+/*}}}*/
 /*… onLong_press1_HOTSPOT {{{*/
 let onLong_press1_HOTSPOT = function()
 {
@@ -10120,7 +10128,7 @@ let onLong_press1_HOTSPOT = function()
 
     if(  onWork_PANEL != hotspot ) return "";
     if(  onWork_EL    != hotring ) return "";
-    let in_gutter      = dom_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
+    let in_gutter      = t_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
     let while_editing  =  prop.get( t_data.EDIT_OR_STAGE );
     let is_on_grid     = call_t_grid_IS_ON_GRID(caller);
     let consumed_by    = "";
@@ -10189,7 +10197,7 @@ let onLong_press3_EDIT_OR_STAGE = function()
 let   caller = "onLong_press3_EDIT_OR_STAGE";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.T3_LAYOUT);
 
-if( log_this) t_fly.t_log_event_status(caller, lf6);
+if( log_this) t_fly.t_log_event_status(caller, lf3);
 /*}}}*/
 
     if(!prop.get( t_data.EDIT_OR_STAGE )) return "";
@@ -10197,23 +10205,66 @@ if( log_this) t_fly.t_log_event_status(caller, lf6);
     return t_tools_hide_onDown_XY_parent();
 };
 /*}}}*/
-/*… onLong_press4_TOOL_EL {{{*/
-let onLong_press4_TOOL_EL = function()
+/*… onLong_press4_SENTENCE {{{*/
+let onLong_press4_SENTENCE = function(e)
 {
 /*{{{*/
-let   caller = "onLong_press4_TOOL_EL";
+let   caller = "onLong_press4_SENTENCE";
+let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
+
+if( log_this) t_fly.t_log_event_status(caller, lf4);
+    let consumed_by = "";
+/*}}}*/
+    /* SKIP TOOLS {{{*/
+    if( t_is_a_tool_el(onWork_EL, caller) ) return "";
+
+    /*}}}*/
+    /* SPLITTING CONTAINER SENTENCES {{{*/
+    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
+    if(   container )
+    {
+        /* SPLITTING MULTIPLE CELLS */
+        if( cells )
+        {
+            consumed_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
+
+            for(let i=0; i < cells.length; ++i)
+            {
+                t_sentence.t_SENTENCE_SPLIT( cells[i] );
+            }
+        }
+
+        /* SPLITTING SINGLE CELL */
+        if(!consumed_by)
+        {
+            consumed_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
+
+            t_sentence.t_SENTENCE_SPLIT( container );
+        }
+    }
+    /*}}}*/
+
+if( log_this && consumed_by) log("%c"+consumed_by, lf4);
+    return consumed_by;
+};
+/*}}}*/
+/*… onLong_press5_TOOL_EL {{{*/
+let onLong_press5_TOOL_EL = function()
+{
+/*{{{*/
+let   caller = "onLong_press5_TOOL_EL";
 let log_this = LOG_MAP.EV4_LONG_PRESS;
 
 /*{{{
 if( log_this) t_log.console_clear(caller);
 }}}*/
-if( log_this) t_fly.t_log_event_status(caller, lf3);
+if( log_this) t_fly.t_log_event_status(caller, lf5);
     let consumed_by = "";
 /*}}}*/
     /* [onLong_press_scroll_freezed] {{{*/
     if( behavior_TOUCH_ELSE_DESKTOP )
     {
-if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]", lb7);
+if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]", lb5);
 
         onLong_press_scroll_freezed = true;
     }
@@ -10233,10 +10284,10 @@ if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT CONSUMED", lf8);
         {
             consumed_by = "IGNORING EDITED STICKY "+sticky.id;
 
-if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
+if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbH+lf8);
         }
         else {
-            consumed_by = onLong_press4_TOOL_STICKY(log_this);
+            consumed_by = onLong_press5_TOOL_STICKY(log_this);
 
         }
     }
@@ -10248,7 +10299,7 @@ if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
            || (onWork_EL.id == t_data.WORDS_BAG_ROT))
       ) {
         consumed_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
-if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbH+lf5);
+if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbH+lf5);
 
         t_fly.t_fly_tooltip_update(bag_rot.title, bag_rot.id);
     }
@@ -10258,7 +10309,7 @@ if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbH+lf5);
     if(!consumed_by && div_slot_containers_child_pressed)
     {
         consumed_by = "START CONTAINERS CHILD DRAG";
-if( log_this) t_log.logSD6("%c"+caller+"%c"+consumed_by, lbH+lf6);
+if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbH+lf5);
 
         t_slot_container_set_fullscreen( onWork_EL );
         t_add_tool_pointermove_listener(caller);
@@ -10270,21 +10321,21 @@ if( log_this) t_log.logSD6("%c"+caller+"%c"+consumed_by, lbH+lf6);
     if(!consumed_by && dimm_mask_child_pressed )
     {
         consumed_by = "LONG-PRESS ON SLOT CONTAINER .. [t_slot_container_set_fullscreen]";
-if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
+if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf5);
 
         t_slot_container_set_fullscreen( onWork_EL );
     }
 }}}*/
     /*}}}*/
-if(log_this && !consumed_by) log("%c"+caller+"%c NOT CONSUMED", lbL+lf3, lbR+lf8);
+if(log_this && !consumed_by) log("%c"+caller+"%c NOT CONSUMED", lbL+lf5, lbR+lf8);
     return consumed_by;
 };
 /*}}}*/
-/*… onLong_press4_TOOL_STICKY {{{*/
-let onLong_press4_TOOL_STICKY = function(log_this)
+/*……onLong_press5_TOOL_STICKY {{{*/
+let onLong_press5_TOOL_STICKY = function(log_this)
 {
 /*{{{*/
-let   caller = "onLong_press4_TOOL_STICKY";
+let   caller = "onLong_press5_TOOL_STICKY";
 
 /*}}}*/
 /* PRESSED CONTEXT .. sel_text sticky {{{*/
@@ -10296,13 +10347,13 @@ let   caller = "onLong_press4_TOOL_STICKY";
 }}}*/
 /*{{{*/
 if( log_this) {
-    log_key_val( caller
+    log_key_val_group( caller
                  , {                    current_sel_text : t_util.ellipsis_short(current_sel_text)
                      ,                   onDown_SEL_TEXT : t_util.ellipsis_short(onDown_SEL_TEXT )
                      ,               pinned_sticky_count
                      ,                    sticky_touched : (sticky ? sticky.touched : "")
                      ,                           callers : t_log.get_callers()
-                 }, lf3);
+                 }, lf4);
 }
 /*}}}*/
 
@@ -10314,7 +10365,7 @@ if( log_this) {
     {
         if(is_a_DOM_LOAD_featured_function("t_sticky.t_sticky_EDIT")) {
             consumed_by = "LONG-PRESS ON ["+sticky.id+"] .. TO EDIT CONTENT";
-if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbL+lf1,lbR+lf1);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
 
             t_seek.t_seeker_PU_hide("instant");
 
@@ -10330,8 +10381,8 @@ if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbL+lf1,lbR+lf1);
             clr_SELECTION_PROGRESS("NEW STICKY FROM PAGE-SELECTION", log_this);
 
         if(pinned_sticky_count < t_sticky.STICKY_MAX) {
-            consumed_by = onLong_press4_TOOL_STICKY_SEL_TEXT(log_this);
-if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
+            consumed_by = onLong_press5_TOOL_STICKY_SEL_TEXT(log_this);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
         }
         else {
             logBIG("(pinned_sticky_count >= t_sticky.STICKY_MAX) .. ("+pinned_sticky_count+" >= "+t_sticky.STICKY_MAX+")");
@@ -10342,7 +10393,7 @@ if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
     if(!consumed_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
     {
         consumed_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf2);
 
         t_sticky.t_sticky_format_pad(sticky);
     }
@@ -10351,7 +10402,7 @@ if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
     if(!consumed_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
     {
         consumed_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf3);
 
         return "";
     }
@@ -10364,7 +10415,7 @@ if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
        && !t_sticky.t_sticky_is_ORIENTING(sticky)
       ) {
         consumed_by         = "LONG-PRESS ON PAGE BACKGROUND .. SHOW STICKY RING .. x"+pinned_sticky_count+" PINNED STICKY";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf4);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf5);
 
         t_seek.t_seeker_PU_hide("instant");
 
@@ -10377,7 +10428,7 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf4);
     if(!consumed_by && !sticky && !onWork_PANEL)
     {
         consumed_by         = "LONG-PRESS ON PAGE BACKGROUND .. ADD FIRST EMPTY STICKY";
-if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf5,lbR+lf5);
+if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf5);
 
         sticky = t_sticky.t_sticky_NEW_XY_SEL_TEXT(onDown_XY.x, onDown_XY.y, t_data.SYMBOL_DIRECT_HIT);
 
@@ -10393,29 +10444,29 @@ if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf5,lbR+lf5);
     return consumed_by;
 };
 /*}}}*/
-/*… onLong_press4_TOOL_STICKY_SEL_TEXT {{{*/
+/*……onLong_press5_TOOL_STICKY_SEL_TEXT {{{*/
 /*{{{*/
 let onLong_press4_TOOL_STICKY_SEL_TEXT_timer;
 
 /*}}}*/
-let onLong_press4_TOOL_STICKY_SEL_TEXT = function(log_this=true)
+let onLong_press5_TOOL_STICKY_SEL_TEXT = function(log_this=true)
 {
 /*{{{*/
-let   caller = "onLong_press4_TOOL_STICKY_SEL_TEXT";
+let   caller = "onLong_press5_TOOL_STICKY_SEL_TEXT";
 
     let      consumed_by = "";
 /*}}}*/
     /* CLR .. LONG-PRESS RELEASED {{{*/
 /*{{{
-log("%c onDown_MS=["+((onDown_MS                       ) / 1000)+"]", lbH+lf7);
-log("%c .DOWN-UP.=["+((  onUp_MS            - onDown_MS) / 1000)+"]", lbH+lf7);
-log("%c .DOWN-NOW=["+((new Date().getTime() - onDown_MS) / 1000)+"]", lbH+lf7);
+log("%c onDown_MS=["+((onDown_MS                       ) / 1000)+"]", lbH+lf4);
+log("%c .DOWN-UP.=["+((  onUp_MS            - onDown_MS) / 1000)+"]", lbH+lf4);
+log("%c .DOWN-NOW=["+((new Date().getTime() - onDown_MS) / 1000)+"]", lbH+lf4);
 }}}*/
     if(onUp_MS > onDown_MS)
     {
         consumed_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
 if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
-                    ,lbH+lf2                     );
+                    ,        lbH+lf8                     );
 
         clr_SELECTION_PROGRESS(consumed_by, log_this);
         return consumed_by;
@@ -10433,7 +10484,7 @@ if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
 if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
                         +"%c"+LF+"FROM %c"+ t_util.ellipsis_short(t_util.strip_CR_LF( last_sel_text))
                         +"%c"+LF+"TO.. %c"+ t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
-                        ,lbH+lf8
+                        ,lbH+lf4
                         ,    lf8             ,lb8
                         ,    lf9             ,lb9);
 
@@ -10441,7 +10492,7 @@ if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
         set_last_sel_text( current_sel_text );
 
         if(!onLong_press4_TOOL_STICKY_SEL_TEXT_timer)
-            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press4_TOOL_STICKY_SEL_TEXT(log_this); }, SEL_TEXT_TIC_TOC_INTERVAL);
+            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press5_TOOL_STICKY_SEL_TEXT(log_this); }, SEL_TEXT_TIC_TOC_INTERVAL);
         /*}}}*/
     }
     /*}}}*/
@@ -10454,21 +10505,21 @@ if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
         {
             consumed_by     = "LONG-PRESS .. SELECTION STEADY";
 if( log_this) t_log.log("%c"+caller+": "+ consumed_by+"%c unchanged x"+unchanged_countdown
-                        ,lbH+lf2                      ,lbb+lbH+lfX[    unchanged_countdown]);
+                        ,lbH+lf4                      ,lbb+lbH+lfX[    unchanged_countdown]);
 
             let next_interval = SEL_TEXT_TIC_TOC_INTERVAL / 3;
 
             clearInterval( onLong_press4_TOOL_STICKY_SEL_TEXT_timer );
-            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press4_TOOL_STICKY_SEL_TEXT(log_this); }, next_interval);
+            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press5_TOOL_STICKY_SEL_TEXT(log_this); }, next_interval);
         }
         /*}}}*/
         /* TOC DONE: .. SELECTION ADD STICKY {{{*/
         else if(last_sel_text)
         {
             consumed_by = "LONG-PRESS .. SELECTION ADD STICKY";
-if(log_this) t_log.logSD2( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
+if(log_this) t_log.logSD4( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
                     +"%c"+LF+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
-                    ,lbH+lf2
+                    ,lbH+lf4
                     ,lbb+lb9);
 
             clr_SELECTION_PROGRESS(consumed_by, log_this);
@@ -10479,8 +10530,8 @@ if(log_this) t_log.logSD2( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
         /* TOC DONE: .. SELECTION IS EMPTY {{{*/
         else {
             consumed_by = "LONG-PRESS .. SELECTION IS EMPTY";
-if(log_this) t_log.logSD2("%c"+caller+": "+consumed_by
-                    ,lbH+lf9                    );
+if(log_this) t_log.logSD4("%c"+caller+": "+consumed_by
+                    ,lbH+lf4                    );
 
             clr_SELECTION_PROGRESS(consumed_by, log_this);
         }
@@ -10490,25 +10541,25 @@ if(log_this) t_log.logSD2("%c"+caller+": "+consumed_by
     return consumed_by;
 };
 /*}}}*/
-/*_ onLong_press5_STICKY_ADD_NEW {{{*/
+/*……onLong_press5_STICKY_ADD_NEW {{{*/
 let onLong_press5_STICKY_ADD_NEW = function(current_sel_text, log_this)
 {
 /*{{{*/
 let   caller = "onLong_press5_STICKY_ADD_NEW";
 
-if(log_this) log(caller+"%c"+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text)), lbH+lf3);
+if(log_this) log(caller+"%c"+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text)), lbH+lf5);
 /*}}}*/
     /* ADD NEW STICKY */
     let new_sticky = t_sticky.t_sticky_NEW_XY_SEL_TEXT(onDown_XY.x, onDown_XY.y, current_sel_text || onDown_SEL_TEXT);
 /*{{{
-if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf2);
+if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf5);
     let was_onDown_EL = onDown_EL;
 }}}*/
     t_set_onWork_EL(new_sticky, caller);
     t_seek.t_seeker_set_TOOL(onWork_EL);
 /*{{{
     onDown_EL = was_onDown_EL;
-if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf2);
+if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf5);
 }}}*/
 
     /* AND CONSUME SELECTION */
@@ -10521,55 +10572,17 @@ if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf2);
     t_add_tool_pointermove_listener(caller);
 };
 /*}}}*/
-/*… onLong_press9_SENTENCE {{{*/
-let onLong_press9_SENTENCE = function(e)
+/*… onLong_press6_TOOL_TOOLTIP {{{*/
+let onLong_press6_TOOL_TOOLTIP = function()
 {
 /*{{{*/
-let   caller = "onLong_press9_SENTENCE";
-let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
-
-if( log_this) t_fly.t_log_event_status(caller, lf6);
-    let consumed_by = "";
-/*}}}*/
-    /* SPLITTING CONTAINER SENTENCES {{{*/
-    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
-    if(   container )
-    {
-        /* SPLITTING MULTIPLE CELLS */
-        if( cells )
-        {
-            consumed_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
-
-            for(let i=0; i < cells.length; ++i)
-            {
-                t_select.t_SENTENCE_SPLIT( cells[i] );
-            }
-        }
-
-        /* SPLITTING SINGLE CELL */
-        if(!consumed_by)
-        {
-            consumed_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
-
-            t_select.t_SENTENCE_SPLIT( container );
-        }
-    }
-    /*}}}*/
-
-if( log_this && consumed_by) log("%c"+consumed_by, lf7);
-    return consumed_by;
-};
-/*}}}*/
-/*… onLong_press5_TOOL_TOOLTIP {{{*/
-let onLong_press5_TOOL_TOOLTIP = function(log_this)
-{
-/*{{{*/
-let   caller = "onLong_press5_TOOL_TOOLTIP";
+let   caller = "onLong_press6_TOOL_TOOLTIP";
+let log_this = LOG_MAP.EV4_LONG_PRESS;
 
     let onWork_EL_is_a_tool = t_is_a_tool_el     (onWork_EL, caller);
     let onWork_EL_has_title = t_util.get_el_title(onWork_EL);
 if( log_this)
-    log_key_val(      caller
+    log_key_val_group(      caller
                 , {   t_fly_div_get       : t_fly.t_fly_div_get()
 /*{{{
                     , sticky              : t_sticky.t_sticky_get_onWork_STICKY()
@@ -10579,8 +10592,8 @@ if( log_this)
                     , onWork_EL
                     , onWork_EL_is_a_tool
                     , onWork_EL_has_title
-                }, lf3);
-if( log_this) t_fly.t_log_event_status(caller, lf3);
+                }, lf6);
+if( log_this) t_fly.t_log_event_status(caller, lf6);
 
     let consumed_by = "";
 /*}}}*/
@@ -10602,15 +10615,15 @@ if( log_this) t_fly.t_log_event_status(caller, lf3);
 
         t_fly.t_fly_tooltip( title );
     }
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
+if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf6,lbR+lf6);
     return consumed_by;
 };
 /*}}}*/
-/*… onLong_press6_TOOL_PANEL_MAGNIFY {{{*/
-let onLong_press6_TOOL_PANEL_MAGNIFY = function()
+/*… onLong_press7_TOOL_PANEL_MAGNIFY {{{*/
+let onLong_press7_TOOL_PANEL_MAGNIFY = function()
 {
 /* {{{*/
-let   caller = "onLong_press6_TOOL_PANEL_MAGNIFY";
+let   caller = "onLong_press7_TOOL_PANEL_MAGNIFY";
 
 /*}}}*/
     /* MAGNIFY [fly_div] {{{*/
@@ -10652,11 +10665,11 @@ let   caller = "onLong_press6_TOOL_PANEL_MAGNIFY";
     return "";
 };
 /*}}}*/
-/*… onLong_press7_HOTSPOT_PANEL_UNHIDE {{{*/
-let onLong_press7_HOTSPOT_PANEL_UNHIDE = function()
+/*… onLong_press8_HOTSPOT_PANEL_UNHIDE {{{*/
+let onLong_press8_HOTSPOT_PANEL_UNHIDE = function()
 {
 /* {{{*/
-let   caller = "onLong_press7_HOTSPOT_PANEL_UNHIDE";
+let   caller = "onLong_press8_HOTSPOT_PANEL_UNHIDE";
 
 /*}}}*/
 
@@ -10674,14 +10687,14 @@ let   caller = "onLong_press7_HOTSPOT_PANEL_UNHIDE";
     return "UNHIDING PANELS";
 };
 /*}}}*/
-/*… onLong_press8_SLOTTED_WORD {{{*/
-let onLong_press8_SLOTTED_WORD = function()
+/*… onLong_press9_SLOTTED_WORD {{{*/
+let onLong_press9_SLOTTED_WORD = function()
 {
 /*{{{*/
-let   caller = "onLong_press8_SLOTTED_WORD";
+let   caller = "onLong_press9_SLOTTED_WORD";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV2_MOVE);
 
-if( log_this) t_fly.t_log_event_status(caller, lf6);
+if( log_this) t_fly.t_log_event_status(caller, lf9);
 /*}}}*/
 
     let      slot = t_get_onWork_EL_slot();
@@ -10696,13 +10709,6 @@ if( log_this) t_fly.t_log_event_status(caller, lf6);
         t_slot_containers_display(slot);
 
     return "SHOWING SLOT ["+slot+"] CONTAINERS";
-};
-/*}}}*/
-/*_ t_get_mouselong_press_consumed_by {{{*/
-let t_get_mouselong_press_consumed_by = function()
-{
-    return mouselong_press_consumed_by;
-
 };
 /*}}}*/
 /*}}}*/
@@ -11529,7 +11535,7 @@ if( log_this) log("%c SELECTING [headsup_w]", lbH+lf4);
                 t_set_CSS_PINNED(headsup_w, true);
                 t_grid_TOOLS_MAP_changed();
 
-                let xy = dom_gutter.get_GUTTER_XY();
+                let xy = t_gutter.get_GUTTER_XY();
                 if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
                 set_onWork_EL_last_used(words_filter_input);
@@ -11721,7 +11727,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
 
         if(onWork_EL_last_used == words_filter_input)
         {
-            let xy = dom_gutter.get_GUTTER_XY();
+            let xy = t_gutter.get_GUTTER_XY();
             if( xy ) t_tools_set_top_xy(xy.x, xy.y);
         }
     }
@@ -12427,7 +12433,9 @@ if( log_this) t_fly.t_log_event_status(caller, lf5);
     /* [has_moved] [INPUT] {{{*/
     if( has_moved                   ) return false;
     if(e_target.tagName == "INPUT"  ) return false;
-//  if( t_event_has_been_consumed() ) return false; // .. set by onUp_5_TOOL_ONCLICK
+/*{{{
+    if( t_event_has_been_consumed() ) return false; .. set by onUp_5_TOOL_ONCLICK
+}}}*/
 
     /*}}}*/
     /* [focussed] [t_clear] {{{*/
@@ -14518,8 +14526,7 @@ let t_cache_wph_WH = function()
     hsR.right  = w_W        - t_data.SCROLLBAR_WIDTH;
     hsR.bottom = w_H_or_p_H - t_data.SCROLLBAR_WIDTH;
 
-    if((typeof dom_gutter !== "undefined"))
-        dom_gutter.layout_has_CHANGED(hsR, BOX_MARGIN);
+        t_gutter.layout_has_CHANGED(hsR, BOX_MARGIN);
 
 /*{{{
     log_key_val_group(  "t_cache_wph_WH"
@@ -14758,8 +14765,8 @@ let t_tools_hide = function()
 let   caller = "t_tools_hide";
 let log_this = LOG_MAP.T5_SPREAD;
 
-    let xy = dom_gutter.get_GUTTER_XY();
-if( log_this) log(caller+": dom_gutter.get_GUTTER_XY() .. xy=["+xy.x+" "+xy.y+"]");
+    let xy = t_gutter.get_GUTTER_XY();
+if( log_this) log(caller+": t_gutter.get_GUTTER_XY() .. xy=["+xy.x+" "+xy.y+"]");
 
     if(!xy.x && !xy.y) { xy.x = 0; xy.y = 0; }
 
@@ -14774,8 +14781,8 @@ let t_tools_show = function(centered)
 let   caller = "t_tools_show";
 let log_this = LOG_MAP.T5_SPREAD;
 
-    let xy = dom_gutter.get_WINDOW_XY();
-if( log_this) log(caller+": dom_gutter.get_WINDOW_XY() .. xy=["+xy.x+" "+xy.y+"]");
+    let xy = t_gutter.get_WINDOW_XY();
+if( log_this) log(caller+": t_gutter.get_WINDOW_XY() .. xy=["+xy.x+" "+xy.y+"]");
 
     if(centered || (!xy.x && !xy.y)) { xy.x = window.innerWidth  / 2; xy.y = window.innerHeight / 2; }
 
@@ -14992,8 +14999,8 @@ if(log_this)
     hotspot.style.left = x +"px";
     hotspot.style.top  = y +"px";
 
-    hotspotXY.gutter_urdl = dom_gutter.get_XY_URDL(x, y, "MOVING HOTSPOT");
-    dom_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
+    hotspotXY.gutter_urdl = t_gutter.get_XY_URDL(x, y, "MOVING HOTSPOT");
+    t_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
 
     /*}}}*/
     /* POST A STORAGE UPDATE .. f(hot_spot_has_moved) {{{*/
@@ -15015,15 +15022,6 @@ const HOTSPOT_HIDE_SHOW_DELAY = 1000;
 /*}}}*/
 let t_hide_hotspot = function(delay/* ms,0,undefined */)
 {
-/* CALLERS of t_hide_hotspot: {{{
-./dom_prop.html:843  unfold_this:860:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
-./intro.html:3683  intro_load_current_snapshot_id:3687:     dom_tools.t_hide_hotspot(0);
-./intro.html:7704  unfold_this:7721:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
-javascript/dom_share.js:996  share9_IMPORT:1089:     if(data_keys == 0) t_tools.t_hide_hotspot();
-javascript/dom_tools.js:23476  t_void_SNAPSHOT:23488:     t_hide_hotspot(0);
-./playground.html:3641  unfold_this:3658:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
-./screenshots.html:950  unfold_this:967:                 <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
-}}}*/
     if(delay === undefined) delay = HOTSPOT_HIDE_SHOW_DELAY;
 
     let x = /*hotspotXY.x_in_gutter ||*/ HOTSPOT_STANDBY_X;
@@ -15184,7 +15182,7 @@ if(!pivot_PANEL) t_set_pivot_PANEL(onWork_PANEL, "PICKING OUT A MISSING [pivot_P
 
     if(!pivot_PANEL) {
 /*{{{
-logXXX(caller+": !pivot_PANEL")//TODO PIVOT
+logXXX(caller+": !pivot_PANEL") .. TODO PIVOT
 }}}*/
         return;
     }
@@ -15893,7 +15891,7 @@ logXXX("t_move_TOOLS_OFF_GRID .. CALLED BY "+_caller+"")
     call_t_grid_ON_OFF_CB(false);
 
 /*{{{
-    dimm_stop(_caller); // already called by t_grid.t_grid_ON_OFF_CB and t_IS_ON_GRID_observerCB
+    dimm_stop(_caller); .. already called by t_grid.t_grid_ON_OFF_CB and t_IS_ON_GRID_observerCB
 }}}*/
 };
 /*}}}*/
@@ -15916,7 +15914,7 @@ log("t_move_TOOLS_TOGGLE_GRID .. NOT TOGGLING TOOLS ON-OFF GRID .. CALLED BY "+_
     }
 };
 /*}}}*/
-/*_ call_t_grid_ON_OFF_CB javascript/dom_grid.js {{{ */
+/*_ call_t_grid_ON_OFF_CB script/dom_grid.js {{{ */
 let call_t_grid_ON_OFF_CB = function(new_state="toggle")
 {
     let caller = "call_t_grid_ON_OFF_CB("+new_state+")";
@@ -15934,7 +15932,7 @@ if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb2+lbF);
     t_fly.t_fly_init(caller);
 };
 /* }}} */
-/*_ call_t_grid_IS_SIZED javascript/dom_grid.js {{{ */
+/*_ call_t_grid_IS_SIZED script/dom_grid.js {{{ */
 let call_t_grid_IS_SIZED = function(_caller)
 {
     if(typeof t_grid.t_grid_IS_SIZED == "undefined") {
@@ -15945,7 +15943,7 @@ let call_t_grid_IS_SIZED = function(_caller)
     }
 };
 /* }}} */
-/*_ call_t_grid_IS_ON_GRID javascript/dom_grid.js {{{ */
+/*_ call_t_grid_IS_ON_GRID script/dom_grid.js {{{ */
 let call_t_grid_IS_ON_GRID = function(_caller)
 {
     if(typeof t_grid.t_grid_IS_ON_GRID == "undefined")
@@ -15994,17 +15992,17 @@ if( log_this) log(caller);
     /* TOOLS SHOWING OFF-GRID PHASE {{{*/
     else {
 /*{{{
-        dimm_stop(caller); // already called by t_grid.t_grid_ON_OFF_CB
+        dimm_stop(caller); .. already called by t_grid.t_grid_ON_OFF_CB
 }}}*/
 
-        let          xy    = dom_gutter.get_WINDOW_XY();
+        let          xy    = t_gutter.get_WINDOW_XY();
         if((Math.abs(xy.x) < OFF_GRID_MARGIN_X)) xy.x = OFF_GRID_MARGIN_X;
         if((Math.abs(xy.y) < OFF_GRID_MARGIN_Y)) xy.y = OFF_GRID_MARGIN_Y;
 /*{{{
-      //spread_ratio.x = 1;
-      //spread_ratio.y = 1;
-      //pivotXY.x      = OFF_GRID_MARGIN_X * 2;
-      //pivotXY.y      = OFF_GRID_MARGIN_Y * 2;
+        spread_ratio.x = 1;
+        spread_ratio.y = 1;
+        pivotXY.x      = OFF_GRID_MARGIN_X * 2;
+        pivotXY.y      = OFF_GRID_MARGIN_Y * 2;
 }}}*/
 
         t_tools_set_top_xy(xy.x, xy.y);
@@ -16099,14 +16097,14 @@ let log_this = LOG_MAP.T2_GRID;
 
 if( log_this) log("dimm_start(zIndex=["+zIndex+"], dimm_class=["+dimm_class+"], dimm_style=["+dimm_style+"]) .. CALLED BY "+ _caller);
 /*}}}*/
-    if((typeof dom_gutter === "undefined")) return;
+    if((typeof t_gutter === "undefined")) return;
     /* [dimm_start_called_with_hotspot_in_gutter] {{{*/
     if(_caller) {
         dimm_start_called_with_hotspot_in_gutter = !!hotspotXY.gutter_urdl;
 if( log_this) log("...%c dimm_start_called_with_hotspot_in_gutter=["+dimm_start_called_with_hotspot_in_gutter+"]", lf7);
 
         if(!dimm_start_called_with_hotspot_in_gutter)
-            dom_gutter.set_WINDOW_XY(h_x, h_y);
+            t_gutter.set_WINDOW_XY(h_x, h_y);
     }
     /*}}}*/
     /* dimm_add dimm_class dimm_style {{{*/
@@ -16163,7 +16161,7 @@ let log_this = LOG_MAP.T2_GRID;
 if( log_this) log("dimm_stop .. CALLED BY "+ _caller);
 if( log_this) log_caller();
 /*}}}*/
-    if((typeof dom_gutter === "undefined")) return;
+    if((typeof t_gutter === "undefined")) return;
     /* clearTimeout {{{*/
     if(dimm_mask_timer) {
         clearTimeout( dimm_mask_timer );
@@ -16198,9 +16196,9 @@ if(log_this) t_log.logSD1("HOTSPOT LEFT IN GUTTER %c"+_caller, lbH+lf8);
     else if(dimm_start_called_with_hotspot_in_gutter != undefined)
     {
         /* is IN-GUTTER .. move it back IN-WINDOW where it was {{{*/
-        if( dom_gutter.is_hotspot_IN(hotspot, "DIMM STOP") )
+        if( t_gutter.is_hotspot_IN(hotspot, "DIMM STOP") )
         {
-            let xy = dom_gutter.get_WINDOW_XY();
+            let xy = t_gutter.get_WINDOW_XY();
             if( xy ) {
 if(log_this) t_log.logSD2("HOTSPOT BACK TO WINDOW %c"+xy.x+" "+xy.y+" %c"+_caller, lbH+lf4, lbH+lf9);
                     t_tools_set_top_xy(xy.x, xy.y);
@@ -16328,7 +16326,7 @@ if(log_this) log("- POSTPONING .. %c EVENT HANDING IN PROGRESS: %c ["+get_n_lbl(
         return;
     }
     /*}}}*/
-    /* 3. TOOLS HIDE .. f(dom_gutter bordering) {{{*/
+    /* 3. TOOLS HIDE .. f(t_gutter bordering) {{{*/
     if( t_sync3_hotspot_hiding_in_gutter() )
     {
 
@@ -16448,8 +16446,8 @@ log("%c...return false .. ![dom_tools_html]", lf3);
     h_x                   = hotspot.offsetLeft;
     h_y                   = hotspot.offsetTop;
 
-    hotspotXY.gutter_urdl = dom_gutter.get_XY_URDL(h_x, h_y, "LAYOUT CHANGED SYNC");
-    dom_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
+    hotspotXY.gutter_urdl = t_gutter.get_XY_URDL(h_x, h_y, "LAYOUT CHANGED SYNC");
+    t_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
 
     if( !hotspotXY.gutter_urdl )
     {
@@ -16536,7 +16534,7 @@ if(log_this) log(get_n_lbl(first_tool)+"%c XY=["+top_tool_l+" "+top_tool_t+"] %c
     bb_dx_dy.dy  = w_H;
 
 /*{{{
-t_log.logSD1("%c bb_dx_dy.dx=["+bb_dx_dy.dx+"] bb_dx_dy.dy=["+bb_dx_dy.dy+"]", lbH+lf1)
+t_log.logSD6("%c bb_dx_dy.dx=["+bb_dx_dy.dx+"] bb_dx_dy.dy=["+bb_dx_dy.dy+"]", lbH+lf1)
 }}}*/
     /*}}}*/
     /* EXPANDED TO INCLUDE ALL SELECTED TOOLS BOUNDING BOX {{{*/
@@ -16563,7 +16561,7 @@ if(log_this) log("...VIEWPORT %c TL "+ view.t  +" "+ view.l  +" %c BR "+ view.b 
         bb_dx_dy.dx  = 0;
         bb_dx_dy.dy  = 0;
 /*{{{
-t_log.logSD2("%c bb_dx_dy.dx=["+bb_dx_dy.dx+"] bb_dx_dy.dy=["+bb_dx_dy.dy+"]", lbH+lf2)
+t_log.logSD6("%c bb_dx_dy.dx=["+bb_dx_dy.dx+"] bb_dx_dy.dy=["+bb_dx_dy.dy+"]", lbH+lf2)
 }}}*/
     }
 
@@ -16711,7 +16709,7 @@ if(log_this) log("%c map.XY=["+parseInt(map.x   )+" "+parseInt(map.y  )+"] map.W
         bb_dx_dy.dy = dy; bb_changed += " dy";
         log_color = "background-color:#F22;";
 /*{{{
-t_log.logSD3("%c bb_dx_dy.dx=["+bb_dx_dy.dx+"] bb_dx_dy.dy=["+bb_dx_dy.dy+"]", lbH+lf3)
+t_log.logSD6("%c bb_dx_dy.dx=["+bb_dx_dy.dx+"] bb_dx_dy.dy=["+bb_dx_dy.dy+"]", lbH+lf3)
 }}}*/
     }
 
@@ -17609,7 +17607,7 @@ let t_get_tools_status_object = function()
 {
 
 /*{{{
-    //..NAME SPACE ACCESS
+    ... NAME SPACE ACCESS
     let onWork_EL            = t_get_onWork_EL();
     let onDown_EL            = t_get_onDown_EL();
     let onWork_EL_last_used  = t_get_onWork_EL_last_used();
@@ -18351,7 +18349,7 @@ if(log_this) log("...content_is_too_big..........: "+ content_is_too_big +"] .. 
         t_check_onModalMS(caller);
         /*}}}*/
         /* [window-scroll-to-top] [dimm_mask] [hotspot] [seeker_PU] {{{*/
-        let xy = dom_gutter.get_GUTTER_XY();
+        let xy = t_gutter.get_GUTTER_XY();
         if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
         add_el_class(hotspot , t_data.CSS_HIDDEN);
@@ -18911,7 +18909,7 @@ if( log_this) t_fly.t_log_event_status(caller, lbb+lf6);
     }
 
 /*{{{
-// will be handled later
+.. will be handled later
 if(log_this) log("SELECTION CLEARED ["+pattern+"]");
     csv_pattern_mov_to_off( pattern );
 }}}*/
@@ -20800,7 +20798,7 @@ if(bag==off_bag) log_caller();
 
 /*_ t_handle_1_pat_bag_sort_changed {{{*/
 /*{{{
-// CURRENTLY HANDLED IN SYNC WITH [pat_bag] STATE
+.. CURRENTLY HANDLED IN SYNC WITH [pat_bag] STATE
 let t_handle_1_pat_bag_sort_changed = function(id,value)
 {
     let requested_direction  = value ? 1 : -1 ;
@@ -21844,7 +21842,7 @@ let log_this = LOG_MAP.S0_PATTERN;
     alt_csv = csv_pattern_del_from_bag(alt_csv, pattern);
     bak_csv = csv_pattern_del_from_bag(bak_csv, pattern);
     bin_csv = csv_pattern_del_from_bag(bin_csv, pattern);
-/*  pat_csv = csv_pattern_del_from_bag(pat_csv, pattern); // leave off pattern in pat_csv as a subset */
+/*  pat_csv = csv_pattern_del_from_bag(pat_csv, pattern); .. leave off pattern in pat_csv as a subset */
     if(t_util.csv_count(pat_csv) < t_select.SELECT_SLOT_MAX) {
         off_csv = csv_pattern_add_into_bag(off_csv, pattern, by_user); /* insert .. (at the top) */
     }
@@ -22183,7 +22181,7 @@ if( log_this) log_caller();
     let hid_csv_count                = t_hide.get_node_to_hide_csv_count();
     let sticky_count                 = t_sticky.t_sticky_GET_COUNT();
     let hotspot_EDITING              = has_el_class(hotspot, t_data.DOM_EDITING);
-    let hotspot_in_gutter            = dom_gutter.is_hotspot_IN(hotspot, "WORTH STORING");
+    let hotspot_in_gutter            = t_gutter.is_hotspot_IN(hotspot, "WORTH STORING");
     let curr_state
         = {   has_pat_csv
             , has_off_csv
@@ -22249,7 +22247,7 @@ if( log_this) {
 /*}}}*/
     /*}}}*/
 
-    hotspot_c.innerHTML = sticky_count ? "<span>"+sticky_count+"</span>" : "";
+    if(hotspot_c) hotspot_c.innerHTML = sticky_count ? "<span>"+sticky_count+"</span>" : "";
 
     /* STORE ... (or not) {{{*/
     if(!page_items_worth_storing )
@@ -22324,10 +22322,11 @@ let t_store_show_all_page_items_removed = function()
         = has_el_class(hotring, CSS_PAGE_ITEMS_ALL_REMOVED);
 
     /* UPDATE TITLE */
-    hotring.title
-        =  page_items_worth_storing
-        ?  page_items_worth_storing
-        :  t_i18n.i18n_get( t_i18n.ALL_PAGE_LOCAL_STORAGE_REMOVED)
+    if( hotring )
+        hotring.title
+            =  page_items_worth_storing
+            ?  page_items_worth_storing
+            :  t_i18n.i18n_get( t_i18n.ALL_PAGE_LOCAL_STORAGE_REMOVED)
     ;
 
     /* UPDATE STATE */
@@ -22667,7 +22666,7 @@ pat_bag.title
     set_el_class_on_off(off_bag, "empty", empty);
 
 /*{{{
-    off_bag.style.gridRowStart = 2 + t_util.csv_count(sel_csv); // wrong results
+    off_bag.style.gridRowStart = 2 + t_util.csv_count(sel_csv); .. wrong results
 }}}*/
     /*}}}*/
     /* LAYOUT BAGS [innerHTML] .. [afterbegin beforeend] {{{*/
@@ -23009,7 +23008,7 @@ if( log_this) action = "new pat_span";
             /* ADD TO [off_bag] .. f( in_off_csv) {{{*/
             if(in_off_csv) { off_bag_innerHTML += line; ++off_inserted_count; }
 /*{{{
-            // TODO [to off when OPENED] [to pat when CLOSED]
+            .. TODO [to off when OPENED] [to pat when CLOSED]
                 let pat_bag_is_opened = has_el_class( pat_bag, "open_bag");
 if( log_this) log("pat_bag_is_opened=["+pat_bag_is_opened+"]");
                 if( pat_bag_is_opened ) { off_bag_innerHTML += line; ++off_inserted_count; }

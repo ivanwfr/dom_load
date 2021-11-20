@@ -2,7 +2,7 @@
 /*│ dom_details_util                                                         │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
-/* globals window, Document, Node */
+/* globals window, document, Document, Node, console */
 
 /* exported dom_details_util, DOM_DETAILS_UTIL_JS_TAG */
 
@@ -10,7 +10,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_DETAILS_UTIL_JS_ID    = "dom_details_util_js";
-const DOM_DETAILS_UTIL_JS_TAG   = DOM_DETAILS_UTIL_JS_ID  +" (210928:15h:28)";
+const DOM_DETAILS_UTIL_JS_TAG   = DOM_DETAILS_UTIL_JS_ID  +" (211029:22h:47)";
 /*}}}*/
 let dom_details_util    = (function() {
 "use strict";
@@ -149,6 +149,38 @@ let get_el_parent_clipped = function(el)
     return null;
 };
 /*}}}*/
+/*_ get_shadow_root {{{*/
+let get_shadow_root = function()
+{
+    let    shadow_host = document.getElementById("shadow_host");
+    let    shadow_root = shadow_host ? shadow_host.shadowRoot : null;
+
+    return shadow_root;
+};
+/*}}}*/
+/*_ get_tool {{{*/
+let get_tool = function(id)
+{
+    if( id.includes(" ") ) return null;
+    let selector
+        = (id.charAt(0) != ".") && (id.charAt(0) != "#")
+        ?  "#"+id
+        :      id;
+
+    let el;
+    try {
+        let shadow_root      = get_shadow_root();
+        if( shadow_root ) el = shadow_root.querySelector( selector );
+        if(!el          ) el = document   .querySelector( selector );
+    }
+    catch(ex) { console.log("selector=["+selector+"]"); console.warn(ex); }
+
+/*{{{
+console.log("t_get_tool("+id+"): ...return ["+(el ? (el.id || el.tagName) : null)+"]");
+}}}*/
+    return el;
+};
+/*}}}*/
 
 return { name : "dom_details_util"
     ,    add_el_class
@@ -159,6 +191,7 @@ return { name : "dom_details_util"
     ,    get_id_or_tag_and_className
     ,    get_nodeXPath
     ,    get_el_parent_clipped
+    ,    get_tool
     ,    has_el_class
     ,    is_el_or_child_of_parent_el
 };

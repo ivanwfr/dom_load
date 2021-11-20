@@ -1,4 +1,4 @@
-javascript: (function () {
+savascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 "use strict";
 /* jshint esversion: 9, boss:true {{{*/
 /* globals send_IPC dom_ipc t_load */
@@ -9,7 +9,7 @@ javascript: (function () {
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (210929:21h:52)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (211120:16h:37)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -35,14 +35,14 @@ let   console_log   = function(  msg     ) { try {                          cons
 let   console_warn  = function(  msg=null) { try {                          console.warn(               msg         );                 } catch(ex) {} };
 /*}}}*/
 
-  /**    1 TOOLS HTML dom_tools_html_data {{{*/
+  /**    1 TOOLS  HTML dom_tools_html_data {{{*/
 /*
-../javascript/dom_tools.html
+../script/dom_tools.html
 */
 let dom_tools_html_data = `
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:21h:29)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210929:21h:31)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -234,14 +234,14 @@ let dom_tools_html_data = `
 ;
 /*}}}*/
 
-  /**    2 HOST   CSS dom_host_css_data .. ESCAPE=[OR HOST CSS WONT WORK]  {{{*/
+  /**    2 HOST    CSS dom_host_css_data .. ESCAPE=[OR HOST CSS WONT WORK]  {{{*/
 /*
 ../stylesheet/dom_host.css
  */
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (210924:19h:13)"; }
+#dom_host_css_tag   { content: "dom_host_css (210930:14h:53)"; }
 body.dark { background : #430; }
 
 body.dimmed {
@@ -339,18 +339,18 @@ details details details details details .line_num { border-right: 2.5em solid rg
 .wall_of_text_parent                  { border        : 0                !important; }
 .wall_of_text_parent                  { margin        : 0 0 0 6em        !important; }
 .wall_of_text_parent                  { padding       : 0                !important; }
-.wall_of_text_parent details                  > pre          { display: inline-block; margin:0; padding:0; }
+.wall_of_text_parent details                  > pre           { display: inline-block; margin:0; padding-left: 5px; border-radius: 0 0 1em 1em; }
 
-.wall_of_text_parent details:nth-of-type( 1n) > pre          { background    : rgba(150, 75,  0,0.2); }
-.wall_of_text_parent details:nth-of-type( 2n) > pre          { background    : rgba(255,  0,  0,0.2); }
-.wall_of_text_parent details:nth-of-type( 3n) > pre          { background    : rgba(255,165,  0,0.2); }
-.wall_of_text_parent details:nth-of-type( 4n) > pre          { background    : rgba(255,255,  0,0.2); }
-.wall_of_text_parent details:nth-of-type( 5n) > pre          { background    : rgba(154,205, 50,0.2); }
-.wall_of_text_parent details:nth-of-type( 6n) > pre          { background    : rgba(100,149,237,0.2); }
-.wall_of_text_parent details:nth-of-type( 7n) > pre          { background    : rgba(238,130,238,0.2); }
-.wall_of_text_parent details:nth-of-type( 8n) > pre          { background    : rgba(160,160,160,0.2); }
-.wall_of_text_parent details:nth-of-type( 9n) > pre          { background    : rgba(255,255,221,0.2); }
-.wall_of_text_parent details:nth-of-type(10n) > pre          { background    : rgba(192,192,192,0.2); }
+.wall_of_text_parent details:nth-of-type( 1n) > pre           { background : rgba(150, 75,  0,0.2); box-shadow: inset 0px 0px 2px 2px rgb(150, 75,  0); }
+.wall_of_text_parent details:nth-of-type( 2n) > pre           { background : rgba(255,  0,  0,0.2); box-shadow: inset 0px 0px 2px 2px rgb(255,  0,  0); }
+.wall_of_text_parent details:nth-of-type( 3n) > pre           { background : rgba(255,165,  0,0.2); box-shadow: inset 0px 0px 2px 2px rgb(255,165,  0); }
+.wall_of_text_parent details:nth-of-type( 4n) > pre           { background : rgba(255,255,  0,0.2); box-shadow: inset 0px 0px 2px 2px rgb(255,255,  0); }
+.wall_of_text_parent details:nth-of-type( 5n) > pre           { background : rgba(154,205, 50,0.2); box-shadow: inset 0px 0px 2px 2px rgb(154,205, 50); }
+.wall_of_text_parent details:nth-of-type( 6n) > pre           { background : rgba(100,149,237,0.2); box-shadow: inset 0px 0px 2px 2px rgb(100,149,237); }
+.wall_of_text_parent details:nth-of-type( 7n) > pre           { background : rgba(238,130,238,0.2); box-shadow: inset 0px 0px 2px 2px rgb(238,130,238); }
+.wall_of_text_parent details:nth-of-type( 8n) > pre           { background : rgba(160,160,160,0.2); box-shadow: inset 0px 0px 2px 2px rgb(160,160,160); }
+.wall_of_text_parent details:nth-of-type( 9n) > pre           { background : rgba(255,255,221,0.2); box-shadow: inset 0px 0px 2px 2px rgb(255,255,221); }
+.wall_of_text_parent details:nth-of-type(10n) > pre           { background : rgba(192,192,192,0.2); box-shadow: inset 0px 0px 2px 2px rgb(192,192,192); }
 
 .wall_of_text_parent details:nth-of-type( 1n) > pre .line_num { background : rgba(150, 75,  0,0.1) !important; }
 .wall_of_text_parent details:nth-of-type( 2n) > pre .line_num { background : rgba(255,  0,  0,0.1) !important; }
@@ -392,20 +392,20 @@ details details details details details .line_num { border-right: 2.5em solid rg
 .show_seekzone .wall_of_text_split    { outline : 1px solid black; }
 .show_seekzone .wall_of_text_parent   { outline : 1px solid black; }
 .show_seekzone .text_line             { outline : 1px solid black; }
-DETAILS.wall_of_text_split                       { margin-left      : 1em !important;               }
-DETAILS.wall_of_text_split                       { width            : max-content;                  }
-DETAILS.wall_of_text_split:not([open])           { opacity          : 0.8;                          }
-DETAILS.wall_of_text_split       SUMMARY         { cursor           : pointer;                      }
-DETAILS.wall_of_text_split       SUMMARY         { border           : 1px solid #FFF;               }
-DETAILS.wall_of_text_split       SUMMARY         { box-shadow       : 1px 1px 0 3px rgba(000,000,000,0.1);          }
-DETAILS.wall_of_text_split       SUMMARY         { border-radius    : 1.0em;                        }
-DETAILS.wall_of_text_split       SUMMARY         { padding          : 0 0.5em;                      }
-                                 SUMMARY::marker { font-size        : 150%;                         }
-DETAILS.wall_of_text_split[open]>SUMMARY::marker { color            : red; background-color: black; }
-DETAILS.wall_of_text_split[open]>SUMMARY         { border-radius    : 1em 1em 0 0;                  }
-DETAILS.wall_of_text_split       SUMMARY         { background       : linear-gradient(to bottom ,  rgba(000,000,255,0.3)                            , rgba(000,000,000,0.0)) !important; }
-DETAILS.wall_of_text_split[open]>SUMMARY         { background       : linear-gradient(to bottom ,  rgba(255,000,000,1.0) , rgba(255,000,000,0.3) 5px, rgba(000,000,000,0.0)) !important; }
-DETAILS.wall_of_text_split>SPAN                  { vertical-align   : top;                          }
+DETAILS.wall_of_text_split                       { margin-left      : 1em !important;                      }
+DETAILS.wall_of_text_split                       { width            : max-content;                         }
+DETAILS.wall_of_text_split:not([open])           { opacity          : 0.8;                                 }
+DETAILS.wall_of_text_split       SUMMARY         { cursor           : pointer;                             }
+DETAILS.wall_of_text_split       SUMMARY         { border           : 2px solid rgba(255,255,255,0.8);     }
+DETAILS.wall_of_text_split       SUMMARY         { box-shadow       : 1px 1px 0 3px rgba(000,000,000,0.1); }
+DETAILS.wall_of_text_split       SUMMARY         { border-radius    : 1.0em;                               }
+DETAILS.wall_of_text_split       SUMMARY         { padding          : 0 0.5em;                             }
+                                 SUMMARY::marker { font-size        : 150%;                                }
+DETAILS.wall_of_text_split[open]>SUMMARY::marker { color            : red; background-color: black;        }
+DETAILS.wall_of_text_split[open]>SUMMARY         { border-radius    : 1em 1em 0 0;                         }
+DETAILS.wall_of_text_split       SUMMARY         { background       : linear-gradient(to bottom , rgba(000,000,255,0.3)                            , rgba(000,000,000,0.0)) !important; }
+DETAILS.wall_of_text_split[open]>SUMMARY         { background       : linear-gradient(to bottom , rgba(255,000,000,1.0) , rgba(255,000,000,0.3) 5px, rgba(000,000,000,0.0)) !important; }
+DETAILS.wall_of_text_split>SPAN                  { vertical-align   : top;                                 }
 
 DETAILS[open] > * {
   animation       : sweep_animation 500ms ease-in-out;
@@ -795,7 +795,7 @@ em.select0 { cursor : all-scroll !important; }
 .sentence, .clause    { transform-origin : 0% 50%       !important; }
 
 .sentence             { margin-top       : 0.5em        !important; }
-.          .clause    { margin-top       : 0            !important; }
+           .clause    { margin-top       : 0            !important; }
 
 .sentence, .clause    { padding          : 0 0.5em 0 0.5em        ; }
 
@@ -885,7 +885,7 @@ em.select0 { cursor : all-scroll !important; }
  .replace(/\\(\\x+)/g,"\\\\$1")
 ;
 /*}}}*/
-  /**    3 GRID   CSS dom_grid_css_data {{{*/
+  /**    3 GRID    CSS dom_grid_css_data {{{*/
 /*
 ../stylesheet/dom_grid.css
 */
@@ -1010,14 +1010,14 @@ let dom_grid_css_data ="data:text/css,"+ `
  .replace(/\\(\\x+)/g,"\\\\$1")
 ;
 /*}}}*/
-  /**   4 TOOLS  CSS dom_tools_css_data .. ESCAPE=[#dom_tools_css_tag] {{{*/
+  /**   4 TOOLS   CSS dom_tools_css_data .. ESCAPE=[#dom_tools_css_tag] {{{*/
 /*
 ../stylesheet/dom_tools.css
 */
 let dom_tools_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 
-#dom_tools_css_tag  { content: "dom_tools_css (210924:19h:59)"; }
+#dom_tools_css_tag  { content: "dom_tools_css (211119:16h:47)"; }
 .flag, .flag.checked {
  border                    : none             !important;
  border-radius             : 1.0em            !important;
@@ -4592,14 +4592,14 @@ background-size    : 100% 100% !important;
  .replace(/\\(\\x+)/g,"\\\\$1")
 ;
 /*}}}*/
-  /**    5 DATA    JS dom_data_js_data {{{*/
+  /**    5 DATA     JS dom_data_js_data {{{*/
 /*
-../javascript/dom_data.js
+../script/dom_data.js
 */
 let dom_data_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_DATA_JS_ID        = "dom_data_js";
-const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (210923:21h:37)";
+const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (210929:21h:31)";
 
 let dom_data    = (function() {
 "use strict";
@@ -5387,14 +5387,14 @@ const DOC_TOOLS_ID            = "doc_tools";
 
 /*}}}*/
 
-  /**   6 LOG     JS dom_log_js_data .. ESCAPE=[linear-gradient(to bottom, #555)] {{{*/
+  /**   6 LOG      JS dom_log_js_data .. ESCAPE=[linear-gradient(to bottom, #555)] {{{*/
 /*
-../javascript/dom_log.js
+../script/dom_log.js
 */
 let dom_log_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (210928:16h:57)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211119:17h:47)";
 
 let dom_log     = (function() {
 "use strict";
@@ -5536,9 +5536,9 @@ const lf0  = "color:#707070; text-shadow:#000 2px 2px 1px;";
 const lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
 
 const dom_log_CSS
-    = {   LOG_BG_ARR : [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ]
-        , LOG_FG_ARR : [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ]
-        , LOG_XX_ARR : [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ]
+    = {   LOG_BG_CSS : { lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX }
+        , LOG_FG_CSS : { lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX }
+        , LOG_XX_CSS : { lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           }
     };
 const BACKSLASH = String.fromCharCode(92);
 const FORESLASH = String.fromCharCode(47);
@@ -6458,9 +6458,9 @@ return { name : "dom_log"
 ;
 
 /*}}}*/
-  /**    7 POPUP   JS dom_popup_js_data .. ESCAPE=[color:#AAA] {{{*/
+  /**    7 POPUP    JS dom_popup_js_data .. ESCAPE=[color:#AAA] {{{*/
 /*
-../javascript/dom_popup.js
+../script/dom_popup.js
 */
 let dom_popup_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
@@ -6784,14 +6784,14 @@ return { log_popup
 ;
 
 /*}}}*/
-  /**   8 UTIL    JS dom_util_js_data .. ESCAPE case "#document"] {{{*/
+  /**   8 UTIL     JS dom_util_js_data .. ESCAPE case "#document"] {{{*/
 /*
-../javascript/dom_util.js
+../script/dom_util.js
 */
 let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_UTIL_JS_ID        = "dom_util_js";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (210928:16h:04)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211119:17h:52)";
 
 let dom_util    = (function() {
 "use strict";
@@ -6820,9 +6820,9 @@ let   util_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                               ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                         ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                               ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -7684,6 +7684,23 @@ let get_shadow_root = function()
     let    shadow_root = shadow_host ? shadow_host.shadowRoot : null;
 
     return shadow_root;
+};
+let get_tool = function(id)
+{
+    if( id.includes(" ") ) return null;
+    let selector
+        = (id.charAt(0) != ".") && (id.charAt(0) != "#")
+        ?  "#"+id
+        :      id;
+
+    let el;
+    try {
+        let shadow_root      = get_shadow_root();
+        if( shadow_root ) el = shadow_root.querySelector( selector );
+        if(!el          ) el = document   .querySelector( selector );
+    }
+    catch(ex) { if(DOM_UTIL_LOG) { console.log("selector=["+selector+"]"); console.warn(ex); } }
+    return el;
 };
 let get_position_absolute_children = function(el,level=1)
 {
@@ -9869,6 +9886,7 @@ return { name : "dom_util"
     , get_position_absolute_children
     , get_selector_nodes
     , get_t_str
+    , get_tool
     , get_viewport_nodes
     , has_a_fixed_parent
     , node_toString
@@ -10020,14 +10038,14 @@ return { name : "dom_util"
 ;
 
 /*}}}*/
-  /**    9 I18N    JS dom_i18n_js_data {{{*/
+  /**    9 I18N     JS dom_i18n_js_data {{{*/
 /*
-../javascript/dom_i18n.js
+../script/dom_i18n.js
 */
 let dom_i18n_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_I18N_JS_ID        = "dom_i18n_js";
-const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (210928:15h:58)";
+const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211119:17h:52)";
 
 let dom_i18n    = (function() {
 "use strict";
@@ -10058,9 +10076,9 @@ let   util_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                               ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                         ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                               ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -10521,14 +10539,14 @@ return { name : "dom_i18n"
 
 ;
 /*}}}*/
-/**   10 PROP    JS dom_prop_js_data {{{*/
+/**   10 PROP     JS dom_prop_js_data {{{*/
 /*
-../javascript/dom_prop.js
+../script/dom_prop.js
 */
 let dom_prop_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_PROP_JS_ID        = "dom_prop_js";
-const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (200910:17h:33)";
+const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (211119:17h:52)";
 let dom_prop    = (function() {
 "use strict";
 let   DOM_PROP_LOG          = false;
@@ -10562,9 +10580,9 @@ let   prop_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -10690,12 +10708,12 @@ if( log_this) {
         let map_length = Prop_Map.length;
         let map_sorted = Prop_Map.sort( function(a,b) { return (a.id > b.id) ? 1 : -1; } );
         map_sorted.forEach(
-                           function(prop,index,array)
+                           function(each_prop,index)
                            {
-                               if(filter_id_to_match && !prop.id.includes( identifier ))      return;
+                               if(filter_id_to_match && !each_prop.id.includes( identifier ))      return;
 
-                               let has_onchange = !unfiltered && ( filter_onchange && prop.onchange);
-                               let    has_value = !unfiltered && ( filter_value    == prop.value   );
+                               let has_onchange = !unfiltered && ( filter_onchange && each_prop.onchange);
+                               let    has_value = !unfiltered && ( filter_value    == each_prop.value   );
 
                                if(   filter_id_to_match
                                   || unfiltered
@@ -10703,7 +10721,7 @@ if( log_this) {
                                   || has_value
                                  ) {
                                    let prefix = mPadStart(index+1+" / "+map_length, C_LEN_PREFIX);
-                                   prop.log( prefix );
+                                   each_prop.log( prefix );
                                }
                            });
 
@@ -10720,7 +10738,7 @@ let Prop = function(id, value, onchange)
 
     this.toString = function()
     {
-        let onchange
+        let onchange_name
             = this.onchange ? this.onchange.name
             :  Prop_CB      ? Prop_CB      .name
             :                 ""
@@ -10731,8 +10749,8 @@ let Prop = function(id, value, onchange)
             :  " "
         ;
 
-        return       mPadStart(this.id  +" "+this.value, 24)
-            + " … "+ mPadStart(el_name  +    onchange  , 24)+" "
+        return       mPadStart(this.id  +" "+this.value   , 24)
+            + " … "+ mPadStart(el_name  +    onchange_name, 24)+" "
         ;
 
     };
@@ -10840,8 +10858,8 @@ if( log_this) prop.log(caller);
     return prop;
 };
 return { name : "dom_prop"
-    , logging : function(state) { return DOM_PROP_LOG = dom_util.t_util_set_state("DOM_PROP_LOG",state); }
-    , tagging : function(state) { return DOM_PROP_TAG = dom_util.t_util_set_state("DOM_PROP_TAG",state); }
+    , logging : (state) => { DOM_PROP_LOG = dom_util.t_util_set_state("DOM_PROP_LOG",state); }
+    , tagging : (state) => { DOM_PROP_TAG = dom_util.t_util_set_state("DOM_PROP_TAG",state); }
     , t_prop_IMPORT
 
     , init          : prop_init
@@ -10868,14 +10886,15 @@ return { name : "dom_prop"
 ;
 /*}}}*/
 
-/**   11 STORE   JS dom_store_js_data {{{*/
+/**   11 STORE    JS dom_store_js_data {{{*/
 /*
-../javascript/dom_store.js
+../script/dom_store.js
 */
 let dom_store_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_STORE_JS_ID       = "dom_store_js";
-const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (200910:17h:33)";
+const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211119:18h:10)";
+
 let dom_store   = (function() {
 "use strict";
 let   DOM_STORE_LOG         = false;
@@ -10883,14 +10902,14 @@ let   DOM_STORE_TAG         = false;
 let t_data     = {}        ;
 let t_log      = {}        ;
 let t_util     = {}        ;
-let t_i18n     = {}        ;
+
 let t_prop     = {}        ;
 let t_store_IMPORT  = function(log_this)
 {
     t_data    = dom_data   ;
     t_log     = dom_log    ;
     t_util    = dom_util   ;
-    t_i18n    = dom_i18n   ;
+
     t_prop    = dom_prop   ;
     store_INTERN();
 
@@ -10911,9 +10930,9 @@ let   store_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -11021,10 +11040,9 @@ if( log_this) log("...dom_string=["+dom_string+"]");
     let xy = null;
     try {
         xy    = JSON.parse(dom_string);
-        let s = ""; Object.keys(xy).forEach( function(key) { s += "["+key+" = "+xy[key]+"]"+LF; });
+        let s = ""; Object.keys(xy).forEach( function(k) { s += "["+k+" = "+xy[k]+"]"+LF; });
 if( log_this) log("%c"+ caller+":", lb0);
 if( log_this) log("%c"+ s         , lb7);
-        return xy;
      }
      catch(ex) {
 if( log_this) log("%c"+caller+":"                                                     , lb2    );
@@ -11033,6 +11051,7 @@ if( log_this) log("%c"+"0123456789_123456789_123456789_123456789_123456789_12345
 if( log_this) log("%c"+"0_________1_________2_________3_________4_________5_________6", lbF+lb8);
 if( log_this) log("%c*** "+ex, lb2);
     }
+    return xy;
 };
 let t_store_has_some_page_keys = function()
 {
@@ -11363,8 +11382,8 @@ let store_key_tail = function(k)
     return k.substring(k.lastIndexOf(".") + 1);
 };
 return { name : "dom_store"
-    , logging : function(state) { return DOM_STORE_LOG = dom_util.t_util_set_state("DOM_STORE_LOG",state); }
-    , tagging : function(state) { return DOM_STORE_TAG = dom_util.t_util_set_state("DOM_STORE_TAG",state); }
+    , logging : (state) => DOM_STORE_LOG = dom_util.t_util_set_state("DOM_STORE_LOG",state)
+    , tagging : (state) => DOM_STORE_TAG = dom_util.t_util_set_state("DOM_STORE_TAG",state)
     , t_store_IMPORT
 
     , SITE_URL_TEMPLATE
@@ -11400,14 +11419,14 @@ return { name : "dom_store"
 ;
 
 /*}}}*/
-/**  12 FLY     JS dom_fly_js_data .. ESCAPE [sample += "--- !! @@ ## $$ %% ~~ ^^ ** (( ))"] {{{*/
+/**  12 FLY      JS dom_fly_js_data .. ESCAPE [sample += "--- !! @@ ## $$ %% ~~ ^^ ** (( ))"] {{{*/
 /*
-../javascript/dom_fly.js
+../script/dom_fly.js
 */
 let dom_fly_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (210928:15h:56)";
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211120:16h:22)";
 let dom_fly     = (function() {
 "use strict";
 let   DOM_FLY_LOG           = false;
@@ -11448,9 +11467,9 @@ let   fly_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -11499,7 +11518,7 @@ let t_fly_div_get = function()
 
     let fly_div_parent = get_fly_div_parent();
 
-    fly_div_parent.appendChild( fly_div );
+    if( fly_div_parent ) fly_div_parent.appendChild( fly_div );
 
     return fly_div;
 };
@@ -12897,18 +12916,19 @@ return { name : "dom_fly"
  .replace(/%u/g,"\\u")
 ;
 /*}}}*/
-  /**   13 WORDING JS dom_wording_js_data .. ESCAPE=[color : #FFF] {{{*/
+  /**   13 WORDING  JS dom_wording_js_data .. ESCAPE=[color : #FFF] {{{*/
 /*
-../javascript/dom_wording.js
+../script/dom_wording.js
 */
 let dom_wording_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (210928:19h:56)';
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211119:17h:52)';
+
 let dom_wording = (function() {
 "use strict";
-var   DOM_WORDING_LOG       = false;
-var   DOM_WORDING_TAG       = false;
+let   DOM_WORDING_LOG       = false;
+let   DOM_WORDING_TAG       = false;
 let t_data     = {}        ;
 let t_log      = {}        ;
 let t_util     = {}        ;
@@ -12940,9 +12960,9 @@ let   wording_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -13193,14 +13213,14 @@ return { name : "dom_wording"
 ;
 
 /*}}}*/
-  /**  14 SELECT  JS dom_select_js_data .. ESCAPE=[t_data.LF +"Slot #"] {{{*/
+  /**  14 SELECT   JS dom_select_js_data .. ESCAPE=[t_data.LF +"Slot #"] {{{*/
 /*
-../javascript/dom_select.js
+../script/dom_select.js
 */
 let dom_select_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (210928:18h:34)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211119:19h:10)";
 
 let dom_select  = (function() {
 "use strict";
@@ -13244,9 +13264,9 @@ let   select_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -15661,345 +15681,11 @@ let log_tools_filter_slot = function(slot)
     let tooltip   = ccs[slot]             ? ccs[slot]            .toString() : t_data.SYMBOL_ELLIPSIS;
     t_tools.t_words_option_tooltip(innerHTML, tooltip);
 };
-let dom_sentence = (function() {
-const CSS_SENTENCE_CONTAINER = "sentence_container";
-const CSS_SENTENCE           = "sentence";
-const CSS_CLAUSE             = "clause";
-const CSS_LAST_CLAUSE        = "last_clause";
-const CSS_OUTLINE            = "outlined";
-const E12_FONT_SIZE_LIST = ["fs1", "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11", "fs12"];
-
-let   e12_font_size      =  "fs5";
-const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))";
-const             BOUNDARY = "\\W*[\\.,;:\\n\\r]+(?!\\w)";
-
-const            LAST_WORD = WORD +"{3,}";
-const           FIRST_WORD = WORD +"+";
-
-const CAPTURING_PREV_END   = "("    + LAST_WORD  +")";
-const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")";
-const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
-let   regexp_SENTENCE;
-let sentence_color_next = 1;
-let sentence_containers = [];
-let t_SENTENCE_SPLIT = function(container)
-{
-
-let   caller = "t_SENTENCE_SPLIT";
-let log_this = LOG_MAP.S2_SELECT;
-let tag_this = DOM_SELECT_TAG || log_this;
-
-if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(container)+")", lbH+lf1);
-if( log_this) t_log.console_dir("container",container        );
-
-    if(container.nodeName == "DETAILS") container.open = true;
-
-    if( !regexp_SENTENCE ) {
-        try {
-            regexp_SENTENCE = new RegExp(CAPTURING_PREV_END +  CAPTURING_BOUNDARY +  CAPTURING_NEXT_START,"gu");
-        } catch(ex) {
-            log(ex);
-        }
-        if(!regexp_SENTENCE)
-            regexp_SENTENCE = new RegExp(             "(\\w*)"+CAPTURING_BOUNDARY+"(\\w*)"               ,"gu");
-    }
-    let   el;
-    while(el = t_util.get_el_child_with_class(container, dom_sentence.CSS_SENTENCE_CONTAINER))
-        t_SENTENCE_RESTORE( el );
-
-    t_SENTENCE_RESTORE( container );
-    sentence_color_next = 1;
-
-if( log_this) {
-    log("...LAST_WORD            %c"+LAST_WORD           , lbC+lf2);
-    log("...BOUNDARY             %c"+BOUNDARY            , lbC+lf3);
-    log("...FIRST_WORD           %c"+FIRST_WORD          , lbC+lf2);
-    log("...CAPTURING_PREV_END   %c"+CAPTURING_PREV_END  , lbC+lf5);
-    log("...CAPTURING_BOUNDARY   %c"+CAPTURING_BOUNDARY  , lbC+lf6);
-    log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
-}
-if( tag_this) {
-    logBIG(regexp_SENTENCE);
-    log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
-}
-    let textContent = t_util.t_get_htmlEntities( container.textContent.trim() );
-if( log_this) log("textContent:%c"+t_data.LF+textContent, lb8);
-
-    textContent = textContent.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
-    container.innerHTML_SAVED
-        = container.innerHTML;
-    t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
-
-    container.style.touchAction = "none";
-
-    container.innerHTML
-        = "<span class='"+CSS_SENTENCE+" bg1'>"
-        + textContent
-        + "</span>" ;
-
-    if(!sentence_containers.includes( container ))
-        sentence_containers.push    ( container );
-    let selector
-        = "."+ CSS_CLAUSE   +"+."+ CSS_SENTENCE
-        + ","
-        + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE
-    ;
-    let sentence_array = container.querySelectorAll( selector );
-if( log_this) t_log.console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
-
-    for(let i=0; i < sentence_array.length; ++i)
-    {
-        let last_clause =   sentence_array[i].previousElementSibling;
-        t_util.add_el_class(last_clause, CSS_LAST_CLAUSE);
-
-if( log_this) console.log(last_clause);
-    }
-    t_util.add_el_class(container.lastElementChild, CSS_LAST_CLAUSE);
-
-    t_SENTENCE_adjust_el_fontsize( container );
-    let innerHTML
-        = container.outerHTML
-        + "<hr>"
-        + "<pre class='xpath'>"
-        +  t_util.get_parent_tag_id_class_chain( container )
-        + "</pre>";
-if( log_this) log("container.innerHTML:%c"+t_data.LF+container.innerHTML, lb7);
-    if(t_util.get_el_parent_fragment(container) || t_prop.get(t_data.TOOLS_TIER2))
-    {
-        dom_popup.log_popup_fixed( innerHTML );
-
-        let popup_sentence_container = get_popup_sentence_container();
-        if( popup_sentence_container )
-            t_SENTENCE_adjust_el_fontsize( popup_sentence_container );
-    }
-
-};
-let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
-{
-
-let log_this = LOG_MAP.S2_SELECT;
-let tag_this = DOM_SELECT_TAG || log_this;
-
-if(next_start == t_data.LF) next_start = "";
-
-if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
-                  ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
-    let entering_a_clause
-        =  boundary.includes(",")
-        || boundary.includes(";")
-
-    ;
-
-    if(!entering_a_clause)
-        sentence_color_next += 1;
-
-    let className
-        = (entering_a_clause ? CSS_CLAUSE : CSS_SENTENCE)
-        + " bg"+(sentence_color_next % 10)
-    ;
-
-    return prev_end + boundary +"</span><span class='"+className+"'>"+ next_start;
-};
-let t_SENTENCE_RESTORE = function(el)
-{
-
-let   caller = "t_SENTENCE_RESTORE";
-let log_this = LOG_MAP.S2_SELECT || DOM_SELECT_TAG;
-
-if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
-    if(!el) return "";
-    let consumed_by = "";
-    let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
-    if( container )
-    {
-        consumed_by = "RESTORING CONTAINER SPLIT SENTENCES";
-        t_util.del_el_class(container, CSS_SENTENCE_CONTAINER);
-        t_util.del_el_class(container, CSS_OUTLINE           );
-
-        if( container.innerHTML_SAVED )
-        {
-            if( log_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
-
-            container.style.touchAction = "";
-
-            container.innerHTML         =  container.innerHTML_SAVED;
-            delete                         container.innerHTML_SAVED;
-
-        }
-
-        sentence_containers.splice(sentence_containers.indexOf(container), 1);
-    }
-    t_util.clear_el_classList(el, E12_FONT_SIZE_LIST);
-
-    dom_popup.log_popup_hide();
-
-if( log_this) log("...return ["+consumed_by+"]");
-    return consumed_by;
-};
-let t_SENTENCE_RESTORE_ALL = function()
-{
-
-let   caller = "t_SENTENCE_RESTORE_ALL";
-let log_this = LOG_MAP.S2_SELECT || DOM_SELECT_TAG;
-
-if( log_this) log("%c"+caller, lbH+lf2);
-    let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
-    for(let i = 0; i <      node_list.length; ++i)
-        t_SENTENCE_RESTORE( node_list[i] );
-};
-let t_SENTENCE_GET_CONTAINERS = function()
-{
-    return sentence_containers;
-};
-let t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT = function()
-{
-    let el_array = [];
-    for(let i=0; i < sentence_containers.length; ++i)
-    {
-        if(dom_view.t_view1_is_el_topLeft_or_bottomRight_in_viewport(sentence_containers[i]))
-            el_array.push( sentence_containers[i] );
-    }
-
-    return el_array;
-};
-let t_SENTENCE_adjust_el_fontsize = function(container)
-{
-    t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
-
-    container.classList.add( e12_font_size );
-};
-let t_SENTENCE_offset_e12_font_size = function(offset=0)
-{
-
-let   caller = "t_SENTENCE_offset_e12_font_size";
-let log_this = LOG_MAP.S2_SELECT;
-    let num = offset + parseInt( e12_font_size.substring(2) );
-    num     = Math.max( 1, num);
-    num     = Math.min(12, num);
-
-    e12_font_size = "fs"+num;
-
-if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
-    let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
-    for(let i=0; i < node_list.length; ++i)
-        t_SENTENCE_adjust_el_fontsize(node_list[i]);
-    let popup_sentence_container = get_popup_sentence_container();
-    if( popup_sentence_container )
-        t_SENTENCE_adjust_el_fontsize( popup_sentence_container );
-    return node_list.length;
-};
-let get_popup_sentence_container = function()
-{
-    let dom_popup_div = dom_popup.log_popup_div_get();
-    if( dom_popup_div )
-        return dom_popup_div.querySelector("."+CSS_SENTENCE_CONTAINER);
-    else
-        return null;
-};
-let t_SENTENCE_get_el_sentence_container = function(el)
-{
-    return t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
-};
-const SENTENCE_DRAG_MOVED_ENOUGH =  64;
-const SENTENCE_DRAG_COOLDOWN_MS  = 500;
-let   sentence_drag_last_MS      =   0;
-let t_SENTENCE_drag_DXY = function(dxy)
-{
-
-let   caller = "t_SENTENCE_drag_DXY";
-let log_this = LOG_MAP.EV0_LISTEN;
-    let  this_MS = new Date().getTime();
-
-    let time_ellapsed = (this_MS - sentence_drag_last_MS);
-    if( time_ellapsed <  SENTENCE_DRAG_COOLDOWN_MS) {
-        t_tools.t_hotspot_add_status_MOVE_ON_COOLDOWN(SENTENCE_DRAG_COOLDOWN_MS - time_ellapsed);
-        return false;
-    }
-    else {
-        t_tools.t_hotspot_del_status_MOVE_ON_COOLDOWN();
-    }
-    let from_container = document.querySelector("."+CSS_SENTENCE_CONTAINER);
-
-    if(!from_container)
-        return false;
-    let move_H_or_V  =  Math.abs(dxy.x     ) > Math.abs(dxy.y);
-    let move_delta   = move_H_or_V ? dxy.x   :          dxy.y;
-    let moved_enough = (Math.abs(move_delta) > SENTENCE_DRAG_MOVED_ENOUGH);
-
-    if(!moved_enough ) {
-        t_tools.t_hotspot_add_status_NOT_MOVED_ENOUGH();
-        return false;
-    }
-    else {
-        t_tools.t_hotspot_del_status_NOT_MOVED_ENOUGH();
-    }
-    let split_or_font = move_H_or_V;
-    let offset        = (move_delta > 0) ? 1 : -1;
-if( log_this) log_key_val_group(  caller
-                                  , { move_delta
-                                    , split_or_font
-                                    , offset
-                                  }
-                                  , lfX[split_or_font ? ((offset > 0) ? 3:4) : ((offset > 0) ? 5:6)]
-                                  , true);
-    if( split_or_font )
-    {
-        t_SENTENCE_split_at_offset(from_container, offset);
-    }
-    else {
-        t_SENTENCE_offset_e12_font_size( offset );
-    }
-
-    sentence_drag_last_MS = this_MS;
-    return true;
-};
-let t_SENTENCE_split_at_offset = function(from_container,offset)
-{
-
-let   caller = "t_SENTENCE_split_at_offset";
-let log_this = LOG_MAP.EV0_LISTEN;
-    let offset_container = t_util.get_node_sibling_at_offset( from_container, offset);
-
-if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
-                                , {   from_container
-                                  , offset_container
-                                });
-
-    if( offset_container )
-    {
-        t_SENTENCE_RESTORE              ( from_container   );
-        t_SENTENCE_SPLIT                ( offset_container );
-        t_SENTENCE_adjust_el_fontsize   ( offset_container );
-        t_SENTENCE_OUTLINE              ( offset_container );
-
-        t_tools.t_scrollIntoViewIfNeeded( offset_container );
-    }
-};
-let t_SENTENCE_OUTLINE = function(sentence_el)
-{
-    let sentence_container = t_util.get_el_parent_with_class(sentence_el, CSS_SENTENCE_CONTAINER);
-    if( sentence_container ) sentence_container.classList.add(            CSS_OUTLINE           );
-};
-return {  CSS_SENTENCE_CONTAINER
-    ,     t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT
-    ,     t_SENTENCE_RESTORE
-    ,     t_SENTENCE_RESTORE_ALL
-    ,     t_SENTENCE_SPLIT
-    ,     t_SENTENCE_adjust_el_fontsize
-    ,     t_SENTENCE_drag_DXY
-    ,     t_SENTENCE_get_el_sentence_container
-    ,     t_SENTENCE_offset_e12_font_size
-    ,     t_SENTENCE_GET_CONTAINERS
-
-    ,     t_SENTENCE_OUTLINE
-};
-
-}());
 return { name : "dom_select"
     , logging : (state) => DOM_SELECT_LOG = dom_util.t_util_set_state("DOM_SELECT_LOG",state)
     , tagging : (state) => DOM_SELECT_TAG = dom_util.t_util_set_state("DOM_SELECT_TAG",state)
     , t_select_IMPORT
-    , ...dom_sentence
+
     , SELECT_SLOT_MAX
     , SEL_CLASS_PREFIX
     , ccs
@@ -16078,14 +15764,15 @@ return { name : "dom_select"
 ;
 
 /*}}}*/
-  /**   15 SLOT    JS dom_slot_js_data .. ESCAPE=[log("%c...found slot #"+slot)] {{{*/
+  /**   15 SLOT     JS dom_slot_js_data .. ESCAPE=[log("%c...found slot #"+slot)] {{{*/
 /*
-../javascript/dom_slot.js
+../script/dom_slot.js
 */
 let dom_slot_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SLOT_JS_ID        = "dom_slot_js";
-const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (210630:02h:07)";
+const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (211119:18h:04)";
+
 let dom_slot    = (function() {
 "use strict";
 let   DOM_SLOT_LOG          = false;
@@ -16121,9 +15808,9 @@ let   slot_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -16139,8 +15826,6 @@ let   slot_DEPEND = function()
 {
 
 };
-let last_cleared_slot           =   1;
-
 let get_slotted_pattern_count = function()
 {
 
@@ -16258,8 +15943,6 @@ let t_clear_slot = function(slot)
 
 let   caller = "t_clear_slot";
 let log_this = DOM_SLOT_LOG || LOG_MAP.S3_SLOT;
-    last_cleared_slot = slot;
-
     let ccX       = slot % t_select.SELECT_SLOT_MAX;
     let sel_class = t_select.SEL_CLASS_PREFIX + ccX;
     let selector  = "."+sel_class;
@@ -16312,10 +15995,10 @@ let get_next_populated_slot = function(slot)
     return slot_with_nodes;
 };
 return { name : "dom_slot"
-    , logging : function(state) { return DOM_SLOT_LOG = dom_util.t_util_set_state("DOM_SLOT_LOG",state); }
-    , tagging : function(state) { return DOM_SLOT_TAG = dom_util.t_util_set_state("DOM_SLOT_TAG",state); }
+    , logging : (state) => DOM_SLOT_LOG = dom_util.t_util_set_state("DOM_SLOT_LOG",state)
+    , tagging : (state) => DOM_SLOT_TAG = dom_util.t_util_set_state("DOM_SLOT_TAG",state)
     , t_slot_IMPORT
-    , get_last_cleared_pattern : function() { return last_cleared_pattern; }
+    , get_last_cleared_pattern : () => last_cleared_pattern
     , get_next_populated_slot
     , get_prev_populated_slot
     , get_slot_matching_pattern
@@ -16338,14 +16021,14 @@ return { name : "dom_slot"
 
 /*}}}*/
 
-  /**  16 HIDE    JS dom_hide_js_data .. ESCAPE=[log(caller+": %c #"+num)] {{{*/
+  /**  16 HIDE     JS dom_hide_js_data .. ESCAPE=[log(caller+": %c #"+num)] {{{*/
 /*
-../javascript/dom_hide.js
+../script/dom_hide.js
 */
 let dom_hide_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_HIDE_JS_ID        = "dom_hide_js";
-const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (210928:15h:58)";
+const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (211119:17h:52)";
 
 let dom_hide    = (function() {
 "use strict";
@@ -16384,9 +16067,9 @@ let   hide_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -17487,14 +17170,14 @@ return { name    : "dom_hide"
 ;
 
 /*}}}*/
-/**   17 VIEW    JS dom_view_js_data {{{*/
+/**   17 VIEW     JS dom_view_js_data {{{*/
 /*
-../javascript/dom_view.js
+../script/dom_view.js
 */
 let dom_view_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_VIEW_JS_ID        = "dom_view_js";
-const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (210928:16h:04)";
+const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (211119:17h:52)";
 let dom_view    = (function() {
 "use strict";
 let   DOM_VIEW_LOG          = false;
@@ -17536,9 +17219,9 @@ let   view_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -18118,14 +17801,14 @@ return { name : "dom_view"
  .replace(/%u/g,"\\u")
 ;
 /*}}}*/
-/**  18 STICKY  JS dom_sticky_js_data .. ESCAPE=[anchor_nodes_in_viewport : "#"+anchor_nodes_in_viewport] {{{*/
+/**  18 STICKY   JS dom_sticky_js_data .. ESCAPE=[anchor_nodes_in_viewport : "#"+anchor_nodes_in_viewport] {{{*/
 /*
-../javascript/dom_sticky.js
+../script/dom_sticky.js
 */
 let dom_sticky_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (210928:16h:01)";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (211119:18h:05)";
 
 let dom_sticky  = (function() {
 "use strict";
@@ -18277,9 +17960,9 @@ let   sticky_INTERN = function()
     SCROLLBAR_WIDTH     = t_data.SCROLLBAR_WIDTH;
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -18795,6 +18478,7 @@ if( log_this) t_sticky_LOG(sticky);
 };
 let   sticky_get_value = function(sticky)
 {
+
 let   caller = "sticky_get_value";
 let log_this = DOM_STICKY_LOG || LOG_MAP.T0_STORE;
         let          xy = get_el_xy(sticky, caller);
@@ -22332,14 +22016,14 @@ return { name : "dom_sticky"
  .replace(/%u/g,"\\u")
 ;
 /*}}}*/
-/**  19 SEEK    JS dom_seek_js_data .. ESCAPE=[onWork_EL slot #"+slot] {{{*/
+/**  19 SEEK     JS dom_seek_js_data .. ESCAPE=[onWork_EL slot #"+slot] {{{*/
 /*
-../javascript/dom_seek.js
+../script/dom_seek.js
 */
 let dom_seek_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (210923:17h:29)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211119:17h:52)";
 
 let dom_seek    = (function() {
 "use strict";
@@ -22384,9 +22068,9 @@ let   seek_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -24335,14 +24019,14 @@ return { name : "dom_seek"
  .replace(/%u/g,"\\u")
 ;
 /*}}}*/
-/**   20 SHARE   JS dom_share_js_data {{{*/
+/**   20 SHARE    JS dom_share_js_data {{{*/
 /*
-../javascript/dom_share.js
+../script/dom_share.js
 */
 let dom_share_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_SHARE_JS_ID       = "dom_share_js";
-const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (210928:18h:42)";
+const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (211120:14h:14)";
 
 let dom_share   = (function() {
 "use strict";
@@ -24402,9 +24086,9 @@ let   share_INTERN = function()
     TAB                         = t_data.TAB;
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -25187,19 +24871,21 @@ return { name : "dom_share"
 ;
 /*}}}*/
 
-/**   20 DETAILS JS dom_details_js_data .. ESCAPE case "#document"] {{{*/
+/**   21 DETAILS  JS dom_details_js_data .. ESCAPE case "#document"] {{{*/
 /*
-../javascript/dom_details.js
+../script/dom_details.js
 */
 let dom_details_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (210928:19h:58)";
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211119:17h:51)";
 
 let dom_details         = (function() {
 "use strict";
 let   DOM_DETAILS_LOG   = false;
 let   DOM_DETAILS_TAG   = false;
+
+const DETAILS_RADIO_ID = "details_radio";
 let t_details_IMPORT    = function(log_this)
 {
     details_INTERN();
@@ -25219,7 +24905,7 @@ let get_el_sibling_with_tag;
 let get_id_or_tag;
 let get_id_or_tag_and_className;
 let get_nodeXPath;
-let has_el_class;
+let get_tool;
 let is_el_or_child_of_parent_el;
 let localStorage_delItem = (key    ) =>           localStorage.removeItem(key    );
 let localStorage_getItem = (key    ) =>           localStorage.getItem   (key    );
@@ -25235,10 +24921,10 @@ let caller = "details_INTERN";
 
     if( dom_log_js )
     {
-        if(dom_log_js.LOG_BG_ARR) {
-            [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log_js.LOG_BG_ARR;
-            [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log_js.LOG_XX_ARR;
-            [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log_js.LOG_FG_ARR;
+        if(dom_log_js.LOG_BG_CSS) {
+            ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log_js.LOG_BG_CSS);
+            ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log_js.LOG_FG_CSS);
+            ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log_js.LOG_XX_CSS);
         }
 
         ({  log
@@ -25268,7 +24954,7 @@ logBIG(caller+": [dom_log UNDEFINED]"   , 2);
          ,  get_id_or_tag
          ,  get_id_or_tag_and_className
          ,  get_nodeXPath
-         ,  has_el_class
+         ,  get_tool
          ,  is_el_or_child_of_parent_el
         } = dom_util_js);
 
@@ -25287,77 +24973,158 @@ logBIG(caller+": [dom_util UNDEFINED]"      , 2);
 if(DOM_DETAILS_LOG || DOM_DETAILS_TAG) logBIG(caller+": ["+dom_store.name+"]"      , 4);
     }
 };
-let  details_load_open_state = function(container=document)
+let details_handler = (function() {
+
+let details_onload = function()
 {
 
-let caller = "details_load_open_state";
+let caller = "details_onload";
+let log_this = DOM_DETAILS_LOG;
 
-if(DOM_DETAILS_LOG) logBIG(caller, 8);
-    let        details_array = container.querySelectorAll("DETAILS");
-
+if(log_this) logBIG(caller, 8);
+    let        details_array = document.querySelectorAll("DETAILS");
     Array.from(details_array).forEach( (el) => {
-        let open = (el.id) && localStorage_getItem(el.id+"_open");
+        let open = el.id && localStorage_getItem(el.id+"_open");
         if( open ) {
             el.open = true;
-if(DOM_DETAILS_LOG) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
+if(log_this) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
         }
     });
     Array.from(details_array).forEach( (el) => {
         if(!el.id) return;
-        el.addEventListener("toggle", details_ontoggle);
+        el.addEventListener("mousedown", details_onmousedown);
+        el.addEventListener("toggle"   , details_ontoggle   );
     });
     details_radio_set_from_localStorage();
     details_add_hash_link_onclick_listener();
 };
+ let details_onmousedown_shiftKey;
+ let details_onmousedown_altKey;
+ let details_onmousedown = function(e)
+ {
+     details_onmousedown_shiftKey  = e.shiftKey;
+     details_onmousedown_altKey    = e.altKey;
+//log("➔ details_onmousedown_shiftKey=["+ details_onmousedown_shiftKey +"]")
+//log("➔ details_onmousedown_altKey..=["+ details_onmousedown_altKey   +"]")
+ };
+const DETAILS_ONTOGGLE_COOLDOWN = 500;
+
+let   details_ontoggle_timeStamp;
+
 let details_ontoggle = function(e)
 {
 if(details_ontoggle_listener_mutex) return;
 
 let caller = "details_ontoggle";
-if(DOM_DETAILS_LOG) log(caller+"("+e.target.tagName+") .. open=["+e.target.open+"]");
+let log_this= DOM_DETAILS_LOG;
 
-     let details_el = e.target;
-if(DOM_DETAILS_LOG) log("➔ details_el=["+(details_el.id || details_el.firstElementChild.textContent)+"] .. open=["+details_el.open+"]");
-    if(!details_el.id) return;
+    let details_el = e.target;
+    if(!details_el ) return;
 
- let key = details_el.id+"_open";
-    if( details_el.open ) localStorage_setItem( key , "true");
-    else                  localStorage_delItem( key         );
+if( log_this) log(caller+"("+e.target.tagName+") .. open=["+e.target.open+"] ➔ details_el=["+(details_el.id || details_el.firstElementChild.textContent)+"] .. open=["+details_el.open+"]");
+    if(details_el.id) {
+        // [localStorage]
+        if(details_el.open) localStorage_setItem(details_el.id+"_open", "true");
+        else                localStorage_delItem(details_el.id+"_open"        );
 
-    if( details_el.open ) details_ontoggle_apply_radio_behavior( details_el );
-    else                  details_ontoggle_close_children      ( details_el );
+        // [COOKIE]
+//      if(details_el.open) set_cookie(details_el.id+"_open", "true");
+//      else                del_cookie(details_el.id+"_open"        );
+    }
+    //   let this_MS      = new Date().getTime();
+    let elapsed      = (e.timeStamp - details_ontoggle_timeStamp).toFixed(0);
+    if( elapsed      < DETAILS_ONTOGGLE_COOLDOWN)
+    {
+if(log_this) log("%c...ON COOLDOWN: elapsed=["+elapsed+"ms]", "color:#888;");
+
+        return;
+    }
+if(log_this) log("%c..."+details_el.tagName+" #"+details_el.id+" .. open "+details_el.open+" .. elapsed=["+elapsed+"]" , (details_el.open ? "color:lightgreen;":"color:red;"));
+
+    details_ontoggle_timeStamp = e.timeStamp;
+    if(details_onmousedown_shiftKey == undefined) return;
+    if( details_onmousedown_altKey )
+    {
+        let state = details_el.open ? "open" : "close";
+
+        details_ontoggle_set_siblings_state(details_el, state);
+    }
+    else {
+
+        let close_others_behavior
+            =  details_radio_el
+            && (    details_radio_el.checked
+                 || details_radio_el              .classList.contains("checked")
+                 || details_radio_el.parentElement.classList.contains("checked")
+               );
+
+        let reversed
+            =   close_others_behavior && details_onmousedown_shiftKey;
+
+        let close_others
+            =  (close_others_behavior && ( details_el.open && !reversed)) ? "OPENED ➔ [NO SHIFT] ➔ CLOSE OTHERS"
+            :  (close_others_behavior && (!details_el.open &&  reversed)) ? "CLOSED ➔ [++ SHIFT] ➔ CLOSE OTHERS"
+            :  false;
+if(log_this) {
+    let style =           "border: "+(close_others_behavior ? "2px solid orange" : "1px solid gray")+";"
+        +                  "color: "+(close_others          ?              "red" : "gray"          )+";"
+        +       "background-color: "+(reversed              ?             "#808" : "black"         )+";"
+    ;
+    log(" ➔ %c["+ close_others +"]", style);
+}
+        if     (!details_el.open ) details_ontoggle_close_children    ( details_el         );
+        else if( close_others    ) details_ontoggle_set_siblings_state( details_el, "close");
+    }
+
 };
-let details_ontoggle_apply_radio_behavior = function(details_el)
+let details_ontoggle_set_siblings_state = function(details_el,state)
 {
 
-let caller = "details_ontoggle_apply_radio_behavior";
+let   caller = "details_ontoggle_set_siblings_state";
+let log_this = DOM_DETAILS_LOG;
 
-    let details_radio  = localStorage_getItem( DETAILS_RADIO_ID );
-if(DOM_DETAILS_LOG || DOM_DETAILS_TAG) logBIG(caller+": details_radio=["+details_radio+"]", 4);
+if(log_this || DOM_DETAILS_TAG) logBIG(caller+"("+get_id_or_tag_and_className(details_el)+", "+state+")");
+    let details_parent
+        = (details_el.parentElement.tagName == "LI")
+        ?  details_el.parentElement.parentElement // hop to OL or UL
+        :  details_el.parentElement;
 
-    if(!details_radio ) return;
-
-    let parent = details_el.parentElement;
-    for(let i=0; i<parent.children.length; ++i)
+if(log_this) log("%c...details_parent: ["+(details_parent.id || details_parent.tagName)+"]", "background-color:#800;");
+    for(let i=0; i<details_parent.children.length; ++i)
     {
+        //  details_sibling {{{
+        let details_sibling  = details_parent.children[i];
+        if( details_sibling.tagName == "LI") details_sibling = details_sibling.children[0];
+//log("...["+ details_sibling.tagName + (details_sibling.id ? (" "+details_sibling.id) : "")+"]")
 
-        let sibling  = parent.children[i];
-        if( sibling == details_el) continue;
-        if((sibling.tagName == "DETAILS") && sibling.open)
+        //}}}
+        // skip just opened or closed details_el {{{
+        if(details_sibling == details_el) continue;
+
+        //}}}
+
+        if(details_sibling.tagName == "DETAILS")
         {
-if(DOM_DETAILS_LOG) log("...close sibling=["+(sibling.id || sibling.firstElementChild.textContent)+"]");
+            details_sibling.open = (state == "open");
 
-            sibling.open = false;
-            if(sibling.id)
-                localStorage_delItem(sibling.id+"_open");
+            if(details_sibling.id)
+            {
+                if(details_sibling.open) localStorage_setItem(details_sibling.id+"_open", "true");
+                else                     localStorage_delItem(details_sibling.id+"_open"        );
+//              del_cookie(          details_sibling.id+"_open");
+            }
         }
+
     }
+
 };
 let details_ontoggle_close_children = function(parent_details)
 {
 
-    let caller = "details_ontoggle_close_children";
-    if(DOM_DETAILS_LOG) logBIG(caller+"("+get_id_or_tag_and_className(parent_details)+") .. open=["+parent_details.open+"]", 2);
+let   caller = "details_ontoggle_close_children";
+let log_this = DOM_DETAILS_LOG;
+
+if( log_this) logBIG(caller+"("+get_id_or_tag_and_className(parent_details)+") .. open=["+parent_details.open+"]", 2);
     let el_array
         = Array.from( parent_details.querySelectorAll("DETAILS[open]") );
 
@@ -25372,19 +25139,21 @@ let details_ontoggle_close_children = function(parent_details)
         }
     });
 };
-const DETAILS_RADIO_ID = "details_radio";
+
+return { details_onload };
+})();
 let details_radio_toggle = function(e)
 {
-//console.log("details_radio_toggle")
-//console.log("DOM_DETAILS_LOG=["+DOM_DETAILS_LOG+"]")
+
+//log("details_radio_toggle")
+//log("DOM_DETAILS_LOG=["+DOM_DETAILS_LOG+"]")
 
 if(DOM_DETAILS_LOG) log("details_radio_toggle("+e.target.tagName+")");
-
-    let { input , details_radio_el } = details_radio_get_input(e);
+    let { input , details_radio_el } = get_details_radio_checkbox(e);
     let state
         = input
         ? ((e.target != input) ? input.checked : !input.checked)
-        : has_el_class(details_radio_el, "checked");
+        : details_radio_el.classList.includes("checked");
     state = !state;
 
     if( input && (!e || (input != e.target)))
@@ -25394,8 +25163,8 @@ if(DOM_DETAILS_LOG) log("details_radio_toggle("+e.target.tagName+")");
         if(state) add_el_class(details_radio_el, "checked");
         else      del_el_class(details_radio_el, "checked");
     }
-    if(state) localStorage_setItem(DETAILS_RADIO_ID,  "true");
-    else      localStorage_setItem(DETAILS_RADIO_ID,   null );
+    if(state) localStorage_setItem(DETAILS_RADIO_ID, "true");
+    else      localStorage_delItem(DETAILS_RADIO_ID        );
 if(DOM_DETAILS_LOG || DOM_DETAILS_TAG)
     log_key_val_group("details_radio_toggle: ...state=["+state+"]"
         , { state
@@ -25412,13 +25181,12 @@ let details_radio_set_from_localStorage = function()
 {
 
 if(DOM_DETAILS_LOG) log("details_radio_set_from_localStorage");
-    let { input , details_radio_el } = details_radio_get_input();
+    let { input , details_radio_el } = get_details_radio_checkbox();
 
     if(!input) return;
     let state = localStorage_getItem( DETAILS_RADIO_ID );
-    if( input ) {
+    if( input )
         input.checked = state;
-    }
 
     if(state) add_el_class(input.parentElement, "checked");
     else      del_el_class(input.parentElement, "checked");
@@ -25432,28 +25200,25 @@ if(DOM_DETAILS_LOG)
         , false);
 
 };
-let details_radio_get_input = function(e)
+let details_radio_el;
+let get_details_radio_checkbox = function(e)
 {
 
-let caller = "details_radio_get_input";
+let caller = "get_details_radio_checkbox";
+    if(!details_radio_el)
+        details_radio_el = get_tool( DETAILS_RADIO_ID );
+
     let el
         = (e)
         ?  e.target
-        :  document.querySelector("#"+DETAILS_RADIO_ID);
+        :  details_radio_el;
 
 if(DOM_DETAILS_LOG) log(caller+": ["+DETAILS_RADIO_ID+"] ➔ el=["+get_id_or_tag(el)+"]");
     if(!el) return {};
     let input
-        =                                  ((el.tagName == "INPUT") && el)
+        =                         ((el.tagName == "INPUT") && el)
         || get_el_child_with_tag  ( el          , "INPUT")
         || get_el_sibling_with_tag( el          , "INPUT");
-    let details_radio_el
-        = input
-        ? input.parentElement
-        : document.querySelector("#"+DETAILS_RADIO_ID);
-
-    if(!details_radio_el)
-        details_radio_el = document.getElementById( DETAILS_RADIO_ID );
 if(DOM_DETAILS_LOG)
     log_key_val_group(caller+": ...return ["+(input ? input.tagName : "")+"]"
         , { e
@@ -25486,7 +25251,7 @@ let details_has_closed_el_parent = function(el)
                 return true;
         }
 
-        details_el   = details_el.parentElement;
+        details_el = details_el.parentElement;
     }
     return false;
 };
@@ -25505,7 +25270,7 @@ if(DOM_DETAILS_LOG) logBIG("details_open_closed_el_parent("+get_id_or_tag_and_cl
                 details_el.open = true;
             }
         }
-        details_el   = details_el.parentElement;
+        details_el = details_el.parentElement;
     }
     el.open = true;
 };
@@ -25604,23 +25369,22 @@ let t_details_set_state = function(label,state)
         return    localStorage.getItem   (label        );
     }
 };
+
 return { name    : "dom_details"
     ,    logging : (state) => { DOM_DETAILS_LOG = dom_details.t_details_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
     ,    tagging : (state) => { DOM_DETAILS_TAG = dom_details.t_details_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
     ,    t_details_IMPORT
     ,    t_details_set_state
-    ,    details_load_open_state
-    ,    details_radio_toggle
 
+    ,    details_onload                 : details_handler.details_onload
+    ,    details_radio_toggle
     ,    details_has_closed_el_parent
     ,    details_open_closed_el_parent
-
     ,    details_close_opened
     ,    details_open_closed
-
 };
-}());
 
+}());
 /*INLINE}}}*/
 //@ sourceURL=dom_details.js
 `
@@ -25630,14 +25394,14 @@ return { name    : "dom_details"
 ;
 
 /*}}}*/
-/**   21 WOT     JS dom_wot_js_data .. ESCAPE case "#document"] {{{*/
+/**   22 WOT      JS dom_wot_js_data .. ESCAPE case "#document"] {{{*/
 /*
-../javascript/dom_wot.js
+../script/dom_wot.js
 */
 let dom_wot_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (210928:19h:58)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (211119:18h:11)";
 
 let dom_wot             = (function() {
 "use strict";
@@ -25685,10 +25449,10 @@ let caller = "wot_INTERN";
 
     if( dom_log_js )
     {
-        if(dom_log_js.LOG_BG_ARR) {
-            [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = dom_log_js.LOG_BG_ARR;
-            [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = dom_log_js.LOG_XX_ARR;
-            [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = dom_log_js.LOG_FG_ARR;
+        if(dom_log_js.LOG_BG_CSS) {
+            ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+            ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+            ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
         }
 
         ({  log
@@ -26151,14 +25915,429 @@ return { name    : "dom_wot"
 ;
 
 /*}}}*/
-  /**   22 GRID    JS dom_grid_js_data .. ESCAPE=[color:#AAA] {{{*/
+  /**   23 SENTENCE JS dom_sentence_js_data .. ESCAPE=[t_data.LF +"Slot #"] {{{*/
 /*
-../javascript/dom_grid.js
+../script/dom_sentence.js
+*/
+let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211119:19h:09)";
+
+let dom_sentence = (function() {
+"use strict";
+let   DOM_SENTENCE_LOG      = false;
+let   DOM_SENTENCE_TAG      = false;
+let t_data     = {}          ;
+
+let t_log      = {}          ;
+let t_popup    = {}          ;
+let t_util     = {}          ;
+let t_i18n     = {}          ;
+let t_prop     = {}          ;
+let t_tools    = {}          ;
+let t_sentence_IMPORT  = function(log_this)
+{
+
+    t_data     = dom_data    ;
+
+    t_log      = dom_log     ;
+    t_popup    = dom_popup   ;
+    t_util     = dom_util    ;
+
+    t_prop     = dom_prop    ;
+    t_tools    = dom_tools   ;
+    sentence_INTERN();
+
+    DOM_SENTENCE_LOG = DOM_SENTENCE_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SENTENCE_LOG"));
+    DOM_SENTENCE_TAG = DOM_SENTENCE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SENTENCE_TAG"));
+if(log_this) log("%c 12 SENTENCE", lbH+lf2);
+};
+let LOG_MAP;
+
+let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
+let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
+let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
+let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
+let prop;
+let   sentence_INTERN = function()
+{
+
+    LOG_MAP = t_log.LOG_MAP;
+
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
+
+    log                 = t_log.log;
+    logBIG              = t_log.logBIG;
+    logXXX              = t_log.logXXX;
+    log_caller          = t_log.log_caller;
+    log_json_one_liner  = t_log.log_json_one_liner;
+    log_key_val         = t_log.log_key_val;
+    log_key_val_group   = t_log.log_key_val_group;
+    prop = t_prop;
+    sentence_DEPEND();
+};
+let   sentence_DEPEND = function()
+{
+
+};
+const CSS_SENTENCE_CONTAINER = "sentence_container";
+const CSS_SENTENCE           = "sentence";
+const CSS_CLAUSE             = "clause";
+const CSS_LAST_CLAUSE        = "last_clause";
+const CSS_OUTLINE            = "outlined";
+const E12_FONT_SIZE_LIST = ["fs1", "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11", "fs12"];
+
+let   e12_font_size      =  "fs5";
+const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))";
+const             BOUNDARY = "\\W*[\\.,;:\\n\\r]+(?!\\w)";
+
+const            LAST_WORD = WORD +"{3,}";
+const           FIRST_WORD = WORD +"+";
+
+const CAPTURING_PREV_END   = "("    + LAST_WORD  +")";
+const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")";
+const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
+let   regexp_SENTENCE;
+let sentence_color_next = 1;
+let sentence_containers = [];
+let t_SENTENCE_SPLIT = function(container)
+{
+
+let   caller = "t_SENTENCE_SPLIT";
+let log_this = LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(container)+")", lbH+lf1);
+if( log_this) t_log.console_dir("container",container        );
+
+    if(container.nodeName == "DETAILS") container.open = true;
+
+    if( !regexp_SENTENCE ) {
+        try {
+            regexp_SENTENCE = new RegExp(CAPTURING_PREV_END +  CAPTURING_BOUNDARY +  CAPTURING_NEXT_START,"gu");
+        } catch(ex) {
+            log(ex);
+        }
+        if(!regexp_SENTENCE)
+            regexp_SENTENCE = new RegExp(             "(\\w*)"+CAPTURING_BOUNDARY+"(\\w*)"               ,"gu");
+    }
+    let   el;
+    while(el = t_util.get_el_child_with_class(container, dom_sentence.CSS_SENTENCE_CONTAINER))
+        t_SENTENCE_RESTORE( el );
+
+    t_SENTENCE_RESTORE( container );
+    sentence_color_next = 1;
+
+if( log_this) {
+    log("...LAST_WORD            %c"+LAST_WORD           , lbC+lf2);
+    log("...BOUNDARY             %c"+BOUNDARY            , lbC+lf3);
+    log("...FIRST_WORD           %c"+FIRST_WORD          , lbC+lf2);
+    log("...CAPTURING_PREV_END   %c"+CAPTURING_PREV_END  , lbC+lf5);
+    log("...CAPTURING_BOUNDARY   %c"+CAPTURING_BOUNDARY  , lbC+lf6);
+    log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
+}
+if( tag_this) {
+    logBIG(regexp_SENTENCE);
+    log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
+}
+    let textContent = t_util.t_get_htmlEntities( container.textContent.trim() );
+if( log_this) log("textContent:%c"+t_data.LF+textContent, lb8);
+
+    textContent = textContent.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
+    container.innerHTML_SAVED
+        = container.innerHTML;
+    t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
+
+    container.style.touchAction = "none";
+
+    container.innerHTML
+        = "<span class='"+CSS_SENTENCE+" bg1'>"
+        + textContent
+        + "</span>" ;
+
+    if(!sentence_containers.includes( container ))
+        sentence_containers.push    ( container );
+    let selector
+        = "."+ CSS_CLAUSE   +"+."+ CSS_SENTENCE
+        + ","
+        + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE
+    ;
+    let sentence_array = container.querySelectorAll( selector );
+if( log_this) t_log.console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
+
+    for(let i=0; i < sentence_array.length; ++i)
+    {
+        let last_clause =   sentence_array[i].previousElementSibling;
+        t_util.add_el_class(last_clause, CSS_LAST_CLAUSE);
+
+if( log_this) console.log(last_clause);
+    }
+    t_util.add_el_class(container.lastElementChild, CSS_LAST_CLAUSE);
+
+    t_SENTENCE_adjust_el_fontsize( container );
+    let innerHTML
+        = container.outerHTML
+        + "<hr>"
+        + "<pre class='xpath'>"
+        +  t_util.get_parent_tag_id_class_chain( container )
+        + "</pre>";
+if( log_this) log("container.innerHTML:%c"+t_data.LF+container.innerHTML, lb7);
+    if(t_util.get_el_parent_fragment(container) || t_prop.get(t_data.TOOLS_TIER2))
+    {
+        t_popup.log_popup_fixed( innerHTML );
+
+        let popup_sentence_container = t_SENTENCE_get_popup_sentence_container();
+        if( popup_sentence_container )
+            t_SENTENCE_adjust_el_fontsize( popup_sentence_container );
+    }
+
+};
+let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
+{
+
+let log_this = LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+if(next_start == t_data.LF) next_start = "";
+
+if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
+                  ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
+    let entering_a_clause
+        =  boundary.includes(",")
+        || boundary.includes(";")
+
+    ;
+
+    if(!entering_a_clause)
+        sentence_color_next += 1;
+
+    let className
+        = (entering_a_clause ? CSS_CLAUSE : CSS_SENTENCE)
+        + " bg"+(sentence_color_next % 10)
+    ;
+
+    return prev_end + boundary +"</span><span class='"+className+"'>"+ next_start;
+};
+let t_SENTENCE_RESTORE = function(el)
+{
+
+let   caller = "t_SENTENCE_RESTORE";
+let log_this = LOG_MAP.S2_SELECT || DOM_SENTENCE_TAG;
+
+if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
+    if(!el) return "";
+    let consumed_by = "";
+    let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
+    if( container )
+    {
+        consumed_by = "RESTORING CONTAINER SPLIT SENTENCES";
+        t_util.del_el_class(container, CSS_SENTENCE_CONTAINER);
+        t_util.del_el_class(container, CSS_OUTLINE           );
+
+        if( container.innerHTML_SAVED )
+        {
+            if( log_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
+
+            container.style.touchAction = "";
+
+            container.innerHTML         =  container.innerHTML_SAVED;
+            delete                         container.innerHTML_SAVED;
+
+        }
+
+        sentence_containers.splice(sentence_containers.indexOf(container), 1);
+    }
+    t_util.clear_el_classList(el, E12_FONT_SIZE_LIST);
+
+    t_popup.log_popup_hide();
+
+if( log_this) log("...return ["+consumed_by+"]");
+    return consumed_by;
+};
+let t_SENTENCE_RESTORE_ALL = function()
+{
+
+let   caller = "t_SENTENCE_RESTORE_ALL";
+let log_this = LOG_MAP.S2_SELECT || DOM_SENTENCE_TAG;
+
+if( log_this) log("%c"+caller, lbH+lf2);
+    let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
+    for(let i = 0; i <      node_list.length; ++i)
+        t_SENTENCE_RESTORE( node_list[i] );
+};
+let t_SENTENCE_GET_CONTAINERS = function()
+{
+    return sentence_containers;
+};
+let t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT = function()
+{
+    let el_array = [];
+    for(let i=0; i < sentence_containers.length; ++i)
+    {
+        if(dom_view.t_view1_is_el_topLeft_or_bottomRight_in_viewport(sentence_containers[i]))
+            el_array.push( sentence_containers[i] );
+    }
+
+    return el_array;
+};
+let t_SENTENCE_adjust_el_fontsize = function(container)
+{
+    t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
+
+    container.classList.add( e12_font_size );
+};
+let t_SENTENCE_offset_e12_font_size = function(offset=0)
+{
+
+let   caller = "t_SENTENCE_offset_e12_font_size";
+let log_this = LOG_MAP.S2_SELECT;
+    let num = offset + parseInt( e12_font_size.substring(2) );
+    num     = Math.max( 1, num);
+    num     = Math.min(12, num);
+
+    e12_font_size = "fs"+num;
+
+if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
+    let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
+    for(let i=0; i < node_list.length; ++i)
+        t_SENTENCE_adjust_el_fontsize(node_list[i]);
+    let popup_sentence_container = t_SENTENCE_get_popup_sentence_container();
+    if( popup_sentence_container )
+        t_SENTENCE_adjust_el_fontsize( popup_sentence_container );
+    return node_list.length;
+};
+let t_SENTENCE_get_popup_sentence_container = function()
+{
+    let dom_popup_div = t_popup.log_popup_div_get();
+    if( dom_popup_div )
+        return dom_popup_div.querySelector("."+CSS_SENTENCE_CONTAINER);
+    else
+        return null;
+};
+let t_SENTENCE_get_el_sentence_container = function(el)
+{
+    return t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
+};
+const SENTENCE_DRAG_MOVED_ENOUGH =  64;
+const SENTENCE_DRAG_COOLDOWN_MS  = 500;
+let   sentence_drag_last_MS      =   0;
+let t_SENTENCE_drag_DXY = function(dxy)
+{
+
+let   caller = "t_SENTENCE_drag_DXY";
+let log_this = LOG_MAP.EV0_LISTEN;
+    let  this_MS = new Date().getTime();
+
+    let time_ellapsed = (this_MS - sentence_drag_last_MS);
+    if( time_ellapsed <  SENTENCE_DRAG_COOLDOWN_MS) {
+        t_tools.t_hotspot_add_status_MOVE_ON_COOLDOWN(SENTENCE_DRAG_COOLDOWN_MS - time_ellapsed);
+        return false;
+    }
+    else {
+        t_tools.t_hotspot_del_status_MOVE_ON_COOLDOWN();
+    }
+    let from_container = document.querySelector("."+CSS_SENTENCE_CONTAINER);
+
+    if(!from_container)
+        return false;
+    let move_H_or_V  =  Math.abs(dxy.x     ) > Math.abs(dxy.y);
+    let move_delta   = move_H_or_V ? dxy.x   :          dxy.y;
+    let moved_enough = (Math.abs(move_delta) > SENTENCE_DRAG_MOVED_ENOUGH);
+
+    if(!moved_enough ) {
+        t_tools.t_hotspot_add_status_NOT_MOVED_ENOUGH();
+        return false;
+    }
+    else {
+        t_tools.t_hotspot_del_status_NOT_MOVED_ENOUGH();
+    }
+    let split_or_font = move_H_or_V;
+    let offset        = (move_delta > 0) ? 1 : -1;
+if( log_this) log_key_val_group(  caller
+                                  , { move_delta
+                                    , split_or_font
+                                    , offset
+                                  }
+                                  , lfX[split_or_font ? ((offset > 0) ? 3:4) : ((offset > 0) ? 5:6)]
+                                  , true);
+    if( split_or_font )
+    {
+        t_SENTENCE_split_at_offset(from_container, offset);
+    }
+    else {
+        t_SENTENCE_offset_e12_font_size( offset );
+    }
+
+    sentence_drag_last_MS = this_MS;
+    return true;
+};
+let t_SENTENCE_split_at_offset = function(from_container,offset)
+{
+
+let   caller = "t_SENTENCE_split_at_offset";
+let log_this = LOG_MAP.EV0_LISTEN;
+    let offset_container = t_util.get_node_sibling_at_offset( from_container, offset);
+
+if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
+                                , {   from_container
+                                  , offset_container
+                                });
+
+    if( offset_container )
+    {
+        t_SENTENCE_RESTORE              ( from_container   );
+        t_SENTENCE_SPLIT                ( offset_container );
+        t_SENTENCE_adjust_el_fontsize   ( offset_container );
+        t_SENTENCE_OUTLINE              ( offset_container );
+
+        t_tools.t_scrollIntoViewIfNeeded( offset_container );
+    }
+};
+let t_SENTENCE_OUTLINE = function(sentence_el)
+{
+    let sentence_container = t_util.get_el_parent_with_class(sentence_el, CSS_SENTENCE_CONTAINER);
+    if( sentence_container ) sentence_container.classList.add(            CSS_OUTLINE           );
+};
+return { name : "dom_sentence"
+    ,    logging : (state) => DOM_SENTENCE_LOG = dom_util.t_util_set_state("DOM_SENTENCE_LOG",state)
+    ,    tagging : (state) => DOM_SENTENCE_TAG = dom_util.t_util_set_state("DOM_SENTENCE_TAG",state)
+    ,    t_sentence_IMPORT
+
+    ,    CSS_SENTENCE_CONTAINER
+
+    ,    t_SENTENCE_SPLIT
+    ,    t_SENTENCE_RESTORE
+    ,    t_SENTENCE_RESTORE_ALL
+    ,    t_SENTENCE_GET_CONTAINERS
+    ,    t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT
+    ,    t_SENTENCE_adjust_el_fontsize
+    ,    t_SENTENCE_get_el_sentence_container
+    ,    t_SENTENCE_offset_e12_font_size
+    ,    t_SENTENCE_drag_DXY
+};
+
+}());
+
+/*INLINE}}}*/
+//@ sourceURL=dom_sentence.js
+`
+ .replace(/\\/g,"\\\\")
+)
+ .replace(/%u/g,"\\u")
+;
+
+/*}}}*/
+  /**   24 GRID     JS dom_grid_js_data .. ESCAPE=[color:#AAA] {{{*/
+/*
+../script/dom_grid.js
 */
 let dom_grid_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (210928:17h:15)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211119:17h:51)";
 
 let dom_grid    = (function() {
 "use strict";
@@ -26197,9 +26376,9 @@ let   grid_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -26882,14 +27061,15 @@ return { name : "dom_grid"
 ;
 
 /*}}}*/
-/**   23 GUTTER  JS dom_gutter_js_data {{{*/
+/**   25 GUTTER   JS dom_gutter_js_data {{{*/
 /*
-../javascript/dom_gutter.js
+../script/dom_gutter.js
 */
 let dom_gutter_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_GUTTER_JS_ID      = "dom_gutter_js";
-const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (200910:17h:33)";
+const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (211120:16h:17)";
+
 let dom_gutter  = (function() {
 "use strict";
 let   DOM_GUTTER_LOG        = false;
@@ -26897,14 +27077,12 @@ let   DOM_GUTTER_TAG        = false;
 let t_data     = {}        ;
 let t_log      = {}        ;
 let t_util     = {}        ;
-let t_i18n     = {}        ;
 let t_tools    = {}        ;
 let t_gutter_IMPORT  = function(log_this)
 {
     t_data    = dom_data   ;
     t_log     = dom_log    ;
     t_util    = dom_util   ;
-    t_i18n    = dom_i18n   ;
     t_tools   = dom_tools  ;
     gutter_INTERN();
 
@@ -26922,9 +27100,9 @@ let   gutter_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -27099,6 +27277,7 @@ let is_hotspot_IN = function(hotspot, _caller)
 
 let   caller = "is_hotspot_IN";
 let log_this = DOM_GUTTER_LOG || LOG_MAP.EV2_MOVE;
+    if(!hotspot) return {};
     let urdl  = get_XY_URDL(hotspot.offsetLeft, hotspot.offsetTop, _caller);
 
 if(log_this) {
@@ -27143,8 +27322,8 @@ let log_gutter = function(_caller, lfx=lf7)
                       , lfx, false);
 };
 return { name : "dom_gutter"
-    , logging : function(state) { return DOM_GUTTER_LOG = dom_util.t_util_set_state("DOM_GUTTER_LOG",state); }
-    , tagging : function(state) { return DOM_GUTTER_TAG = dom_util.t_util_set_state("DOM_GUTTER_TAG",state); }
+    , logging : (state) => { DOM_GUTTER_LOG = dom_util.t_util_set_state("DOM_GUTTER_LOG",state); }
+    , tagging : (state) => { DOM_GUTTER_TAG = dom_util.t_util_set_state("DOM_GUTTER_TAG",state); }
     , t_gutter_IMPORT
     , DOM_GUTTER_JS_ID
     , DOM_GUTTER_JS_TAG
@@ -27168,14 +27347,15 @@ return { name : "dom_gutter"
  .replace(/%u/g,"\\u")
 ;
 /*}}}*/
-/**   24 IPC     JS dom_ipc_js_data {{{*/
+
+/**   26 IPC      JS dom_ipc_js_data {{{*/
 /*
-../javascript/dom_ipc.js
+../script/dom_ipc.js
 */
 let dom_ipc_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_IPC_JS_ID         = "dom_ipc_js";
-const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (200910:17h:33)";
+const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (211119:17h:52)";
 
 let dom_ipc     = (function() {
 "use strict";
@@ -27201,9 +27381,9 @@ let   ipc_INTERN = function()
 
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -27476,29 +27656,29 @@ return { name : "dom_ipc"
  .replace(/%u/g,"\\u")
 ;
 /*}}}*/
-/** 25 TOOLS   JS dom_tools_js_data .. ESCAPE=[document.querySelector("#"+id)] {{{*/
+/** 27 TOOLS    JS dom_tools_js_data .. ESCAPE=[document.querySelector("#"+id)] {{{*/
 /*
-../javascript/dom_tools.js
+../script/dom_tools.js
 */
 let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (210928:19h:34)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211120:16h:20)";
 
 let dom_tools   = (function() {
 "use strict";
 let t_data     = {}        ;
+
 let t_log      = {}        ;
+let t_popup    = {}        ;
 let t_util     = {}        ;
-let t_details  = {}        ;
 let t_i18n     = {}        ;
 let t_prop     = {}        ;
+
 let t_store    = {}        ;
 let t_fly      = {}        ;
-
 let t_wording  = {}        ;
 let t_select   = {}        ;
-let t_wot      = {}        ;
 let t_slot     = {}        ;
 
 let t_hide     = {}        ;
@@ -27507,36 +27687,42 @@ let t_sticky   = {}        ;
 let t_seek     = {}        ;
 let t_share    = {}        ;
 
+let t_details  = {}        ;
+let t_wot      = {}        ;
+let t_sentence = {}        ;
 let t_grid     = {}        ;
 let t_gutter   = {}        ;
 
 let t_ipc      = {}        ;
 let t_tools_IMPORT  = function(log_this)
 {
-                                         t_data    = dom_data   ;
-if(typeof dom_log     != "undefined")    t_log     = dom_log    ;
-if(typeof dom_util    != "undefined")    t_util    = dom_util   ;
-if(typeof dom_details != "undefined")    t_details = dom_details;
-if(typeof dom_i18n    != "undefined")    t_i18n    = dom_i18n   ;
-if(typeof dom_prop    != "undefined")    t_prop    = dom_prop   ;
-if(typeof dom_store   != "undefined")    t_store   = dom_store  ;
-if(typeof dom_fly     != "undefined")    t_fly     = dom_fly    ;
+                                         t_data    = dom_data    ;
 
-if(typeof dom_wording != "undefined")    t_wording = dom_wording;
-if(typeof dom_select  != "undefined")    t_select  = dom_select ;
-if(typeof dom_wot     != "undefined")    t_wot     = dom_wot    ;
-if(typeof dom_slot    != "undefined")    t_slot    = dom_slot   ;
+if(typeof dom_log     != "undefined")    t_log     = dom_log     ;
+if(typeof dom_popup   != "undefined")    t_popup   = dom_popup   ;
+if(typeof dom_util    != "undefined")    t_util    = dom_util    ;
+if(typeof dom_i18n    != "undefined")    t_i18n    = dom_i18n    ;
+if(typeof dom_prop    != "undefined")    t_prop    = dom_prop    ;
 
-if(typeof dom_hide    != "undefined")    t_hide    = dom_hide   ;
-if(typeof dom_view    != "undefined")    t_view    = dom_view   ;
-if(typeof dom_sticky  != "undefined")    t_sticky  = dom_sticky ;
-if(typeof dom_seek    != "undefined")    t_seek    = dom_seek   ;
-if(typeof dom_share   != "undefined")    t_share   = dom_share  ;
+if(typeof dom_store   != "undefined")    t_store   = dom_store   ;
+if(typeof dom_fly     != "undefined")    t_fly     = dom_fly     ;
+if(typeof dom_wording != "undefined")    t_wording = dom_wording ;
+if(typeof dom_select  != "undefined")    t_select  = dom_select  ;
+if(typeof dom_slot    != "undefined")    t_slot    = dom_slot    ;
 
-if(typeof dom_grid    != "undefined")    t_grid    = dom_grid   ;
-if(typeof dom_gutter  != "undefined")    t_gutter  = dom_gutter ;
+if(typeof dom_hide    != "undefined")    t_hide    = dom_hide    ;
+if(typeof dom_view    != "undefined")    t_view    = dom_view    ;
+if(typeof dom_sticky  != "undefined")    t_sticky  = dom_sticky  ;
+if(typeof dom_seek    != "undefined")    t_seek    = dom_seek    ;
+if(typeof dom_share   != "undefined")    t_share   = dom_share   ;
 
-if(typeof dom_ipc     != "undefined")    t_ipc     = dom_ipc    ;
+if(typeof dom_details != "undefined")    t_details = dom_details ;
+if(typeof dom_wot     != "undefined")    t_wot     = dom_wot     ;
+if(typeof dom_sentence!= "undefined")    t_sentence= dom_sentence;
+if(typeof dom_grid    != "undefined")    t_grid    = dom_grid    ;
+if(typeof dom_gutter  != "undefined")    t_gutter  = dom_gutter  ;
+
+if(typeof dom_ipc     != "undefined")    t_ipc     = dom_ipc     ;
     tools_INTERN();
 
     DOM_TOOLS_LOG = DOM_TOOLS_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_TOOLS_LOG"));
@@ -27572,9 +27758,9 @@ let   tools_INTERN = function()
     [ CSS_CC1, CSS_CC2, CSS_CC3, CSS_CC4, CSS_CC5, CSS_CC6, CSS_CC7, CSS_CC8, CSS_CC9, CSS_CC0 ] = t_data.CCX_CLASSLIST;
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -27678,28 +27864,29 @@ let   tools_DEPEND = function()
 let   load_IMPORT = function()
 {
 let log_this = DOM_TOOLS_TAG;
-if(typeof dom_log     != "undefined")     dom_log     .t_log_IMPORT     (log_this);
-if(typeof dom_util    != "undefined")     dom_util    .t_util_IMPORT    (log_this);
-if(typeof dom_details != "undefined")     dom_details .t_details_IMPORT (log_this);
-if(typeof dom_i18n    != "undefined")     dom_i18n    .t_i18n_IMPORT    (log_this);
-if(typeof dom_prop    != "undefined")     dom_prop    .t_prop_IMPORT    (log_this);
+if(typeof dom_log      != "undefined")    dom_log     .t_log_IMPORT     (log_this);
+if(typeof dom_util     != "undefined")    dom_util    .t_util_IMPORT    (log_this);
+if(typeof dom_details  != "undefined")    dom_details .t_details_IMPORT (log_this);
+if(typeof dom_i18n     != "undefined")    dom_i18n    .t_i18n_IMPORT    (log_this);
+if(typeof dom_prop     != "undefined")    dom_prop    .t_prop_IMPORT    (log_this);
 
-if(typeof dom_store   != "undefined")     dom_store   .t_store_IMPORT   (log_this);
-if(typeof dom_fly     != "undefined")     dom_fly     .t_fly_IMPORT     (log_this);
-if(typeof dom_wording != "undefined")     dom_wording .t_wording_IMPORT (log_this);
-if(typeof dom_select  != "undefined")     dom_select  .t_select_IMPORT  (log_this);
-if(typeof dom_wot     != "undefined")     dom_wot     .t_wot_IMPORT     (log_this);
-if(typeof dom_slot    != "undefined")     dom_slot    .t_slot_IMPORT    (log_this);
+if(typeof dom_store    != "undefined")    dom_store   .t_store_IMPORT   (log_this);
+if(typeof dom_fly      != "undefined")    dom_fly     .t_fly_IMPORT     (log_this);
+if(typeof dom_wording  != "undefined")    dom_wording .t_wording_IMPORT (log_this);
+if(typeof dom_select   != "undefined")    dom_select  .t_select_IMPORT  (log_this);
+if(typeof dom_sentence != "undefined")    dom_sentence.t_sentence_IMPORT(log_this);
+if(typeof dom_wot      != "undefined")    dom_wot     .t_wot_IMPORT     (log_this);
+if(typeof dom_slot     != "undefined")    dom_slot    .t_slot_IMPORT    (log_this);
 
-if(typeof dom_hide    != "undefined")     dom_hide    .t_hide_IMPORT    (log_this);
-if(typeof dom_view    != "undefined")     dom_view    .t_view_IMPORT    (log_this);
-if(typeof dom_sticky  != "undefined")     dom_sticky  .t_sticky_IMPORT  (log_this);
-if(typeof dom_seek    != "undefined")     dom_seek    .t_seek_IMPORT    (log_this);
-if(typeof dom_share   != "undefined")     dom_share   .t_share_IMPORT   (log_this);
+if(typeof dom_hide     != "undefined")    dom_hide    .t_hide_IMPORT    (log_this);
+if(typeof dom_view     != "undefined")    dom_view    .t_view_IMPORT    (log_this);
+if(typeof dom_sticky   != "undefined")    dom_sticky  .t_sticky_IMPORT  (log_this);
+if(typeof dom_seek     != "undefined")    dom_seek    .t_seek_IMPORT    (log_this);
+if(typeof dom_share    != "undefined")    dom_share   .t_share_IMPORT   (log_this);
 
-if(typeof dom_grid    != "undefined")     dom_grid    .t_grid_IMPORT    (log_this);
-if(typeof dom_gutter  != "undefined")     dom_gutter  .t_gutter_IMPORT  (log_this);
-if(typeof dom_ipc     != "undefined")     dom_ipc     .t_ipc_IMPORT     (log_this);
+if(typeof dom_grid     != "undefined")    dom_grid    .t_grid_IMPORT    (log_this);
+if(typeof dom_gutter   != "undefined")    dom_gutter  .t_gutter_IMPORT  (log_this);
+if(typeof dom_ipc      != "undefined")    dom_ipc     .t_ipc_IMPORT     (log_this);
  t_tools_IMPORT   (log_this);
     if( DOM_TOOLS_GLOBALS )
     {
@@ -27714,6 +27901,7 @@ logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
 
         window.t_wording = t_wording;
         window.t_select  = t_select;
+        window.t_sentence= t_sentence;
         window.t_slot    = t_slot;
 
         window.t_hide    = t_hide;
@@ -28171,7 +28359,7 @@ if(log_this) log(caller, "info");
         t_wot.t_WOT_SPLIT();
 
     }
-    t_details.details_load_open_state();
+    t_details.details_onload();
 
     load7_GRID();
 
@@ -28218,8 +28406,7 @@ if( log_this) log("HIDE TOOLS");
         dom_tools_html.style.visibility = t_data.CSS_HIDDEN;
 
 if( log_this) log("SET t_data.WORDING OFF");
-    if(typeof dom_wording != "undefined")
-        dom_wording.dom_wording_cycle("OFF", false);
+    t_wording.dom_wording_cycle("OFF", false);
 
 if( log_this) log("SEND IPC UNLOAD MESSAGE");
     let ipc = {    t_load : TOOLS5_UNLOADED
@@ -28936,7 +29123,7 @@ if( log_this) log_caller();
     xy.x = Math.min(        xy.x, w_W );
     xy.y = Math.min(        xy.y, w_H );
 
-    if(xy.x || xy.y) dom_gutter.set_WINDOW_XY(xy.x, xy.y);
+    if(xy.x || xy.y) t_gutter.set_WINDOW_XY(xy.x, xy.y);
 if(log_this) logBIG(caller+": hotspotXY IN-WINDOW ["+xy.x+" "+xy.y+"]");
     xy   = { x : hotspotXY.x_in_gutter , y : hotspotXY.y_in_gutter };
     xy.x = Math.max( -w_W , xy.x      );
@@ -28944,7 +29131,7 @@ if(log_this) logBIG(caller+": hotspotXY IN-WINDOW ["+xy.x+" "+xy.y+"]");
     xy.x = Math.min(        xy.x, w_W );
     xy.y = Math.min(        xy.y, w_H );
 
-    if(xy.x || xy.y) dom_gutter.set_GUTTER_XY(xy.x, xy.y);
+    if(xy.x || xy.y) t_gutter.set_GUTTER_XY(xy.x, xy.y);
 
 if(log_this) logBIG("hotspotXY_in_gutter=["+xy.x+" "+xy.y+"]");
 if(log_this) log_key_val_group("LOADING hotspotXY", hotspotXY, lf7, true);
@@ -29006,7 +29193,7 @@ let load6_DOM_TAGS = function()
 {
 
     let caller = "load6_DOM_TAGS";
-let log_this = LOG_MAP.T1_DOM_LOAD;
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
 
 if( log_this) log("%c"+t_data.SD6+"%c "+caller+" COLOR-STAMPING MODULE TAGS", lbS+lf6, lbH+lf6);
     let dom_load_tags_el = t_get_tool("dom_load_tags");
@@ -29027,118 +29214,123 @@ logBIG(caller+" *** t_get_tool('dom_load_tags') failed");
     let m_class = "em_missing";
     dom_load_tags_el.innerHTML = ""
 
-        + ("LOADER"+LF)
++ ("LOADER"+LF)
         + ((typeof DOM_LOAD_TAG       == "undefined") ? "<em class='"+m_class+"'>DOM_LOAD_TAG       *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOAD_TAG       ) +"'>"+ DOM_LOAD_TAG        +"</em>")
 
-        + ("HTML TOOLS"+LF)
-        + ((typeof DOM_TOOLS_HTML_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_HTML_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_HTML_TAG ) +"'>"+ DOM_TOOLS_HTML_TAG  +"</em>")
-        + ((typeof DOM_GRID_HTML_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_HTML_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_HTML_TAG  ) +"'>"+ DOM_GRID_HTML_TAG   +"</em>")
++ ("HTML TOOLS"+LF)
+        + ((typeof DOM_TOOLS_HTML_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_HTML_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_HTML_TAG ) +"'>"+ DOM_TOOLS_HTML_TAG  +"</em>")
+        + ((typeof DOM_GRID_HTML_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_HTML_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_HTML_TAG  ) +"'>"+ DOM_GRID_HTML_TAG   +"</em>")
 
-        + ("CSS STYLE"+LF)
-        + ((typeof DOM_HOST_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_HOST_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HOST_CSS_TAG   ) +"'>"+ DOM_HOST_CSS_TAG    +"</em>")
-        + ((typeof DOM_GRID_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_CSS_TAG   ) +"'>"+ DOM_GRID_CSS_TAG    +"</em>")
-        + ((typeof DOM_TOOLS_CSS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_CSS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_CSS_TAG  ) +"'>"+ DOM_TOOLS_CSS_TAG   +"</em>")
++ ("CSS STYLE"+LF)
+        + ((typeof DOM_HOST_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_HOST_CSS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HOST_CSS_TAG   ) +"'>"+ DOM_HOST_CSS_TAG    +"</em>")
+        + ((typeof DOM_GRID_CSS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_CSS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_CSS_TAG   ) +"'>"+ DOM_GRID_CSS_TAG    +"</em>")
+        + ((typeof DOM_TOOLS_CSS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_CSS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_CSS_TAG  ) +"'>"+ DOM_TOOLS_CSS_TAG   +"</em>")
 
-        + ("JS MODULES"+LF)
-        + ((typeof DOM_LOG_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_LOG_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOG_JS_TAG     ) +"'>"+ DOM_LOG_JS_TAG      +"</em>")
-        + ((typeof DOM_UTIL_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_UTIL_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_UTIL_JS_TAG    ) +"'>"+ DOM_UTIL_JS_TAG     +"</em>")
-        + ((typeof DOM_DATA_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_DATA_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DATA_JS_TAG    ) +"'>"+ DOM_DATA_JS_TAG     +"</em>")
-        + ((typeof DOM_PROP_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_PROP_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_PROP_JS_TAG    ) +"'>"+ DOM_PROP_JS_TAG     +"</em>")
-        + ((typeof DOM_STORE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_STORE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STORE_JS_TAG   ) +"'>"+ DOM_STORE_JS_TAG    +"</em>")
-        + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
-        + ((typeof DOM_I18N_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_I18N_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_I18N_JS_TAG    ) +"'>"+ DOM_I18N_JS_TAG     +"</em>")
++ ("JS MODULES 05"+LF)
+        + ((typeof DOM_DATA_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_DATA_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DATA_JS_TAG    ) +"'>"+ DOM_DATA_JS_TAG     +"</em>")
 
-        + ("JS WORDS"+LF)
-        + ((typeof DOM_SELECT_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_SELECT_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SELECT_JS_TAG  ) +"'>"+ DOM_SELECT_JS_TAG   +"</em>")
-        + ((typeof DOM_SLOT_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SLOT_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SLOT_JS_TAG    ) +"'>"+ DOM_SLOT_JS_TAG     +"</em>")
-        + ((typeof DOM_WORDING_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_WORDING_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WORDING_JS_TAG ) +"'>"+ DOM_WORDING_JS_TAG  +"</em>")
-        + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
++ ("JS MODULES 06..10"+LF)
+        + ((typeof DOM_LOG_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_LOG_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_LOG_JS_TAG     ) +"'>"+ DOM_LOG_JS_TAG      +"</em>")
+        + ((typeof DOM_POPUP_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_POPUP_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_POPUP_JS_TAG   ) +"'>"+ DOM_POPUP_JS_TAG    +"</em>")
+        + ((typeof DOM_UTIL_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_UTIL_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_UTIL_JS_TAG    ) +"'>"+ DOM_UTIL_JS_TAG     +"</em>")
+        + ((typeof DOM_I18N_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_I18N_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_I18N_JS_TAG    ) +"'>"+ DOM_I18N_JS_TAG     +"</em>")
+        + ((typeof DOM_PROP_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_PROP_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_PROP_JS_TAG    ) +"'>"+ DOM_PROP_JS_TAG     +"</em>")
 
-        + ("JS GUI"+LF)
-        + ((typeof DOM_FLY_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_FLY_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_FLY_JS_TAG     ) +"'>"+ DOM_FLY_JS_TAG      +"</em>")
-        + ((typeof DOM_HIDE_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_HIDE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HIDE_JS_TAG    ) +"'>"+ DOM_HIDE_JS_TAG     +"</em>")
-        + ((typeof DOM_VIEW_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_VIEW_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_VIEW_JS_TAG    ) +"'>"+ DOM_VIEW_JS_TAG     +"</em>")
-        + ((typeof DOM_STICKY_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_STICKY_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STICKY_JS_TAG  ) +"'>"+ DOM_STICKY_JS_TAG   +"</em>")
++ ("JS MODULES 11..15"+LF)
+        + ((typeof DOM_STORE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_STORE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STORE_JS_TAG   ) +"'>"+ DOM_STORE_JS_TAG    +"</em>")
+        + ((typeof DOM_FLY_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_FLY_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_FLY_JS_TAG     ) +"'>"+ DOM_FLY_JS_TAG      +"</em>")
+        + ((typeof DOM_WORDING_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_WORDING_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WORDING_JS_TAG ) +"'>"+ DOM_WORDING_JS_TAG  +"</em>")
+        + ((typeof DOM_SELECT_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_SELECT_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SELECT_JS_TAG  ) +"'>"+ DOM_SELECT_JS_TAG   +"</em>")
+        + ((typeof DOM_SLOT_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SLOT_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SLOT_JS_TAG    ) +"'>"+ DOM_SLOT_JS_TAG     +"</em>")
++ ("JS MODULES 16..20"+LF)
+        + ((typeof DOM_HIDE_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_HIDE_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_HIDE_JS_TAG    ) +"'>"+ DOM_HIDE_JS_TAG     +"</em>")
+        + ((typeof DOM_VIEW_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_VIEW_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_VIEW_JS_TAG    ) +"'>"+ DOM_VIEW_JS_TAG     +"</em>")
+        + ((typeof DOM_STICKY_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_STICKY_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_STICKY_JS_TAG  ) +"'>"+ DOM_STICKY_JS_TAG   +"</em>")
+        + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
+        + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
 
-        + ("JS FOLDING"+LF)
-        + ((typeof DOM_DETAILS_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_DETAILS_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DETAILS_JS_TAG ) +"'>"+ DOM_DETAILS_JS_TAG  +"</em>")
-        + ((typeof DOM_WOT_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_WOT_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WOT_JS_TAG     ) +"'>"+ DOM_WOT_JS_TAG      +"</em>")
++ ("JS MODULES 21..15"+LF)
+        + ((typeof DOM_DETAILS_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_DETAILS_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DETAILS_JS_TAG ) +"'>"+ DOM_DETAILS_JS_TAG  +"</em>")
+        + ((typeof DOM_WOT_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_WOT_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WOT_JS_TAG     ) +"'>"+ DOM_WOT_JS_TAG      +"</em>")
+        + ((typeof DOM_SENTENCE_JS_TAG== "undefined") ? "<em class='"+m_class+"'>DOM_SENTENCE_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SENTENCE_JS_TAG) +"'>"+ DOM_SENTENCE_JS_TAG +"</em>")
+        + ((typeof DOM_GRID_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_JS_TAG    ) +"'>"+ DOM_GRID_JS_TAG     +"</em>")
+        + ((typeof DOM_GUTTER_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GUTTER_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GUTTER_JS_TAG  ) +"'>"+ DOM_GUTTER_JS_TAG   +"</em>")
 
-        + ("JS TOOLS"+LF)
-        + ((typeof DOM_GRID_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_GRID_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GRID_JS_TAG    ) +"'>"+ DOM_GRID_JS_TAG     +"</em>")
-        + ((typeof DOM_GUTTER_JS_TAG  == "undefined") ? "<em class='"+m_class+"'>DOM_GUTTER_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_GUTTER_JS_TAG  ) +"'>"+ DOM_GUTTER_JS_TAG   +"</em>")
-        + ((typeof DOM_IPC_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_IPC_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_IPC_JS_TAG     ) +"'>"+ DOM_IPC_JS_TAG      +"</em>")
-        + ((typeof DOM_TOOLS_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_JS_TAG   *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_JS_TAG   ) +"'>"+ DOM_TOOLS_JS_TAG    +"</em>")
++ ("JS MODULES 26..27"+LF)
+        + ((typeof DOM_IPC_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_IPC_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_IPC_JS_TAG     ) +"'>"+ DOM_IPC_JS_TAG      +"</em>")
+        + ((typeof DOM_TOOLS_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_TOOLS_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_TOOLS_JS_TAG   ) +"'>"+ DOM_TOOLS_JS_TAG    +"</em>")
     ;
 if(LOG_MAP.T3_LAYOUT) log(t_util.strip_HTML(dom_load_tags_el.innerHTML));
 
 };
 let load6_DOC_CSS = function(id)
 {
+
+let   caller = "load6_DOC_CSS";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
+
+if( log_this) log("%c"+caller+"("+id+")", lbH+lf1);
     let tag = "";
-    let el = document.getElementById(id+"_tag");
-    if(!el) {
-        el               = document.createElement("SPAN");
-        el.id            = id+"_tag";
-        el.style.display = "none";
-        document.body.appendChild( el );
-    }
-    try {
-        let style = getComputedStyle(el);
-        let   txt = t_util.strip_pat(style.getPropertyValue("content"), t_data.DOUBLE_QUOTE);
-        tag       = txt.includes(id) ? txt : "";
-    }
-    catch(ex) {
+
+    let el = document.getElementById(id);
+    if( el ) {
+        tag = load6_CSS_TAG_FROM_CSSRULES(el);
 
     }
+
+if( log_this) log("%c...return: tag=["+tag+"]", lf1);
     return tag;
 };
 let load6_TOOL_CSS = function(id)
 {
+
+let   caller = "load6_TOOL_CSS";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
+
+if( log_this) log("%c"+caller+"("+id+")", lbH+lf3);
     let tag = "";
-    let el       = t_get_tool(id)  ;
-    if( el ) tag = load6_TOOL_CSS_RULE(el);
-    if(!tag) {
-        el               = document.createElement("SPAN");
-        el.id            = id+"_tag";
-        el.style.display = "none";
-        shadow_root.appendChild( el );
+    let el  = t_get_tool(id)  ;
+if( log_this) log("...el=["+t_util.get_node_id_or_tag(el)+"]");
+    if( el ) {
+        tag = load6_CSS_TAG_FROM_CSSRULES(el);
 
-        try {
-            let style = getComputedStyle(el);
-            let   txt = t_util.strip_pat(style.getPropertyValue("content"), t_data.DOUBLE_QUOTE);
-            tag       = txt.includes(id) ? "SHADOW: "+txt : "";
-        }
-        catch(ex) {
-
-        }
     }
 
+if( log_this) log("%c...return: tag=["+tag+"]", lf3);
     return tag;
 };
-let load6_TOOL_CSS_RULE = function(el)
+let load6_CSS_TAG_FROM_CSSRULES = function(el)
 {
 
-    let tag = "";
+let   caller = "load6_CSS_TAG_FROM_CSSRULES";
+let log_this = DOM_TOOLS_TAG || LOG_MAP.T1_DOM_LOAD;
 
-    let                                result = "";
-    try {
-        if(     !el.sheet            ) result = "!el.sheet";
-        else if(!el.sheet.cssRules   ) result = "!el.sheet.cssRules";
-        else if(!el.sheet.cssRules[0]) result = "!el.sheet.cssRules[0]";
-        else {
-            let txt = el.sheet.cssRules[0].cssText;
-            let x_1 = txt.indexOf    ('"');
-            let x_2 = txt.lastIndexOf('"');
-            txt     = txt.substring(x_1+1, x_2);
-            tag     = txt.includes(el.id) ? txt : "";
+if( log_this) log("%c"+caller+"("+t_util.get_id_or_tag_and_className(el)+")", lf6);
+
+    let    tag = ""; let result = "";
+
+    if(document.location.origin == "file://")
+    {
+        tag = el.id+" ("+document.location.origin+")";
+
+    }
+    else {
+        try {
+            if(     !el.sheet            ) result = "!el.sheet";
+            else if(!el.sheet.cssRules   ) result = "!el.sheet.cssRules";
+            else if(!el.sheet.cssRules[0]) result = "!el.sheet.cssRules[0]";
+            else {
+                let txt = el.sheet.cssRules[0].cssText;
+                let x_1 = txt.indexOf    ('"');
+                let x_2 = txt.lastIndexOf('"');
+                txt     = txt.substring(x_1+1, x_2);
+                tag     = txt.includes(el.id) ? txt : "";
+            }
         }
-    }
-    catch(ex) {
-        result = ex;
-
+        catch(ex) { result = ex; }
     }
 
+if( log_this) log("%c...return: "+(tag || result), (tag ? lf5:lf2));
     return tag;
 };
 let load7_GRID = function()
@@ -29577,20 +29769,20 @@ if( log_this) log("...NO PAGE DATA WORTH REMEMBERING");
         h_x                      = hotspot.offsetLeft;
         h_y                      = hotspot.offsetTop;
 
-        hotspotXY.gutter_urdl    = dom_gutter.get_XY_URDL(h_x, h_y, caller);
+        hotspotXY.gutter_urdl    = t_gutter.get_XY_URDL(h_x, h_y, caller);
 
-        dom_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
+        t_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
         if(hotspotXY.gutter_urdl) {
             hotspotXY.x_in_gutter = h_x;
             hotspotXY.y_in_gutter = h_y;
 
-            dom_gutter.set_GUTTER_XY(h_x, h_y);
+            t_gutter.set_GUTTER_XY(h_x, h_y);
         }
         else {
             hotspotXY.x           = h_x;
             hotspotXY.y           = h_y;
 
-            dom_gutter.set_WINDOW_XY(h_x, h_y);
+            t_gutter.set_WINDOW_XY(h_x, h_y);
         }
 
 if(log_this) log_key_val_group("SAVING hotspotXY", hotspotXY, lf5, false);
@@ -29927,7 +30119,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
 
     t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight);
 
-    let xy = dom_gutter.get_GUTTER_XY();
+    let xy = t_gutter.get_GUTTER_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
     set_el_class_removing(hotspot_c, "", t_sticky.CSS_ROTATE_XX);
     t_hide.dom_hide2_store_reload("page");
@@ -29946,7 +30138,7 @@ if( log_this) log("%c"+caller, lbH+lf5);
     t_stop_DOM_EDITING();
 
     t_dom_EDIT_drag_hotspot_off_gutter();
-    let xy = dom_gutter.get_WINDOW_XY();
+    let xy = t_gutter.get_WINDOW_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
     t_seek.t_seekzone5_hide("instant");
@@ -30051,7 +30243,7 @@ let t_WOT_SPLIT_changed = function(id, state)
     if(state && !t_wot.t_WOT_SPLIT_done())
     {
         t_wot.t_WOT_SPLIT();
-        t_details.details_load_open_state();
+        t_details.details_onload();
         t_sticky .t_sticky_LOAD_ANCHORS_CHANGED();
         if( pat_csv ) pat_bag3_reselect( pat_csv );
     }
@@ -31982,7 +32174,7 @@ let onDown_4_STICKY_PICK = function(e)
 let   caller = "onDown_4_STICKY_PICK";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 
-if( log_this) log("%c"+caller, lbF+lb2);
+if( log_this) log("%c"+caller, lbF+lb4);
     if(!onWork_EL) return "";
 
     let consumed_by = t_sticky.t_sticky_onDown(e);
@@ -32266,7 +32458,7 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
 
         return "";
     }
-    let sentence_el        = t_select.t_SENTENCE_get_el_sentence_container(onDown_EL);
+    let sentence_el        = t_sentence.t_SENTENCE_get_el_sentence_container(onDown_EL);
     if( sentence_el )
     {
         consumed_by += " .. ON A SENTENCE ELEMENT";
@@ -32771,7 +32963,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
     if(   (onWork_PANEL == hotspot)
        && (onWork_EL    == hotring)
     ) {
-        if( !dom_gutter.get_XY_URDL(onDown_HSPOT_XY.x, onDown_HSPOT_XY.y, "NO LAG DRAGGING [hotspot] IN-WINDOW") )
+        if( !t_gutter.get_XY_URDL(onDown_HSPOT_XY.x, onDown_HSPOT_XY.y, "NO LAG DRAGGING [hotspot] IN-WINDOW") )
         {
             t_set_has_moved(caller+": no lag for [hotring] when not IN GUTTER");
 
@@ -33051,7 +33243,7 @@ let t_SENTENCE_drag = function(event)
 
 let   caller = "t_SENTENCE_drag";
     get_onMoveDXY(event, caller);
-    if( t_select.t_SENTENCE_drag_DXY( onMoveDXY ) )
+    if( t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
     {
         zap_onMoveDXY();
         event.preventDefault();
@@ -33432,7 +33624,7 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
         }
         else {
             consumed_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
-            if( dom_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
+            if( t_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
                 t_tools_show  ();
             }
             else {
@@ -33986,7 +34178,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         {
             for(let i=0; i < cells.length; ++i)
                 consumed_by
-                    =     t_select.t_SENTENCE_RESTORE( cells[i] )
+                    =     t_sentence.t_SENTENCE_RESTORE( cells[i] )
                     ||    consumed_by
             ;
         }
@@ -33995,19 +34187,19 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
             if(!t_util.is_el_child_of_id(onWork_EL, "log_popup_div") )
             {
 
-                consumed_by = t_select.t_SENTENCE_RESTORE( container );
+                consumed_by = t_sentence.t_SENTENCE_RESTORE( container );
             }
             else {
                 if( t_util.is_el_child_of_class(onWork_EL, "xpath") )
                 {
                     consumed_by = "CLOSING LOG POPUP";
 
-                    dom_popup.log_popup_hide();
+                    t_popup.log_popup_hide();
                 }
                 else {
                     consumed_by = "RESTORING ALL CONTAINERS SENTENCES";
 
-                    t_select.t_SENTENCE_RESTORE_ALL();
+                    t_sentence.t_SENTENCE_RESTORE_ALL();
                 }
             }
         }
@@ -34029,8 +34221,6 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG
         || t_util.get_el_parent_with_tag  (el,  "LI"       )
         || t_util.get_el_parent_with_tag  (el, "UL"        )
         || t_util.get_el_parent_with_tag  (el, "OL"        )
-        || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  )
-        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
         || t_util.get_el_parent_with_tag  (el,  "DT"       )
         || t_util.get_el_parent_with_tag  (el,  "DD"       )
         || t_util.get_el_parent_with_tag  (el, "DL"        )
@@ -34047,6 +34237,8 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG
         || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE")
         || t_util.get_el_parent_with_tag  (el, "DIR"       )
         || t_util.get_el_parent_with_tag  (el, "DIV"       )
+        || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  )
+        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
     ;
 
     if(!container) return "";
@@ -34259,7 +34451,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf9);
     move_cooldown_clear_pending();
     if(    has_moved && (onWork_PANEL == hotspot)
        &&  prop.get( t_data.EDIT_OR_STAGE )
-       && !dom_gutter.get_XY_URDL(h_x, h_y, "EDITING DONE .. dragging [hotspot] back IN-WINDOW")
+       && !t_gutter.get_XY_URDL(h_x, h_y, "EDITING DONE .. dragging [hotspot] back IN-WINDOW")
       ) {
         t_dom_EDIT_drag_hotspot_off_gutter(h_x, h_y);
     }
@@ -34345,7 +34537,7 @@ if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf9);
     if( t_preventDefault_caller ) t_restoreDefault("ON UP DONE");
 
     onWork_MOVABLE_CHILD = null;
-    if( t_select.t_SENTENCE_GET_CONTAINERS() )
+    if( t_sentence.t_SENTENCE_GET_CONTAINERS() )
     {
         t_SENTENCE_del_listener(caller);
 
@@ -34542,12 +34734,12 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
     if(!consumed_by) { consumed_by = onLong_press1_HOTSPOT             (); consumed_by_css = lf1; }
     if(!consumed_by) { consumed_by = onLong_press2_TOOLS_ON_GRID       (); consumed_by_css = lf2; }
     if(!consumed_by) { consumed_by = onLong_press3_EDIT_OR_STAGE       (); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onLong_press4_TOOL_EL             (); consumed_by_css = lf4; }
-    if(!consumed_by) { consumed_by = onLong_press5_TOOL_TOOLTIP        (); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onLong_press6_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = onLong_press7_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf8; }
-    if(!consumed_by) { consumed_by = onLong_press8_SLOTTED_WORD        (); consumed_by_css = lf9; }
-    if(!consumed_by) { consumed_by = onLong_press9_SENTENCE            (); consumed_by_css = lf5; }
+    if(!consumed_by) { consumed_by = onLong_press4_SENTENCE            (); consumed_by_css = lf3; }
+    if(!consumed_by) { consumed_by = onLong_press5_TOOL_EL             (); consumed_by_css = lf4; }
+    if(!consumed_by) { consumed_by = onLong_press6_TOOL_TOOLTIP        (); consumed_by_css = lf6; }
+    if(!consumed_by) { consumed_by = onLong_press7_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onLong_press8_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = onLong_press9_SLOTTED_WORD        (); consumed_by_css = lf9; }
     if(!consumed_by) {
         consumed_by = "NO LONG-PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
 
@@ -34566,6 +34758,11 @@ if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("LONG-PRESS");
 };
+let t_get_mouselong_press_consumed_by = function()
+{
+    return mouselong_press_consumed_by;
+
+};
 let onLong_press1_HOTSPOT = function()
 {
 
@@ -34573,7 +34770,7 @@ let onLong_press1_HOTSPOT = function()
 
     if(  onWork_PANEL != hotspot ) return "";
     if(  onWork_EL    != hotring ) return "";
-    let in_gutter      = dom_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
+    let in_gutter      = t_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
     let while_editing  =  prop.get( t_data.EDIT_OR_STAGE );
     let is_on_grid     = call_t_grid_IS_ON_GRID(caller);
     let consumed_by    = "";
@@ -34632,21 +34829,53 @@ let onLong_press3_EDIT_OR_STAGE = function()
 let   caller = "onLong_press3_EDIT_OR_STAGE";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.T3_LAYOUT);
 
-if( log_this) t_fly.t_log_event_status(caller, lf6);
+if( log_this) t_fly.t_log_event_status(caller, lf3);
     if(!prop.get( t_data.EDIT_OR_STAGE )) return "";
 
     return t_tools_hide_onDown_XY_parent();
 };
-let onLong_press4_TOOL_EL = function()
+let onLong_press4_SENTENCE = function(e)
 {
 
-let   caller = "onLong_press4_TOOL_EL";
+let   caller = "onLong_press4_SENTENCE";
+let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
+
+if( log_this) t_fly.t_log_event_status(caller, lf4);
+    let consumed_by = "";
+    if( t_is_a_tool_el(onWork_EL, caller) ) return "";
+    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
+    if(   container )
+    {
+
+        if( cells )
+        {
+            consumed_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
+
+            for(let i=0; i < cells.length; ++i)
+            {
+                t_sentence.t_SENTENCE_SPLIT( cells[i] );
+            }
+        }
+        if(!consumed_by)
+        {
+            consumed_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
+
+            t_sentence.t_SENTENCE_SPLIT( container );
+        }
+    }
+if( log_this && consumed_by) log("%c"+consumed_by, lf4);
+    return consumed_by;
+};
+let onLong_press5_TOOL_EL = function()
+{
+
+let   caller = "onLong_press5_TOOL_EL";
 let log_this = LOG_MAP.EV4_LONG_PRESS;
-if( log_this) t_fly.t_log_event_status(caller, lf3);
+if( log_this) t_fly.t_log_event_status(caller, lf5);
     let consumed_by = "";
     if( behavior_TOUCH_ELSE_DESKTOP )
     {
-if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]", lb7);
+if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]", lb5);
 
         onLong_press_scroll_freezed = true;
     }
@@ -34662,10 +34891,10 @@ if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT CONSUMED", lf8);
         {
             consumed_by = "IGNORING EDITED STICKY "+sticky.id;
 
-if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
+if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbH+lf8);
         }
         else {
-            consumed_by = onLong_press4_TOOL_STICKY(log_this);
+            consumed_by = onLong_press5_TOOL_STICKY(log_this);
 
         }
     }
@@ -34675,7 +34904,7 @@ if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf8);
            || (onWork_EL.id == t_data.WORDS_BAG_ROT))
       ) {
         consumed_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
-if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbH+lf5);
+if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbH+lf5);
 
         t_fly.t_fly_tooltip_update(bag_rot.title, bag_rot.id);
     }
@@ -34683,29 +34912,29 @@ if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbH+lf5);
     if(!consumed_by && div_slot_containers_child_pressed)
     {
         consumed_by = "START CONTAINERS CHILD DRAG";
-if( log_this) t_log.logSD6("%c"+caller+"%c"+consumed_by, lbH+lf6);
+if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbH+lf5);
 
         t_slot_container_set_fullscreen( onWork_EL );
         t_add_tool_pointermove_listener(caller);
     }
-if(log_this && !consumed_by) log("%c"+caller+"%c NOT CONSUMED", lbL+lf3, lbR+lf8);
+if(log_this && !consumed_by) log("%c"+caller+"%c NOT CONSUMED", lbL+lf5, lbR+lf8);
     return consumed_by;
 };
-let onLong_press4_TOOL_STICKY = function(log_this)
+let onLong_press5_TOOL_STICKY = function(log_this)
 {
 
-let   caller = "onLong_press4_TOOL_STICKY";
+let   caller = "onLong_press5_TOOL_STICKY";
     let current_sel_text    = t_get_current_sel_text();
     let pinned_sticky_count = t_sticky.t_sticky_GET_COUNT();
     let              sticky = t_sticky.t_sticky_get_onWork_STICKY();
 if( log_this) {
-    log_key_val( caller
+    log_key_val_group( caller
                  , {                    current_sel_text : t_util.ellipsis_short(current_sel_text)
                      ,                   onDown_SEL_TEXT : t_util.ellipsis_short(onDown_SEL_TEXT )
                      ,               pinned_sticky_count
                      ,                    sticky_touched : (sticky ? sticky.touched : "")
                      ,                           callers : t_log.get_callers()
-                 }, lf3);
+                 }, lf4);
 }
     let consumed_by         = "";
     if(!consumed_by && (current_sel_text || onDown_SEL_TEXT))
@@ -34714,8 +34943,8 @@ if( log_this) {
             clr_SELECTION_PROGRESS("NEW STICKY FROM PAGE-SELECTION", log_this);
 
         if(pinned_sticky_count < t_sticky.STICKY_MAX) {
-            consumed_by = onLong_press4_TOOL_STICKY_SEL_TEXT(log_this);
-if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
+            consumed_by = onLong_press5_TOOL_STICKY_SEL_TEXT(log_this);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
         }
         else {
             logBIG("(pinned_sticky_count >= t_sticky.STICKY_MAX) .. ("+pinned_sticky_count+" >= "+t_sticky.STICKY_MAX+")");
@@ -34724,31 +34953,31 @@ if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
     if(!consumed_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
     {
         consumed_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf2,lbR+lf2);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf2);
 
         t_sticky.t_sticky_format_pad(sticky);
     }
     if(!consumed_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
     {
         consumed_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf3);
 
         return "";
     }
     return consumed_by;
 };
 let onLong_press4_TOOL_STICKY_SEL_TEXT_timer;
-let onLong_press4_TOOL_STICKY_SEL_TEXT = function(log_this=true)
+let onLong_press5_TOOL_STICKY_SEL_TEXT = function(log_this=true)
 {
 
-let   caller = "onLong_press4_TOOL_STICKY_SEL_TEXT";
+let   caller = "onLong_press5_TOOL_STICKY_SEL_TEXT";
 
     let      consumed_by = "";
     if(onUp_MS > onDown_MS)
     {
         consumed_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
 if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
-                    ,lbH+lf2                     );
+                    ,        lbH+lf8                     );
 
         clr_SELECTION_PROGRESS(consumed_by, log_this);
         return consumed_by;
@@ -34764,13 +34993,13 @@ if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
 if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
                         +"%c"+LF+"FROM %c"+ t_util.ellipsis_short(t_util.strip_CR_LF( last_sel_text))
                         +"%c"+LF+"TO.. %c"+ t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
-                        ,lbH+lf8
+                        ,lbH+lf4
                         ,    lf8             ,lb8
                         ,    lf9             ,lb9);
         set_last_sel_text( current_sel_text );
 
         if(!onLong_press4_TOOL_STICKY_SEL_TEXT_timer)
-            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press4_TOOL_STICKY_SEL_TEXT(log_this); }, SEL_TEXT_TIC_TOC_INTERVAL);
+            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press5_TOOL_STICKY_SEL_TEXT(log_this); }, SEL_TEXT_TIC_TOC_INTERVAL);
 
     }
     else
@@ -34781,19 +35010,19 @@ if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
         {
             consumed_by     = "LONG-PRESS .. SELECTION STEADY";
 if( log_this) t_log.log("%c"+caller+": "+ consumed_by+"%c unchanged x"+unchanged_countdown
-                        ,lbH+lf2                      ,lbb+lbH+lfX[    unchanged_countdown]);
+                        ,lbH+lf4                      ,lbb+lbH+lfX[    unchanged_countdown]);
 
             let next_interval = SEL_TEXT_TIC_TOC_INTERVAL / 3;
 
             clearInterval( onLong_press4_TOOL_STICKY_SEL_TEXT_timer );
-            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press4_TOOL_STICKY_SEL_TEXT(log_this); }, next_interval);
+            onLong_press4_TOOL_STICKY_SEL_TEXT_timer = setInterval(function() { onLong_press5_TOOL_STICKY_SEL_TEXT(log_this); }, next_interval);
         }
         else if(last_sel_text)
         {
             consumed_by = "LONG-PRESS .. SELECTION ADD STICKY";
-if(log_this) t_log.logSD2( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
+if(log_this) t_log.logSD4( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
                     +"%c"+LF+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
-                    ,lbH+lf2
+                    ,lbH+lf4
                     ,lbb+lb9);
 
             clr_SELECTION_PROGRESS(consumed_by, log_this);
@@ -34802,8 +35031,8 @@ if(log_this) t_log.logSD2( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
         }
         else {
             consumed_by = "LONG-PRESS .. SELECTION IS EMPTY";
-if(log_this) t_log.logSD2("%c"+caller+": "+consumed_by
-                    ,lbH+lf9                    );
+if(log_this) t_log.logSD4("%c"+caller+": "+consumed_by
+                    ,lbH+lf4                    );
 
             clr_SELECTION_PROGRESS(consumed_by, log_this);
         }
@@ -34817,7 +35046,7 @@ let onLong_press5_STICKY_ADD_NEW = function(current_sel_text, log_this)
 
 let   caller = "onLong_press5_STICKY_ADD_NEW";
 
-if(log_this) log(caller+"%c"+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text)), lbH+lf3);
+if(log_this) log(caller+"%c"+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text)), lbH+lf5);
     let new_sticky = t_sticky.t_sticky_NEW_XY_SEL_TEXT(onDown_XY.x, onDown_XY.y, current_sel_text || onDown_SEL_TEXT);
 
     t_set_onWork_EL(new_sticky, caller);
@@ -34828,54 +35057,24 @@ if(log_this) log(caller+"%c"+t_util.ellipsis_short(t_util.strip_CR_LF(current_se
 
     t_add_tool_pointermove_listener(caller);
 };
-let onLong_press9_SENTENCE = function(e)
+let onLong_press6_TOOL_TOOLTIP = function()
 {
 
-let   caller = "onLong_press9_SENTENCE";
-let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
-
-if( log_this) t_fly.t_log_event_status(caller, lf6);
-    let consumed_by = "";
-    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
-    if(   container )
-    {
-
-        if( cells )
-        {
-            consumed_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
-
-            for(let i=0; i < cells.length; ++i)
-            {
-                t_select.t_SENTENCE_SPLIT( cells[i] );
-            }
-        }
-        if(!consumed_by)
-        {
-            consumed_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
-
-            t_select.t_SENTENCE_SPLIT( container );
-        }
-    }
-if( log_this && consumed_by) log("%c"+consumed_by, lf7);
-    return consumed_by;
-};
-let onLong_press5_TOOL_TOOLTIP = function(log_this)
-{
-
-let   caller = "onLong_press5_TOOL_TOOLTIP";
+let   caller = "onLong_press6_TOOL_TOOLTIP";
+let log_this = LOG_MAP.EV4_LONG_PRESS;
 
     let onWork_EL_is_a_tool = t_is_a_tool_el     (onWork_EL, caller);
     let onWork_EL_has_title = t_util.get_el_title(onWork_EL);
 if( log_this)
-    log_key_val(      caller
+    log_key_val_group(      caller
                 , {   t_fly_div_get       : t_fly.t_fly_div_get()
 
                     , onWork_PANEL
                     , onWork_EL
                     , onWork_EL_is_a_tool
                     , onWork_EL_has_title
-                }, lf3);
-if( log_this) t_fly.t_log_event_status(caller, lf3);
+                }, lf6);
+if( log_this) t_fly.t_log_event_status(caller, lf6);
 
     let consumed_by = "";
     if(onWork_PANEL == t_fly.t_fly_div_get()     ) return "";
@@ -34892,13 +35091,13 @@ if( log_this) t_fly.t_log_event_status(caller, lf3);
 
         t_fly.t_fly_tooltip( title );
     }
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbL+lf3,lbR+lf3);
+if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf6,lbR+lf6);
     return consumed_by;
 };
-let onLong_press6_TOOL_PANEL_MAGNIFY = function()
+let onLong_press7_TOOL_PANEL_MAGNIFY = function()
 {
 
-let   caller = "onLong_press6_TOOL_PANEL_MAGNIFY";
+let   caller = "onLong_press7_TOOL_PANEL_MAGNIFY";
     if( t_util.is_el_or_child_of_parent_el(onWork_EL, t_fly.t_fly_div_get()) )
     {
         let el6_is_import_clipboard = (onWork_EL && (onWork_EL.id == t_data.CSS_FLY_CLIPBOARD));
@@ -34923,10 +35122,10 @@ let   caller = "onLong_press6_TOOL_PANEL_MAGNIFY";
 
     return "";
 };
-let onLong_press7_HOTSPOT_PANEL_UNHIDE = function()
+let onLong_press8_HOTSPOT_PANEL_UNHIDE = function()
 {
 
-let   caller = "onLong_press7_HOTSPOT_PANEL_UNHIDE";
+let   caller = "onLong_press8_HOTSPOT_PANEL_UNHIDE";
     t_clr_has_moved();
     check_has_moved(caller);
 
@@ -34939,13 +35138,13 @@ let   caller = "onLong_press7_HOTSPOT_PANEL_UNHIDE";
 
     return "UNHIDING PANELS";
 };
-let onLong_press8_SLOTTED_WORD = function()
+let onLong_press9_SLOTTED_WORD = function()
 {
 
-let   caller = "onLong_press8_SLOTTED_WORD";
+let   caller = "onLong_press9_SLOTTED_WORD";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV2_MOVE);
 
-if( log_this) t_fly.t_log_event_status(caller, lf6);
+if( log_this) t_fly.t_log_event_status(caller, lf9);
     let      slot = t_get_onWork_EL_slot();
     if(     !slot           ) return "";
     if(!t_select.ccs[ slot] ) return "";
@@ -34954,11 +35153,6 @@ if( log_this) t_fly.t_log_event_status(caller, lf6);
         t_slot_containers_display(slot);
 
     return "SHOWING SLOT ["+slot+"] CONTAINERS";
-};
-let t_get_mouselong_press_consumed_by = function()
-{
-    return mouselong_press_consumed_by;
-
 };
 let   t_onclick_e_target;
 let   t_onclick_timer;
@@ -35548,7 +35742,7 @@ if( log_this) log("%c SELECTING [headsup_w]", lbH+lf4);
                 t_set_CSS_PINNED(headsup_w, true);
                 t_grid_TOOLS_MAP_changed();
 
-                let xy = dom_gutter.get_GUTTER_XY();
+                let xy = t_gutter.get_GUTTER_XY();
                 if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
                 set_onWork_EL_last_used(words_filter_input);
@@ -35706,7 +35900,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
 
         if(onWork_EL_last_used == words_filter_input)
         {
-            let xy = dom_gutter.get_GUTTER_XY();
+            let xy = t_gutter.get_GUTTER_XY();
             if( xy ) t_tools_set_top_xy(xy.x, xy.y);
         }
     }
@@ -36212,7 +36406,6 @@ let log_this = LOG_MAP.EV5_TOOL_CB;
 if( log_this) t_fly.t_log_event_status(caller, lf5);
     if( has_moved                   ) return false;
     if(e_target.tagName == "INPUT"  ) return false;
-//  if( t_event_has_been_consumed() ) return false; // .. set by onUp_5_TOOL_ONCLICK
 if(e_target) del_el_class(e_target, CSS_FOCUSSED);
     let keyword;
     if(!keyword) try { keyword =                e_target.id;                   } catch(ex) {}
@@ -37722,8 +37915,7 @@ let t_cache_wph_WH = function()
     hsR.right  = w_W        - t_data.SCROLLBAR_WIDTH;
     hsR.bottom = w_H_or_p_H - t_data.SCROLLBAR_WIDTH;
 
-    if((typeof dom_gutter !== "undefined"))
-        dom_gutter.layout_has_CHANGED(hsR, BOX_MARGIN);
+        t_gutter.layout_has_CHANGED(hsR, BOX_MARGIN);
     return { w_W , w_H
         ,    p_W , p_H
         ,    h_W , h_H
@@ -37888,8 +38080,8 @@ let t_tools_hide = function()
 let   caller = "t_tools_hide";
 let log_this = LOG_MAP.T5_SPREAD;
 
-    let xy = dom_gutter.get_GUTTER_XY();
-if( log_this) log(caller+": dom_gutter.get_GUTTER_XY() .. xy=["+xy.x+" "+xy.y+"]");
+    let xy = t_gutter.get_GUTTER_XY();
+if( log_this) log(caller+": t_gutter.get_GUTTER_XY() .. xy=["+xy.x+" "+xy.y+"]");
 
     if(!xy.x && !xy.y) { xy.x = 0; xy.y = 0; }
 
@@ -37902,8 +38094,8 @@ let t_tools_show = function(centered)
 let   caller = "t_tools_show";
 let log_this = LOG_MAP.T5_SPREAD;
 
-    let xy = dom_gutter.get_WINDOW_XY();
-if( log_this) log(caller+": dom_gutter.get_WINDOW_XY() .. xy=["+xy.x+" "+xy.y+"]");
+    let xy = t_gutter.get_WINDOW_XY();
+if( log_this) log(caller+": t_gutter.get_WINDOW_XY() .. xy=["+xy.x+" "+xy.y+"]");
 
     if(centered || (!xy.x && !xy.y)) { xy.x = window.innerWidth  / 2; xy.y = window.innerHeight / 2; }
 
@@ -38043,8 +38235,8 @@ if(log_this)
     hotspot.style.left = x +"px";
     hotspot.style.top  = y +"px";
 
-    hotspotXY.gutter_urdl = dom_gutter.get_XY_URDL(x, y, "MOVING HOTSPOT");
-    dom_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
+    hotspotXY.gutter_urdl = t_gutter.get_XY_URDL(x, y, "MOVING HOTSPOT");
+    t_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
     if(    !save_update_is_pending()
         && !prop.get( t_data.EDIT_OR_STAGE   )
       ) {
@@ -38057,7 +38249,6 @@ if(log_this) log_key_val_group("MOVING hotspotXY", hotspotXY, lf4, true);
 const HOTSPOT_HIDE_SHOW_DELAY = 1000;
 let t_hide_hotspot = function(delay)
 {
-
     if(delay === undefined) delay = HOTSPOT_HIDE_SHOW_DELAY;
 
     let x = HOTSPOT_STANDBY_X;
@@ -38720,7 +38911,7 @@ if( log_this) log(caller);
             t_flash_unpinned_panels(caller);
     }
     else {
-        let          xy    = dom_gutter.get_WINDOW_XY();
+        let          xy    = t_gutter.get_WINDOW_XY();
         if((Math.abs(xy.x) < OFF_GRID_MARGIN_X)) xy.x = OFF_GRID_MARGIN_X;
         if((Math.abs(xy.y) < OFF_GRID_MARGIN_Y)) xy.y = OFF_GRID_MARGIN_Y;
         t_tools_set_top_xy(xy.x, xy.y);
@@ -38800,14 +38991,14 @@ let log_this = LOG_MAP.T2_GRID;
 
 if( log_this) log("dimm_start(zIndex=["+zIndex+"], dimm_class=["+dimm_class+"], dimm_style=["+dimm_style+"]) .. CALLED BY "+ _caller);
 
-    if((typeof dom_gutter === "undefined")) return;
+    if((typeof t_gutter === "undefined")) return;
 
     if(_caller) {
         dimm_start_called_with_hotspot_in_gutter = !!hotspotXY.gutter_urdl;
 if( log_this) log("...%c dimm_start_called_with_hotspot_in_gutter=["+dimm_start_called_with_hotspot_in_gutter+"]", lf7);
 
         if(!dimm_start_called_with_hotspot_in_gutter)
-            dom_gutter.set_WINDOW_XY(h_x, h_y);
+            t_gutter.set_WINDOW_XY(h_x, h_y);
     }
     if(!dimm_mask) dimm_add();
     if(dimm_class && !has_el_class(dimm_mask, dimm_class)) set_el_class_removing(dimm_mask, dimm_class, DIMM_CLASS_ARRAY);
@@ -38846,7 +39037,7 @@ let log_this = LOG_MAP.T2_GRID;
 if( log_this) log("dimm_stop .. CALLED BY "+ _caller);
 if( log_this) log_caller();
 
-    if((typeof dom_gutter === "undefined")) return;
+    if((typeof t_gutter === "undefined")) return;
 
     if(dimm_mask_timer) {
         clearTimeout( dimm_mask_timer );
@@ -38869,9 +39060,9 @@ if(log_this) t_log.logSD1("HOTSPOT LEFT IN GUTTER %c"+_caller, lbH+lf8);
     else if(dimm_start_called_with_hotspot_in_gutter != undefined)
     {
 
-        if( dom_gutter.is_hotspot_IN(hotspot, "DIMM STOP") )
+        if( t_gutter.is_hotspot_IN(hotspot, "DIMM STOP") )
         {
-            let xy = dom_gutter.get_WINDOW_XY();
+            let xy = t_gutter.get_WINDOW_XY();
             if( xy ) {
 if(log_this) t_log.logSD2("HOTSPOT BACK TO WINDOW %c"+xy.x+" "+xy.y+" %c"+_caller, lbH+lf4, lbH+lf9);
                     t_tools_set_top_xy(xy.x, xy.y);
@@ -39039,8 +39230,8 @@ log("%c...return false .. ![dom_tools_html]", lf3);
     h_x                   = hotspot.offsetLeft;
     h_y                   = hotspot.offsetTop;
 
-    hotspotXY.gutter_urdl = dom_gutter.get_XY_URDL(h_x, h_y, "LAYOUT CHANGED SYNC");
-    dom_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
+    hotspotXY.gutter_urdl = t_gutter.get_XY_URDL(h_x, h_y, "LAYOUT CHANGED SYNC");
+    t_gutter.set_CSS_URDL(hotring, hotspotXY.gutter_urdl);
 
     if( !hotspotXY.gutter_urdl )
     {
@@ -40382,7 +40573,7 @@ if(log_this) log("...window [W H] = ["+w_H     +" "+ w_W                   +"]")
         dimm_start_slot_containers(caller);
 
         t_check_onModalMS(caller);
-        let xy = dom_gutter.get_GUTTER_XY();
+        let xy = t_gutter.get_GUTTER_XY();
         if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
         add_el_class(hotspot , t_data.CSS_HIDDEN);
@@ -43094,7 +43285,7 @@ if( log_this) log_caller();
     let hid_csv_count                = t_hide.get_node_to_hide_csv_count();
     let sticky_count                 = t_sticky.t_sticky_GET_COUNT();
     let hotspot_EDITING              = has_el_class(hotspot, t_data.DOM_EDITING);
-    let hotspot_in_gutter            = dom_gutter.is_hotspot_IN(hotspot, "WORTH STORING");
+    let hotspot_in_gutter            = t_gutter.is_hotspot_IN(hotspot, "WORTH STORING");
     let curr_state
         = {   has_pat_csv
             , has_off_csv
@@ -43142,7 +43333,7 @@ if( log_this) {
                 , lf8
                );
 }
-    hotspot_c.innerHTML = sticky_count ? "<span>"+sticky_count+"</span>" : "";
+    if(hotspot_c) hotspot_c.innerHTML = sticky_count ? "<span>"+sticky_count+"</span>" : "";
     if(!page_items_worth_storing )
         t_store.t_store_remove_shared_items("NO PAGE ITEMS WORTH STORING");
 
@@ -43195,10 +43386,11 @@ let t_store_show_all_page_items_removed = function()
 
     let previously_all_removed
         = has_el_class(hotring, CSS_PAGE_ITEMS_ALL_REMOVED);
-    hotring.title
-        =  page_items_worth_storing
-        ?  page_items_worth_storing
-        :  t_i18n.i18n_get( t_i18n.ALL_PAGE_LOCAL_STORAGE_REMOVED)
+    if( hotring )
+        hotring.title
+            =  page_items_worth_storing
+            ?  page_items_worth_storing
+            :  t_i18n.i18n_get( t_i18n.ALL_PAGE_LOCAL_STORAGE_REMOVED)
     ;
     let s
         = page_items_worth_storing ? t_util.strip_CR_LF(page_items_worth_storing.toLowerCase()) : "";
@@ -44798,7 +44990,7 @@ dom_tools.t_load();
 /** LOADER */
 /* DATA STRING LITERALS {{{*/
 /*{{{*/
-/* @see javascript/dom_log.js */
+/* @see script/dom_log.js */
 const lbA  = "background-color:inherit;   color:inherit;";
 
 const lbF  = "font-size:120%; font-weight:500; border:2px solid white;";
@@ -44889,12 +45081,14 @@ if( log_this) window.addEventListener("error", load_onerror, false);
         if(    dom_load_success && !load_js    ( "dom_sticky_js"  , dom_sticky_js_data  ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_seek_js"    , dom_seek_js_data    ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_share_js"   , dom_share_js_data   ) ) dom_load_success = false;
-        /*......................*/  load_js    ( "dom_details_js" , dom_details_js_data );   /* POSSIBLY PRELOADED */
-        /*......................*/  load_js    ( "dom_wot_js"     , dom_wot_js_data     );   /* POSSIBLY PRELOADED */
+
+        /*......................*/  load_js    ( "dom_details_js" , dom_details_js_data ) ;  /* POSSIBLY PRELOADED */
+        /*......................*/  load_js    ( "dom_wot_js"     , dom_wot_js_data     ) ;  /* POSSIBLY PRELOADED */
+        if(    dom_load_success && !load_js    ( "dom_sentence_js", dom_sentence_js_data) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_grid_js"    , dom_grid_js_data    ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_gutter_js"  , dom_gutter_js_data  ) ) dom_load_success = false;
-        if(    dom_load_success && !load_js    ( "dom_ipc_js"     , dom_ipc_js_data     ) ) dom_load_success = false;
 
+        if(    dom_load_success && !load_js    ( "dom_ipc_js"     , dom_ipc_js_data     ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_tools_js"   , dom_tools_js_data   ) ) dom_load_success = false;
     }
     catch(ex) {

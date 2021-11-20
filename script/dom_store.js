@@ -1,28 +1,29 @@
 /* dom_store_js */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals window, console, localStorage */
+/* globals dom_data, dom_log, dom_util, dom_prop */
+
+/* exported DOM_STORE_JS_TAG */
+
 const DOM_STORE_JS_ID       = "dom_store_js";
-const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (200910:17h:33)";
+const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211119:18h:10)";
+/*}}}*/
 let dom_store   = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_prop */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_STORE_LOG         = false;
 let   DOM_STORE_TAG         = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_store_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_i18n     = {}        ;    /* 08 */
+/*  t_i18n     = {}        ; */ /* 08 */
 let t_prop     = {}        ;    /* 09 */
 /*  t_store    = {}        ; */ /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
@@ -51,7 +52,7 @@ let t_store_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_i18n    = dom_i18n   ;    /* 08 */
+/*  t_i18n    = dom_i18n   ; */ /* 08 */
     t_prop    = dom_prop   ;    /* 09 */
 /*  t_store   = dom_store  ; */ /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
@@ -104,9 +105,9 @@ let   store_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -138,6 +139,7 @@ let   store_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /* OBSERVERS */
@@ -288,10 +290,9 @@ if( log_this) log("...dom_string=["+dom_string+"]");
     let xy = null;
     try {
         xy    = JSON.parse(dom_string);
-        let s = ""; Object.keys(xy).forEach( function(key) { s += "["+key+" = "+xy[key]+"]"+LF; });
+        let s = ""; Object.keys(xy).forEach( function(k) { s += "["+k+" = "+xy[k]+"]"+LF; });
 if( log_this) log("%c"+ caller+":", lb0);
 if( log_this) log("%c"+ s         , lb7);
-        return xy;
      }
      catch(ex) {
 if( log_this) log("%c"+caller+":"                                                     , lb2    );
@@ -300,6 +301,7 @@ if( log_this) log("%c"+"0123456789_123456789_123456789_123456789_123456789_12345
 if( log_this) log("%c"+"0_________1_________2_________3_________4_________5_________6", lbF+lb8);
 if( log_this) log("%c*** "+ex, lb2);
     }
+    return xy;
 };
 /*}}}*/
 /*➔ t_store_has_some_page_keys {{{*/
@@ -352,7 +354,7 @@ let t_store_log_site_and_page = function()
 };
 /*}}}*/
 /*… store_FILTER {{{*/
-const EMPTY_ARRAY = '[""]';
+const EMPTY_ARRAY = '[""]'; /* eslint-disable-line quotes */
 
 let store_FILTER = function(key,val)
 {
@@ -651,7 +653,7 @@ if( log_this ) {
 
 /* HELPER */
 /*➔ t_site_or_page_logged_keys_clear {{{*/
-let t_site_or_page_logged_keys_clear = function(_caller)
+let t_site_or_page_logged_keys_clear = function(_caller) /* eslint-disable-line no-unused-vars */
 {
 /*{{{
 log("%c t_site_or_page_logged_keys_clear %c"+_caller, lbL+lf8, lbR+lf4);
@@ -749,8 +751,8 @@ let store_key_tail = function(k)
 /* EXPORT */
 /*{{{*/
 return { name : "dom_store"
-    , logging : function(state) { return DOM_STORE_LOG = dom_util.t_util_set_state("DOM_STORE_LOG",state); }
-    , tagging : function(state) { return DOM_STORE_TAG = dom_util.t_util_set_state("DOM_STORE_TAG",state); }
+    , logging : (state) => DOM_STORE_LOG = dom_util.t_util_set_state("DOM_STORE_LOG",state)
+    , tagging : (state) => DOM_STORE_TAG = dom_util.t_util_set_state("DOM_STORE_TAG",state)
     , t_store_IMPORT
 
     , SITE_URL_TEMPLATE

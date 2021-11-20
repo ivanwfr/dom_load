@@ -1,5 +1,5 @@
 
-#dom_tools_css_tag  { content: "dom_tools_css (210924:19h:59)"; }
+#dom_tools_css_tag  { content: "dom_tools_css (211119:16h:47)"; }
 
 /* flag {{{*/
 .flag, .flag.checked {
@@ -4045,7 +4045,7 @@ padding    : 5px             !important;
 
 /* z-index */
 /*{{{*/
-/* javascript/dom_tools.js */
+/* script/dom_tools.js */
 
 .open_bag                       { z-index :100 !important; } /* above all   */
 
@@ -4089,7 +4089,7 @@ padding    : 5px             !important;
 #dom_load_tags               em { z-index :  1; }
 #dev_log_map                 em { z-index :  1; }
 
-/* DYNAMIC .. [javascript/dom_tools.js] {{{
+/* DYNAMIC .. [script/dom_tools.js] {{{
 #dimm_mask                      { z-index :  0; }
 }}}*/
 

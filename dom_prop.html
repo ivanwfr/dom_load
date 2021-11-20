@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>dom_prop</title>
+  <!-- META {{{ -->
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
+  <meta                         http-equiv="Cache-control" content="no-cache">
+  <meta                         http-equiv="pragma"        content="no-cache">
+  <!-- }}} -->
+  <!-- [link] CSS {{{-->
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"  rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
+  <!--}}}-->
+
+
+
+
+ </head>
+ <body onload='set_title(); dom_prop_IMPORT(); init_doc_tools();'>
+  <!-- h1 {{{-->
+  <h1 style="clear:right; margin:1em;">
+   dom_prop:
+   <br>...should have been populated by <em>set_title</em>
+   <br>with the value of <em>DOM_LOAD_TAG</em>
+  </h1>
+  <!--}}}-->
+ <!-- HTML   WORDS {{{-->
+ <!-- h_words_1 .. h_words_A {{{-->
+ <div  id="h_words"   class="left_div round_el">
+  <div id="h_words_1" style="background-color: rgba(150,  75,   0, .7) !important; "><ol><li><code>words_1</code></li></ol></div>
+  <div id="h_words_2" style="background-color: rgba(255,   0,   0, .7) !important; "><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
+  <div id="h_words_3" style="background-color: rgba(255, 165,   0, .7) !important; "><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
+  <div id="h_words_4" style="background-color: rgba(255, 255,   0, .7) !important; "><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
+  <div id="h_words_5" style="background-color: rgba(154, 205,  50, .7) !important; "><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
+  <div id="h_words_6" style="background-color: rgba(100, 149, 237, .7) !important; "><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
+  <div id="h_words_7" style="background-color: rgba(238, 130, 238, .7) !important; "><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
+  <div id="h_words_8" style="background-color: rgba(160, 160, 160, .7) !important; "><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
+  <div id="h_words_9" style="background-color: rgba(255, 255, 255, .7) !important; "><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
+  <div id="h_words_A" style="background-color: rgba(207, 181, 059, .7) !important; "><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
+ </div>
+ <!--}}}-->
+ <!-- words_1 .. words_A {{{-->
+ <div  id="words"   class="left_div round_el" style="display:grid; align-items:start; clear:left;">
+  <div id="words_1" style="background-color: rgba(150,  75,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_1</code></li></ol></div>
+  <div id="words_2" style="background-color: rgba(255,   0,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_2</code></li><li><code>words_2</code></li></ol></div>
+  <div id="words_3" style="background-color: rgba(255, 165,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_3</code></li><li><code>words_3</code></li><li><code>words_3</code></li></ol></div>
+  <div id="words_4" style="background-color: rgba(255, 255,   0, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li><li><code>words_4</code></li></ol></div>
+  <div id="words_5" style="background-color: rgba(154, 205,  50, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li><li><code>words_5</code></li></ol></div>
+  <div id="words_6" style="background-color: rgba(100, 149, 237, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li><li><code>words_6</code></li></ol></div>
+  <div id="words_7" style="background-color: rgba(238, 130, 238, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li><li><code>words_7</code></li></ol></div>
+  <div id="words_8" style="background-color: rgba(160, 160, 160, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li><li><code>words_8</code></li></ol></div>
+  <div id="words_9" style="background-color: rgba(255, 255, 255, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li><li><code>words_9</code></li></ol></div>
+  <div id="words_A" style="background-color: rgba(207, 181, 059, .7) !important; grid-row:1; border: 1px ridge #333; margin:2px;"><ol><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li><li><code>words_A</code></li></ol></div>
+ </div>
+ <!--}}}-->
+  <!--}}}-->
+ <!-- HTML   DOC TOOLS {{{-->
+<!-- INPUT-OUTPUT {{{
+
+    OUTPUT ... HANDLED BY [dom_tools.js  .. t_onClick_1_e_target]
+    INPUT  ... HANDLED BY [dom_hide.html .. _dom_hide_log_park_all_handler]
+
+    [OUTPUT .. dom_tools.js .. ]
+
+    [INPUT-OUTPUT]
+
+}}}-->
+   <!-- [transcript] {{{-->
+   <div
+    id="transcript"
+    class="transcript"
+    style="
+    position   : fixed; top : 1em; right : 1em;
+    color      : black;
+    text-align : left;
+    min-width  : 20em;
+    min-height : 10em;
+    "
+    >
+
+   </div>
+   <!--}}}-->
+ <!-- [playground_clones_panel bottom_right] {{{-->
+ <div
+  id   ="playground_clones_panel" title="playground_clones_panel"
+  class="transcript display_delayed bottom_right squeezed_0_1"
+  >
+  <!-- [magpin_div] {{{-->
+  <div  class="magpin_div box cb_filled_pin toolbag_button bg4" title="SQUEEZE_CYCLE">
+   <input  id="squeeze_cycle_playground_clones_panel"            type="checkbox" />
+   <label for="squeeze_cycle_playground_clones_panel">
+    <pre>&#x25E4; &#x25E5;
+&#x25E3; &#x25E2;</pre>
+   </label>
+  </div>
+  <!--}}}-->
+ </div>
+ <!--}}}-->
+ <!--}}}-->
+ <!-- SCRIPT dom_tools {{{ -->
+ <script>
+  DOM_LOAD_ID       = "dom_prop_html";       DOM_LOAD_TAG  = DOM_LOAD_ID+" (211119:18h:26)";
+  DOM_LOAD_PANELS   = "";
+  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+   document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
+  }
+  /*}}}*/
+  /* dom_prop_IMPORT {{{*/
+  function dom_prop_IMPORT() {
+
+      let log_this = true;
+      dom_log  .t_log_IMPORT  (log_this);
+      dom_util .t_util_IMPORT (log_this);
+      dom_i18n .t_i18n_IMPORT (log_this);
+      dom_prop .t_prop_IMPORT (log_this);
+      dom_store.t_store_IMPORT(log_this);
+      dom_tools.t_tools_IMPORT(log_this);
+
+      /* dom_log INTERN {{{*/
+      log = dom_log;
+
+      ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+      ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+      ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
+
+      log                 = dom_log.log;
+      logBIG              = dom_log.logBIG;
+      logXXX              = dom_log.logXXX;
+      log_caller          = dom_log.log_caller;
+      log_json_one_liner  = dom_log.log_json_one_liner;
+      log_key_val         = dom_log.log_key_val;
+      log_key_val_group   = dom_log.log_key_val_group;
+      /*}}}*/
+      DOM_LOADER_LOG = (typeof dom_store == "undefined") ? false : dom_store.t_store_getBool("DOM_LOADER_LOG");
+      DOM_LOADER_TAG = (typeof dom_store == "undefined") ? false : dom_store.t_store_getBool("DOM_LOADER_TAG");
+
+log("%c 23 "+DOM_LOAD_TAG, lbH+lf3);
+  }
+  /*}}}*/
+  /*  load_html {{{*/
+  let load_html = function(id, html) {
+   if( document.getElementById(id) ) return;
+   let el       = document.createElement("DIV");
+   el.id        = id;
+   el.title     = id;
+   el.innerHTML = unescape(html);
+   document.body.appendChild(el);
+//console.log("load_html("+id+") ...done")
+  };
+  /*}}}*/
+    //{{{
+    let _dom_hide_caller_array = [];
+    let _dom_hide_log_unpark_timer;
+    let _dom_hide_log_park_all_timer;
+    //}}}
+    let  playground_prop_CB = function(key, val) { //{{{
+      let  el = document.getElementById( key );
+      if(  el ) {
+//console.log("playground_prop_CB("+key+", "+val+")")
+       el.checked = ((val == true) || (val == key)) ? "checked" : "";
+       el.parentNode.classList.remove("parked");
+      }
+    };//}}}
+    let _dom_hide_log_unpark = function(caller) { //{{{
+/*{{{
+logXXX("dom_hide_log_unpark("+caller+")")
+}}}*/
+     //if(_dom_hide_log_park_all_timer) _dom_hide_log_park_all_handler(); // force parked all
+     // post unpark {{{
+     _dom_hide_caller_array.push(caller);
+     if(_dom_hide_log_unpark_timer) clearTimeout(_dom_hide_log_unpark_timer     );
+     _dom_hide_log_unpark_timer =     setTimeout(_dom_hide_log_unpark_handler, 0);
+
+     //}}}
+    };//}}}
+    let _dom_hide_log_unpark_handler = function() { //{{{
+//console.log("_dom_hide_log_unpark_handler: _dom_hide_caller_array.length=["+_dom_hide_caller_array.length+"]")
+     // handle unpark {{{
+     let caller = "_dom_hide_log_unpark_handler ";
+     if( _dom_hide_caller_array.length )
+     {
+
+         caller += _dom_hide_caller_array.shift();
+         if((   idx = caller.indexOf("(")) > 0) caller = caller.substring(0,idx);
+//console.log("caller=["+caller+"]")
+         let  el = document.getElementById(caller);
+         if(  el ) {
+//logBIG(el.id)
+             el.checked = "checked";
+             el.parentNode.classList.remove("parked");
+         }
+
+         if(_dom_hide_caller_array.length) _dom_hide_log_unpark_timer = setTimeout(_dom_hide_log_unpark_handler, 150);
+         else                              _dom_hide_log_unpark_timer = null;
+     }
+     //}}}
+     // post parked all {{{
+     if(_dom_hide_log_park_all_timer) clearTimeout(_dom_hide_log_park_all_timer        );
+     _dom_hide_log_park_all_timer =     setTimeout(_dom_hide_log_park_all_handler, 1000);
+     //}}}
+     _dom_hide_log_unpark_timer = null;
+     dom_hide_log_settings();
+    }; //}}}
+   let _dom_hide_log_park_all_handler = function(parked=true) { //{{{
+    // handle parked all {{{
+
+     let node_list = document.querySelectorAll("INPUT");
+     for(let i=0; i < node_list.length; ++i)
+     {
+      let el = node_list[i];
+      if( el.parentElement.classList.contains("cb_slider_cap") ) continue;
+      el.checked = "";
+      if(parked) el.parentNode.classList.add   ("parked");
+      else       el.parentNode.classList.remove("parked");
+     } //}}}
+
+     let el = document.getElementById("park_all");
+     if( el) el.checked = parked;
+
+     _dom_hide_log_park_all_timer = null;
+    }; //}}}
+   let _dom_hide_log_check_all_handler = function(checked=true) { //{{{
+     // handle check all {{{
+
+     let node_list = document.querySelectorAll("INPUT");
+     for(let i=0; i < node_list.length; ++i)
+     {
+      let     el = node_list[i];
+      if( el.parentElement.classList.contains("cb_slider_cap") ) continue;
+      el.checked = checked;
+
+      if(checked) el.parentNode.classList.add   ("checked");
+      else        el.parentNode.classList.remove("checked");
+     } //}}}
+
+    let el = document.getElementById("check_all");
+    if( el) el.checked = checked;
+
+     _dom_hide_log_check_all_timer = null;
+    }; //}}}
+/*# sourceURL=dom_prop.html */
+ </script>
+ <!--}}}-->
+  <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] [defer] .. DEPENDENCIES SOLVED BY PAGE ORDER AND IMPORT CALL {{{-->
+
+  <script id="dom_data_js"    src="script/dom_data.js"    defer></script> <!-- DATA    05 DATA                          -->
+  <script id="dom_log_js"     src="script/dom_log.js"     defer></script> <!-- LOG     06 data LOG util                 -->
+  <script id="dom_popup_js"   src="script/dom_popup.js"   defer></script>
+  <script id="dom_util_js"    src="script/dom_util.js"    defer></script> <!-- UTIL    07 data log UTIL(i18n)           -->
+  <script id="dom_details_js" src="script/dom_details.js" defer></script> <!-- DETAILS         log UTIL                 -->
+  <script id="dom_i18n_js"    src="script/dom_i18n.js"    defer></script> <!-- I18N    08 data log util I18N            -->
+  <script id="dom_prop_js"    src="script/dom_prop.js"    defer></script> <!-- PROP    09 data log util PROP            -->
+  <script id="dom_store_js"   src="script/dom_store.js"   defer></script> <!-- STORE   10 data log util      STORE      -->
+  <script id="dom_fly_js"     src="script/dom_fly.js"     defer></script> <!-- FLY     11 data log util prop store FLY  -->
+
+  <!--ipt id="dom_wording_js" src="script/dom_wording.js" defer></scri--> <!-- WORDING 12      log                        WORDING               -->
+  <script id="dom_select_js"  src="script/dom_select.js"  defer></script> <!-- SELECT  13 data log util prop       fly            SELECT  slot  -->
+  <!--ipt id="dom_wot_js"     src="script/dom_wot.js"     defer></scri-->
+  <script id="dom_slot_js"    src="script/dom_slot.js"    defer></script> <!-- SLOT    14 data log      prop                      select  SLOT  -->
+
+  <!--ipt id="dom_hide_js"    src="script/dom_hide.js"    defer></scri--> <!-- HIDE    15 data log util prop store                             HIDE                          -->
+  <script id="dom_view_js"    src="script/dom_view.js"    defer></script> <!-- VIEW    16 data log util prop                                         VIEW                    -->
+  <script id="dom_sticky_js"  src="script/dom_sticky.js"  defer></script> <!-- STICKY  17 data log util prop store                                   view STICKY seek        -->
+  <script id="dom_seek_js"    src="script/dom_seek.js"    defer></script> <!-- SEEK    18 data log util prop                      select                  sticky SEEK        -->
+  <script id="dom_share_js"   src="script/dom_share.js"   defer></script> <!-- SHARE   19 data log util      store fly                                    sticky      SHARE  -->
+
+  <!--ipt id="dom_grid_js"    src="script/dom_grid.js"    defer></scri--> <!-- GRID    20 data log util                                                                       GRID         -->
+  <!--ipt id="dom_gutter_js"  src="script/dom_gutter.js"  defer></scri--> <!-- GUTTER  21 data log util prop                                                                       GUTTER  -->
+
+  <!--ipt id="dom_ipc_js"     src="script/dom_ipc.js"     defer></scri--> <!-- IPC     22 log                                                                                               IPC        -->
+  <script id="dom_tools_js"   src="script/dom_tools.js"   defer></script> <!-- TOOLS   23 data log util prop store fly            select        hide view sticky seek share   grid          ipc TOOLS  -->
+
+
+ <!--}}}-->
+<!-- HTML dom_tools {{{-->
+<!-- [tools STUB] HTML [dom_tools_html_data] {{{-->
+<script>
+/*
+script/dom_tools.html
+*/
+dom_tools_html_data = escape(`
+<!--INLINE{{{-->
+<!DOCTYPE html>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:21h:29)</span>
+
+ <!-- hotspot {{{-->
+ <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
+  <div  id="hotwave"       class="hotwave">
+   <div id="hotring"       class="hotring">&nbsp;</div>
+  </div>
+  <div id="hotspot_c">&#x00BB;</div>
+ </div>
+ <!--}}}-->
+ <!-- headsup {{{ -->
+ <div id="headsup"         class="transcript hidden"        title="headsup">
+
+  <em  id="user_lang"      class="toolbag_button cc9"       title="user_lang">&nbsp;</em>
+
+  <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
+  <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
+  <em  id="wording"        class="toolbag_button cc3"       title="wording">WORDING</em>
+  <em  id="anchor_freeze"  class="toolbag_button cc9"       title="anchor_freeze">&#x26D4;</em>
+  <em  id="containers_hi"  class="toolbag_button cc9"       title="containers_hi">&#x00A7;</em>
+  <em  id="overflow_visi"  class="toolbag_button cc9"       title="overflow_visi">&nbsp;</em>
+  <em  id="scroll_smooth"  class="toolbag_button cc9"       title="scroll_smooth">&nbsp;</em>
+
+  <em  id="details_close"  class="toolbag_button cc9"       title="details_close">&#x25B2;</em>
+  <em  id="details_open"   class="toolbag_button cc9"       title="details_open" >&#x25BC;</em>
+  <em  id="details_radio"  class="toolbag_button cc9"       title="details_radio">&nbsp;</em>
+
+  <em  id="tools_tier2"    class="toolbag_button cc9"       title="tools_tier2">&#x2630;</em>
+
+<!--{{{
+  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
+  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
+  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+}}}-->
+
+  <em  id="remove_ads"     class="toolbag_button cc9"       title="remove_ads">&nbsp;</em>
+  <em  id="split_wot"      class="toolbag_button cc9"       title="split_wot">&nbsp;</em>
+  <em  id="lines_wot"      class="toolbag_button cc9"       title="lines_wot">&nbsp;</em>
+
+ </div>
+ <!-- }}} -->
+
+ <!-- pat_bag {{{ -->
+  <div id="pat_bag"           class="transcript hidden bag" title="PAT BAG"></div>
+ <!-- }}} -->
+ <!-- headsup_w {{{ -->
+ <div    id="headsup_w"       class="transcript hidden"     title="headsup_w">
+  <input id="words_filter"    type="text"                   title="words_filter"/>
+  <em    id="words_exact"     class="toolbag_button cc3"    title="words_exact">&#x2261;</em>
+  <em    id="words_segment"   class="toolbag_button cc4"    title="words_segment">&#x2282;</em>
+  <em    id="words_head_tail" class="toolbag_button cc5"    title="words_head_tail">&#x2208;</em>
+  <em    id="words_opcycle"   class="toolbag_button cc9"    title="words_opcycle">&#x27F3;</em>
+  <em    id="words_recycle"   class="toolbag_button cc7"    title="words_recycle">&#x267B;</em>
+  <em    id="words_bag_rot"   class="toolbag_button cc0"    title="words_bag_rot">&#x2026;</em>
+  <em    id="words_drop_case" class="toolbag_button cc8"    title="words_drop_case">&nbsp;</em>
+  <em    id="words_drop_ing"  class="toolbag_button cc8"    title="words_drop_ing">&nbsp;</em>
+  <em    id="words_drop_s"    class="toolbag_button cc8"    title="words_drop_s">&nbsp;</em>
+  <div   id="words_regex"     class="txt_log"               >words_regex</div>
+ </div>
+ <!-- }}} -->
+ <!-- sel_bag {{{ -->
+  <div id="sel_bag"           class="transcript hidden bag" title="sel_bag"><span class="seeker_handle"></span></div>
+ <!-- }}} -->
+
+ <!-- headsup_ds {{{ -->
+ <div id="headsup_ds"         class="transcript hidden"     title="headsup_ds">
+  <em  id="tools_trap"        class="toolbag_button"        title="tools_trap">&#x00BB;</em>
+  <em  id="tools_scroll"      class="toolbag_button"        title="tools_scroll">&#x2693;</em>
+  <em  id="site_or_page"      class="toolbag_button cc9"    title="site_or_page">&nbsp;</em>
+  <em  id="mask_or_hide"      class="toolbag_button cc9"    title="mask_or_hide">&nbsp;</em>
+  <em  id="edit_or_stage"     class="toolbag_button cc9"    title="edit_or_stage">&nbsp;</em>
+  <em  id="dom_hide1_reset"   class="toolbag_button cc9"    title="dom_hide1_reset">&nbsp;</em>
+  <em  id="dom_hide1_undo"    class="toolbag_button cc9"    title="dom_hide1_undo">…</em>
+  <em  id="deny_or_allow"     class="toolbag_button cc8"    title="deny_or_allow">&nbsp;</em>
+<!--{{{
+  <em  id="targeteer"         class="toolbag_button cc9"    title="targeteer">&nbsp;</em>
+  <em  id="target_01"         class="toolbag_button cc1"    title="target_01">&nbsp;</em>
+  <em  id="target_02"         class="toolbag_button cc2"    title="target_02">&nbsp;</em>
+  <em  id="target_03"         class="toolbag_button cc3"    title="target_03">&nbsp;</em>
+}}}-->
+ </div>
+ <!-- }}} -->
+ <!-- headsup_bw {{{ -->
+ <div id="headsup_bw"          class="transcript hidden"    title="headsup_bw">
+  <em id="headsup_bw_value"    class="cc10">BODY WIDTH</em><br>
+  <em class="cc1"> 480</em><em class="cc2"> 640</em><em class="cc3"> 780</em><br>
+  <em class="cc4"> 960</em><em class="cc5">1024</em><em class="cc6">1200</em><br>
+  <em class="cc7">1440</em><em class="cc8">1600</em><em class="cc9">1980</em><br>
+ </div>
+ <!-- }}} -->
+ <!-- headsup_bz {{{ -->
+ <div id="headsup_bz"          class="transcript hidden"    title="headsup_bz">
+  <em id="headsup_bz_value"     class="cc10">BODY ZOOM</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 150%</em><em class="cc3"> 160%</em><br>
+  <em class="cc1"> 180%</em><em class="cc2" > 200%</em><em class="cc3"> 220%</em><br>
+ </div>
+ <!-- }}} -->
+ <!-- headsup_fs {{{ -->
+ <div id="headsup_fs"          class="transcript hidden"    title="headsup_fs">
+  <em id="headsup_fs_value"     class="cc10">BODY FONT SIZE</em><br>
+  <em class="cc1">  70%</em><em class="cc2" >  80%</em><em class="cc3">  90%</em><br>
+  <em class="cc1"> 100%</em><em class="cc2" > 110%</em><em class="cc3"> 120%</em><br>
+  <em class="cc1"> 130%</em><em class="cc2" > 140%</em><em class="cc3"> 150%</em><br>
+  <em class="cc1"> 160%</em><em class="cc2" > 170%</em><em class="cc3"> 180%</em><br>
+  <em class="cc1"> 190%</em><em class="cc2" > 200%</em><em class="cc3"> 210%</em><br>
+ </div>
+ <!-- }}} -->
+
+ <!-- dom_traversal {{{ -->
+ <div id="dom_traversal"   class="transcript hidden"        title="dom_traversal">
+ <!-- NodeIterator TreeWalker childNodes tagNodes {{{ -->
+  <em class = "toolbag_button cc5">NodeIterator</em><br>
+  <em class = "toolbag_button cc6">TreeWalker</em><br>
+  <em class = "toolbag_button cc7">childNodes</em><br>
+  <em class = "toolbag_button cc7">tagNodes</em><br>
+
+  <em  id="show_seekzone"  class="toolbag_button cc9"       title="show_seekzone">&nbsp;</em>
+  <em  id="pin_seekspot"   class="toolbag_button cc9"       title="pin_seekspot">&nbsp;</em>
+  <em  id="log_seekspot"   class="toolbag_button cc9"       title="log_seekspot">&nbsp;</em>
+  <!-- }}} -->
+  <!-- tools_node {{{ -->
+  <table>
+   <tr>
+    <th>node</th>
+    <td>
+     <input id="tools_node"     type="text"                title="tools_node"/>
+     <span class="cc2">html</span>
+     <span class="cc3">head</span>
+     <span class="cc4">body</span>
+    </td>
+   </tr>
+  </table>
+  <!-- }}} -->
+ </div>
+ <!-- }}} -->
+ <!-- test_panel: RELOAD CLEAR t_log_regex t_log_behavior - (onclick would not care for has_moved) {{{ -->
+ <div id="test_panel"      class="transcript hidden"     title="test_panel">
+  <em id="CLEAR"           class="toolbag_button cc1"    title="CLEAR"     > CLEAR      </em>
+  <em id="BEHAVIOR"        class="toolbag_button cc2"    title="BEHAVIOR"  > BEHAVIOR   </em>
+  <em id="HIGHLIGHT"       class="toolbag_button cc3"    title="HIGHLIGHT" > HIGHLIGHT  </em>
+  <em id="REGEX"           class="toolbag_button cc4"    title="REGEX"     > REGEX      </em>
+  <em id="EXPORT"          class="toolbag_button cc6"    title="EXPORT"    > EXPORT     </em>
+  <em id="IMPORT"          class="toolbag_button cc5"    title="IMPORT"    > IMPORT     </em>
+  <em id="RELOAD"          class="toolbag_button cc7"    title="RELOAD"    >&#x21BB;<br>RELOAD<br>&#x21BB;</em>
+ </div>
+ <!-- }}} -->
+
+  <!-- dev_log_map {{{-->
+  <div id="dev_log_map"    class="transcript hidden"     title="dev_log_map"
+   >
+   dev_log_map placeholder:<br>
+   <i class="todo">..should have been populated by <em>dom_tools.sync_logging</em> with the value of logging</i>
+
+  </div>
+  <!-- }}} -->
+ <!-- dom_load_tags (placeholder) {{{ -->
+ <div id="dom_load_tags"   class="transcript hidden"     title="dom_load_tags"
+  >
+  dom_load_tags placeholder:<br />
+  <i class="todo">...should have been populated by <em>dom_tools.show_tags</em> with the value of DOM_LOAD_TAG</i>
+
+ </div>
+ <!-- }}} -->
+
+ <!-- transcript1 {{{ -->
+ <div id="transcript1"     class="transcript hidden cleardiv"  title="transcript1"></div>
+ <!-- }}} -->
+ <!-- transcript2 {{{ -->
+ <div id="transcript2"     class="transcript hidden cleardiv"  title="transcript2"></div>
+ <!-- }}} -->
+
+ <!-- pivspot {{{-->
+ <div   id="pivspot"       class="hidden"                      title="pivspot">
+   <div id="pivspot_c">&#x00BB;</div>
+ </div>
+ <!--}}}-->
+ <!-- seeker {{{-->
+ <div  id = "seeker_PU"    class="seeker_P"                    title="seeker_PU"><div id="seeker_CU" >seeker up    </div></div>
+ <div  id = "seeker_PD"    class="seeker_P"                    title="seeker_PD"><div id="seeker_CD" >seeker_thumbs</div></div>
+
+ <div id = "seekspot_U"                                                        ></div>
+ <div id = "seekzone"      class="hotspot_frame"               title="seekzone"></div>
+ <div id = "seekspot_A"                                                >&#x2191;</div>
+ <div id = "seekspot_D"                                                        ></div>
+ <!--}}}-->
+<!--INLINE}}}-->
+`
+);
+load_html("dom_tools_html", dom_tools_html_data);
+</script>
+<!--}}}-->
+  <hr style="clear:both;">
+<!-- PROP_TOOLS .. (DOC EMBEDDED CHECKBOX CLONES) {{{-->
+<div class="transcript prop_bag"
+ style="
+ font-size   : 50%;
+ cursor      : pointer;
+ display     : grid;
+ grid-gap    : 0.5em;
+ align-items : start;
+ ">
+                                                                       
+ <em class="toolbag_button    " id="EV0_LISTEN"      style="grid-row:2"> EV0_LISTEN     </em>
+ <em class="toolbag_button    " id="EV1_DOWN"        style="grid-row:2"> EV1_DOWN       </em>
+ <em class="toolbag_button    " id="EV2_MOVE"        style="grid-row:2"> EV2_MOVE       </em>
+ <em class="toolbag_button    " id="EV3_UP"          style="grid-row:2"> EV3_UP         </em>
+ <em class="toolbag_button    " id="EV4_LONG_PRESS"  style="grid-row:2"> EV4_LONG_PRESS </em>
+ <em class="toolbag_button    " id="EV5_TOOL_CB"     style="grid-row:2"> EV5_TOOL_CB    </em>
+ <em class="toolbag_button    " id="EV6_CHANGED"     style="grid-row:2"> EV6_CHANGED    </em>
+ <em class="toolbag_button    " id="EV7_DISPATCH"    style="grid-row:2"> EV7_DISPATCH   </em>
+ <em class="toolbag_button    " id="EV8_FLOATLOG"    style="grid-row:2"> EV8_FLOATLOG   </em>
+                                                                       
+ <em class="toolbag_button    " id="S0_PATTERN"      style="grid-row:3"> S0_PATTERN     </em>
+ <em class="toolbag_button    " id="S1_RANGE"        style="grid-row:3"> S1_RANGE       </em>
+ <em class="toolbag_button    " id="S2_SELECT"       style="grid-row:3"> S2_SELECT      </em>
+ <em class="toolbag_button    " id="S3_SLOT"         style="grid-row:3"> S3_SLOT        </em>
+                                                                       
+ <em class="toolbag_button    " id="T0_STORE"        style="grid-row:4"> T0_STORE       </em>
+ <em class="toolbag_button    " id="T1_DOM_LOAD"     style="grid-row:4"> T1_DOM_LOAD    </em>
+ <em class="toolbag_button    " id="T2_GRID"         style="grid-row:4"> T2_GRID        </em>
+ <em class="toolbag_button    " id="T3_LAYOUT"       style="grid-row:4"> T3_LAYOUT      </em>
+ <em class="toolbag_button    " id="T4_PIVOT"        style="grid-row:4"> T4_PIVOT       </em>
+ <em class="toolbag_button    " id="T5_SPREAD"       style="grid-row:4"> T5_SPREAD      </em>
+ <em class="toolbag_button    " id="T6_SLOT"         style="grid-row:4"> T6_SLOT        </em>
+ <em class="toolbag_button    " id="T7_SHARE"        style="grid-row:4"> T7_SHARE       </em>
+ <em class="toolbag_button    " id="T8_TOOLBAR"      style="grid-row:4"> T8_TOOLBAR     </em>
+
+ <em class="toolbag_button    " id="IPC_LOG"         style="grid-row:4"> IPC_LOG        </em>
+
+ <em class="toolbag_button    " id="containers_hi"   style="grid-row:5" title="containers_hi"  >&#x00A7;</em>
+ <em class="toolbag_button    " id="words_exact"     style="grid-row:5" title="words_exact"    >&#x2261;</em>
+ <em class="toolbag_button    " id="words_segment"   style="grid-row:5" title="words_segment"  >&#x2282;</em>
+ <em class="toolbag_button    " id="words_head_tail" style="grid-row:5" title="words_head_tail">&#x2208;</em>
+ <em class="toolbag_button    " id="words_opcycle"   style="grid-row:5" title="words_opcycle"  >&#x27F3;</em>
+
+ <em class="toolbag_button big" id="RELOAD"          style="grid-row:6" title="RELOAD"         >&#x267B;</em>
+
+ <em class="toolbag_button big" id="scroll_smooth"   style="grid-row:6" title="scroll_smooth"  >scroll_smooth</em>
+ <em class="toolbag_button big" id="show_seekzone"   style="grid-row:6" title="show_seekzone"  >&#x2191;</em>
+ <em class="toolbag_button big" id="pin_seekspot"    style="grid-row:6" title="pin_seekspot"   >&#x1F4CC;</em>
+ <em class="toolbag_button big" id="log_seekspot"    style="grid-row:6" title="log_seekspot"   >log_seekspot</em>
+ <em class="toolbag_button big" id="split_wot"       style="grid-row:6" title="split_wot"      >split_wot</em>
+ <em class="toolbag_button big" id="lines_wot"       style="grid-row:6" title="lines_wot"      >lines_wot</em>
+
+ <em class="toolbag_button big" id="theme_dark"      style="grid-row:6" title="theme_dark"     >&#x2600; &#x263D;</em>
+ <em class="toolbag_button big" id="pat_sort"        style="grid-row:6" title="pat_sort"       >&#x2191;</em>
+ <em class="toolbag_button big"                      style="grid-row:6" title="console.clear()" onclick='console.clear("DOC");'>clear</em>
+
+</div>
+<!--}}}-->
+<!-- dom_tools }}}-->
+  <script>let snapshot_id;</script>
+
+<!--
+j:r script/doc_tools.html
+-->
+<!-- [doc_tools.html] {{{-->
+<!-- script {{{-->
+<script>
+let DOM_LOADER_LOG = false;
+let DOM_LOADER_TAG = false;
+/*_ init_doc_tools {{{*/
+let init_doc_tools = function()
+{
+    let some_are_logging = check_modules_state("logging");
+    let some_are_tagging = check_modules_state("tagging");
+
+if(some_are_logging) log("%c LOGGING: "+some_are_logging, lbb+lbH+lf8);
+if(some_are_tagging) log("%c TAGGING: "+some_are_tagging, lbb+lbH+lf8);
+
+    if(some_are_logging || some_are_tagging) {
+        dom_util.del_el_class(document.getElementById("doc_tools"), "minimized");
+        dom_util.del_el_class(document.getElementById("div_above"), "folded"   );
+    }
+
+    build_svg_X();
+};
+/*}}}*/
+/*_ build_svg_X {{{*/
+let build_svg_X = function()
+{
+//logXXX("build_svg_X")
+    /* [svg_X] path {{{*/
+    let svg_X           = document.getElementById("svg_X");
+    if(!svg_X) return;
+    let d = ""
+        +"M443.6,387.1"
+        +"L312.4,255.4"
+        +"l131.5-130"
+        +"c5.4-5.4,5.4-14.2,0-19.6"
+        +"l-37.4-37.6"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        + ""
+        +"L256,197.8"
+        +"L124.9,68.3"
+        +"c-2.6-2.6-6.1-4-9.8-4"
+        +"c-3.7,0-7.2,1.5-9.8,4"
+        +"L68,105.9"
+        +"c-5.4,5.4-5.4,14.2,0,19.6"
+        +"l131.5,130"
+        +"L68.4,387.1"
+        + " "
+        +"c-2.6,2.6-4.1,6.1-4.1,9.8"
+        +"c0,3.7,1.4,7.2,4.1,9.8"
+        +"l37.4,37.6"
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"L256,313.1"
+        +"l130.7,131.1"
+        + " "
+        +"c2.7,2.7,6.2,4.1,9.8,4.1"
+        +"c3.5,0,7.1-1.3,9.8-4.1"
+        +"l37.4-37.6"
+        +"c2.6-2.6,4.1-6.1,4.1-9.8"
+        +"C447.7,393.2,446.2,389.7,443.6,387.1"
+        +"z"
+        ;
+    svg_X.innerHTML     = "<path d='"+d+"'></path>";
+
+//console_dir("svg_X",svg_X)
+    /*}}}*/
+    /* [svg_32] CLONE {{{*/
+    let svg_32          = svg_X.cloneNode(true);
+    svg_32.style.width  = "32px";
+    svg_32.style.height = "32px";
+    svg_32.style.backgroundColor  = "rgba(255,000,255,0.3)";
+    svg_32.style.borderColor      = "rgba(255,000,255,0.5)";
+    svg_32.style.borderStyle      = "outset";
+    svg_32.style.borderRadius     = "32px";
+    svg_32.style.borderWidth      =  "2px";
+    svg_32.style.padding          =  "2px";
+    svg_32.style.transform        =  "rotate(45deg)";
+//console_dir("svg_32",svg_32)
+
+    svg_X.parentElement.appendChild(svg_32);
+    /*}}}*/
+    /* [data:image/svg+xml] parent div cursor {{{*/
+    let cursor
+//      = "url('stylesheet/svg_32.svg') 16 16, pointer";
+        = "url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnDQppZCAgICAgICAgICA9ICJzdmdfWCINCnhtbDpzcGFjZSAgID0gInByZXNlcnZlIg0KeG1sbnM6eGxpbmsgPSAiaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCnhtbG5zICAgICAgID0gImh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIg0KdmVyc2lvbiAgICAgPSAiMS4xIg0Kd2lkdGggICAgICAgPSAiMzJweCINCmhlaWdodCAgICAgID0gIjMycHgiDQp2aWV3Qm94ICAgICA9ICIwIDAgNTEyIDUxMiINCnN0eWxlICAgICAgID0gIg0KICAgIHdpZHRoICAgICAgICAgICAgOiAzMnB4Ow0KICAgIGhlaWdodCAgICAgICAgICAgOiAzMnB4Ow0KLyoNCiAgICBiYWNrZ3JvdW5kLWNvbG9yIDogI0YwRjQ7DQogICAgYm9yZGVyLWNvbG9yICAgICA6ICNGMEY4Ow0KICAgIGJvcmRlci1zdHlsZSAgICAgOiBvdXRzZXQ7DQogICAgYm9yZGVyLXJhZGl1cyAgICA6IDMycHg7DQogICAgYm9yZGVyLXdpZHRoICAgICA6IDJweDsNCiAgICBwYWRkaW5nICAgICAgICAgIDogMnB4Ow0KKi8NCiINCj4NCjxwYXRoIGQ9ICJNNDQzLjYsMzg3LjFMMzEyLjQsMjU1LjRsMTMxLjUtMTMwYzUuNC01LjQsNS40LTE0LjIsMC0xOS42bC0zNy40LTM3LjZjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDQNCiAgICBMMjU2LDE5Ny44TDEyNC45LDY4LjNjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDRMNjgsMTA1LjljLTUuNCw1LjQtNS40LDE0LjIsMCwxOS42bDEzMS41LDEzMEw2OC40LDM4Ny4xDQogICAgYy0yLjYsMi42LTQuMSw2LjEtNC4xLDkuOGMwLDMuNywxLjQsNy4yLDQuMSw5LjhsMzcuNCwzNy42YzIuNywyLjcsNi4yLDQuMSw5LjgsNC4xYzMuNSwwLDcuMS0xLjMsOS44LTQuMUwyNTYsMzEzLjFsMTMwLjcsMTMxLjENCiAgICBjMi43LDIuNyw2LjIsNC4xLDkuOCw0LjFjMy41LDAsNy4xLTEuMyw5LjgtNC4xbDM3LjQtMzcuNmMyLjYtMi42LDQuMS02LjEsNC4xLTkuOEM0NDcuNywzOTMuMiw0NDYuMiwzODkuNyw0NDMuNiwzODcuMXoiLz4NCjwvc3ZnPg=='), pointer";
+//console_dir("cursor", cursor)
+
+    svg_X.parentElement.style.cursor = cursor;
+
+//console_dir("svg_X.parentElement"             ,svg_X.parentElement             )
+//console_dir("svg_X.parentElement.style"       ,svg_X.parentElement.style       )
+//console_dir("svg_X.parentElement.style.cursor",svg_X.parentElement.style.cursor)
+    /*}}}*/
+};
+/*}}}*/
+/*_ check_modules_state {{{*/
+let DOM_MODULES;
+let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LOADER_LOG))
+{
+    let lfx = (state_name == "logging") ? lf3:lf5;
+
+    /* COLLECT LOADED MODULES {{{*/
+    if(!DOM_MODULES) {
+        DOM_MODULES
+            = [   { name : "dom_loader"  , module : dom_loader  } /* 00 */
+                , { name : "dom_log"     , module : dom_log     } /* 06 */
+                , { name : "dom_util"    , module : dom_util    } /* 07 */
+                , { name : "dom_details" , module : dom_details } /* 07 */
+                , { name : "dom_i18n"    , module : dom_i18n    } /* 08 */
+                , { name : "dom_prop"    , module : dom_prop    } /* 09 */
+                , { name : "dom_store"   , module : dom_store   } /* 10 */
+                , { name : "dom_fly"     , module : dom_fly     } /* 11 */
+                , { name : "dom_select"  , module : dom_select  } /* 13 */
+//              , { name : "dom_wot"     , module : dom_wot     } /* 13 */
+                , { name : "dom_sticky"  , module : dom_sticky  } /* 17 */
+                , { name : "dom_seek"    , module : dom_seek    } /* 18 */
+                , { name : "dom_share"   , module : dom_share   } /* 19 */
+                , { name : "dom_tools"   , module : dom_tools   } /* 23 */
+            ];
+
+    }
+    /*}}}*/
+    let some_are = "";
+    let module_names  = [];
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     let selector = "[title='"+state_name+" "+module.name+"']"; /* .. document.querySelector("[title='tagging dom_loader']"); */
+                     let el = document.querySelector( selector );
+                     if( el ) {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+
+                         let state = state_get_set_function();
+                         if( state ) module_names.push( module.name );
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+
+                         if( state )
+                             some_are += (some_are ? " ": "")+module.name;
+                     }
+                 }
+                );
+
+if(log_this) {
+    if(module_names.length) {
+        log("%c check_modules_state %c"+state_name, lbL,lbR+lfx);
+        for(let i=0; i < module_names.length; ++i)
+            log("%c → "+ module_names[i]+" is "+state_name, lfx);
+    }
+    else {
+        log("%c check_modules_state %c No module is "+state_name, lbL,lbR+lf8);
+    }
+}
+
+    return some_are;
+};
+/*}}}*/
+/*_ toggle_module_state {{{*/
+let toggle_module_state = function(el)
+{
+    if(el.tagName == "DIV")
+    {
+        let state_name
+            = el.id.endsWith("tagging")
+            ?                "tagging"
+            :                "logging";
+
+        check_modules_state(state_name, true);
+        return;
+    }
+
+    let [ state_name , module_name ] = el.title.split(" ");
+
+    let lfx = (state_name == "logging") ? lf3:lf5;
+log("%c toggle_module_state %c"+module_name+"%c"+state_name, lbL,lbC+lf9,lbR+lfx);
+
+    DOM_MODULES
+        .forEach(
+                 function({name , module})
+                 {
+                     if(name == module_name)
+                     {
+                         let state_get_set_function = ((state_name == "logging") ? module.logging : module.tagging);
+                         let state_was              = state_get_set_function();
+                         let state                  = state_get_set_function(!state_was);
+
+                         let l_x = state ? lfX[state ? 5:8] : lf0;
+if(state || DOM_LOADER_TAG || DOM_LOADER_LOG) log("%c "+module.name+" %c "+(state ? "is ":"not ")+state_name, lfx, l_x);
+
+                         dom_util.set_el_class_on_off(el, "blurred_frame", state);
+                     }
+                 }
+                 );
+};
+/*}}}*/
+/*➔ dom_loader {{{*/
+let dom_loader = (function()
+{
+if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
+
+    return { name : "dom_loader"
+        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
+
+        , toggle_module_state
+
+        /* DEBUG */
+        , check_modules_state
+    };
+}());
+/*}}}*/
+</script>
+<!--}}}-->
+<!--      doc_tools {{{-->
+<div  id="doc_tools" title="doc_tools_html_tag (210923:21h:09)" class="round_el doc_tool user_select_none minimized">
+    <!-- STYLE {{{-->
+    <style>
+/* doc_tools {{{*/
+#doc_tools {
+    user-select      : none;
+    position         : fixed; bottom:0.2em; right:15%;
+    margin           : 0;
+    z-index          : 101; /* above dom_tools */
+    border           : none                  !important;
+    border-radius    : 0.5em;
+    padding          : 0.3em;
+    box-shadow       : rgba( 64, 64, 64,0.2) 2px 2px 10px 5px;
+    text-align       : center;
+/*{{{
+    line-height      : 1.8em;
+}}}*/
+    font-size        : 200%;
+    transform-origin : 100% 100%;
+}
+#doc_tools.minimized {
+    transform        : scale(0.5);
+}
+
+#doc_tools>div{
+    margin           : 0;
+    padding          : 0.3em 1em 0.3em 1em;
+}
+#doc_tools>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(128,128,128,0.9)) !important;
+/*{{{
+background       : rgba(255,255,255,0.9);
+background       : rgba(255,255,255,0.1);
+}}}*/
+}
+#doc_tools.minimized>div {
+    background       : linear-gradient(to bottom, rgba(255,255,255,0.1), rgba(017,017,017,0.5)) !important;
+}
+
+    /*}}}*/
+    /* div_above {{{*/
+
+    #div_above {
+        display               : grid;
+        grid-auto-flow        : column;
+        align-items           : align-self;
+/*{{{
+      grid-template-columns : 1fr 1fr 1fr;
+      grid-template-rows    : min-content;
+      grid-auto-rows        : min-content;
+      grid-gap              : 1em;
+      justify-items         : stretch;
+      min-height            : 30em;
+}}}*/
+    }
+
+    .minimized #div_above       { pointer-events:none; }
+
+    #div_above                  { margin-bottom    : 0;           }
+    #div_above                  { border-radius    : 1em 1em 0 0; }
+    #div_above                  { padding          : 0;           }
+
+    #div_above.folded           { height           : 0.5em; overflow : hidden; }
+    #div_above.clicked          { height           : unset;                    }
+
+    #div_above::before          { font-size        : 150% !important; content:'\261E'; pointer-events:none; position:absolute; bottom:0.5em; right:0.5em; }
+    #doc_tools::after           { font-size        : 150% !important; content:'\261F'; pointer-events:none; position:absolute; bottom:0.5em; left :0.5em; }
+
+    #div_above                  { transition       : all 250ms       ease-out; }
+    #doc_tools::after           { transition       : all 150ms 500ms ease-out; }
+    #div_above::before          { transition       : all 150ms 600ms ease-out; }
+
+    #doc_tools::after           { transform        : rotate(-90deg); }
+    #doc_tools.minimized::after { transform        : rotate( 90deg); }
+
+    .minimized #div_above.folded::before          { transform        : rotate(-135deg); }
+               #div_above::before          { transform        : rotate( 90deg); }
+               #div_above.folded::before   { transform        : rotate(-90deg); }
+
+    /*}}}*/
+    /* div_above ... {{{*/
+
+    #div_above .blurred_frame        { color            : white           !important; }
+    #div_above .blurred_frame        { box-shadow       : 0.1em 0.1em 0.1em white;    }
+
+    #div_above     a                 { padding          : 0 0.5em 0 0.5em !important; }
+    #div_above     a                 { min-width        : 5em; }
+    #div_above     a                 { font-size        :  45%            !important; }
+
+
+    #div_above   span                 { margin-bottom   : 0.5em           !important; }
+    #div_above   a                    { margin-bottom   : 0.5em           !important; }
+
+    #div_above > div                  { background      : transparent     !important; }
+    #div_above > div                  { border          : none;                       }
+    #div_above > div                  { display         : inline-block;               }
+
+    #div_above > div                  { margin          : 0.5em;                      }
+    #div_above > div                  { padding         : 0;                          }
+    #div_above > div                  { vertical-align  : top             !important; }
+
+    #div_above > div > *              { float:left; clear:left; }
+
+    #div_above > div > p:nth-child(1) { font-size:80%; padding:0; margin:0; }
+
+    /*}}}*/
+    /* div_bellow {{{*/
+    #div_bellow {
+        margin-top       : 0;
+        border-radius    : 0   0   1em 1em;
+        padding          : 0.5em 2em !important;
+    }
+    #div_bellow>a {
+        font-size : 120%;
+    }
+    /*}}}*/
+    </style>
+    <!--}}}-->
+    <!-- SCRIPT {{{-->
+    <script>
+        /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+        "use strict";
+/* JSHint {{{*/
+/* globals dom_util, dom_i18n, log, lbH, lf2, lf3, lf4, lf6, lf7 */
+/* exported toggle_this */
+/*
+:?script>?+,/script>/-y *
+:!start explorer https://jshint.com/
+ */
+/*}}}*/
+/*_ toggle_this {{{*/
+let toggle_this = function(event,el)
+{
+if(DOM_LOADER_LOG) log("%c toggle_this("+el.id+")", lbH+lf7);
+
+    let div_above = el.previousElementSibling;
+    let doc_tools = el.parentElement;
+
+    let clicked_left = (event.offsetX > (el.offsetWidth/2));
+    if( clicked_left ) {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        if(dom_util.has_el_class(div_above, "folded"   ))     unfold_this(div_above);
+        else                                                    fold_this(div_above);
+    }
+
+    else {
+        if(dom_util.has_el_class(doc_tools, "minimized")) unminimize_this(doc_tools);
+        else {                                                  fold_this(div_above);
+            /*.........................................*/   minimize_this(doc_tools);
+        }
+    }
+};
+/*}}}*/
+/*_   minimize_this {{{*/
+let   minimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c minimize_this("+el.id+")", lbH+lf2);
+
+    if(!dom_util.has_el_class(el,"minimized"))
+        dom_util.add_el_class(el,"minimized");
+};
+/*}}}*/
+/*_ unminimize_this {{{*/
+let unminimize_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unminimize_this("+el.id+")", lbH+lf3);
+
+    if( dom_util.has_el_class(el,"minimized"))
+        dom_util.del_el_class(el,"minimized");
+};
+/*}}}*/
+/*_   fold_this {{{*/
+let   fold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c fold_this("+el.id+")", lbH+lf6);
+
+    if(!dom_util.has_el_class(el,"folded"))
+        dom_util.add_el_class(el,"folded");
+};
+/*}}}*/
+/*_ unfold_this {{{*/
+let unfold_this = function(el)
+{
+if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
+
+    if( dom_util.has_el_class(el,"folded"))
+        dom_util.del_el_class(el,"folded");
+};
+/*}}}*/
+    </script>
+    <!--}}}-->
+        <!-- div_above {{{-->
+        <div id="div_above" class="folded" onclick='if(event.target==this) unfold_this(this);'>
+            <div      id="div_log_csv"> <!--{{{-->
+                <span>TOOLS:</span>
+                <a title="dom_tools.t_log_csv"       class="em8 small" onclick='dom_tools.t_log_csv      (DOM_LOAD_ID                   );'>CSV</a>
+                <a title="dom_tools.t_log_status"    class="em8 small" onclick='dom_tools.t_log_status   (DOM_LOAD_ID                   );'>STATUS</a>
+                <a title="dom_tools.t_show_hotspot"  class="em5 small" onclick='dom_tools.t_show_hotspot();'                               >SHOW hotspot</a>
+                <a title="dom_tools.t_hide_hotspot"  class="em6 small" onclick='dom_tools.t_hide_hotspot();'                               >HIDE hotspot</a>
+                <a title="dom_tools.t_take_SNAPSHOT" class="em3 small" onclick='dom_tools.t_take_SNAPSHOT(DOM_LOAD_ID, snapshot_id, this);'>TAKE SNAPSHOT</a>
+                <a title="dom_tools.t_load_SNAPSHOT" class="em4 small" onclick='dom_tools.t_load_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>LOAD SNAPSHOT</a>
+                <a title="dom_tools.t_show_SNAPSHOT" class="em4 small" onclick='dom_tools.t_show_SNAPSHOT(DOM_LOAD_ID, snapshot_id      );'>SHOW SNAPSHOT</a>
+            </div>
+            <!--}}}-->
+            <div      id="div_fist_sticky"> <!--{{{-->
+                <span title="call a sticky function on sticky #1"                         >first sticky</span>
+                <a    title="format_pad" class="em8 small" onclick='dom_sticky.format_pad();'> format_pad </a>
+                <a    title="fit_font"   class="em8 small" onclick='dom_sticky.fit_font();'  > fit_font   </a>
+                <a    title="msg_fit"    class="em8 small" onclick='dom_sticky.msg_fit();'   > msg_fit    </a>
+            </div>
+            <!--}}}-->
+            <div      id="div_all_sticky"> <!--{{{-->
+                <span title   = "other sticky functions">all sticky</span>
+                <a    title   = "t_sticky_format_pad_all" class   = "em8 small" onclick = 'dom_sticky.t_sticky_format_pad_all(); '>t_sticky_format_pad_all</a>
+                <a    title   = "t_sticky_LOG" class   = "em8 small" onclick = 'dom_sticky.t_sticky_LOG(); '>t_sticky_LOG</a>
+                <a    title   = "show_seekzone" class   = "em8 small"
+                   onclick = '      dom_prop.toggle(   this.title);
+                   let state      = dom_prop.get   (   this.title);
+                   this.innerText = "PROP."+           this.title+" "+   (state ? "\u2714":"");
+                   console.log("%c dom_prop.toggle(\""+this.title+"\",\""+state+"\")", lbb+lbH+lf7);
+                   let classWas   = state ? "em8" : "em2";
+                   let classNow   = state ? "em2" : "em8";
+                   dom_util.set_el_class_removing(     this, classNow, classWas);
+                   '>PROP "show_seekzone"</a>
+            </div>
+            <!--}}}-->
+            <div id="div_logging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">logging</span>
+                <a title="logging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="logging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="logging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="logging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="logging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="logging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="logging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="logging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="logging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="logging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
+                <a title="logging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="logging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="logging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
+            </div>
+            <!--}}}-->
+            <div id="div_tagging" onclick='dom_loader.toggle_module_state(event.target);'
+                > <!--{{{-->
+                <span style="pointer-events:none;">tagging</span>
+                <a title="tagging dom_loader"  class="em1 small">LOADER </a> <!-- 00 -->
+                <a title="tagging dom_log"     class="em0 small">log    </a> <!-- 06 -->
+                <a title="tagging dom_util"    class="em8 small">util   </a> <!-- 07 -->
+                <a title="tagging dom_details" class="em8 small">details</a> <!-- 08 -->
+                <a title="tagging dom_i18n"    class="em8 small">i18n   </a> <!-- 09 -->
+                <a title="tagging dom_prop"    class="em3 small">prop   </a> <!-- 10 -->
+                <a title="tagging dom_store"   class="em7 small">store  </a> <!-- 11 -->
+                <a title="tagging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
+                <a title="tagging dom_select"  class="em4 small">select </a> <!-- 14 -->
+                <a title="tagging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
+                <a title="tagging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
+                <a title="tagging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
+                <a title="tagging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="tagging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
+            </div>
+            <!--}}}-->
+        </div>
+        <!--}}}-->
+    <!-- div_bellow {{{-->
+    <div id     ="div_bellow"
+         onclick='if(event.target == this) toggle_this(event,this);'
+         >
+<!--{{{
+            <a id="details_close" title="details_close"          class="em5 action" onclick='dom_details.details_close_opened();     '>                         <label>▲</label></a>
+            <a id="details_open"  title="details_open"           class="em5 action" onclick='dom_details.details_open_closed ();     '>                         <label>▼</label></a>
+            <a id="details_radio" title="details radio behavior" class="em5 action" onclick='dom_details.details_radio_toggle(event);'><input type="checkbox" /><label>&#x25B6;</label></a>
+}}}-->
+            <a                    title="page top"               class="em6 action" onclick='window.scrollTo(0,0                       );'>&#x2191;</a>
+            <a                    title="page bottom"            class="em6 action" onclick='window.scrollTo(0,dom_util.getPageHeight());'>&#x2193;</a>
+            <a                    title="dump csv and sticky"    class="em8 action" onclick='dom_tools.t_dump_csv_and_sticky();'          >&#x267B;</a>
+            <a                    title="reset"                  class="em8 action" onclick='dom_tools.t_void_SNAPSHOT();'                >&#x2715;</a>
+            <a                    title="reset & reload"         class="em2 action" onclick='document.location.reload();'                 >&#x21BB;</a>
+    </div>
+    <!--}}}-->
+</div>
+<!--}}}-->
+<!--}}}-->
+
+ </body>
+ <!-- check_load_html_results {{{-->
+ <script>
+    function check_load_html_results()
+    {
+        /* CSS {{{*/
+        const lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+        const lbH = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+        const lf2 = "color:#F00;";
+        const lf5 = "color:#0F0;";
+        const lf8 = "color:#AAA;";
+        const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
+        const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
+
+        /*}}}*/
+        /*  check_missing_id {{{*/
+        let check_missing_id = function(id)
+        {
+            let   shadow_host
+                = document.getElementById("shadow_host");
+
+            let   shadow_root
+                = shadow_host
+                ? shadow_host.shadowRoot
+                : null;
+
+            let el = shadow_root
+                ?    shadow_root.querySelector("#"+id)
+                :    document   .querySelector("#"+id);
+
+            if(!el ) return SKO+" #"+id+"\n";
+            console.log("%c"+SOK+" %c"+el.textContent,lbH+lf8,lf8);
+            return "";
+        };
+        /*}}}*/
+
+        let missing_ids = "";
+        let id;
+
+        id =     "dom_tools_html_tag";                missing_ids +=     check_missing_id(id) ;
+//      id =     "dom_grid_html_tag" ;                missing_ids +=     check_missing_id(id) ;
+
+        if(typeof DOM_DATA_JS_TAG    === 'undefined') missing_ids += "\n DOM_DATA_JS_TAG"     ; /* 05 */
+        if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ; /* 06 */
+        if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ; /* 07 */
+        if(typeof DOM_I18N_JS_TAG    === 'undefined') missing_ids += "\n DOM_I18N_JS_TAG"     ; /* 08 */
+        if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ; /* 09 */
+        if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ; /* 10 */
+//      if(typeof DOM_FLY_JS_TAG     === 'undefined') missing_ids += "\n DOM_FLY_JS_TAG"      ; /* 11 */
+
+//      if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ; /* 12 */
+//      if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ; /* 13 */
+//      if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ; /* 14 */
+
+//      if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ; /* 15 */
+//      if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ; /* 16 */
+//      if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 17 */
+//      if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 18 */
+//      if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 19 */
+
+//      if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 20 */
+//      if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 21 */
+
+//      if(typeof DOM_IPC_JS_TAG     === 'undefined') missing_ids += "\n DOM_IPC_JS_TAG"      ; /* 22 */
+        if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ; /* 23 */
+
+        /* print missing_ids {{{*/
+        if(missing_ids) {
+            console.log("%c"+DOM_LOAD_TAG+" MISSING IDs:", lbb+lf2);
+            console.log("%c"+ missing_ids  , lbH+lf2);
+            alert(           "MISSING IDs:\n"+ missing_ids);
+        }
+        /*}}}*/
+    }
+
+    setTimeout(check_load_html_results, 500);
+ </script>
+ <!--}}}-->
+</html>
+<!--
+ vim: sw=4
+-->
+

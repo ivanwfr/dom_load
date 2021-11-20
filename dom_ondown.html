@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>dom_ondown</title>
+  <!-- META {{{ -->
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
+  <meta                         http-equiv="Cache-control" content="no-cache">
+  <meta                         http-equiv="pragma"        content="no-cache">
+  <!-- }}} -->
+  <!-- [link] CSS {{{-->
+  <link id="dom_tools_css"  type="text/css" href="stylesheet/dom_tools.css"  rel="stylesheet"/>
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
+  <!--}}}-->
+ </head>
+ <body onload='set_title();'>
+  <!-- H1 {{{-->
+  <h1 style="clear:right; margin:1em; user-select:none;" title="onclick .. reload" onclick='document.location.reload();'>...</h1>
+  <!--}}}-->
+<!-- BUTTONS {{{-->
+  <div style="user-select:none;">
+
+   <b onclick="l_get_onWork_EL(        event)"        >click      </b> <br>checks onDown<br><br>
+   <b onclick="l_call_set_onDown_seekX(     )"        >shift-click</b> <br>checks onDown SEEK<br><br>
+
+  </div>
+<!--}}}-->
+  <!-- HTML {{{-->
+  <div style="display:grid; grid-template-columns : 1fr 1fr;">
+   <p style="margin:0; font-size:200px; background-color:#F002; border-radius:5%; text-align:center;">1
+   <p style="margin:0; font-size:200px; background-color:#0F02; border-radius:5%; text-align:center;">2
+  </div>
+  <!--}}}-->
+ <!-- SCRIPT set_title load_html {{{ -->
+ <script>
+  DOM_LOAD_ID       = "dom_ondown"; DOM_LOAD_TAG  = DOM_LOAD_ID+" (211119:16h:38)";
+  DOM_LOAD_PANELS   = "";
+  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+      document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>"
+          +"<b onclick='location.reload();' title='Reload'                                    > &#x21BB;</b>"
+          +"<b onclick='console.clear();'   title='clear console&#0010;...same with alt-click'> &#x2699;</b>"
+          ;
+  }
+  /*}}}*/
+  /*  load_html {{{*/
+  let load_html = function(id, html) {
+   if( document.getElementById(id) ) return;
+   let el       = document.createElement("DIV");
+   el.id        = id;
+   el.title     = id;
+   el.innerHTML = unescape(html);
+   document.body.appendChild(el);
+//console.log("load_html("+id+") ...done")
+  };
+  /*}}}*/
+ </script>
+ <!--}}}-->
+
+  <!-- SCRIPT UNDER TEST ... [right before DOMContentLoaded] [defer] .. DEPENDENCIES SOLVED BY PAGE ORDER AND IMPORT CALL {{{-->
+
+  <script id="dom_data_js"    src="script/dom_data.js"    defer></script> <!-- DATA    05 DATA                          -->
+  <script id="dom_log_js"     src="script/dom_log.js"     defer></script> <!-- LOG     06 data LOG util                 -->
+  <script id="dom_popup_js"   src="script/dom_popup.js"   defer></script>
+  <script id="dom_util_js"    src="script/dom_util.js"    defer></script> <!-- UTIL    07 data log UTIL(i18n)           -->
+  <script id="dom_details_js" src="script/dom_details.js" defer></script> <!-- DETAILS         log UTIL                 -->
+  <script id="dom_i18n_js"    src="script/dom_i18n.js"    defer></script> <!-- I18N    08 data log util I18N            -->
+  <script id="dom_prop_js"    src="script/dom_prop.js"    defer></script> <!-- PROP    09 data log util PROP            -->
+  <!--ipt id="dom_store_js"   src="script/dom_store.js"   defer></scri--> <!-- STORE   10 data log util      STORE      -->
+  <!--ipt id="dom_fly_js"     src="script/dom_fly.js"     defer></scri--> <!-- FLY     11 data log util prop store FLY  -->
+
+  <!--ipt id="dom_wording_js" src="script/dom_wording.js" defer></scri--> <!-- 11       log                        WORDING               -->
+  <!--ipt id="dom_select_js"  src="script/dom_select.js"  defer></scri--> <!-- 12  data log util prop       fly            SELECT  slot  -->
+  <!--ipt id="dom_wot_js"     src="script/dom_wot.js"     defer></scri-->
+  <script id="dom_slot_js"    src="script/dom_slot.js"    defer></script> <!-- 13  data log      prop                      select  SLOT  -->
+                                                                        
+  <!--ipt id="dom_hide_js"    src="script/dom_hide.js"    defer></scri--> <!-- 14  data log util prop store                             HIDE                          -->
+  <!--ipt id="dom_view_js"    src="script/dom_view.js"    defer></scri--> <!-- 15  data log util prop                                         VIEW                    -->
+  <!--ipt id="dom_sticky_js"  src="script/dom_sticky.js"  defer></scri--> <!-- 16  data log util prop store                                   view STICKY seek        -->
+  <script id="dom_seek_js"    src="script/dom_seek.js"    defer></script> <!-- 17  data log util prop                      select                  sticky SEEK        -->
+  <!--ipt id="dom_share_js"   src="script/dom_share.js"   defer></scri--> <!-- 18  data log util      store fly                                    sticky      SHARE  -->
+                                                                        
+  <!--ipt id="dom_grid_js"    src="script/dom_grid.js"    defer></scri--> <!-- 19  data log util                                                                       GRID         -->
+  <!--ipt id="dom_gutter_js"  src="script/dom_gutter.js"  defer></scri--> <!-- 20  data log util prop                                                                       GUTTER  -->
+                                                                        
+  <!--ipt id="dom_ipc_js"     src="script/dom_ipc.js"     defer></scri--> <!-- 21  log                                                                                               IPC        -->
+  <!--ipt id="dom_tools_js"   src="script/dom_tools.js"   defer></scri--> <!-- 22  data log util prop store fly            select        hide view sticky seek share   grid          ipc TOOLS  -->
+
+
+ <!--}}}-->
+ <!-- SCRIPT DOWN MOVE UP {{{-->
+ <script>
+/*  set_onDown_XY {{{*/
+let     onDown_XY = { x:0, y:0 };
+let set_onDown_XY = function(e, _caller)
+{
+    let      xy = get_event_XY(e);
+    onDown_XY.x = xy.x;
+    onDown_XY.y = xy.y;
+};
+/*}}}*/
+/*  get_event_XY {{{*/
+let get_event_XY = function(e)
+{
+    let x, y;
+    if(e.changedTouches) {
+        x = parseInt(e.changedTouches[0].clientX);
+        y = parseInt(e.changedTouches[0].clientY);
+    }
+    else {
+        x = parseInt(                  e.clientX);
+        y = parseInt(                  e.clientY);
+    }
+    return { x:x , y:y };
+};
+/*}}}*/
+/*_ [dom_tools  STUB] {{{*/
+let dom_tools  = (function() {
+    return { CSS_BACK                                  : "..."
+        ,    CSS_CONTAINER_SELECTED                       : "..."
+        ,    CSS_FADING                                   : "..."
+        ,    CSS_NUM_SELECTED                             : "..."
+        ,    CSS_ON_COOLDOWN                              : "..."
+        ,    LONG_PRESS_ARM                               : "..."
+        ,    DIR_NUM_NEXT                                : "..."
+        ,    DIR_NUM_PREV                                : "..."
+        ,    DIR_SLOT_NEXT                               : "..."
+        ,    DIR_SLOT_PREV                               : "..."
+        ,    t_get_tool                                     : "..."
+        ,    t_clr_container_selected                     : function() { console.log("t_clr_container_selected");               }
+        ,    t_dimm_mask_displayed                        : "..."
+        ,    t_get_EL_num                                 : "..."
+        ,    t_get_EL_slot                                : "..."
+        ,    t_get_body_zoom_percent                      : "..."
+        ,    t_get_container_selected                     : "..."
+        ,    t_get_dimm_mask                              : "..."
+        ,    t_get_has_moved                              : "..."
+        ,    t_get_onDown_EL                              : "..."
+        ,    t_get_onDown_XY                              : function() { console.log("t_get_onDown_XY");      return onDown_XY; }
+        ,    t_get_onWork_EL                              : "..."
+        ,    t_get_onWork_EL_last_used                    : "..."
+        ,    t_get_onWork_EL_num                          : function() { console.log("t_get_onWork_EL_num");  return 0;         }
+        ,    t_get_onWork_EL_slot                         : function() { console.log("t_get_onWork_EL_slot"); return 0;         }
+        ,    t_get_onWork_PANEL                           : "..."
+        ,    t_get_shadow_root                            : "..."
+        ,    t_is_a_tool_el                               : function() { console.log("t_is_a_tool_el");       return false;     }
+        ,    t_log_event_status_if_changed                : "..."
+        ,    t_scroll_not_done_yet                        : "..."
+        ,    t_seek_set_container_selected                : "..."
+        ,    t_set_onWork_EL                              : "..."
+        ,    t_store_consider_page_items_worth_storing    : "..."
+        ,    t_toggle_panel_magnified                     : "..."
+        ,    t_was_a_click                                : "..."
+        ,    t_was_a_misclick                             : "..."
+        ,    t_window_getSelection_removeAllRanges        : "..."
+    };
+}());
+/*}}}*/
+/*_ [dom_sticky STUB] {{{*/
+let dom_sticky = (function() {
+    return { CSS_POINT_00                : ""
+        ,    CSS_POINT_EE                : ""
+        ,    CSS_POINT_NE                : ""
+        ,    CSS_POINT_NW                : ""
+        ,    CSS_POINT_SE                : ""
+        ,    CSS_POINT_SW                : ""
+        ,    CSS_POINT_WW                : ""
+        ,    CSS_POINT_XX                : ""
+        ,    t_sticky_GET_NUM            : function() { console.log("t_sticky_GET_NUM");                   return 0;    }
+        ,    t_sticky_get_SEEK_NEXT      : function() { console.log("t_sticky_get_SEEK_NEXT");             return null; }
+        ,    t_sticky_get_onWork_STICKY  : function() { console.log("t_sticky_get_onWork_STICKY");         return null; }
+    };
+}());
+/*}}}*/
+/*_ [dom_select STUB] {{{*/
+let dom_select  = (function() {
+    return { SELECT_SLOT_MAX                 : 10
+        ,    clear_last_selected_slot       : function() { console.log("clear_last_selected_slot");      return     0; }
+        ,    get_last_highlighted_num          : function() { console.log("get_last_highlighted_num");         return     0; }
+        ,    get_last_selected_slot         : function() { console.log("get_last_selected_slot");        return     0; }
+        ,    get_slot_num_container          : function() { console.log("get_slot_num_container");         return  null; }
+        ,    is_a_select_tool                : function() { console.log("is_a_select_tool");               return false; }
+        ,    pattern2_get_sel_bag_thumbs_EM  : function() { console.log("pattern2_get_sel_bag_thumbs_EM"); return  null; }
+        ,    t_is_node_selected              : function() { console.log("t_is_node_selected");             return false; }
+        ,    t_select_get_ccs_length         : function() { console.log("t_select_get_ccs_length");        return     0; }
+        ,    t_select_get_slot_nodes_length  : function() { console.log("t_select_get_slot_nodes_length"); return     0; }
+        ,    t_select_get_slot_num_node      : function() { console.log("t_select_get_slot_num_node");     return  null; }
+        ,    t_select_get_slot_num_selected  : function() { console.log("t_select_get_slot_num_selected"); return     0; }
+        ,    t_select_get_slot_pattern       : function() { console.log("t_select_get_slot_pattern");      return    ""; }
+        ,    t_select_set_slot_num_selected  : function() { console.log("t_select_set_slot_num_selected"); return     0; }
+    };
+}());
+/*}}}*/
+/* RESOURCES */
+/*{{{*/
+
+/* DATA SEEKER */ let onWork_EL;
+/* DATA SEEKER */ let onDown_EL;
+/* DATA SEEKER */ let onWork_SEEK_TARGET;
+/* DATA SEEKER */ let seeker_CU;
+/* DATA SEEKER */ let seeker_PU;
+/* DATA STICKY */ let sticky;
+
+/* USE  SEEKER */ let t_seeker_PU_is_active        = function()                    { return false; };
+/* USE  SLOT   */ let t_get_EL_slot                = function()                    { return    -1; };
+
+/* OUT         */ let t_change_onWork_SEEK_TOOL    = function(seek_tool          ) {};
+/* OUT         */ let t_set_onDown_SEEK_label      = function(seek_label=""      ) {};
+
+/* OUT         */ let t_get_panel_scale            = function() { };
+/* OUT         */ let t_is_a_tool_el               = function() { };
+/* OUT         */ let t_seeker_isOn_SLOT_EL        = function() { };
+/* OUT         */ let t_fly_log_event_status       = function() { };
+/* OUT         */ let t_sticky_logt_msg_lfx        = function() { };
+
+/* DATA TOOL   */ const CSS_PRESSED                   = "pressed";
+/* DATA TOOL   */ let hotspot;
+/* DATA TOOL   */ let onWork_PANEL;
+/* DATA SEEKER */ let seekzone;
+
+/* OUT         */ let set_seeker_grab_done                = function(state) {};
+/* OUT         */ let t_seeker_SELECT_EL                  = function(el   ) {};
+/* OUT         */ let t_sticky_set_SEL_PASTE_TARGET_STATE = function(     ) {};
+
+/*}}}*/
+/* EVENTS */
+/*_ l_get_onWork_EL {{{*/
+let l_get_onWork_EL = function(e)
+{
+let caller = "l_get_onWork_EL";
+console.log(caller+": CALLING SEEKER");
+console.dir(e);
+
+    onWork_EL        = e.target;
+    onDown_EL        = e.target;
+    onWork_SEEK_TARGET = e.target;
+
+/*{{{
+// TODO
+    dom_seek.t_seekzone_clr_onWork_EL_pressed();
+    set_onDown_XY(e,caller);
+    dom_seek.t_seeker_onDown_1_INIT_CTRL_DEBOUNCE_INPUT(onWork_EL, onDown_XY);
+}}}*/
+
+}
+/*}}}*/
+/*_ l_call_set_onDown_seekX {{{*/
+let l_call_set_onDown_seekX = function(e)
+{
+let caller = "l_call_set_onDown_seekX";
+console.log(caller);
+
+    dom_seek.t_seeker_set_TOOL(onWork_EL);
+};
+/*}}}*/
+ </script>
+ <!--}}}-->
+ <!-- SCRIPT LISTENERS {{{-->
+ <script>
+/*_ DOWN {{{*/
+/*_ l_pointerdown_listener {{{*/
+let l_pointerdown_listener = function(e)
+{
+console.dir(e.target)
+    if(e.altKey) { console.log(); console.clear(); return; }
+    let caller = (e.shiftKey || (e.target.innerText.indexOf("shift") >= 0)) ? "SHIFT DOWN" : "DOWN";
+dom_log.logBIG(caller, dom_log.lf3);
+
+                l_get_onWork_EL(e);
+ if(e.shiftKey) l_call_set_onDown_seekX(e);
+};
+/*}}}*/
+/*}}}*/
+/*_ MOVE {{{*/
+
+/*}}}*/
+/*_ UP {{{*/
+/*_ l_pointerup_listener {{{*/
+let l_pointerup_listener  = function(e)
+{
+    if(e.altKey) return;
+let caller = "l_pointerup_listener";
+console.log(caller);
+console.dir(e);
+
+
+
+};
+/*}}}*/
+/*}}}*/
+ </script>
+ <!--}}}-->
+<!-- ADD LISTENERS {{{-->
+ <script>
+let l_add_listener_capture_active = function(el, ev, fn) { el.addEventListener(ev, fn, {capture:true, passive:false}); };
+let l_add_LISTENERS = function()
+{
+    if( ("ontouchstart" in document.documentElement) ) {
+        l_add_listener_capture_active(   window, "touchstart"       , l_pointerdown_listener);
+        l_add_listener_capture_active(   window, "touchend"         , l_pointerup_listener);
+    }
+    else {
+        l_add_listener_capture_active(   window, "mousedown"        , l_pointerdown_listener);
+        l_add_listener_capture_active(   window, "mouseup"          , l_pointerup_listener);
+    }
+};
+console.log(DOM_LOAD_ID+" LOADING DONE" );
+
+/* LISTENERS */
+console.log("ADDING LISTENERS");
+l_add_LISTENERS();
+
+/* STUBS */
+setTimeout(function() {
+    console.log("LOADING STUBS");
+    dom_log .t_log_IMPORT();
+    dom_util.t_util_IMPORT();
+    dom_i18n.t_i18n_IMPORT();
+    dom_prop.t_prop_IMPORT();
+    dom_slot.t_slot_IMPORT();
+    dom_seek.t_seek_IMPORT();
+}, 1000);
+
+ </script>
+ <!--}}}-->
+ </body>
+
+ <!-- check_load_html_results {{{-->
+ <script>
+    function check_load_html_results()
+    {
+        /* CSS {{{*/
+        const lbb = "font-size:150%; font-weight:900; margin:0 0 0 0;";
+        const lbH = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+        const lf2 = "color:#F00;";
+        const lf5 = "color:#0F0;";
+        const lf8 = "color:#AAA;";
+        const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
+        const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
+
+        console.log("%c"+DOM_LOAD_TAG, lbH+lf5);
+
+        let missing_ids  = "";
+        let id;
+        /*}}}*/
+        /*  check_missing_id {{{*/
+        let check_missing_id = function(id)
+        {
+            let   shadow_host
+                = document.getElementById("shadow_host");
+
+            let   shadow_root
+                = shadow_host
+                ? shadow_host.shadowRoot
+                : null;
+
+            let el = shadow_root
+                ?    shadow_root.querySelector("#"+id)
+                :    document   .querySelector("#"+id);
+
+            if(!el ) return SKO+" #"+id+"\n";
+            console.log("%c"+SOK+" %c"+el.textContent,lbH+lf8,lf8);
+            return "";
+        };
+        /*}}}*/
+
+
+
+
+        if(typeof DOM_DATA_JS_TAG    === 'undefined') missing_ids += "\n DOM_DATA_JS_TAG"     ; /* 05 */
+        if(typeof DOM_LOG_JS_TAG     === 'undefined') missing_ids += "\n DOM_LOG_JS_TAG"      ; /* 06 */
+        if(typeof DOM_UTIL_JS_TAG    === 'undefined') missing_ids += "\n DOM_UTIL_JS_TAG"     ; /* 07 */
+        if(typeof DOM_I18N_JS_TAG    === 'undefined') missing_ids += "\n DOM_I18N_JS_TAG"     ; /* 08 */
+        if(typeof DOM_PROP_JS_TAG    === 'undefined') missing_ids += "\n DOM_PROP_JS_TAG"     ; /* 09 */
+      //if(typeof DOM_STORE_JS_TAG   === 'undefined') missing_ids += "\n DOM_STORE_JS_TAG"    ; /* 10 */
+      //if(typeof DOM_FLY_JS_TAG     === 'undefined') missing_ids += "\n DOM_FLY_JS_TAG"      ; /* 11 */
+
+      //if(typeof DOM_WORDING_JS_TAG === 'undefined') missing_ids += "\n DOM_WORDING_JS_TAG"  ; /* 12 */
+        if(typeof DOM_SLOT_JS_TAG    === 'undefined') missing_ids += "\n DOM_SLOT_JS_TAG"     ; /* 13 */
+      //if(typeof DOM_SELECT_JS_TAG  === 'undefined') missing_ids += "\n DOM_SELECT_JS_TAG"   ; /* 14 */
+
+      //if(typeof DOM_HIDE_JS_TAG    === 'undefined') missing_ids += "\n DOM_HIDE_JS_TAG"     ; /* 15 */
+      //if(typeof DOM_VIEW_JS_TAG    === 'undefined') missing_ids += "\n DOM_VIEW_JS_TAG"     ; /* 16 */
+      //if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 17 */
+        if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 18 */
+      //if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 19 */
+
+      //if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 20 */
+      //if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 21 */
+
+      //if(typeof DOM_IPC_JS_TAG     === 'undefined') missing_ids += "\n DOM_IPC_JS_TAG"      ; /* 22 */
+      //if(typeof DOM_TOOLS_JS_TAG   === 'undefined') missing_ids += "\n DOM_TOOLS_JS_TAG"    ; /* 23 */
+
+        /* print missing_ids {{{*/
+        if(missing_ids) {
+            console.log("%c...MISSING IDs:", lbb+lf2);
+            console.log("%c"+ missing_ids  , lbH+lf2);
+            alert(           "MISSING IDs:\n"+ missing_ids);
+        }
+        /*}}}*/
+    }
+    setTimeout(check_load_html_results, 500);
+ </script>
+ <!--}}}-->
+</html>
+<!--
+ vim: sw=4
+-->
+

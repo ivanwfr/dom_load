@@ -1,7 +1,7 @@
 /* dom_view_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_VIEW_JS_ID        = "dom_view_js";
-const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (210928:16h:04)";
+const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (211119:17h:52)";
 let dom_view    = (function() {
 "use strict";
 /* JSHint {{{*/
@@ -120,9 +120,9 @@ let   view_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;

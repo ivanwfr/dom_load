@@ -1,28 +1,34 @@
 /* dom_gutter_js */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals window, document */
+/* globals dom_data, dom_log, dom_util, dom_store, dom_tools */
+
+/* exported dom_gutter, DOM_GUTTER_JS_TAG */
+
+/* eslint-disable complexity     */
+/* eslint-disable no-template-curly-in-string */
+/* eslint-disable max-depth */
+/* eslint-disable no-warning-comments */
+
 const DOM_GUTTER_JS_ID      = "dom_gutter_js";
-const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (200910:17h:33)";
+const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (211120:16h:17)";
+/*}}}*/
 let dom_gutter  = (function() {
 "use strict";
-/* JSHint {{{*/
-/* globals dom_data, dom_log, dom_util, dom_store, dom_tools */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
-/*}}}*/
 let   DOM_GUTTER_LOG        = false;
 let   DOM_GUTTER_TAG        = false;
 
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_gutter_IMPORT {{{*/
 /*{{{*/
 /*....................................*/
 let t_data     = {}        ;    /* 05 */
 let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
-let t_i18n     = {}        ;    /* 08 */
+/*  t_i18n     = {}        ; */ /* 08 */
 /*  t_prop     = {}        ; */ /* 09 */
 /*  t_store    = {}        ; */ /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
@@ -51,7 +57,7 @@ let t_gutter_IMPORT  = function(log_this)
     t_data    = dom_data   ;    /* 05 */
     t_log     = dom_log    ;    /* 06 */
     t_util    = dom_util   ;    /* 07 */
-    t_i18n    = dom_i18n   ;    /* 08 */
+/*  t_i18n    = dom_i18n   ; */ /* 08 */
 /*  t_prop    = dom_prop   ; */ /* 09 */
 /*  t_store   = dom_store  ; */ /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
@@ -99,9 +105,9 @@ let   gutter_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX                                    ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb                                              ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX                                    ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -123,6 +129,7 @@ let   gutter_DEPEND = function()
 
 };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /* MEMBERS */
@@ -356,6 +363,7 @@ let   caller = "is_hotspot_IN";
 let log_this = DOM_GUTTER_LOG || LOG_MAP.EV2_MOVE;
 
 /*}}}*/
+    if(!hotspot) return {};
     let urdl  = get_XY_URDL(hotspot.offsetLeft, hotspot.offsetTop, _caller);
 /*{{{*/
 if(log_this) {
@@ -413,8 +421,8 @@ let log_gutter = function(_caller, lfx=lf7)
 /* EXPORT */
 /*{{{*/
 return { name : "dom_gutter"
-    , logging : function(state) { return DOM_GUTTER_LOG = dom_util.t_util_set_state("DOM_GUTTER_LOG",state); }
-    , tagging : function(state) { return DOM_GUTTER_TAG = dom_util.t_util_set_state("DOM_GUTTER_TAG",state); }
+    , logging : (state) => { DOM_GUTTER_LOG = dom_util.t_util_set_state("DOM_GUTTER_LOG",state); }
+    , tagging : (state) => { DOM_GUTTER_TAG = dom_util.t_util_set_state("DOM_GUTTER_TAG",state); }
     , t_gutter_IMPORT
 
     /* const */

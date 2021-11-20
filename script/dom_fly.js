@@ -1,7 +1,7 @@
 /* dom_fly */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (210928:15h:56)"; /* eslint-disable-line no-unused-vars */
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211120:16h:22)"; /* eslint-disable-line no-unused-vars */
 let dom_fly     = (function() {
 "use strict";
 /* JSHint {{{*/
@@ -110,9 +110,9 @@ let   fly_INTERN = function()
     /* t_log {{{*/
     LOG_MAP = t_log.LOG_MAP;
 
-    [ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX ] = t_log.LOG_BG_ARR;
-    [ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           ] = t_log.LOG_XX_ARR;
-    [ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX ] = t_log.LOG_FG_ARR;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
 
     log                 = t_log.log;
     logBIG              = t_log.logBIG;
@@ -179,7 +179,7 @@ let t_fly_div_get = function()
 
     let fly_div_parent = get_fly_div_parent();
 
-    fly_div_parent.appendChild( fly_div );
+    if( fly_div_parent ) fly_div_parent.appendChild( fly_div );
 
     return fly_div;
 };
