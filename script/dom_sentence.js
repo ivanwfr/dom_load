@@ -1,15 +1,15 @@
 /** dom_sentence_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
-/* globals console */
-/* globals document */
-/* globals dom_data    */
-/* globals dom_log     */
-/* globals dom_popup   */
-/* globals dom_prop    */
-/* globals dom_store   */
-/* globals dom_tools   */
-/* globals dom_util    */
-/* globals dom_view    */
+/* globals console, document, localStorage */
+
+/* INLINE */
+/* globals dom_util , dom_sentence_util  */
+/* globals dom_tools, dom_sentence_tools */
+
+/* OPTIONAL */
+/* globals dom_log   */
+/* globals dom_popup */
+/* globals dom_view  */
 
 /* exported dom_sentence, DOM_SENTENCE_JS_TAG */
 
@@ -17,140 +17,93 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211119:19h:09)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211122:23h:29)";
 /*}}}*/
 let dom_sentence = (function() {
 "use strict";
 let   DOM_SENTENCE_LOG      = false;
 let   DOM_SENTENCE_TAG      = false;
 
-/* IMPORT */
-/*{{{*/
+/* IMPORT {{{*/
 /* eslint-disable no-unused-vars */
 /*➔ t_sentence_IMPORT {{{*/
 /*{{{*/
-let t_data     = {}          ;    /* 05 */
-/*......................................*/
-let t_log      = {}          ;    /* 06 */
-let t_popup    = {}          ;    /* 07 */
-let t_util     = {}          ;    /* 08 */
-let t_i18n     = {}          ;    /* 09 */
-let t_prop     = {}          ;    /* 10 */
-/* .....................................*/
-/*  t_store    = {}          ; */ /* 11 */
-/*  t_fly      = {}          ; */ /* 12 */
-/*  t_wording  = {}          ; */ /* 13 */
-/*  t_select   = {}          ; */ /* 14 */
-/*  t_slot     = {}          ; */ /* 15 */
-/* .....................................*/
-/*  t_hide     = {}          ; */ /* 16 */
-/*  t_view     = {}          ; */ /* 17 */
-/*  t_sticky   = {}          ; */ /* 18 */
-/*  t_seek     = {}          ; */ /* 19 */
-/*  t_share    = {}          ; */ /* 20 */
-/* .....................................*/
-/*  t_details  = {}          ; */ /* 21 */
-/*  t_wot      = {}          ; */ /* 22 */
-/*  t_sentence = {}          ; */ /* 23 */
-/*  t_grid     = {}          ; */ /* 24 */
-/*  t_gutter   = {}          ; */ /* 25 */
-/* .....................................*/
-/*  t_ipc      = {}          ; */ /* 26 */
-let t_tools    = {}          ;    /* 27 */
+
+let t_util     ;//= {}          ;    /* 08 */
+let t_tools    ;//= {}          ;    /* 27 */
+
 /*......................................*/
 /*}}}*/
-let t_sentence_IMPORT  = function(log_this)
+let t_sentence_IMPORT  = function(log_this,import_num)
 {
-/* LOAD {{{*/
-    t_data     = dom_data    ;    /* 05 */
-/* .....................................*/
-    t_log      = dom_log     ;    /* 06 */
-    t_popup    = dom_popup   ;    /* 07 */
-    t_util     = dom_util    ;    /* 08 */
-/*  t_i18n     = dom_i18n    ; */ /* 09 */
-    t_prop     = dom_prop    ;    /* 10 */
-/* .....................................*/
-/*  t_store    = dom_store   ; */ /* 11 */
-/*  t_fly      = dom_fly     ; */ /* 12 */
-/*  t_wording  = dom_wording ; */ /* 13 */
-/*  t_select   = dom_select  ; */ /* 14 */
-/*  t_slot     = dom_slot    ; */ /* 15 */
-/* .....................................*/
-/*  t_hide     = dom_hide    ; */ /* 16 */
-/*  t_view     = dom_view    ; */ /* 17 */
-/*  t_sticky   = dom_sticky  ; */ /* 18 */
-/*  t_seek     = dom_seek    ; */ /* 19 */
-/*  t_share    = dom_share   ; */ /* 20 */
-/* .....................................*/
-/*  t_details  = dom_details ; */ /* 21 */
-/*  t_wot      = dom_wot     ; */ /* 22 */
-/*  t_sentence = dom_sentence; */ /* 23 */
-/*  t_grid     = dom_grid    ; */ /* 24 */
-/*  t_gutter   = dom_gutter  ; */ /* 25 */
-/* .....................................*/
-/*  t_ipc      = dom_ipc     ; */ /* 26 */
-    t_tools    = dom_tools   ;    /* 27 */
-/* .....................................*/
-/*}}}*/
-    sentence_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_SENTENCE_LOG = DOM_SENTENCE_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SENTENCE_LOG"));
-    DOM_SENTENCE_TAG = DOM_SENTENCE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SENTENCE_TAG"));
+    DOM_SENTENCE_LOG = DOM_SENTENCE_LOG || localStorage_getItem("DOM_SENTENCE_LOG");
+    DOM_SENTENCE_TAG = DOM_SENTENCE_TAG || localStorage_getItem("DOM_SENTENCE_TAG");
 
     /*}}}*/
-if(log_this) log("%c 12 SENTENCE", lbH+lf2);
+    /* t_util {{{*/
+    if     (typeof dom_util           != "undefined") t_util  = dom_util         ;
+    else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util; /* script/stub/dom_sentence_util.js */
+    else console.warn("MISSING STUB FOR: [dom_util]");
+
+    /*}}}*/
+    /* t_tools {{{*/
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools        ;
+    else if(typeof dom_sentence_tools != "undefined") t_tools = dom_sentence_tools; /* script/stub/dom_sentence_tools.js */
+    else console.warn("MISSING STUB FOR: [dom_tools]");
+
+    /*}}}*/
+    sentence_INTERN();
+if(log_this) log("%c #"+import_num+" SENTENCE", lbH+lf2);
 };
 /*}}}*/
 /*_   sentence_INTERN {{{*/
-/*{{{*/
+/* dom_log {{{*/
 
-/* t_log */
-let LOG_MAP;
+let LOG_MAP = false;
 
-let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
-let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
-let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
-let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
+let lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lf0="";
+let lfX = [ lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9, lf0 ];
 
-/*  prop */
-let prop;
+let lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lb0="";
+let lbX = [ lb1 ,lb2 ,lb3 ,lb4 ,lb5 ,lb6 ,lb7 ,lb8 ,lb9, lb0 ];
+
+let lbA="", lbB="", lbC="", lbF="", lbH="", lbL="", lbR="", lbS="", lbb="";
+
+let log                = console.log;
+let log_key_val_group  = console.log;
+
+let console_dir        = (k,v) => { console.log(k+":"); console.dir(v); };
 
 /*}}}*/
 let   sentence_INTERN = function()
 {
-    /* t_log {{{*/
-    LOG_MAP = t_log.LOG_MAP;
+    /* dom_log OVERLOADED BY dom_log {{{*/
+    if(typeof dom_log != "undefined")
+    {
+        LOG_MAP = dom_log.LOG_MAP;
 
-    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
-    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
-    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
+        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
 
-    log                 = t_log.log;
-    logBIG              = t_log.logBIG;
-    logXXX              = t_log.logXXX;
-    log_caller          = t_log.log_caller;
-    log_json_one_liner  = t_log.log_json_one_liner;
-    log_key_val         = t_log.log_key_val;
-    log_key_val_group   = t_log.log_key_val_group;
+        log                 = dom_log.log;
+        log_key_val_group   = dom_log.log_key_val_group;
+        console_dir         = dom_log.console_dir;
+    }
     /*}}}*/
-    /* t_prop {{{*/
-    prop = t_prop;
-
-    /*}}}*/
-
-    sentence_DEPEND();
 };
 /*}}}*/
-/*_   sentence_DEPEND {{{*/
-let   sentence_DEPEND = function()
-{
-
-};
+/*_ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
 /*}}}*/
 
-/*{{{*/
+/*_ const {{{*/
+const LF    = String.fromCharCode(10);
 /* CSS {{{*/
 const CSS_SENTENCE_CONTAINER = "sentence_container";
 const CSS_SENTENCE           = "sentence";
@@ -187,26 +140,26 @@ const CAPTURING_PREV_END   = "("    + LAST_WORD  +")"; /* p1 capturing group */
 const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"; /* p2 capturing group */
 const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"; /* p3 capturing group */
 
-/*{{{
-const regexp_SENTENCE      = new RegExp(CAPTURING_PREV_END +  CAPTURING_BOUNDARY +  CAPTURING_NEXT_START,"gu");
-}}}*/
-let   regexp_SENTENCE;
-
 /*}}}*/
 
 let sentence_color_next = 1;
 let sentence_containers = [];
 /*}}}*/
+
 /*➔ t_SENTENCE_SPLIT {{{*/
+/*{{{*/
+let   regexp_SENTENCE;
+
+/*}}}*/
 let t_SENTENCE_SPLIT = function(container)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_SPLIT";
-let log_this = LOG_MAP.S2_SELECT;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
 if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(container)+")", lbH+lf1);
-if( log_this) t_log.console_dir("container",container        );
+if( log_this) console_dir("container",container        );
 /*}}}*/
     if(container.nodeName == "DETAILS") container.open = true;
     /* Firefox fail safe regexp_SENTENCE {{{*/
@@ -240,13 +193,13 @@ if( log_this) {
     log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
 }
 if( tag_this) {
-    logBIG(regexp_SENTENCE);
+    log("%c "+regexp_SENTENCE, lbb+lbH+lf7);
     log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
 }
 /*}}}*/
 
     let textContent = t_util.t_get_htmlEntities( container.textContent.trim() );
-if( log_this) log("textContent:%c"+t_data.LF+textContent, lb8);
+if( log_this) log("textContent:%c"+LF+textContent, lb8);
 
     textContent = textContent.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
 
@@ -277,7 +230,7 @@ if( log_this) log("textContent:%c"+t_data.LF+textContent, lb8);
         + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE
     ;
     let sentence_array = container.querySelectorAll( selector );
-if( log_this) t_log.console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
+if( log_this) console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
 
     for(let i=0; i < sentence_array.length; ++i)
     {
@@ -299,13 +252,13 @@ if( log_this) console.log(last_clause);
         + "<pre class='xpath'>"
         +  t_util.get_parent_tag_id_class_chain( container )
         + "</pre>";
-if( log_this) log("container.innerHTML:%c"+t_data.LF+container.innerHTML, lb7);
+if( log_this) log("container.innerHTML:%c"+LF+container.innerHTML, lb7);
 
     /*}}}*/
     /* APPLY CURRENT FONT SIZE TO POPUP SENTENCE SPLIT CONTAINER {{{*/
-    if(t_util.get_el_parent_fragment(container) || t_prop.get(t_data.TOOLS_TIER2))
+    if(typeof dom_popup != "undefined")
     {
-        t_popup.log_popup_fixed( innerHTML );
+        dom_popup.log_popup_fixed( innerHTML );
 
         let popup_sentence_container = t_SENTENCE_get_popup_sentence_container();
         if( popup_sentence_container )
@@ -318,10 +271,10 @@ if( log_this) log("container.innerHTML:%c"+t_data.LF+container.innerHTML, lb7);
 let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start /*, offset, string, group */)
 {
 /*{{{*/
-let log_this = LOG_MAP.S2_SELECT;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
-if(next_start == t_data.LF) next_start = "";
+if(next_start == LF) next_start = "";
 
 if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
                   ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
@@ -355,9 +308,10 @@ let t_SENTENCE_RESTORE = function(el)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_RESTORE";
-let log_this = LOG_MAP.S2_SELECT || DOM_SENTENCE_TAG;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
 
-if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
+if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
     if(!el) return "";
     let consumed_by = "";
 /*}}}*/
@@ -376,7 +330,7 @@ if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 
         if( container.innerHTML_SAVED )
         {
-            if( log_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
+if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
 
             container.style.touchAction = "";
 
@@ -391,9 +345,9 @@ if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 
     t_util.clear_el_classList(el, E12_FONT_SIZE_LIST);
 
-    t_popup.log_popup_hide();
+    if(typeof dom_popup != "undefined") dom_popup.log_popup_hide();
 
-if( log_this) log("...return ["+consumed_by+"]");
+if( tag_this) log("...return ["+consumed_by+"]");
     return consumed_by;
 };
 /*}}}*/
@@ -402,9 +356,10 @@ let t_SENTENCE_RESTORE_ALL = function()
 {
 /*{{{*/
 let   caller = "t_SENTENCE_RESTORE_ALL";
-let log_this = LOG_MAP.S2_SELECT || DOM_SENTENCE_TAG;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
 
-if( log_this) log("%c"+caller, lbH+lf2);
+if( tag_this) log("%c"+caller, lbH+lf2);
 /*}}}*/
 
     let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
@@ -421,6 +376,8 @@ let t_SENTENCE_GET_CONTAINERS = function()
 /*➔ t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT {{{*/
 let t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT = function()
 {
+    if(typeof dom_view == "undefined") return [];
+
     let el_array = [];
     for(let i=0; i < sentence_containers.length; ++i)
     {
@@ -444,7 +401,7 @@ let t_SENTENCE_offset_e12_font_size = function(offset=0)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_offset_e12_font_size";
-let log_this = LOG_MAP.S2_SELECT;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 
 /*}}}*/
     /* APPLY [offset] to [e12_font_size] {{{*/
@@ -474,7 +431,10 @@ if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
 /*_ t_SENTENCE_get_popup_sentence_container {{{*/
 let t_SENTENCE_get_popup_sentence_container = function()
 {
-    let dom_popup_div = t_popup.log_popup_div_get();
+    if(typeof dom_popup == "undefined")
+        return null;
+
+    let dom_popup_div = dom_popup.log_popup_div_get();
     if( dom_popup_div )
         return dom_popup_div.querySelector("."+CSS_SENTENCE_CONTAINER);
     else
@@ -498,7 +458,7 @@ let t_SENTENCE_drag_DXY = function(dxy)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_drag_DXY";
-let log_this = LOG_MAP.EV0_LISTEN;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
 
 /*}}}*/
     /* SENTENCE_DRAG_COOLDOWN_MS {{{*/
@@ -570,7 +530,7 @@ let t_SENTENCE_split_at_offset = function(from_container,offset)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_split_at_offset";
-let log_this = LOG_MAP.EV0_LISTEN;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
 
 /*
 :new C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/XPH/javascript/xpath.js
@@ -603,9 +563,23 @@ let t_SENTENCE_OUTLINE = function(sentence_el)
 };
 /*}}}*/
 /* ➔ EXPORT {{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_sentence"
-    ,    logging : (state) => DOM_SENTENCE_LOG = dom_util.t_util_set_state("DOM_SENTENCE_LOG",state)
-    ,    tagging : (state) => DOM_SENTENCE_TAG = dom_util.t_util_set_state("DOM_SENTENCE_TAG",state)
+    ,    logging : (state) => DOM_SENTENCE_LOG = t_store_set_state("DOM_SENTENCE_LOG",state)
+    ,    tagging : (state) => DOM_SENTENCE_TAG = t_store_set_state("DOM_SENTENCE_TAG",state)
     ,    t_sentence_IMPORT
 
     ,    CSS_SENTENCE_CONTAINER
