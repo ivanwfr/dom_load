@@ -7,7 +7,7 @@
 /* exported DOM_STORE_JS_TAG */
 
 const DOM_STORE_JS_ID       = "dom_store_js";
-const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211119:18h:10)";
+const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211122:23h:50)";
 /*}}}*/
 let dom_store   = (function() {
 "use strict";
@@ -45,7 +45,7 @@ let t_prop     = {}        ;    /* 09 */
 /*  t_tools    = {}        ; */ /* 23 */
 /*....................................*/
 /*}}}*/
-let t_store_IMPORT  = function(log_this)
+let t_store_IMPORT  = function(log_this,import_num)
 {
 /*{{{*/
 /* ...................................*/
@@ -81,7 +81,7 @@ let t_store_IMPORT  = function(log_this)
     DOM_STORE_TAG = DOM_STORE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_STORE_TAG"));
 
     /*}}}*/
-if(log_this) log("%c 09 store", lbH+lf9);
+if(log_this) log("%c "+import_num+" store", lbH+lf9);
 };
 /*}}}*/
 /*_   store_INTERN {{{*/
@@ -122,21 +122,9 @@ let   store_INTERN = function()
 
     /*}}}*/
     /* t_prop {{{*/
-    t_prop = dom_prop;
+    if( dom_prop ) t_prop = dom_prop;
 
     /*}}}*/
-    store_DEPEND();
-};
-/*}}}*/
-/*_   store_DEPEND {{{*/
-/*{{{*/
-let prop;
-
-/*}}}*/
-let   store_DEPEND = function()
-{
-    prop = t_prop;
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -678,7 +666,7 @@ if( log_this) {
 
         let isa_site_key = store_isa_site_key( key          ); let l_s = isa_site_key ? lf2 : lf0;
         let isa_page_key = store_isa_page_key( key          ); let l_p = isa_page_key ? lf6 : lf0;
-        let site_or_page =       prop.get( t_data.SITE_OR_PAGE ); let l_m = site_or_page ? lf2 : lf6;
+        let site_or_page =       t_prop.get( t_data.SITE_OR_PAGE ); let l_m = site_or_page ? lf2 : lf6;
 
         if(isa_site_key || isa_page_key || site_or_page)
         {
@@ -690,7 +678,7 @@ if( log_this) {
 /*}}}*/
     if( store_isa_site_key( key ) ) return  true;     /* EXPLICIT SITE SCOPE */
     if( store_isa_page_key( key ) ) return false;     /* EXPLICIT PAGE SCOPE */
-    /* CURRENT MODE or PAGE */      return prop && prop.get( t_data.SITE_OR_PAGE );
+    /* CURRENT MODE or PAGE */      return t_prop.get( t_data.SITE_OR_PAGE );
 };
 /*}}}*/
 /*… store_get_site_or_page_pfx_for_key {{{*/
@@ -748,11 +736,12 @@ let store_key_tail = function(k)
 };
 /*}}}*/
 
+// t_store_IMPORT(true);// ReferenceError: Cannot access 'dom_store' before initialization
 /* EXPORT */
 /*{{{*/
 return { name : "dom_store"
-    , logging : (state) => DOM_STORE_LOG = dom_util.t_util_set_state("DOM_STORE_LOG",state)
-    , tagging : (state) => DOM_STORE_TAG = dom_util.t_util_set_state("DOM_STORE_TAG",state)
+    , logging : (state) => DOM_STORE_LOG = t_store_set_state("DOM_STORE_LOG",state)
+    , tagging : (state) => DOM_STORE_TAG = t_store_set_state("DOM_STORE_TAG",state)
     , t_store_IMPORT
 
     , SITE_URL_TEMPLATE
@@ -794,3 +783,4 @@ return { name : "dom_store"
 
 }());
 
+//dom_store.t_store_IMPORT(true,0); /* auto import .. (dom_store is used before [dom_tools] call) */
