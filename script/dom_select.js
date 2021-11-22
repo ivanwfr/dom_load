@@ -1,6 +1,6 @@
 /* dom_select_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
-/* globals console, setTimeout, clearTimeout */
+/* globals console, localStorage, setTimeout, clearTimeout */
 /* globals window, document, Node, NodeFilter */
 
 /* globals dom_data     */
@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211119:19h:10)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211122:16h:48)";
 /*}}}*/
 let dom_select  = (function() {
 "use strict";
@@ -134,14 +134,6 @@ let   select_INTERN = function()
     prop = t_prop;
 
     /*}}}*/
-
-    select_DEPEND();
-};
-/*}}}*/
-/*_   select_DEPEND {{{*/
-let   select_DEPEND = function()
-{
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -3408,11 +3400,26 @@ let log_tools_filter_slot = function(slot)
 /*}}}*/
 
 /* EXPORT */
-/* dom_select {{{*/
+/*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_select"
-    , logging : (state) => DOM_SELECT_LOG = dom_util.t_util_set_state("DOM_SELECT_LOG",state)
-    , tagging : (state) => DOM_SELECT_TAG = dom_util.t_util_set_state("DOM_SELECT_TAG",state)
+    , logging : (state) => DOM_SELECT_LOG = t_store_set_state("DOM_SELECT_LOG",state)
+    , tagging : (state) => DOM_SELECT_TAG = t_store_set_state("DOM_SELECT_TAG",state)
     , t_select_IMPORT
+
     /* CONSTANTS {{{*/
     , SELECT_SLOT_MAX
     , SEL_CLASS_PREFIX
@@ -3494,4 +3501,5 @@ return { name : "dom_select"
 
 };
 /*}}}*/
+
 }());

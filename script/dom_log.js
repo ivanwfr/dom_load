@@ -1,7 +1,7 @@
 /* dom_log_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals console, setTimeout, clearTimeout */
+/* globals console, localStorage, setTimeout, clearTimeout */
 /* globals document, window, HTMLElement */
 /* globals dom_data   */
 /* globals dom_select */ /* OPTIONAL */
@@ -15,14 +15,8 @@
 /* eslint-disable prefer-spread */
 /* eslint-disable prefer-rest-params */
 
-/*
-:update|1,$y *
-:!start explorer https://jshint.com/
-*/
-
-
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211119:17h:47)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211122:23h:54)";
 /*}}}*/
 let dom_log     = (function() {
 "use strict";
@@ -30,6 +24,7 @@ let   DOM_LOG_LOG           = false;
 let   DOM_LOG_TAG           = false;
 /* IMPORT */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_log_IMPORT {{{*/
 /* t_data t_util {{{*/
 /*....................................*/
@@ -90,8 +85,8 @@ let t_log_IMPORT  = function(log_this)
 /*}}}*/
     log_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_LOG_LOG = DOM_LOG_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_LOG_LOG"));
-    DOM_LOG_TAG = DOM_LOG_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_LOG_TAG"));
+    DOM_LOG_LOG = DOM_LOG_LOG || localStorage_getItem("DOM_LOG_LOG");
+    DOM_LOG_TAG = DOM_LOG_TAG || localStorage_getItem("DOM_LOG_TAG");
 
     /*}}}*/
 if(log_this) log("%c 06 log", lbH+lf6);
@@ -159,15 +154,14 @@ let   log_INTERN = function()
     strip_pat                   = t_util.strip_pat;
 
     /*}}}*/
-    log_DEPEND();
 };
 /*}}}*/
-/*_   log_DEPEND {{{*/
-let   log_DEPEND = function()
-{
-
-};
+/*_ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
 /*}}}*/
+/* eslint-enable no-unused-vars */
 /*}}}*/
 /*➔ log_IMPORT {{{*/
 let log_IMPORT = function() /* eslint-disable-line complexity */
@@ -1408,9 +1402,23 @@ const dom_log_transcript
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_log"
-    , logging : (state) => DOM_LOG_LOG = dom_util.t_util_set_state("DOM_LOG_LOG",state)
-    , tagging : (state) => DOM_LOG_TAG = dom_util.t_util_set_state("DOM_LOG_TAG",state)
+    , logging : (state) => DOM_LOG_LOG = t_store_set_state("DOM_LOG_LOG",state)
+    , tagging : (state) => DOM_LOG_TAG = t_store_set_state("DOM_LOG_TAG",state)
     , t_log_IMPORT
 
     /* MODULES */

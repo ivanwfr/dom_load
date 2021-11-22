@@ -9,7 +9,7 @@ savascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (211120:16h:37)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (211122:23h:59)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -5394,7 +5394,7 @@ const DOC_TOOLS_ID            = "doc_tools";
 let dom_log_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211119:17h:47)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211122:23h:54)";
 
 let dom_log     = (function() {
 "use strict";
@@ -5410,8 +5410,8 @@ let t_log_IMPORT  = function(log_this)
     t_util    = dom_util   ;
     log_INTERN();
 
-    DOM_LOG_LOG = DOM_LOG_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_LOG_LOG"));
-    DOM_LOG_TAG = DOM_LOG_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_LOG_TAG"));
+    DOM_LOG_LOG = DOM_LOG_LOG || localStorage_getItem("DOM_LOG_LOG");
+    DOM_LOG_TAG = DOM_LOG_TAG || localStorage_getItem("DOM_LOG_TAG");
 if(log_this) log("%c 06 log", lbH+lf6);
 };
 let   L_CHK  =         "✔ ";
@@ -5457,12 +5457,10 @@ let   log_INTERN = function()
     strip_HTML                  = t_util.strip_HTML;
     strip_console_formatting    = t_util.strip_console_formatting;
     strip_pat                   = t_util.strip_pat;
-    log_DEPEND();
 };
-let   log_DEPEND = function()
-{
-
-};
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
 let log_IMPORT = function()
 {
  let d = "  defined";
@@ -6422,9 +6420,22 @@ const dom_log_transcript
 
         , log_TR_RESULT_set
     };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_log"
-    , logging : (state) => DOM_LOG_LOG = dom_util.t_util_set_state("DOM_LOG_LOG",state)
-    , tagging : (state) => DOM_LOG_TAG = dom_util.t_util_set_state("DOM_LOG_TAG",state)
+    , logging : (state) => DOM_LOG_LOG = t_store_set_state("DOM_LOG_LOG",state)
+    , tagging : (state) => DOM_LOG_TAG = t_store_set_state("DOM_LOG_TAG",state)
     , t_log_IMPORT
     , ...dom_LOG_MAP
     , ...dom_log_CHAR
@@ -6791,7 +6802,7 @@ return { log_popup
 let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_UTIL_JS_ID        = "dom_util_js";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211119:17h:52)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211122:23h:55)";
 
 let dom_util    = (function() {
 "use strict";
@@ -6805,8 +6816,8 @@ let t_util_IMPORT  = function(log_this)
     t_log     = dom_log    ;
     util_INTERN();
 
-    DOM_UTIL_LOG = DOM_UTIL_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_UTIL_LOG"));
-    DOM_UTIL_TAG = DOM_UTIL_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_UTIL_TAG"));
+    DOM_UTIL_LOG = DOM_UTIL_LOG || localStorage_getItem("DOM_UTIL_LOG");
+    DOM_UTIL_TAG = DOM_UTIL_TAG || localStorage_getItem("DOM_UTIL_TAG");
 if(log_this) log("%c 07 util", lbH+lf7);
 };
 let LOG_MAP;
@@ -6836,12 +6847,11 @@ let   util_INTERN = function()
         i18n_get        = dom_i18n.i18n_get;
 
     }
-    util_DEPEND();
-};
-let   util_DEPEND = function()
-{
 
 };
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
 const LF    = String.fromCharCode(10);
 const PREVENT_RELOAD_ID   = "prevent_reload";
 const PREVENT_RELOAD_DATA = "data:text/javascript;charset='utf-8',"
@@ -9823,17 +9833,24 @@ let get_parent_tag_id_class_chain = function(el)
 
     return parent_id_class_chain;
 };
-let t_util_set_state = function(label,state)
+let t_store_set_state = function(label,state)
 {
-    return (typeof dom_store == "undefined") ? !!state
-        :   !!dom_store.t_store_set_state(label, state);
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
 };
 
 return { name : "dom_util"
-    , logging : (state) => { DOM_UTIL_LOG = dom_util.t_util_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
-    , tagging : (state) => { DOM_UTIL_TAG = dom_util.t_util_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
+    , logging : (state) => { DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
+    , tagging : (state) => { DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
     , t_util_IMPORT
-    , t_util_set_state
+    , t_util_set_state : t_store_set_state
     , get_el_event_handler
     , get_el_event_handler_label
     , get_el_input_event_handler
@@ -10045,7 +10062,7 @@ return { name : "dom_util"
 let dom_i18n_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_I18N_JS_ID        = "dom_i18n_js";
-const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211119:17h:52)";
+const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211122:23h:56)";
 
 let dom_i18n    = (function() {
 "use strict";
@@ -10062,8 +10079,8 @@ let t_i18n_IMPORT  = function(log_this)
     t_util    = dom_util   ;
     util_INTERN();
 
-    DOM_I18N_LOG = DOM_I18N_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_I18N_LOG"));
-    DOM_I18N_TAG = DOM_I18N_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_I18N_TAG"));
+    DOM_I18N_LOG = DOM_I18N_LOG || localStorage_getItem("DOM_I18N_LOG");
+    DOM_I18N_TAG = DOM_I18N_TAG || localStorage_getItem("DOM_I18N_TAG");
 if(log_this) log("%c 07 util", lbH+lf7);
 };
 let LOG_MAP;
@@ -10087,12 +10104,10 @@ let   util_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
-    util_DEPEND();
 };
-let   util_DEPEND = function()
-{
-
-};
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
 let i18n_set_args = function(args)
 {
 
@@ -10420,9 +10435,22 @@ if(log_this) {
 }
 
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_i18n"
-    , logging : (state) => DOM_I18N_LOG = dom_util.t_util_set_state("DOM_I18N_LOG",state)
-    , tagging : (state) => DOM_I18N_TAG = dom_util.t_util_set_state("DOM_I18N_TAG",state)
+    , logging : (state) => DOM_I18N_LOG = t_store_set_state("DOM_I18N_LOG",state)
+    , tagging : (state) => DOM_I18N_TAG = t_store_set_state("DOM_I18N_TAG",state)
     , t_i18n_IMPORT
     , i18n_set_args
     , i18n_get
@@ -10546,7 +10574,7 @@ return { name : "dom_i18n"
 let dom_prop_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_PROP_JS_ID        = "dom_prop_js";
-const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (211119:17h:52)";
+const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (211122:23h:56)";
 let dom_prop    = (function() {
 "use strict";
 let   DOM_PROP_LOG          = false;
@@ -10561,8 +10589,8 @@ let t_prop_IMPORT  = function(log_this)
     t_util    = dom_util   ;
     prop_INTERN();
 
-    DOM_PROP_LOG = DOM_PROP_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_PROP_LOG"));
-    DOM_PROP_TAG = DOM_PROP_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_PROP_TAG"));
+    DOM_PROP_LOG = DOM_PROP_LOG || localStorage_getItem("DOM_PROP_LOG");
+    DOM_PROP_TAG = DOM_PROP_TAG || localStorage_getItem("DOM_PROP_TAG");
 if(log_this) log("%c 08 prop", lbH+lf8);
 };
 let LOG_MAP;
@@ -10594,12 +10622,10 @@ let   prop_INTERN = function()
     get_id_or_tag       = t_util.get_id_or_tag;
     mPadEnd             = t_util.mPadEnd;
     mPadStart           = t_util.mPadStart;
-    prop_DEPEND();
 };
-let   prop_DEPEND = function()
-{
-
-};
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
 const C_LEN_PREFIX     = 10;
 const C_LEN_ID         = 24;
 const C_LEN_REC_VALUE  = 10;
@@ -10857,9 +10883,22 @@ else if( log_this) log("...unchanged");
 if( log_this) prop.log(caller);
     return prop;
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_prop"
-    , logging : (state) => { DOM_PROP_LOG = dom_util.t_util_set_state("DOM_PROP_LOG",state); }
-    , tagging : (state) => { DOM_PROP_TAG = dom_util.t_util_set_state("DOM_PROP_TAG",state); }
+    , logging : (state) => { DOM_PROP_LOG = t_store_set_state("DOM_PROP_LOG",state); }
+    , tagging : (state) => { DOM_PROP_TAG = t_store_set_state("DOM_PROP_TAG",state); }
     , t_prop_IMPORT
 
     , init          : prop_init
@@ -10893,7 +10932,7 @@ return { name : "dom_prop"
 let dom_store_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_STORE_JS_ID       = "dom_store_js";
-const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211119:18h:10)";
+const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211122:23h:50)";
 
 let dom_store   = (function() {
 "use strict";
@@ -10904,7 +10943,7 @@ let t_log      = {}        ;
 let t_util     = {}        ;
 
 let t_prop     = {}        ;
-let t_store_IMPORT  = function(log_this)
+let t_store_IMPORT  = function(log_this,import_num)
 {
     t_data    = dom_data   ;
     t_log     = dom_log    ;
@@ -10915,7 +10954,7 @@ let t_store_IMPORT  = function(log_this)
 
     DOM_STORE_LOG = DOM_STORE_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_STORE_LOG"));
     DOM_STORE_TAG = DOM_STORE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_STORE_TAG"));
-if(log_this) log("%c 09 store", lbH+lf9);
+if(log_this) log("%c "+import_num+" store", lbH+lf9);
 };
 let LOG_MAP;
 
@@ -10942,14 +10981,7 @@ let   store_INTERN = function()
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
     LF = t_data.LF;
-    t_prop = dom_prop;
-    store_DEPEND();
-};
-let prop;
-let   store_DEPEND = function()
-{
-    prop = t_prop;
-
+    if( dom_prop ) t_prop = dom_prop;
 };
 let store_info_observers = [];
 let t_store_add_info_observer = function(observer)
@@ -11332,7 +11364,7 @@ if( log_this) {
 
         let isa_site_key = store_isa_site_key( key          ); let l_s = isa_site_key ? lf2 : lf0;
         let isa_page_key = store_isa_page_key( key          ); let l_p = isa_page_key ? lf6 : lf0;
-        let site_or_page =       prop.get( t_data.SITE_OR_PAGE ); let l_m = site_or_page ? lf2 : lf6;
+        let site_or_page =       t_prop.get( t_data.SITE_OR_PAGE ); let l_m = site_or_page ? lf2 : lf6;
 
         if(isa_site_key || isa_page_key || site_or_page)
         {
@@ -11344,7 +11376,7 @@ if( log_this) {
 
     if( store_isa_site_key( key ) ) return  true;
     if( store_isa_page_key( key ) ) return false;
-      return prop && prop.get( t_data.SITE_OR_PAGE );
+      return t_prop.get( t_data.SITE_OR_PAGE );
 };
 const SITE_URL_TEMPLATE = "www.localhost.com";
 let store_get_site_or_page_pfx_for_key = function(key)
@@ -11381,9 +11413,10 @@ let store_key_tail = function(k)
 {
     return k.substring(k.lastIndexOf(".") + 1);
 };
+// t_store_IMPORT(true);// ReferenceError: Cannot access 'dom_store' before initialization
 return { name : "dom_store"
-    , logging : (state) => DOM_STORE_LOG = dom_util.t_util_set_state("DOM_STORE_LOG",state)
-    , tagging : (state) => DOM_STORE_TAG = dom_util.t_util_set_state("DOM_STORE_TAG",state)
+    , logging : (state) => DOM_STORE_LOG = t_store_set_state("DOM_STORE_LOG",state)
+    , tagging : (state) => DOM_STORE_TAG = t_store_set_state("DOM_STORE_TAG",state)
     , t_store_IMPORT
 
     , SITE_URL_TEMPLATE
@@ -11410,6 +11443,7 @@ return { name : "dom_store"
 };
 }());
 
+//dom_store.t_store_IMPORT(true,0);
 /*INLINE}}}*/
 //@ sourceURL=dom_store.js
 `
@@ -11426,7 +11460,7 @@ return { name : "dom_store"
 let dom_fly_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211120:16h:22)";
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211122:16h:42)";
 let dom_fly     = (function() {
 "use strict";
 let   DOM_FLY_LOG           = false;
@@ -11488,6 +11522,7 @@ let DOC_LOG_DIV_HEADER;
 let FLOATLOG_MARGIN;
 let   fly_DEPEND = function()
 {
+
     DOC_EVT_DIV_EMPTY  = "<span style='font-size:500%;'>"+t_data.SYMBOL_GEAR+"</span>";
     DOC_LOG_DIV_EMPTY  = "<span style='font-size:500%;'>"+t_data.SYMBOL_BULB+"</span>";
     DOC_EVT_DIV_HEADER = "<span style='font-size:200%;'>"+t_data.SYMBOL_GEAR+"</span>";
@@ -11499,6 +11534,7 @@ let   fly_DEPEND = function()
             , right  :16 + t_data.SCROLLBAR_WIDTH
             , bottom :16 + t_data.SCROLLBAR_WIDTH
         };
+
 };
 let fly_div;
 let t_fly_div_get = function()
@@ -12852,9 +12888,22 @@ let   fly_tooltip_add_category_className = function(category_className)
 if(DOM_FLY_LOG) t_log.log("fly_tooltip_category_className_array: adding %c["+category_className+"]", lbH+lf7);
     }
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_fly"
-    , logging : (state) => DOM_FLY_LOG = dom_util.t_util_set_state("DOM_FLY_LOG",state)
-    , tagging : (state) => DOM_FLY_TAG = dom_util.t_util_set_state("DOM_FLY_TAG",state)
+    , logging : (state) => DOM_FLY_LOG = t_store_set_state("DOM_FLY_LOG",state)
+    , tagging : (state) => DOM_FLY_TAG = t_store_set_state("DOM_FLY_TAG",state)
     , t_fly_IMPORT
     , STAGE_0_NONE
     , STAGE_1_INPUT
@@ -12923,7 +12972,7 @@ return { name : "dom_fly"
 let dom_wording_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211119:17h:52)';
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211122:16h:58)';
 
 let dom_wording = (function() {
 "use strict";
@@ -13195,9 +13244,22 @@ if( log_this)
     if( e.preventDefault           ) e.preventDefault();
 
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_wording"
-    , logging : (state) => DOM_WORDING_LOG = dom_util.t_util_set_state("DOM_WORDING_LOG",state)
-    , tagging : (state) => DOM_WORDING_TAG = dom_util.t_util_set_state("DOM_WORDING_TAG",state)
+    , logging : (state) => DOM_WORDING_LOG = t_store_set_state("DOM_WORDING_LOG",state)
+    , tagging : (state) => DOM_WORDING_TAG = t_store_set_state("DOM_WORDING_TAG",state)
     , t_wording_IMPORT
 
     , t_wording_cycle
@@ -13220,7 +13282,7 @@ return { name : "dom_wording"
 let dom_select_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211119:19h:10)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211122:16h:48)";
 
 let dom_select  = (function() {
 "use strict";
@@ -13276,11 +13338,6 @@ let   select_INTERN = function()
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
     prop = t_prop;
-    select_DEPEND();
-};
-let   select_DEPEND = function()
-{
-
 };
 const SELECT_SLOT_MAX                = 10;
 const S_TOUCHED_WORD_LENGTH_MAX      = 256;
@@ -15681,11 +15738,23 @@ let log_tools_filter_slot = function(slot)
     let tooltip   = ccs[slot]             ? ccs[slot]            .toString() : t_data.SYMBOL_ELLIPSIS;
     t_tools.t_words_option_tooltip(innerHTML, tooltip);
 };
-return { name : "dom_select"
-    , logging : (state) => DOM_SELECT_LOG = dom_util.t_util_set_state("DOM_SELECT_LOG",state)
-    , tagging : (state) => DOM_SELECT_TAG = dom_util.t_util_set_state("DOM_SELECT_TAG",state)
-    , t_select_IMPORT
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
 
+return { name : "dom_select"
+    , logging : (state) => DOM_SELECT_LOG = t_store_set_state("DOM_SELECT_LOG",state)
+    , tagging : (state) => DOM_SELECT_TAG = t_store_set_state("DOM_SELECT_TAG",state)
+    , t_select_IMPORT
     , SELECT_SLOT_MAX
     , SEL_CLASS_PREFIX
     , ccs
@@ -15753,7 +15822,6 @@ return { name : "dom_select"
     , ccs_log
     , ccs_sort_pattern
 };
-
 }());
 /*INLINE}}}*/
 //@ sourceURL=dom_select.js
@@ -15771,7 +15839,7 @@ return { name : "dom_select"
 let dom_slot_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SLOT_JS_ID        = "dom_slot_js";
-const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (211119:18h:04)";
+const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (211122:16h:49)";
 
 let dom_slot    = (function() {
 "use strict";
@@ -15820,11 +15888,6 @@ let   slot_INTERN = function()
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
     prop                = t_prop;
-    slot_DEPEND();
-};
-let   slot_DEPEND = function()
-{
-
 };
 let get_slotted_pattern_count = function()
 {
@@ -15994,9 +16057,22 @@ let get_next_populated_slot = function(slot)
     }
     return slot_with_nodes;
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_slot"
-    , logging : (state) => DOM_SLOT_LOG = dom_util.t_util_set_state("DOM_SLOT_LOG",state)
-    , tagging : (state) => DOM_SLOT_TAG = dom_util.t_util_set_state("DOM_SLOT_TAG",state)
+    , logging : (state) => DOM_SLOT_LOG = t_store_set_state("DOM_SLOT_LOG",state)
+    , tagging : (state) => DOM_SLOT_TAG = t_store_set_state("DOM_SLOT_TAG",state)
     , t_slot_IMPORT
     , get_last_cleared_pattern : () => last_cleared_pattern
     , get_next_populated_slot
@@ -16028,7 +16104,7 @@ return { name : "dom_slot"
 let dom_hide_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_HIDE_JS_ID        = "dom_hide_js";
-const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (211119:17h:52)";
+const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (211122:16h:43)";
 
 let dom_hide    = (function() {
 "use strict";
@@ -16079,11 +16155,6 @@ let   hide_INTERN = function()
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
     prop = t_prop;
-    hide_DEPEND();
-};
-let   hide_DEPEND = function()
-{
-
 };
 const LAST_HIDDEN               = "last_hidden";
 const NODE_TO_HIDE_MASK         = "node_to_hide_mask";
@@ -17134,9 +17205,22 @@ if( log_this) log(caller);
     t_util.add_el_class(node.node_mask, LAST_HIDDEN);
     _notify_hide_container(node, caller, "LAST HIDDEN "+t_util.get_id_or_tag(node));
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name    : "dom_hide"
-    ,    logging : (state) => DOM_HIDE_LOG = dom_util.t_util_set_state("DOM_HIDE_LOG",state)
-    ,    tagging : (state) => DOM_HIDE_TAG = dom_util.t_util_set_state("DOM_HIDE_TAG",state)
+    ,    logging : (state) => DOM_HIDE_LOG = t_store_set_state("DOM_HIDE_LOG",state)
+    ,    tagging : (state) => DOM_HIDE_TAG = t_store_set_state("DOM_HIDE_TAG",state)
     ,    t_hide_IMPORT
     ,    dom_hide1_collect_nodes
     ,    dom_hide1_container_clicked
@@ -17177,7 +17261,8 @@ return { name    : "dom_hide"
 let dom_view_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_VIEW_JS_ID        = "dom_view_js";
-const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (211119:17h:52)";
+const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (211122:16h:57)";
+
 let dom_view    = (function() {
 "use strict";
 let   DOM_VIEW_LOG          = false;
@@ -17234,11 +17319,6 @@ let   view_INTERN = function()
     log_label_URDL      = t_log.log_label_URDL;
     console_dir         = t_log.console_dir;
     prop                = t_prop;
-
-    view_DEPEND();
-};
-let   view_DEPEND = function()
-{
 
 };
 let t_view1_is_el_in_viewport = function(el)
@@ -17775,9 +17855,22 @@ let t_view7_clr_panel_capped_from_xy = function(panel)
 
     t_util.del_el_class(panel, t_data.CSS_CAPPED);
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_view"
-    , logging : (state) => DOM_VIEW_LOG = dom_util.t_util_set_state("DOM_VIEW_LOG",state)
-    , tagging : (state) => DOM_VIEW_TAG = dom_util.t_util_set_state("DOM_VIEW_TAG",state)
+    , logging : (state) => DOM_VIEW_LOG = t_store_set_state("DOM_VIEW_LOG",state)
+    , tagging : (state) => DOM_VIEW_TAG = t_store_set_state("DOM_VIEW_TAG",state)
     , t_view_IMPORT
 
     , t_view1_is_el_in_viewport
@@ -17808,7 +17901,7 @@ return { name : "dom_view"
 let dom_sticky_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (211119:18h:05)";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (211122:16h:49)";
 
 let dom_sticky  = (function() {
 "use strict";
@@ -21901,9 +21994,22 @@ if( log_this) log("%c msg_pos_anchor_lines: %c"+t_data.LF+strip_HTML(msg_pos_anc
                                 +"</pre>"
                                 , CSS_STICKY_LOG);
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_sticky"
-    , logging : function(state) { return DOM_STICKY_LOG = dom_util.t_util_set_state("DOM_STICKY_LOG",state); }
-    , tagging : function(state) { return DOM_STICKY_TAG = dom_util.t_util_set_state("DOM_STICKY_TAG",state); }
+    , logging : function(state) { return DOM_STICKY_LOG = t_store_set_state("DOM_STICKY_LOG",state); }
+    , tagging : function(state) { return DOM_STICKY_TAG = t_store_set_state("DOM_STICKY_TAG",state); }
     , t_sticky_IMPORT
         , STICKY_MAX
 
@@ -22023,7 +22129,7 @@ return { name : "dom_sticky"
 let dom_seek_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211119:17h:52)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211122:16h:46)";
 
 let dom_seek    = (function() {
 "use strict";
@@ -23925,9 +24031,22 @@ let t_seeker_from_to_slot_num = function(from_slot, from_num, to_slot, to_num)
     }
 
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_seek"
-    , logging : (state) => DOM_SEEK_LOG = dom_util.t_util_set_state("DOM_SEEK_LOG",state)
-    , tagging : (state) => DOM_SEEK_TAG = dom_util.t_util_set_state("DOM_SEEK_TAG",state)
+    , logging : (state) => DOM_SEEK_LOG = t_store_set_state("DOM_SEEK_LOG",state)
+    , tagging : (state) => DOM_SEEK_TAG = t_store_set_state("DOM_SEEK_TAG",state)
     , t_seek_IMPORT
 
     ,    CSS_SEEK0_ONDOC
@@ -24026,7 +24145,7 @@ return { name : "dom_seek"
 let dom_share_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_SHARE_JS_ID       = "dom_share_js";
-const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (211120:14h:14)";
+const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (211122:16h:48)";
 
 let dom_share   = (function() {
 "use strict";
@@ -24097,10 +24216,6 @@ let   share_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
-    share_DEPEND();
-};
-let   share_DEPEND = function()
-{
 
 };
 const MAILTO_SUBJ          = "RTabs export: ";
@@ -24848,9 +24963,22 @@ let log_this = DOM_SHARE_LOG || LOG_MAP.T7_SHARE;
 if( log_this) log_key_val_group(caller, { data_hostname , data_page_pfx });
     return { data_hostname , data_page_pfx };
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_share"
-    , logging : (state) => DOM_SHARE_LOG = dom_util.t_util_set_state("DOM_SHARE_LOG",state)
-    , tagging : (state) => DOM_SHARE_TAG = dom_util.t_util_set_state("DOM_SHARE_TAG",state)
+    , logging : (state) => DOM_SHARE_LOG = t_store_set_state("DOM_SHARE_LOG",state)
+    , tagging : (state) => DOM_SHARE_TAG = t_store_set_state("DOM_SHARE_TAG",state)
     , t_share_IMPORT
 
     , t_share1_EXPORT
@@ -24878,7 +25006,7 @@ return { name : "dom_share"
 let dom_details_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211119:17h:51)";
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211122:16h:25)";
 
 let dom_details         = (function() {
 "use strict";
@@ -25357,7 +25485,7 @@ if(DOM_DETAILS_LOG) logBIG("restore_details_ontoggle_listener",6);
         }
         , DETAILS_ONTOGGLE_LISTENER_DELAY);
 };
-let t_details_set_state = function(label,state)
+let t_store_set_state = function(label,state)
 {
     if(    state != undefined)
     {
@@ -25371,11 +25499,9 @@ let t_details_set_state = function(label,state)
 };
 
 return { name    : "dom_details"
-    ,    logging : (state) => { DOM_DETAILS_LOG = dom_details.t_details_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
-    ,    tagging : (state) => { DOM_DETAILS_TAG = dom_details.t_details_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
+    ,    logging : (state) => { DOM_DETAILS_LOG = t_store_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
+    ,    tagging : (state) => { DOM_DETAILS_TAG = t_store_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
     ,    t_details_IMPORT
-    ,    t_details_set_state
-
     ,    details_onload                 : details_handler.details_onload
     ,    details_radio_toggle
     ,    details_has_closed_el_parent
@@ -25922,67 +26048,64 @@ return { name    : "dom_wot"
 let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211119:19h:09)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211122:23h:29)";
 
 let dom_sentence = (function() {
 "use strict";
 let   DOM_SENTENCE_LOG      = false;
 let   DOM_SENTENCE_TAG      = false;
-let t_data     = {}          ;
-
-let t_log      = {}          ;
-let t_popup    = {}          ;
-let t_util     = {}          ;
-let t_i18n     = {}          ;
-let t_prop     = {}          ;
-let t_tools    = {}          ;
-let t_sentence_IMPORT  = function(log_this)
+let t_util     ;//= {}          ;
+let t_tools    ;//= {}          ;
+let t_sentence_IMPORT  = function(log_this,import_num)
 {
 
-    t_data     = dom_data    ;
-
-    t_log      = dom_log     ;
-    t_popup    = dom_popup   ;
-    t_util     = dom_util    ;
-
-    t_prop     = dom_prop    ;
-    t_tools    = dom_tools   ;
+    DOM_SENTENCE_LOG = DOM_SENTENCE_LOG || localStorage_getItem("DOM_SENTENCE_LOG");
+    DOM_SENTENCE_TAG = DOM_SENTENCE_TAG || localStorage_getItem("DOM_SENTENCE_TAG");
+    if     (typeof dom_util           != "undefined") t_util  = dom_util         ;
+    else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util;
+    else console.warn("MISSING STUB FOR: [dom_util]");
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools        ;
+    else if(typeof dom_sentence_tools != "undefined") t_tools = dom_sentence_tools;
+    else console.warn("MISSING STUB FOR: [dom_tools]");
     sentence_INTERN();
-
-    DOM_SENTENCE_LOG = DOM_SENTENCE_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SENTENCE_LOG"));
-    DOM_SENTENCE_TAG = DOM_SENTENCE_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_SENTENCE_TAG"));
-if(log_this) log("%c 12 SENTENCE", lbH+lf2);
+if(log_this) log("%c #"+import_num+" SENTENCE", lbH+lf2);
 };
-let LOG_MAP;
+let LOG_MAP = false;
 
-let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
-let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
-let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
-let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
-let prop;
+let lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lf0="";
+let lfX = [ lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9, lf0 ];
+
+let lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lb0="";
+let lbX = [ lb1 ,lb2 ,lb3 ,lb4 ,lb5 ,lb6 ,lb7 ,lb8 ,lb9, lb0 ];
+
+let lbA="", lbB="", lbC="", lbF="", lbH="", lbL="", lbR="", lbS="", lbb="";
+
+let log                = console.log;
+let log_key_val_group  = console.log;
+
+let console_dir        = (k,v) => { console.log(k+":"); console.dir(v); };
 let   sentence_INTERN = function()
 {
 
-    LOG_MAP = t_log.LOG_MAP;
+    if(typeof dom_log != "undefined")
+    {
+        LOG_MAP = dom_log.LOG_MAP;
 
-    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
-    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
-    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
+        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
 
-    log                 = t_log.log;
-    logBIG              = t_log.logBIG;
-    logXXX              = t_log.logXXX;
-    log_caller          = t_log.log_caller;
-    log_json_one_liner  = t_log.log_json_one_liner;
-    log_key_val         = t_log.log_key_val;
-    log_key_val_group   = t_log.log_key_val_group;
-    prop = t_prop;
-    sentence_DEPEND();
-};
-let   sentence_DEPEND = function()
-{
+        log                 = dom_log.log;
+        log_key_val_group   = dom_log.log_key_val_group;
+        console_dir         = dom_log.console_dir;
+    }
 
 };
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
+const LF    = String.fromCharCode(10);
+
 const CSS_SENTENCE_CONTAINER = "sentence_container";
 const CSS_SENTENCE           = "sentence";
 const CSS_CLAUSE             = "clause";
@@ -26000,18 +26123,18 @@ const           FIRST_WORD = WORD +"+";
 const CAPTURING_PREV_END   = "("    + LAST_WORD  +")";
 const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")";
 const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
-let   regexp_SENTENCE;
 let sentence_color_next = 1;
 let sentence_containers = [];
+let   regexp_SENTENCE;
 let t_SENTENCE_SPLIT = function(container)
 {
 
 let   caller = "t_SENTENCE_SPLIT";
-let log_this = LOG_MAP.S2_SELECT;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
 if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(container)+")", lbH+lf1);
-if( log_this) t_log.console_dir("container",container        );
+if( log_this) console_dir("container",container        );
 
     if(container.nodeName == "DETAILS") container.open = true;
 
@@ -26040,11 +26163,11 @@ if( log_this) {
     log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
 }
 if( tag_this) {
-    logBIG(regexp_SENTENCE);
+    log("%c "+regexp_SENTENCE, lbb+lbH+lf7);
     log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
 }
     let textContent = t_util.t_get_htmlEntities( container.textContent.trim() );
-if( log_this) log("textContent:%c"+t_data.LF+textContent, lb8);
+if( log_this) log("textContent:%c"+LF+textContent, lb8);
 
     textContent = textContent.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
     container.innerHTML_SAVED
@@ -26066,7 +26189,7 @@ if( log_this) log("textContent:%c"+t_data.LF+textContent, lb8);
         + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE
     ;
     let sentence_array = container.querySelectorAll( selector );
-if( log_this) t_log.console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
+if( log_this) console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
 
     for(let i=0; i < sentence_array.length; ++i)
     {
@@ -26084,10 +26207,10 @@ if( log_this) console.log(last_clause);
         + "<pre class='xpath'>"
         +  t_util.get_parent_tag_id_class_chain( container )
         + "</pre>";
-if( log_this) log("container.innerHTML:%c"+t_data.LF+container.innerHTML, lb7);
-    if(t_util.get_el_parent_fragment(container) || t_prop.get(t_data.TOOLS_TIER2))
+if( log_this) log("container.innerHTML:%c"+LF+container.innerHTML, lb7);
+    if(typeof dom_popup != "undefined")
     {
-        t_popup.log_popup_fixed( innerHTML );
+        dom_popup.log_popup_fixed( innerHTML );
 
         let popup_sentence_container = t_SENTENCE_get_popup_sentence_container();
         if( popup_sentence_container )
@@ -26098,10 +26221,10 @@ if( log_this) log("container.innerHTML:%c"+t_data.LF+container.innerHTML, lb7);
 let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
 {
 
-let log_this = LOG_MAP.S2_SELECT;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
-if(next_start == t_data.LF) next_start = "";
+if(next_start == LF) next_start = "";
 
 if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
                   ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
@@ -26125,9 +26248,10 @@ let t_SENTENCE_RESTORE = function(el)
 {
 
 let   caller = "t_SENTENCE_RESTORE";
-let log_this = LOG_MAP.S2_SELECT || DOM_SENTENCE_TAG;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
 
-if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
+if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
     if(!el) return "";
     let consumed_by = "";
     let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
@@ -26139,7 +26263,7 @@ if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 
         if( container.innerHTML_SAVED )
         {
-            if( log_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
+if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
 
             container.style.touchAction = "";
 
@@ -26152,18 +26276,19 @@ if( log_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
     }
     t_util.clear_el_classList(el, E12_FONT_SIZE_LIST);
 
-    t_popup.log_popup_hide();
+    if(typeof dom_popup != "undefined") dom_popup.log_popup_hide();
 
-if( log_this) log("...return ["+consumed_by+"]");
+if( tag_this) log("...return ["+consumed_by+"]");
     return consumed_by;
 };
 let t_SENTENCE_RESTORE_ALL = function()
 {
 
 let   caller = "t_SENTENCE_RESTORE_ALL";
-let log_this = LOG_MAP.S2_SELECT || DOM_SENTENCE_TAG;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
 
-if( log_this) log("%c"+caller, lbH+lf2);
+if( tag_this) log("%c"+caller, lbH+lf2);
     let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
     for(let i = 0; i <      node_list.length; ++i)
         t_SENTENCE_RESTORE( node_list[i] );
@@ -26174,6 +26299,8 @@ let t_SENTENCE_GET_CONTAINERS = function()
 };
 let t_SENTENCE_GET_CONTAINERS_IN_VIEWPORT = function()
 {
+    if(typeof dom_view == "undefined") return [];
+
     let el_array = [];
     for(let i=0; i < sentence_containers.length; ++i)
     {
@@ -26193,7 +26320,7 @@ let t_SENTENCE_offset_e12_font_size = function(offset=0)
 {
 
 let   caller = "t_SENTENCE_offset_e12_font_size";
-let log_this = LOG_MAP.S2_SELECT;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
     let num = offset + parseInt( e12_font_size.substring(2) );
     num     = Math.max( 1, num);
     num     = Math.min(12, num);
@@ -26211,7 +26338,10 @@ if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
 };
 let t_SENTENCE_get_popup_sentence_container = function()
 {
-    let dom_popup_div = t_popup.log_popup_div_get();
+    if(typeof dom_popup == "undefined")
+        return null;
+
+    let dom_popup_div = dom_popup.log_popup_div_get();
     if( dom_popup_div )
         return dom_popup_div.querySelector("."+CSS_SENTENCE_CONTAINER);
     else
@@ -26228,7 +26358,7 @@ let t_SENTENCE_drag_DXY = function(dxy)
 {
 
 let   caller = "t_SENTENCE_drag_DXY";
-let log_this = LOG_MAP.EV0_LISTEN;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
     let  this_MS = new Date().getTime();
 
     let time_ellapsed = (this_MS - sentence_drag_last_MS);
@@ -26278,7 +26408,7 @@ let t_SENTENCE_split_at_offset = function(from_container,offset)
 {
 
 let   caller = "t_SENTENCE_split_at_offset";
-let log_this = LOG_MAP.EV0_LISTEN;
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
     let offset_container = t_util.get_node_sibling_at_offset( from_container, offset);
 
 if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
@@ -26301,9 +26431,22 @@ let t_SENTENCE_OUTLINE = function(sentence_el)
     let sentence_container = t_util.get_el_parent_with_class(sentence_el, CSS_SENTENCE_CONTAINER);
     if( sentence_container ) sentence_container.classList.add(            CSS_OUTLINE           );
 };
+let t_store_set_state = function(label,state)
+{
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_sentence"
-    ,    logging : (state) => DOM_SENTENCE_LOG = dom_util.t_util_set_state("DOM_SENTENCE_LOG",state)
-    ,    tagging : (state) => DOM_SENTENCE_TAG = dom_util.t_util_set_state("DOM_SENTENCE_TAG",state)
+    ,    logging : (state) => DOM_SENTENCE_LOG = t_store_set_state("DOM_SENTENCE_LOG",state)
+    ,    tagging : (state) => DOM_SENTENCE_TAG = t_store_set_state("DOM_SENTENCE_TAG",state)
     ,    t_sentence_IMPORT
 
     ,    CSS_SENTENCE_CONTAINER
@@ -26337,7 +26480,7 @@ return { name : "dom_sentence"
 let dom_grid_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211119:17h:51)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211122:16h:42)";
 
 let dom_grid    = (function() {
 "use strict";
@@ -26392,11 +26535,6 @@ let   grid_INTERN = function()
     CSS_HIDDEN                  = t_data.CSS_HIDDEN;
     CSS_ON_GRID                 = t_data.CSS_ON_GRID;
     ZINDEX_ON_GRID              = t_data.ZINDEX_ON_GRID;
-    grid_DEPEND();
-};
-let   grid_DEPEND = function()
-{
-
 };
 const GRID_CAPTION    = "grid_caption";
 let get_tools_map = function()
@@ -27027,9 +27165,22 @@ let grid_getElement = function(id)
     if(!el)           el = document.getElementById  (    id);
     return el;
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_grid"
-    , logging : (state) => { DOM_GRID_LOG = dom_util.t_util_set_state("DOM_GRID_LOG",state); }
-    , tagging : (state) => { DOM_GRID_TAG = dom_util.t_util_set_state("DOM_GRID_TAG",state); }
+    , logging : (state) => { DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state); }
+    , tagging : (state) => { DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state); }
     ,    t_grid_IMPORT
 
     ,    t_grid_IS_ON_GRID
@@ -27068,7 +27219,7 @@ return { name : "dom_grid"
 let dom_gutter_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_GUTTER_JS_ID      = "dom_gutter_js";
-const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (211120:16h:17)";
+const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (211122:16h:43)";
 
 let dom_gutter  = (function() {
 "use strict";
@@ -27111,11 +27262,6 @@ let   gutter_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
-
-    gutter_DEPEND();
-};
-let   gutter_DEPEND = function()
-{
 
 };
 let vp                     = { top:0 , left:0 , right:0 , bottom:0 , margin:0 };
@@ -27321,9 +27467,22 @@ let log_gutter = function(_caller, lfx=lf7)
                       }
                       , lfx, false);
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_gutter"
-    , logging : (state) => { DOM_GUTTER_LOG = dom_util.t_util_set_state("DOM_GUTTER_LOG",state); }
-    , tagging : (state) => { DOM_GUTTER_TAG = dom_util.t_util_set_state("DOM_GUTTER_TAG",state); }
+    , logging : (state) => { DOM_GUTTER_LOG = t_store_set_state("DOM_GUTTER_LOG",state); }
+    , tagging : (state) => { DOM_GUTTER_TAG = t_store_set_state("DOM_GUTTER_TAG",state); }
     , t_gutter_IMPORT
     , DOM_GUTTER_JS_ID
     , DOM_GUTTER_JS_TAG
@@ -27355,7 +27514,7 @@ return { name : "dom_gutter"
 let dom_ipc_js_data ="data:text/javascript;charset='utf-8',"+ `
 /*INLINE{{{*/
 const DOM_IPC_JS_ID         = "dom_ipc_js";
-const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (211119:17h:52)";
+const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (211122:16h:45)";
 
 let dom_ipc     = (function() {
 "use strict";
@@ -27392,10 +27551,6 @@ let   ipc_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
-    ipc_DEPEND();
-};
-let   ipc_DEPEND = function()
-{
 
 };
 let ipc_add_message_listener = function(script_id)
@@ -27631,9 +27786,22 @@ let t_wait_for_startup_message_from_extension = function(_caller)
 
     }
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+
 return { name : "dom_ipc"
-    , logging : function(state) { return DOM_IPC_LOG = dom_util.t_util_set_state("DOM_IPC_LOG",state); }
-    , tagging : function(state) { return DOM_IPC_TAG = dom_util.t_util_set_state("DOM_IPC_TAG",state); }
+    , logging : function(state) { return DOM_IPC_LOG = t_store_set_state("DOM_IPC_LOG",state); }
+    , tagging : function(state) { return DOM_IPC_TAG = t_store_set_state("DOM_IPC_TAG",state); }
     , t_ipc_IMPORT
     , t_ipc_PARSE
     , t_ipc_add_MutationObserver
@@ -27663,7 +27831,7 @@ return { name : "dom_ipc"
 let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211120:16h:20)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211122:23h:38)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -27863,34 +28031,39 @@ let   tools_DEPEND = function()
 };
 let   load_IMPORT = function()
 {
-let log_this = DOM_TOOLS_TAG;
-if(typeof dom_log      != "undefined")    dom_log     .t_log_IMPORT     (log_this);
-if(typeof dom_util     != "undefined")    dom_util    .t_util_IMPORT    (log_this);
-if(typeof dom_details  != "undefined")    dom_details .t_details_IMPORT (log_this);
-if(typeof dom_i18n     != "undefined")    dom_i18n    .t_i18n_IMPORT    (log_this);
-if(typeof dom_prop     != "undefined")    dom_prop    .t_prop_IMPORT    (log_this);
+let log_this = localStorage.getItem("DOM_TOOLS_TAG");
 
-if(typeof dom_store    != "undefined")    dom_store   .t_store_IMPORT   (log_this);
-if(typeof dom_fly      != "undefined")    dom_fly     .t_fly_IMPORT     (log_this);
-if(typeof dom_wording  != "undefined")    dom_wording .t_wording_IMPORT (log_this);
-if(typeof dom_select   != "undefined")    dom_select  .t_select_IMPORT  (log_this);
-if(typeof dom_sentence != "undefined")    dom_sentence.t_sentence_IMPORT(log_this);
-if(typeof dom_wot      != "undefined")    dom_wot     .t_wot_IMPORT     (log_this);
-if(typeof dom_slot     != "undefined")    dom_slot    .t_slot_IMPORT    (log_this);
+let i =5;
 
-if(typeof dom_hide     != "undefined")    dom_hide    .t_hide_IMPORT    (log_this);
-if(typeof dom_view     != "undefined")    dom_view    .t_view_IMPORT    (log_this);
-if(typeof dom_sticky   != "undefined")    dom_sticky  .t_sticky_IMPORT  (log_this);
-if(typeof dom_seek     != "undefined")    dom_seek    .t_seek_IMPORT    (log_this);
-if(typeof dom_share    != "undefined")    dom_share   .t_share_IMPORT   (log_this);
+    i+=1; if(typeof dom_log      != "undefined")    dom_log     .t_log_IMPORT     (log_this,i);
+    i+=1;
+    i+=1; if(typeof dom_util     != "undefined")    dom_util    .t_util_IMPORT    (log_this,i);
+    i+=1; if(typeof dom_i18n     != "undefined")    dom_i18n    .t_i18n_IMPORT    (log_this,i);
+    i+=1; if(typeof dom_prop     != "undefined")    dom_prop    .t_prop_IMPORT    (log_this,i);
 
-if(typeof dom_grid     != "undefined")    dom_grid    .t_grid_IMPORT    (log_this);
-if(typeof dom_gutter   != "undefined")    dom_gutter  .t_gutter_IMPORT  (log_this);
-if(typeof dom_ipc      != "undefined")    dom_ipc     .t_ipc_IMPORT     (log_this);
- t_tools_IMPORT   (log_this);
+    i+=1; if(typeof dom_store    != "undefined")    dom_store   .t_store_IMPORT   (log_this,i);
+    i+=1; if(typeof dom_fly      != "undefined")    dom_fly     .t_fly_IMPORT     (log_this,i);
+    i+=1; if(typeof dom_wording  != "undefined")    dom_wording .t_wording_IMPORT (log_this,i);
+    i+=1; if(typeof dom_select   != "undefined")    dom_select  .t_select_IMPORT  (log_this,i);
+    i+=1; if(typeof dom_slot     != "undefined")    dom_slot    .t_slot_IMPORT    (log_this,i);
+
+    i+=1; if(typeof dom_hide     != "undefined")    dom_hide    .t_hide_IMPORT    (log_this,i);
+    i+=1; if(typeof dom_view     != "undefined")    dom_view    .t_view_IMPORT    (log_this,i);
+    i+=1; if(typeof dom_sticky   != "undefined")    dom_sticky  .t_sticky_IMPORT  (log_this,i);
+    i+=1; if(typeof dom_seek     != "undefined")    dom_seek    .t_seek_IMPORT    (log_this,i);
+    i+=1; if(typeof dom_share    != "undefined")    dom_share   .t_share_IMPORT   (log_this,i);
+
+    i+=1; if(typeof dom_details  != "undefined")    dom_details .t_details_IMPORT (log_this,i);
+    i+=1; if(typeof dom_wot      != "undefined")    dom_wot     .t_wot_IMPORT     (log_this,i);
+    i+=1; if(typeof dom_sentence != "undefined")    dom_sentence.t_sentence_IMPORT(log_this,i);
+    i+=1; if(typeof dom_grid     != "undefined")    dom_grid    .t_grid_IMPORT    (log_this,i);
+    i+=1; if(typeof dom_gutter   != "undefined")    dom_gutter  .t_gutter_IMPORT  (log_this,i);
+
+    i+=1; if(typeof dom_ipc      != "undefined")    dom_ipc     .t_ipc_IMPORT     (log_this,i);
+    i+=1; t_tools_IMPORT   (log_this,i);
     if( DOM_TOOLS_GLOBALS )
     {
-logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
+        logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
 
         window.t_data    = t_data;
         window.t_log     = t_log;
@@ -44609,9 +44782,21 @@ let t_show_SNAPSHOT = function()
         t_fly.t_fly( snapshot_mail_body );
     }
 };
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
 return { name : "dom_tools"
-    , logging : function(state) { return DOM_TOOLS_LOG = dom_util.t_util_set_state("DOM_TOOLS_LOG",state); }
-    , tagging : function(state) { return DOM_TOOLS_TAG = dom_util.t_util_set_state("DOM_TOOLS_TAG",state); }
+    , logging : function(state) { return DOM_TOOLS_LOG = t_store_set_state("DOM_TOOLS_LOG",state); }
+    , tagging : function(state) { return DOM_TOOLS_TAG = t_store_set_state("DOM_TOOLS_TAG",state); }
     , t_tools_IMPORT
     ,    CSS_BACK
     ,    CSS_BUTTONS_POD

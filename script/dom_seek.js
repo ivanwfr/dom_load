@@ -1,8 +1,9 @@
 /* dom_seek_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals window, document */
+/* globals localStorage, window, document */
 /* globals setTimeout, clearTimeout */
+
 /* globals dom_data   */
 /* globals dom_i18n   */
 /* globals dom_log    */
@@ -23,7 +24,7 @@
 */
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211119:17h:52)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211122:16h:46)";
 /*}}}*/
 let dom_seek    = (function() {
 "use strict";
@@ -142,7 +143,7 @@ let CSS_CORNER_ARRAY;
 /*}}}*/
 let   seek_DEPEND = function()
 {
-    /* DEPEND {{{*/
+    /* t_data {{{*/
     CSS_SEEKZONE_ARRAY
         = [   t_data.CSS_ANCHOR_NODE
             , t_data.CSS_BORDERING
@@ -2729,9 +2730,23 @@ logBIG(caller+"(FROM ["+from_slot+" "+from_num+"] TO ["+to_slot+" "+to_num+"]", 
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_seek"
-    , logging : (state) => DOM_SEEK_LOG = dom_util.t_util_set_state("DOM_SEEK_LOG",state)
-    , tagging : (state) => DOM_SEEK_TAG = dom_util.t_util_set_state("DOM_SEEK_TAG",state)
+    , logging : (state) => DOM_SEEK_LOG = t_store_set_state("DOM_SEEK_LOG",state)
+    , tagging : (state) => DOM_SEEK_TAG = t_store_set_state("DOM_SEEK_TAG",state)
     , t_seek_IMPORT
 
     ,    CSS_SEEK0_ONDOC

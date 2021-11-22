@@ -5,7 +5,7 @@
 
 /* globals dom_data, dom_log, dom_util, dom_i18n, dom_prop, dom_store, dom_fly, dom_view, dom_seek, dom_tools */
 
-/* globals console, window, document, Node */
+/* globals console, localStorage, window, document, Node */
 /* globals setTimeout, clearTimeout */
 /* globals requestAnimationFrame, cancelAnimationFrame */
 
@@ -21,7 +21,7 @@
 /* eslint-disable prefer-object-spread */
 
 const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (211119:18h:05)";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (211122:16h:49)";
 /*}}}*/
 let dom_sticky  = (function() {
 "use strict";
@@ -329,7 +329,7 @@ let STICKY0_HTML_PASTE;
 /*}}}*/
 let   sticky_DEPEND = function()
 {
-    /* HTML {{{*/
+    /* t_data {{{*/
 
     /* HAND  .. (1) {{{*/
     STICKY1_HTML_HAND
@@ -5684,10 +5684,24 @@ if( log_this) log("%c msg_pos_anchor_lines: %c"+t_data.LF+strip_HTML(msg_pos_anc
 /*}}}*/
 /*}}}*/
 /* EXPORT */
-    /*{{{*/
+/*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_sticky"
-    , logging : function(state) { return DOM_STICKY_LOG = dom_util.t_util_set_state("DOM_STICKY_LOG",state); }
-    , tagging : function(state) { return DOM_STICKY_TAG = dom_util.t_util_set_state("DOM_STICKY_TAG",state); }
+    , logging : function(state) { return DOM_STICKY_LOG = t_store_set_state("DOM_STICKY_LOG",state); }
+    , tagging : function(state) { return DOM_STICKY_TAG = t_store_set_state("DOM_STICKY_TAG",state); }
     , t_sticky_IMPORT
 
         /* CONST {{{*/

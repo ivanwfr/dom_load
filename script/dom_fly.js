@@ -1,11 +1,11 @@
 /* dom_fly */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211120:16h:22)"; /* eslint-disable-line no-unused-vars */
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211122:16h:42)"; /* eslint-disable-line no-unused-vars */
 let dom_fly     = (function() {
 "use strict";
 /* JSHint {{{*/
-/* globals console, setTimeout, clearTimeout */
+/* globals console, localStorage, setTimeout, clearTimeout */
 /* globals window, document */
 /* globals dom_data   */
 /* globals dom_i18n   */
@@ -139,6 +139,7 @@ let FLOATLOG_MARGIN;
 /*}}}*/
 let   fly_DEPEND = function()
 {
+    /* t_data {{{*/
     DOC_EVT_DIV_EMPTY  = "<span style='font-size:500%;'>"+t_data.SYMBOL_GEAR+"</span>";
     DOC_LOG_DIV_EMPTY  = "<span style='font-size:500%;'>"+t_data.SYMBOL_BULB+"</span>";
     DOC_EVT_DIV_HEADER = "<span style='font-size:200%;'>"+t_data.SYMBOL_GEAR+"</span>";
@@ -150,6 +151,7 @@ let   fly_DEPEND = function()
             , right  :16 + t_data.SCROLLBAR_WIDTH
             , bottom :16 + t_data.SCROLLBAR_WIDTH
         };
+    /*}}}*/
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -1986,10 +1988,23 @@ if(DOM_FLY_LOG) t_log.log("fly_tooltip_category_className_array: adding %c["+cat
 
 /* EXPORT */
 /*{{{*/
-
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_fly"
-    , logging : (state) => DOM_FLY_LOG = dom_util.t_util_set_state("DOM_FLY_LOG",state)
-    , tagging : (state) => DOM_FLY_TAG = dom_util.t_util_set_state("DOM_FLY_TAG",state)
+    , logging : (state) => DOM_FLY_LOG = t_store_set_state("DOM_FLY_LOG",state)
+    , tagging : (state) => DOM_FLY_TAG = t_store_set_state("DOM_FLY_TAG",state)
     , t_fly_IMPORT
 
     /* CONSTANTS {{{*/

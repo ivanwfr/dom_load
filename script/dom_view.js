@@ -1,11 +1,10 @@
-/* dom_view_js */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
-const DOM_VIEW_JS_ID        = "dom_view_js";
-const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (211119:17h:52)";
-let dom_view    = (function() {
-"use strict";
-/* JSHint {{{*/
-/* globals window */
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_view                                                                 │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals window, localStorage  */
+
 /* globals dom_data   */
 /* globals dom_i18n   */
 /* globals dom_log    */
@@ -19,11 +18,12 @@ let dom_view    = (function() {
 
 /* eslint-disable no-warning-comments */
 /* eslint-disable dot-notation        */
-/*
-:1,$y *
-:!start explorer https://jshint.com/
-*/
+
+const DOM_VIEW_JS_ID        = "dom_view_js";
+const DOM_VIEW_JS_TAG       = DOM_VIEW_JS_ID  +" (211122:16h:57)";
 /*}}}*/
+let dom_view    = (function() {
+"use strict";
 let   DOM_VIEW_LOG          = false;
 let   DOM_VIEW_TAG          = false;
 
@@ -138,16 +138,6 @@ let   view_INTERN = function()
     /* t_prop */
     prop                = t_prop;
     /*}}}*/
-    view_DEPEND();
-};
-/*}}}*/
-/*_   view_DEPEND {{{*/
-/*{{{*/
-
-/*}}}*/
-let   view_DEPEND = function()
-{
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -892,9 +882,23 @@ let t_view7_clr_panel_capped_from_xy = function(panel)
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_view"
-    , logging : (state) => DOM_VIEW_LOG = dom_util.t_util_set_state("DOM_VIEW_LOG",state)
-    , tagging : (state) => DOM_VIEW_TAG = dom_util.t_util_set_state("DOM_VIEW_TAG",state)
+    , logging : (state) => DOM_VIEW_LOG = t_store_set_state("DOM_VIEW_LOG",state)
+    , tagging : (state) => DOM_VIEW_TAG = t_store_set_state("DOM_VIEW_TAG",state)
     , t_view_IMPORT
 
     , t_view1_is_el_in_viewport

@@ -18,7 +18,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SHARE_JS_ID       = "dom_share_js";
-const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (211120:14h:14)";
+const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (211122:16h:48)";
 /*}}}*/
 let dom_share   = (function() {
 "use strict";
@@ -145,14 +145,6 @@ let   share_INTERN = function()
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
     /*}}}*/
-
-    share_DEPEND();
-};
-/*}}}*/
-/*_   share_DEPEND {{{*/
-let   share_DEPEND = function()
-{
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -1225,9 +1217,23 @@ if( log_this) log_key_val_group(caller, { data_hostname , data_page_pfx });
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_share"
-    , logging : (state) => DOM_SHARE_LOG = dom_util.t_util_set_state("DOM_SHARE_LOG",state)
-    , tagging : (state) => DOM_SHARE_TAG = dom_util.t_util_set_state("DOM_SHARE_TAG",state)
+    , logging : (state) => DOM_SHARE_LOG = t_store_set_state("DOM_SHARE_LOG",state)
+    , tagging : (state) => DOM_SHARE_TAG = t_store_set_state("DOM_SHARE_TAG",state)
     , t_share_IMPORT
 
     , t_share1_EXPORT

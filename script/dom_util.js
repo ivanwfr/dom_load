@@ -6,13 +6,12 @@
 /* globals Document, XPathEvaluator, XPathResult */
 /* globals Node, NodeFilter, getComputedStyle */
 /* globals btoa, atob */
-/* globals console */
+/* globals console, localStorage */
 /* globals window, document */
 
 /* globals dom_data    */
 /* globals dom_i18n    */ /* OPTIONAL */
 /* globals dom_log     */
-/* globals dom_store   */ /* OPTIONAL */
 /* globals dom_tools   */ /* OPTIONAL */
 /*
 /* eslint-disable no-global-assign    */
@@ -21,8 +20,10 @@
 /* eslint-disable no-native-reassign  */
 /* eslint-disable no-warning-comments */
 
+/* exported dom_util */
+
 const DOM_UTIL_JS_ID        = "dom_util_js";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211119:17h:52)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211122:23h:55)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -92,8 +93,8 @@ let t_util_IMPORT  = function(log_this)
 /*}}}*/
     util_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_UTIL_LOG = DOM_UTIL_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_UTIL_LOG"));
-    DOM_UTIL_TAG = DOM_UTIL_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_UTIL_TAG"));
+    DOM_UTIL_LOG = DOM_UTIL_LOG || localStorage_getItem("DOM_UTIL_LOG");
+    DOM_UTIL_TAG = DOM_UTIL_TAG || localStorage_getItem("DOM_UTIL_TAG");
 
     /*}}}*/
 if(log_this) log("%c 07 util", lbH+lf7);
@@ -138,19 +139,12 @@ let   util_INTERN = function()
 
     }
     /*}}}*/
-
-    util_DEPEND();
 };
 /*}}}*/
-/*_   util_DEPEND {{{*/
-/*{{{*/
-
-
-/*}}}*/
-let   util_DEPEND = function()
-{
-
-};
+/*_ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
 /*}}}*/
 /* eslint-enable no-unused-vars */
 /*}}}*/
@@ -4348,17 +4342,25 @@ let get_parent_tag_id_class_chain = function(el)
 
 /* EXPORT */
 /*{{{*/
-let t_util_set_state = function(label,state)
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
 {
-    return (typeof dom_store == "undefined") ? !!state
-        :   !!dom_store.t_store_set_state(label, state);
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
 };
-
+/*}}}*/
 return { name : "dom_util"
-    , logging : (state) => { DOM_UTIL_LOG = dom_util.t_util_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
-    , tagging : (state) => { DOM_UTIL_TAG = dom_util.t_util_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
+    , logging : (state) => { DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
+    , tagging : (state) => { DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
     , t_util_IMPORT
-    , t_util_set_state
+    , t_util_set_state : t_store_set_state
 
     /* DOM */
     /* EVENT {{{*/

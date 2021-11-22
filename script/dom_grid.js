@@ -1,9 +1,9 @@
 /* dom_grid_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals window, document, setTimeout, clearTimeout */
+/* globals window, document, setTimeout, clearTimeout, localStorage */
 /* globals getComputedStyle */
-/* globals dom_data, dom_log, dom_util, dom_tools */
+/* globals dom_data, dom_log, dom_util, dom_store, dom_tools */
 
 /* exported dom_grid, DOM_GRID_JS_TAG */
 
@@ -13,7 +13,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211119:17h:51)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211122:16h:42)";
 /*}}}*/
 let dom_grid    = (function() {
 "use strict";
@@ -140,16 +140,6 @@ let   grid_INTERN = function()
     ZINDEX_ON_GRID              = t_data.ZINDEX_ON_GRID;
 
     /*}}}*/
-    grid_DEPEND();
-};
-/*}}}*/
-/*_   grid_DEPEND {{{*/
-/*{{{*/
-
-/*}}}*/
-let   grid_DEPEND = function()
-{
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -1009,9 +999,23 @@ let grid_getElement = function(id)
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_grid"
-    , logging : (state) => { DOM_GRID_LOG = dom_util.t_util_set_state("DOM_GRID_LOG",state); }
-    , tagging : (state) => { DOM_GRID_TAG = dom_util.t_util_set_state("DOM_GRID_TAG",state); }
+    , logging : (state) => { DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state); }
+    , tagging : (state) => { DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state); }
     ,    t_grid_IMPORT
 
     ,    t_grid_IS_ON_GRID

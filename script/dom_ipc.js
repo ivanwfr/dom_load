@@ -3,12 +3,12 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals dom_log, dom_store */
+/* globals console, localStorage, window, document */
+/* globals MutationObserver */
+
 /* globals IPC_EXTENSION_ID, IPC_SCRIPT_ID, IPC_LOG_COLOR, IPC_MSG_COLOR */
 /* globals t_handle_ipc_message */
-/* globals console, window, document */
-/* globals MutationObserver */
-/* globals dom_util */
+/* globals dom_log, dom_store */
 
 /* exported DOM_IPC_JS_TAG, dom_ipc */
 
@@ -19,7 +19,7 @@
 */
 
 const DOM_IPC_JS_ID         = "dom_ipc_js";
-const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (211119:17h:52)";
+const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (211122:16h:45)";
 /*}}}*/
 let dom_ipc     = (function() {
 "use strict";
@@ -126,14 +126,6 @@ let   ipc_INTERN = function()
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
 /*}}}*/
-
-    ipc_DEPEND();
-};
-/*}}}*/
-/*_   ipc_DEPEND {{{*/
-let   ipc_DEPEND = function()
-{
-
 };
 /*}}}*/
 /*}}}*/
@@ -434,9 +426,23 @@ let t_wait_for_startup_message_from_extension = function(_caller)
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_ipc"
-    , logging : function(state) { return DOM_IPC_LOG = dom_util.t_util_set_state("DOM_IPC_LOG",state); } /* eslint-disable-line object-shorthand */
-    , tagging : function(state) { return DOM_IPC_TAG = dom_util.t_util_set_state("DOM_IPC_TAG",state); } /* eslint-disable-line object-shorthand */
+    , logging : function(state) { return DOM_IPC_LOG = t_store_set_state("DOM_IPC_LOG",state); } /* eslint-disable-line object-shorthand */
+    , tagging : function(state) { return DOM_IPC_TAG = t_store_set_state("DOM_IPC_TAG",state); } /* eslint-disable-line object-shorthand */
     , t_ipc_IMPORT
     , t_ipc_PARSE
     , t_ipc_add_MutationObserver

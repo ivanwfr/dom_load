@@ -1,7 +1,7 @@
 /* dom_wording_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 /* globals dom_log, dom_util, dom_data, dom_store, dom_i18n, dom_tools */
-/* globals document, console */
+/* globals document, console, localStorage */
 /* exported dom_wording */
 
 /* eslint-disable quotes */
@@ -9,7 +9,7 @@
 /* eslint-disable no-return-assign */
 
 const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211119:17h:52)';
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211122:16h:58)';
 /*}}}*/
 let dom_wording = (function() {
 "use strict";
@@ -439,9 +439,23 @@ console.dir(e);
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_wording"
-    , logging : (state) => DOM_WORDING_LOG = dom_util.t_util_set_state("DOM_WORDING_LOG",state)
-    , tagging : (state) => DOM_WORDING_TAG = dom_util.t_util_set_state("DOM_WORDING_TAG",state)
+    , logging : (state) => DOM_WORDING_LOG = t_store_set_state("DOM_WORDING_LOG",state)
+    , tagging : (state) => DOM_WORDING_TAG = t_store_set_state("DOM_WORDING_TAG",state)
     , t_wording_IMPORT
 
     , t_wording_cycle

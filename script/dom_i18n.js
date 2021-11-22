@@ -1,12 +1,12 @@
 /* dom_i18n_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
+/* globals Map */
+/* globals window, localStorage */
+
 /* globals dom_data */
 /* globals dom_log */
-/* globals dom_store */
 /* globals dom_util */
-/* globals Map */
-/* globals window */
 
 /* exported dom_i18n, DOM_I18N_JS_TAG */
 
@@ -17,7 +17,7 @@
 */
 
 const DOM_I18N_JS_ID        = "dom_i18n_js";
-const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211119:17h:52)";
+const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211122:23h:56)";
 /*}}}*/
 let dom_i18n    = (function() {
 "use strict";
@@ -92,8 +92,8 @@ let t_i18n_IMPORT  = function(log_this)
 /*}}}*/
     util_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_I18N_LOG = DOM_I18N_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_I18N_LOG"));
-    DOM_I18N_TAG = DOM_I18N_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_I18N_TAG"));
+    DOM_I18N_LOG = DOM_I18N_LOG || localStorage_getItem("DOM_I18N_LOG");
+    DOM_I18N_TAG = DOM_I18N_TAG || localStorage_getItem("DOM_I18N_TAG");
 
     /*}}}*/
 if(log_this) log("%c 07 util", lbH+lf7);
@@ -128,19 +128,12 @@ let   util_INTERN = function()
     log_key_val_group   = t_log.log_key_val_group;
 
     /*}}}*/
-
-    util_DEPEND();
 };
 /*}}}*/
-/*_   util_DEPEND {{{*/
-/*{{{*/
-
-
-/*}}}*/
-let   util_DEPEND = function()
-{
-
-};
+/*_ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
 /*}}}*/
@@ -536,9 +529,23 @@ if(log_this) {
 
 /** EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_i18n"
-    , logging : (state) => DOM_I18N_LOG = dom_util.t_util_set_state("DOM_I18N_LOG",state)
-    , tagging : (state) => DOM_I18N_TAG = dom_util.t_util_set_state("DOM_I18N_TAG",state)
+    , logging : (state) => DOM_I18N_LOG = t_store_set_state("DOM_I18N_LOG",state)
+    , tagging : (state) => DOM_I18N_TAG = t_store_set_state("DOM_I18N_TAG",state)
     , t_i18n_IMPORT
 
     /* I18N  */

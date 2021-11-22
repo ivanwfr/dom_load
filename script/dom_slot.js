@@ -1,13 +1,14 @@
 /* dom_slot_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals document */
-/* globals dom_data, dom_log, dom_util, dom_store, dom_prop, dom_select, dom_tools */
+/* globals localStorage, document */
+
+/* globals dom_data, dom_log, dom_store, dom_prop, dom_select, dom_tools */
 
 /* exported dom_slot, DOM_SLOT_JS_TAG */
 
 const DOM_SLOT_JS_ID        = "dom_slot_js";
-const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (211119:18h:04)";
+const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (211122:16h:49)";
 /*}}}*/
 let dom_slot    = (function() {
 "use strict";
@@ -121,16 +122,6 @@ let   slot_INTERN = function()
     prop                = t_prop;
 
     /*}}}*/
-    slot_DEPEND();
-};
-/*}}}*/
-/*_   slot_DEPEND {{{*/
-/*{{{*/
-
-/*}}}*/
-let   slot_DEPEND = function()
-{
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -340,9 +331,23 @@ let get_next_populated_slot = function(slot)
 /*}}}*/
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name : "dom_slot"
-    , logging : (state) => DOM_SLOT_LOG = dom_util.t_util_set_state("DOM_SLOT_LOG",state)
-    , tagging : (state) => DOM_SLOT_TAG = dom_util.t_util_set_state("DOM_SLOT_TAG",state)
+    , logging : (state) => DOM_SLOT_LOG = t_store_set_state("DOM_SLOT_LOG",state)
+    , tagging : (state) => DOM_SLOT_TAG = t_store_set_state("DOM_SLOT_TAG",state)
     , t_slot_IMPORT
 
     /* PATTERN */

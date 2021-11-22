@@ -1,12 +1,12 @@
 /* dom_hide_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
+/* globals window, document */
+/* globals console, localStorage, setTimeout, clearTimeout */
+
 /* globals dom_data, dom_log, dom_util, dom_prop, dom_store, dom_tools */
 /* globals playground_notify */
 /* globals dom_i18n, */
-
-/* globals window, document */
-/* globals console, setTimeout, clearTimeout */
 
 /* exported dom_hide */
 
@@ -22,7 +22,7 @@
 */
 
 const DOM_HIDE_JS_ID        = "dom_hide_js";
-const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (211119:17h:52)"; /* eslint-disable-line no-unused-vars */
+const DOM_HIDE_JS_TAG       = DOM_HIDE_JS_ID  +" (211122:16h:43)"; /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_hide    = (function() {
 "use strict";
@@ -133,14 +133,6 @@ let   hide_INTERN = function()
     prop = t_prop;
 
     /*}}}*/
-
-    hide_DEPEND();
-};
-/*}}}*/
-/*_   hide_DEPEND {{{*/
-let   hide_DEPEND = function()
-{
-
 };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
@@ -1641,9 +1633,23 @@ t_log.console_dir("MASK",      node.node_mask);
 
 /* EXPORT */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 return { name    : "dom_hide"
-    ,    logging : (state) => DOM_HIDE_LOG = dom_util.t_util_set_state("DOM_HIDE_LOG",state)
-    ,    tagging : (state) => DOM_HIDE_TAG = dom_util.t_util_set_state("DOM_HIDE_TAG",state)
+    ,    logging : (state) => DOM_HIDE_LOG = t_store_set_state("DOM_HIDE_LOG",state)
+    ,    tagging : (state) => DOM_HIDE_TAG = t_store_set_state("DOM_HIDE_TAG",state)
     ,    t_hide_IMPORT
 
     /* DOM_HIDE1_SELECT */

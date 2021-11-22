@@ -15,7 +15,7 @@
 /* exported dom_details, DOM_DETAILS_JS_TAG */
 
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211119:17h:51)";  /* eslint-disable-line no-unused-vars */
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211122:16h:25)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_details         = (function() {
 "use strict";
@@ -671,8 +671,8 @@ if(DOM_DETAILS_LOG) logBIG("restore_details_ontoggle_listener",6);
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_details_set_state {{{*/
-let t_details_set_state = function(label,state)
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
 {
     if(    state != undefined)
     {
@@ -686,10 +686,10 @@ let t_details_set_state = function(label,state)
 };
 /*}}}*/
 return { name    : "dom_details"
-    ,    logging : (state) => { DOM_DETAILS_LOG = dom_details.t_details_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
-    ,    tagging : (state) => { DOM_DETAILS_TAG = dom_details.t_details_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
+    ,    logging : (state) => { DOM_DETAILS_LOG = t_store_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
+    ,    tagging : (state) => { DOM_DETAILS_TAG = t_store_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
     ,    t_details_IMPORT
-    ,    t_details_set_state
+
     /*   --------------------------------- CALLERS:       */
     ,    details_onload                 : details_handler.details_onload
     ,    details_radio_toggle           /* RADIO-BEHAVIOR */
