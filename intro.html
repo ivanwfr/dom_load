@@ -1,7 +1,7 @@
 <!DOCTYPE html> <html lang="fr">
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (211119:18h:27)";
+  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (211122:23h:57)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
@@ -7208,7 +7208,7 @@ script/dom_tools.html
 dom_tools_html_data = escape(`
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210923:21h:29)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210929:21h:31)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -7607,8 +7607,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
-        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_store.t_store_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.t_store_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 

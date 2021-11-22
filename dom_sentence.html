@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>dom_sentence</title>
+  <!-- META {{{ -->
+  <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
+  <meta                         http-equiv="Cache-control" content="no-cache">
+  <meta                         http-equiv="pragma"        content="no-cache">
+  <!-- }}} -->
+  <!-- [link] CSS {{{-->
+  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
+  <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
+  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
+  <!--}}}-->
+ </head>
+ <body onload='set_title();'>
+  <!-- H1 {{{-->
+  <h1 style="clear:right; margin:1em; user-select:none;" title="onclick .. reload" onclick='document.location.reload();'>...</h1>
+  <!--}}}-->
+<!-- PRE {{{-->
+<h2>String.prototype.replace()</h2>
+<pre style="border: 2px inset; background-color:#AAF8">
+The replace() method returns a new string with some or all matches of a pattern
+replaced by a replacement.
+
+The pattern can be a string or a RegExp, and the replacement can be a string or a function to be called for each match.
+
+If pattern is a string, only the first occurrence will be replaced.
+</pre>
+<!--}}}-->
+
+  <!--ipt id="dom_util_js"     src="script/stub/dom_sentence_util.js" ></scri-->
+  <script id="dom_util_js"     src="script/dom_util.js"               ></script> <!-- STUB     -->
+
+  <!--ipt id="dom_tools"       src="script/dom_tools.js"         defer></scri--> <!-- ORIGINAL -->
+  <!--ipt id="dom_data_js"     src="script/dom_data.js"               ></scri--> <!-- ORIGINAL -->
+  <!--ipt id="dom_log_js"      src="script/dom_log.js"                ></scri--> <!-- ORIGINAL -->
+  <!--ipt id="dom_util_js"     src="script/dom_util.js"               ></scri--> <!-- ORIGINAL -->
+  <!--ipt id="dom_prop_js"     src="script/dom_prop.js"               ></scri--> <!-- ORIGINAL -->
+  <!--ipt id="dom_store_js"    src="script/dom_store.js"              ></scri--> <!-- ORIGINAL -->
+  <!--ipt id="dom_i18n_js"     src="script/dom_i18n.js"               ></scri--> <!-- ORIGINAL -->
+  <script id="dom_tools"       src="script/stub/dom_sentence_tools.js"></script> <!-- STUB     -->
+
+  <!--ipt id="dom_log_js"      src="script/dom_log.js"                ></scri--> <!-- OPTION   -->
+  <!--ipt id="dom_popup_js"    src="script/dom_popup.js"              ></scri--> <!-- OPTION   -->
+  <!--ipt id="dom_view_js"     src="script/dom_view.js"               ></scri--> <!-- OPTION   -->
+
+  <script id="dom_sentence_js" src="script/dom_sentence.js"           ></script> <!-- ORIGINAL -->
+
+ <!-- SCRIPT set_title load_html {{{ -->
+ <script>
+  DOM_LOAD_ID       = "dom_sentence"; DOM_LOAD_TAG  = DOM_LOAD_ID+" (211122:20h:08)";
+  DOM_LOAD_PANELS   = "";
+  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  /* set_title {{{*/
+  function set_title() {
+   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+      document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>"
+          +"<b onclick='location.reload();' title='Reload'                                    > &#x21BB;</b>"
+          +"<b onclick='console.clear();'   title='clear console&#0010;...same with alt-click'> &#x2699;</b>"
+          ;
+  }
+  /*}}}*/
+  /*  load_html {{{*/
+  let load_html = function(id, html) {
+   if( document.getElementById(id) ) return;
+   let el       = document.createElement("DIV");
+   el.id        = id;
+   el.title     = id;
+   el.innerHTML = unescape(html);
+   document.body.appendChild(el);
+//console.log(DOM_LOAD_TAG+": load_html("+id+") ...done")
+  };
+  /*}}}*/
+ </script>
+ <!--}}}-->
+ <!-- SCRIPT LISTENERS {{{-->
+ <script>
+/*_ DOWN {{{*/
+/*_ ondown_listener {{{*/
+let ondown_listener = function(e)
+{
+let caller = "ondown_listener"; console.log(DOM_LOAD_TAG+": "+caller+"("+e.target.tagName+" "+e.target.className+")");
+//console.dir(e);
+
+};
+/*}}}*/
+
+/*}}}*/
+/*_ UP {{{*/
+/*_ onup_listener {{{*/
+let onup_listener  = function(e)
+{
+let caller = "..onup_listener"; console.log(DOM_LOAD_TAG+": "+caller+"("+e.target.tagName+" "+e.target.className+")");
+//console.dir(e);
+
+};
+/*}}}*/
+
+/*}}}*/
+ </script>
+ <!--}}}-->
+<!-- ADD LISTENERS {{{-->
+<script>
+    /* EVENTS {{{*/
+    let s_add_listener_capture_active = function(el, ev, fn)
+    {
+        el.addEventListener(ev, fn, {capture:true, passive:false});
+    };
+    let l_add_LISTENERS = function()
+    {
+        if( ("ontouchstart" in document.documentElement) ) {
+            s_add_listener_capture_active(   window, "touchstart"       , ondown_listener);
+            s_add_listener_capture_active(   window, "touchend"         ,   onup_listener);
+        }
+        else {
+            s_add_listener_capture_active(   window, "mousedown"        , ondown_listener);
+            s_add_listener_capture_active(   window, "mouseup"          ,   onup_listener);
+        }
+    };
+
+    /*}}}*/
+    /* IMPORT {{{*/
+    setTimeout(function() {
+        console.log(DOM_LOAD_TAG+": "+"dom_sentence.t_sentence_IMPORT:");
+        dom_sentence .t_sentence_IMPORT();
+    }, 1000);
+
+    /*}}}*/
+    /* ADD LISTENERS {{{*/
+    console.log(DOM_LOAD_TAG+": "+"ADDING LISTENERS");
+    l_add_LISTENERS();
+
+    /*}}}*/
+    /* LOAD DONE {{{*/
+    console.log(DOM_LOAD_TAG+": LOAD DONE" );
+
+    /*}}}*/
+</script>
+<!--}}}-->
+ </body>
+</html>
+<!--
+ vim: sw=4
+
+ :!start explorer %
+-->
+
+<!--{{{
+
+dom_sentence.t_SENTENCE_get_el_sentence_container ( onDown_EL )
+
+dom_sentence.t_SENTENCE_SPLIT                     (el)
+dom_sentence.t_SENTENCE_SPLIT                     (el)
+
+dom_sentence.t_SENTENCE_drag_DXY                  ( onMoveDXY )
+
+dom_sentence.t_SENTENCE_RESTORE_ALL               (           )
+
+dom_sentence.t_SENTENCE_GET_CONTAINERS            (           )
+dom_sentence.t_SENTENCE_RESTORE                   ( container )
+dom_sentence.t_SENTENCE_RESTORE                   ( cells[i]  )
+
+}}}-->
