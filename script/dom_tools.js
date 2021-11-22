@@ -3,6 +3,11 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
+/* globals window, document, navigator */
+/* globals console, localStorage, setTimeout, clearTimeout, setInterval, clearInterval */
+/* globals Node, requestAnimationFrame, cancelAnimationFrame */
+/* globals getComputedStyle */
+
 /* globals DOM_DATA_JS_TAG     */
 /* globals DOM_DETAILS_JS_TAG  */
 /* globals DOM_FLY_JS_TAG      */
@@ -29,11 +34,6 @@
 /* globals DOM_WORDING_JS_TAG  */
 /* globals DOM_WOT_JS_TAG      */
 
-/* globals window, document, navigator */
-/* globals console, setTimeout, clearTimeout, setInterval, clearInterval */
-/* globals Node, requestAnimationFrame, cancelAnimationFrame */
-/* globals getComputedStyle */
-
 /*┌─────── DOM MODULES ──────────────────────────────────────────────────────┐*/
 /* globals dom_data,    dom_details, dom_fly,    dom_grid,     dom_gutter     */
 /* globals dom_hide,    dom_i18n,    dom_ipc,    dom_log,      dom_popup      */
@@ -54,7 +54,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211120:16h:20)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211122:23h:38)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -331,39 +331,41 @@ let   tools_DEPEND = function()
 /*…   load_IMPORT .. globals {{{*/
 let   load_IMPORT = function()
 {
-let log_this = DOM_TOOLS_TAG;
-/*..........................................................................................*/
-/*....................................... dom_data     EXPORT-ONLY                    /* 05 */
-/*..........................................................................................*/
-if(typeof dom_log      != "undefined")    dom_log     .t_log_IMPORT     (log_this);   /* 06 */
-if(typeof dom_util     != "undefined")    dom_util    .t_util_IMPORT    (log_this);   /* 07 */
-if(typeof dom_details  != "undefined")    dom_details .t_details_IMPORT (log_this);   /* 08 */
-if(typeof dom_i18n     != "undefined")    dom_i18n    .t_i18n_IMPORT    (log_this);   /* 09 */
-if(typeof dom_prop     != "undefined")    dom_prop    .t_prop_IMPORT    (log_this);   /* 10 */
-/*.................... .....................................................................*/
-if(typeof dom_store    != "undefined")    dom_store   .t_store_IMPORT   (log_this);   /* 11 */
-if(typeof dom_fly      != "undefined")    dom_fly     .t_fly_IMPORT     (log_this);   /* 12 */
-if(typeof dom_wording  != "undefined")    dom_wording .t_wording_IMPORT (log_this);   /* 13 */
-if(typeof dom_select   != "undefined")    dom_select  .t_select_IMPORT  (log_this);   /* 14 */
-if(typeof dom_sentence != "undefined")    dom_sentence.t_sentence_IMPORT(log_this);   /* 14 */
-if(typeof dom_wot      != "undefined")    dom_wot     .t_wot_IMPORT     (log_this);   /* 14 */
-if(typeof dom_slot     != "undefined")    dom_slot    .t_slot_IMPORT    (log_this);   /* 15 */
-/*.................... .....................................................................*/
-if(typeof dom_hide     != "undefined")    dom_hide    .t_hide_IMPORT    (log_this);   /* 16 */
-if(typeof dom_view     != "undefined")    dom_view    .t_view_IMPORT    (log_this);   /* 17 */
-if(typeof dom_sticky   != "undefined")    dom_sticky  .t_sticky_IMPORT  (log_this);   /* 18 */
-if(typeof dom_seek     != "undefined")    dom_seek    .t_seek_IMPORT    (log_this);   /* 19 */
-if(typeof dom_share    != "undefined")    dom_share   .t_share_IMPORT   (log_this);   /* 20 */
-/*.................... .....................................................................*/
-if(typeof dom_grid     != "undefined")    dom_grid    .t_grid_IMPORT    (log_this);   /* 21 */
-if(typeof dom_gutter   != "undefined")    dom_gutter  .t_gutter_IMPORT  (log_this);   /* 22 */
-if(typeof dom_ipc      != "undefined")    dom_ipc     .t_ipc_IMPORT     (log_this);   /* 23 */
-/*..................................... ✔ dom_tools */ t_tools_IMPORT   (log_this);   /* 24 */
-/*..........................................................................................*/
-/* [globals] DEBUG {{{*/
+let log_this = localStorage.getItem("DOM_TOOLS_TAG");
+
+let i =5; /*....................................... dom_data     EXPORT-ONLY */                 /* 05 */
+
+    i+=1; if(typeof dom_log      != "undefined")    dom_log     .t_log_IMPORT     (log_this,i); /* 06 */
+    i+=1; /*....................................... dom_popup    EXPORT-ONLY */                 /* 07 */
+    i+=1; if(typeof dom_util     != "undefined")    dom_util    .t_util_IMPORT    (log_this,i); /* 08 */
+    i+=1; if(typeof dom_i18n     != "undefined")    dom_i18n    .t_i18n_IMPORT    (log_this,i); /* 09 */
+    i+=1; if(typeof dom_prop     != "undefined")    dom_prop    .t_prop_IMPORT    (log_this,i); /* 10 */
+
+    i+=1; if(typeof dom_store    != "undefined")    dom_store   .t_store_IMPORT   (log_this,i); /* 11 */
+    i+=1; if(typeof dom_fly      != "undefined")    dom_fly     .t_fly_IMPORT     (log_this,i); /* 12 */
+    i+=1; if(typeof dom_wording  != "undefined")    dom_wording .t_wording_IMPORT (log_this,i); /* 13 */
+    i+=1; if(typeof dom_select   != "undefined")    dom_select  .t_select_IMPORT  (log_this,i); /* 14 */
+    i+=1; if(typeof dom_slot     != "undefined")    dom_slot    .t_slot_IMPORT    (log_this,i); /* 15 */
+
+    i+=1; if(typeof dom_hide     != "undefined")    dom_hide    .t_hide_IMPORT    (log_this,i); /* 16 */
+    i+=1; if(typeof dom_view     != "undefined")    dom_view    .t_view_IMPORT    (log_this,i); /* 17 */
+    i+=1; if(typeof dom_sticky   != "undefined")    dom_sticky  .t_sticky_IMPORT  (log_this,i); /* 18 */
+    i+=1; if(typeof dom_seek     != "undefined")    dom_seek    .t_seek_IMPORT    (log_this,i); /* 19 */
+    i+=1; if(typeof dom_share    != "undefined")    dom_share   .t_share_IMPORT   (log_this,i); /* 20 */
+
+    i+=1; if(typeof dom_details  != "undefined")    dom_details .t_details_IMPORT (log_this,i); /* 21 */
+    i+=1; if(typeof dom_wot      != "undefined")    dom_wot     .t_wot_IMPORT     (log_this,i); /* 22 */
+    i+=1; if(typeof dom_sentence != "undefined")    dom_sentence.t_sentence_IMPORT(log_this,i); /* 23 */
+    i+=1; if(typeof dom_grid     != "undefined")    dom_grid    .t_grid_IMPORT    (log_this,i); /* 24 */
+    i+=1; if(typeof dom_gutter   != "undefined")    dom_gutter  .t_gutter_IMPORT  (log_this,i); /* 25 */
+
+    i+=1; if(typeof dom_ipc      != "undefined")    dom_ipc     .t_ipc_IMPORT     (log_this,i); /* 26 */
+    i+=1; /*..................................... ✔ dom_tools */ t_tools_IMPORT   (log_this,i); /* 27 */
+
+    /* [globals] DEBUG {{{*/
     if( DOM_TOOLS_GLOBALS )
     {
-logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
+        logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
 
         window.t_data    = t_data;
         window.t_log     = t_log;
@@ -389,10 +391,10 @@ logBIG("DOM_TOOLS_GLOBALS .. EXPORTING [window.t_tools = dom_tools] ", lf0);
         window.t_ipc     = t_ipc;
         window.t_tools   = dom_tools;
     }
-/*}}}*/
+    /*}}}*/
 
-/*{{{
-t_log.log_IMPORT();
+    /*{{{
+    t_log.log_IMPORT();
 }}}*/
 };
 /*}}}*/
@@ -23989,11 +23991,25 @@ log("t_show_SNAPSHOT: snapshot_mail_body=["+t_util.ellipsis(snapshot_mail_body)+
 
 /* EXPORT tools */
 /*{{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(          state != undefined)
+    {
+        if(      state) localStorage.setItem   (label, "true");
+        else            localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return          localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
 /* eslint-disable object-shorthand */
 
 return { name : "dom_tools"
-    , logging : function(state) { return DOM_TOOLS_LOG = dom_util.t_util_set_state("DOM_TOOLS_LOG",state); }
-    , tagging : function(state) { return DOM_TOOLS_TAG = dom_util.t_util_set_state("DOM_TOOLS_TAG",state); }
+    , logging : function(state) { return DOM_TOOLS_LOG = t_store_set_state("DOM_TOOLS_LOG",state); }
+    , tagging : function(state) { return DOM_TOOLS_TAG = t_store_set_state("DOM_TOOLS_TAG",state); }
     , t_tools_IMPORT
 
     /* CSS {{{*/
