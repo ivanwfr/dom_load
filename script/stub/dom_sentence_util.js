@@ -3,70 +3,69 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals window, document, Node */
+/* globals console, window, document, Node */
 
 /* exported dom_sentence_util */
 
 const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util_js";
-const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (211122:18h:25)";  /* eslint-disable-line no-unused-vars */
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (211123:19h:42)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_sentence_util    = (function() {
 "use strict";
 
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [ellipsis]                                                               │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*_ mPadStart .. mPadEnd {{{*/
-let mPadStart = function(s,l,c=" ") { s = String(s); while(s.length < l) s = c+s; return s; }; /* eslint-disable-line no-unused-vars */
+/* console {{{*/
+/* eslint-disable no-unused-vars */
+/* CSS {{{*/
+const lf1  = "color:#964B00;";
+const lf2  = "color:#FF0000;";
+const lf3  = "color:#FFA500;";
+const lf4  = "color:#FFFF00;";
+const lf5  = "color:#9ACD32;";
+const lf6  = "color:#6495ED;";
+const lf7  = "color:#EE82EE;";
+const lf8  = "color:#A0A0A0;";
+const lf9  = "color:#FFFFFF;";
+const lf0  = "color:#707070; text-shadow:#000 2px 2px 1px;"; /* offset-x offset-y blur-radius */
+const lfX  = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
 
-let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length < l) s = s+c; return s; };
+const lbH  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+const lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0 1ex; padding:0 .5em 0 .5em; border-radius:1em   0   0 1em; background:linear-gradient(to   left, #333 0%           ,#445 100%);";
+const lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
+const lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
+
 /*}}}*/
-/*_ ellipsis {{{*/
-const HORIZONTAL_ELLLIPSIS = "\u2026";
-const ELLIPSIS_DEFAULT_LEN = 96;
-const ELLIPSIS_SHORT_LEN   = 48;
+let dir               = console.dir;
+let log               = console.log;
+let logX = (msg,l_x) => console.log("%c"+msg, lbR+lfX[l_x]);
+let log0 = (msg)     =>         logX(    msg, 0  );
+let log1 = (msg)     =>         logX(    msg, 1  );
+let log2 = (msg)     =>         logX(    msg, 2  );
+let log3 = (msg)     =>         logX(    msg, 3  );
+let log4 = (msg)     =>         logX(    msg, 4  );
+let log5 = (msg)     =>         logX(    msg, 5  );
+let log6 = (msg)     =>         logX(    msg, 6  );
+let log7 = (msg)     =>         logX(    msg, 7  );
+let log8 = (msg)     =>         logX(    msg, 8  );
+let log9 = (msg)     =>         logX(    msg, 9  );
 
-let ellipsis_16 = function(msg)
-{
-    return mPadEnd( ellipsis(msg, 16) , 16);
-};
+let logs = { dir
+        ,    log
+        ,    log0
+        ,    log1
+        ,    log2
+        ,    log3
+        ,    log4
+        ,    log5
+        ,    log6
+        ,    log7
+        ,    log8
+        ,    log9
+    };
 
-let ellipsis_short = function(msg)
-{
-    return ellipsis(msg, ELLIPSIS_SHORT_LEN);
-};
-
-let ellipsis = function(_msg, len=ELLIPSIS_DEFAULT_LEN)
-{
-    let msg = show_CR_LF( String(_msg) );
-    return (msg.length    <= len)
-        ?   msg
-        :   msg.substring(0, len-3)+HORIZONTAL_ELLLIPSIS
-    ;
-};
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [show_CR_LF]                                                             │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-const regexp_CR              = new RegExp("\\r", "g");
-const regexp_LF              = new RegExp("\\n", "g");
-const SYMBOL_DOWN_LEFT_ARROW = "\u21B5";
-/*_ show_CR_LF {{{*/
-let show_CR_LF = function(text)
-{
-    return text
-        .   replace(regexp_CR,  "")
-        .   replace(regexp_LF, SYMBOL_DOWN_LEFT_ARROW)
-        .   trim()
-    ;
-};
-/*}}}*/
-
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [t_get_htmlEntities]                                                     │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*_ t_get_htmlEntities {{{ */
+/*➔ t_get_htmlEntities {{{ */
 /*{{{
 const regexp_HTML_AMP           = new RegExp("&"                                        , "g");
 const regexp_HTML_LT            = new RegExp("<"                                        , "g");
@@ -91,17 +90,13 @@ let t_get_htmlEntities = function(str)
 };
 /*}}}*/
 
-
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [add_el_class del_el_class clear_el_classList]                           │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/* CSS_CLASS {{{*/
+/*➔ [set_el_class] [add_el_class] [del_el_class] [has_el_class] [clear_el_classList] {{{*/
 let add_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(   !el.classList.contains( className )) el.classList.add   ( className ); };
 let del_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(    el.classList.contains( className )) el.classList.remove( className ); };
 let set_el_class     = function(el, className) { if(!el || !el.classList) return      ;                                            el.className       = className  ; };
 let has_el_class     = function(el, className) { if(!el || !el.classList) return false; return el.classList.contains( className );                                   };
 /*_ clear_el_classList .. cycle_el_classList .. cycle_id_classList {{{*/
-let clear_el_classList = function(el_or_id, classList) { cycle_el_classList(el_or_id, classList, true); };
+let clear_el_classList = function(el_or_id, classList) { cycle_el_classList(el_or_id, classList, true); }; /* eslint-disable-line no-unused-vars */
 let cycle_el_classList = function(el_or_id, classList, remove_only)
 {
     let el = (typeof               el_or_id == "object")
@@ -156,7 +151,7 @@ let flip_el_class = function(el_or_id, className)
 let flip_id_class = flip_el_class; /* eslint-disable-line no-unused-vars */
 /*}}}*/
 /*_ set_el_class_on_off {{{*/
-let set_el_class_on_off = function(el, className, on_off)
+let set_el_class_on_off = function(el, className, on_off) /* eslint-disable-line no-unused-vars */
 {
     if(on_off) add_el_class(el, className);
     else       del_el_class(el, className);
@@ -164,7 +159,7 @@ let set_el_class_on_off = function(el, className, on_off)
 };
 /*}}}*/
 /*_ set_el_class_removing {{{*/
-let set_el_class_removing = function(el_or_id, class_to_add, classes_to_remove) /* string or collection */
+let set_el_class_removing = function(el_or_id, class_to_add, classes_to_remove) /* string or collection */ /* eslint-disable-line no-unused-vars */
 {
     if(       typeof      classes_to_remove != "object") classes_to_remove = [ classes_to_remove ];
 
@@ -195,7 +190,7 @@ let set_el_class_removing = function(el_or_id, class_to_add, classes_to_remove) 
 /*}}}*/
 /*  is_marked_to_hide {{{*/
 const MARKED_TO_HIDE        = "marked_to_hide";
-let is_marked_to_hide = function( node )
+let is_marked_to_hide = function( node ) /* eslint-disable-line no-unused-vars */
 {
     return has_el_class(node, MARKED_TO_HIDE);
 
@@ -203,11 +198,85 @@ let is_marked_to_hide = function( node )
 /*}}}*/
 /*}}}*/
 
+/*➔ show_CR_LF {{{*/
+const regexp_CR              = new RegExp("\\r", "g");
+const regexp_LF              = new RegExp("\\n", "g");
+const SYMBOL_DOWN_LEFT_ARROW = "\u21B5";
+let show_CR_LF = function(text)
+{
+    return text
+        .   replace(regexp_CR,  "")
+        .   replace(regexp_LF, SYMBOL_DOWN_LEFT_ARROW)
+        .   trim()
+    ;
+};
+/*}}}*/
+/*➔ ellipsis {{{*/
+const HORIZONTAL_ELLLIPSIS = "\u2026";
+const ELLIPSIS_DEFAULT_LEN = 96;
+const ELLIPSIS_SHORT_LEN   = 48;
 
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [get_el_child_with_class]                                                │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*_ get_el_child_with_class {{{*/
+let ellipsis_16 = function(msg) /* eslint-disable-line no-unused-vars */
+{
+    return mPadEnd( ellipsis(msg, 16) , 16);
+};
+
+let ellipsis_short = function(msg)
+{
+    return ellipsis(msg, ELLIPSIS_SHORT_LEN);
+};
+
+let ellipsis = function(_msg, len=ELLIPSIS_DEFAULT_LEN)
+{
+    let msg = show_CR_LF( String(_msg) );
+    return (msg.length    <= len)
+        ?   msg
+        :   msg.substring(0, len-3)+HORIZONTAL_ELLLIPSIS
+    ;
+};
+/*}}}*/
+/*_ mPadStart .. mPadEnd {{{*/
+let mPadStart = function(s,l,c=" ") { s = String(s); while(s.length < l) s = c+s; return s; }; /* eslint-disable-line no-unused-vars */
+
+let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length < l) s = s+c; return s; };
+/*}}}*/
+
+/*➔ get_el_parent_fragment {{{*/
+let get_el_parent_fragment = function(el)
+{
+    while( el ) {
+        if(el.shadowRoot                             ) return el;
+        if(el.nodeType == Node.DOCUMENT_FRAGMENT_NODE) return el;
+        el              = el.parentNode;
+    }
+    return null;
+};
+/*}}}*/
+/*➔ get_el_parent_with_tag {{{*/
+let get_el_parent_with_tag = function(el,tag)
+{
+    if( el.nodeName == "#text")
+        el     = el.parentElement;
+
+    while(el && (el.tagName != tag))
+        el     = el.parentElement;
+
+    if(    !el                        ) return null;
+    return (         tag == el.tagName) ? el : null;
+};
+/*}}}*/
+
+/*➔ get_el_parent_with_class {{{*/
+let get_el_parent_with_class = function(el, className)
+{
+    while(   el ) {
+        if(  el.classList.contains( className )) return el;
+        el = el.parentElement;
+    }
+    return null;
+};
+/*}}}*/
+/*➔ get_el_child_with_class {{{*/
 let get_el_child_with_class = function(parent,className,level=1)
 {
     if(!parent) return null;
@@ -240,58 +309,8 @@ log("get_el_child_with_class("+get_id_or_tag(parent)+" , "+className+") %c LEVEL
     return null;
 };
 /*}}}*/
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [get_el_parent_fragment]                                                 │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*➔ get_el_parent_fragment {{{*/
-let get_el_parent_fragment = function(el)
-{
-    while( el ) {
-        if(el.shadowRoot                             ) return el;
-        if(el.nodeType == Node.DOCUMENT_FRAGMENT_NODE) return el;
-        el              = el.parentNode;
-    }
-    return null;
-};
-/*}}}*/
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [get_el_child_with_class]                                                │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*_ get_el_parent_with_class {{{*/
-let get_el_parent_with_class = function(el, className)
-{
-    while(   el ) {
-        if(  el.classList.contains( className )) return el;
-        el = el.parentElement;
-    }
-    return null;
-};
-/*}}}*/
 
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [get_n_lbl]                                                              │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*_ truncate {{{*/
-let truncate = function(_msg, length=80)
-{
-    let msg = strip_CR_LF( String(_msg) );
-    return (msg.length <= length)
-        ?   msg
-        :   msg.substring(0, length-3)+"..."
-    ;
-};
-/*}}}*/
-/*_ strip_CR_LF {{{*/
-let strip_CR_LF = function(text)
-{
-    return text
-        .   replace(regexp_CR,  "")
-        .   replace(regexp_LF, " ")
-        .   trim()
-    ;
-};
-/*}}}*/
-/*_ get_n_lbl {{{ */
+/*➔ get_n_lbl {{{ */
 let get_n_lbl = function(node)
 {
     if(!node                 ) return "null_node";
@@ -315,10 +334,27 @@ let get_n_lbl = function(node)
     return "";
 };
 /*}}}*/
+/*_ truncate {{{*/
+let truncate = function(_msg, length=80)
+{
+    let msg = strip_CR_LF( String(_msg) );
+    return (msg.length <= length)
+        ?   msg
+        :   msg.substring(0, length-3)+"..."
+    ;
+};
+/*}}}*/
+/*_ strip_CR_LF {{{*/
+let strip_CR_LF = function(text)
+{
+    return text
+        .   replace(regexp_CR,  "")
+        .   replace(regexp_LF, " ")
+        .   trim()
+    ;
+};
+/*}}}*/
 
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [get_node_sibling_at_offset]                                             │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
 /*➔ get_node_sibling_at_offset {{{*/
 let get_node_sibling_at_offset = function(node,offset)
 {
@@ -346,25 +382,6 @@ let get_node_sibling_at_offset = function(node,offset)
         }
     }
     return null;
- };
-/*}}}*/
-/*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ [get_parent_tag_id_class_chain]                                          │*/
-/*└──────────────────────────────────────────────────────────────────────────┘*/
-/*_ get_nodeName_rank {{{*/
-let get_nodeName_rank = function(node)
-{
-    if(node.nodeType == Node.ATTRIBUTE_NODE) return null;
-
-    let rank = 1;
-    for(let prev_node =      node.previousElementSibling
-    ;       prev_node
-    ;       prev_node = prev_node.previousElementSibling
-    ) {
-        if(prev_node.nodeName == node.nodeName)
-            rank += 1;
-    }
-    return rank;
  };
 /*}}}*/
 /*➔ get_parent_tag_id_class_chain {{{*/
@@ -402,31 +419,49 @@ let get_parent_tag_id_class_chain = function(el)
     return parent_id_class_chain;
 };
 /*}}}*/
+/*_ get_nodeName_rank {{{*/
+let get_nodeName_rank = function(node)
+{
+    if(node.nodeType == Node.ATTRIBUTE_NODE) return null;
+
+    let rank = 1;
+    for(let prev_node =      node.previousElementSibling
+    ;       prev_node
+    ;       prev_node = prev_node.previousElementSibling
+    ) {
+        if(prev_node.nodeName == node.nodeName)
+            rank += 1;
+    }
+    return rank;
+ };
+/*}}}*/
 
 
 /* EXPORT */
 /*{{{*/
-return { add_el_class
-    ,    clear_el_classList
-    ,    cycle_el_classList
-    ,    del_el_class
-    ,    ellipsis
-    ,    ellipsis_16
-    ,    ellipsis_short
-    ,    flip_el_class
-    ,    get_el_child_with_class
-    ,    get_el_parent_fragment
-    ,    get_el_parent_with_class
-    ,    get_n_lbl
-    ,    get_node_sibling_at_offset
-    ,    get_parent_tag_id_class_chain
-    ,    has_el_class
-    ,    is_marked_to_hide
-    ,    set_el_class
-    ,    set_el_class_on_off
-    ,    set_el_class_removing
-    ,    show_CR_LF
-    ,    t_get_htmlEntities
+return { name : DOM_SENTENCE_UTIL_JS_ID
+
+    , t_get_htmlEntities
+
+    , set_el_class
+    , add_el_class
+    , del_el_class
+    , has_el_class
+    , clear_el_classList
+
+    , show_CR_LF
+    , ellipsis
+
+    , get_el_parent_fragment
+    , get_el_parent_with_tag
+    , get_el_parent_with_class
+    , get_el_child_with_class
+
+    , get_n_lbl
+    , get_node_sibling_at_offset
+    , get_parent_tag_id_class_chain
+
+    , ...logs
 };
 /*}}}*/
 
