@@ -9,7 +9,7 @@ savascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (211122:23h:59)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (211124:14h:49)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -26048,7 +26048,7 @@ return { name    : "dom_wot"
 let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211122:23h:29)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211124:14h:16)";
 
 let dom_sentence = (function() {
 "use strict";
@@ -26064,9 +26064,13 @@ let t_sentence_IMPORT  = function(log_this,import_num)
     if     (typeof dom_util           != "undefined") t_util  = dom_util         ;
     else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util;
     else console.warn("MISSING STUB FOR: [dom_util]");
-    if     (typeof dom_tools          != "undefined") t_tools = dom_tools        ;
-    else if(typeof dom_sentence_tools != "undefined") t_tools = dom_sentence_tools;
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools         ;
+    else if(typeof dom_sentence_event != "undefined") t_tools = dom_sentence_event;
     else console.warn("MISSING STUB FOR: [dom_tools]");
+
+//console.log("t_tools:")
+//console.dir( t_tools  )
+
     sentence_INTERN();
 if(log_this) log("%c #"+import_num+" SENTENCE", lbH+lf2);
 };
@@ -27831,7 +27835,7 @@ return { name : "dom_ipc"
 let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 /*INLINE{{{*/
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211122:23h:38)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211123:15h:07)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -28225,20 +28229,21 @@ if(log_this) {
 };
 const FUNCTIONS_TO_IGNORE
     = [    { dom_load_id : "dom_hide" , id : "t_seekzone1_XYWH"            }
-         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone1_show_onDown_XY"  }
-         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone2_show_misclick"   }
-         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone3_show_dblclick"   }
-         , { dom_load_id : "dom_hide" , id : "onDown_7_DOC_SELECT_OR_SEEK" }
-         , { dom_load_id : "dom_hide" , id : "onUp_7_DOC_CB_CLICK_WORD"    }
-         , { dom_load_id : "dom_hide" , id : "onUp_2_SLOT_CONTAINER_CB"    }
-         , { dom_load_id : "dom_hide" , id : "t_store_patterns_csv"        }
+         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone1_show_onDown_XY"}
+         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone2_show_misclick" }
+         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone3_show_dblclick" }
+         , { dom_load_id : "dom_hide" , id : "onDown_7_SENTENCE"                }
+         , { dom_load_id : "dom_hide" , id : "onDown_8_DOC_SELECT_OR_SEEK"      }
+         , { dom_load_id : "dom_hide" , id : "onUp_7_DOC_CB_CLICK_WORD"         }
+         , { dom_load_id : "dom_hide" , id : "onUp_2_SLOT_CONTAINER_CB"         }
+         , { dom_load_id : "dom_hide" , id : "t_store_patterns_csv"             }
 
-         , { dom_load_id : "dom_find" , id : "t_seekzone1_XYWH"            }
-         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone1_show_onDown_XY"  }
-         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone2_show_misclick"   }
-         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone3_show_dblclick"   }
-         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_CHOOSE"             }
-         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_EDIT"               }
+         , { dom_load_id : "dom_find" , id : "t_seekzone1_XYWH"                 }
+         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone1_show_onDown_XY"}
+         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone2_show_misclick" }
+         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone3_show_dblclick" }
+         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_CHOOSE"         }
+         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_EDIT"           }
     ];
 
 let cached_entry_selected_item_id = {};
@@ -32099,8 +32104,9 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
     if(!consumed_by) { consumed_by = onDown_4_STICKY_PICK              (e); consumed_by_css = lf2; }
     if(!consumed_by) { consumed_by = onDown_5_TOOL_PICK                (e); consumed_by_css = lf5; }
     if(!consumed_by) { consumed_by = onDown_6_TOOL_MOVE                (e); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onDown_7_DOC_SELECT_OR_SEEK       (e); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = e.type+" BUBBLING"; onDown_8_STALL( ); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = onDown_7_SENTENCE                 (e); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onDown_8_DOC_SELECT_OR_SEEK       (e); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = e.type+" BUBBLING"; onDown_9_STALL( ); consumed_by_css = lf9; }
 
 if( tag_this && !mousedown_consumed_by) log("%c"+consumed_by, lbH+consumed_by_css);
     mousedown_consumed_by = consumed_by;
@@ -32615,10 +32621,10 @@ if( log_this) log("%c move_panel #"+move_panel_idx+" "+ TOOL_panels[move_panel_i
     }
 
 };
-let onDown_7_DOC_SELECT_OR_SEEK = function(e)
+let onDown_7_SENTENCE = function(e)
 {
 
-let   caller = "onDown_7_DOC_SELECT_OR_SEEK";
+let   caller = "onDown_7_SENTENCE";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
@@ -32638,7 +32644,36 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
 
         t_preventDefault(e, consumed_by);
 
-        t_SENTENCE_add_listener(caller);
+        t_add_LISTENER_DRAG(caller);
+    }
+
+if( log_this && consumed_by) log("%c"+consumed_by, lf7);
+    return consumed_by;
+};
+let onDown_8_DOC_SELECT_OR_SEEK = function(e)
+{
+
+let   caller = "onDown_8_DOC_SELECT_OR_SEEK";
+if(!is_a_DOM_LOAD_featured_function(caller)) return "";
+let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
+
+if( log_this) log("%c"+caller, lbF+lb8);
+if( log_this) t_fly.t_log_event_status(caller, lf8);
+    let consumed_by = "";
+    if( t_util.is_el_child_of_id(onWork_EL, t_data.DOC_TOOLS_ID) )
+    {
+if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
+
+        return "";
+    }
+    let sentence_el        = t_sentence.t_SENTENCE_get_el_sentence_container(onDown_EL);
+    if( sentence_el )
+    {
+        consumed_by += " .. ON A SENTENCE ELEMENT";
+
+        t_preventDefault(e, consumed_by);
+
+        t_add_LISTENER_DRAG(caller);
     }
     if(!consumed_by && !t_preventDefault_has_been_called())
     {
@@ -32674,15 +32709,15 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
         add_long_press_listener("ON DOWN DOC TOOL");
     }
 
-if( log_this && consumed_by) log("%c"+consumed_by, lf7);
+if( log_this && consumed_by) log("%c"+consumed_by, lf8);
     return consumed_by;
 };
 const MOVE_ON_STALL_DURATION = 500;
 let   move_on_stall_timer    = null;
-let onDown_8_STALL = function()
+let onDown_9_STALL = function()
 {
 
-let   caller = "onDown_8_STALL";
+let   caller = "onDown_9_STALL";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lb8);
@@ -33376,10 +33411,10 @@ if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_mo
                   ,lbH+lf5    ,lbL+lf5         ,lbR+lf5           ,lbH+lf4                                );
     return consumed_by;
 };
-let t_SENTENCE_add_listener = function(_caller)
+let t_add_LISTENER_DRAG = function(_caller)
 {
 
-let   caller = "t_SENTENCE_add_listener";
+let   caller = "t_add_LISTENER_DRAG";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
@@ -34376,7 +34411,9 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
                 }
             }
         }
+
     }
+
     if( consumed_by )
         t_event_set_e_consumed_by(e, consumed_by);
 
@@ -40313,7 +40350,10 @@ let move_on_cooldown_handler = function()
     t_hotspot_del_status_MOVE_ON_COOLDOWN();
 };
 
-let t_hotspot_del_status_MOVE_ON_COOLDOWN   = function() { del_el_class(hotspot, CSS_MOVE_ON_COOLDOWN); };
+let t_hotspot_del_status_MOVE_ON_COOLDOWN = function()
+{
+    del_el_class(hotspot, CSS_MOVE_ON_COOLDOWN);
+};
 const PATTERN_SEPARATOR     = "|";
 const PATTERN_SEPARATOR_LEN = PATTERN_SEPARATOR.length;
 let t_pattern_to_sel_text_words_option = function(pattern)
