@@ -54,7 +54,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211122:23h:38)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211123:15h:07)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -681,20 +681,21 @@ if(log_this) {
 /* FEATURES .. f(LOADING PAGE ID) */
 const FUNCTIONS_TO_IGNORE
     = [    { dom_load_id : "dom_hide" , id : "t_seekzone1_XYWH"            } /* no seekzone feedback */
-         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone1_show_onDown_XY"  } /* no seekzone feedback */
-         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone2_show_misclick"   } /* no click    feedback */
-         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone3_show_dblclick"   } /* no click    feedback */
-         , { dom_load_id : "dom_hide" , id : "onDown_7_DOC_SELECT_OR_SEEK" } /* no document  wording */
-         , { dom_load_id : "dom_hide" , id : "onUp_7_DOC_CB_CLICK_WORD"    } /* no document  wording */
-         , { dom_load_id : "dom_hide" , id : "onUp_2_SLOT_CONTAINER_CB"    } /* no document  wording */
-         , { dom_load_id : "dom_hide" , id : "t_store_patterns_csv"        } /* no document  wording */
+         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone1_show_onDown_XY"} /* no seekzone feedback */
+         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone2_show_misclick" } /* no click    feedback */
+         , { dom_load_id : "dom_hide" , id : "t_seek.t_seekzone3_show_dblclick" } /* no click    feedback */
+         , { dom_load_id : "dom_hide" , id : "onDown_7_SENTENCE"                } /* no document sentence */
+         , { dom_load_id : "dom_hide" , id : "onDown_8_DOC_SELECT_OR_SEEK"      } /* no document  wording */
+         , { dom_load_id : "dom_hide" , id : "onUp_7_DOC_CB_CLICK_WORD"         } /* no document  wording */
+         , { dom_load_id : "dom_hide" , id : "onUp_2_SLOT_CONTAINER_CB"         } /* no document  wording */
+         , { dom_load_id : "dom_hide" , id : "t_store_patterns_csv"             } /* no document  wording */
 
-         , { dom_load_id : "dom_find" , id : "t_seekzone1_XYWH"            } /* no seekzone feedback */
-         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone1_show_onDown_XY"  } /* no seekzone feedback */
-         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone2_show_misclick"   } /* no click    feedback */
-         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone3_show_dblclick"   } /* no click    feedback */
-         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_CHOOSE"             } /* no STICKY    support */
-         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_EDIT"               } /* no STICKY    support */
+         , { dom_load_id : "dom_find" , id : "t_seekzone1_XYWH"                 } /* no seekzone feedback */
+         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone1_show_onDown_XY"} /* no seekzone feedback */
+         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone2_show_misclick" } /* no click    feedback */
+         , { dom_load_id : "dom_find" , id : "t_seek.t_seekzone3_show_dblclick" } /* no click    feedback */
+         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_CHOOSE"         } /* no STICKY    support */
+         , { dom_load_id : "dom_find" , id : "t_sticky.t_sticky_EDIT"           } /* no STICKY    support */
     ];
 
 let cached_entry_selected_item_id = {};
@@ -6135,8 +6136,9 @@ if( prop.get(t_data.PIN_SEEKSPOT) ) log("%c onDown_MS %c"+(onDown_MS / 1000), lb
     if(!consumed_by) { consumed_by = onDown_4_STICKY_PICK              (e); consumed_by_css = lf2; }
     if(!consumed_by) { consumed_by = onDown_5_TOOL_PICK                (e); consumed_by_css = lf5; }
     if(!consumed_by) { consumed_by = onDown_6_TOOL_MOVE                (e); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onDown_7_DOC_SELECT_OR_SEEK       (e); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = e.type+" BUBBLING"; onDown_8_STALL( ); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = onDown_7_SENTENCE                 (e); consumed_by_css = lf7; }
+    if(!consumed_by) { consumed_by = onDown_8_DOC_SELECT_OR_SEEK       (e); consumed_by_css = lf8; }
+    if(!consumed_by) { consumed_by = e.type+" BUBBLING"; onDown_9_STALL( ); consumed_by_css = lf9; }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 if( tag_this && !mousedown_consumed_by) log("%c"+consumed_by, lbH+consumed_by_css);
     mousedown_consumed_by = consumed_by;
@@ -6910,16 +6912,51 @@ if( log_this) log("%c move_panel #"+move_panel_idx+" "+ TOOL_panels[move_panel_i
     /*}}}*/
 };
 /*}}}*/
-/*… onDown_7_DOC_SELECT_OR_SEEK .. t_data.WORDING {{{*/
-let onDown_7_DOC_SELECT_OR_SEEK = function(e)
+/*… onDown_7_SENTENCE {{{*/
+let onDown_7_SENTENCE = function(e)
 {
-/* {{{*/
-let   caller = "onDown_7_DOC_SELECT_OR_SEEK";
+/*{{{*/
+let   caller = "onDown_7_SENTENCE";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lbF+lb7);
 if( log_this) t_fly.t_log_event_status(caller, lf7);
+    let consumed_by = "";
+/*}}}*/
+    /* NOT WHEN ON DOC TOOLS {{{*/
+    if( t_util.is_el_child_of_id(onWork_EL, t_data.DOC_TOOLS_ID) )
+    {
+if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
+
+        return "";
+    }
+    /*}}}*/
+    /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
+    let sentence_el        = t_sentence.t_SENTENCE_get_el_sentence_container(onDown_EL);
+    if( sentence_el )
+    {
+        consumed_by += " .. ON A SENTENCE ELEMENT";
+
+        t_preventDefault(e, consumed_by);
+
+        t_add_LISTENER_DRAG(caller);
+    }
+    /*}}}*/
+if( log_this && consumed_by) log("%c"+consumed_by, lf7);
+    return consumed_by;
+};
+/*}}}*/
+/*… onDown_8_DOC_SELECT_OR_SEEK .. t_data.WORDING {{{*/
+let onDown_8_DOC_SELECT_OR_SEEK = function(e)
+{
+/* {{{*/
+let   caller = "onDown_8_DOC_SELECT_OR_SEEK";
+if(!is_a_DOM_LOAD_featured_function(caller)) return "";
+let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
+
+if( log_this) log("%c"+caller, lbF+lb8);
+if( log_this) t_fly.t_log_event_status(caller, lf8);
     let consumed_by = "";
 /*}}}*/
 /*{{{
@@ -6943,7 +6980,7 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
 
         t_preventDefault(e, consumed_by);
 
-        t_SENTENCE_add_listener(caller);
+        t_add_LISTENER_DRAG(caller);
     }
     /*}}}*/
     /* SELECT WORD -OR- BUBBLE EVENT {{{*/
@@ -6990,20 +7027,20 @@ logXXX("SELECT WORD: onWork_EL.tagName....................=["+ onWork_EL.tagName
         add_long_press_listener("ON DOWN DOC TOOL");
     }
     /*}}}*/
-if( log_this && consumed_by) log("%c"+consumed_by, lf7);
+if( log_this && consumed_by) log("%c"+consumed_by, lf8);
     return consumed_by;
 };
 /*}}}*/
-/*… onDown_8_STALL .. handler .. is_pending {{{*/
+/*… onDown_9_STALL .. handler .. is_pending {{{*/
 /*{{{*/
 const MOVE_ON_STALL_DURATION = 500;
 let   move_on_stall_timer    = null;
 
 /*}}}*/
-let onDown_8_STALL = function()
+let onDown_9_STALL = function()
 {
 /* {{{*/
-let   caller = "onDown_8_STALL";
+let   caller = "onDown_9_STALL";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lb8);
@@ -7939,11 +7976,11 @@ if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_mo
 /*}}}*/
 /* SENTENCE */
 /*{{{*/
-/*_ t_SENTENCE_add_listener {{{*/
-let t_SENTENCE_add_listener = function(_caller)
+/*_ t_add_LISTENER_DRAG {{{*/
+let t_add_LISTENER_DRAG = function(_caller)
 {
 /*{{{*/
-let   caller = "t_SENTENCE_add_listener";
+let   caller = "t_add_LISTENER_DRAG";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
@@ -9312,8 +9349,8 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
                 }
             }
         }
+        /*}}}*/
     }
-    /*}}}*/
     /*}}}*/
     if( consumed_by )
         t_event_set_e_consumed_by(e, consumed_by);
@@ -9328,7 +9365,7 @@ let onUp_7_DOC_SENTENCES_get_onDown_EL_container = function(el)
 /*{{{*/
 let   caller = "onUp_7_DOC_SENTENCES_get_onDown_EL_container";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
-/*{{{
+/* ✔ NOTE {{{
 .. as [onDown_EL] cannot be a TEXT_NODE
 .. ... it defaults to  EVENT target parent container
 .. XXX that can have a huge textContent XXX
@@ -9904,7 +9941,7 @@ let long_press_arm_timer;
 let mouselong_press_consumed_by = "";
 /*}}}*/
 /*{{{*/
-/*  add_long_press_listener .. (call birst debouncer) {{{*/
+/*  add_long_press_listener .. (call burst debouncer) {{{*/
 let add_long_press_listener = function(_caller="setTimeout")
 {
 /*{{{*/
@@ -17688,7 +17725,10 @@ let move_on_cooldown_handler = function()
     t_hotspot_del_status_MOVE_ON_COOLDOWN();
 };
 /*}}}*/
-let t_hotspot_del_status_MOVE_ON_COOLDOWN   = function() { del_el_class(hotspot, CSS_MOVE_ON_COOLDOWN); };
+let t_hotspot_del_status_MOVE_ON_COOLDOWN = function()
+{
+    del_el_class(hotspot, CSS_MOVE_ON_COOLDOWN);
+};
 /*}}}*/
 /*}}}*/
 
