@@ -1,165 +1,120 @@
 <!DOCTYPE html>
 <html>
  <head>
-  <title>dom_sentence</title>
+  <title>dom_sentence_html</title>
   <!-- META {{{ -->
   <meta id="meta_http_equiv"    http-equiv="content-type"  content="text/html" charset="utf-8">
   <meta                         http-equiv="Cache-control" content="no-cache">
   <meta                         http-equiv="pragma"        content="no-cache">
   <!-- }}} -->
   <!-- [link] CSS {{{-->
-  <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"   rel="stylesheet"/>
-  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
   <link id="playground_css" type="text/css" href="stylesheet/playground.css" rel="stylesheet"/>
-  <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"   rel="stylesheet"/>
+  <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"   rel="stylesheet"/>
   <!--}}}-->
  </head>
  <body onload='set_title();'>
+<!-- style {{{-->
+<style>
+    body                { margin-left      : 20%; }
+    body                { font-family      : "Comic sans ms"; }
+    p                   { margin-left      : 2em; }
+
+    p                   { border           : 4px inset #FFFA; }
+    p                   { border-radius    : 0.8em; padding:0.5em; }
+    p                   { max-width        : 64ch; }
+
+    p:nth-of-type( odd) { background-color :           #AFA8; }
+    p:nth-of-type(even) { background-color :           #FAA8; }
+    p:nth-of-type(   1) { border           : 4px outset #FF0A; background-color: #DDDA; }
+</style>
+<!--}}}-->
   <!-- H1 {{{-->
   <h1 style="clear:right; margin:1em; user-select:none;" title="onclick .. reload" onclick='document.location.reload();'>...</h1>
   <!--}}}-->
-<!-- PRE {{{-->
+<!--String replace {{{-->
 <h2>String.prototype.replace()</h2>
-<pre style="border: 2px inset; background-color:#AAF8">
-The replace() method returns a new string with some or all matches of a pattern
+<!-- PRE {{{-->
+<p>
+The <em>replace()</em> method returns a new string with some or all matches of a pattern
 replaced by a replacement.
-
 The pattern can be a string or a RegExp, and the replacement can be a string or a function to be called for each match.
-
 If pattern is a string, only the first occurrence will be replaced.
-</pre>
+
+The original string is left unchanged
+</p>
 <!--}}}-->
 
-  <!--ipt id="dom_util_js"     src="script/stub/dom_sentence_util.js" ></scri-->
-  <script id="dom_util_js"     src="script/dom_util.js"               ></script> <!-- STUB     -->
+<h2>Parameters</h2>
+<!-- P {{{-->
+<h3>regexp (pattern)</h3>
+<p>
+A RegExp object or literal. The match or matches are replaced with newSubstr or the value returned by the specified replacerFunction.
+</p>
 
-  <!--ipt id="dom_tools"       src="script/dom_tools.js"         defer></scri--> <!-- ORIGINAL -->
-  <!--ipt id="dom_data_js"     src="script/dom_data.js"               ></scri--> <!-- ORIGINAL -->
-  <!--ipt id="dom_log_js"      src="script/dom_log.js"                ></scri--> <!-- ORIGINAL -->
-  <!--ipt id="dom_util_js"     src="script/dom_util.js"               ></scri--> <!-- ORIGINAL -->
-  <!--ipt id="dom_prop_js"     src="script/dom_prop.js"               ></scri--> <!-- ORIGINAL -->
-  <!--ipt id="dom_store_js"    src="script/dom_store.js"              ></scri--> <!-- ORIGINAL -->
-  <!--ipt id="dom_i18n_js"     src="script/dom_i18n.js"               ></scri--> <!-- ORIGINAL -->
-  <script id="dom_tools"       src="script/stub/dom_sentence_tools.js"></script> <!-- STUB     -->
+<h3>substr</h3>
+<p>
+A String that is to be replaced by newSubstr. It is treated as a literal string and is not interpreted as a regular expression. Only the first occurrence will be replaced.
+</p>
 
-  <!--ipt id="dom_log_js"      src="script/dom_log.js"                ></scri--> <!-- OPTION   -->
-  <!--ipt id="dom_popup_js"    src="script/dom_popup.js"              ></scri--> <!-- OPTION   -->
-  <!--ipt id="dom_view_js"     src="script/dom_view.js"               ></scri--> <!-- OPTION   -->
+<h3>newSubstr (replacement)</h3>
+<p>
+The String that replaces the substring specified by the specified regexp or substr parameter. A number of special replacement patterns are supported; see the "Specifying a string as a parameter" section below.
 
-  <script id="dom_sentence_js" src="script/dom_sentence.js"           ></script> <!-- ORIGINAL -->
+If newSubstr is an empty string, then the substring given by substr, or the matches for regexp, are removed (rather then being replaced).
+</p>
 
+<h3>replacerFunction (replacement)</h3>
+<p>
+A function to be invoked to create the new substring to be used to replace the matches to the given regexp or substr. The arguments supplied to this function are described in the "Specifying a function as a parameter" section below.
+</p>
+<!--}}}-->
+<!--}}}-->
+  <script id="dom_sentence_js" src="script/dom_sentence.js"           defer></script> <!-- LOADER   -->
+  <script id="dom_util_js"     src="script/stub/dom_sentence_util.js"      ></script> <!-- STUB     -->
+  <script id="dom_tools_js"    src="script/stub/dom_sentence_event.js"     ></script> <!-- STUB     -->
+  <!--ipt id="dom_log_js"      src="script/dom_log.js"                     ></scri--> <!-- OPTION   -->
+  <!--ipt id="dom_popup_js"    src="script/dom_popup.js"                   ></scri--> <!-- OPTION   -->
+  <!--ipt id="dom_view_js"     src="script/dom_view.js"                    ></scri--> <!-- OPTION   -->
  <!-- SCRIPT set_title load_html {{{ -->
  <script>
-  DOM_LOAD_ID       = "dom_sentence"; DOM_LOAD_TAG  = DOM_LOAD_ID+" (211122:20h:08)";
-  DOM_LOAD_PANELS   = "";
-  document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
+  DOM_LOAD_ID       = "dom_sentence_html"; DOM_LOAD_TAG  = DOM_LOAD_ID+" (211124:14h:47)";
   /* set_title {{{*/
   function set_title() {
-   document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
+      document.getElementsByTagName("html" )[0].id        = DOM_LOAD_ID;
+      document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID;
       document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>"
           +"<b onclick='location.reload();' title='Reload'                                    > &#x21BB;</b>"
           +"<b onclick='console.clear();'   title='clear console&#0010;...same with alt-click'> &#x2699;</b>"
           ;
   }
   /*}}}*/
-  /*  load_html {{{*/
-  let load_html = function(id, html) {
-   if( document.getElementById(id) ) return;
-   let el       = document.createElement("DIV");
-   el.id        = id;
-   el.title     = id;
-   el.innerHTML = unescape(html);
-   document.body.appendChild(el);
-//console.log(DOM_LOAD_TAG+": load_html("+id+") ...done")
-  };
-  /*}}}*/
  </script>
  <!--}}}-->
  <!-- SCRIPT LISTENERS {{{-->
  <script>
-/*_ DOWN {{{*/
-/*_ ondown_listener {{{*/
-let ondown_listener = function(e)
-{
-let caller = "ondown_listener"; console.log(DOM_LOAD_TAG+": "+caller+"("+e.target.tagName+" "+e.target.className+")");
-//console.dir(e);
-
-};
-/*}}}*/
-
-/*}}}*/
-/*_ UP {{{*/
-/*_ onup_listener {{{*/
-let onup_listener  = function(e)
-{
-let caller = "..onup_listener"; console.log(DOM_LOAD_TAG+": "+caller+"("+e.target.tagName+" "+e.target.className+")");
-//console.dir(e);
-
-};
-/*}}}*/
-
-/*}}}*/
  </script>
  <!--}}}-->
 <!-- ADD LISTENERS {{{-->
 <script>
-    /* EVENTS {{{*/
-    let s_add_listener_capture_active = function(el, ev, fn)
-    {
-        el.addEventListener(ev, fn, {capture:true, passive:false});
-    };
-    let l_add_LISTENERS = function()
-    {
-        if( ("ontouchstart" in document.documentElement) ) {
-            s_add_listener_capture_active(   window, "touchstart"       , ondown_listener);
-            s_add_listener_capture_active(   window, "touchend"         ,   onup_listener);
-        }
-        else {
-            s_add_listener_capture_active(   window, "mousedown"        , ondown_listener);
-            s_add_listener_capture_active(   window, "mouseup"          ,   onup_listener);
-        }
-    };
-
-    /*}}}*/
-    /* IMPORT {{{*/
     setTimeout(function() {
-        console.log(DOM_LOAD_TAG+": "+"dom_sentence.t_sentence_IMPORT:");
-        dom_sentence .t_sentence_IMPORT();
-    }, 1000);
+console.log(DOM_LOAD_TAG+": .. IMPORT .. LISTENERS");
 
-    /*}}}*/
-    /* ADD LISTENERS {{{*/
-    console.log(DOM_LOAD_TAG+": "+"ADDING LISTENERS");
-    l_add_LISTENERS();
+        dom_sentence      .t_sentence_IMPORT(); /* script/dom_sentence.js */
+        dom_sentence_event.t_add_LISTENERS  (); /* script/stub/dom_sentence_event.js */
+    }, 0);
 
-    /*}}}*/
-    /* LOAD DONE {{{*/
     console.log(DOM_LOAD_TAG+": LOAD DONE" );
-
-    /*}}}*/
 </script>
 <!--}}}-->
  </body>
 </html>
-<!--
- vim: sw=4
-
- :!start explorer %
--->
 
 <!--{{{
+:!start explorer %
 
-dom_sentence.t_SENTENCE_get_el_sentence_container ( onDown_EL )
+:cd $WPROJECTS/RTabs/Util/RTabs_Profiles/DEV
+:n  dom_sentence.html script/dom_sentence.js script/stub/dom_sentence*.js
 
-dom_sentence.t_SENTENCE_SPLIT                     (el)
-dom_sentence.t_SENTENCE_SPLIT                     (el)
-
-dom_sentence.t_SENTENCE_drag_DXY                  ( onMoveDXY )
-
-dom_sentence.t_SENTENCE_RESTORE_ALL               (           )
-
-dom_sentence.t_SENTENCE_GET_CONTAINERS            (           )
-dom_sentence.t_SENTENCE_RESTORE                   ( container )
-dom_sentence.t_SENTENCE_RESTORE                   ( cells[i]  )
-
+ vim: sw=4
 }}}-->
+
