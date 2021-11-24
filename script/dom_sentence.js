@@ -4,7 +4,7 @@
 
 /* INLINE */
 /* globals dom_util , dom_sentence_util  */
-/* globals dom_tools, dom_sentence_tools */
+/* globals dom_tools, dom_sentence_event */
 
 /* OPTIONAL */
 /* globals dom_log   */
@@ -17,7 +17,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211122:23h:29)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (211124:14h:16)";
 /*}}}*/
 let dom_sentence = (function() {
 "use strict";
@@ -42,16 +42,18 @@ let t_sentence_IMPORT  = function(log_this,import_num)
 
     /*}}}*/
     /* t_util {{{*/
-    if     (typeof dom_util           != "undefined") t_util  = dom_util         ;
+    if     (typeof dom_util           != "undefined") t_util  = dom_util         ; /* script/dom_util.js */
     else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util; /* script/stub/dom_sentence_util.js */
     else console.warn("MISSING STUB FOR: [dom_util]");
 
     /*}}}*/
     /* t_tools {{{*/
-    if     (typeof dom_tools          != "undefined") t_tools = dom_tools        ;
-    else if(typeof dom_sentence_tools != "undefined") t_tools = dom_sentence_tools; /* script/stub/dom_sentence_tools.js */
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools         ; /* script/dom_tools.js */
+    else if(typeof dom_sentence_event != "undefined") t_tools = dom_sentence_event; /* script/stub/dom_sentence_event.js */
     else console.warn("MISSING STUB FOR: [dom_tools]");
 
+//console.log("t_tools:")
+//console.dir( t_tools  )
     /*}}}*/
     sentence_INTERN();
 if(log_this) log("%c #"+import_num+" SENTENCE", lbH+lf2);
