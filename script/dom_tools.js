@@ -41,6 +41,7 @@
 /* globals dom_slot,    dom_sticky,  dom_store,  dom_util,     dom_view       */
 /* globals dom_wording, dom_wot                                               */
 /*└──────────────────────────────────────────────────────────────────────────┘*/
+/* exported dom_scroll */
 
 /*┌─────── OPTIONAL CALLBACKS─┐*/
 /* globals dom_prop_notify     */
@@ -54,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (211123:15h:07)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220207:16h:46)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -2091,7 +2092,7 @@ logBIG(caller+": spread_ratio=["+spread_ratio.x+" "+spread_ratio.y+"]")
             ?  "smooth"
             :  "instant";
 
-        setTimeout( function() { t_window_scrollTo(window.scrollX, window_scrollY, scrollBehavior); }, 2000);
+        setTimeout( function() { dom_scroll.t_window_scrollTo(window.scrollX, window_scrollY, scrollBehavior); }, 2000);
     }
 /*{{{
 logBIG("GET window_scrollY=["+window_scrollY+"]", lf2);
@@ -2276,7 +2277,7 @@ logBIG(caller+" *** t_get_tool('dom_load_tags') failed");
         + ((typeof DOM_SEEK_JS_TAG    == "undefined") ? "<em class='"+m_class+"'>DOM_SEEK_JS_TAG     *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SEEK_JS_TAG    ) +"'>"+ DOM_SEEK_JS_TAG     +"</em>")
         + ((typeof DOM_SHARE_JS_TAG   == "undefined") ? "<em class='"+m_class+"'>DOM_SHARE_JS_TAG    *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SHARE_JS_TAG   ) +"'>"+ DOM_SHARE_JS_TAG    +"</em>")
 
-+ ("JS MODULES 21..15"+LF)
++ ("JS MODULES 21..25"+LF)
         + ((typeof DOM_DETAILS_JS_TAG == "undefined") ? "<em class='"+m_class+"'>DOM_DETAILS_JS_TAG  *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_DETAILS_JS_TAG ) +"'>"+ DOM_DETAILS_JS_TAG  +"</em>")
         + ((typeof DOM_WOT_JS_TAG     == "undefined") ? "<em class='"+m_class+"'>DOM_WOT_JS_TAG      *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_WOT_JS_TAG     ) +"'>"+ DOM_WOT_JS_TAG      +"</em>")
         + ((typeof DOM_SENTENCE_JS_TAG== "undefined") ? "<em class='"+m_class+"'>DOM_SENTENCE_JS_TAG *</em>" : "<em class='cc"+ t_util.get_tag_hour( DOM_SENTENCE_JS_TAG) +"'>"+ DOM_SENTENCE_JS_TAG +"</em>")
@@ -2907,6 +2908,7 @@ let log_this = LOG_MAP.T0_STORE;
 if( log_this) log(caller);
 
 /*{{{
+    let scroll_last_scrollY = dom_scroll.get_scroll_last_scrollY();
     key = "window_scrollY"     ; value = scroll_last_scrollY   ; t_store.t_store_set_value(key, value);
 }}}*/
 
@@ -2929,6 +2931,7 @@ let log_this = LOG_MAP.T0_STORE;
 if( log_this) log(caller);
 
 /*{{{
+    let scroll_last_scrollY = dom_scroll.get_scroll_last_scrollY();
     key = "window_scrollY"     ; value = scroll_last_scrollY   ; t_store.t_store_set_value(key, value);
 }}}*/
 
@@ -2992,6 +2995,7 @@ if( log_this) log("...NO PAGE DATA WORTH REMEMBERING");
     let key, value, xy;
     if(hotspot) {
         /* CURRENT SCROLL POSITION {{{*/
+        let scroll_last_scrollY = dom_scroll.get_scroll_last_scrollY();
         key = "window_scrollY"          ; value = scroll_last_scrollY       ; t_store.t_store_set_value(key, value);
 
         /*}}}*/
@@ -4433,7 +4437,7 @@ if( log_this) log("%c"+caller, lbb+lbH+lf2);
     add_listener_capture_active(       window,       "unload"     , load_listener);
 
     /* LAYOUT */
-    add_listener_capture_active(       window, "scroll"           , t_scroll_listener);
+    add_listener_capture_active(       window, "scroll"           , dom_scroll.t_scroll_listener);
     add_listener_capture_active(       window, "resize"           , t_resize_listener);
     add_listener_capture_active(       window, "orientationchange", t_orient_listener);
 
@@ -4450,7 +4454,7 @@ if( log_this) log("%c"+caller, lbb+lbH+lf2);
 /*{{{*/
 if( log_this) {
     log("%c"+load_listener          .name+"%c beforeunload unload %c window",lbL,lbF+lf1,lbR);
-    log("%c"+t_scroll_listener      .name+"%c scroll              %c window",lbL,lbF+lf3,lbR);
+    log("%c"+dom_scroll.t_scroll_listener      .name+"%c scroll              %c window",lbL,lbF+lf3,lbR);
     log("%c"+t_resize_listener      .name+"%c resize              %c window",lbL,lbF+lf3,lbR);
     log("%c"+t_orient_listener      .name+"%c orientationchange   %c window",lbL,lbF+lf3,lbR);
 
@@ -4530,7 +4534,7 @@ if( log_this) log(caller, "info");
     /* LAYOUT */
     remove_listener_capture_active    (window, "orientationchange", t_orient_listener);
     remove_listener_capture_active    (window, "resize"           , t_resize_listener);
-    remove_listener_capture_active    (window, "scroll"           , t_scroll_listener);
+    remove_listener_capture_active    (window, "scroll"           , dom_scroll.t_scroll_listener);
 
     /* TOUCH (DOWN UP) (HOST TOOL) */
     if( ("ontouchstart" in document.documentElement)) {
@@ -4771,7 +4775,7 @@ let t_clr_has_moved = function(_caller)
 logBIG("t_clr_has_moved: "+_caller, lbH+lf4);
 }}}*/
     has_moved     = "";
-    has_been_scrolled_by_script  = "";
+    dom_scroll.clr_has_been_scrolled_by_script();
 };
 /*}}}*/
 /*_ t_set_has_moved {{{*/
@@ -5280,8 +5284,10 @@ log(onMoveDXY.x.toFixed(0)+" "+onMoveDXY.y.toFixed(0));
 /*  zap_onMoveDXY {{{*/
 let zap_onMoveDXY = function()
 {
+log_caller();//FIXME
     onDown_XY.x += onMoveDXY.x;
     onDown_XY.y += onMoveDXY.y;
+    drag_cursor.show_drag_cursor();
     onMoveDXY.x  = 0;
     onMoveDXY.y  = 0;
 };
@@ -6115,7 +6121,7 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 if( prop.get(t_data.PIN_SEEKSPOT) ) log("%c onDown_MS %c"+(onDown_MS / 1000), lbL+lf2,lbR+lf2);
 }}}*/
 
-    clr_has_scrolled();
+    dom_scroll.clr_has_scrolled();
 
     onDown_SHIFT = e.shiftKey;        /* modifiers */
     onDown_CTRL  = e.ctrlKey ;
@@ -6185,7 +6191,7 @@ if( log_this) log("%c"+caller, lbF+lb1);
     t_clr_has_moved(caller);
     t_raise_pivot_PANEL_reset(caller);
 
-    scrollIntoViewIfNeeded_cancel(caller);
+    dom_scroll.t_scrollIntoViewIfNeeded_cancel(caller);
 
     if(               t_tools_layout_on_mouseup_timer ) {
         clearTimeout( t_tools_layout_on_mouseup_timer );
@@ -6323,17 +6329,17 @@ let onDown_3_TOOL_PRESS = function(e)
 let   caller = "onDown_3_TOOL_PRESS";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 
-if( log_this) log("%c"+caller, lbF+lb4);
+if( log_this) log("%c"+caller, lbF+lb3);
 /*}}}*/
 /* TODO child of [dimm_mask] .. [div_slot_containers fullscreen selected container] */
     /* ADD LONG-PRESS TIMER .. (do not consume) {{{*/
     if( onDown_3_TOOL_PRESS_has_long_press_handler() )
     {
-if( log_this) log("%c ADDING LONG-PRESS TIMER:", lbF+lf4);
+if( log_this) log("%c ADDING LONG-PRESS TIMER:", lbF+lf3);
 
         add_long_press_listener("ON DOWN TOOL PRESS "+ get_n_lbl(onWork_EL));
         if( has_el_class(onWork_EL, CSS_TOOLTIP) ) {
-if( log_this) log("%c ADDING SCROLL LISTENER ON "+get_n_lbl(onWork_EL), lbH+lf4);
+if( log_this) log("%c ADDING SCROLL LISTENER ON "+get_n_lbl(onWork_EL), lbH+lf3);
 
             add_listener_capture_active(onWork_EL, "scroll", onDown_3_TOOL_PRESS_scroll_listener);
         }
@@ -6350,7 +6356,7 @@ let onDown_3_TOOL_PRESS_scroll_listener = function(e)
 let   caller = "onDown_3_TOOL_PRESS_scroll_listener";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV3_UP;
 
-if( log_this) log("%c"+caller, lbH+lb4);
+if( log_this) log("%c"+caller, lbH+lb3);
 /*}}}*/
 
     if( is_long_press_pending() )
@@ -6367,7 +6373,7 @@ let caller = "onDown_3_TOOL_PRESS_has_long_press_handler";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV4_LONG_PRESS;
 let tag_this = DOM_TOOLS_TAG || log_this;
 
-if( log_this) log("%c"+caller, lbH+lb4);
+if( log_this) log("%c"+caller, lbH+lb3);
 /*}}}*/
     /* CONTEXT {{{*/
     if(!onWork_EL) return false;
@@ -6381,6 +6387,7 @@ if( log_this) log("%c"+caller, lbH+lb4);
 }}}*/
     /*}}}*/
     /* onWork_EL {{{*/
+    let el0_on_a_sentence_container  = t_util.is_el_or_child_of_class(onWork_EL, t_sentence.CSS_SENTENCE_CONTAINER);
     let el0_is_a_scrolling_EL        =  has_el_class(onWork_EL, t_data.CSS_SCROLLING);
     let el0_onSlotEL                 = (t_get_onWork_EL_slot() > 0);
     let el1_is_a_tool                =  t_is_a_tool_el                    ( onWork_EL, caller               );
@@ -6395,8 +6402,8 @@ if( log_this) log("%c"+caller, lbH+lb4);
 
     /*}}}*/
 /*{{{*/
-if(tag_this) {
-    log_key_val( caller
+if( tag_this)
+    log_key_val_group( caller
                  , {   onWork_PANEL                  : get_n_lbl(onWork_PANEL)
                      ,  panel1_is_a_dimm_mask
                      ,  panel2_is_hotspot
@@ -6406,6 +6413,8 @@ if(tag_this) {
                      ,  panel5_has_a_SCALEPIN
 }}}*/
                      , onWork_EL                     : get_n_lbl(onWork_EL)
+                     ,  current_sel_text             : t_util.ellipsis(t_get_current_sel_text())
+                     ,  el0_on_a_sentence_container
                      ,  el0_is_a_scrolling_EL
                      ,  el0_onSlotEL
                      ,  el1_is_a_tool
@@ -6420,8 +6429,8 @@ if(tag_this) {
                      , onDown_SEL_TEXT               : t_util.ellipsis_short(onDown_SEL_TEXT)
                      ,                       callers : t_log.get_callers()
                  }
-                 , lf4);
-}
+                 , lf3);
+
 /*}}}*/
     /*}}}*/
     /* ON-SCROLLBAR {{{*/
@@ -6430,6 +6439,13 @@ if(tag_this) {
     {
         handled_by = "";
         why_not    = "ON A SCROLLING EL";
+    }
+    /*}}}*/
+    /* ON-SENTENCE-CONTAINER {{{*/
+    else if( el0_on_a_sentence_container )
+    {
+        handled_by = "";
+        why_not    = "ON A SENTENCE CONTAINER";
     }
     /*}}}*/
     /* ON-TOOL {{{*/
@@ -6476,7 +6492,7 @@ if(tag_this) {
     /*}}}*/
     let result = !!handled_by;
 if(tag_this) log("%c"+caller+"%c return "+result    +"%c"+(handled_by || why_not)
-                 ,lbL+lf4    ,lbC+(result ? lf9:lf8) ,lbR+lf4                    );
+                 ,lbL+lf3    ,lbC+(result ? lf9:lf8) ,lbR+lf3                    );
     return result;
 };
 /*}}}*/
@@ -6919,6 +6935,7 @@ let onDown_7_SENTENCE = function(e)
 let   caller = "onDown_7_SENTENCE";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
+    log_this=true;//FIXME
 
 if( log_this) log("%c"+caller, lbF+lb7);
 if( log_this) t_fly.t_log_event_status(caller, lf7);
@@ -6933,14 +6950,14 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
     }
     /*}}}*/
     /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
-    let sentence_el        = t_sentence.t_SENTENCE_get_el_sentence_container(onDown_EL);
+    let sentence_el        = t_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
     if( sentence_el )
     {
         consumed_by += " .. ON A SENTENCE ELEMENT";
 
         t_preventDefault(e, consumed_by);
 
-        t_add_LISTENER_DRAG(caller);
+        t_CURSOR_add_MOVE_LISTENER(caller);
     }
     /*}}}*/
 if( log_this && consumed_by) log("%c"+consumed_by, lf7);
@@ -6972,17 +6989,17 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
         return "";
     }
     /*}}}*/
-    /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
-    let sentence_el        = t_sentence.t_SENTENCE_get_el_sentence_container(onDown_EL);
-    if( sentence_el )
-    {
-        consumed_by += " .. ON A SENTENCE ELEMENT";
-
-        t_preventDefault(e, consumed_by);
-
-        t_add_LISTENER_DRAG(caller);
-    }
-    /*}}}*/
+//    /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
+//    let sentence_el        = t_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
+//    if( sentence_el )
+//    {
+//        consumed_by += " .. ON A SENTENCE ELEMENT";
+//
+//        t_preventDefault(e, consumed_by);
+//
+//        t_CURSOR_add_MOVE_LISTENER(caller);
+//    }
+//    /*}}}*/
     /* SELECT WORD -OR- BUBBLE EVENT {{{*/
 /*{{{
 logXXX("SELECT WORD: anchor_freeze........................=["+ prop.get( t_data.ANCHOR_FREEZE )   +"]");
@@ -7358,9 +7375,9 @@ let onMove_1_ON_COOLDOWN = function(e)
 {
     let caller = "onMove_1_ON_COOLDOWN";
 
-    let                                   consumed_by = "";
-    if     ( t_scroll_not_done_yet()    ) consumed_by = "SCROLLING";
-    else if( move_cooldown_is_pending() ) consumed_by = "MOVE COOLDOWN "+move_cooldown_reason;
+    let                                           consumed_by = "";
+    if     ( dom_scroll.t_scroll_not_done_yet() ) consumed_by = "SCROLLING";
+    else if( move_cooldown_is_pending()         ) consumed_by = "MOVE COOLDOWN "+move_cooldown_reason;
 
     if(consumed_by)
     {
@@ -7976,56 +7993,66 @@ if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_mo
 /*}}}*/
 /* SENTENCE */
 /*{{{*/
-/*_ t_add_LISTENER_DRAG {{{*/
-let t_add_LISTENER_DRAG = function(_caller)
+/*_ t_CURSOR_add_MOVE_LISTENER {{{*/
+let t_CURSOR_add_MOVE_LISTENER = function(_caller)
 {
 /*{{{*/
-let   caller = "t_add_LISTENER_DRAG";
+let   caller = "t_CURSOR_add_MOVE_LISTENER";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
 /*}}}*/
     if("ontouchmove"  in document.documentElement) {
-        add_listener_capture_active(   window, "touchmove"     , t_SENTENCE_drag);
+        add_listener_capture_active(   window, "touchmove", t_SENTENCE_drag_listener);
     }
     else {
-        add_listener_capture_active(   window, "mousemove"     , t_SENTENCE_drag);
-        add_listener_capture_active(   window, "wheel"         , t_SENTENCE_drag);
+        add_listener_capture_active(   window, "mousemove", t_SENTENCE_drag_listener);
+        add_listener_capture_active(   window, "wheel"    , t_SENTENCE_drag_listener);
     }
 };
 /*}}}*/
-/*_ t_SENTENCE_del_listener {{{*/
-let t_SENTENCE_del_listener = function(_caller)
+/*_ t_CURSOR_del_MOVE_LISTENER {{{*/
+let t_CURSOR_del_MOVE_LISTENER = function(_caller)
 {
 /*{{{*/
-let   caller = "t_SENTENCE_del_listener";
+let   caller = "t_CURSOR_del_MOVE_LISTENER";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf6);
 /*}}}*/
-    if("ontouchmove"  in document.documentElement) {
-        remove_listener_capture_active(window, "touchmove"     , t_SENTENCE_drag);
-    }
-    else {
-        remove_listener_capture_active(window, "mousemove"     , t_SENTENCE_drag);
-        remove_listener_capture_active(window, "wheel"         , t_SENTENCE_drag);
-    }
 
-    t_hotspot_del_status_NOT_MOVED_ENOUGH();
-    t_hotspot_del_status_MOVE_ON_COOLDOWN();
+    t_del_NOT_MOVED_ENOUGH();
+    t_del_MOVE_ON_COOLDOWN();
+
+    if(!drag_cursor.get_display_drag_cursor_state())
+    {
+        if("ontouchmove"  in document.documentElement) {
+            remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
+        }
+        else {
+            remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
+            remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
+        }
+
+        drag_cursor.hide_drag_cursor();
+    }
 };
 /*}}}*/
-/*_ t_SENTENCE_drag {{{*/
-let t_SENTENCE_drag = function(event)
+/*_ t_SENTENCE_drag_listener {{{*/
+let t_SENTENCE_drag_listener = function(event)
 {
 /*{{{*/
-let   caller = "t_SENTENCE_drag";
+let   caller = "t_SENTENCE_drag_listener";
+
 
 /*}}}*/
     get_onMoveDXY(event, caller);
     if( t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
     {
-        zap_onMoveDXY(); /* next move from here */
+        /* next move from here */
+/*{{{
+        zap_onMoveDXY();
+}}}*/
         event.preventDefault();
     }
 };
@@ -8370,6 +8397,7 @@ const MOUSEUP            = "MOUSE UP";
 /*}}}*/
 let t_pointerup_listener  = function(e)
 {
+if(e.button) return;
 if(e.ctrlKey) {logXXX("UP   IGNORED .. f(e.ctrlKey)"); return; }
 /* {{{*/
 let   caller = "t_pointerup_listener";
@@ -8416,6 +8444,7 @@ onDown_7_STALL_cancel();
     if(!has_moved) check_has_moved(MOUSEUP);
 
 /*{{{
+        let scroll_last_scrollY = dom_scroll.get_scroll_last_scrollY();
 logXXX(" %c...has_moved..................=["+ has_moved                   +"%c]",lf8,lbA);
 logXXX(" %c...has_been_scrolled_by_script=["+ has_been_scrolled_by_script +"%c]",lf8,lbA);
 logXXX(" %c............onDown_SCROLL_XY.y=["+ onDown_SCROLL_XY.y          +"%c]",lf8,lbA);
@@ -8424,6 +8453,7 @@ logXXX(" %c...........scroll_last_scrollY=["+ scroll_last_scrollY         +"%c]"
     if(!has_moved && (Math.abs(scroll_last_scrollY - onDown_SCROLL_XY.y) > SCROLLED_ENOUGH))
     if(!has_moved && (Math.abs(window.scrollY - onDown_SCROLL_XY.y) > SCROLLED_ENOUGH))
 }}}*/
+    let has_been_scrolled_by_script = dom_scroll.get_has_been_scrolled_by_script();
     if(!has_moved && behavior_TOUCH_ELSE_DESKTOP && has_been_scrolled_by_script)
         t_set_has_moved( has_been_scrolled_by_script );
 
@@ -8432,7 +8462,7 @@ logXXX(" %c...........scroll_last_scrollY=["+ scroll_last_scrollY         +"%c]"
     let dblclicked = is_a_dblclick(e, caller);
 
 /*{{{
-    if( clicked ) scrollIntoViewIfNeeded_cancel(caller);
+    if( clicked ) t_scrollIntoViewIfNeeded_cancel(caller);
 }}}*/
     /*}}}*/
 /*{{{*/
@@ -8725,7 +8755,7 @@ log(container_to_copy_from.innerHTML)
     else {
         consumed_by += " .. SCROLL BACK TO DIM START POINT";
 
-        t_window_scrollTo(0, onDown_SCROLL_XY.y);
+        dom_scroll.t_window_scrollTo(0, onDown_SCROLL_XY.y);
 
         dimm_stop( caller );
     }
@@ -8892,11 +8922,11 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) log("%c"+caller, lf4);
 /*}}}*/
-    /* dismissed_by .. f(!clicked OR dblclicked OR t_event_has_been_consumed) {{{*/
+    /* rejected_by .. f(!clicked OR dblclicked OR t_event_has_been_consumed) {{{*/
     let is_a_tool               = t_is_a_tool_el(onWork_EL, caller);
     let is_an_embedded_doc_tool = t_is_an_embedded_doc_tool(onWork_EL,log_this);
 
-    let dismissed_by
+    let rejected_by
         = (!clicked                         ) ? "!clicked"
         : ( is_a_tool                       ) ? "is_a_tool"
         : ( is_an_embedded_doc_tool         ) ? "is_an_embedded_doc_tool"
@@ -8907,19 +8937,19 @@ if( log_this) log("%c"+caller, lf4);
         :                                        ""
     ;
 
-    if(dismissed_by) {
-if( log_this) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf4, lbA, lf9);
+    if(rejected_by) {
+if( log_this) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf4, lbA, lf9);
         return "";
     }
     /*}}}*/
-    /* dismissed_by .. f(NO el_event_handler) {{{*/
+    /* rejected_by .. f(NO el_event_handler) {{{*/
     let el_event_handler  = t_util.get_el_event_handler(onWork_EL, caller);
-    dismissed_by
+    rejected_by
         = (el_event_handler == null)
         ? "NO EVENT HANDLER"
         : "";
-    if(dismissed_by) {
-if( log_this) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf4, lbA, lf9);
+    if(rejected_by) {
+if( log_this) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf4, lbA, lf9);
         return "";
     }
     /*}}}*/
@@ -8941,12 +8971,12 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) t_fly.t_log_event_status(caller+"(clicked "+clicked+")", lf5);
 
-    let dismissed_by
+    let rejected_by
     = ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
     : (!t_is_a_tool_el(onWork_EL, caller) ) ? "NOT A TOOL ["+get_n_lbl(onWork_EL)+"]"
     :                                          "";
-if( log_this && dismissed_by) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf5, lbA, lf9);
-    if(dismissed_by) return "";
+if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf5, lbA, lf9);
+    if(rejected_by) return "";
 if( log_this) log("%c"+caller, lf5);
 
     let consumed_by = "ON TOOL .. ["+get_n_lbl(onWork_EL)+"]";
@@ -9290,13 +9320,14 @@ let onUp_7_DOC_SENTENCES = function(e, clicked, dblclicked)
 /*{{{*/
 let   caller = "onUp_7_DOC_SENTENCES";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
+    log_this=true;//FIXME
 
 if( log_this) t_fly.t_log_event_status(caller, lf7);
 /*}}}*/
     /* !t_is_a_tool_el .. !has_moved .. !t_seek.t_seeker_PU_is_active {{{*/
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 
-    let dismissed_by
+    let rejected_by
         = (!clicked                           ) ? "!clicked"
         : ( has_moved                         ) ? has_moved
         : (onDown_TOUCHES > 1                 ) ? ""
@@ -9304,8 +9335,8 @@ if(!is_a_DOM_LOAD_featured_function(caller)) return "";
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
-if( log_this && dismissed_by) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf7, lbA, lf9);
-    if(dismissed_by) return "";
+if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf7, lbA, lf9);
+    if(rejected_by) return "";
 
 if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()+"%c onDown_TOUCHES=["+onDown_TOUCHES+"]"
                    ,lf7        ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8]  ,lbH+lfX[dblclicked ? 5:8]       ,lbH+lf8                               );
@@ -9313,7 +9344,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
     let consumed_by = "";
     /*}}}*/
     /* [container   clicked] .. RESTORING CONTAINER SENTENCES .. f(on a sentence container) {{{*/
-    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
+    let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER( onDown_EL );
     if(   container )
     {
         /* RESTORING MULTIPLE CONTAINERS {{{*/
@@ -9321,7 +9352,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         {
             for(let i=0; i < cells.length; ++i)
                 consumed_by
-                    =     t_sentence.t_SENTENCE_RESTORE( cells[i] )
+                    =     t_sentence.t_SENTENCE_RESTORE_EL(cells[i], e)
                     ||    consumed_by
             ;
         }
@@ -9333,7 +9364,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
             if(!t_util.is_el_child_of_id(onWork_EL, "log_popup_div") )
             {
 
-                consumed_by = t_sentence.t_SENTENCE_RESTORE( container );
+                consumed_by = t_sentence.t_SENTENCE_RESTORE_EL(container, e);
             }
             else {
                 if( t_util.is_el_child_of_class(onWork_EL, "xpath") )
@@ -9345,7 +9376,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
                 else {
                     consumed_by = "RESTORING ALL CONTAINERS SENTENCES";
 
-                    t_sentence.t_SENTENCE_RESTORE_ALL();
+                    t_sentence.t_SENTENCE_RESTORE_ALL( e );
                 }
             }
         }
@@ -9359,113 +9390,6 @@ if(log_this && consumed_by) log("%c"+consumed_by, lbb+lbH+lf7);
     return consumed_by;
 };
 /*}}}*/
-/*_ onUp_7_DOC_SENTENCES_get_onDown_EL_container {{{*/
-let onUp_7_DOC_SENTENCES_get_onDown_EL_container = function(el)
-{
-/*{{{*/
-let   caller = "onUp_7_DOC_SENTENCES_get_onDown_EL_container";
-let log_this = !onDown_SHIFT && (LOG_MAP.EV4_LONG_PRESS || LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
-/* ✔ NOTE {{{
-.. as [onDown_EL] cannot be a TEXT_NODE
-.. ... it defaults to  EVENT target parent container
-.. XXX that can have a huge textContent XXX
-}}}*/
-
-/*}}}*/
-    let container
-        =  t_util.get_el_parent_with_class(el, "container_light") /* ▼ ordered by priority... */
-        || t_util.get_el_parent_with_class(el, "container_dark" )
-
-    /* LIST */
-        || t_util.get_el_parent_with_tag  (el,  "LI"       )
-        || t_util.get_el_parent_with_tag  (el, "UL"        )
-        || t_util.get_el_parent_with_tag  (el, "OL"        )
-
-    /* GLOSSARY */
-        || t_util.get_el_parent_with_tag  (el,  "DT"       ) /* single cell Term        */
-        || t_util.get_el_parent_with_tag  (el,  "DD"       ) /* single cell Description */
-        || t_util.get_el_parent_with_tag  (el, "DL"        ) /*        cell collection  .. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl */
-
-    /* TABLE */
-        || t_util.get_el_parent_with_tag  (el,  "TH"       ) /* single cell             */
-        || t_util.get_el_parent_with_tag  (el,  "TD"       ) /* single cell             */
-        || t_util.get_el_parent_with_tag  (el,  "THEAD"    ) /*        cell collection  */
-        || t_util.get_el_parent_with_tag  (el,  "TFOOT"    ) /*        cell collection  */
-        || t_util.get_el_parent_with_tag  (el,  "COLGROUP" ) /*        cell collection  */
-        || t_util.get_el_parent_with_tag  (el,  "CAPTION"  ) /*        cell collection  */
-        || t_util.get_el_parent_with_tag  (el,  "TBODY"    ) /*        cell collection  */
-        || t_util.get_el_parent_with_tag  (el, "TABLE"     ) /*        cell collection  */
-
-    /* COMPOSITION */
-        || t_util.get_el_parent_with_tag  (el, "PRE"       )
-        || t_util.get_el_parent_with_tag  (el, "P"         )
-        || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE")
-        || t_util.get_el_parent_with_tag  (el, "DIR"       )
-        || t_util.get_el_parent_with_tag  (el, "DIV"       )
-
-    /* DETAILS */
-        || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  )
-        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
-    ;
-
-    if(!container) return "";
-
-    /* [CLICKED TITLE] ➔ [TITLE + DL] */
-    let c_next = container              .nextElementSibling;
-
-    let p_next = container.parentElement
-        ?        container.parentElement.nextElementSibling
-        :        null
-    ;
-
-    let group
-        = (!container)                          ? null
-        : ( c_next && (c_next.tagName == "DL")) ? [ container               , c_next ]
-        : ( p_next && (p_next.tagName == "DL")) ? [ container.parentElement , p_next ]
-        :                                         null
-    ;
-
-    /* [CLICKED DT] ➔ [CONTAINING DL] */
-    let dlist
-        = (!container)                        ? null
-        : ( container.nodeName == "DL"      ) ? container
-        : ( container.nodeName == "DT"      ) ? container.parentElement
-        :                                       null
-    ;
-
-    let table
-        = (!container)                        ? null
-        : ( container.nodeName ==  "THEAD"  ) ? container.parentElement
-        : ( container.nodeName ==  "TFOOT"  ) ? container.parentElement
-        : ( container.nodeName ==  "TBODY"  ) ? container.parentElement
-        : ( container.nodeName ==  "CAPTION") ? container.parentElement
-        : ( container.nodeName == "TABLE"   ) ? container
-        :                                      null
-    ;
-
-    let cells
-        =   group ?                        group
-        :   dlist ? dlist.querySelectorAll("DIV,DT,DD,TEMPLATE")
-        :   table ? table.querySelectorAll(    "TH,TD,CAPTION")
-        :           null
-    ;
-/*{{{*/
-if( log_this )
-    log_key_val_group(caller
-                      , {   el
-                          ,                   el_tagName : el.tagName
-                          , container
-                          , container_textContent_length : container.textContent.length
-                          , table
-                          , dlist
-                          , group
-                          , cells
-                      }, lbH+lf4, false);
-
-/*}}}*/
-    return { container , cells };
-};
-/*}}}*/
 /*… onUp_7_DOC_WORDING {{{*/
 let onUp_7_DOC_WORDING = function(e, clicked, dblclicked)
 {
@@ -9474,7 +9398,7 @@ let   caller = "onUp_7_DOC_WORDING";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
 
-    let dismissed_by
+    let rejected_by
         = (!clicked                           ) ? "!clicked"
         : ( has_moved                         ) ? has_moved
         : (onDown_TOUCHES > 1                 ) ? ""
@@ -9482,8 +9406,8 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
-if( log_this && dismissed_by) log("%c"+caller+"%c dismissed_by %c"+dismissed_by, lf7, lbA, lf9);
-    if(dismissed_by) return "";
+if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf7, lbA, lf9);
+    if(rejected_by) return "";
 
 if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()
                   ,lf7         ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8] ,lbH+lfX[dblclicked ? 5:8]     );
@@ -9750,7 +9674,7 @@ if( log_this) log("%c WHILE EDITING STICKY "+sticky.id+" %c IGNORING STICKY PAST
 
     }
     else {
-        if(t_get_current_sel_text())
+        if( t_get_current_sel_text() )
         {
 if( log_this) log( "SHOWING STICKY PASTE TARGET INDICATORS");
 /*
@@ -9803,17 +9727,16 @@ if(log_this) log("%c SETTING FOCUS ON ["+import_clipboard.id+"]", lbb+lbH+lf9);
     onWork_MOVABLE_CHILD = null;
     /*}}}*/
     /* SENTENCE CONTAINER ➔ REMOVE FONT-SIZE WHEEL LISTENER {{{*/
-    if( t_sentence.t_SENTENCE_GET_CONTAINERS() )
+    if( t_sentence.t_SENTENCE_GET_SENTENCE_CONTAINERS() )
     {
-        t_SENTENCE_del_listener(caller);
-
+        t_CURSOR_del_MOVE_LISTENER(caller);
     }
     /*}}}*/
 /*{{{
 t_fly.t_fly_tooltip_add(caller) .. TODO PIVOT
 }}}*/
     clr_click_last_result();
-    onLong_press_scroll_freezed = false;
+    dom_scroll.set_onLong_press_scroll_freezed( false );
 };
 /*}}}*/
 /*… onUp_9_TOOLS_LAYOUT_HANDLER {{{*/
@@ -9823,7 +9746,7 @@ let onUp_9_TOOLS_LAYOUT_HANDLER = function()
 let caller   = "onUp_9_TOOLS_LAYOUT_HANDLER";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV0_LISTEN || LOG_MAP.EV3_UP);
 
-    if( call_t_grid_IS_ON_GRID(caller)             ) { clr_onWork_EL(caller); return; }
+    if( call_t_grid_IS_ON_GRID(caller)      ) { clr_onWork_EL(caller); return; }
     if( has_el_class(pat_bag, CSS_OPEN_BAG) ) { clr_onWork_EL(caller); return; }
 /*}}}*/
 /*{{{
@@ -10252,14 +10175,26 @@ let   caller = "onLong_press4_SENTENCE";
 let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
 
 if( log_this) t_fly.t_log_event_status(caller, lf4);
+    let rejected_by = "";
     let consumed_by = "";
 /*}}}*/
     /* SKIP TOOLS {{{*/
-    if( t_is_a_tool_el(onWork_EL, caller) ) return "";
+    if( t_is_a_tool_el          (onWork_EL, caller         )) rejected_by = "t_is_a_tool_el";
+
+    if( t_util.is_el_child_of_id(onWork_EL, "log_popup_div")) rejected_by = "is_el_child_of_id";
+    /*}}}*/
+    /* PRESERVE SELECTION FOR STICKY TOOL {{{*/
+    if( t_get_current_sel_text() ) rejected_by = "t_get_current_sel_text";
 
     /*}}}*/
+    if(rejected_by)
+    {
+if( log_this && rejected_by) log("%c"+rejected_by, lb4);
+
+        return "";
+    }
     /* SPLITTING CONTAINER SENTENCES {{{*/
-    let { container , cells } = onUp_7_DOC_SENTENCES_get_onDown_EL_container(onDown_EL);
+    let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER( onDown_EL );
     if(   container )
     {
         /* SPLITTING MULTIPLE CELLS */
@@ -10305,7 +10240,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf5);
     {
 if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]", lb5);
 
-        onLong_press_scroll_freezed = true;
+        dom_scroll.set_onLong_press_scroll_freezed( true );
     }
     /*}}}*/
     /* WORD SLOT .. IGNORE {{{*/
@@ -11744,7 +11679,7 @@ log("...div_slot_containers.className=["+div_slot_containers.className+"]")
         else {
             consumed_by = "ESCAPE SLOT CONTAINERS DISPLAYED";
 
-            t_window_scrollTo(0, onDown_SCROLL_XY.y);
+            dom_scroll.t_window_scrollTo(0, onDown_SCROLL_XY.y);
             dimm_stop( caller );
         }
     }
@@ -12294,7 +12229,7 @@ if( log_this) {
 /*}}}*/
     s_X /= (body_zoom_percent  / 100);
     s_Y /= (body_zoom_percent  / 100);
-    t_window_scrollTo(s_X, s_Y, "instant");
+    dom_scroll.t_window_scrollTo(s_X, s_Y, "instant");
 
     t_layout_changed();
 
@@ -13103,15 +13038,15 @@ if( log_this) log(caller);
     if( log_this) log("....t_event_consumed_cause %c "+ t_event_consumed_cause  +" ", lb2);
     if( log_this) log("...t_preventDefault_caller %c "+ t_preventDefault_caller +" ", lb2);
 
-    let                                    dismissed_by = "";
-    if     ( has_moved                   ) dismissed_by = "has_moved";
-    else if( t_event_has_been_consumed() ) dismissed_by = t_event_consumed_cause;
+    let                                    rejected_by = "";
+    if     ( has_moved                   ) rejected_by = "has_moved";
+    else if( t_event_has_been_consumed() ) rejected_by = t_event_consumed_cause;
 /*
-    else if( t_preventDefault_has_been_called() ) dismissed_by = t_preventDefault_caller;
+    else if( t_preventDefault_has_been_called() ) rejected_by = t_preventDefault_caller;
 */
 
-if(log_this && dismissed_by) log(caller+": %c dismissed_by ["+ dismissed_by+"]", lb2);
-    if(dismissed_by) {
+if(log_this && rejected_by) log(caller+": %c rejected_by ["+ rejected_by+"]", lb2);
+    if(rejected_by) {
 if(log_this) console.trace();
         return;
     }
@@ -13387,7 +13322,7 @@ let t_resize_listener = function(e)
 
     t_layout_changed();
 
-    scroll_changed(e);
+    dom_scroll.scroll_listener_scroll_changed(e);
 };
 /*}}}*/
 /*  t_layout_changed {{{*/
@@ -13417,12 +13352,12 @@ logXXX("dom_tools_html.style.visibility "+ dom_tools_html.style.visibility)
     if(layout_changed_timer )   clearTimeout(layout_changed_timer);
     layout_changed_timer    =   null;
 
-    if(!delay)                               layout_changed_handler();       /* sync */
-    else layout_changed_timer = setTimeout  (layout_changed_handler, delay); /* async .. wait for new window geometry */
+    if(!delay)                               layout_changed_handler(        window.event); /* sync */
+    else layout_changed_timer = setTimeout  (layout_changed_handler, delay, window.event); /* async .. wait for new window geometry */
 };
 /*}}}*/
 /*_ layout_changed_handler {{{*/
-let layout_changed_handler = function()
+let layout_changed_handler = function(e)
 {
 /*{{{*/
 let   caller = "layout_changed_handler";
@@ -13473,9 +13408,9 @@ if(log_this) log_caller();
     {
         div_slot_containers.style.minHeight = window.innerHeight+"px";
 
-        if(t_scrollIntoView_EL) delete t_scrollIntoView_EL.scrolledIntoViewHandled;
+        dom_scroll.t_scrollIntoView_EL_reset();
 
-        t_scroll_div_slot_containers_in_viewport();
+        dom_scroll.t_scroll_div_slot_containers_in_viewport();
     }
     /*}}}*/
     /* 3/3 - STICKY RING-MENU LAYOUT {{{*/
@@ -13510,467 +13445,7 @@ if(log_this) log_caller();
     t_sticky.t_sticky_onLayout();
 
     /*}}}*/
-};
-/*}}}*/
-/*}}}*/
-/* SCROLL {{{*/
-/*{{{*/
-
-const MAX_SCROLL_SMOOTH_DURATION = 20000;
-const SCROLLED_ENOUGH                 =  16;
-const SCROLL_DONE_COOLDOWN  =  250;
-const WINDOW_SCROLLTO_BY_SCRIPT_DELAY = 500;
-
-let scroll_check_timeout  = null;
-let scroll_last_scrollY   = 0;
-let has_been_scrolled_by_script;
-let onLong_press_scroll_freezed;
-let sync_scroll_smooth_timeout;
-let t_scroll_div_slot_containers_in_viewport_timeout;
-let t_window_scrollTo_last_call_MS;
-
-/*}}}*/
-/* t_scroll_listener {{{*/
-/*{{{*/
-let has_scrolled;
-
-/*}}}*/
-let t_scroll_listener = function(e)
-{
-/*{{{*/
-let caller = "t_scroll_listener";
-let log_this = LOG_MAP.EV1_DOWN;
-
-if(log_this || LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status_if_changed_filter(caller, "scroll", lf6);
-    let scrolled_by_script = "";
-/*}}}*/
-    has_scrolled = true;
-    /*  onLong_press_scroll_freezed {{{*/
-    if( onLong_press_scroll_freezed )
-    {
-        window.scrollTo(  onDown_SCROLL_XY.x,  onDown_SCROLL_XY.y);
-
-        return;
-    }
-    /*}}}*/
-    /*  div_slot_containers_displayed .. f(SCROLLED_INTO_VIEW) {{{*/
-    if( div_slot_containers_displayed() )
-    {
-        if(!has_el_class(div_slot_containers, SCROLLED_INTO_VIEW) )
-        {
-            scrolled_by_script += "WAITING FOR CONTAINERS INTO VIEW";
-
-            let rect = div_slot_containers.getBoundingClientRect();
-            div_slot_containers.on_grid_height = parseInt(rect.bottom - rect.top);
-
-if( log_this) log("%c"+caller+"%c div_slot_containers.height %c"+div_slot_containers.on_grid_height, lbL, lbC, lbR);
-        }
-        else {
-            /* div_slot_containers into view {{{*/
-            if((window.scrollY + window.innerHeight) > div_slot_containers.on_grid_height)
-            {
-if( log_this) log(caller+": ...t_window_scrollTo(0, "+div_slot_containers.on_grid_height +"- "+window.innerHeight+")");
-
-                add_el_class(div_slot_containers, SCROLLED_OVER_VIEW);
-
-                t_window_scrollTo(0, div_slot_containers.on_grid_height - window.innerHeight);
-            }
-            else {
-                del_el_class(div_slot_containers, SCROLLED_OVER_VIEW);
-            }
-            /*}}}*/
-            return;
-        }
-    }
-    /*}}}*/
-    /* SCROLLED BY SCRIPT OR BY USER {{{*/
-    let scrolled_by_user   = "";
-    let this_MS            = new Date().getTime();
-
-    /*}}}*/
-    /* WITHIN DELAY [SCROLL BY SCRIPT] {{{*/
-    if( t_window_scrollTo_last_call_MS )
-    {
-        let elapsed = this_MS - t_window_scrollTo_last_call_MS;
-        if( elapsed < WINDOW_SCROLLTO_BY_SCRIPT_DELAY) {
-            scrolled_by_script += " .. WITHIN SCROLL_BY_SCRIPT DELAY OF "+WINDOW_SCROLLTO_BY_SCRIPT_DELAY+"ms";
-
-if( log_this) log("%c"+caller+"%c WINDOW SCROLL %c ENDED "+elapsed+"ms AGO"
-                  ,lbL+lf8    ,lbC+lf9         ,lbR+lf3);
-        }
-/*{{{
-        t_window_scrollTo_last_call_MS = 0;
-}}}*/
-
-    }
-    /*}}}*/
-    /* WITHIN DELAY [SCROLL INTO VIEW IF NEEDED] {{{*/
-    if( t_scrollIntoViewIfNeeded_DONE_MS )
-    {
-        let elapsed = this_MS - t_scrollIntoViewIfNeeded_DONE_MS;
-        if( elapsed < WINDOW_SCROLLTO_BY_SCRIPT_DELAY)
-            scrolled_by_script += " .. INTO VIEW";
-
-        t_scrollIntoViewIfNeeded_DONE_MS = 0;
-    }
-    /*}}}*/
-    /* WITHIN DELAY [SCROLL RECENTER] {{{*/
-    if( t_scroll_recenter_DONE_MS )
-    {
-        let elapsed = this_MS - t_scroll_recenter_DONE_MS;
-        if( elapsed < WINDOW_SCROLLTO_BY_SCRIPT_DELAY)
-            scrolled_by_script += " .. RECENTER";
-
-        t_scroll_recenter_DONE_MS = 0;
-    }
-    /*}}}*/
-    /* WITHIN DELAY [SCROLL TO LAST HIDDEN NODE] {{{*/
-    if( t_hide.dom_hide4_scroll_to_last_hidden_handled_recently(WINDOW_SCROLLTO_BY_SCRIPT_DELAY) )
-    {
-        scrolled_by_script += " .. TO LAST HIDDEN NODE";
-
-    }
-    /*}}}*/
-    /* INTERRUPTED BY USER .. CLEAR ALL PENDING SCROLL HANDLERS {{{*/
-    if( !scrolled_by_script )
-    {
-        if( scrollIntoViewIfNeeded_is_pending() ) {
-if( log_this) log("%c SCROLLED BY USER %c CLEAR SCROLL INTO VIEW AND RECENTER", lbL+lf8, lbR+lf9);
-
-            scrollIntoViewIfNeeded( null );
-        }
-
-        if( t_hide.dom_hide4_scroll_to_last_hidden_is_pending() ) {
-if( log_this) log("%c SCROLLED BY USER %c CLEAR SCROLL TO LAST HIDDEN HANDLER", lbL+lf8, lbR+lf9);
-
-            t_hide.dom_hide4_scroll_to_last_hidden( null );
-        }
-    }
-/*{{{
-    else if( onDown_MS ) {
-        let elapsed = this_MS - onDown_MS;
-if( log_this) log(caller+"%c scrolled_by_script=["+scrolled_by_script+"] %c ONDOWN TO SCROLL EVENT DELAY %c "+elapsed+"ms"
-                  ,       lbH+lf7                                       ,lbL+lf4                        ,lbR+lf4);
-    }
-}}}*/
-    /*}}}*/
-    /* ONSCROLL: CLEAR SELECTION AND UNDIMM STICKY TOOLS {{{*/
-    if( t_sticky.t_sticky_EDITING() )
-        t_sticky.t_sticky_EDIT_DONE();
-
-    if( t_sticky.t_sticky_reorder_required_on_scroll() )
-        t_sticky.t_sticky_reorder();
-
-    t_window_getSelection_removeAllRanges();
-
-    /* scroll burst filter */
-/*{{{
-    if(!t_sticky.t_sticky_SET_DIMMED_IS_PENDING())
-        t_sticky.t_sticky_SET_DIMMED(false, "SCROLL");
-}}}*/
-
-    /*}}}*/
-
-if( log_this && scrolled_by_script) log("%c"+caller+" %c "+scrolled_by_script, lbb+lbL+lf8, lbb+lbR+lf3);
-if( log_this && scrolled_by_user  ) log("%c"+caller+" %c "+scrolled_by_user  , lbb+lbL+lf7, lbb+lbR+lf3);
-    scroll_changed(e, scrolled_by_script);
-};
-/*}}}*/
-/*_ t_has_scrolled {{{*/
-let t_has_scrolled = function()
-{
-    return has_scrolled;
-};
-/*}}}*/
-/*_   clr_has_scrolled {{{*/
-let   clr_has_scrolled = function()
-{
-    has_scrolled = false;
-};
-/*}}}*/
-/*_ t_scroll_div_slot_containers_in_viewport {{{*/
-let t_scroll_div_slot_containers_in_viewport = function(scrolled_by_script)
-{
-/*{{{
-logBIG("t_scroll_div_slot_containers_in_viewport("+scrolled_by_script+")");
-logBIG("scrollIntoViewIfNeeded_is_pending="+scrollIntoViewIfNeeded_is_pending());
-}}}*/
-
-    if(t_scroll_div_slot_containers_in_viewport_timeout) return;
-
-    /* KEEP [div_slot_containers] BOTTOM VISIBLE {{{*/
-    if(!scrolled_by_script)
-    {
-        del_el_class(div_slot_containers, SCROLLED_INTO_VIEW);
-        add_el_class(div_slot_containers, SCROLLED_OVER_VIEW);
-
-        t_scroll_div_slot_containers_in_viewport_timeout
-            = setTimeout(
-                         function() {
-                             t_scroll_div_slot_containers_in_viewport_timeout = null;
-
-                             let scrollY_max = BOX_MARGIN + div_slot_containers.offsetHeight - window.innerHeight;
-                             if(window.scrollY > scrollY_max)
-                                 t_window_scrollTo(window.scrollX, scrollY_max, "instant");
-                         }
-                         , WINDOW_SCROLLTO_BY_SCRIPT_DELAY);
-    }
-    /*}}}*/
-};
-/*}}}*/
-/*_ t_window_scrollTo {{{*/
-/*{{{*/
-/*{{{
-let CACHED_GLOBAL_WINDOW_SCROLLTO = window.scrollTo;
-let window_overriden_scrollTo_deleted;
-}}}*/
-/*}}}*/
-let t_window_scrollTo = function(x, y, scrollBehavior)
-{
-    /* set behavior */
-    scrollBehavior =                         scrollBehavior
-        || (prop.get(t_data.SCROLL_SMOOTH) ? "smooth"
-            :                                "instant");
-    set_scrollBehavior( scrollBehavior );
-
-    /* scroll */
-    x *= (body_zoom_percent  / 100);
-    y *= (body_zoom_percent  / 100);
-    window.scrollTo(x, y);
-
-/*
- :!start explorer "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView"
-*/
-
-    /* restore user behavior */
-    if(sync_scroll_smooth_timeout) clearTimeout( sync_scroll_smooth_timeout );
-    sync_scroll_smooth_timeout   =   setTimeout( sync_scroll_smooth, MAX_SCROLL_SMOOTH_DURATION);
-
-    /* clear move in progress */
-    onMoveDXY.x = 0;
-    onMoveDXY.y = 0;
-};
-/*}}}*/
-/*_ set_scrollBehavior {{{*/
-let set_scrollBehavior = function(scrollBehavior)
-{
-    let html  = document.getElementsByTagName("HTML")[0];
-
-    let state = (scrollBehavior == "smooth");
-
-    set_el_class_on_off(html, t_data.SCROLL_SMOOTH, state);
-
-/*{{{
-logXXX("set_scrollBehavior("+scrollBehavior+") .. set_el_class_on_off(html , "+t_data.SCROLL_SMOOTH+","+state+")");
-}}}*/
-};
-/*}}}*/
-/*_ sync_scroll_smooth {{{*/
-let sync_scroll_smooth = function()
-{
-    /* restore user behavior */
-    sync_scroll_smooth_timeout = null;
-
-    let html  = document.getElementsByTagName("HTML")[0];
-
-    let state = prop.get( t_data.SCROLL_SMOOTH );
-
-    set_el_class_on_off(html, t_data.SCROLL_SMOOTH, state);
-
-/*{{{
-logXXX("sync_scroll_smooth() .. set_el_class_on_off(html , "+t_data.SCROLL_SMOOTH+","+state+")");
-}}}*/
-};
-/*}}}*/
-/*_ scroll_changed {{{*/
-let scroll_changed = function(e, scrolled_by_script="")
-{
-/*{{{*/
-let   caller = "scroll_changed";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log(caller +": ["+ window.scrollX +" "+ window.scrollY +"]"+ (scrolled_by_script ? " scrolled_by_script" : "") + (container_selected ? " container_selected=["+t_util.get_id_or_tag(container_selected)+" "+t_util.get_n_txt(container_selected)+"]" : ""));
-/*}}}*/
-    /* has_been_scrolled_by_script {{{*/
-    if(scrolled_by_script && !has_been_scrolled_by_script && (Math.abs(window.scrollY - onDown_SCROLL_XY.y) > SCROLLED_ENOUGH))
-    {
-        has_been_scrolled_by_script = "HAS SCROLLED .. abs("+(window.scrollY - onDown_SCROLL_XY.y)+") > "+ SCROLLED_ENOUGH;
-    }
-    /*}}}*/
-    t_set_has_moved(has_been_scrolled_by_script || caller);
-    /*    seeker follow scrolling {{{*/
-    if(!t_seek.t_seeker_sync_is_pending() )
-        t_seek.t_seeker_sync();
-
-    /*}}}*/
-    if( div_slot_containers_displayed() )
-    {
-        /* div_slot_containers {{{*/
-        if(dimm_mask.firstElementChild == div_slot_containers)
-        {
-            /* SCROLLED BY SCRIPT */
-            if( scrolled_by_script )
-            {
-if( log_this) logBIG(caller+": "+ scrolled_by_script +" .. SCROLL INTO VIEW", lf4);
-
-                scrollIntoViewIfNeeded_dimm_mask_container_selected( dimm_mask.firstElementChild );
-            }
-            /* SCROLLED BY USER .. INTERRUPT SCHEDULED SCROLLING */
-            else if( scrollIntoViewIfNeeded_is_pending() )
-            {
-if( log_this) logBIG(caller+": "+ scrolled_by_script +" .. SCROLL INTO VIEW CANCELED", lf5);
-
-                scrollIntoViewIfNeeded_dimm_mask_container_selected( null );
-            }
-        }
-        /*}}}*/
-    }
-    /* follow [container_selected] {{{*/
-    if(container_selected)
-        t_seek.t_seekzone7_show_container( container_selected );
-
-    /*}}}*/
-    /* display current window scrollY percentage .. (thumb_p) {{{*/
-    if( toolbar_thumb )
-    {
-        /* keep only 2 digits */
-        let thumb_p             = 100 * window.scrollY / t_util.getPageHeight();
-        let thumb_p_str         = t_select.t_get_thumb_p_str(thumb_p);
-        toolbar_thumb.innerHTML = thumb_p_str.replace(" ","&nbsp;");
-    }
-    /*}}}*/
-    /* track and store [window_scrollY] {{{*/
-    if(!scroll_check_timeout)
-    {
-/*{{{
-t_log.console_clear("scroll_changed")
-logXXX("SCROLLING START");
-}}}*/
-/*{{{
-        add_el_class(document.body, t_data.CSS_SCROLLING);
-}}}*/
-
-        scroll_check_timeout = setTimeout(scroll_check_handler, SCROLL_DONE_COOLDOWN);
-    }
-    /*}}}*/
-};
-/*}}}*/
-/*_ scroll_check_handler {{{*/
-let scroll_check_handler     = function()
-{
-/*{{{*/
-let   caller = "scroll_check_handler";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-    scroll_check_timeout = null;
-/*}}}*/
-    let                this_scrollY  =      window.scrollY;
-    let done_moving = (this_scrollY == scroll_last_scrollY);
-    if( done_moving )
-    {
-        /* [el_to_mark_SCROLLED_INTO_VIEW] MARK DONE {{{*/
-        if( el_to_mark_SCROLLED_INTO_VIEW )
-        {
-if( log_this) log("%c"+caller+" %c ["+t_util.get_id_or_tag(el_to_mark_SCROLLED_INTO_VIEW) +"] SCROLLED_INTO_VIEW DONE", lbb+lbL+lf8, lbb+lbR+lf3);
-
-            del_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_OVER_VIEW);
-            add_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_INTO_VIEW);
-
-            el_to_mark_SCROLLED_INTO_VIEW = null;
-        }
-        /*}}}*/
-        /* SCROLLING DONE: .. CALL [t_clr_has_moved] {{{*/
-        t_clr_has_moved("scroll_check_handler");
-
-/*{{{
-        del_el_class(document.body, t_data.CSS_SCROLLING);
-}}}*/
-
-/*{{{
-        scroll_done_collect_nodes_in_view();
-}}}*/
-if( log_this) log("%c TODO %c scroll_done_collect_nodes_in_view", lbb+lbL+lf2, lbb+lbR+lf8);
-        /*}}}*/
-        /* STORE SCROLL POSITION {{{*/
-        t_store.t_store_set_value("window_scrollY", scroll_last_scrollY);
-/*{{{
-logBIG("SET window_scrollY=["+scroll_last_scrollY+"]", lf3);
-}}}*/
-
-        /*}}}*/
-    }
-    else {
-        /* RECHECK AGAIN LATER {{{*/
-        scroll_last_scrollY  = this_scrollY;
-        scroll_check_timeout = setTimeout(scroll_check_handler, SCROLL_DONE_COOLDOWN);
-/*{{{
-logBIG("SET window_scrollY=["+scroll_last_scrollY+"]", lf6);
-}}}*/
-        /*}}}*/
-    }
-};
-/*}}}*/
-/*_ t_scroll_not_done_yet {{{*/
-let t_scroll_not_done_yet = function()
-{
-    return (scroll_check_timeout != null);
-};
-/*}}}*/
-/* TODO */
-/*_ scroll_done_collect_nodes_in_view {{{*/
-/*{{{*/
-let nodes_in_view_array         = [];
-
-/*}}}*/
-let scroll_done_collect_nodes_in_view = function(dir)
-{
-/*{{{*/
-let   caller = "scroll_done_collect_nodes_in_view";
-let log_this = LOG_MAP.T3_LAYOUT;
-
-if( log_this) log("%c TODO %c "+caller, lbb+lbL+lf2, lbb+lbR+lf8);
-
-if( log_this) console.time(caller);
-/*}}}*/
-    /* CURRENT [VIEWPORT TOP BOTTOM] thumb_p {{{*/
-    let view_T = window.scrollY;
-    let view_B = window.scrollY+ window.innerHeight;
-
-if( log_this) log("...view_T=["+ view_T +"]");
-if( log_this) log("...view_B=["+ view_B +"]");
-    /*}}}*/
-    /* FORGET PREVIOUSLY VIEWABLE NODES {{{*/
-    for(let i = 1; i <= nodes_in_view_array.length; ++i)
-        del_el_class(   nodes_in_view_array[i], t_data.CSS_VIEWABLE);
-
-    /*}}}*/
-    /* COLLECT CURRENTLY VIEWABLE NODES {{{*/
-    nodes_in_view_array = [];
-    for(let slot = 1; slot < t_select.ccs.length; ++slot)
-    {
-        /* ...skip unpopulated ones */
-        let num_max = t_select.t_select_get_slot_nodes_length(slot);
-        if(!t_select.ccs[slot] || (num_max < 1)) continue;
-
-        for(let num = 1; num <= num_max; ++num)
-        {
-            let       node    = t_select.ccs[slot].nodes[num-1];
-            let       node_T  = t_util.getInPageTop( node );
-            let       node_B  = node_T + node.offsetHeight;
-            if(      (node_T >= view_T)
-                  && (node_B <= view_B)
-              ) {
-                nodes_in_view_array.push( node );
-                add_el_class(node, t_data.CSS_VIEWABLE);
-
-if( log_this) log(". "+nodes_in_view_array.length+": slot["+slot+"] num["+num+"]");
-            }
-        }
-
-    }
-    /*}}}*/
-if( log_this) console.time(caller);
-if( log_this) console.timeEnd(caller);
+    t_sentence.t_SENTENCE_onresize(e);
 };
 /*}}}*/
 /*}}}*/
@@ -17166,6 +16641,9 @@ let t_set_CSS_FULLY_SPREAD = function(tool_el, state)
 
 /* SCROLL */
 /* {{{*/
+let dom_scroll  = (function() {
+/*"use strict";*/
+
 /*{{{*/
 const SCROLLED_INTO_VIEW     = "scrolled_into_view";
 const SCROLLED_OVER_VIEW     = "scrolled_over_view";
@@ -17176,11 +16654,483 @@ const SCROLL_CONTAINER_DELAY = 500;
 
 let t_scrollIntoView_EL;
 
-let t_scrollIntoViewIfNeeded_timer;
-let t_scrollIntoViewIfNeeded_DONE_MS;
-let t_scroll_recenter_timer;
-let t_scroll_recenter_DONE_MS;
+let t_scroll_intoview_DONE_MS; let t_scroll_intoview_timer;
+let t_scroll_recenter_DONE_MS; let t_scroll_recenter_timer;
 
+/*}}}*/
+
+/* LISTENER */
+/*{{{*/
+/*{{{*/
+
+const MAX_SCROLL_SMOOTH_DURATION = 20000;
+const SCROLLED_ENOUGH                 =  16;
+const SCROLL_DONE_COOLDOWN  =  250;
+const WINDOW_SCROLLTO_BY_SCRIPT_DELAY = 500;
+
+let scroll_end_timeout = null;
+let scroll_last_scrollY   = 0;
+let has_been_scrolled_by_script;
+let onLong_press_scroll_freezed;
+let sync_scroll_smooth_timeout;
+let t_scroll_div_slot_containers_in_viewport_timeout;
+let t_window_scrollTo_last_call_MS;
+
+/*}}}*/
+/* t_scroll_listener {{{*/
+/*{{{*/
+let has_scrolled;
+
+/*}}}*/
+let t_scroll_listener = function(e)
+{
+/*{{{*/
+let caller = "t_scroll_listener";
+let log_this = LOG_MAP.EV1_DOWN;
+
+if(log_this || LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status_if_changed_filter(caller, "scroll", lf6);
+    let scrolled_by_script = "";
+/*}}}*/
+    has_scrolled = (Math.abs(window.scrollY - onDown_SCROLL_XY.y) > SCROLLED_ENOUGH);
+/*{{{
+log_key_val_group(caller, {has_scrolled,scrollY: window.scrollY, onDown_SCROLL_XY_y: onDown_SCROLL_XY.y, SCROLLED_ENOUGH }, lf8, false)
+}}}*/
+    /*  onLong_press_scroll_freezed {{{*/
+    if( onLong_press_scroll_freezed )
+    {
+        window.scrollTo(  onDown_SCROLL_XY.x,  onDown_SCROLL_XY.y);
+
+        return;
+    }
+    /*}}}*/
+    /*  div_slot_containers_displayed .. f(SCROLLED_INTO_VIEW) {{{*/
+    if( div_slot_containers_displayed() )
+    {
+        if(!has_el_class(div_slot_containers, dom_scroll.SCROLLED_INTO_VIEW) )
+        {
+            scrolled_by_script += "WAITING FOR CONTAINERS INTO VIEW";
+
+            let rect = div_slot_containers.getBoundingClientRect();
+            div_slot_containers.on_grid_height = parseInt(rect.bottom - rect.top);
+
+if( log_this) log("%c"+caller+"%c div_slot_containers.height %c"+div_slot_containers.on_grid_height, lbL, lbC, lbR);
+        }
+        else {
+            /* div_slot_containers into view {{{*/
+            if((window.scrollY + window.innerHeight) > div_slot_containers.on_grid_height)
+            {
+if( log_this) log(caller+": ...t_window_scrollTo(0, "+div_slot_containers.on_grid_height +"- "+window.innerHeight+")");
+
+                add_el_class(div_slot_containers, dom_scroll.SCROLLED_OVER_VIEW);
+
+                t_window_scrollTo(0, div_slot_containers.on_grid_height - window.innerHeight);
+            }
+            else {
+                del_el_class(div_slot_containers, dom_scroll.SCROLLED_OVER_VIEW);
+            }
+            /*}}}*/
+            return;
+        }
+    }
+    /*}}}*/
+    /* SCROLLED BY SCRIPT OR BY USER {{{*/
+    let scrolled_by_user   = "";
+    let this_MS            = new Date().getTime();
+
+    /*}}}*/
+    /* WITHIN DELAY [SCROLL BY SCRIPT] {{{*/
+    if( t_window_scrollTo_last_call_MS )
+    {
+        let elapsed = this_MS - t_window_scrollTo_last_call_MS;
+        if( elapsed < WINDOW_SCROLLTO_BY_SCRIPT_DELAY) {
+            scrolled_by_script += " .. WITHIN SCROLL_BY_SCRIPT DELAY OF "+WINDOW_SCROLLTO_BY_SCRIPT_DELAY+"ms";
+
+if( log_this) log("%c"+caller+"%c WINDOW SCROLL %c ENDED "+elapsed+"ms AGO"
+                  ,lbL+lf8    ,lbC+lf9         ,lbR+lf3);
+        }
+/*{{{
+        t_window_scrollTo_last_call_MS = 0;
+}}}*/
+
+    }
+    /*}}}*/
+    /* WITHIN DELAY [SCROLL INTO VIEW IF NEEDED] {{{*/
+    if( dom_scroll.t_scroll_intoview_DONE_WITHIN_SCRIPT_DELAY(this_MS) )
+    {
+        scrolled_by_script += " .. INTO VIEW";
+    }
+    /*}}}*/
+    /* WITHIN DELAY [SCROLL RECENTER] {{{*/
+    if( dom_scroll.t_scroll_recenter_DONE_WITHIN_SCRIPT_DELAY(this_MS) )
+    {
+        scrolled_by_script += " .. RECENTER";
+    }
+    /*}}}*/
+    /* WITHIN DELAY [SCROLL TO LAST HIDDEN NODE] {{{*/
+    if( t_hide.dom_hide4_scroll_to_last_hidden_handled_recently(WINDOW_SCROLLTO_BY_SCRIPT_DELAY) )
+    {
+        scrolled_by_script += " .. TO LAST HIDDEN NODE";
+
+    }
+    /*}}}*/
+    /* INTERRUPTED BY USER .. CLEAR ALL PENDING SCROLL HANDLERS {{{*/
+    if( !scrolled_by_script )
+    {
+        if( dom_scroll.t_scrollIntoViewIfNeeded_pending() ) {
+if( log_this) log("%c SCROLLED BY USER %c CLEAR SCROLL INTO VIEW AND RECENTER", lbL+lf8, lbR+lf9);
+
+            dom_scroll.t_scrollIntoViewIfNeeded( null );
+        }
+
+        if( t_hide.dom_hide4_scroll_to_last_hidden_is_pending() ) {
+if( log_this) log("%c SCROLLED BY USER %c CLEAR SCROLL TO LAST HIDDEN HANDLER", lbL+lf8, lbR+lf9);
+
+            t_hide.dom_hide4_scroll_to_last_hidden( null );
+        }
+    }
+/*{{{
+    else if( onDown_MS ) {
+        let elapsed = this_MS - onDown_MS;
+if( log_this) log(caller+"%c scrolled_by_script=["+scrolled_by_script+"] %c ONDOWN TO SCROLL EVENT DELAY %c "+elapsed+"ms"
+                  ,       lbH+lf7                                       ,lbL+lf4                        ,lbR+lf4);
+    }
+}}}*/
+    /*}}}*/
+    /* ONSCROLL: CLEAR SELECTION AND UNDIMM STICKY TOOLS {{{*/
+    if( t_sticky.t_sticky_EDITING() )
+        t_sticky.t_sticky_EDIT_DONE();
+
+    if( t_sticky.t_sticky_reorder_required_on_scroll() )
+        t_sticky.t_sticky_reorder();
+
+    t_window_getSelection_removeAllRanges();
+
+    /* scroll burst filter */
+/*{{{
+    if(!t_sticky.t_sticky_SET_DIMMED_IS_PENDING())
+        t_sticky.t_sticky_SET_DIMMED(false, "SCROLL");
+}}}*/
+
+    /*}}}*/
+
+if( log_this && scrolled_by_script) log("%c"+caller+" %c "+scrolled_by_script, lbb+lbL+lf8, lbb+lbR+lf3);
+if( log_this && scrolled_by_user  ) log("%c"+caller+" %c "+scrolled_by_user  , lbb+lbL+lf7, lbb+lbR+lf3);
+    scroll_listener_scroll_changed(e, scrolled_by_script);
+};
+/*}}}*/
+/*_ get_has_scrolled {{{*/
+let get_has_scrolled = function()
+{
+    return has_scrolled;
+};
+/*}}}*/
+/*_ clr_has_scrolled {{{*/
+let clr_has_scrolled = function()
+{
+    has_scrolled = false;
+};
+/*}}}*/
+/*_ t_scroll_div_slot_containers_in_viewport {{{*/
+let t_scroll_div_slot_containers_in_viewport = function(scrolled_by_script)
+{
+/*{{{
+logBIG("t_scroll_div_slot_containers_in_viewport("+scrolled_by_script+")");
+logBIG("t_scrollIntoViewIfNeeded_pending="+t_scrollIntoViewIfNeeded_pending());
+}}}*/
+
+    if(t_scroll_div_slot_containers_in_viewport_timeout) return;
+
+    /* KEEP [div_slot_containers] BOTTOM VISIBLE {{{*/
+    if(!scrolled_by_script)
+    {
+        del_el_class(div_slot_containers, dom_scroll.SCROLLED_INTO_VIEW);
+        add_el_class(div_slot_containers, dom_scroll.SCROLLED_OVER_VIEW);
+
+        t_scroll_div_slot_containers_in_viewport_timeout
+            = setTimeout(
+                         function() {
+                             t_scroll_div_slot_containers_in_viewport_timeout = null;
+
+                             let scrollY_max = BOX_MARGIN + div_slot_containers.offsetHeight - window.innerHeight;
+                             if(window.scrollY > scrollY_max)
+                                 t_window_scrollTo(window.scrollX, scrollY_max, "instant");
+                         }
+                         , WINDOW_SCROLLTO_BY_SCRIPT_DELAY);
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ t_window_scrollTo {{{*/
+/*{{{*/
+/*{{{
+let CACHED_GLOBAL_WINDOW_SCROLLTO = window.scrollTo;
+let window_overriden_scrollTo_deleted;
+}}}*/
+/*}}}*/
+let t_window_scrollTo = function(x, y, scrollBehavior)
+{
+    /* set behavior */
+    scrollBehavior =                         scrollBehavior
+        || (prop.get(t_data.SCROLL_SMOOTH) ? "smooth"
+            :                                "instant");
+    set_scrollBehavior( scrollBehavior );
+
+    /* scroll */
+    x *= (body_zoom_percent  / 100);
+    y *= (body_zoom_percent  / 100);
+    window.scrollTo(x, y);
+
+/*
+ :!start explorer "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView"
+*/
+
+    /* restore user behavior */
+    if(sync_scroll_smooth_timeout) clearTimeout( sync_scroll_smooth_timeout );
+    sync_scroll_smooth_timeout   =   setTimeout( sync_scroll_smooth, MAX_SCROLL_SMOOTH_DURATION);
+
+    /* clear move in progress */
+    onMoveDXY.x = 0;
+    onMoveDXY.y = 0;
+};
+/*}}}*/
+/*_ set_scrollBehavior {{{*/
+let set_scrollBehavior = function(scrollBehavior)
+{
+    let html  = document.getElementsByTagName("HTML")[0];
+
+    let state = (scrollBehavior == "smooth");
+
+    set_el_class_on_off(html, t_data.SCROLL_SMOOTH, state);
+
+/*{{{
+logXXX("set_scrollBehavior("+scrollBehavior+") .. set_el_class_on_off(html , "+t_data.SCROLL_SMOOTH+","+state+")");
+}}}*/
+};
+/*}}}*/
+/*_ sync_scroll_smooth {{{*/
+let sync_scroll_smooth = function()
+{
+    /* restore user behavior */
+    sync_scroll_smooth_timeout = null;
+
+    let html  = document.getElementsByTagName("HTML")[0];
+
+    let state = prop.get( t_data.SCROLL_SMOOTH );
+
+    set_el_class_on_off(html, t_data.SCROLL_SMOOTH, state);
+
+/*{{{
+logXXX("sync_scroll_smooth() .. set_el_class_on_off(html , "+t_data.SCROLL_SMOOTH+","+state+")");
+}}}*/
+};
+/*}}}*/
+/*_ scroll_listener_scroll_changed {{{*/
+let scroll_listener_scroll_changed = function(e, scrolled_by_script="")
+{
+/*{{{*/
+let   caller = "scroll_listener_scroll_changed";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log(caller +": ["+ window.scrollX +" "+ window.scrollY +"]"+ (scrolled_by_script ? " scrolled_by_script" : "") + (container_selected ? " container_selected=["+t_util.get_id_or_tag(container_selected)+" "+t_util.get_n_txt(container_selected)+"]" : ""));
+/*}}}*/
+    /* has_been_scrolled_by_script {{{*/
+    if(scrolled_by_script && !has_been_scrolled_by_script && (Math.abs(window.scrollY - onDown_SCROLL_XY.y) > SCROLLED_ENOUGH))
+    {
+        has_been_scrolled_by_script = "HAS SCROLLED .. abs("+(window.scrollY - onDown_SCROLL_XY.y)+") > "+ SCROLLED_ENOUGH;
+    }
+    /*}}}*/
+    t_set_has_moved(has_been_scrolled_by_script || caller);
+    /*    seeker follow scrolling {{{*/
+    if(!t_seek.t_seeker_sync_is_pending() )
+        t_seek.t_seeker_sync();
+
+    /*}}}*/
+    if( div_slot_containers_displayed() )
+    {
+        /* div_slot_containers {{{*/
+        if(dimm_mask.firstElementChild == div_slot_containers)
+        {
+            /* SCROLLED BY SCRIPT */
+            if( scrolled_by_script )
+            {
+if( log_this) logBIG(caller+": "+ scrolled_by_script +" .. SCROLL INTO VIEW", lf4);
+
+                dom_scroll.t_scrollIntoViewIfNeeded_dimm_mask_container_selected( dimm_mask.firstElementChild );
+            }
+            /* SCROLLED BY USER .. INTERRUPT SCHEDULED SCROLLING */
+            else if( dom_scroll.t_scrollIntoViewIfNeeded_pending() )
+            {
+if( log_this) logBIG(caller+": "+ scrolled_by_script +" .. SCROLL INTO VIEW CANCELED", lf5);
+
+                dom_scroll.t_scrollIntoViewIfNeeded_dimm_mask_container_selected( null );
+            }
+        }
+        /*}}}*/
+    }
+    /* follow [container_selected] {{{*/
+    if(container_selected)
+        t_seek.t_seekzone7_show_container( container_selected );
+
+    /*}}}*/
+    /* display current window scrollY percentage .. (thumb_p) {{{*/
+    if( toolbar_thumb )
+    {
+        /* keep only 2 digits */
+        let thumb_p             = 100 * window.scrollY / t_util.getPageHeight();
+        let thumb_p_str         = t_select.t_get_thumb_p_str(thumb_p);
+        toolbar_thumb.innerHTML = thumb_p_str.replace(" ","&nbsp;");
+    }
+    /*}}}*/
+    /* track and store [window_scrollY] {{{*/
+    if(!scroll_end_timeout)
+    {
+/*{{{
+t_log.console_clear("scroll_listener_scroll_changed")
+logXXX("SCROLLING START");
+}}}*/
+/*{{{
+        add_el_class(document.body, t_data.CSS_SCROLLING);
+}}}*/
+
+        scroll_end_timeout = setTimeout(scroll_check_handler, SCROLL_DONE_COOLDOWN);
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ scroll_check_handler {{{*/
+let scroll_check_handler     = function()
+{
+/*{{{*/
+let   caller = "scroll_check_handler";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+    scroll_end_timeout = null;
+/*}}}*/
+    let                this_scrollY  =      window.scrollY;
+    let done_moving = (this_scrollY == scroll_last_scrollY);
+    if( done_moving )
+    {
+        /* [el_to_mark_SCROLLED_INTO_VIEW] MARK DONE {{{*/
+        dom_scroll.t_scrollIntoView_EL_reset();
+
+        /*}}}*/
+        /* SCROLLING DONE: .. CALL [t_clr_has_moved] {{{*/
+        t_clr_has_moved("scroll_check_handler");
+
+/*{{{
+        del_el_class(document.body, t_data.CSS_SCROLLING);
+}}}*/
+
+/*{{{
+        scroll_done_collect_nodes_in_view();
+}}}*/
+if( log_this) log("%c TODO %c scroll_done_collect_nodes_in_view", lbb+lbL+lf2, lbb+lbR+lf8);
+        /*}}}*/
+        /* STORE SCROLL POSITION {{{*/
+        t_store.t_store_set_value("window_scrollY", scroll_last_scrollY);
+/*{{{
+logBIG("SET window_scrollY=["+scroll_last_scrollY+"]", lf3);
+}}}*/
+
+        /*}}}*/
+    }
+    else {
+        /* RECHECK AGAIN LATER {{{*/
+        scroll_last_scrollY  = this_scrollY;
+        scroll_end_timeout = setTimeout(scroll_check_handler, SCROLL_DONE_COOLDOWN);
+/*{{{
+logBIG("SET window_scrollY=["+scroll_last_scrollY+"]", lf6);
+}}}*/
+        /*}}}*/
+    }
+};
+/*}}}*/
+/*_ t_scroll_not_done_yet {{{*/
+let t_scroll_not_done_yet = function()
+{
+    return (scroll_end_timeout != null);
+};
+/*}}}*/
+/*_ scroll_done_collect_nodes_in_view {{{*/
+/*{{{*/
+let nodes_in_view_array         = [];
+
+/*}}}*/
+let scroll_done_collect_nodes_in_view = function(dir)
+{
+/*{{{*/
+let   caller = "scroll_done_collect_nodes_in_view";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+if( log_this) log("%c TODO %c "+caller, lbb+lbL+lf2, lbb+lbR+lf8);
+
+if( log_this) console.time(caller);
+/*}}}*/
+    /* CURRENT [VIEWPORT TOP BOTTOM] thumb_p {{{*/
+    let view_T = window.scrollY;
+    let view_B = window.scrollY+ window.innerHeight;
+
+if( log_this) log("...view_T=["+ view_T +"]");
+if( log_this) log("...view_B=["+ view_B +"]");
+    /*}}}*/
+    /* FORGET PREVIOUSLY VIEWABLE NODES {{{*/
+    for(let i = 1; i <= nodes_in_view_array.length; ++i)
+        del_el_class(   nodes_in_view_array[i], t_data.CSS_VIEWABLE);
+
+    /*}}}*/
+    /* COLLECT CURRENTLY VIEWABLE NODES {{{*/
+    nodes_in_view_array = [];
+    for(let slot = 1; slot < t_select.ccs.length; ++slot)
+    {
+        /* ...skip unpopulated ones */
+        let num_max = t_select.t_select_get_slot_nodes_length(slot);
+        if(!t_select.ccs[slot] || (num_max < 1)) continue;
+
+        for(let num = 1; num <= num_max; ++num)
+        {
+            let       node    = t_select.ccs[slot].nodes[num-1];
+            let       node_T  = t_util.getInPageTop( node );
+            let       node_B  = node_T + node.offsetHeight;
+            if(      (node_T >= view_T)
+                  && (node_B <= view_B)
+              ) {
+                nodes_in_view_array.push( node );
+                add_el_class(node, t_data.CSS_VIEWABLE);
+
+if( log_this) log(". "+nodes_in_view_array.length+": slot["+slot+"] num["+num+"]");
+            }
+        }
+
+    }
+    /*}}}*/
+if( log_this) console.time(caller);
+if( log_this) console.timeEnd(caller);
+};
+/*}}}*/
+/*}}}*/
+/*_ get_has_been_scrolled_by_script {{{*/
+let get_has_been_scrolled_by_script = function()
+{
+    return has_been_scrolled_by_script;
+};
+/*}}}*/
+/*_ clr_has_been_scrolled_by_script {{{*/
+let clr_has_been_scrolled_by_script = function()
+{
+    has_been_scrolled_by_script  = "";
+};
+/*}}}*/
+/*_ set_onLong_press_scroll_freezed {{{*/
+let set_onLong_press_scroll_freezed = function(state)
+{
+    onLong_press_scroll_freezed = state;
+};
+/*}}}*/
+/*_ get_scroll_last_scrollY {{{*/
+let get_scroll_last_scrollY = function()
+{
+    return scroll_last_scrollY;
+};
 /*}}}*/
 
 /*➔ t_scrollIntoViewIfNeeded {{{*/
@@ -17206,7 +17156,7 @@ if( log_this) log_caller();
 }}}*/
 /*}}}*/
 
-    scrollIntoViewIfNeeded_cancel(caller);
+    t_scrollIntoViewIfNeeded_cancel(caller);
 
     t_scrollIntoView_EL                 = el;
     if(t_scrollIntoView_EL)
@@ -17216,27 +17166,27 @@ if( log_this) log_caller();
 
         if( delay == undefined)   delay = SCROLL_INTO_VIEW_DELAY;
 
-        if( delay ) t_scrollIntoViewIfNeeded_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay); /* async */
+        if( delay ) t_scroll_intoview_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay); /* async */
         else                                                    scrollIntoViewIfNeeded_handler();       /* sync */
     }
     else {
-        t_scrollIntoViewIfNeeded_timer = null;
+        t_scroll_intoview_timer = null;
     }
 };
 /*}}}*/
-/*_   scrollIntoViewIfNeeded_is_pending {{{*/
-let   scrollIntoViewIfNeeded_is_pending = function()
+/*➔ t_scrollIntoViewIfNeeded_pending {{{*/
+let t_scrollIntoViewIfNeeded_pending = function()
 {
-    return (t_scrollIntoViewIfNeeded_timer != null)
-        || (t_scroll_recenter_timer        != null)
+    return (t_scroll_intoview_timer != null)
+        || (t_scroll_recenter_timer != null)
     ;
 };
 /*}}}*/
-/*_   scrollIntoViewIfNeeded_cancel {{{*/
-let   scrollIntoViewIfNeeded_cancel = function(_caller)
+/*➔ t_scrollIntoViewIfNeeded_cancel {{{*/
+let t_scrollIntoViewIfNeeded_cancel = function(_caller)
 {
 /*{{{*/
-let   caller = "scrollIntoViewIfNeeded_cancel";
+let   caller = "t_scrollIntoViewIfNeeded_cancel";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 /*}}}*/
@@ -17247,10 +17197,10 @@ let log_this = LOG_MAP.EV0_LISTEN;
         t_scrollIntoView_EL = null;
     }
 
-    if( t_scrollIntoViewIfNeeded_timer )
+    if( t_scroll_intoview_timer )
     {
 if( log_this) log(caller+": PENDING SCROLL INTERRUPTED BY "+ _caller);
-        clearTimeout( t_scrollIntoViewIfNeeded_timer );
+        clearTimeout( t_scroll_intoview_timer );
     }
 
     if( t_scroll_recenter_timer )
@@ -17275,7 +17225,7 @@ let   scrollIntoViewIfNeeded_handler = function()
 let   caller = "scrollIntoViewIfNeeded_handler";
 let log_this = LOG_MAP.EV0_LISTEN;
 
-    t_scrollIntoViewIfNeeded_timer   = null;
+    t_scroll_intoview_timer = null;
     if(!t_scrollIntoView_EL) return;
 
     let el = t_scrollIntoView_EL;
@@ -17329,7 +17279,7 @@ if( log_this) log("SCROLL INTO VIEW %c DX=["+window.scrollX+" "+t_data.SYMBOL_RI
 logXXX("%c "+caller+": t_scroll_not_done_yet=["+t_scroll_not_done_yet()+"]", lbH+lf7);
 }}}*/
 
-        t_scrollIntoViewIfNeeded_DONE_MS = new Date().getTime();
+        t_scroll_intoview_DONE_MS = new Date().getTime();
 
         let scrollBehavior = prop.get( t_data.SCROLL_SMOOTH ) ? "smooth" : "instant";
         t_window_scrollTo(xy.x, xy.y, scrollBehavior);
@@ -17439,7 +17389,7 @@ if( log_this) t_fly.t_log_event_status(caller+"(container=["+t_util.get_id_or_ta
 container.scrollIntoView(true);
 - opt_center: (if false): aligned to the nearest edge of the visible area of the scrollable ancestor
 - scrollable ancestor...: (node.scrollHeight > node.clientHeight)
-container.scrollIntoViewIfNeeded(true);
+container.t_scrollIntoViewIfNeeded(true);
 }}}*/
     /*}}}*/
     /* VIEW {{{*/
@@ -17499,7 +17449,7 @@ log_caller()
     let over_left      = (container_rect.left    < view_rect.left  );
     let over_bottom    = (container_rect.bottom  > view_rect.bottom);
     let over_right     = (container_rect.right   > view_rect.right );
-    let on_sentence    = has_el_class(container, t_select.CSS_SENTENCE_CONTAINER);
+    let on_sentence    = has_el_class(container, t_sentence.CSS_SENTENCE_CONTAINER);
 
     let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
 
@@ -17542,8 +17492,8 @@ if(log_this) {
         let scroll_more
             =  view_rect.height
             - (container_rect.height + added_seeker_height_atop);
-
-if(log_this) {
+/*{{{*/
+if(log_this)
         log_key_val_group("to_the_top .. scroll_more=["+scroll_more+"]"
                           , {   container
                               , view_rect
@@ -17554,7 +17504,8 @@ if(log_this) {
                               , scroll_more
                               , scrollY_scroll_more : (scrollY + scroll_more)
                           }, lfX[over_something ? 7:8], false);
-}
+
+/*}}}*/
         scrollY += scroll_more;
     }
     /*}}}*/
@@ -17568,16 +17519,39 @@ let   scrollIntoViewIfNeeded_get_scrollXY = function(el)
 };
 /*}}}*/
 
-/*_   scrollIntoViewIfNeeded_dimm_mask_container_selected {{{*/
+/*➔ t_scroll_recenter_DONE_WITHIN_SCRIPT_DELAY {{{*/
+let t_scroll_recenter_DONE_WITHIN_SCRIPT_DELAY = function(this_MS)
+{
+    if(!t_scroll_recenter_DONE_MS ) return false;
+
+    let elapsed = this_MS - t_scroll_recenter_DONE_MS;
+    t_scroll_recenter_DONE_MS = 0;
+
+    return elapsed < WINDOW_SCROLLTO_BY_SCRIPT_DELAY;
+};
+/*}}}*/
+/*➔ t_scroll_intoview_DONE_WITHIN_SCRIPT_DELAY {{{*/
+let t_scroll_intoview_DONE_WITHIN_SCRIPT_DELAY = function(this_MS)
+{
+    if(!t_scroll_intoview_DONE_MS ) return false;
+
+    let elapsed = this_MS - t_scroll_intoview_DONE_MS;
+    t_scroll_intoview_DONE_MS = 0;
+
+    return elapsed < WINDOW_SCROLLTO_BY_SCRIPT_DELAY;
+};
+/*}}}*/
+
+/*➔ t_scrollIntoViewIfNeeded_dimm_mask_container_selected {{{*/
 /*{{{*/
 let t_scrollIntoViewIfNeeded_dimm_mask_container_selected_timer;
 
 let el_to_mark_SCROLLED_INTO_VIEW;
 /*}}}*/
-let   scrollIntoViewIfNeeded_dimm_mask_container_selected = function(el)
+let   t_scrollIntoViewIfNeeded_dimm_mask_container_selected = function(el)
 {
 /*{{{*/
-let   caller = "scrollIntoViewIfNeeded_dimm_mask_container_selected";
+let   caller = "t_scrollIntoViewIfNeeded_dimm_mask_container_selected";
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el), lbL+lf4,lbR+lf4);
@@ -17616,19 +17590,92 @@ if( log_this) t_log.console_dir("containers.firstElementChild",     container );
 
     /* SCROLL INTO VIEW IF NEEDED */
 if( log_this) t_log.console_dir("container", container);
-    if(container &&  has_el_class(container, CSS_CONTAINER_SELECTED)) scrollIntoViewIfNeeded( container );
+    if(container &&  has_el_class(container, CSS_CONTAINER_SELECTED)) t_scrollIntoViewIfNeeded( container );
 
     t_scrollIntoViewIfNeeded_dimm_mask_container_selected_timer = null;
 };
 /*}}}*/
+
+/*➔ t_scrollIntoView_EL_reset {{{*/
+let t_scrollIntoView_EL_reset = function()
+{
+/*{{{*/
+let   caller = "t_scrollIntoView_EL_reset";
+let log_this = LOG_MAP.T3_LAYOUT;
+
+/*}}}*/
+    if(t_scrollIntoView_EL) delete t_scrollIntoView_EL.scrolledIntoViewHandled;
+
+    if( el_to_mark_SCROLLED_INTO_VIEW )
+    {
+        if( log_this) log("%c"+caller+" %c ["+t_util.get_id_or_tag(el_to_mark_SCROLLED_INTO_VIEW) +"] SCROLLED_INTO_VIEW DONE", lbb+lbL+lf8, lbb+lbR+lf3);
+
+        del_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_OVER_VIEW);
+        add_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_INTO_VIEW);
+
+        el_to_mark_SCROLLED_INTO_VIEW = null;
+    }
+};
+/*}}}*/
+/*➔ t_scrollIntoView_was_needed {{{*/
+let t_scrollIntoView_was_needed = function()
+{
+    return scrollIntoView_was_needed;
+};
+/*}}}*/
+/*➔ t_scrollIntoView_was_needed_reset {{{*/
+let t_scrollIntoView_was_needed_reset = function()
+{
+    scrollIntoView_was_needed = false;
+};
+    /*}}}*/
+
+/* EXPORT */
+return { name : "dom_scroll"
+
+    /*   LISTENER */
+    ,    clr_has_been_scrolled_by_script
+    ,    get_has_scrolled
+    ,    clr_has_scrolled
+    ,    get_has_been_scrolled_by_script
+    ,    get_scroll_last_scrollY
+    ,    scroll_listener_scroll_changed
+    ,    set_onLong_press_scroll_freezed
+    ,    t_scroll_div_slot_containers_in_viewport
+    ,    t_scroll_listener
+    ,    t_scroll_not_done_yet
+    ,    t_window_scrollTo
+
+    ,    SCROLLED_INTO_VIEW
+    ,    SCROLLED_OVER_VIEW
+
+    ,    t_scrollIntoViewIfNeeded
+    ,    t_scrollIntoViewIfNeeded_cancel
+    ,    t_scrollIntoViewIfNeeded_dimm_mask_container_selected
+    ,    t_scrollIntoViewIfNeeded_get_scrollXY_with_margin
+    ,    t_scrollIntoViewIfNeeded_pending
+
+    ,    t_scrollIntoView_EL
+    ,    t_scrollIntoView_EL_reset
+
+    ,    t_scrollIntoView_was_needed
+    ,    t_scrollIntoView_was_needed_reset
+
+    ,    t_scroll_intoview_DONE_WITHIN_SCRIPT_DELAY
+    ,    t_scroll_recenter_DONE_WITHIN_SCRIPT_DELAY
+
+};
+}());
 /*}}}*/
 
 /* STATUS */
+/*XXX*/
 /*{{{*/
 /*_ t_get_event_status_object {{{*/
 let t_get_event_status_object = function()
 {
     let onSeekXYL = t_seek.t_seeker_get_onSeekXYL();
+    let has_been_scrolled_by_script = dom_scroll.get_has_been_scrolled_by_script();
 
     return {              captured_by : (t_preventDefault_caller ? (t_preventDefault_caller ) : "" )
         ,                 consumed_by : (t_event_consumed_cause  ? (t_event_consumed_cause  ) : "" )
@@ -17683,52 +17730,60 @@ let t_get_tools_status_object = function()
 
 };
 /*}}}*/
+/*XXX*/
 /* NOT_MOVED_ENOUGH {{{*/
 /*{{{*/
 const CSS_NOT_MOVED_ENOUGH = "not_moved_enough";
 
 /*}}}*/
-/*_ t_hotspot_add_status_NOT_MOVED_ENOUGH {{{*/
-let t_hotspot_add_status_NOT_MOVED_ENOUGH   = function()
+/*_ t_add_NOT_MOVED_ENOUGH {{{*/
+let t_add_NOT_MOVED_ENOUGH   = function()
 {
-    add_el_class(hotspot, CSS_NOT_MOVED_ENOUGH);
+    add_el_class(  hotspot   , CSS_NOT_MOVED_ENOUGH);
+    drag_cursor.add_drag_cursor_CSS_NOT_MOVED_ENOUGH();
 };
 /*}}}*/
-/*_ t_hotspot_del_status_NOT_MOVED_ENOUGH {{{*/
-let t_hotspot_del_status_NOT_MOVED_ENOUGH   = function()
+/*_ t_del_NOT_MOVED_ENOUGH {{{*/
+let t_del_NOT_MOVED_ENOUGH   = function()
 {
-    del_el_class(hotspot, CSS_NOT_MOVED_ENOUGH);
+    del_el_class(  hotspot   , CSS_NOT_MOVED_ENOUGH);
+    drag_cursor.del_drag_cursor_CSS_NOT_MOVED_ENOUGH();
 };
 /*}}}*/
 /*}}}*/
+/*XXX*/
 /* MOVE_ON_COOLDOWN {{{*/
 /*{{{*/
 const CSS_MOVE_ON_COOLDOWN = "move_on_cooldown";
 
 let move_on_cooldown_timer;
 /*}}}*/
-/*_ t_hotspot_add_status_MOVE_ON_COOLDOWN {{{*/
-let t_hotspot_add_status_MOVE_ON_COOLDOWN   = function(time_left)
+/*_ t_add_MOVE_ON_COOLDOWN {{{*/
+let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 {
+    if( move_on_cooldown_timer ) return;
 
-    add_el_class(hotspot, CSS_MOVE_ON_COOLDOWN);
 
-    if(!move_on_cooldown_timer)
-        move_on_cooldown_timer = setTimeout(move_on_cooldown_handler, time_left);
-
+//  if( move_on_cooldown_timer ) clearTimeout( move_on_cooldown_timer );
+    /**/move_on_cooldown_timer =   setTimeout(t_del_MOVE_ON_COOLDOWN, time_left);
+    add_el_class(  hotspot   , CSS_MOVE_ON_COOLDOWN);
+    drag_cursor.add_drag_cursor_CSS_MOVE_ON_COOLDOWN();
 };
 /*}}}*/
-/*_ move_on_cooldown_handler {{{*/
-let move_on_cooldown_handler = function()
+/*_ t_del_MOVE_ON_COOLDOWN {{{*/
+let t_del_MOVE_ON_COOLDOWN = function()
 {
-    move_on_cooldown_timer = null;
-    t_hotspot_del_status_MOVE_ON_COOLDOWN();
+
+
+
+    if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
+    /**/move_on_cooldown_timer = null;
+    del_el_class(  hotspot   , CSS_MOVE_ON_COOLDOWN);
+    drag_cursor.del_drag_cursor_CSS_MOVE_ON_COOLDOWN();
+
+    zap_onMoveDXY(); /* next move from here */
 };
 /*}}}*/
-let t_hotspot_del_status_MOVE_ON_COOLDOWN = function()
-{
-    del_el_class(hotspot, CSS_MOVE_ON_COOLDOWN);
-};
 /*}}}*/
 /*}}}*/
 
@@ -18210,7 +18265,7 @@ if( log_this) log("%c"+caller+" %c "+t_util.get_id_or_tag(touched_container)+" %
     if(touched_container)
     {
         t_seek_set_container_selected(touched_container, caller);
-        scrollIntoViewIfNeeded     (touched_container);
+        dom_scroll.t_scrollIntoViewIfNeeded     (touched_container);
     }
     else {
 if( log_this) log("%c"+caller+" %c NO [touched_container]"
@@ -18396,7 +18451,7 @@ if(log_this) log("...content_is_too_big..........: "+ content_is_too_big +"] .. 
 
         add_el_class(hotspot , t_data.CSS_HIDDEN);
 
-        t_window_scrollTo(0, 0);
+        dom_scroll.t_window_scrollTo(0, 0);
 
         /*}}}*/
         /* [button_COPY_ALL_parent_div] {{{*/
@@ -18473,7 +18528,7 @@ if( log_this) log("div_slot_containers XY=["+div_slot_containers.style.left+" "+
         t_seek.t_seeker_PU_hide("instant");
     }
     /*}}}*/
-    scrollIntoViewIfNeeded_dimm_mask_container_selected( div_slot_containers );
+    dom_scroll.t_scrollIntoViewIfNeeded_dimm_mask_container_selected( div_slot_containers );
 };
 /*}}}*/
 /*_ t_slot_containers_get_button {{{*/
@@ -18546,7 +18601,7 @@ logXXX("...........slot_container=["+(           slot_container ?            slo
 /*{{{
 logBIG("["+(fullscreen_slot_container ? fullscreen_slot_container.className : "")+"] .. on_grid_top=["+fullscreen_slot_container.on_grid_top+"]");
 }}}*/
-            t_window_scrollTo(0, fullscreen_slot_container.on_grid_top - window.innerHeight / 4);
+            dom_scroll.t_window_scrollTo(0, fullscreen_slot_container.on_grid_top - window.innerHeight / 4);
         }
     }
     /*}}}*/
@@ -18644,7 +18699,7 @@ if(log_this) log("%c #"+(i+1)+" "+(first ? "first" : (last ? "last" : "center"))
 /*{{{
 logBIG("...SCROLLING INTO VIEW: last_fullscreen_slot_container=["+get_n_lbl(last_fullscreen_slot_container)+"]");
 }}}*/
-        scrollIntoViewIfNeeded(last_fullscreen_slot_container, 0);
+        dom_scroll.t_scrollIntoViewIfNeeded(last_fullscreen_slot_container, 0);
     }
 
     /*}}}*/
@@ -23876,15 +23931,16 @@ if(log_this) log("%c SEEKER ANIMATION CANCELED BEFORE NUM "+num, lbH+lf3);
     /* maybe undefined on first call */
     num_wrap_to = num_wrap_to || num;
 
+    let scrollIntoView_was_needed = dom_scroll.t_scrollIntoView_was_needed();
     /*}}}*/
 /*{{{*/
 if(log_this)
     log_key_val_group(caller+"(slot "+slot+" .. num "+num+" → "+num_wrap_to+")"
-                      ,{    slot
-                          , num
-                          , num_wrap_to
-                          , scrollIntoView_was_needed
-                      }, lfX[scrollIntoView_was_needed ? 3:8]
+                      ,{       slot
+                       ,       num
+                       ,       num_wrap_to
+                       ,       scrollIntoView_was_needed
+                      },   lfX[scrollIntoView_was_needed ? 3:8]
                       , true);
 
 /*}}}*/
@@ -23900,7 +23956,7 @@ if(log_this)
         ?        SEEK_NEXT_SCROLL_WAS_NEEDED_DELAY
         :        SEEK_NEXT_SLOT_NUM_DELAY
     ;
-scrollIntoView_was_needed = false;
+    dom_scroll.t_scrollIntoView_was_needed_reset();
 
     if( prop.get(t_data.SCROLL_SMOOTH) )
         delay *= 2;
@@ -24029,6 +24085,81 @@ log("t_show_SNAPSHOT: snapshot_mail_body=["+t_util.ellipsis(snapshot_mail_body)+
 };
 /*}}}*/
 
+
+/* [drag_cursor] */
+/*{{{*/
+let drag_cursor  = (function() {
+/*"use strict";*/
+
+/*{{{*/
+let      cursor_div;
+
+/*
+let      drag_cursor_count = 0;
+*/
+/*}}}*/
+/*_ display_drag_cursor  {{{*/
+/*{{{*/
+let display_drag_cursor_state = false;
+
+/*}}}*/
+let display_drag_cursor = function(state=true)
+{
+    display_drag_cursor_state = state;
+
+    if(state) show_drag_cursor();
+
+    if(state) t_CURSOR_add_MOVE_LISTENER();
+    else      t_CURSOR_del_MOVE_LISTENER();
+};
+/*}}}*/
+let get_display_drag_cursor_state        = function() { return display_drag_cursor_state; };
+/*_ show_drag_cursor {{{*/
+let show_drag_cursor = function()
+{
+/*{{{
+console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",onMoveDXY , "onDown_XY:",onDown_XY)
+}}}*/
+    if(!cursor_div) {
+        cursor_div = document.createElement("DIV");
+
+        cursor_div.id                    =     "drag_cursor";
+        cursor_div.style.pointerEvents   =            "none";
+        cursor_div.style.position        =           "fixed";
+        cursor_div.style.margin          =             "0px";
+        cursor_div.style.padding         =            "16px";
+        cursor_div.style.backgroundColor =            "#FF0";
+        cursor_div.style.border          =  "3px solid #000";
+        cursor_div.style.borderRadius    = "0em 1em 1em 1em";
+        cursor_div.style.zIndex          =      "2147483647";
+
+        document.documentElement.appendChild( cursor_div );
+    }
+    cursor_div.style.left    = onDown_XY.x+"px";
+    cursor_div.style.top     = onDown_XY.y+"px";
+    cursor_div.style.display = "block";
+};
+/*}}}*/
+let hide_drag_cursor                     = function() { if(cursor_div) cursor_div.style.display = "none"; };
+let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
+let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
+let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
+let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
+
+/* EXPORT */
+return { name : "drag_cursor"
+    ,    display_drag_cursor
+    ,    get_display_drag_cursor_state
+    ,    show_drag_cursor
+    ,    hide_drag_cursor
+    ,    add_drag_cursor_CSS_MOVE_ON_COOLDOWN
+    ,    add_drag_cursor_CSS_NOT_MOVED_ENOUGH
+    ,    del_drag_cursor_CSS_MOVE_ON_COOLDOWN
+    ,    del_drag_cursor_CSS_NOT_MOVED_ENOUGH
+};
+}());
+/*}}}*/
+
 /* EXPORT tools */
 /*{{{*/
 /*➔ t_store_set_state {{{*/
@@ -24078,6 +24209,11 @@ return { name : "dom_tools"
     ,    DIR_SLOT_PREV
 
     ,    MOVED_ENOUGH
+
+    /* SCROLL */
+    , ...dom_scroll
+    , t_has_scrolled        : dom_scroll.get_has_scrolled
+    , t_scroll_is_scrolling : dom_scroll.t_scroll_not_done_yet
 
     /* ACCESSORS */
 
@@ -24173,8 +24309,6 @@ return { name : "dom_tools"
     ,    t_pin_panel_at_XY
     ,    t_reload
     ,    t_save_update_post
-    ,    t_scrollIntoViewIfNeeded_get_scrollXY_with_margin
-    ,    t_scroll_not_done_yet
     ,    t_seek_set_container_selected
     ,    t_set_CSS_PINNED
     ,    t_set_el_pat_words_option
@@ -24195,7 +24329,6 @@ return { name : "dom_tools"
     ,    t_was_a_click                : was_a_click
     ,    t_was_a_misclick             : was_a_misclick
     ,    t_window_getSelection_removeAllRanges
-    ,    t_window_scrollTo
     ,    t_words_option_select
     ,    t_words_option_tooltip
     ,    t_words_regex_no_match
@@ -24205,7 +24338,6 @@ return { name : "dom_tools"
     , t_pattern1_sync_csv_from_ccs
     , t_pattern2_set_sel_bag_innerHTML
     , t_pattern3_pat_off_alt_bak_innerHTML
-    , t_scrollIntoViewIfNeeded
     , t_store_del_patterns_csv
 
     /* PROXY .. (for missplaced functions) */
@@ -24225,13 +24357,11 @@ return { name : "dom_tools"
     , t_preventDefault
     , wording_3_CB_WORDS_RECYCLE
     , zap_onMoveDXY
-    , scrollIntoViewIfNeeded_cancel
 
     /* UNUSED YET */
     , are_p1_p2_in_same_quadrant_and_p2_in_corner
     , is_a_tool_container
     , is_pannel_in_hotspot_quadrant
-    , scroll_done_collect_nodes_in_view
     , t_del_clearpin_on_panel
     , t_del_closepin_on_panel
     , t_del_push_pin_on_panel
@@ -24251,7 +24381,6 @@ return { name : "dom_tools"
     , post_focus_to
 
     /* PROXY .. intro.html */
-    , t_has_scrolled
     , del_long_press_listener
     , t_dump_csv_and_sticky : function()
     {
@@ -24306,10 +24435,10 @@ return { name : "dom_tools"
     , t_get_mouselong_press_consumed_by
 
     /* STATUS INDICATOR */
-    , t_hotspot_add_status_NOT_MOVED_ENOUGH
-    , t_hotspot_del_status_NOT_MOVED_ENOUGH
-    , t_hotspot_add_status_MOVE_ON_COOLDOWN
-    , t_hotspot_del_status_MOVE_ON_COOLDOWN
+    , t_add_NOT_MOVED_ENOUGH
+    , t_del_NOT_MOVED_ENOUGH
+    , t_add_MOVE_ON_COOLDOWN
+    , t_del_MOVE_ON_COOLDOWN
 
 /* DEBUG */
 , TOOL_SET
@@ -24333,6 +24462,10 @@ return { name : "dom_tools"
 , t_tools_pointermove_drag_hotspot
 , t_tools_sync_top_xy
 
+, display_drag_cursor           : drag_cursor.display_drag_cursor
+, get_display_drag_cursor_state : drag_cursor.get_display_drag_cursor_state
+, show_drag_cursor              : drag_cursor.show_drag_cursor
+, hide_drag_cursor              : drag_cursor.hide_drag_cursor
 /*
     , t_storage_list : function()
     {
@@ -24485,4 +24618,8 @@ dom_tools.t_load();
 console.profileEnd();
 }}}*/
 /*}}}*/
+/*
+:e splitter_embedded.html
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+*/
 
