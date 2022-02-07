@@ -7,15 +7,16 @@
 
 /* exported dom_sentence_util */
 
-const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util_js";
-const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (211123:19h:42)";  /* eslint-disable-line no-unused-vars */
+const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util";
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220204:19h:31)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_sentence_util    = (function() {
 "use strict";
 
 /* console {{{*/
 /* eslint-disable no-unused-vars */
-/* CSS {{{*/
+
+/* CSS */
 const lf1  = "color:#964B00;";
 const lf2  = "color:#FF0000;";
 const lf3  = "color:#FFA500;";
@@ -33,7 +34,6 @@ const lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:
 const lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
 const lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
 
-/*}}}*/
 let dir               = console.dir;
 let log               = console.log;
 let logX = (msg,l_x) => console.log("%c"+msg, lbR+lfX[l_x]);
@@ -309,6 +309,53 @@ log("get_el_child_with_class("+get_id_or_tag(parent)+" , "+className+") %c LEVEL
     return null;
 };
 /*}}}*/
+/*➔ get_el_xy {{{*/
+let get_el_xy = function(el)
+{
+    if(!el) return null;
+    let  x = 0;
+    let  y = 0;
+
+    let cs = window.getComputedStyle(el);
+
+    if(   (cs.position == "fixed"   )
+       || (cs.position == "absolute")
+      ) {
+/*{{{
+log("%c"+(el.id || el.tagName)+" "+cs.position,lbH+lf7);
+}}}*/
+        x   = el.offsetLeft;
+        y   = el.offsetTop ;
+    }
+    else {
+/*{{{
+log("%c"+(el.id || el.tagName)+" "+cs.position,lbH+lf8);
+}}}*/
+        while(el) {
+            x  += el.offsetLeft;
+            y  += el.offsetTop ;
+            el  = el.offsetParent;
+        }
+/*{{{
+        let r = el.getBoundingClientRect();
+        y     = r.top  + window.scrollY;
+        x     = r.left + window.scrollX;
+}}}*/
+    }
+
+    return { x , y };
+};
+/*}}}*/
+/*_ get_id_or_tag {{{ */
+let get_id_or_tag = function(node)
+{
+    return !node           ? ("null_node"                        )
+        :   node.id        ? ("#"+ node.id                       )
+        :   node.className ? (node.tagName+"."+ node.classList[0])
+        :                    (node.tagName                       )
+    ;
+};
+/*}}}*/
 
 /*➔ get_n_lbl {{{ */
 let get_n_lbl = function(node)
@@ -436,10 +483,65 @@ let get_nodeName_rank = function(node)
  };
 /*}}}*/
 
+/* EVENT */
+/*_ t_get_event_target {{{*/
+let t_get_event_target = function(e) /* eslint-disable-line complexity */
+{
+    let e_target = e.target ? e.target  : undefined;
+    let e_path_0 =  e.path  ? e.path[0] : undefined;
+    let e_path_1 =  e.path  ? e.path[1] : undefined;
+/*{{{
+console.log("e_path_0:",e_path_0)
+console.log("e_path_1:",e_path_1)
+console.log("e.path:"  ,e.path  )
+}}}*/
+
+    if     (e.path && (e_path_0.tagName != "IMG"))  e_target = e_path_0;
+    else if(e.path &&  e_path_1                  )  e_target = e_path_1;
+    else if(e.originalTarget                     )  e_target = e.originalTarget;
+    else if(e.explicitOriginalTarget             )  e_target = e.explicitOriginalTarget;
+
+    let el;
+    e_target
+        = ((el = e_target.firstElementChild) && (el.tagName == "INPUT")) ?                                         e_target.firstElementChild
+        : ((el = e_target                  ) && (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
+        : ((el = e_target.parentElement    ) && (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
+        : /*..........................................................*/                                           e_target
+    ;
+
+/*{{{
+console.log("t_get_event_target: return "+e_target.tagName+" "+e_target.className)
+console.log("e_target:",e_target)
+}}}*/
+    return e_target;
+};
+/*}}}*/
+/*_ get_event_XY {{{*/
+let get_event_XY = function(e)
+{
+    let x, y;
+    if(e.changedTouches) {
+        x = parseInt(e.changedTouches[0].clientX);
+        y = parseInt(e.changedTouches[0].clientY);
+    }
+    else {
+        x = parseInt(                  e.clientX);
+        y = parseInt(                  e.clientY);
+    }
+/*{{{
+if(log_this) log("get_event_XY: return { "+x+" , "+y+" }");
+}}}*/
+    return { x , y };
+};
+/*}}}*/
 
 /* EXPORT */
 /*{{{*/
 return { name : DOM_SENTENCE_UTIL_JS_ID
+
+    /* EVENT */
+    ,    t_get_event_target
+    ,    get_event_XY
 
     , t_get_htmlEntities
 
@@ -456,14 +558,39 @@ return { name : DOM_SENTENCE_UTIL_JS_ID
     , get_el_parent_with_tag
     , get_el_parent_with_class
     , get_el_child_with_class
+    , get_el_xy
+    , get_id_or_tag
 
     , get_n_lbl
     , get_node_sibling_at_offset
     , get_parent_tag_id_class_chain
 
-    , ...logs
+    , logs
 };
 /*}}}*/
 
-}());
+ }());
 
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+"...           $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
