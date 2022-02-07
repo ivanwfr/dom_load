@@ -1,5 +1,5 @@
 
-#dom_tools_css_tag  { content: "dom_tools_css (211119:16h:47)"; }
+#dom_tools_css_tag  { content: "dom_tools_css (220203:16h:26)"; }
 
 /* flag {{{*/
 .flag, .flag.checked {
@@ -1366,7 +1366,7 @@ li { white-space: nowrap; }
 #hotspot.dark *:after  { background      : #AAA;                 }
 
 #hotspot.move_on_cooldown:before { font-size: 24px; content: "\231B"     ; position: absolute; transform: translate(2em,0); border-radius:1em; padding:0.2em 0.5em; background-color:rgba(000,255,000,0.5); box-shadow:-1px -1px 3px #888 inset; }
-#hotspot.not_moved_enough:after  { font-size: 24px; content: "\25C4\25BA"; position: absolute; transform: translate(2em,0); border-radius:1em; padding:0.2em 0.5em; background-color:rgba(000,000,255,0.5); box-sh170,221,ow:-1px -1px 3px #888 inset; }
+#hotspot.not_moved_enough:after  { font-size: 24px; content: "\25C4\25BA"; position: absolute; transform: translate(2em,0); border-radius:1em; padding:0.2em 0.5em; background-color:rgba(000,000,255,0.5); box-shadow:-1px -1px 3px #888 inset; }
 
 .page_items_all_removed                   { background : #F00 !important; } /* to override dark */
 .page_items_has_pat_csv   .hotwave::after { background : #080 !important; } /* to override dark */
