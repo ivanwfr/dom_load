@@ -15,7 +15,7 @@
 */
 
 const DOM_POPUP_JS_ID         = "dom_popup";
-const DOM_POPUP_JS_TAG        =  DOM_POPUP_JS_ID +" (210702:19h:23)";
+const DOM_POPUP_JS_TAG        =  DOM_POPUP_JS_ID +" (220127:17h:05)";
 /*}}}*/
 let dom_popup = (function() {
 "use strict";
@@ -25,22 +25,23 @@ let dom_popup = (function() {
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /*➔ log_popup {{{*/
 /*{{{*/
-const CAPTURE_TRUE_PASSIVE_FALSE  = {capture:true, passive:false, useCapture:true };
-const LOG_POPUP_DIV_DURATION      = 3000;
+const CAPTURE_TRUE_PASSIVE_FALSE  = { capture: true , passive: false , useCapture: true };
+const LOG_POPUP_DIV_DURATION      =   3000;
 
 const LOG_POPUP_STYLE             = { backgroundColor: "rgba(255,255,  0,0.9)" , fontSize: "100%" };
-/*
+/*{{{
 const LOG_POPUP_STYLE_WARN        = { backgroundColor: "rgba(255,165,  0,0.9)" , fontSize: "150%" };
 const LOG_POPUP_STYLE_WARN        = { backgroundColor: "transparent"           , fontSize: "150%" };
-*/
+}}}*/
 const LOG_POPUP_STYLE_WARN        = { backgroundColor: "rgba(255,255,255,0.8)" , fontSize: "150%" };
+
+const THEME_STYLE_DARK  =  "color: #DDD !important; background-color: rgba( 32, 32, 32,0.8) !important;";
+const THEME_STYLE_LIGHT =  "color: #222 !important; background-color: rgba(255,255,255,0.8) !important;";
 
 let   log_popup_div;
 let   log_popup_div_timeout;
 /*}}}*/
-let log_popup_warn = function(message_HTML, xy/*=LOG_POPUP_XY_WARN*/, style=LOG_POPUP_STYLE_WARN) { log_popup(message_HTML, xy, style         ); };
-let log_popup_fixed= function(message_HTML, xy/*=LOG_POPUP_XY_WARN*/, style=LOG_POPUP_STYLE_WARN) { log_popup(message_HTML, xy, style, "fixed"); };
-let log_popup      = function(message_HTML, xy/*=LOG_POPUP_XY     */, style=LOG_POPUP_STYLE     , options="")
+let log_popup = function({ message_HTML , xy , style=LOG_POPUP_STYLE , options="" , theme_dark })
 {
     /* CREATE {{{*/
     if(!log_popup_div)
@@ -61,9 +62,16 @@ let log_popup      = function(message_HTML, xy/*=LOG_POPUP_XY     */, style=LOG_
     }
     /*}}}*/
 /* DISPLAY {{{*/
+
+    let   theme_style
+        = theme_dark
+        ? THEME_STYLE_DARK
+        : THEME_STYLE_LIGHT
+    ;
+
     log_popup_div.innerHTML
-        = "<pre style='color:#222; background: transparent;'>"
-        + message_HTML
+        = "<pre style='"+theme_style+"'>"
+        +  message_HTML
         + "</pre>"
     ;
 
@@ -85,7 +93,6 @@ let log_popup      = function(message_HTML, xy/*=LOG_POPUP_XY     */, style=LOG_
     {
         log_popup_div.style.top  = Math.max(0, xy.y)+"px";
         log_popup_div.style.left = Math.max(0, xy.x)+"px";
-
     }
     /*}}}*/
     /* HIDE .. f(setTimeout) {{{*/
@@ -228,7 +235,7 @@ log_key_val("log_popup_scrollTo_el("+get_id_or_tag(el)+")"
     }
     /*}}}*/
     /* first layout {{{*/
-    log_popup(text, tl_xy, style);
+    log_popup({ message_HTML: text , xy: tl_xy , style });
 
     /*}}}*/
     /* move popup bottom above target element {{{*/
@@ -433,7 +440,6 @@ let div_mask_addEventListener = function(type,handler)
 
 /* EXPORT {{{*/
 return { log_popup
-    ,    log_popup_fixed
     ,    log_popup_addEventListener
     ,    log_popup_div_get
     ,    log_popup_div_handles_event
@@ -441,7 +447,6 @@ return { log_popup
     ,    log_popup_hide
     ,    log_popup_scrollTo_el
     ,    log_popup_scrollTo_el_warn
-    ,    log_popup_warn
 
     ,    div_mask_get
     ,    div_mask_hide
