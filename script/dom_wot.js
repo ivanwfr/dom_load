@@ -16,21 +16,26 @@
 /* exported dom_wot, DOM_WOT_JS_TAG */
 
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (211119:18h:11)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (211208:17h:11)";
 /*}}}*/
 let dom_wot             = (function() {
 "use strict";
 let   DOM_WOT_LOG       = false;
 let   DOM_WOT_TAG       = false;
 
+/* IMPORT {{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_wot_IMPORT {{{*/
 /* eslint-disable no-unused-vars */
-let t_wot_IMPORT        = function(log_this)
+let t_wot_IMPORT        = function(_log_this,import_num)
 {
-    wot_INTERN();
-
+    /* MODULE LOGGING TAGGING {{{*/
     DOM_WOT_LOG         = DOM_WOT_LOG       || localStorage_getItem("DOM_WOT_LOG");
     DOM_WOT_TAG         = DOM_WOT_TAG       || localStorage_getItem("DOM_WOT_TAG");
+
+    /*}}}*/
+    wot_INTERN();
+if(_log_this) log("➔ "+(import_num ? (import_num+" ") : "")+"t_wot_IMPORT");
 };
 /*}}}*/
 /*_   wot_INTERN {{{*/
@@ -167,6 +172,8 @@ if(DOM_WOT_LOG || DOM_WOT_TAG) logBIG(caller+": ["+dom_tools.name+"]"      , 4);
     /*}}}*/
 };
 /* eslint-enable no-unused-vars */
+/*}}}*/
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 
 /*┌──────────────────────────────────────────────────────────────────────────┐*/

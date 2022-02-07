@@ -3,7 +3,6 @@
 "use strict"; /* eslint-disable-line strict */
 
 /* globals window, document, setTimeout, clearTimeout */
-/* globals getComputedStyle */
 /* globals dom_log, dom_util, dom_tools */
 
 /* exported intro_get_event_URDL_ZSPN, DOM_POD_JS_TAG */
@@ -14,7 +13,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_POD_JS_ID      = "dom_pod_js";
-const DOM_POD_JS_TAG     = DOM_POD_JS_ID  +" (211119:16h:26)";
+const DOM_POD_JS_TAG     = DOM_POD_JS_ID  +" (211206:17h:17)";
 /*}}}*/
 let   DOM_POD_LOG        = false;
 let   DOM_POD_TAG        = false;
@@ -291,7 +290,7 @@ let tag_this = DOM_POD_TAG || log_this;
 if( tag_this) log("%c"+caller+": el=["+dom_util.get_node_path(el)+"]", lb1);
 /*}}}*/
     /* CANCEL PENDING SCROLL TIMOUT {{{*/
-    dom_tools.scrollIntoViewIfNeeded_cancel(caller);
+    dom_tools.t_scrollIntoViewIfNeeded_cancel(caller);
 
     /*}}}*/
     /* CLEAR PENDING [zoomed_el] {{{*/

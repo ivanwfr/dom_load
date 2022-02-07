@@ -24,7 +24,7 @@
 */
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211122:16h:46)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211208:19h:33)";
 /*}}}*/
 let dom_seek    = (function() {
 "use strict";
@@ -2570,8 +2570,8 @@ let   seeker_sync_SEL_BACK_handle = function()
         }}}*/
         /* ...[show_seekzone] toggle .. (bottom) {{{
         else if( t_util.has_el_class(el, t_data.CSS_BOTTOM )) {
-            if(      t_prop.get(  t_data.LOG_SEEKSPOT )) t_util.add_el_class(el  , t_data.CSS_CHECKED);
-            else                                t_util.del_el_class(el  , t_data.CSS_CHECKED);
+            if(           t_prop.get(    t_data.LOG_SEEKSPOT )) t_util.add_el_class(el  , t_data.CSS_CHECKED);
+            else                                                t_util.del_el_class(el  , t_data.CSS_CHECKED);
         }
         }}}*/
     }

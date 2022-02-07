@@ -22,8 +22,8 @@
 
 /* exported dom_util */
 
-const DOM_UTIL_JS_ID        = "dom_util_js";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211122:23h:55)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_ID        = "dom_util";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211206:19h:32)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -4654,9 +4654,27 @@ return { name : "dom_util"
 :!start explorer "http://xahlee.info/comp/unicode_arrows.html"
 :!start explorer "http://unicode.org/emoji/charts/full-emoji-list.html"
 
-" iwintoo
-:new C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/lib/lib_util.js
-:new C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/XPH/stylesheet/dom_host.css
-
 }}}*/
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
 
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+"...           $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/

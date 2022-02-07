@@ -10,7 +10,7 @@
 */
 
 const DOM_DATA_JS_ID        = "dom_data_js";
-const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (210929:21h:31)";
+const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (220126:18h:04)";
 /*}}}*/
 let dom_data    = (function() {
 "use strict";
@@ -119,6 +119,7 @@ const SYMBOL_RELOAD                 = "\u21BB";
 const SYMBOL_ANCHOR                 = "\u2693"; /* ⚓*/
 const SYMBOL_CROSSED_SWORDS         = "\u2694"; /* ⚔ */
 const SYMBOL_GEAR                   = "\u2699";
+const SYMBOL_THEME                  = "\u262F"; /* ☯ */
 const SYMBOL_WARNING                = "\u26A0";
 const SYMBOL_WHITE_CIRCLE           = "\u26AA"; /* MEDIUM_WHITE */
 const SYMBOL_BLMED_CIRCLE           = "\u26AB"; /* MEDIUM */
@@ -675,6 +676,7 @@ const DOC_TOOLS_ID            = "doc_tools";
         , SYMBOL_DOWN_POINTING
         , SYMBOL_ELLIPSIS
         , SYMBOL_GEAR
+        , SYMBOL_THEME
         , SYMBOL_HEAVY_RIGHT_ARROW
         , SYMBOL_LEFT_ARROW
         , SYMBOL_LEFT_ARROW_HOOK

@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211122:16h:48)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211206:19h:32)";
 /*}}}*/
 let dom_select  = (function() {
 "use strict";
@@ -2856,7 +2856,7 @@ if( log_this) log(caller+": containers_hi=["+prop.get("containers_hi")+"]");
     /* 3/3 - restore container split sentences {{{*/
     let   container;
     while(container = t_util.get_el_child_with_class(document.body, dom_sentence.CSS_SENTENCE_CONTAINER))
-        dom_sentence.t_SENTENCE_RESTORE( container );
+        dom_sentence.t_SENTENCE_RESTORE_EL( container );
 
     /*}}}*/
 };
@@ -3503,3 +3503,27 @@ return { name : "dom_select"
 /*}}}*/
 
 }());
+
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+"...           $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
