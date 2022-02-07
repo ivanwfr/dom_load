@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220207:16h:03)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220207:19h:24)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -818,7 +818,6 @@ let t_SENTENCE_drag_DXY = function(dxy)
 /*{{{*/
 let   caller = "t_SENTENCE_drag_DXY";
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
-    log_this=true;//FIXME
 
 let tag_this = DOM_SENTENCE_TAG || log_this;
 /*}}}*/
@@ -1200,7 +1199,7 @@ return { name : "dom_sentence"
     ,    t_SENTENCE_drag_DXY
     ,    t_SENTENCE_onresize
 
-    // DEBUG
+    /* DEBUG */
     ,    o : outline_text_containers_in_view
     ,    r : restore_text_containers_in_view
     ,    f : node_in_view_filter_clear

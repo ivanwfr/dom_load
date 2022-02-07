@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220207:16h:46)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220207:19h:25)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -5284,7 +5284,6 @@ log(onMoveDXY.x.toFixed(0)+" "+onMoveDXY.y.toFixed(0));
 /*  zap_onMoveDXY {{{*/
 let zap_onMoveDXY = function()
 {
-log_caller();//FIXME
     onDown_XY.x += onMoveDXY.x;
     onDown_XY.y += onMoveDXY.y;
     drag_cursor.show_drag_cursor();
@@ -6935,7 +6934,6 @@ let onDown_7_SENTENCE = function(e)
 let   caller = "onDown_7_SENTENCE";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
-    log_this=true;//FIXME
 
 if( log_this) log("%c"+caller, lbF+lb7);
 if( log_this) t_fly.t_log_event_status(caller, lf7);
@@ -6989,17 +6987,6 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
         return "";
     }
     /*}}}*/
-//    /* SENTENCE CONTAINER ➔ ADD FONT-SIZE WHEEL LISTENER {{{*/
-//    let sentence_el        = t_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
-//    if( sentence_el )
-//    {
-//        consumed_by += " .. ON A SENTENCE ELEMENT";
-//
-//        t_preventDefault(e, consumed_by);
-//
-//        t_CURSOR_add_MOVE_LISTENER(caller);
-//    }
-//    /*}}}*/
     /* SELECT WORD -OR- BUBBLE EVENT {{{*/
 /*{{{
 logXXX("SELECT WORD: anchor_freeze........................=["+ prop.get( t_data.ANCHOR_FREEZE )   +"]");
@@ -9320,7 +9307,6 @@ let onUp_7_DOC_SENTENCES = function(e, clicked, dblclicked)
 /*{{{*/
 let   caller = "onUp_7_DOC_SENTENCES";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
-    log_this=true;//FIXME
 
 if( log_this) t_fly.t_log_event_status(caller, lf7);
 /*}}}*/
@@ -17763,8 +17749,6 @@ let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 {
     if( move_on_cooldown_timer ) return;
 
-
-//  if( move_on_cooldown_timer ) clearTimeout( move_on_cooldown_timer );
     /**/move_on_cooldown_timer =   setTimeout(t_del_MOVE_ON_COOLDOWN, time_left);
     add_el_class(  hotspot   , CSS_MOVE_ON_COOLDOWN);
     drag_cursor.add_drag_cursor_CSS_MOVE_ON_COOLDOWN();
