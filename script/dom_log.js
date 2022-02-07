@@ -16,7 +16,7 @@
 /* eslint-disable prefer-rest-params */
 
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (211122:23h:54)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (220207:18h:58)";
 /*}}}*/
 let dom_log     = (function() {
 "use strict";
@@ -578,6 +578,10 @@ let logging_something = function()
 
 const dom_LOG_MAP
     = {   LOG_MAP
+/* CALLERS of dom_LOG_MAP: {{{
+/^[^/]*\<dom_LOG_MAP\>\s*[(=),}]
+C:/LOCAL/STORE/DEV/PROJECTS/RTabs/Util/RTabs_Profiles/DEV/script/dom_log.js:1409  t_store_set_state:1428:     , ...dom_LOG_MAP
+}}}*/
         , logging_load_LOG_MAP
         , logging_toggle
         , logging_something
@@ -676,17 +680,19 @@ const regexp_LF = new RegExp("\\n", "g");
 /*}}}*/
 let log_object_val_format = function(val,lxx)
 {
-    let                                           text = String(val);
-    if     ( !text                              ) text = "[]";
-    else if(          val instanceof HTMLElement) text = get_id_or_tag_and_className(val);
-    else if(  typeof  val         == "object"   ) text = log_json(val, lxx);
-    else if(  typeof  val         == "function" ) text = L_FNC +" "+ (val.name || "anonymous");
-    else if(  text.includes(         LF        )) text = L_ARD+LF + text.replace(regexp_LF, LF);
+    let text;
+    try    { text = String(val); } catch(ex)         { text = LF+ex.message; }
+    if     (                                   !text ) text = "[]";
 
-    if(       text.includes(         L_ARU     )) text = text.replace(L_ARU, " %c"); /* f(parse_ex_stack_FUNC_FILE_LINE_COL) */
+    if(       text.includes(        L_ARU           )) text = text.replace(L_ARU, " %c"); /* f(parse_ex_stack_FUNC_FILE_LINE_COL) */
+    if(      !text.includes(        LF              )
+         &&   text.length > TEXT_LENGTH_MAX          ) text = t_util.ellipsis(text, TEXT_LENGTH_MAX);
 
-    if(      !text.includes(         LF        )
-         &&   text.length > TEXT_LENGTH_MAX     ) text = t_util.ellipsis(text, TEXT_LENGTH_MAX);
+    if     (               val instanceof HTMLElement) text = get_id_or_tag_and_className(val);
+    else if( Array.isArray(val)                      ) text = "ARRAY["+val.length+"] "+  t_util.ellipsis(val.toString().replace(/,/g," _ "), TEXT_LENGTH_MAX);
+    else if(        typeof val   == "object"         ) text = log_json(val, lxx);
+    else if(        typeof val   == "function"       ) text = L_FNC +" "+ (val.name || "anonymous");
+    else if(  text.includes(        LF              )) text = L_ARD+LF+text.replace(regexp_LF, LF);
 
     return    text;
 };
@@ -698,12 +704,13 @@ const regexp_BSLASH = new RegExp("\\\\"                     , "g");
 const regexp_COMMA  = new RegExp(" *, *"                    , "g");
 const regexp_QUOTE  = new RegExp("[\\u0022\\u0027]"         , "g"); /* "' */
 const regexp_URL_64 = new RegExp('"url":"([^"]{1,64})[^"]*"', "g"); /* eslint-disable-line quotes */
+
 /*}}}*/
 let log_json = function(val,lxx)
 {
     if(val == null     ) return "null";
     if(val == undefined) return "undefined";
-    if(val.id          ) return "#"+val.id;
+    if(val.id          ) return "#"+val.id+(val.className ? ("."+val.className.replace(/ /g,".")) : "");
     if(val.tagName     ) return     val.tagName;
 
     let result = "";
@@ -1450,8 +1457,32 @@ return { name : "dom_log"
 /*}}}*/
 
 })();
+
 /*{{{
 :!start explorer "https://developers.google.com/web/tools/chrome-devtools/console/console-reference"
-:e C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/lib/lib_log.js
+
+}}}*/
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+"...           $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/spliter.js splite
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
 }}}*/
 
