@@ -70,7 +70,9 @@ escape(`
   DOM_LOAD_PANELS   = "";
   document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
   /* set_title {{{*/
-  function set_title() {
+  function set_title(e)
+  {
+   console.log("...set_title("+e.type+")");
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
    document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
   }

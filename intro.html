@@ -1,7 +1,7 @@
 <!DOCTYPE html> <html lang="fr">
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (211122:23h:57)";
+  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (220126:20h:01)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
@@ -2460,6 +2460,7 @@ if( log_this) log("%c SCROLLED", lbH+lf7);
     if( consumed_by && !dom_tools.t_event_has_been_consumed())
         dom_tools.t_event_add_e_consumed_by(event, event.type+" "+consumed_by);
 
+/*{{{*/
 if(tag_this) logBIG("CLICK: "+consumed_by, lfx);
 if(log_this) {
     log_key_val_group( caller+"("+event.type+")"
@@ -2471,6 +2472,7 @@ if(log_this) {
           , callers                    : dom_log.get_callers()
         }, lf9, false);
 }
+/*}}}*/
 
     intro_link_URDL_layout();
 };
@@ -2501,12 +2503,12 @@ let intro_onClick1_gadgets = function(event)
     if(!buttons_pod        ) return;
     let restack_button = buttons_pod.querySelector("#restack"                            );
 
-/*{{{
 log_key_val_group("intro_onClick1_gadgets: "+fullscreen_cell_div.id
         ,{ fullscreen_cell_div
          , buttons_pod
          , restack_button
         }, lf7, false);
+/*{{{
 }}}*/
 
     if(event.target.id == "restack")
@@ -4229,7 +4231,7 @@ let log_zoomed = function()
  <!--}}}-->
  </head>
 
- <body onload='set_title(); intro_IMPORT(); intro_init();'>
+ <body onload='set_title(event); intro_IMPORT(event); intro_init(event);'>
   <div id="dimm_mask"></div>
 
 <!-- link_URDL {{{-->
@@ -7120,7 +7122,9 @@ j0"qy$
  <script>
   document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
   /* set_title {{{*/
-  function set_title() {
+  function set_title(e)
+  {
+   //console.log("...set_title("+e.type+")");
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
    document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='title'>"+DOM_LOAD_TAG+"</em> <sup><i>(Bookmarklet and Extension)</i></sup>";
   }

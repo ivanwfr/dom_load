@@ -81,7 +81,7 @@ div { margin    : 1em; }
  transform      : translate(-50%, 0) !important;
  white-space    : nowrap             !important;
     text-align  : center;
-vertical-align  : middle;
+/* vertical-align  : middle; .. (not inline) */
 }
 #div_links>* {
   border-radius     : 48px         !important;
@@ -1223,7 +1223,7 @@ escapeXXX(`
  width            : 150px             !important;
  height           : 150px             !important;
  text-align       : center            !important;
- vertical-align   : middle            !important;
+ /* vertical-align  : middle; .. (not inline) */
  margin           : 1em               !important;
  padding          : 1em               !important;
  border           : 8px #444 groove   !important;
@@ -1240,11 +1240,13 @@ escapeXXX(`
 
   <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (211122:23h:58)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (220126:16h:07)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
-  function set_title() {
+  function set_title(e)
+  {
+   console.log("...set_title("+(e ? e.type : "onload")+")");
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
    document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc6'>"+DOM_LOAD_TAG+"</em>";
   }
@@ -4210,7 +4212,6 @@ return { name    : "dom_wot"
 
 <pre style="
 border           :  8px solid rgba(255,0,0,0.3);
-left             :  10em;
 margin           :  1em;
 ">
 overflowing child

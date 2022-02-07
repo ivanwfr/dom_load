@@ -43,7 +43,7 @@
  transform      : translate(-50%, 0) !important;
  white-space    : nowrap             !important;
     text-align  : center;
-vertical-align  : middle;
+/* vertical-align  : middle; .. (only for inline, inline-block, table-cell) */
 }
 #div_links>* {
   border-radius     : 48px         !important;
@@ -364,7 +364,9 @@ The better to eat you with.
  <script>
   document.getElementsByTagName("html")[0].id  = DOM_LOAD_ID;
   /* set_title {{{*/
-  function set_title() {
+  function set_title(e)
+  {
+   console.log("...set_title("+e.type+")");
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
    document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
   }
