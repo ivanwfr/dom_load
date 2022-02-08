@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220207:19h:06)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220208:21h:29)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -34572,7 +34572,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220207:16h:03)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220207:19h:24)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -35356,7 +35356,6 @@ let t_SENTENCE_drag_DXY = function(dxy)
 
 let   caller = "t_SENTENCE_drag_DXY";
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
-    log_this=true;//FIXME
 
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
@@ -35727,7 +35726,7 @@ return { name : "dom_sentence"
     ,    t_SENTENCE_drag_DXY
     ,    t_SENTENCE_onresize
 
-    // DEBUG
+
     ,    o : outline_text_containers_in_view
     ,    r : restore_text_containers_in_view
     ,    f : node_in_view_filter_clear
@@ -37767,7 +37766,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220207:16h:46)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220208:21h:29)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -42566,7 +42565,6 @@ let get_onMoveDXY = function(e)
 
 let zap_onMoveDXY = function()
 {
-log_caller();//FIXME
     onDown_XY.x += onMoveDXY.x;
     onDown_XY.y += onMoveDXY.y;
     drag_cursor.show_drag_cursor();
@@ -44078,7 +44076,6 @@ let onDown_7_SENTENCE = function(e)
 let   caller = "onDown_7_SENTENCE";
 if(!is_a_DOM_LOAD_featured_function(caller)) return "";
 let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
-    log_this=true;//FIXME
 
 if( log_this) log("%c"+caller, lbF+lb7);
 if( log_this) t_fly.t_log_event_status(caller, lf7);
@@ -44128,17 +44125,6 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
         return "";
     }
 
-//
-//    let sentence_el        = t_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
-//    if( sentence_el )
-//    {
-//        consumed_by += " .. ON A SENTENCE ELEMENT";
-//
-//        t_preventDefault(e, consumed_by);
-//
-//        t_CURSOR_add_MOVE_LISTENER(caller);
-//    }
-//
 
 
     if(!consumed_by && !t_preventDefault_has_been_called())
@@ -45080,6 +45066,7 @@ if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_mo
 
 
 
+
 let t_CURSOR_add_MOVE_LISTENER = function(_caller)
 {
 
@@ -45088,6 +45075,8 @@ let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
 
+
+
     if("ontouchmove"  in document.documentElement) {
         add_listener_capture_active(   window, "touchmove", t_SENTENCE_drag_listener);
     }
@@ -45095,6 +45084,8 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
         add_listener_capture_active(   window, "mousemove", t_SENTENCE_drag_listener);
         add_listener_capture_active(   window, "wheel"    , t_SENTENCE_drag_listener);
     }
+
+
 };
 
 
@@ -45110,18 +45101,24 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf6);
     t_del_NOT_MOVED_ENOUGH();
     t_del_MOVE_ON_COOLDOWN();
 
-    if(!drag_cursor.get_display_drag_cursor_state())
-    {
-        if("ontouchmove"  in document.documentElement) {
-            remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
-        }
-        else {
-            remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
-            remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
-        }
 
-        drag_cursor.hide_drag_cursor();
+    if( drag_cursor.get_mouseUP_display_state() )
+        return;
+
+
+
+
+    if("ontouchmove"  in document.documentElement) {
+        remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
     }
+    else {
+        remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
+        remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
+    }
+
+    drag_cursor.hide_drag_cursor();
+
+
 };
 
 
@@ -45129,15 +45126,23 @@ let t_SENTENCE_drag_listener = function(event)
 {
 
 let   caller = "t_SENTENCE_drag_listener";
+let log_this = LOG_MAP.EV2_MOVE;
 
+if(log_this) log(caller);
 
 
     get_onMoveDXY(event, caller);
-    if( t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
+
+    if(onDown_XY && t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
     {
 
 
+        drag_cursor.move_drag_cursor(event);
         event.preventDefault();
+    }
+    else if( drag_cursor.get_mouseUP_display_state() )
+    {
+        drag_cursor.move_drag_cursor(event);
     }
 };
 
@@ -46304,7 +46309,6 @@ let onUp_7_DOC_SENTENCES = function(e, clicked, dblclicked)
 
 let   caller = "onUp_7_DOC_SENTENCES";
 let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
-    log_this=true;//FIXME
 
 if( log_this) t_fly.t_log_event_status(caller, lf7);
 
@@ -46365,6 +46369,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
             }
         }
 
+        drag_cursor.set_mouseUP_display_state(false);
     }
 
     if( consumed_by )
@@ -54008,7 +54013,7 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
     if( el_to_mark_SCROLLED_INTO_VIEW )
     {
-        if( log_this) log("%c"+caller+" %c ["+t_util.get_id_or_tag(el_to_mark_SCROLLED_INTO_VIEW) +"] SCROLLED_INTO_VIEW DONE", lbb+lbL+lf8, lbb+lbR+lf3);
+if( log_this) log("%c"+caller+" %c ["+t_util.get_id_or_tag(el_to_mark_SCROLLED_INTO_VIEW) +"] SCROLLED_INTO_VIEW DONE", lbb+lbL+lf8, lbb+lbR+lf3);
 
         del_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_OVER_VIEW);
         add_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_INTO_VIEW);
@@ -54153,8 +54158,6 @@ let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 {
     if( move_on_cooldown_timer ) return;
 
-
-//  if( move_on_cooldown_timer ) clearTimeout( move_on_cooldown_timer );
 move_on_cooldown_timer =   setTimeout(t_del_MOVE_ON_COOLDOWN, time_left);
     add_el_class(  hotspot   , CSS_MOVE_ON_COOLDOWN);
     drag_cursor.add_drag_cursor_CSS_MOVE_ON_COOLDOWN();
@@ -54163,8 +54166,11 @@ move_on_cooldown_timer =   setTimeout(t_del_MOVE_ON_COOLDOWN, time_left);
 
 let t_del_MOVE_ON_COOLDOWN = function()
 {
+    if(!move_on_cooldown_timer ) return;
 
+let log_this = LOG_MAP.EV2_MOVE;
 
+if(log_this) log("t_del_MOVE_ON_COOLDOWN");
 
     if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
 move_on_cooldown_timer = null;
@@ -60009,22 +60015,24 @@ let t_show_SNAPSHOT = function()
 
 
 
+
+
 let drag_cursor  = (function() {
 
 
 
-let      cursor_div;
+let      drag_cursor_div;
 
 
 
 
 
-let display_drag_cursor_state = false;
+let mouseUP_display_state = true;
 
 
-let display_drag_cursor = function(state=true)
+let set_mouseUP_display_state = function(state=true)
 {
-    display_drag_cursor_state = state;
+    mouseUP_display_state = state;
 
     if(state) show_drag_cursor();
 
@@ -60032,49 +60040,63 @@ let display_drag_cursor = function(state=true)
     else      t_CURSOR_del_MOVE_LISTENER();
 };
 
-let get_display_drag_cursor_state        = function() { return display_drag_cursor_state; };
+let get_mouseUP_display_state = function() { return mouseUP_display_state; };
 
 let show_drag_cursor = function()
 {
 
-    if(!cursor_div) {
-        cursor_div = document.createElement("DIV");
+    if(!drag_cursor_div) {
+        drag_cursor_div = document.createElement("DIV");
 
-        cursor_div.id                    =     "drag_cursor";
-        cursor_div.style.pointerEvents   =            "none";
-        cursor_div.style.position        =           "fixed";
-        cursor_div.style.margin          =             "0px";
-        cursor_div.style.padding         =            "16px";
-        cursor_div.style.backgroundColor =            "#FF0";
-        cursor_div.style.border          =  "3px solid #000";
-        cursor_div.style.borderRadius    = "0em 1em 1em 1em";
-        cursor_div.style.zIndex          =      "2147483647";
+        drag_cursor_div.id                    =     "drag_cursor";
+        drag_cursor_div.style.pointerEvents   =            "none";
+        drag_cursor_div.style.position        =           "fixed";
+        drag_cursor_div.style.margin          =             "0px";
+        drag_cursor_div.style.padding         =            "16px";
+        drag_cursor_div.style.backgroundColor =            "#FF0";
+        drag_cursor_div.style.border          =  "3px solid #000";
+        drag_cursor_div.style.borderRadius    = "1em 0em 1em 1em";
+        drag_cursor_div.style.zIndex          =      "2147483647";
+        drag_cursor_div.style.opacity         =             "0.5";
 
-        document.documentElement.appendChild( cursor_div );
+        document.documentElement.appendChild( drag_cursor_div );
     }
-    cursor_div.style.left    = onDown_XY.x+"px";
-    cursor_div.style.top     = onDown_XY.y+"px";
-    cursor_div.style.display = "block";
+    drag_cursor_div.style.left    = (onDown_XY.x - drag_cursor_div.offsetWidth)+"px";
+    drag_cursor_div.style.top     = (onDown_XY.y                         )+"px";
+    drag_cursor_div.style.display = "block";
 };
 
-let hide_drag_cursor                     = function() { if(cursor_div) cursor_div.style.display = "none"; };
-let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
-let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
-let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
-let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
+
+let move_drag_cursor = function(e)
+{
+    if(!drag_cursor_div                         ) return;
+    if(!drag_cursor_div.style.display == "block") return;
+
+    let      xy = t_util.get_event_XY(e);
+    drag_cursor_div.style.left    = (xy.x - drag_cursor_div.offsetWidth)+"px";
+    drag_cursor_div.style.top     = (xy.y                         )+"px";
+};
+
+let hide_drag_cursor                     = function() { if(drag_cursor_div) drag_cursor_div.style.display = "none"; };
+let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(drag_cursor_div) drag_cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
+let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(drag_cursor_div) drag_cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
+let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(drag_cursor_div) drag_cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
+let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(drag_cursor_div) drag_cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
 
 
 return { name : "drag_cursor"
-    ,    display_drag_cursor
-    ,    get_display_drag_cursor_state
+    ,    set_mouseUP_display_state
+    ,    get_mouseUP_display_state
     ,    show_drag_cursor
     ,    hide_drag_cursor
+    ,    move_drag_cursor
     ,    add_drag_cursor_CSS_MOVE_ON_COOLDOWN
     ,    add_drag_cursor_CSS_NOT_MOVED_ENOUGH
     ,    del_drag_cursor_CSS_MOVE_ON_COOLDOWN
     ,    del_drag_cursor_CSS_NOT_MOVED_ENOUGH
 };
 }());
+
 
 
 
@@ -60379,8 +60401,8 @@ return { name : "dom_tools"
 , t_tools_pointermove_drag_hotspot
 , t_tools_sync_top_xy
 
-, display_drag_cursor           : drag_cursor.display_drag_cursor
-, get_display_drag_cursor_state : drag_cursor.get_display_drag_cursor_state
+, move_drag_cursor              : drag_cursor.move_drag_cursor
+, get_mouseUP_display_state     : drag_cursor.get_mouseUP_display_state
 , show_drag_cursor              : drag_cursor.show_drag_cursor
 , hide_drag_cursor              : drag_cursor.hide_drag_cursor
 
