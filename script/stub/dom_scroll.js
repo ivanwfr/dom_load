@@ -14,7 +14,7 @@
 /* exported DOM_SCROLL_JS_TAG */
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220128:19h:47)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220208:19h:32)";
 /*}}}*/
 let dom_scroll              = (function() {
 "use strict";
@@ -486,6 +486,7 @@ if(log_this)
 };
 /*}}}*/
 /*_   scrollIntoViewIfNeeded_then_recenter_handler {{{*/
+const CONTAINER_TOP_MARGIN = 64;
 let   scrollIntoViewIfNeeded_then_recenter_handler = function()
 {
 /*{{{*/
@@ -513,6 +514,7 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL), l
     recenter_dxy.y    = recenter_dxy.y  /* container top    */
         +     e_H/2 /* container middle */
         -     w_H/2 /*   window  middle */
+        -     CONTAINER_TOP_MARGIN
     ;
 
     /*}}}*/
