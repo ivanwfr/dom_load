@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220207:19h:25)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220208:21h:29)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -7979,6 +7979,7 @@ if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_mo
 };
 /*}}}*/
 /* SENTENCE */
+/*let t_SENTENCE_drag_listener_state;*/
 /*{{{*/
 /*_ t_CURSOR_add_MOVE_LISTENER {{{*/
 let t_CURSOR_add_MOVE_LISTENER = function(_caller)
@@ -7989,6 +7990,8 @@ let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
 /*}}}*/
+    /*if(t_SENTENCE_drag_listener_state) return;*/
+
     if("ontouchmove"  in document.documentElement) {
         add_listener_capture_active(   window, "touchmove", t_SENTENCE_drag_listener);
     }
@@ -7996,6 +7999,8 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf4);
         add_listener_capture_active(   window, "mousemove", t_SENTENCE_drag_listener);
         add_listener_capture_active(   window, "wheel"    , t_SENTENCE_drag_listener);
     }
+
+    /*t_SENTENCE_drag_listener_state = true;*/
 };
 /*}}}*/
 /*_ t_CURSOR_del_MOVE_LISTENER {{{*/
@@ -8011,18 +8016,24 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf6);
     t_del_NOT_MOVED_ENOUGH();
     t_del_MOVE_ON_COOLDOWN();
 
-    if(!drag_cursor.get_display_drag_cursor_state())
-    {
-        if("ontouchmove"  in document.documentElement) {
-            remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
-        }
-        else {
-            remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
-            remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
-        }
+    /* KEEP MOVING CURSOR WHILE MOUSE BUTTON IS UP */
+    if( drag_cursor.get_mouseUP_display_state() )
+        return;
 
-        drag_cursor.hide_drag_cursor();
+    /*if(!t_SENTENCE_drag_listener_state) return;*/
+
+    /* STOP MOVING CURSOR WHILE MOUSE BUTTON IS UP */
+    if("ontouchmove"  in document.documentElement) {
+        remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
     }
+    else {
+        remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
+        remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
+    }
+
+    drag_cursor.hide_drag_cursor();
+
+    /*t_SENTENCE_drag_listener_state = false;*/
 };
 /*}}}*/
 /*_ t_SENTENCE_drag_listener {{{*/
@@ -8030,17 +8041,25 @@ let t_SENTENCE_drag_listener = function(event)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_drag_listener";
+let log_this = LOG_MAP.EV2_MOVE;
 
-
+if(log_this) log(caller);
 /*}}}*/
+
     get_onMoveDXY(event, caller);
-    if( t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
+
+    if(onDown_XY && t_sentence.t_SENTENCE_drag_DXY( onMoveDXY ) )
     {
         /* next move from here */
 /*{{{
         zap_onMoveDXY();
 }}}*/
+        drag_cursor.move_drag_cursor(event);
         event.preventDefault();
+    }
+    else if( drag_cursor.get_mouseUP_display_state() )
+    {
+        drag_cursor.move_drag_cursor(event);
     }
 };
 /*}}}*/
@@ -9367,6 +9386,7 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
             }
         }
         /*}}}*/
+        drag_cursor.set_mouseUP_display_state(false);
     }
     /*}}}*/
     if( consumed_by )
@@ -17594,7 +17614,7 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
     if( el_to_mark_SCROLLED_INTO_VIEW )
     {
-        if( log_this) log("%c"+caller+" %c ["+t_util.get_id_or_tag(el_to_mark_SCROLLED_INTO_VIEW) +"] SCROLLED_INTO_VIEW DONE", lbb+lbL+lf8, lbb+lbR+lf3);
+if( log_this) log("%c"+caller+" %c ["+t_util.get_id_or_tag(el_to_mark_SCROLLED_INTO_VIEW) +"] SCROLLED_INTO_VIEW DONE", lbb+lbL+lf8, lbb+lbR+lf3);
 
         del_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_OVER_VIEW);
         add_el_class(el_to_mark_SCROLLED_INTO_VIEW, SCROLLED_INTO_VIEW);
@@ -17757,9 +17777,12 @@ let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 /*_ t_del_MOVE_ON_COOLDOWN {{{*/
 let t_del_MOVE_ON_COOLDOWN = function()
 {
+    if(!move_on_cooldown_timer ) return;
+/*{{{*/
+let log_this = LOG_MAP.EV2_MOVE;
 
-
-
+if(log_this) log("t_del_MOVE_ON_COOLDOWN");
+/*}}}*/
     if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
     /**/move_on_cooldown_timer = null;
     del_el_class(  hotspot   , CSS_MOVE_ON_COOLDOWN);
@@ -24071,77 +24094,10 @@ log("t_show_SNAPSHOT: snapshot_mail_body=["+t_util.ellipsis(snapshot_mail_body)+
 
 
 /* [drag_cursor] */
-/*{{{*/
-let drag_cursor  = (function() {
-/*"use strict";*/
-
-/*{{{*/
-let      cursor_div;
-
 /*
-let      drag_cursor_count = 0;
+../script/drag_cursor.js
 */
-/*}}}*/
-/*_ display_drag_cursor  {{{*/
-/*{{{*/
-let display_drag_cursor_state = false;
-
-/*}}}*/
-let display_drag_cursor = function(state=true)
-{
-    display_drag_cursor_state = state;
-
-    if(state) show_drag_cursor();
-
-    if(state) t_CURSOR_add_MOVE_LISTENER();
-    else      t_CURSOR_del_MOVE_LISTENER();
-};
-/*}}}*/
-let get_display_drag_cursor_state        = function() { return display_drag_cursor_state; };
-/*_ show_drag_cursor {{{*/
-let show_drag_cursor = function()
-{
-/*{{{
-console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",onMoveDXY , "onDown_XY:",onDown_XY)
-}}}*/
-    if(!cursor_div) {
-        cursor_div = document.createElement("DIV");
-
-        cursor_div.id                    =     "drag_cursor";
-        cursor_div.style.pointerEvents   =            "none";
-        cursor_div.style.position        =           "fixed";
-        cursor_div.style.margin          =             "0px";
-        cursor_div.style.padding         =            "16px";
-        cursor_div.style.backgroundColor =            "#FF0";
-        cursor_div.style.border          =  "3px solid #000";
-        cursor_div.style.borderRadius    = "0em 1em 1em 1em";
-        cursor_div.style.zIndex          =      "2147483647";
-
-        document.documentElement.appendChild( cursor_div );
-    }
-    cursor_div.style.left    = onDown_XY.x+"px";
-    cursor_div.style.top     = onDown_XY.y+"px";
-    cursor_div.style.display = "block";
-};
-/*}}}*/
-let hide_drag_cursor                     = function() { if(cursor_div) cursor_div.style.display = "none"; };
-let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
-let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
-let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
-let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
-
-/* EXPORT */
-return { name : "drag_cursor"
-    ,    display_drag_cursor
-    ,    get_display_drag_cursor_state
-    ,    show_drag_cursor
-    ,    hide_drag_cursor
-    ,    add_drag_cursor_CSS_MOVE_ON_COOLDOWN
-    ,    add_drag_cursor_CSS_NOT_MOVED_ENOUGH
-    ,    del_drag_cursor_CSS_MOVE_ON_COOLDOWN
-    ,    del_drag_cursor_CSS_NOT_MOVED_ENOUGH
-};
-}());
+/*INLINE{{{*/
 /*}}}*/
 
 /* EXPORT tools */
@@ -24446,8 +24402,8 @@ return { name : "dom_tools"
 , t_tools_pointermove_drag_hotspot
 , t_tools_sync_top_xy
 
-, display_drag_cursor           : drag_cursor.display_drag_cursor
-, get_display_drag_cursor_state : drag_cursor.get_display_drag_cursor_state
+, move_drag_cursor              : drag_cursor.move_drag_cursor
+, get_mouseUP_display_state     : drag_cursor.get_mouseUP_display_state
 , show_drag_cursor              : drag_cursor.show_drag_cursor
 , hide_drag_cursor              : drag_cursor.hide_drag_cursor
 /*
