@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220207:19h:26)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220208:21h:43)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -1005,7 +1005,7 @@ let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220128:19h:47)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220208:19h:32)";
 
 let dom_scroll              = (function() {
 "use strict";
@@ -1460,6 +1460,7 @@ if(log_this)
 };
 
 
+const CONTAINER_TOP_MARGIN = 64;
 let   scrollIntoViewIfNeeded_then_recenter_handler = function()
 {
 
@@ -1487,6 +1488,7 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL), l
     recenter_dxy.y    = recenter_dxy.y
         +     e_H/2
         -     w_H/2
+        -     CONTAINER_TOP_MARGIN
     ;
 
 
@@ -2138,7 +2140,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220207:14h:06)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220208:21h:42)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2261,18 +2263,22 @@ if(log_this) log6("→→→ long_press_handler");
 let t_SENTENCE_drag_listener = function(event)
 {
 
-let   caller = "t_SENTENCE_drag";
+let   caller = "t_SENTENCE_drag_listener";
 
-if(log_this) log7("t_SENTENCE_drag_listener");
+
+if(log_this) log7(caller);
 
 
     get_onMoveDXY(event, caller);
+
     if(onDown_EL && dom_sentence.t_SENTENCE_drag_DXY( onMoveDXY ))
     {
-        zap_onMoveDXY();
+
+
+        drag_cursor.move_drag_cursor(event);
         event.preventDefault();
     }
-    else if( drag_cursor.get_display_drag_cursor_state() )
+    else if( drag_cursor.get_mouseUP_display_state() )
     {
         drag_cursor.move_drag_cursor(event);
     }
@@ -2322,12 +2328,17 @@ move_on_cooldown_timer =   setTimeout( t_del_MOVE_ON_COOLDOWN, time_left);
 let t_del_MOVE_ON_COOLDOWN   = function()
 {
     if(!move_on_cooldown_timer ) return;
+
+
+
 if(log_this) log0("t_del_MOVE_ON_COOLDOWN");
 
     if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
 move_on_cooldown_timer = null;
     document.body.classList.remove(   CSS_MOVE_ON_COOLDOWN );
     drag_cursor.del_drag_cursor_CSS_MOVE_ON_COOLDOWN();
+
+    zap_onMoveDXY();
 };
 
 
@@ -2556,24 +2567,29 @@ if(log_this) log7("t_CURSOR_add_MOVE_LISTENER");
 let t_CURSOR_del_MOVE_LISTENER = function()
 {
 
-if(log_this) log0("t_CURSOR_del_MOVE_LISTENER");
+let   caller = "t_CURSOR_del_MOVE_LISTENER";
+
+
+if(log_this) log0(caller);
 
 
     t_del_NOT_MOVED_ENOUGH();
     t_del_MOVE_ON_COOLDOWN();
 
-    if(!drag_cursor.get_display_drag_cursor_state())
-    {
-        if("ontouchmove"  in document.documentElement) {
-            remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
-        }
-        else {
-            remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
-            remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
-        }
 
-        drag_cursor.hide_drag_cursor();
+    if( drag_cursor.get_mouseUP_display_state() )
+        return;
+
+
+    if("ontouchmove"  in document.documentElement) {
+        remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
     }
+    else {
+        remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
+        remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
+    }
+
+    drag_cursor.hide_drag_cursor();
 };
 
 
@@ -2618,22 +2634,24 @@ let t_scrollIntoViewIfNeeded = function(el)
 
 
 
+
+
 let drag_cursor  = (function() {
 
 
 
-let      cursor_div;
+let      drag_cursor_div;
 
 
 
 
 
-let display_drag_cursor_state = true;
+let mouseUP_display_state = true;
 
 
-let display_drag_cursor = function(state=true)
+let set_mouseUP_display_state = function(state=true)
 {
-    display_drag_cursor_state = state;
+    mouseUP_display_state = state;
 
     if(state) show_drag_cursor();
 
@@ -2641,53 +2659,53 @@ let display_drag_cursor = function(state=true)
     else      t_CURSOR_del_MOVE_LISTENER();
 };
 
-let get_display_drag_cursor_state        = function() { return display_drag_cursor_state; };
+let get_mouseUP_display_state = function() { return mouseUP_display_state; };
 
 let show_drag_cursor = function()
 {
 
-    if(!cursor_div) {
-        cursor_div = document.createElement("DIV");
+    if(!drag_cursor_div) {
+        drag_cursor_div = document.createElement("DIV");
 
-        cursor_div.id                    =     "drag_cursor";
-        cursor_div.style.pointerEvents   =            "none";
-        cursor_div.style.position        =           "fixed";
-        cursor_div.style.margin          =             "0px";
-        cursor_div.style.padding         =            "16px";
-        cursor_div.style.backgroundColor =            "#FF0";
-        cursor_div.style.border          =  "3px solid #000";
-        cursor_div.style.borderRadius    = "1em 0em 1em 1em";
-        cursor_div.style.zIndex          =      "2147483647";
-        cursor_div.style.opacity         =             "0.5";
+        drag_cursor_div.id                    =     "drag_cursor";
+        drag_cursor_div.style.pointerEvents   =            "none";
+        drag_cursor_div.style.position        =           "fixed";
+        drag_cursor_div.style.margin          =             "0px";
+        drag_cursor_div.style.padding         =            "16px";
+        drag_cursor_div.style.backgroundColor =            "#FF0";
+        drag_cursor_div.style.border          =  "3px solid #000";
+        drag_cursor_div.style.borderRadius    = "1em 0em 1em 1em";
+        drag_cursor_div.style.zIndex          =      "2147483647";
+        drag_cursor_div.style.opacity         =             "0.5";
 
-        document.documentElement.appendChild( cursor_div );
+        document.documentElement.appendChild( drag_cursor_div );
     }
-    cursor_div.style.left    = (onDown_XY.x - cursor_div.offsetWidth)+"px";
-    cursor_div.style.top     = (onDown_XY.y                         )+"px";
-    cursor_div.style.display = "block";
+    drag_cursor_div.style.left    = (onDown_XY.x - drag_cursor_div.offsetWidth)+"px";
+    drag_cursor_div.style.top     = (onDown_XY.y                         )+"px";
+    drag_cursor_div.style.display = "block";
 };
 
 
 let move_drag_cursor = function(e)
 {
-    if(!cursor_div                         ) return;
-    if(!cursor_div.style.display == "block") return;
+    if(!drag_cursor_div                         ) return;
+    if(!drag_cursor_div.style.display == "block") return;
 
     let      xy = t_util.get_event_XY(e);
-    cursor_div.style.left    = (xy.x - cursor_div.offsetWidth)+"px";
-    cursor_div.style.top     = (xy.y                         )+"px";
+    drag_cursor_div.style.left    = (xy.x - drag_cursor_div.offsetWidth)+"px";
+    drag_cursor_div.style.top     = (xy.y                         )+"px";
 };
 
-let hide_drag_cursor                     = function() { if(cursor_div) cursor_div.style.display = "none"; };
-let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
-let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(cursor_div) cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
-let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
-let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(cursor_div) cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
+let hide_drag_cursor                     = function() { if(drag_cursor_div) drag_cursor_div.style.display = "none"; };
+let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(drag_cursor_div) drag_cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
+let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(drag_cursor_div) drag_cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
+let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(drag_cursor_div) drag_cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
+let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(drag_cursor_div) drag_cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
 
 
 return { name : "drag_cursor"
-    ,    display_drag_cursor
-    ,    get_display_drag_cursor_state
+    ,    set_mouseUP_display_state
+    ,    get_mouseUP_display_state
     ,    show_drag_cursor
     ,    hide_drag_cursor
     ,    move_drag_cursor
@@ -2700,6 +2718,8 @@ return { name : "drag_cursor"
 
 
 
+
+
 return { name : DOM_SENTENCE_EVENT_JS_ID
     ,    t_SENTENCE_add_LISTENER
     ,    t_SENTENCE_del_LISTENER
@@ -2708,16 +2728,17 @@ return { name : DOM_SENTENCE_EVENT_JS_ID
     ,    t_del_MOVE_ON_COOLDOWN
     ,    t_add_NOT_MOVED_ENOUGH
     ,    t_del_NOT_MOVED_ENOUGH
-    ,    display_drag_cursor    : drag_cursor.display_drag_cursor
+    ,    set_mouseUP_display_state : drag_cursor.set_mouseUP_display_state
 
-    ,  show_drag_cursor         : drag_cursor.show_drag_cursor
-    ,  hide_drag_cursor         : drag_cursor.hide_drag_cursor
-    ,  move_drag_cursor         : drag_cursor.move_drag_cursor
+    ,    get_mouseUP_display_state : drag_cursor.get_mouseUP_display_state
+    ,  show_drag_cursor            : drag_cursor.show_drag_cursor
+    ,  hide_drag_cursor            : drag_cursor.hide_drag_cursor
+    ,  move_drag_cursor            : drag_cursor.move_drag_cursor
 };
 
 }());
 
-setTimeout(dom_sentence_event.display_drag_cursor, 1000);
+setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
 
 
 
