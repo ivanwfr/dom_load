@@ -2,7 +2,7 @@
 <html>
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (211122:23h:58)";
+  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (220209:13h:40)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
@@ -366,7 +366,7 @@ The better to eat you with.
   /* set_title {{{*/
   function set_title(e)
   {
-   console.log("...set_title("+e.type+")");
+   console.log("...set_title("+(e ? e.type : "")+")");
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
    document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc4'>"+DOM_LOAD_TAG+"</em>";
   }
