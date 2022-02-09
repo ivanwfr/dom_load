@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220209:13h:31)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220209:13h:36)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
