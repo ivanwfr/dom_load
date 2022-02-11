@@ -23,7 +23,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211206:19h:32)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220210:17h:06)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -4338,6 +4338,20 @@ let get_parent_tag_id_class_chain = function(el)
     return parent_id_class_chain;
 };
 /*}}}*/
+/*➔ get_parent_chain {{{*/
+let get_parent_chain = function(el)
+{
+    let array = [];
+
+    while(          el.parentElement )
+    {
+        array.push( el.parentElement );
+        el        = el.parentElement;
+    }
+
+    return array;
+};
+/*}}}*/
 /*}}}*/
 
 /* EXPORT */
@@ -4495,6 +4509,7 @@ return { name : "dom_util"
     , get_nodeXPath_target
     , get_node_sibling_at_offset
     , get_parent_tag_id_class_chain
+    , get_parent_chain
 
     /*}}}*/
 
