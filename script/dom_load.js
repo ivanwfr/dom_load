@@ -1,9 +1,5 @@
 javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 "use strict";
-/* CALLERS of javascript: {{{
-/^[^/]*\<javascript\>\s*[(=),}]
-script/dom_load.js:6072  dom_data:6967: /*}}}*/
-}}}*/
 /* jshint esversion: 9, boss:true {{{*/
 /* globals send_IPC dom_ipc t_load */
 /* globals console, alert, window, document, setTimeout */
@@ -13,7 +9,7 @@ script/dom_load.js:6072  dom_data:6967: /*}}}*/
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220211:18h:18)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220211:18h:41)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
