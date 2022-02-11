@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220208:21h:43)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220211:18h:26)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220207:15h:02)"; }
+#dom_host_css_tag   { content: "dom_host_css (220211:16h:15)"; }
 
 
 body.dark { background : #430; }
@@ -983,599 +983,7 @@ return {  LF
 ;
 
 /*}}}*/
-  /**   3 SCROLL   JS dom_scroll_js_data .. ESCAPE case "#document"] {{{*/
-/*
-../script/stub/dom_scroll.js
-*/
-let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
-/*INLINE{{{*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220208:19h:32)";
-
-let dom_scroll              = (function() {
-"use strict";
-let   DOM_SCROLL_LOG        = false;
-let   DOM_SCROLL_TAG        = false;
-
-
-
-
-
-
-
-let t_util     ;
-let t_tools    ;
-
-
-
-let t_scroll_IMPORT  = function(_log_this,import_num)
-{
-
-    DOM_SCROLL_LOG = DOM_SCROLL_LOG || localStorage_getItem("DOM_SCROLL_LOG");
-    DOM_SCROLL_TAG = DOM_SCROLL_TAG || localStorage_getItem("DOM_SCROLL_TAG");
-
-
-
-    if     (typeof dom_util           != "undefined") t_util  = dom_util         ;
-    else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util;
-    else console.warn("MISSING STUB FOR: [dom_util]");
-
-
-
-    if     (typeof dom_tools          != "undefined") t_tools = dom_tools         ;
-    else if(typeof dom_sentence_event != "undefined") t_tools = dom_sentence_event;
-    else console.warn("MISSING STUB FOR: [dom_tools]");
-
-
-    scroll_INTERN();
-if(_log_this) log("➔ "+(import_num ? (import_num+" ") : "")+"t_scroll_IMPORT: "+t_util.name+", "+t_tools.name);
-};
-
-
-
-
-let LOG_MAP = false;
-
-let lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lf0="";
-let lfX = [ lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9, lf0 ];
-
-let lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lb0="";
-let lbX = [ lb1 ,lb2 ,lb3 ,lb4 ,lb5 ,lb6 ,lb7 ,lb8 ,lb9, lb0 ];
-
-const lXX  = "border:1px solid gray; padding:0 .5em; border-radius:1em;";
-let lbA=lXX, lbB=lXX, lbC=lXX, lbF=lXX, lbH=lXX, lbL=lXX, lbR=lXX, lbS=lXX, lbb=lXX;
-
-let log                 = console.log;
-let log_key_val_group   = console.log;
-
-let console_dir         = (k,v) => { console.log("..."+k+":"); console.dir(v); };
-
-
-let   scroll_INTERN     = function()
-{
-
-    if((typeof dom_log != "undefined") && (dom_log.LOG_BG_CSS))
-    {
-        LOG_MAP = dom_log.LOG_MAP;
-
-        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
-        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
-        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
-
-        log                 = dom_log.log;
-        log_key_val_group   = dom_log.log_key_val_group;
-        console_dir         = dom_log.console_dir;
-    }
-
-
-    else if((typeof dom_log != "undefined") && dom_log.lfX)
-    {
-        lbH = dom_log.lbH;
-        lbL = dom_log.lbL;
-        lbR = dom_log.lbR;
-        lbC = dom_log.lbC;
-        lfX = dom_log.lfX;
-        [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ] = lfX;
-    }
-
-};
-
-
-let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
-let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
-let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
-
-
-
-
-const CSS_SCROLL_SMOOTH      = "scroll_smooth";
-
-const SCROLL_INTO_VIEW_DELAY = 500;
-const SCROLL_RECENTER_DELAY  = 500;
-
-let scrollIntoView_EL;
-
-let scroll_intoview_timer;
-let scroll_recenter_timer;
-
-let w_W = 1280, w_H = 1024;
-
-
-
-
-
-
-
-
-const MAX_SCROLL_SMOOTH_DURATION    = 20000;
-const SCROLLED_ENOUGH               =    16;
-const SCROLL_DONE_COOLDOWN          =   250;
-
-let scroll_end_timeout              =  null;
-let scroll_end_last_scrollY         =     0;
-let scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout;
-
-
-
-let t_scroll_listener = function(e)
-{
-
-let   caller = "t_scroll_listener";
-let log_this = DOM_SCROLL_LOG;
-
-    if(!t_util) t_scroll_IMPORT(true);
-
-
-    let scroll_details = "scrollY="+window.scrollY;
-
-if( log_this) log("%c"+caller+" %c "+ scroll_details, lbb+lbL+lf8, lbb+lbR+lf3);
-    scroll_listener_scroll_changed(e, scroll_details);
-};
-
-
-let   scroll_listener_scroll_changed = function(e, scroll_details="")
-{
-
-let   caller = "scroll_listener_scroll_changed";
-let log_this = DOM_SCROLL_LOG;
-
-if( log_this && !scroll_end_timeout)
-    log("➔ %c"+caller+"%c"+ window.scrollX +" "+ window.scrollY +"%c"+ (scroll_details ? " scroll_details" : "")
-        ,  lbb+lbL+lf9,lbb+lbC+lf9                               ,lbb+lbR+lf9                                   );
-
-
-    if( scroll_end_timeout ) clearTimeout( scroll_end_timeout );
-scroll_end_timeout =   setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
-
-
-};
-
-
-let t_scroll_is_scrolling = function()
-{
-
-let   caller = "t_scroll_is_scrolling";
-let log_this = DOM_SCROLL_LOG;
-
-
-    let result = (scroll_end_timeout != null);
-if( log_this) log("➔ %c"+caller+" %c "+ result
-                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
-    return result;
-};
-
-
-let   scroll_listener_scroll_changed_scroll_end_handler     = function()
-{
-
-let   caller = "scroll_listener_scroll_changed_scroll_end_handler";
-let log_this = DOM_SCROLL_LOG;
-let tag_this = DOM_SCROLL_TAG || log_this;
-
-
-
-    scroll_end_timeout = null;
-
-    let                   this_scrollY  =          window.scrollY;
-    let done_scrolling = (this_scrollY == scroll_end_last_scrollY);
-
-
-
-    if(!done_scrolling )
-    {
-        scroll_end_last_scrollY = this_scrollY;
-        scroll_end_timeout      = setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
-    }
-
-    else {
-        let scroll_details = "scrollY="+window.scrollY+" "+(scrollIntoView_EL ? t_util.get_id_or_tag(scrollIntoView_EL) : "");
-if( tag_this) log("➔ %c"+caller+" %c "+ scroll_details
-                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
-
-        if( scrollIntoView_EL )
-            on_scroll_end_scrollIntoViewIfNeeded();
-    }
-};
-
-
-
-
-let t_scrollIntoViewIfNeeded_set_EL = function(el)
-{
-
-let   caller = "t_scrollIntoViewIfNeeded_set_EL";
-let log_this = DOM_SCROLL_LOG;
-let tag_this = DOM_SCROLL_TAG || log_this;
-
-    if(!t_util) t_scroll_IMPORT(true);
-
-
-    if(        scrollIntoView_EL
-       &&      scrollIntoView_EL.scrolledIntoView_handled_MS)
-        delete scrollIntoView_EL.scrolledIntoView_handled_MS;
-
-    scrollIntoView_EL = el;
-
-if( tag_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)
-                  ,lbL+lf4      ,lbR+lf4                                       );
-
-    if( scrollIntoView_EL ) on_scrollIntoView_EL();
-};
-
-
-let   on_scroll_end_scrollIntoViewIfNeeded = function(delay)
-{
-if( !scrollIntoView_EL ) return;
-
-let   caller = "on_scroll_end_scrollIntoViewIfNeeded";
-let log_this = DOM_SCROLL_LOG;
-
-if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+     "%c scrollIntoView_EL.scrolledIntoView_handled_MS "+scrollIntoView_EL.scrolledIntoView_handled_MS+"%c delay "+delay
-                  ,lbL+lf4      ,lbR+lf4                                      ,lbH+lfX[scrollIntoView_EL.scrolledIntoView_handled_MS ? 5 : 6]                                        ,lbH+lf9         );
-
-
-
-    if(scroll_intoview_timer) clearTimeout( scroll_intoview_timer );
-    scroll_intoview_timer = null;
-
-    if( scrollIntoView_EL ) on_scrollIntoView_EL();
-};
-
-
-let   on_scrollIntoView_EL = function()
-{
-    if(!scrollIntoView_EL ) return;
-
-    scrollIntoView_EL.scrollIntoView({ behavior : "smooth"
-                                       , block    : "nearest"
-                                       , inline   : "nearest"
-    });
-
-
-
-
-
-
-};
-
-
-
-let scrollIntoView_was_needed;
-
-
-let   scrollIntoViewIfNeeded_handler = function()
-{
-
-let   caller = "scrollIntoViewIfNeeded_handler";
-let log_this = DOM_SCROLL_LOG;
-
-    scroll_intoview_timer = null;
-
-    if(!scrollIntoView_EL) return;
-
-    let el = scrollIntoView_EL;
-if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
-                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5 : 6]                  );
-
-    t_scrollIntoViewIfNeeded_set_EL( null );
-
-
-    if( el.scrolledIntoView_handled_MS )
-    {
-        let      this_MS = new Date().getTime();
-        let since_handled = this_MS - el.scrolledIntoView_handled_MS;
-        let  just_handled = (since_handled < SCROLL_RECENTER_DELAY*3);
-
-if( log_this) log("%c  just_handled=["+just_handled+"]", lbH+lfX[just_handled ? 8:7]);
-
-        if( just_handled ) return;
-    }
-
-
-    let xy = scrollIntoViewIfNeeded_get_scrollXY( el );
-    if(!xy) {
-
-        return;
-    }
-
-
-    if((window.scrollX == xy.x) && (window.scrollY == xy.y))
-    {
-
-
-        scrollIntoView_was_needed = false;
-if( log_this) log("%c scrollIntoView_was_needed=["+scrollIntoView_was_needed+"]", lbH+lf8);
-    }
-
-
-    else {
-        scrollIntoView_was_needed = true;
-if( log_this) log("%c scrollIntoView_was_needed=["+scrollIntoView_was_needed+"]", lbH+lf8);
-
-if( log_this) log("SCROLL INTO VIEW %c DX=["+window.scrollX+" "+xy.x+"] %c DY=["+window.scrollY+" "+xy.y+"]"
-                  ,                 lbL+lf9                            ,lbR+lf9                             );
-        scrollIntoViewIfNeeded_then_recenter_handler_scrollTo(xy.x, xy.y);
-    }
-
-
-
-    if(scrollIntoView_was_needed)
-    {
-if( log_this) log("RECENTERING");
-
-        if(scroll_recenter_timer) clearTimeout( scroll_recenter_timer );
-        scroll_recenter_timer = setTimeout(scrollIntoViewIfNeeded_then_recenter_handler, SCROLL_RECENTER_DELAY);
-    }
-};
-
-
-let   scrollIntoViewIfNeeded_get_scrollXY = function(el)
-{
-    return scrollIntoViewIfNeeded_get_scrollXY_with_options({ container:el , with_margin:false });
-};
-
-
-let   scrollIntoViewIfNeeded_get_scrollXY_with_options = function({ container })
-{
-
-let caller = "scrollIntoViewIfNeeded_get_scrollXY_with_options";
-let log_this = DOM_SCROLL_LOG;
-
-
-
-    w_W = window.innerWidth ;
-    w_H = window.innerHeight;
-    let view_rect
-        = {   left   : window.scrollX       + 16
-            , top    : window.scrollY       + 16
-            , right  : window.scrollX + w_W - 32
-            , bottom : window.scrollY + w_H - 32
-        };
-
-    view_rect.height
-        = view_rect.bottom
-        - view_rect.top
-    ;
-
-
-    let xy = t_util.get_el_xy(container, caller);
-
-    if(!xy) return null;
-
-    let e_W = container.clientWidth  || container.offsetWidth;
-    let e_H = container.clientHeight || container.offsetHeight;
-
-    let container_rect
-        = { left   : xy.x
-        ,   top    : xy.y
-        ,   right  : xy.x + e_W
-        ,   bottom : xy.y + e_H
-    };
-
-    container_rect.height
-        = container_rect.bottom
-        - container_rect.top
-    ;
-
-
-    container_rect.seekTop
-        =  container_rect.top
-    ;
-    let over_top       = (container_rect.seekTop < view_rect.top   );
-    let over_left      = (container_rect.left    < view_rect.left  );
-    let over_bottom    = (container_rect.bottom  > view_rect.bottom);
-    let over_right     = (container_rect.right   > view_rect.right );
-
-    let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
-
-    let may_go_left    = (container_rect.right  < window.innerWidth);
-if(log_this) {
-    log_key_val_group("to_the_top .. over_something=["+over_something+"]"
-                      , {   container
-                          , container_rect
-                          , e_H
-                          , view_rect
-                          , window_scrollY : window.scrollY
-                          , over_something : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
-                      }, lfX[over_something ? 7:8], false);
-}
-
-
-
-    if(!!!over_something) return null;
-
-
-
-    let scrollX
-        = (over_left  ) ? container_rect.left                         - 16
-        : (over_right ) ? container_rect.right   - window.innerWidth  + 32
-        : may_go_left   ?                          0
-        :                                          window.scrollX;
-
-    let scrollY
-        = (over_top    ) ? container_rect.seekTop                     - 16
-        : (over_bottom ) ? container_rect.bottom - window.innerHeight + 32
-        :                                          window.scrollY;
-
-
-
-    if(container.to_the_top && over_bottom)
-    {
-        let scroll_more
-            = view_rect.height
-            - container_rect.height;
-
-if(log_this)
-        log_key_val_group("to_the_top .. scroll_more=["+scroll_more+"]"
-                          , {   container
-                              , view_rect
-                              , container_rect
-                              , window_scrollY      : window.scrollY
-                              , over_something      : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
-                              , scrollY
-                              , scroll_more
-                              , scrollY_scroll_more : (scrollY + scroll_more)
-                          }, lfX[over_something ? 7:8], false);
-
-
-        scrollY += scroll_more;
-    }
-
-    return { x : scrollX , y : scrollY };
-};
-
-
-const CONTAINER_TOP_MARGIN = 64;
-let   scrollIntoViewIfNeeded_then_recenter_handler = function()
-{
-
-let   caller = "scrollIntoViewIfNeeded_then_recenter_handler";
-let log_this = DOM_SCROLL_LOG;
-
-if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
-
-    if( !scrollIntoView_EL) return;
-    let el = scrollIntoView_EL;
-
-    scroll_recenter_timer   = null;
-
-    let recenter_dxy = t_util.get_el_xy(el, caller);
-    if(!recenter_dxy ) return;
-
-    let e_W = el.clientWidth  || el.offsetWidth;
-    let e_H = el.clientHeight || el.offsetHeight;
-
-    recenter_dxy.x    = recenter_dxy.x
-        +     e_W/2
-        -     w_W/2
-    ;
-
-    recenter_dxy.y    = recenter_dxy.y
-        +     e_H/2
-        -     w_H/2
-        -     CONTAINER_TOP_MARGIN
-    ;
-
-
-
-    if((window.scrollX != recenter_dxy.x) || (window.scrollY != recenter_dxy.y))
-    {
-        scrollIntoView_was_needed = true;
-
-        scrollIntoViewIfNeeded_then_recenter_handler_scrollTo(recenter_dxy.x, recenter_dxy.y);
-    }
-
-
-    else {
-        scrollIntoView_was_needed = false;
-if( log_this) log("%c SCROLL RECENTER NOT NEEDED %c "+window.scrollX+" "+window.scrollY, lbb+lbH+lf6, lbb+lbH+lf6);
-
-    }
-
-};
-
-
-let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo = function(x, y)
-{
-
-let   caller = "scrollIntoViewIfNeeded_then_recenter_handler_scrollTo";
-let log_this = DOM_SCROLL_LOG;
-
-if( log_this) log("%c "+caller+"%c(x=["+x+"] , y=["+y+"])", lbL+lf6,lbR+lf6);
-
-
-    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior();
-
-
-    window.scrollTo(x, y);
-
-
-    if( scrollIntoView_EL ) {
-        scrollIntoView_EL.scrolledIntoView_handled_MS = new Date().getTime();
-
-if( log_this) log("%c scrollIntoView_EL.scrolledIntoView_handled_MS=["+scrollIntoView_EL.scrolledIntoView_handled_MS+"]", lbH+lf6);
-    }
-
-
-    if(scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
-    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout   =   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
-};
-
-
-let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior = function()
-{
-    let html  = document.getElementsByTagName("HTML")[0];
-
-    html.classList.add( CSS_SCROLL_SMOOTH );
-};
-
-
-let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior = function()
-{
-
-    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout = null;
-
-    let html  = document.getElementsByTagName("HTML")[0];
-
-    html.classList.remove( CSS_SCROLL_SMOOTH );
-};
-
-
-
-
-return { name : "dom_scroll"
-    ,    t_scroll_listener
-    ,    t_scrollIntoViewIfNeeded_set_EL
-    ,    t_scroll_is_scrolling
-};
-}());
-
-
-/*INLINE}}}*/
-//@ sourceURL=dom_scroll.js
-`
- .replace(/\\/g,"\\\\")
-)
- .replace(/%u/g,"\\u")
-;
-
-/*}}}*/
-  /**   4 UTIL     JS dom_sentence_util_js_data .. ESCAPE=[linear-gradient(to bottom, #555)] {{{*/
+  /**   3 UTIL     JS dom_sentence_util_js_data .. ESCAPE=[linear-gradient(to bottom, #555)] {{{*/
 /*
 ../script/stub/dom_sentence_util.js
 */
@@ -1591,7 +999,7 @@ let dom_sentence_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util";
-const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220204:19h:31)";
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220210:18h:39)";
 
 let dom_sentence_util    = (function() {
 "use strict";
@@ -1904,6 +1312,17 @@ let get_id_or_tag = function(node)
 };
 
 
+let is_el_or_child_of_parent_el = function(el, parent_el)
+{
+    if(!parent_el) return false;
+
+    while(el && (el != parent_el))
+        el     = el.parentElement;
+
+    return (el == parent_el);
+};
+
+
 
 let get_n_lbl = function(node)
 {
@@ -2098,6 +1517,7 @@ return { name : DOM_SENTENCE_UTIL_JS_ID
     , get_el_child_with_class
     , get_el_xy
     , get_id_or_tag
+    , is_el_or_child_of_parent_el
 
     , get_n_lbl
     , get_node_sibling_at_offset
@@ -2112,6 +1532,603 @@ return { name : DOM_SENTENCE_UTIL_JS_ID
 
 /*INLINE}}}*/
 //@ sourceURL=dom_sentence_util.js
+`
+ .replace(/\\/g,"\\\\")
+)
+ .replace(/%u/g,"\\u")
+;
+
+/*}}}*/
+  /**   4 SCROLL   JS dom_scroll_js_data .. ESCAPE case "#document"] {{{*/
+/*
+../script/stub/dom_scroll.js
+*/
+let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const DOM_SCROLL_JS_ID         = "dom_scroll_js";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220211:18h:17)";
+
+let dom_scroll              = (function() {
+"use strict";
+let   DOM_SCROLL_LOG        = false;
+let   DOM_SCROLL_TAG        = false;
+
+
+
+
+
+
+
+let t_util     ;
+let t_tools    ;
+
+
+
+let t_scroll_IMPORT  = function(_log_this,import_num)
+{
+
+    DOM_SCROLL_LOG = DOM_SCROLL_LOG || localStorage_getItem("DOM_SCROLL_LOG");
+    DOM_SCROLL_TAG = DOM_SCROLL_TAG || localStorage_getItem("DOM_SCROLL_TAG");
+
+
+
+    if     (typeof dom_util           != "undefined") t_util  = dom_util         ;
+    else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util;
+    else console.warn("MISSING STUB FOR: [dom_util]");
+
+
+
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools         ;
+    else if(typeof dom_sentence_event != "undefined") t_tools = dom_sentence_event;
+    else console.warn("MISSING STUB FOR: [dom_tools]");
+
+
+    scroll_INTERN();
+if(_log_this) log("➔ "+(import_num ? (import_num+" ") : "")+"t_scroll_IMPORT: "+t_util.name+", "+t_tools.name);
+};
+
+
+
+
+let LOG_MAP = false;
+
+let lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lf0="";
+let lfX = [ lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9, lf0 ];
+
+let lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lb0="";
+let lbX = [ lb1 ,lb2 ,lb3 ,lb4 ,lb5 ,lb6 ,lb7 ,lb8 ,lb9, lb0 ];
+
+const lXX  = "border:1px solid gray; padding:0 .5em; border-radius:1em;";
+let lbA=lXX, lbB=lXX, lbC=lXX, lbF=lXX, lbH=lXX, lbL=lXX, lbR=lXX, lbS=lXX, lbb=lXX;
+
+let log                 = console.log;
+let log_key_val_group   = console.log;
+let log_caller          = console.trace;
+
+let console_dir         = (k,v) => { console.log("..."+k+":"); console.dir(v); };
+
+
+let   scroll_INTERN     = function()
+{
+
+    if((typeof dom_log != "undefined") && (dom_log.LOG_BG_CSS))
+    {
+        LOG_MAP = dom_log.LOG_MAP;
+
+        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
+
+        log                 = dom_log.log;
+        log_key_val_group   = dom_log.log_key_val_group;
+        console_dir         = dom_log.console_dir;
+        log_caller          = dom_log.log_caller;
+    }
+
+
+    else if((typeof dom_log != "undefined") && dom_log.lfX)
+    {
+        lbH = dom_log.lbH;
+        lbL = dom_log.lbL;
+        lbR = dom_log.lbR;
+        lbC = dom_log.lbC;
+        lfX = dom_log.lfX;
+        [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ] = lfX;
+    }
+
+};
+
+
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
+
+
+
+
+const CSS_SCROLL_SMOOTH      = "scroll_smooth";
+
+const SCROLL_INTO_VIEW_DELAY = 500;
+const SCROLL_RECENTER_DELAY  = 500;
+
+let scrollIntoView_EL;
+
+let scroll_intoview_timer;
+let scroll_recenter_timer;
+
+let w_W = 1280, w_H = 1024;
+
+
+
+
+
+
+
+
+const MAX_SCROLL_SMOOTH_DURATION    = 20000;
+const SCROLLED_ENOUGH               =    16;
+const SCROLL_DONE_COOLDOWN          =   250;
+
+let scroll_end_timeout              =  null;
+let scroll_end_last_scrollY         =     0;
+let scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout;
+
+
+
+let t_scroll_listener = function(e)
+{
+
+let   caller = "t_scroll_listener";
+let log_this = DOM_SCROLL_LOG;
+
+    if(!t_util) t_scroll_IMPORT(true);
+
+
+    let scroll_details = "scrollY="+window.scrollY;
+
+if( log_this) log("%c"+caller+" %c "+ scroll_details, lbb+lbL+lf8, lbb+lbR+lf3);
+    scroll_listener_scroll_changed(e, scroll_details);
+};
+
+
+let   scroll_listener_scroll_changed = function(e, scroll_details="")
+{
+
+let   caller = "scroll_listener_scroll_changed";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this && !scroll_end_timeout)
+    log("➔ %c"+caller+"%c"+ window.scrollX +" "+ window.scrollY +"%c"+ (scroll_details ? " scroll_details" : "")
+        ,  lbb+lbL+lf9,lbb+lbC+lf9                               ,lbb+lbR+lf9                                   );
+
+
+    if( scroll_end_timeout ) clearTimeout( scroll_end_timeout );
+scroll_end_timeout =   setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+
+
+};
+
+
+let t_scroll_is_scrolling = function()
+{
+
+let   caller = "t_scroll_is_scrolling";
+let log_this = DOM_SCROLL_LOG;
+
+
+    let result = (scroll_end_timeout != null);
+if( log_this) log("➔ %c"+caller+" %c "+ result
+                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
+    return result;
+};
+
+
+let   scroll_listener_scroll_changed_scroll_end_handler     = function()
+{
+
+let   caller = "scroll_listener_scroll_changed_scroll_end_handler";
+let log_this = DOM_SCROLL_LOG;
+let tag_this = DOM_SCROLL_TAG || log_this;
+
+
+
+    scroll_end_timeout = null;
+
+    let                   this_scrollY  =          window.scrollY;
+    let done_scrolling = (this_scrollY == scroll_end_last_scrollY);
+
+
+
+    if(!done_scrolling )
+    {
+        scroll_end_last_scrollY = this_scrollY;
+        scroll_end_timeout      = setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+    }
+
+    else {
+        let scroll_details = "scrollY="+window.scrollY+" "+(scrollIntoView_EL ? t_util.get_id_or_tag(scrollIntoView_EL) : "");
+if( tag_this) log("➔ %c"+caller+" %c "+ scroll_details
+                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
+
+        if( scrollIntoView_EL )
+            on_scroll_end_scrollIntoViewIfNeeded();
+    }
+};
+
+
+
+
+let t_scrollIntoViewIfNeeded_set_EL = function(el)
+{
+
+let   caller = "t_scrollIntoViewIfNeeded_set_EL";
+let log_this = DOM_SCROLL_LOG;
+let tag_this = DOM_SCROLL_TAG || log_this;
+
+    if(!t_util) t_scroll_IMPORT(true);
+
+
+    if(        scrollIntoView_EL
+       &&      scrollIntoView_EL.scrolledIntoView_handled_MS)
+        delete scrollIntoView_EL.scrolledIntoView_handled_MS;
+
+    scrollIntoView_EL = el;
+
+if( tag_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)
+                  ,lbL+lf4      ,lbR+lf4                                       );
+if( log_this) log_caller();
+
+    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+};
+
+
+let   on_scroll_end_scrollIntoViewIfNeeded = function(delay)
+{
+if( !scrollIntoView_EL ) return;
+
+let   caller = "on_scroll_end_scrollIntoViewIfNeeded";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+     "%c scrollIntoView_EL.scrolledIntoView_handled_MS "+scrollIntoView_EL.scrolledIntoView_handled_MS+"%c delay "+delay
+                  ,lbL+lf4      ,lbR+lf4                                      ,lbH+lfX[scrollIntoView_EL.scrolledIntoView_handled_MS ? 5 : 6]                                        ,lbH+lf9         );
+
+
+
+    if(scroll_intoview_timer) clearTimeout( scroll_intoview_timer );
+    scroll_intoview_timer = null;
+
+    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+};
+
+
+let   on_scrollIntoView_EL = function()
+{
+
+    if(!scrollIntoView_EL ) return;
+
+    scrollIntoView_EL.scrollIntoView({ behavior : "smooth"
+                                     , block    : "nearest"
+                                     , inline   : "nearest"
+    });
+    scrollIntoView_EL = null;
+
+
+
+
+
+
+};
+
+
+
+let scrollIntoView_was_needed;
+
+
+let   scrollIntoViewIfNeeded_handler = function()
+{
+
+let   caller = "scrollIntoViewIfNeeded_handler";
+let log_this = DOM_SCROLL_LOG;
+
+    scroll_intoview_timer = null;
+
+    if(!scrollIntoView_EL) return;
+
+    let el = scrollIntoView_EL;
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
+                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5 : 6]                  );
+
+    t_scrollIntoViewIfNeeded_set_EL( null );
+
+
+    if( el.scrolledIntoView_handled_MS )
+    {
+        let      this_MS = new Date().getTime();
+        let since_handled = this_MS - el.scrolledIntoView_handled_MS;
+        let  just_handled = (since_handled < SCROLL_RECENTER_DELAY*3);
+
+if( log_this) log("%c  just_handled=["+just_handled+"]", lbH+lfX[just_handled ? 8:7]);
+
+        if( just_handled ) return;
+    }
+
+
+    let xy = scrollIntoViewIfNeeded_get_scrollXY( el );
+    if(!xy) {
+
+        return;
+    }
+
+
+    if((window.scrollX == xy.x) && (window.scrollY == xy.y))
+    {
+
+
+        scrollIntoView_was_needed = false;
+if( log_this) log("%c scrollIntoView_was_needed=["+scrollIntoView_was_needed+"]", lbH+lf8);
+    }
+
+
+    else {
+        scrollIntoView_was_needed = true;
+if( log_this) log("%c scrollIntoView_was_needed=["+scrollIntoView_was_needed+"]", lbH+lf8);
+
+if( log_this) log("SCROLL INTO VIEW %c DX=["+window.scrollX+" "+xy.x+"] %c DY=["+window.scrollY+" "+xy.y+"]"
+                  ,                 lbL+lf9                            ,lbR+lf9                             );
+        scrollIntoViewIfNeeded_then_recenter_handler_scrollTo(xy.x, xy.y);
+    }
+
+
+
+    if(scrollIntoView_was_needed)
+    {
+if( log_this) log("RECENTERING");
+
+        if(scroll_recenter_timer) clearTimeout( scroll_recenter_timer );
+        scroll_recenter_timer = setTimeout(scrollIntoViewIfNeeded_then_recenter_handler, SCROLL_RECENTER_DELAY);
+    }
+};
+
+
+let   scrollIntoViewIfNeeded_get_scrollXY = function(el)
+{
+    return scrollIntoViewIfNeeded_get_scrollXY_with_options({ container:el , with_margin:false });
+};
+
+
+let   scrollIntoViewIfNeeded_get_scrollXY_with_options = function({ container })
+{
+
+let caller = "scrollIntoViewIfNeeded_get_scrollXY_with_options";
+let log_this = DOM_SCROLL_LOG;
+
+
+
+    w_W = window.innerWidth ;
+    w_H = window.innerHeight;
+    let view_rect
+        = {   left   : window.scrollX       + 16
+            , top    : window.scrollY       + 16
+            , right  : window.scrollX + w_W - 32
+            , bottom : window.scrollY + w_H - 32
+        };
+
+    view_rect.height
+        = view_rect.bottom
+        - view_rect.top
+    ;
+
+
+    let xy = t_util.get_el_xy(container, caller);
+
+    if(!xy) return null;
+
+    let e_W = container.clientWidth  || container.offsetWidth;
+    let e_H = container.clientHeight || container.offsetHeight;
+
+    let container_rect
+        = { left   : xy.x
+        ,   top    : xy.y
+        ,   right  : xy.x + e_W
+        ,   bottom : xy.y + e_H
+    };
+
+    container_rect.height
+        = container_rect.bottom
+        - container_rect.top
+    ;
+
+
+    container_rect.seekTop
+        =  container_rect.top
+    ;
+    let over_top       = (container_rect.seekTop < view_rect.top   );
+    let over_left      = (container_rect.left    < view_rect.left  );
+    let over_bottom    = (container_rect.bottom  > view_rect.bottom);
+    let over_right     = (container_rect.right   > view_rect.right );
+
+    let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
+
+    let may_go_left    = (container_rect.right  < window.innerWidth);
+if(log_this) {
+    log_key_val_group("to_the_top .. over_something=["+over_something+"]"
+                      , {   container
+                          , container_rect
+                          , e_H
+                          , view_rect
+                          , window_scrollY : window.scrollY
+                          , over_something : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
+                      }, lfX[over_something ? 7:8], false);
+}
+
+
+
+    if(!!!over_something) return null;
+
+
+
+    let scrollX
+        = (over_left  ) ? container_rect.left                         - 16
+        : (over_right ) ? container_rect.right   - window.innerWidth  + 32
+        : may_go_left   ?                          0
+        :                                          window.scrollX;
+
+    let scrollY
+        = (over_top    ) ? container_rect.seekTop                     - 16
+        : (over_bottom ) ? container_rect.bottom - window.innerHeight + 32
+        :                                          window.scrollY;
+
+
+
+    if(container.to_the_top && over_bottom)
+    {
+        let scroll_more
+            = view_rect.height
+            - container_rect.height;
+
+if(log_this)
+        log_key_val_group("to_the_top .. scroll_more=["+scroll_more+"]"
+                          , {   container
+                              , view_rect
+                              , container_rect
+                              , window_scrollY      : window.scrollY
+                              , over_something      : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
+                              , scrollY
+                              , scroll_more
+                              , scrollY_scroll_more : (scrollY + scroll_more)
+                          }, lfX[over_something ? 7:8], false);
+
+
+        scrollY += scroll_more;
+    }
+
+    return { x : scrollX , y : scrollY };
+};
+
+
+const CONTAINER_TOP_MARGIN = 64;
+let   scrollIntoViewIfNeeded_then_recenter_handler = function()
+{
+
+let   caller = "scrollIntoViewIfNeeded_then_recenter_handler";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
+
+    if( !scrollIntoView_EL) return;
+    let el = scrollIntoView_EL;
+
+    scroll_recenter_timer   = null;
+
+    let recenter_dxy = t_util.get_el_xy(el, caller);
+    if(!recenter_dxy ) return;
+
+    let e_W = el.clientWidth  || el.offsetWidth;
+    let e_H = el.clientHeight || el.offsetHeight;
+
+    recenter_dxy.x    = recenter_dxy.x
+        +     e_W/2
+        -     w_W/2
+    ;
+
+    recenter_dxy.y    = recenter_dxy.y
+        +     e_H/2
+        -     w_H/2
+        -     CONTAINER_TOP_MARGIN
+    ;
+
+
+
+    if((window.scrollX != recenter_dxy.x) || (window.scrollY != recenter_dxy.y))
+    {
+        scrollIntoView_was_needed = true;
+
+        scrollIntoViewIfNeeded_then_recenter_handler_scrollTo(recenter_dxy.x, recenter_dxy.y);
+    }
+
+
+    else {
+        scrollIntoView_was_needed = false;
+if( log_this) log("%c SCROLL RECENTER NOT NEEDED %c "+window.scrollX+" "+window.scrollY, lbb+lbH+lf6, lbb+lbH+lf6);
+
+    }
+
+};
+
+
+let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo = function(x, y)
+{
+
+let   caller = "scrollIntoViewIfNeeded_then_recenter_handler_scrollTo";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this) log("%c "+caller+"%c(x=["+x+"] , y=["+y+"])", lbL+lf6,lbR+lf6);
+
+
+    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior();
+
+
+    window.scrollTo(x, y);
+
+
+    if( scrollIntoView_EL ) {
+        scrollIntoView_EL.scrolledIntoView_handled_MS = new Date().getTime();
+
+if( log_this) log("%c scrollIntoView_EL.scrolledIntoView_handled_MS=["+scrollIntoView_EL.scrolledIntoView_handled_MS+"]", lbH+lf6);
+    }
+
+
+    if(scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
+    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout   =   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
+};
+
+
+let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior = function()
+{
+    let html  = document.getElementsByTagName("HTML")[0];
+
+    html.classList.add( CSS_SCROLL_SMOOTH );
+};
+
+
+let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior = function()
+{
+
+    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout = null;
+
+    let html  = document.getElementsByTagName("HTML")[0];
+
+    html.classList.remove( CSS_SCROLL_SMOOTH );
+};
+
+
+
+
+return { name : "dom_scroll"
+    ,    t_scroll_listener
+    ,    t_scrollIntoViewIfNeeded_set_EL
+    ,    t_scroll_is_scrolling
+};
+}());
+
+
+/*INLINE}}}*/
+//@ sourceURL=dom_scroll.js
 `
  .replace(/\\/g,"\\\\")
 )
@@ -2140,12 +2157,12 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220208:21h:42)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220211:16h:02)";
 
 let dom_sentence_event   = (function() {
 "use strict";
-
-let log_this = false;
+let   DOM_SENTENCE_LOG  = false;
+//t   DOM_SENTENCE_TAG  = false;
 
 
 
@@ -2202,7 +2219,11 @@ if(e.ctrlKey) { log(e.type+" IGNORED .. f(e.ctrlKey)" ); return; }
 
 let t_pointerdown_handler = function(e)
 {
-if(log_this) log1("→→ t_pointerdown_handler");
+
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log1("→→ t_pointerdown_handler");
+
     let sentence_el = dom_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
     if( sentence_el )
     {
@@ -2223,7 +2244,11 @@ if(log_this) log1("... NO sentence_el"+LF);
 
 let add_long_press_arm_listener = function()
 {
-if(log_this) log6("→ add_long_press_arm_listener");
+
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log6("→ add_long_press_arm_listener");
+
 
     if(long_press_timer    ) clearTimeout(long_press_timer      ); long_press_timer = null;
 
@@ -2234,7 +2259,11 @@ if(log_this) log6("→ add_long_press_arm_listener");
 
 let long_press_arm_handler = function()
 {
+
+let log_this = DOM_SENTENCE_LOG;
+
 if(log_this) log6("→→ long_press_arm_handler");
+
     long_press_arm_timer = null;
 
     if(long_press_timer) clearTimeout(long_press_timer);
@@ -2244,7 +2273,11 @@ if(log_this) log6("→→ long_press_arm_handler");
 
 let long_press_handler  = function()
 {
+
+let log_this = DOM_SENTENCE_LOG;
+
 if(log_this) log6("→→→ long_press_handler");
+
 
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
     if(   container )
@@ -2264,9 +2297,9 @@ let t_SENTENCE_drag_listener = function(event)
 {
 
 let   caller = "t_SENTENCE_drag_listener";
+let log_this = DOM_SENTENCE_LOG;
 
-
-if(log_this) log7(caller);
+if( log_this) log7(caller);
 
 
     get_onMoveDXY(event, caller);
@@ -2316,6 +2349,10 @@ let move_on_cooldown_timer;
 let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 {
     if( move_on_cooldown_timer ) return;
+
+let log_this = DOM_SENTENCE_LOG;
+
+
 if(log_this) log9("t_add_MOVE_ON_COOLDOWN");
 
     if( move_on_cooldown_timer ) clearTimeout( move_on_cooldown_timer );
@@ -2329,9 +2366,9 @@ let t_del_MOVE_ON_COOLDOWN   = function()
 {
     if(!move_on_cooldown_timer ) return;
 
+let log_this = DOM_SENTENCE_LOG;
 
-
-if(log_this) log0("t_del_MOVE_ON_COOLDOWN");
+if( log_this) log0("t_del_MOVE_ON_COOLDOWN");
 
     if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
 move_on_cooldown_timer = null;
@@ -2348,7 +2385,11 @@ move_on_cooldown_timer = null;
 let t_pointerup_listener  = function(e)
 {
 if(e.button) return;
-if(log_this) log5(LF+"→ t_pointerup_listener");
+
+let log_this = DOM_SENTENCE_LOG;
+
+
+if( log_this) log5(LF+"→ t_pointerup_listener");
 
     t_pointerup_handler(e);
 
@@ -2392,6 +2433,9 @@ let t_pointerup_handler = function(e)
 {
 
 let   caller = "t_pointerup_handler";
+let log_this = DOM_SENTENCE_LOG;
+
+    let consumed_by                  = "";
 
 
     let   this_MS                    = new Date().getTime();
@@ -2399,20 +2443,20 @@ let   caller = "t_pointerup_handler";
     let   clicked                    = (delayMS < CLICK_DURATION);
 
 
+    t_CURSOR_del_MOVE_LISTENER();
+
+
 
     let   onDown_sentence_container  = t_util.get_el_parent_with_class(onDown_EL, "sentence_container");
     let   some_sentence_container    =          document.querySelector(          ".sentence_container");
-
-    let consumed_by                  = "";
-
-    t_CURSOR_del_MOVE_LISTENER();
-
     if(     clicked && onDown_sentence_container)
     {
         consumed_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
 
         dom_sentence.t_SENTENCE_RESTORE_EL(onDown_sentence_container, e);
     }
+
+
     else if(clicked && some_sentence_container)
     {
         consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
@@ -2420,6 +2464,8 @@ let   caller = "t_pointerup_handler";
         dom_sentence.t_SENTENCE_RESTORE_ALL( e );
         some_sentence_container = document.querySelector(".sentence_container");
     }
+
+
     else
     {
         consumed_by
@@ -2428,7 +2474,9 @@ let   caller = "t_pointerup_handler";
             +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"
             +  " .. onDown_sentence_container=["+ (onDown_sentence_container ? onDown_sentence_container .tagName : "")+"]"
         ;
+
     }
+
 
     if( clicked )
     {
@@ -2439,12 +2487,17 @@ let   caller = "t_pointerup_handler";
         else if(   some_sentence_container ) dom_scroll.t_scrollIntoViewIfNeeded_set_EL( some_sentence_container );
     }
 
+
+
     if(long_press_timer    ) clearTimeout(long_press_timer    ); long_press_timer     = null;
     if(long_press_arm_timer) clearTimeout(long_press_arm_timer); long_press_arm_timer = null;
 
+
+
     clr_onWork_EL( caller );
 
-if(log_this) log5("→→ t_pointerup_handler:"+ consumed_by);
+
+if( log_this) log5("→→ "+caller+":"+ consumed_by);
 };
 
 
@@ -2496,6 +2549,7 @@ let clr_onWork_EL = function(_caller)
 {
 
 let   caller = "clr_onWork_EL";
+let log_this = DOM_SENTENCE_LOG;
 
 if( log_this) log8(caller+": CALLED BY "+ _caller);
 
@@ -2515,7 +2569,12 @@ let CAPTURE_TRUE_PASSIVE_FALSE  = { capture:true , passive:false };
 
 let t_SENTENCE_add_LISTENER = function(_log_this,_tag_this)
 {
-if(log_this || _log_this || _tag_this) log5("➔ t_SENTENCE_add_LISTENER"+LF);
+
+let   caller = "t_SENTENCE_add_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+
+if( log_this || _log_this || _tag_this) log5("➔ "+caller+LF);
 
     if( ("ontouchstart" in document.documentElement)) {
         add_listener_capture_active(   window, "touchstart", t_pointerdown_listener           );
@@ -2533,7 +2592,12 @@ if(log_this || _log_this || _tag_this) log5("➔ t_SENTENCE_add_LISTENER"+LF);
 
 let t_SENTENCE_del_LISTENER = function(_log_this,_tag_this)
 {
-if(log_this || _log_this || _tag_this) log0("➔ t_SENTENCE_del_LISTENER"+LF);
+
+let   caller = "t_SENTENCE_del_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this || _log_this || _tag_this) log0("➔ "+caller+LF);
+
 
     if( ("ontouchstart" in document.documentElement)) {
         remove_listener_capture_active(   window, "touchstart", t_pointerdown_listener);
@@ -2551,8 +2615,10 @@ if(log_this || _log_this || _tag_this) log0("➔ t_SENTENCE_del_LISTENER"+LF);
 let t_CURSOR_add_MOVE_LISTENER = function()
 {
 
-if(log_this) log7("t_CURSOR_add_MOVE_LISTENER");
+let   caller = "t_CURSOR_add_MOVE_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
 
+if( log_this) log7(caller);
 
     if("ontouchmove"  in document.documentElement) {
         add_listener_capture_active(   window, "touchmove", t_SENTENCE_drag_listener);
@@ -2568,7 +2634,7 @@ let t_CURSOR_del_MOVE_LISTENER = function()
 {
 
 let   caller = "t_CURSOR_del_MOVE_LISTENER";
-
+let log_this = DOM_SENTENCE_LOG;
 
 if(log_this) log0(caller);
 
@@ -2607,7 +2673,11 @@ let remove_listener_capture_active = function(el, ev, fn, uc)
 
 let preventDefault = function(e)
 {
-if(log_this) log0("preventDefault");
+
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log0("preventDefault");
+
     if(e.cancelable)
     {
         if( e.stopPropagation          ) e.stopPropagation         ();
@@ -2780,7 +2850,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220207:19h:24)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220210:18h:36)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3094,10 +3164,14 @@ const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
 
 const SYMBOL_GEAR          = "\u2699";
 const SYMBOL_THEME         = "\u262F";
+const SYMBOL_MAGNIFY_LEFT  = "\uD83D\uDD0D";
 const SYMBOL_MAGNIFY_RIGHT = "\uD83D\uDD0E";
-const MAGNIFIED_STYLE      = "font-size: 200%;";
-const THEME_STYLE_DARK     =  "color: #DDD !important; background-color: rgba( 32, 32, 32,0.8) !important;";
-const THEME_STYLE_LIGHT    =  "color: #222 !important; background-color: rgba(255,255,255,0.8) !important;";
+const MAGNIFIED_STYLE      = "font-size: 200% !important;";
+
+const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
+const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
+const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important;";
+const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important;";
 
 let     theme_dark = false;
 let     magnified  = false;
@@ -3186,11 +3260,17 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
         +      " line-height: 1em;"
     ;
 
+    let   magnified_symbol
+        = magnified
+        ? SYMBOL_MAGNIFY_LEFT
+        : SYMBOL_MAGNIFY_RIGHT
+    ;
+
     let tools = ""
-        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME         +"</button>"
-        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ SYMBOL_MAGNIFY_RIGHT +"</button>"
+        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME     +"</button>"
+        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ magnified_symbol +"</button>"
         + ((typeof dom_popup != "undefined")
-           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR          +"</button>" : "")
+           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR      +"</button>" : "")
     ;
 
     let   theme_style
@@ -3212,6 +3292,11 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
 
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
+
+    if( theme_dark )
+        t_SENTENCE_SPLIT_set_parent_theme_dark( container );
+    else
+        t_SENTENCE_SPLIT_clr_parent_theme_dark( container );
 
 
 
@@ -3274,6 +3359,40 @@ if( log_this) log_key_val_group(            caller
 
 
     last_container = container;
+};
+
+
+let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
+{
+    let el_array = get_parent_chain(container);
+
+    el_array.forEach((el) => {
+        el.style.backgroundColor_saved         = el.style.backgroundColor;
+        el.style.backgroundColor               = THEME_STYLE_BG_DARK;
+        if(            el.parentElement ) {
+            Array.from(el.parentElement.children).forEach((sl) => {
+                sl.style.backgroundColor_saved = sl.style.backgroundColor;
+                sl.style.backgroundColor       = THEME_STYLE_BG_DARK;
+            });
+        }
+    });
+};
+
+
+let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
+{
+    let el_array = get_parent_chain(container);
+
+    el_array.forEach((el) => {
+        el.style.backgroundColor       = el.style.backgroundColor_saved || "";
+        delete                           el.style.backgroundColor_saved;
+        if(            el.parentElement ) {
+            Array.from(el.parentElement.children).forEach((sl) => {
+                sl.style.backgroundColor = sl.style.backgroundColor_saved || "";
+                delete                   sl.style.backgroundColor_saved;
+            });
+        }
+    });
 };
 
 
@@ -3751,6 +3870,7 @@ if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_S
             delete                         container.innerHTML_SAVED;
 
         }
+        t_SENTENCE_SPLIT_clr_parent_theme_dark( container );
 
         sentence_containers.splice(sentence_containers.indexOf(container), 1);
     }
@@ -3896,6 +4016,20 @@ let hide_popup = function()
     if(typeof dom_popup == "undefined") return;
 
     dom_popup.log_popup_hide();
+};
+
+
+let get_parent_chain = function(el)
+{
+    let array = [];
+
+    while(          el.parentElement )
+    {
+        array.push( el.parentElement );
+        el        = el.parentElement;
+    }
+
+    return array;
 };
 
 

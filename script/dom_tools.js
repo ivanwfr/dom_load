@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220209:13h:36)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220209:19h:56)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -4348,7 +4348,7 @@ let t_set_id_class_on_off = function(id, className, on_off)
 
 /* EVENT LISTENER .. ONDOWN .. PIVOT .. PINNED */
 /*{{{*/
-/*{{{*/
+/** RESOURCES (onDown ➔ onWork) {{{*/
 
 /*_______________XY___________________________*/
 let onDown_HSPOT_XY        = { x:0, y:0 }; /* TODO ? could better be [onDown_HSPOT_MID] ? */
@@ -4387,7 +4387,7 @@ let onUp_MS                = 0;
 /*__what_was_selected_at_event_start__________*/
 
 /*}}}*/
-/* LISTENER {{{*/
+/** LISTENER (add remove prevent) {{{*/
 /* NOTE {{{
 
  :!start explorer "https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver"
@@ -4414,7 +4414,7 @@ let onUp_MS                = 0;
 
 }}}*/
 
-/* ADD */
+/* [PERSISTENT ] LISTENER [EVENT: down up move input resize scroll ] */
 /*➔ t_add_input_listener {{{*/
 let t_add_input_listener = function(el)
 {
@@ -4488,41 +4488,6 @@ if( log_this) log("%c"+t_input_2_CB.name+"%c onkeyup onchange %c"+(inputs[i].id 
     html.style.scrollBehavior = "initial"; /* .. [auto] .. [The scrolling box scrolls instantly] */
 };
 /*}}}*/
-/*_ add_page_pointermove_listener {{{*/
-let add_page_pointermove_listener = function(_caller)
-{
-/*{{{*/
-let   caller = "add_page_pointermove_listener";
-let log_this = LOG_MAP.EV0_LISTEN;
-
-if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
-/*}}}*/
-/*{{{
-    if(typeof MWebJS != "undefined") MWebJS.eval("SCROLL OFF");
-}}}*/
-    if("ontouchmove"  in document.documentElement)
-        add_listener_capture_active(   window, "touchmove"     , t_PAGE_pointermove_drag);
-    else
-        add_listener_capture_active(   window, "mousemove"     , t_PAGE_pointermove_drag);
-};
-/*}}}*/
-/*_ t_add_tool_pointermove_listener {{{*/
-let t_add_tool_pointermove_listener = function(_caller)
-{
-/*{{{*/
-let  caller = "t_add_tool_pointermove_listener";
-    let log_this = LOG_MAP.EV0_LISTEN;
-
-if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
-/*}}}*/
-    if("ontouchmove"  in document.documentElement)
-        add_listener_capture_active(   window, "touchmove"     , t_TOOL_pointermove_drag);
-    else
-        add_listener_capture_active(   window, "mousemove"     , t_TOOL_pointermove_drag);
-};
-/*}}}*/
-
-/* REMOVE */
 /*_ t_del_listeners {{{*/
 let t_del_listeners = function()
 {
@@ -4551,6 +4516,41 @@ if( log_this) log(caller, "info");
     del_page_and_tool_pointermove_listeners(caller);
 };
 /*}}}*/
+
+/* [TRANSIENT  ] LISTENER [EVENT: move ] */
+/*_ t_add_tool_pointermove_listener {{{*/
+let t_add_tool_pointermove_listener = function(_caller)
+{
+/*{{{*/
+let  caller = "t_add_tool_pointermove_listener";
+    let log_this = LOG_MAP.EV0_LISTEN;
+
+if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
+/*}}}*/
+    if("ontouchmove"  in document.documentElement)
+        add_listener_capture_active(   window, "touchmove"     , t_TOOL_pointermove_drag);
+    else
+        add_listener_capture_active(   window, "mousemove"     , t_TOOL_pointermove_drag);
+};
+/*}}}*/
+/*_ add_page_pointermove_listener {{{*/
+let add_page_pointermove_listener = function(_caller)
+{
+/*{{{*/
+let   caller = "add_page_pointermove_listener";
+let log_this = LOG_MAP.EV0_LISTEN;
+
+if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
+/*}}}*/
+/*{{{
+    if(typeof MWebJS != "undefined") MWebJS.eval("SCROLL OFF");
+}}}*/
+    if("ontouchmove"  in document.documentElement)
+        add_listener_capture_active(   window, "touchmove"     , t_PAGE_pointermove_drag);
+    else
+        add_listener_capture_active(   window, "mousemove"     , t_PAGE_pointermove_drag);
+};
+/*}}}*/
 /*_ del_page_and_tool_pointermove_listeners {{{*/
 let del_page_and_tool_pointermove_listeners = function(_caller)
 {
@@ -4562,15 +4562,15 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
 /*
     if(typeof MWebJS != "undefined") MWebJS.eval("SCROLL ON");
 */
-    remove_listener_capture_active(    window, "mousemove"        , t_PAGE_pointermove_drag);
-    remove_listener_capture_active(    window, "touchmove"        , t_PAGE_pointermove_drag);
+    remove_listener_capture_active(    window, "mousemove"     , t_PAGE_pointermove_drag);
+    remove_listener_capture_active(    window, "touchmove"     , t_PAGE_pointermove_drag);
 
-    remove_listener_capture_active(    window, "mousemove"        , t_TOOL_pointermove_drag);
-    remove_listener_capture_active(    window, "touchmove"        , t_TOOL_pointermove_drag);
+    remove_listener_capture_active(    window, "mousemove"     , t_TOOL_pointermove_drag);
+    remove_listener_capture_active(    window, "touchmove"     , t_TOOL_pointermove_drag);
 };
 /*}}}*/
 
-/* ADD-REMOVE LISTENER */
+/* [PER ELEMENT] LISTENER [EVENT: any ] */
 /*_ add_listener_capture_active {{{*/
 let CAPTURE_TRUE_PASSIVE_FALSE  = { capture:true , passive:false };
 
@@ -4594,7 +4594,7 @@ if(log_this) log("%c remove_listener_capture_active("+get_n_lbl(el)+" "+ev+" "+f
 };
 /*}}}*/
 
-/* PROPAGATION */
+/* EVENT PROPAGATION */
 /*_ t_acceptBubble {{{*/
 let t_acceptBubble = function(e, msg, log_this)
 {
@@ -4689,7 +4689,7 @@ if(log_this && t_preventDefault_caller) {
 };
 /*}}}*/
 
-/* CONSUMED */
+/* EVENT CONSUMED BY (dispatched-to handler with highest prority) */
 /*{{{*/
 let t_event_consumed_cause = "";
 
@@ -4865,7 +4865,7 @@ let t_log_clr_status = function()
 /*}}}*/
 
 /*}}}*/
-/* DOWN {{{*/
+/** DOWN EVENT CONTEXT {{{*/
 /* script/dom_ondown.js */
 /* onDown_EL onWork_EL onWork_PANEL {{{*/
 
@@ -5293,7 +5293,7 @@ let zap_onMoveDXY = function()
 /*}}}*/
 /*}}}*/
 /*}}}*/
-/* PIVOT {{{*/
+/** TOOL PANELS PIVOT {{{*/
 /*{{{*/
 const T_RAISE_PIVOT_PANEL_DELAY_LONG  = 2000;
 const T_RAISE_PIVOT_PANEL_DELAY_SHORT =  500;
@@ -5638,7 +5638,7 @@ if(log_this) logBIG(caller+"("+_caller+")", lf8);
 /*}}}*/
 
 /*}}}*/
-/* PINNED {{{*/
+/** TOOL PANEL PINNED {{{*/
 /*{{{*/
 const CSS_FULLY_SPREAD = "fully_spread";
 const CSS_DIMMED_PANEL = "dimmed_panel";
@@ -5735,7 +5735,7 @@ t_log_panel_style_zIndex(panel, "t_show_pinned_panel");
 /*}}}*/
 
 /*}}}*/
-/* FOCUS {{{*/
+/** TOOL PANEL FOCUS {{{*/
 /*{{{*/
 let T_POST_FOCUS_TO_DELAY = 500;
 let t_post_focus_to_el;
@@ -5860,7 +5860,7 @@ if( log_this) t_log.console_dir("e_target", e_target);
 };
 /*}}}*/
 /*}}} */
-/* CSS_MAGNIFIED {{{*/
+/** TOOL PANEL MAGNIFIED {{{*/
 let MAGNIFIED_BY_FONTSIZE = false;
 /*_ t_layout_panel_magnified {{{*/
 let t_layout_panel_magnified = function(panel, magnified)
@@ -6094,7 +6094,7 @@ if(log_this) log(caller+": pivot_magnified: %c "+new_state+" ", (new_state ? lb2
 
 /* EVENT HANDLERS .. DOWN .. MOVE .. LONG_PRESS .. UP .. CLICK */
 /*{{{*/
-/* DOWN {{{*/
+/** DOWN {{{*/
 /*{{{*/
 
 let mousedown_consumed_by = "";
@@ -7140,7 +7140,7 @@ let t_set_body_style_overflow_hidden = function(hidden)
 };
 /*}}}*/
 /*}}}*/
-/* MOVE {{{*/
+/** MOVE {{{*/
 /*{{{*/
 const DIR_GRAB            = "DIR_GRAB";
 const DIR_NUM_NEXT        = "DIR_NUM_NEXT";
@@ -8388,7 +8388,7 @@ if(!onWork_MOVABLE_CHILD) return "";
 };
 /*}}}*/
 /*}}}*/
-/* UP {{{*/
+/** UP {{{*/
 /*{{{*/
 
 let mouseup_consumed_by = "";
@@ -9860,7 +9860,7 @@ if( log_this) {
 };
 /*}}}*/
 /*}}}*/
-/* LONG_PRESS {{{*/
+/** LONG_PRESS {{{*/
 /*{{{*/
 const LONG_PRESS_ARM     = "long_press_arm";
 
@@ -10692,7 +10692,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf9);
 };
 /*}}}*/
 /*}}}*/
-/* DRAG CLICK {{{*/
+/** DRAG CLICK {{{*/
 /*{{{*/
 let   t_onclick_e_target;
 let   t_onclick_timer;
@@ -11286,7 +11286,7 @@ if(result && LOG_MAP.EV0_LISTEN) log(caller+": ...return "+result);
 };
 /* }}} */
 /*}}}*/
-/* MODE {{{*/
+/** MODE {{{*/
 /*{{{*/
 let onModalMS = 0;
 
@@ -11364,7 +11364,7 @@ let t_which_onModal_EL = function()
 };
 /*}}}*/
 /*}}}*/
-/* INPUT {{{*/
+/** INPUT {{{*/
 /*  t_window_2_keyup_CB {{{*/
 let t_window_2_keyup_CB = function(e)
 {
@@ -11717,7 +11717,7 @@ if( log_this) log("%c"+caller+": %c"+consumed_by, lbH+lf4, lbH+lf4);
 };
 /*}}}*/
 /*}}}*/
-/* WORDING {{{*/
+/** WORDING {{{*/
 /*_ t_wording_3_CB {{{*/
 /*{{{*/
 const T_WORDING_3_CB_DELAY =  100;
@@ -12050,7 +12050,7 @@ t_i18n.i18n_get(t_i18n.WORDS_RECYCLE_CLICK_TO_HIDE   );
 };
 /*}}}*/
 /*}}}*/
-/* SELECTION {{{*/
+/** SELECTION {{{*/
 /*{{{*/
 const SEL_TEXT_TIC_TOC_INTERVAL =  250;
 const SEL_TEXT_UNCHANGED_COUNT  =   20;
@@ -12125,7 +12125,7 @@ let   get_SELECTION_PROGRESS = function()
 };
 /*}}}*/
 /*}}}*/
-/* CB {{{*/
+/** CB {{{*/
 /*  DOC  CB {{{*/
 /*_ t_body_width_show {{{*/
 let t_body_width_show = function()
@@ -12972,7 +12972,7 @@ if(log_this && panel_moved) log(caller+": .. moved from XY=["+xy.x+" "+xy.y+"] .
 /*}}}*/
 
 /*}}}*/
-/* PROP {{{*/
+/** PROP {{{*/
 /*➔ prop_id_state_CB {{{*/
 let prop_id_state_CB = function(id, checked)
 {
@@ -13311,7 +13311,7 @@ let   cycle_parent_classList = function(el, classList)
 };
 /*}}}*/
 /*}}}*/
-/* LAYOUT {{{*/
+/** LAYOUT {{{*/
 /*  t_orient_listener {{{*/
 let t_orient_listener = function(e)
 {
@@ -13455,7 +13455,7 @@ if(log_this) log_caller();
 };
 /*}}}*/
 /*}}}*/
-/* LOG {{{*/
+/** LOG {{{*/
 /*_ t_get_consumed_by_table {{{*/
 let t_get_consumed_by_table = function()
 {
@@ -13470,7 +13470,6 @@ let t_get_consumed_by_table = function()
 /*}}}*/
 /*}}}*/
 /*}}}*/
-
 
 /* LAYOUT */
 /*{{{*/

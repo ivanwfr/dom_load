@@ -13,12 +13,12 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220208:21h:42)";  /* eslint-disable-line no-unused-vars */
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220211:16h:02)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_sentence_event   = (function() {
 "use strict";
-
-let log_this = false;
+let   DOM_SENTENCE_LOG  = false;
+//t   DOM_SENTENCE_TAG  = false;
 
 /* INLINE */
 /* console {{{*/
@@ -75,7 +75,11 @@ if(e.ctrlKey) { log(e.type+" IGNORED .. f(e.ctrlKey)" ); return; }
 /*… t_pointerdown_handler {{{*/
 let t_pointerdown_handler = function(e)
 {
-if(log_this) log1("→→ t_pointerdown_handler");
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log1("→→ t_pointerdown_handler");
+/*}}}*/
     let sentence_el = dom_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
     if( sentence_el )
     {
@@ -96,7 +100,11 @@ if(log_this) log1("... NO sentence_el"+LF);
 /*_ add_long_press_arm_listener .. (call burst debouncer) {{{*/
 let add_long_press_arm_listener = function()
 {
-if(log_this) log6("→ add_long_press_arm_listener");
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log6("→ add_long_press_arm_listener");
+/*}}}*/
 
     if(long_press_timer    ) clearTimeout(long_press_timer      ); long_press_timer = null;
 
@@ -107,7 +115,11 @@ if(log_this) log6("→ add_long_press_arm_listener");
 /*_ long_press_arm_handler {{{*/
 let long_press_arm_handler = function()
 {
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
 if(log_this) log6("→→ long_press_arm_handler");
+/*}}}*/
     long_press_arm_timer = null;
 
     if(long_press_timer) clearTimeout(long_press_timer);
@@ -117,7 +129,11 @@ if(log_this) log6("→→ long_press_arm_handler");
 /*_ long_press_handler ➔ SENTENCE_SPLIT {{{*/
 let long_press_handler  = function()
 {
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
 if(log_this) log6("→→→ long_press_handler");
+/*}}}*/
 
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
     if(   container )
@@ -137,9 +153,9 @@ let t_SENTENCE_drag_listener = function(event)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_drag_listener";
+let log_this = DOM_SENTENCE_LOG;
 
-
-if(log_this) log7(caller);
+if( log_this) log7(caller);
 /*}}}*/
 
     get_onMoveDXY(event, caller);
@@ -168,7 +184,9 @@ const CSS_NOT_MOVED_ENOUGH = "not_moved_enough";
 let t_add_NOT_MOVED_ENOUGH   = function()
 {
 /*{{{
-if(log_this) log8("t_add_NOT_MOVED_ENOUGH");
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log8("t_add_NOT_MOVED_ENOUGH");
 }}}*/
     document.body.classList.add(      CSS_NOT_MOVED_ENOUGH );
     drag_cursor.add_drag_cursor_CSS_NOT_MOVED_ENOUGH();
@@ -178,6 +196,8 @@ if(log_this) log8("t_add_NOT_MOVED_ENOUGH");
 let t_del_NOT_MOVED_ENOUGH   = function()
 {
 /*{{{
+let log_this = DOM_SENTENCE_LOG;
+
 if(log_this) log7("t_del_NOT_MOVED_ENOUGH");
 }}}*/
     document.body.classList.remove(   CSS_NOT_MOVED_ENOUGH);
@@ -195,6 +215,10 @@ let move_on_cooldown_timer;
 let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 {
     if( move_on_cooldown_timer ) return;
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+/*}}}*/
 if(log_this) log9("t_add_MOVE_ON_COOLDOWN");
 
     if( move_on_cooldown_timer ) clearTimeout( move_on_cooldown_timer );
@@ -208,9 +232,9 @@ let t_del_MOVE_ON_COOLDOWN   = function()
 {
     if(!move_on_cooldown_timer ) return;
 /*{{{*/
+let log_this = DOM_SENTENCE_LOG;
 
-
-if(log_this) log0("t_del_MOVE_ON_COOLDOWN");
+if( log_this) log0("t_del_MOVE_ON_COOLDOWN");
 /*}}}*/
     if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
     /**/move_on_cooldown_timer = null;
@@ -227,7 +251,11 @@ if(log_this) log0("t_del_MOVE_ON_COOLDOWN");
 let t_pointerup_listener  = function(e)
 {
 if(e.button) return;
-if(log_this) log5(LF+"→ t_pointerup_listener");
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+/*}}}*/
+if( log_this) log5(LF+"→ t_pointerup_listener");
 
     t_pointerup_handler(e);
 
@@ -273,29 +301,32 @@ let t_pointerup_handler = function(e) /* eslint-disable-line no-unused-vars */
 {
 /*{{{*/
 let   caller = "t_pointerup_handler";
+let log_this = DOM_SENTENCE_LOG;
 
+    let consumed_by                  = "";
 /*}}}*/
+    /* [t_CURSOR_del_MOVE_LISTENER] {{{*/
     let   this_MS                    = new Date().getTime();
     let   delayMS                    = onDown_MS ? (this_MS - onDown_MS) : 0;
     let   clicked                    = (delayMS < CLICK_DURATION);
-
 /*{{{
     let { onDown_container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
 }}}*/
 
-    let   onDown_sentence_container  = t_util.get_el_parent_with_class(onDown_EL, "sentence_container");
-    let   some_sentence_container    =          document.querySelector(          ".sentence_container");
-
-    let consumed_by                  = "";
-
     t_CURSOR_del_MOVE_LISTENER();
 
+    /*}}}*/
+    /* [t_SENTENCE_RESTORE_EL] {{{*/
+    let   onDown_sentence_container  = t_util.get_el_parent_with_class(onDown_EL, "sentence_container");
+    let   some_sentence_container    =          document.querySelector(          ".sentence_container");
     if(     clicked && onDown_sentence_container)
     {
         consumed_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
 
         dom_sentence.t_SENTENCE_RESTORE_EL(onDown_sentence_container, e);
     }
+    /*}}}*/
+    /* [t_SENTENCE_RESTORE_ALL] {{{*/
     else if(clicked && some_sentence_container)
     {
         consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
@@ -303,6 +334,8 @@ let   caller = "t_pointerup_handler";
         dom_sentence.t_SENTENCE_RESTORE_ALL( e );
         some_sentence_container = document.querySelector(".sentence_container");
     }
+    /*}}}*/
+    /*{{{*/
     else
     {
         consumed_by
@@ -311,8 +344,10 @@ let   caller = "t_pointerup_handler";
             +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"
             +  " .. onDown_sentence_container=["+ (onDown_sentence_container ? onDown_sentence_container .tagName : "")+"]"
         ;
-    }
 
+    }
+    /*}}}*/
+    /* [clicked] .. [t_scrollIntoViewIfNeeded_set_EL] {{{*/
     if( clicked )
     {
 /*{{{
@@ -326,13 +361,18 @@ console.log("...same node             = "+(onDown_sentence_container == some_sen
         if(      onDown_sentence_container ) dom_scroll.t_scrollIntoViewIfNeeded_set_EL( null                    ); /* STOP   [scrollIntoView] */
         else if(   some_sentence_container ) dom_scroll.t_scrollIntoViewIfNeeded_set_EL( some_sentence_container ); /* CHANGE [scrollIntoView] */
     }
+    /*}}}*/
+    /* [clearTimeout] LONG_PRESS {{{*/
 
     if(long_press_timer    ) clearTimeout(long_press_timer    ); long_press_timer     = null;
     if(long_press_arm_timer) clearTimeout(long_press_arm_timer); long_press_arm_timer = null;
 
+    /*}}}*/
+    /* [clr_onWork_EL] {{{*/
     clr_onWork_EL( caller );
 
-if(log_this) log5("→→ t_pointerup_handler:"+ consumed_by);
+    /*}}}*/
+if( log_this) log5("→→ "+caller+":"+ consumed_by);
 };
 /*}}}*/
 
@@ -384,6 +424,7 @@ let clr_onWork_EL = function(_caller)
 {
 /*{{{*/
 let   caller = "clr_onWork_EL";
+let log_this = DOM_SENTENCE_LOG;
 
 if( log_this) log8(caller+": CALLED BY "+ _caller);
 /*}}}*/
@@ -403,7 +444,12 @@ let CAPTURE_TRUE_PASSIVE_FALSE  = { capture:true , passive:false };
 /*➔ t_SENTENCE_add_LISTENER {{{*/
 let t_SENTENCE_add_LISTENER = function(_log_this,_tag_this)
 {
-if(log_this || _log_this || _tag_this) log5("➔ t_SENTENCE_add_LISTENER"+LF);
+/*{{{*/
+let   caller = "t_SENTENCE_add_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+/*}}}*/
+if( log_this || _log_this || _tag_this) log5("➔ "+caller+LF);
 
     if( ("ontouchstart" in document.documentElement)) {
         add_listener_capture_active(   window, "touchstart", t_pointerdown_listener           ); /* DOWN   */
@@ -421,7 +467,12 @@ if(log_this || _log_this || _tag_this) log5("➔ t_SENTENCE_add_LISTENER"+LF);
 /*➔ t_SENTENCE_del_LISTENER {{{*/
 let t_SENTENCE_del_LISTENER = function(_log_this,_tag_this)
 {
-if(log_this || _log_this || _tag_this) log0("➔ t_SENTENCE_del_LISTENER"+LF);
+/*{{{*/
+let   caller = "t_SENTENCE_del_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this || _log_this || _tag_this) log0("➔ "+caller+LF);
+/*}}}*/
 
     if( ("ontouchstart" in document.documentElement)) {
         remove_listener_capture_active(   window, "touchstart", t_pointerdown_listener);    /* DOWN  */
@@ -439,8 +490,10 @@ if(log_this || _log_this || _tag_this) log0("➔ t_SENTENCE_del_LISTENER"+LF);
 let t_CURSOR_add_MOVE_LISTENER = function()
 {
 /*{{{*/
-if(log_this) log7("t_CURSOR_add_MOVE_LISTENER");
+let   caller = "t_CURSOR_add_MOVE_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
 
+if( log_this) log7(caller);
 /*}}}*/
     if("ontouchmove"  in document.documentElement) {
         add_listener_capture_active(   window, "touchmove", t_SENTENCE_drag_listener);
@@ -456,7 +509,7 @@ let t_CURSOR_del_MOVE_LISTENER = function()
 {
 /*{{{*/
 let   caller = "t_CURSOR_del_MOVE_LISTENER";
-
+let log_this = DOM_SENTENCE_LOG;
 
 if(log_this) log0(caller);
 /*}}}*/
@@ -495,7 +548,11 @@ let remove_listener_capture_active = function(el, ev, fn, uc) /* eslint-disable-
 /*_ preventDefault {{{*/
 let preventDefault = function(e)
 {
-if(log_this) log0("preventDefault");
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log0("preventDefault");
+/*}}}*/
     if(e.cancelable)
     {
         if( e.stopPropagation          ) e.stopPropagation         (); /* capturing and bubbling phases */

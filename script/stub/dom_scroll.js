@@ -14,7 +14,7 @@
 /* exported DOM_SCROLL_JS_TAG */
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220208:19h:32)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220211:18h:17)";
 /*}}}*/
 let dom_scroll              = (function() {
 "use strict";
@@ -71,6 +71,7 @@ let lbA=lXX, lbB=lXX, lbC=lXX, lbF=lXX, lbH=lXX, lbL=lXX, lbR=lXX, lbS=lXX, lbb=
 
 let log                 = console.log;
 let log_key_val_group   = console.log;
+let log_caller          = console.trace;
 
 let console_dir         = (k,v) => { console.log("..."+k+":"); console.dir(v); };
 
@@ -89,6 +90,7 @@ let   scroll_INTERN     = function()
         log                 = dom_log.log;
         log_key_val_group   = dom_log.log_key_val_group;
         console_dir         = dom_log.console_dir;
+        log_caller          = dom_log.log_caller;
     }
     /*}}}*/
     /* lfX {{{*/
@@ -246,6 +248,7 @@ let tag_this = DOM_SCROLL_TAG || log_this;
 
 if( tag_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)
                   ,lbL+lf4      ,lbR+lf4                                       );
+if( log_this) log_caller();
 
     if( scrollIntoView_EL ) on_scrollIntoView_EL();
 };
@@ -272,14 +275,21 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+  
 /*_   on_scrollIntoView_EL {{{*/
 let   on_scrollIntoView_EL = function()
 {
+/*{{{
+log("%c on_scrollIntoView_EL", lbB)
+log("%c on_scrollIntoView_EL %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
+}}}*/
     if(!scrollIntoView_EL ) return;
     /* (native support) {{{*/
     scrollIntoView_EL.scrollIntoView({ behavior : "smooth"  /* [auto]  , smooth          */
-                                       , block    : "nearest" /* [start] , center, nearest */
-                                       , inline   : "nearest" /* [start] , center, nearest */
+                                     , block    : "nearest" /* [start] , center, nearest */
+                                     , inline   : "nearest" /* [start] , center, nearest */
     });
+    scrollIntoView_EL = null; /* only once */
 
 /*
+    $0.scrollIntoView({behavior:"smooth" , block:"nearest" , inline:"nearest"});
+
 :!start explorer "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView"
 */
     /*}}}*/

@@ -8,7 +8,7 @@
 /* exported dom_sentence_util */
 
 const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util";
-const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220204:19h:31)";  /* eslint-disable-line no-unused-vars */
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220210:18h:39)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_sentence_util    = (function() {
 "use strict";
@@ -356,6 +356,17 @@ let get_id_or_tag = function(node)
     ;
 };
 /*}}}*/
+/*_ is_el_or_child_of_parent_el {{{*/
+let is_el_or_child_of_parent_el = function(el, parent_el)
+{
+    if(!parent_el) return false;
+
+    while(el && (el != parent_el))
+        el     = el.parentElement;
+
+    return (el == parent_el);
+};
+/*}}}*/
 
 /*➔ get_n_lbl {{{ */
 let get_n_lbl = function(node)
@@ -560,6 +571,7 @@ return { name : DOM_SENTENCE_UTIL_JS_ID
     , get_el_child_with_class
     , get_el_xy
     , get_id_or_tag
+    , is_el_or_child_of_parent_el
 
     , get_n_lbl
     , get_node_sibling_at_offset

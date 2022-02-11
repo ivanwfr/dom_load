@@ -1,5 +1,9 @@
 javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 "use strict";
+/* CALLERS of javascript: {{{
+/^[^/]*\<javascript\>\s*[(=),}]
+script/dom_load.js:6072  dom_data:6967: /*}}}*/
+}}}*/
 /* jshint esversion: 9, boss:true {{{*/
 /* globals send_IPC dom_ipc t_load */
 /* globals console, alert, window, document, setTimeout */
@@ -9,7 +13,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220208:21h:29)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220211:18h:18)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -241,7 +245,7 @@ let dom_tools_html_data = `
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220207:15h:02)"; }
+#dom_host_css_tag   { content: "dom_host_css (220211:16h:15)"; }
 
 
 body.dark { background : #430; }
@@ -8854,7 +8858,7 @@ let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (211206:19h:32)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220210:17h:06)";
 
 let dom_util    = (function() {
 "use strict";
@@ -12780,6 +12784,20 @@ let get_parent_tag_id_class_chain = function(el)
 };
 
 
+let get_parent_chain = function(el)
+{
+    let array = [];
+
+    while(          el.parentElement )
+    {
+        array.push( el.parentElement );
+        el        = el.parentElement;
+    }
+
+    return array;
+};
+
+
 
 
 
@@ -12936,6 +12954,7 @@ return { name : "dom_util"
     , get_nodeXPath_target
     , get_node_sibling_at_offset
     , get_parent_tag_id_class_chain
+    , get_parent_chain
 
 
 
@@ -34572,7 +34591,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220207:19h:24)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220210:18h:36)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -34886,10 +34905,14 @@ const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
 
 const SYMBOL_GEAR          = "\u2699";
 const SYMBOL_THEME         = "\u262F";
+const SYMBOL_MAGNIFY_LEFT  = "\uD83D\uDD0D";
 const SYMBOL_MAGNIFY_RIGHT = "\uD83D\uDD0E";
-const MAGNIFIED_STYLE      = "font-size: 200%;";
-const THEME_STYLE_DARK     =  "color: #DDD !important; background-color: rgba( 32, 32, 32,0.8) !important;";
-const THEME_STYLE_LIGHT    =  "color: #222 !important; background-color: rgba(255,255,255,0.8) !important;";
+const MAGNIFIED_STYLE      = "font-size: 200% !important;";
+
+const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
+const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
+const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important;";
+const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important;";
 
 let     theme_dark = false;
 let     magnified  = false;
@@ -34978,11 +35001,17 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
         +      " line-height: 1em;"
     ;
 
+    let   magnified_symbol
+        = magnified
+        ? SYMBOL_MAGNIFY_LEFT
+        : SYMBOL_MAGNIFY_RIGHT
+    ;
+
     let tools = ""
-        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME         +"</button>"
-        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ SYMBOL_MAGNIFY_RIGHT +"</button>"
+        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME     +"</button>"
+        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ magnified_symbol +"</button>"
         + ((typeof dom_popup != "undefined")
-           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR          +"</button>" : "")
+           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR      +"</button>" : "")
     ;
 
     let   theme_style
@@ -35004,6 +35033,11 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
 
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
+
+    if( theme_dark )
+        t_SENTENCE_SPLIT_set_parent_theme_dark( container );
+    else
+        t_SENTENCE_SPLIT_clr_parent_theme_dark( container );
 
 
 
@@ -35066,6 +35100,40 @@ if( log_this) log_key_val_group(            caller
 
 
     last_container = container;
+};
+
+
+let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
+{
+    let el_array = get_parent_chain(container);
+
+    el_array.forEach((el) => {
+        el.style.backgroundColor_saved         = el.style.backgroundColor;
+        el.style.backgroundColor               = THEME_STYLE_BG_DARK;
+        if(            el.parentElement ) {
+            Array.from(el.parentElement.children).forEach((sl) => {
+                sl.style.backgroundColor_saved = sl.style.backgroundColor;
+                sl.style.backgroundColor       = THEME_STYLE_BG_DARK;
+            });
+        }
+    });
+};
+
+
+let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
+{
+    let el_array = get_parent_chain(container);
+
+    el_array.forEach((el) => {
+        el.style.backgroundColor       = el.style.backgroundColor_saved || "";
+        delete                           el.style.backgroundColor_saved;
+        if(            el.parentElement ) {
+            Array.from(el.parentElement.children).forEach((sl) => {
+                sl.style.backgroundColor = sl.style.backgroundColor_saved || "";
+                delete                   sl.style.backgroundColor_saved;
+            });
+        }
+    });
 };
 
 
@@ -35543,6 +35611,7 @@ if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_S
             delete                         container.innerHTML_SAVED;
 
         }
+        t_SENTENCE_SPLIT_clr_parent_theme_dark( container );
 
         sentence_containers.splice(sentence_containers.indexOf(container), 1);
     }
@@ -35688,6 +35757,20 @@ let hide_popup = function()
     if(typeof dom_popup == "undefined") return;
 
     dom_popup.log_popup_hide();
+};
+
+
+let get_parent_chain = function(el)
+{
+    let array = [];
+
+    while(          el.parentElement )
+    {
+        array.push( el.parentElement );
+        el        = el.parentElement;
+    }
+
+    return array;
 };
 
 
@@ -37766,7 +37849,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220208:21h:29)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220209:19h:56)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -41855,39 +41938,6 @@ if( log_this) log("%c"+t_input_2_CB.name+"%c onkeyup onchange %c"+(inputs[i].id 
 };
 
 
-let add_page_pointermove_listener = function(_caller)
-{
-
-let   caller = "add_page_pointermove_listener";
-let log_this = LOG_MAP.EV0_LISTEN;
-
-if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
-
-
-    if("ontouchmove"  in document.documentElement)
-        add_listener_capture_active(   window, "touchmove"     , t_PAGE_pointermove_drag);
-    else
-        add_listener_capture_active(   window, "mousemove"     , t_PAGE_pointermove_drag);
-};
-
-
-let t_add_tool_pointermove_listener = function(_caller)
-{
-
-let  caller = "t_add_tool_pointermove_listener";
-    let log_this = LOG_MAP.EV0_LISTEN;
-
-if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
-
-    if("ontouchmove"  in document.documentElement)
-        add_listener_capture_active(   window, "touchmove"     , t_TOOL_pointermove_drag);
-    else
-        add_listener_capture_active(   window, "mousemove"     , t_TOOL_pointermove_drag);
-};
-
-
-
-
 let t_del_listeners = function()
 {
 let   caller = "t_del_listeners";
@@ -41916,6 +41966,39 @@ if( log_this) log(caller, "info");
 };
 
 
+
+
+let t_add_tool_pointermove_listener = function(_caller)
+{
+
+let  caller = "t_add_tool_pointermove_listener";
+    let log_this = LOG_MAP.EV0_LISTEN;
+
+if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
+
+    if("ontouchmove"  in document.documentElement)
+        add_listener_capture_active(   window, "touchmove"     , t_TOOL_pointermove_drag);
+    else
+        add_listener_capture_active(   window, "mousemove"     , t_TOOL_pointermove_drag);
+};
+
+
+let add_page_pointermove_listener = function(_caller)
+{
+
+let   caller = "add_page_pointermove_listener";
+let log_this = LOG_MAP.EV0_LISTEN;
+
+if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
+
+
+    if("ontouchmove"  in document.documentElement)
+        add_listener_capture_active(   window, "touchmove"     , t_PAGE_pointermove_drag);
+    else
+        add_listener_capture_active(   window, "mousemove"     , t_PAGE_pointermove_drag);
+};
+
+
 let del_page_and_tool_pointermove_listeners = function(_caller)
 {
 let   caller = "del_page_and_tool_pointermove_listeners";
@@ -41924,11 +42007,11 @@ let log_this = LOG_MAP.EV0_LISTEN;
 if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf2);
 
 
-    remove_listener_capture_active(    window, "mousemove"        , t_PAGE_pointermove_drag);
-    remove_listener_capture_active(    window, "touchmove"        , t_PAGE_pointermove_drag);
+    remove_listener_capture_active(    window, "mousemove"     , t_PAGE_pointermove_drag);
+    remove_listener_capture_active(    window, "touchmove"     , t_PAGE_pointermove_drag);
 
-    remove_listener_capture_active(    window, "mousemove"        , t_TOOL_pointermove_drag);
-    remove_listener_capture_active(    window, "touchmove"        , t_TOOL_pointermove_drag);
+    remove_listener_capture_active(    window, "mousemove"     , t_TOOL_pointermove_drag);
+    remove_listener_capture_active(    window, "touchmove"     , t_TOOL_pointermove_drag);
 };
 
 
@@ -50156,7 +50239,6 @@ let t_get_consumed_by_table = function()
         + "</table>"
     ;
 };
-
 
 
 
