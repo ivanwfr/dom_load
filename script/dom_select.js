@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (211206:19h:32)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220214:18h:38)";
 /*}}}*/
 let dom_select  = (function() {
 "use strict";
@@ -2342,7 +2342,8 @@ let log_this = LOG_MAP.S1_RANGE;
         switch( words_option   ) {
         case    t_data.WORDS_EXACT    : rx = new RegExp( "\\b("+sel_text+")\\b" , flags); break;
         case    t_data.WORDS_SEGMENT  : rx = new RegExp(    "("+sel_text+")"    , flags); break;
-        case    t_data.WORDS_HEAD_TAIL: rx = new RegExp("\\S*("+sel_text+")\\S*", flags); break;
+/*      case    t_data.WORDS_HEAD_TAIL: rx = new RegExp("\\S*("+sel_text+")\\S*", flags); break; */
+        case    t_data.WORDS_HEAD_TAIL: rx = new RegExp("\\w*("+sel_text+")\\w*", flags); break;
         default:
         logBIG("*** wrong words_option ["+words_option+"] ***", lf2);
         }

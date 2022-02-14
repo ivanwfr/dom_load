@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220209:19h:56)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220214:18h:40)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -17846,9 +17846,15 @@ let log_this = LOG_MAP.S2_SELECT;
             =   pattern.startsWith("\\b(")
             &&  pattern.endsWith  ("\\b");
 
+/*{{{
         let     pattern_WORDS_HEAD_TAIL
             =   pattern.startsWith("\\S*")
             &&  pattern.endsWith  ("\\S*");
+}}}*/
+
+        let     pattern_WORDS_HEAD_TAIL
+            =   pattern.startsWith("\\w*")
+            &&  pattern.endsWith  ("\\w*");
 
 /*{{{
         let     pattern_WORDS_SEGMENT
