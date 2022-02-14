@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220214:16h:40)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220214:17h:50)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -2852,7 +2852,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:16h:40)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:17h:50)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3828,6 +3828,8 @@ let t_SENTENCE_FONTSIZE_APPLY = function(container)
     t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
 
     container.classList.add( e12_font_size );
+
+    container.parentElement.style.maxHeight = "fit-content";
 };
 
 

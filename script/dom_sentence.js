@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:16h:40)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:17h:50)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -1035,6 +1035,8 @@ let t_SENTENCE_FONTSIZE_APPLY = function(container)
     t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
 
     container.classList.add( e12_font_size );
+
+    container.parentElement.style.maxHeight = "fit-content";
 };
 /*}}}*/
 
