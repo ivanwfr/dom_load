@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220214:16h:06)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220214:16h:40)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220214:16h:02)"; }
+#dom_host_css_tag   { content: "dom_host_css (220214:16h:26)"; }
 
 
 body.dark { background : #430; }
@@ -728,18 +728,18 @@ em.select0 { cursor : all-scroll !important; }
 .sentence_container *    { white-space : pre-line !important; }
 .sentence_container *    { text-align  : left     !important; }
 
-.sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px !important; line-height:1em !important; }
-.sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px !important; line-height:1em !important; }
-.sentence_container.fs3 , .sentence_container.fs3  * { font-size :  9px !important; line-height:1em !important; }
-.sentence_container.fs4 , .sentence_container.fs4  * { font-size : 11px !important; line-height:1em !important; }
-.sentence_container.fs5 , .sentence_container.fs5  * { font-size : 13px !important; line-height:1em !important; }
-.sentence_container.fs6 , .sentence_container.fs6  * { font-size : 16px !important; line-height:1em !important; }
-.sentence_container.fs7 , .sentence_container.fs7  * { font-size : 20px !important; line-height:1em !important; }
-.sentence_container.fs8 , .sentence_container.fs8  * { font-size : 23px !important; line-height:1em !important; }
-.sentence_container.fs9 , .sentence_container.fs9  * { font-size : 28px !important; line-height:1em !important; }
-.sentence_container.fs10, .sentence_container.fs10 * { font-size : 34px !important; line-height:1em !important; }
-.sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px !important; line-height:1em !important; }
-.sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px !important; line-height:1em !important; }
+.sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px !important; }
+.sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px !important; }
+.sentence_container.fs3 , .sentence_container.fs3  * { font-size :  9px !important; }
+.sentence_container.fs4 , .sentence_container.fs4  * { font-size : 11px !important; }
+.sentence_container.fs5 , .sentence_container.fs5  * { font-size : 13px !important; }
+.sentence_container.fs6 , .sentence_container.fs6  * { font-size : 16px !important; }
+.sentence_container.fs7 , .sentence_container.fs7  * { font-size : 20px !important; }
+.sentence_container.fs8 , .sentence_container.fs8  * { font-size : 23px !important; }
+.sentence_container.fs9 , .sentence_container.fs9  * { font-size : 28px !important; }
+.sentence_container.fs10, .sentence_container.fs10 * { font-size : 34px !important; }
+.sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px !important; }
+.sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px !important; }
 
 .sentence, .clause    { display          : block        !important; }
 .sentence, .clause    { transform        : scale(0.9)   !important; }
@@ -752,6 +752,8 @@ em.select0 { cursor : all-scroll !important; }
 
 .sentence, .clause    { border-style     : outset                 ; }
 .sentence, .clause    { border-color     : rgba(136,136,136,0.5)  ; }
+
+           .clause    { line-height      : 1em         !important ; }
 
 
                    .dark .sentence {        color     : rgba(255,255,255,1.0)  ; }
@@ -2850,7 +2852,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:15h:55)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:16h:40)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3165,7 +3167,8 @@ const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
 const SYMBOL_GEAR          = "\u2699";
 const SYMBOL_THEME         = "\u262F";
 
-const MAGNIFIED_STYLE      = "font-size: 200% !important;";
+const MAGNIFIED_STYLE      = "font-size  : 200% !important;";
+const LINE_HEIGHT_STYLE    = "line-height: 1em  !important;";
 
 const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
 const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
@@ -3284,7 +3287,7 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
     ;
 
     container.innerHTML = tools
-        + "<pre class='"+CSS_SENTENCE+" bg1' style='"+theme_style+" "+magnified_style+"'>"
+        + "<pre class='"+CSS_SENTENCE+" bg1' style=' "+LINE_HEIGHT_STYLE+" "+theme_style+" "+magnified_style+"'>"
         +  textContent
         + "</pre>";
 
@@ -3423,7 +3426,7 @@ if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
         + " bg"+(sentence_color_next % 10)
     ;
 
-    return prev_end + boundary +"</span><span class='"+className+"'>"+ next_start;
+    return prev_end + boundary +"</span><span style='"+LINE_HEIGHT_STYLE+"' class='"+className+"'>"+ next_start;
 };
 
 

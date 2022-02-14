@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:15h:55)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:16h:40)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -347,7 +347,8 @@ const SYMBOL_THEME         = "\u262F"; /* ☯ */
 const SYMBOL_MAGNIFY_LEFT  = "\uD83D\uDD0D";
 const SYMBOL_MAGNIFY_RIGHT = "\uD83D\uDD0E";
 }}}*/
-const MAGNIFIED_STYLE      = "font-size: 200% !important;";
+const MAGNIFIED_STYLE      = "font-size  : 200% !important;";
+const LINE_HEIGHT_STYLE    = "line-height: 1em  !important;";
 
 const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
 const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
@@ -474,7 +475,7 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
     ;
 
     container.innerHTML = tools
-        + "<pre class='"+CSS_SENTENCE+" bg1' style='"+theme_style+" "+magnified_style+"'>"
+        + "<pre class='"+CSS_SENTENCE+" bg1' style=' "+LINE_HEIGHT_STYLE+" "+theme_style+" "+magnified_style+"'>"
         +  textContent
         + "</pre>";
 
@@ -628,7 +629,7 @@ if( log_this) console.table(arguments);
         + " bg"+(sentence_color_next % 10)
     ;
 
-    return prev_end + boundary +"</span><span class='"+className+"'>"+ next_start;
+    return prev_end + boundary +"</span><span style='"+LINE_HEIGHT_STYLE+"' class='"+className+"'>"+ next_start;
 };
 /*}}}*/
 
