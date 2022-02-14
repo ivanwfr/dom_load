@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220210:18h:36)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:15h:55)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -343,14 +343,16 @@ const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"; /* p3 capturing group */
 /*{{{*/
 const SYMBOL_GEAR          = "\u2699";
 const SYMBOL_THEME         = "\u262F"; /* ☯ */
+/*{{{
 const SYMBOL_MAGNIFY_LEFT  = "\uD83D\uDD0D";
 const SYMBOL_MAGNIFY_RIGHT = "\uD83D\uDD0E";
+}}}*/
 const MAGNIFIED_STYLE      = "font-size: 200% !important;";
 
 const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
 const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
-const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important;";
-const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important;";
+const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important; border-radius:1em;";
+const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important; border-radius:1em;";
 
 let     theme_dark = false;
 let     magnified  = false;
@@ -371,6 +373,9 @@ if( log_this) console_dir("container",container        );
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 /*}}}*/
     if( check_tool_event(e) ) return;
+
+    if(!sentence_containers.includes( container ))
+        sentence_containers.push    ( container );
 
     if(container.nodeName == "DETAILS") container.open = true;
     /* [regexp_SENTENCE] .. [Firefox fail safe] {{{*/
@@ -420,7 +425,7 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
         = container.innerHTML;
 
     /*}}}*/
-    /* ADD [CSS_SENTENCE_CONTAINER] {{{*/
+    /* REPLACE [innerHTML] .. [BUTTONS] .. [CSS_SENTENCE_CONTAINER CLASS] {{{*/
     t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
     if(theme_dark)
         t_util.add_el_class(container, CSS_DARK);
@@ -439,15 +444,19 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
         +      " line-height: 1em;"
     ;
 
+/*{{{
     let   magnified_symbol
         = magnified
         ? SYMBOL_MAGNIFY_LEFT
         : SYMBOL_MAGNIFY_RIGHT
     ;
+}}}*/
 
     let tools = ""
         +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME     +"</button>"
+/*{{{
         +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ magnified_symbol +"</button>"
+}}}*/
         + ((typeof dom_popup != "undefined")
            ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR      +"</button>" : "")
     ;
@@ -465,12 +474,9 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
     ;
 
     container.innerHTML = tools
-        + "<pre class='"+CSS_SENTENCE+" bg1' style='"+theme_style + magnified_style+"'>"
+        + "<pre class='"+CSS_SENTENCE+" bg1' style='"+theme_style+" "+magnified_style+"'>"
         +  textContent
         + "</pre>";
-
-    if(!sentence_containers.includes( container ))
-        sentence_containers.push    ( container );
 
     if( theme_dark )
         t_SENTENCE_SPLIT_set_parent_theme_dark( container );
@@ -480,10 +486,16 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
     /*}}}*/
     /* ADD [CSS_LAST_CLAUSE] TO EVERY SENTENCE LAST PART {{{*/
     let selector
-        = "."+ CSS_CLAUSE   +"+."+ CSS_SENTENCE
+        = "."+ CSS_CLAUSE   +"+."+ CSS_SENTENCE /* a sentence that follows a clause */
         + ","
-        + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE
+        + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE /* a sentence that follows a sentence */
     ;
+/*{{{
+document.querySelectorAll(".clause+.sentence");
+document.querySelectorAll(".sentence+.sentence");
+document.querySelectorAll(".clause+.sentence,.sentence+.sentence");
+last_clause.style.outline= "2px dotted navy";
+}}}*/
     let sentence_array = container.querySelectorAll( selector );
 if( tag_this) console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
 
@@ -495,12 +507,12 @@ if( tag_this) console_dir("sentence_array .. selector=["+selector+"]",sentence_a
 if( log_this) console.log(last_clause);
     }
 
-    /* Adding last sentence that is not part of those captured by selector ..(it has no nextSibling) */
-    t_util.add_el_class(container.lastElementChild, CSS_LAST_CLAUSE);
+    /* Adding last sentence that is not part of those captured by selector .. (as it has no nextSibling) */
+    t_util.add_el_class(container.lastElementChild.lastElementChild, CSS_LAST_CLAUSE);
 
-    t_SENTENCE_FONTSIZE_CLEAR( container );
+    t_SENTENCE_FONTSIZE_APPLY( container );
     /*}}}*/
-    /* POPUP CONTAINER .. [AND ITS XPATH] {{{*/
+    /* OPTIONNAL [POPUP] CONTAINER .. [AND ITS XPATH] {{{*/
     let innerHTML
         = container.outerHTML;
 
@@ -584,7 +596,7 @@ dom_log.log_caller();
 let sentence_color_next = 1;
 
 /*}}}*/
-let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start /*, offset, string, group */)
+let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
 {
 /*{{{*/
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
@@ -919,15 +931,15 @@ console.log("from_container=["+from_container+"]")
     /*}}}*/
     /* SENTENCE-SPLIT OR FONT-ADJUST .. f(H or V){{{*/
     let split_or_font = move_H_or_V;
-    let offset        = (move_delta > 0) ? 1 : -1;
+    let size_offset   = (move_delta > 0) ? 1 : -1;
 
 /*{{{*/
 if( log_this) log_key_val_group(  caller
                                   , { move_delta
                                     , split_or_font
-                                    , offset
+                                    , size_offset
                                   }
-                                  , lfX[split_or_font ? ((offset > 0) ? 3:4) : ((offset > 0) ? 5:6)]
+                                  , lfX[split_or_font ? ((size_offset > 0) ? 3:4) : ((size_offset > 0) ? 5:6)]
                                   , true);
 
 /*}}}*/
@@ -935,12 +947,12 @@ if( log_this) log_key_val_group(  caller
     /* NEXT OR PREVIOUS SENTENCE-SPLIT {{{*/
     if( split_or_font )
     {
-        t_SENTENCE_split_at_offset(from_container, offset);
+        t_SENTENCE_split_at_offset(from_container, size_offset);
     }
     /*}}}*/
     /* ADJUST SENTENCE FONT SIZE {{{*/
     else {
-        t_SENTENCE_FONTSIZE_OFFSET( offset );
+        t_SENTENCE_FONTSIZE_OFFSET( size_offset );
     }
     /*}}}*/
 if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
@@ -950,7 +962,7 @@ if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
 };
 /*}}}*/
 /*_ t_SENTENCE_split_at_offset {{{*/
-let t_SENTENCE_split_at_offset = function(from_container,offset)
+let t_SENTENCE_split_at_offset = function(from_container,size_offset)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_split_at_offset";
@@ -961,9 +973,9 @@ let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
 */
 /*}}}*/
 
-    let offset_container = t_util.get_node_sibling_at_offset( from_container, offset);
+    let offset_container = t_util.get_node_sibling_at_offset( from_container, size_offset);
 
-if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
+if( log_this) log_key_val_group( caller+"(size_offset=["+size_offset+"])"
                                 , {   from_container
                                   , offset_container
                                 });
@@ -972,7 +984,7 @@ if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
     {
         t_SENTENCE_RESTORE_EL    ( from_container   );
         t_SENTENCE_SPLIT         ( offset_container );
-        t_SENTENCE_FONTSIZE_CLEAR( offset_container );
+        t_SENTENCE_FONTSIZE_APPLY( offset_container );
         t_SENTENCE_OUTLINE       ( offset_container );
 
         t_tools.t_scrollIntoViewIfNeeded( offset_container );
@@ -987,15 +999,15 @@ let t_SENTENCE_OUTLINE = function(sentence_el)
 };
 /*}}}*/
 /*_ t_SENTENCE_FONTSIZE_OFFSET {{{*/
-let t_SENTENCE_FONTSIZE_OFFSET = function(offset=0)
+let t_SENTENCE_FONTSIZE_OFFSET = function(size_offset=0)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_FONTSIZE_OFFSET";
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 
 /*}}}*/
-    /* APPLY [offset] to [e12_font_size] {{{*/
-    let num = offset + parseInt( e12_font_size.substring(2) );
+    /* APPLY [size_offset] to [e12_font_size] {{{*/
+    let num = size_offset + parseInt( e12_font_size.substring(2) );
     num     = Math.max( 1, num);
     num     = Math.min(12, num);
 
@@ -1006,7 +1018,7 @@ if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
     /* APPLY CURRENT FONT SIZE TO ALL SENTENCE SPLIT CONTAINER {{{*/
     let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
     for(let i=0; i < node_list.length; ++i)
-        t_SENTENCE_FONTSIZE_CLEAR(node_list[i]);
+        t_SENTENCE_FONTSIZE_APPLY(node_list[i]);
 
     /*}}}*/
     /* APPLY CURRENT FONT SIZE TO POPUP SENTENCE SPLIT CONTAINER {{{*/
@@ -1016,8 +1028,8 @@ if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
     return node_list.length;
 };
 /*}}}*/
-/*_ t_SENTENCE_FONTSIZE_CLEAR {{{*/
-let t_SENTENCE_FONTSIZE_CLEAR = function(container)
+/*_ t_SENTENCE_FONTSIZE_APPLY {{{*/
+let t_SENTENCE_FONTSIZE_APPLY = function(container)
 {
     t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
 
@@ -1207,7 +1219,7 @@ let clear_popup = function()
     if(typeof dom_popup == "undefined") return;
 
     let dom_popup_div = dom_popup.log_popup_div_get();
-    if( dom_popup_div ) t_SENTENCE_FONTSIZE_CLEAR( dom_popup_div );
+    if( dom_popup_div ) t_SENTENCE_FONTSIZE_APPLY( dom_popup_div );
 };
 /*}}}*/
 /*_ hide_popup {{{*/

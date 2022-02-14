@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220211:18h:26)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220214:16h:06)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220211:16h:15)"; }
+#dom_host_css_tag   { content: "dom_host_css (220214:16h:02)"; }
 
 
 body.dark { background : #430; }
@@ -728,18 +728,18 @@ em.select0 { cursor : all-scroll !important; }
 .sentence_container *    { white-space : pre-line !important; }
 .sentence_container *    { text-align  : left     !important; }
 
-.sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px !important; }
-.sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px !important; }
-.sentence_container.fs3 , .sentence_container.fs3  * { font-size :  9px !important; }
-.sentence_container.fs4 , .sentence_container.fs4  * { font-size : 11px !important; }
-.sentence_container.fs5 , .sentence_container.fs5  * { font-size : 13px !important; }
-.sentence_container.fs6 , .sentence_container.fs6  * { font-size : 16px !important; }
-.sentence_container.fs7 , .sentence_container.fs7  * { font-size : 20px !important; }
-.sentence_container.fs8 , .sentence_container.fs8  * { font-size : 23px !important; }
-.sentence_container.fs9 , .sentence_container.fs9  * { font-size : 28px !important; }
-.sentence_container.fs10, .sentence_container.fs10 * { font-size : 34px !important; }
-.sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px !important; }
-.sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px !important; }
+.sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px !important; line-height:1em !important; }
+.sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px !important; line-height:1em !important; }
+.sentence_container.fs3 , .sentence_container.fs3  * { font-size :  9px !important; line-height:1em !important; }
+.sentence_container.fs4 , .sentence_container.fs4  * { font-size : 11px !important; line-height:1em !important; }
+.sentence_container.fs5 , .sentence_container.fs5  * { font-size : 13px !important; line-height:1em !important; }
+.sentence_container.fs6 , .sentence_container.fs6  * { font-size : 16px !important; line-height:1em !important; }
+.sentence_container.fs7 , .sentence_container.fs7  * { font-size : 20px !important; line-height:1em !important; }
+.sentence_container.fs8 , .sentence_container.fs8  * { font-size : 23px !important; line-height:1em !important; }
+.sentence_container.fs9 , .sentence_container.fs9  * { font-size : 28px !important; line-height:1em !important; }
+.sentence_container.fs10, .sentence_container.fs10 * { font-size : 34px !important; line-height:1em !important; }
+.sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px !important; line-height:1em !important; }
+.sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px !important; line-height:1em !important; }
 
 .sentence, .clause    { display          : block        !important; }
 .sentence, .clause    { transform        : scale(0.9)   !important; }
@@ -2850,7 +2850,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220210:18h:36)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:15h:55)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3164,14 +3164,13 @@ const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
 
 const SYMBOL_GEAR          = "\u2699";
 const SYMBOL_THEME         = "\u262F";
-const SYMBOL_MAGNIFY_LEFT  = "\uD83D\uDD0D";
-const SYMBOL_MAGNIFY_RIGHT = "\uD83D\uDD0E";
+
 const MAGNIFIED_STYLE      = "font-size: 200% !important;";
 
 const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
 const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
-const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important;";
-const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important;";
+const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important; border-radius:1em;";
+const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important; border-radius:1em;";
 
 let     theme_dark = false;
 let     magnified  = false;
@@ -3192,6 +3191,9 @@ if( log_this) console_dir("container",container        );
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if( check_tool_event(e) ) return;
+
+    if(!sentence_containers.includes( container ))
+        sentence_containers.push    ( container );
 
     if(container.nodeName == "DETAILS") container.open = true;
 
@@ -3260,15 +3262,11 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
         +      " line-height: 1em;"
     ;
 
-    let   magnified_symbol
-        = magnified
-        ? SYMBOL_MAGNIFY_LEFT
-        : SYMBOL_MAGNIFY_RIGHT
-    ;
+
 
     let tools = ""
         +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME     +"</button>"
-        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ magnified_symbol +"</button>"
+
         + ((typeof dom_popup != "undefined")
            ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR      +"</button>" : "")
     ;
@@ -3286,12 +3284,9 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
     ;
 
     container.innerHTML = tools
-        + "<pre class='"+CSS_SENTENCE+" bg1' style='"+theme_style + magnified_style+"'>"
+        + "<pre class='"+CSS_SENTENCE+" bg1' style='"+theme_style+" "+magnified_style+"'>"
         +  textContent
         + "</pre>";
-
-    if(!sentence_containers.includes( container ))
-        sentence_containers.push    ( container );
 
     if( theme_dark )
         t_SENTENCE_SPLIT_set_parent_theme_dark( container );
@@ -3305,6 +3300,7 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
         + ","
         + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE
     ;
+
     let sentence_array = container.querySelectorAll( selector );
 if( tag_this) console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
 
@@ -3317,9 +3313,9 @@ if( log_this) console.log(last_clause);
     }
 
 
-    t_util.add_el_class(container.lastElementChild, CSS_LAST_CLAUSE);
+    t_util.add_el_class(container.lastElementChild.lastElementChild, CSS_LAST_CLAUSE);
 
-    t_SENTENCE_FONTSIZE_CLEAR( container );
+    t_SENTENCE_FONTSIZE_APPLY( container );
 
 
     let innerHTML
@@ -3728,15 +3724,15 @@ if( tag_this && (was_is_scrolling != is_scrolling)) log("%c SCROLLING", lbH+lfX[
 
 
     let split_or_font = move_H_or_V;
-    let offset        = (move_delta > 0) ? 1 : -1;
+    let size_offset   = (move_delta > 0) ? 1 : -1;
 
 
 if( log_this) log_key_val_group(  caller
                                   , { move_delta
                                     , split_or_font
-                                    , offset
+                                    , size_offset
                                   }
-                                  , lfX[split_or_font ? ((offset > 0) ? 3:4) : ((offset > 0) ? 5:6)]
+                                  , lfX[split_or_font ? ((size_offset > 0) ? 3:4) : ((size_offset > 0) ? 5:6)]
                                   , true);
 
 
@@ -3744,12 +3740,12 @@ if( log_this) log_key_val_group(  caller
 
     if( split_or_font )
     {
-        t_SENTENCE_split_at_offset(from_container, offset);
+        t_SENTENCE_split_at_offset(from_container, size_offset);
     }
 
 
     else {
-        t_SENTENCE_FONTSIZE_OFFSET( offset );
+        t_SENTENCE_FONTSIZE_OFFSET( size_offset );
     }
 
 if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
@@ -3759,7 +3755,7 @@ if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
 };
 
 
-let t_SENTENCE_split_at_offset = function(from_container,offset)
+let t_SENTENCE_split_at_offset = function(from_container,size_offset)
 {
 
 let   caller = "t_SENTENCE_split_at_offset";
@@ -3768,9 +3764,9 @@ let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
 
 
 
-    let offset_container = t_util.get_node_sibling_at_offset( from_container, offset);
+    let offset_container = t_util.get_node_sibling_at_offset( from_container, size_offset);
 
-if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
+if( log_this) log_key_val_group( caller+"(size_offset=["+size_offset+"])"
                                 , {   from_container
                                   , offset_container
                                 });
@@ -3779,7 +3775,7 @@ if( log_this) log_key_val_group( caller+"(offset=["+offset+"])"
     {
         t_SENTENCE_RESTORE_EL    ( from_container   );
         t_SENTENCE_SPLIT         ( offset_container );
-        t_SENTENCE_FONTSIZE_CLEAR( offset_container );
+        t_SENTENCE_FONTSIZE_APPLY( offset_container );
         t_SENTENCE_OUTLINE       ( offset_container );
 
         t_tools.t_scrollIntoViewIfNeeded( offset_container );
@@ -3794,7 +3790,7 @@ let t_SENTENCE_OUTLINE = function(sentence_el)
 };
 
 
-let t_SENTENCE_FONTSIZE_OFFSET = function(offset=0)
+let t_SENTENCE_FONTSIZE_OFFSET = function(size_offset=0)
 {
 
 let   caller = "t_SENTENCE_FONTSIZE_OFFSET";
@@ -3802,7 +3798,7 @@ let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 
 
 
-    let num = offset + parseInt( e12_font_size.substring(2) );
+    let num = size_offset + parseInt( e12_font_size.substring(2) );
     num     = Math.max( 1, num);
     num     = Math.min(12, num);
 
@@ -3813,7 +3809,7 @@ if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
 
     let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
     for(let i=0; i < node_list.length; ++i)
-        t_SENTENCE_FONTSIZE_CLEAR(node_list[i]);
+        t_SENTENCE_FONTSIZE_APPLY(node_list[i]);
 
 
 
@@ -3824,7 +3820,7 @@ if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
 };
 
 
-let t_SENTENCE_FONTSIZE_CLEAR = function(container)
+let t_SENTENCE_FONTSIZE_APPLY = function(container)
 {
     t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
 
@@ -4007,7 +4003,7 @@ let clear_popup = function()
     if(typeof dom_popup == "undefined") return;
 
     let dom_popup_div = dom_popup.log_popup_div_get();
-    if( dom_popup_div ) t_SENTENCE_FONTSIZE_CLEAR( dom_popup_div );
+    if( dom_popup_div ) t_SENTENCE_FONTSIZE_APPLY( dom_popup_div );
 };
 
 
