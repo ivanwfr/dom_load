@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220214:18h:42)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:15h:27)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -241,7 +241,7 @@ let dom_tools_html_data = `
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220214:16h:26)"; }
+#dom_host_css_tag   { content: "dom_host_css (220216:14h:27)"; }
 
 
 body.dark { background : #430; }
@@ -928,18 +928,18 @@ em.select0 { cursor : all-scroll !important; }
 .sentence_container *    { white-space : pre-line !important; }
 .sentence_container *    { text-align  : left     !important; }
 
-.sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px !important; }
-.sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px !important; }
-.sentence_container.fs3 , .sentence_container.fs3  * { font-size :  9px !important; }
-.sentence_container.fs4 , .sentence_container.fs4  * { font-size : 11px !important; }
-.sentence_container.fs5 , .sentence_container.fs5  * { font-size : 13px !important; }
-.sentence_container.fs6 , .sentence_container.fs6  * { font-size : 16px !important; }
-.sentence_container.fs7 , .sentence_container.fs7  * { font-size : 20px !important; }
-.sentence_container.fs8 , .sentence_container.fs8  * { font-size : 23px !important; }
-.sentence_container.fs9 , .sentence_container.fs9  * { font-size : 28px !important; }
-.sentence_container.fs10, .sentence_container.fs10 * { font-size : 34px !important; }
-.sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px !important; }
-.sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px !important; }
+.sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px; }
+.sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px; }
+.sentence_container.fs3 , .sentence_container.fs3  * { font-size :  9px; }
+.sentence_container.fs4 , .sentence_container.fs4  * { font-size : 11px; }
+.sentence_container.fs5 , .sentence_container.fs5  * { font-size : 13px; }
+.sentence_container.fs6 , .sentence_container.fs6  * { font-size : 16px; }
+.sentence_container.fs7 , .sentence_container.fs7  * { font-size : 20px; }
+.sentence_container.fs8 , .sentence_container.fs8  * { font-size : 23px; }
+.sentence_container.fs9 , .sentence_container.fs9  * { font-size : 28px; }
+.sentence_container.fs10, .sentence_container.fs10 * { font-size : 34px; }
+.sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px; }
+.sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px; }
 
 .sentence, .clause    { display          : block        !important; }
 .sentence, .clause    { transform        : scale(0.9)   !important; }
@@ -8856,7 +8856,7 @@ let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220210:17h:06)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220216:15h:26)";
 
 let dom_util    = (function() {
 "use strict";
@@ -12465,6 +12465,8 @@ let get_url_domain = function(url)
 
 
 const regexp_URL = new RegExp("^([^:]+):\\/\\/(?:([^@]+)@)?([^\\/:]*)?(?::([\\d]+))?(?:(\\/[^#]*)(?:#(.*))?)?$", "i");
+
+
 
 
 
@@ -29227,7 +29229,7 @@ let dom_seek_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211208:19h:33)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:13)";
 
 let dom_seek    = (function() {
 "use strict";
@@ -29516,7 +29518,7 @@ if( log_this) t_tools.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" 
     let slot_hasCCS
         = !!t_select.t_select_get_slot_pattern(slot)
     ;
-if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS", 2);
+if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS .. ["+t_util.get_id_or_tag_and_className(onWork_EL)+"]", 2);
 
     let seeker_isOn_SLOT_EL = t_seeker_isOn_SLOT_EL(onWork_EL);
 
@@ -30898,12 +30900,12 @@ if( log_this) log("%c"+caller, lbH+lf1);
     switch( onSeekXYLT.label )
     {
         case CSS_SEEK2_ONSLOTEL : { sym = t_data.SYMBOL_BLACK_R_HAND ; msg = "SEEK SLOT #"+t_tools.t_get_onWork_EL_slot(); } break;
-        case CSS_SEEK4_ONJUMPEL : { sym = "ON"                ; msg = t_util.get_id_or_tag(onWork_EL)         ; } break;
-        case CSS_SEEK6_ONSTICKY : { sym = "ON"                ; msg = t_util.get_id_or_tag(onWork_EL)         ; } break;
-        case CSS_SEEK5_ONSEEKER : { sym = container_symbol    ; msg = container_msg                    ; } break;
-        case CSS_SEEK1_ONRESUME : { sym = t_data.SYMBOL_GEAR         ; msg = "RESUME"                         ; } break;
-        case CSS_SEEK0_ONDOC    : { sym = t_data.SYMBOL_BLACK_R_HAND ; msg = "SEEK DOC"                       ; } break;
-        default                 : { sym = t_data.SYMBOL_CIRCLE       ; msg = onSeekXYLT.label || "NOT SEEKING" ; } break;
+        case CSS_SEEK4_ONJUMPEL : { sym = "ON"                       ; msg = t_util.get_id_or_tag(onWork_EL)             ; } break;
+        case CSS_SEEK6_ONSTICKY : { sym = "ON"                       ; msg = t_util.get_id_or_tag(onWork_EL)             ; } break;
+        case CSS_SEEK5_ONSEEKER : { sym = container_symbol           ; msg = container_msg                               ; } break;
+        case CSS_SEEK1_ONRESUME : { sym = t_data.SYMBOL_GEAR         ; msg = "RESUME"                                    ; } break;
+        case CSS_SEEK0_ONDOC    : { sym = t_data.SYMBOL_BLACK_R_HAND ; msg = "SEEK DOC"                                  ; } break;
+        default                 : { sym = t_data.SYMBOL_CIRCLE       ; msg = onSeekXYLT.label || "NOT SEEKING"           ; } break;
     }
 
     t_seeker_show(sym +" "+ msg);

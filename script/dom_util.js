@@ -23,7 +23,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220210:17h:06)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220216:15h:26)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -4003,8 +4003,8 @@ let get_url_domain = function(url)
 
     let domain
         = (url.indexOf("://" ) > 0)
-        ?  url.split  (  "/" )[2]
-        :  url.split  (  "/" )[0]
+        ?  url.split  (  "/" )[2]       /* .. http://mydomain/images/logo.jpg */
+        :  url.split  (  "/" )[0]       /* ..                 images/logo.jpg */
     ;
 
     return  domain.replace(regex_DOMAIN, "$1") || parseURL(url).scheme+"://";
@@ -4015,6 +4015,10 @@ const regexp_URL = new RegExp("^([^:]+):\\/\\/(?:([^@]+)@)?([^\\/:]*)?(?::([\\d]
 /*_________________ SEPARATOR:_________^__^__^__________^________________^________________^_________^________^______*/
 /*____________________ AFFIXE:__1111111__________2222222___3333333333_____44444444_____5555555555____66666__________*/
 /*_____________________ TOKEN:   scheme:  /  /  userinfo@  host          :port            /path     #fragment       */
+
+/*{{{
+    dom_util.parseURL("http://myUserName:myPassword@myDomain:8081/images/logo.jpg");
+}}}*/
 
 let parseURL = function(url)
 {

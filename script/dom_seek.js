@@ -24,7 +24,7 @@
 */
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (211208:19h:33)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:13)";
 /*}}}*/
 let dom_seek    = (function() {
 "use strict";
@@ -319,7 +319,7 @@ if( log_this) t_tools.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" 
     let slot_hasCCS
         = !!t_select.t_select_get_slot_pattern(slot)
     ;
-if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS", 2);
+if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS .. ["+t_util.get_id_or_tag_and_className(onWork_EL)+"]", 2);
 
     let seeker_isOn_SLOT_EL = t_seeker_isOn_SLOT_EL(onWork_EL); /* onWork_EL has a slot */
     /*}}}*/
@@ -1747,12 +1747,12 @@ if( log_this) log("%c"+caller, lbH+lf1);
     switch( onSeekXYLT.label )
     {
         case CSS_SEEK2_ONSLOTEL : { sym = t_data.SYMBOL_BLACK_R_HAND ; msg = "SEEK SLOT #"+t_tools.t_get_onWork_EL_slot(); } break;
-        case CSS_SEEK4_ONJUMPEL : { sym = "ON"                ; msg = t_util.get_id_or_tag(onWork_EL)         ; } break;
-        case CSS_SEEK6_ONSTICKY : { sym = "ON"                ; msg = t_util.get_id_or_tag(onWork_EL)         ; } break;
-        case CSS_SEEK5_ONSEEKER : { sym = container_symbol    ; msg = container_msg                    ; } break;
-        case CSS_SEEK1_ONRESUME : { sym = t_data.SYMBOL_GEAR         ; msg = "RESUME"                         ; } break;
-        case CSS_SEEK0_ONDOC    : { sym = t_data.SYMBOL_BLACK_R_HAND ; msg = "SEEK DOC"                       ; } break;
-        default                 : { sym = t_data.SYMBOL_CIRCLE       ; msg = onSeekXYLT.label || "NOT SEEKING" ; } break;
+        case CSS_SEEK4_ONJUMPEL : { sym = "ON"                       ; msg = t_util.get_id_or_tag(onWork_EL)             ; } break;
+        case CSS_SEEK6_ONSTICKY : { sym = "ON"                       ; msg = t_util.get_id_or_tag(onWork_EL)             ; } break;
+        case CSS_SEEK5_ONSEEKER : { sym = container_symbol           ; msg = container_msg                               ; } break;
+        case CSS_SEEK1_ONRESUME : { sym = t_data.SYMBOL_GEAR         ; msg = "RESUME"                                    ; } break;
+        case CSS_SEEK0_ONDOC    : { sym = t_data.SYMBOL_BLACK_R_HAND ; msg = "SEEK DOC"                                  ; } break;
+        default                 : { sym = t_data.SYMBOL_CIRCLE       ; msg = onSeekXYLT.label || "NOT SEEKING"           ; } break;
     }
 
     t_seeker_show(sym +" "+ msg);
