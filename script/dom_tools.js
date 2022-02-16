@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220214:18h:40)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220216:15h:42)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -18923,16 +18923,17 @@ if( log_this) log("%c t_select.get_last_selected_slot() .. return ["+slot+"]", l
             : el.id.startsWith("thumb_s_"  ) ?  8   /* thumb_s_5   */
             :                                   0
         ;
-
-        let ss = el.id.substring(offset);
-
-        let ccX = parseInt( ss );
-        slot
-            = isNaN(ccX    ) ?   0  /* not found     */
-            :      (ccX > 0) ? ccX  /*  ccX=[1..9,0] */
-            :                   10; /* slot=[1...10] */
+        if( offset )
+        {
+            let ss  = el.id.substring( offset );
+            let ccX =        parseInt( ss     );
+            slot
+                = isNaN(ccX    ) ?   0  /* not found     */
+                :      (ccX > 0) ? ccX  /*  ccX=[1..9,0] */
+                :                   10; /* slot=[1...10] */
 
 if( log_this) log("offset=["+offset+"] .. el.id=["+el.id+"] .. ss=["+ss+"] .. ccX=["+ccX+"] .. slot=["+slot+"]");
+        }
     }
 
 if( log_this) log(caller+"("+get_n_lbl(el)+"): ...return ["+slot+"]");

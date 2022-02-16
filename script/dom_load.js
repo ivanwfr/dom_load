@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:15h:27)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:15h:42)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -37849,7 +37849,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220214:18h:40)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220216:15h:42)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -55328,16 +55328,17 @@ if( log_this) log("%c t_select.get_last_selected_slot() .. return ["+slot+"]", l
             : el.id.startsWith("thumb_s_"  ) ?  8
             :                                   0
         ;
-
-        let ss = el.id.substring(offset);
-
-        let ccX = parseInt( ss );
-        slot
-            = isNaN(ccX    ) ?   0
-            :      (ccX > 0) ? ccX
-            :                   10;
+        if( offset )
+        {
+            let ss  = el.id.substring( offset );
+            let ccX =        parseInt( ss     );
+            slot
+                = isNaN(ccX    ) ?   0
+                :      (ccX > 0) ? ccX
+                :                   10;
 
 if( log_this) log("offset=["+offset+"] .. el.id=["+el.id+"] .. ss=["+ss+"] .. ccX=["+ccX+"] .. slot=["+slot+"]");
+        }
     }
 
 if( log_this) log(caller+"("+get_n_lbl(el)+"): ...return ["+slot+"]");
