@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:15h:42)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:15h:55)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -29229,7 +29229,7 @@ let dom_seek_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:13)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:55)";
 
 let dom_seek    = (function() {
 "use strict";
@@ -29518,7 +29518,7 @@ if( log_this) t_tools.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" 
     let slot_hasCCS
         = !!t_select.t_select_get_slot_pattern(slot)
     ;
-if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS .. ["+t_util.get_id_or_tag_and_className(onWork_EL)+"]", 2);
+if((slot >= 0) && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS .. ["+t_util.get_id_or_tag_and_className(onWork_EL)+"]", 2);
 
     let seeker_isOn_SLOT_EL = t_seeker_isOn_SLOT_EL(onWork_EL);
 

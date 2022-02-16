@@ -24,7 +24,7 @@
 */
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:13)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:55)";
 /*}}}*/
 let dom_seek    = (function() {
 "use strict";
@@ -319,7 +319,7 @@ if( log_this) t_tools.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" 
     let slot_hasCCS
         = !!t_select.t_select_get_slot_pattern(slot)
     ;
-if(slot && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS .. ["+t_util.get_id_or_tag_and_className(onWork_EL)+"]", 2);
+if((slot >= 0) && !slot_hasCCS) logBIG(caller+": [slot "+slot+"] .. !slot_hasCCS .. ["+t_util.get_id_or_tag_and_className(onWork_EL)+"]", 2);
 
     let seeker_isOn_SLOT_EL = t_seeker_isOn_SLOT_EL(onWork_EL); /* onWork_EL has a slot */
     /*}}}*/
