@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:14h:30)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220217:18h:43)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220216:14h:27)"; }
+#dom_host_css_tag   { content: "dom_host_css (220217:18h:42)"; }
 
 
 body.dark { background : #430; }
@@ -722,11 +722,13 @@ em.select0 { cursor : all-scroll !important; }
     outline          : 5px #000 dashed;
     box-shadow       : 3px 3px 12px 6px rgba(0,0,0,0.5);
     border           : 5px #000 dashed;
-    background-color : #DFD;
+    background-color : rgba(221,255,221,0.5);
 }
-.sentence_container *    { max-width   : 64ch     !important; }
-.sentence_container *    { white-space : pre-line !important; }
-.sentence_container *    { text-align  : left     !important; }
+.sentence { max-width   : 64ch     !important; }
+.sentence { min-width   : 32ch     !important; }
+.sentence { overflow    : visible  !important; }
+.sentence { white-space : pre-line !important; }
+.sentence { text-align  : left     !important; }
 
 .sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px; }
 .sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px; }
@@ -741,6 +743,7 @@ em.select0 { cursor : all-scroll !important; }
 .sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px; }
 .sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px; }
 
+.sentence             { overflow         : visible      !important; }
 .sentence, .clause    { display          : block        !important; }
 .sentence, .clause    { transform        : scale(0.9)   !important; }
 .sentence, .clause    { transform-origin : 0% 50%       !important; }

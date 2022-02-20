@@ -1,5 +1,5 @@
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220216:14h:27)"; }
+#dom_host_css_tag   { content: "dom_host_css (220220:19h:04)"; }
 
 /* body {{{*/
 body.dark { background : #430; }
@@ -785,11 +785,13 @@ table { border-collapse: collapse !important; }
     outline          : 5px #000 dashed;
     box-shadow       : 3px 3px 12px 6px rgba(0,0,0,0.5);
     border           : 5px #000 dashed;
-    background-color : #DFD;
+    background-color : rgba(221,255,221,0.5);
 }
-.sentence_container *    { max-width   : 64ch     !important; }
-.sentence_container *    { white-space : pre-line !important; }
-.sentence_container *    { text-align  : left     !important; }
+.sentence { max-width   : 64ch     !important; }
+.sentence { min-width   : 32ch     !important; }
+.sentence { overflow    : visible  !important; }
+.sentence { white-space : pre-line !important; }
+.sentence { text-align  : left     !important; }
 
 .sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px; } /* E12.1 = 1.0 */
 .sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px; } /* E12.1 = 1.2 */
@@ -804,6 +806,7 @@ table { border-collapse: collapse !important; }
 .sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px; } /* E12.1 = 6.8 */
 .sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px; } /* E12.1 = 8.2 */
 
+.sentence             { overflow         : visible      !important; }
 .sentence, .clause    { display          : block        !important; }
 .sentence, .clause    { transform        : scale(0.9)   !important; }
 .sentence, .clause    { transform-origin : 0% 50%       !important; }
@@ -966,8 +969,12 @@ table { border-collapse: collapse !important; }
 
 /*}}}*/
 
-#drag_cursor.move_on_cooldown    { content: "\231B"      !important; background-color:rgba(000,255,000,0.5) !important; }
-#drag_cursor.not_moved_enough    { content: "\25C4\25BA" !important; background-color:rgba(000,000,255,0.5) !important; }
+#drag_cursor                  { transition    : transform 300ms ease-out; }
+#drag_cursor.onload           { transform     :  rotate(360deg) scale(3); }
+#drag_cursor.onload           { border-radius : 1em          !important;  }
+#drag_cursor.onload::after    { content       : "splitter"   !important;  }
+#drag_cursor.move_on_cooldown { content       : "\231B"      !important; background-color:rgba(000,255,000,0.5) !important; }
+#drag_cursor.not_moved_enough { content       : "\25C4\25BA" !important; background-color:rgba(000,000,255,0.5) !important; }
 
 /*{{{
 "┌─────────────────────────────────────────────────────────────────────────────┐

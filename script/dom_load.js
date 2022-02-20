@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220216:15h:55)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220220:19h:10)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -241,7 +241,7 @@ let dom_tools_html_data = `
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220216:14h:27)"; }
+#dom_host_css_tag   { content: "dom_host_css (220220:19h:04)"; }
 
 
 body.dark { background : #430; }
@@ -922,11 +922,13 @@ em.select0 { cursor : all-scroll !important; }
     outline          : 5px #000 dashed;
     box-shadow       : 3px 3px 12px 6px rgba(0,0,0,0.5);
     border           : 5px #000 dashed;
-    background-color : #DFD;
+    background-color : rgba(221,255,221,0.5);
 }
-.sentence_container *    { max-width   : 64ch     !important; }
-.sentence_container *    { white-space : pre-line !important; }
-.sentence_container *    { text-align  : left     !important; }
+.sentence { max-width   : 64ch     !important; }
+.sentence { min-width   : 32ch     !important; }
+.sentence { overflow    : visible  !important; }
+.sentence { white-space : pre-line !important; }
+.sentence { text-align  : left     !important; }
 
 .sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px; }
 .sentence_container.fs2 , .sentence_container.fs2  * { font-size :  7px; }
@@ -941,6 +943,7 @@ em.select0 { cursor : all-scroll !important; }
 .sentence_container.fs11, .sentence_container.fs11 * { font-size : 41px; }
 .sentence_container.fs12, .sentence_container.fs12 * { font-size : 49px; }
 
+.sentence             { overflow         : visible      !important; }
 .sentence, .clause    { display          : block        !important; }
 .sentence, .clause    { transform        : scale(0.9)   !important; }
 .sentence, .clause    { transform-origin : 0% 50%       !important; }
@@ -1068,8 +1071,12 @@ em.select0 { cursor : all-scroll !important; }
 
 
 
-#drag_cursor.move_on_cooldown    { content: "\\231B"      !important; background-color:rgba(000,255,000,0.5) !important; }
-#drag_cursor.not_moved_enough    { content: "\\25C4\\25BA" !important; background-color:rgba(000,000,255,0.5) !important; }
+#drag_cursor                  { transition    : transform 300ms ease-out; }
+#drag_cursor.onload           { transform     :  rotate(360deg) scale(3); }
+#drag_cursor.onload           { border-radius : 1em          !important;  }
+#drag_cursor.onload::after    { content       : "splitter"   !important;  }
+#drag_cursor.move_on_cooldown { content       : "\\231B"      !important; background-color:rgba(000,255,000,0.5) !important; }
+#drag_cursor.not_moved_enough { content       : "\\25C4\\25BA" !important; background-color:rgba(000,000,255,0.5) !important; }
 
 
 /*INLINE}}}*/
@@ -8393,7 +8400,7 @@ let dom_popup_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_POPUP_JS_ID         = "dom_popup";
-const DOM_POPUP_JS_TAG        =  DOM_POPUP_JS_ID +" (220127:17h:05)";
+const DOM_POPUP_JS_TAG        =  DOM_POPUP_JS_ID +" (220218:15h:22)";
 
 let dom_popup = (function() {
 "use strict";
@@ -8406,18 +8413,19 @@ let dom_popup = (function() {
 const CAPTURE_TRUE_PASSIVE_FALSE  = { capture: true , passive: false , useCapture: true };
 const LOG_POPUP_DIV_DURATION      =   3000;
 
-const LOG_POPUP_STYLE             = { backgroundColor: "rgba(255,255,  0,0.9)" , fontSize: "100%" };
+const LOG_POPUP_STYLE             = { backgroundColor: "rgba(255,255,0,0.9)" , fontSize: "100%" };
+const LOG_POPUP_STYLE_WARN        = { backgroundColor: "rgba(255,165,0,0.8)" , fontSize: "150%" };
 
-const LOG_POPUP_STYLE_WARN        = { backgroundColor: "rgba(255,255,255,0.8)" , fontSize: "150%" };
-
-const THEME_STYLE_DARK  =  "color: #DDD !important; background-color: rgba( 32, 32, 32,0.8) !important;";
-const THEME_STYLE_LIGHT =  "color: #222 !important; background-color: rgba(255,255,255,0.8) !important;";
+const THEME_STYLE_DARK  =  "color: #F00 !important; background-color: transparent; font-weight:900;";
+const THEME_STYLE_LIGHT =  "color: #F00 !important; background-color: transparent; font-weight:900;";
 
 let   log_popup_div;
 let   log_popup_div_timeout;
 
-let log_popup = function({ message_HTML , xy , style=LOG_POPUP_STYLE , options="" , theme_dark })
+let log_popup_warn = function(msg) { log_popup({ message_HTML: msg , style: LOG_POPUP_STYLE_WARN } ); };
+let log_popup      = function(args)
 {
+    let { message_HTML , xy , style=LOG_POPUP_STYLE , options="" , theme_dark } = args || {};
 
     if(!log_popup_div)
         log_popup_div_get();
@@ -8489,6 +8497,10 @@ let log_popup = function({ message_HTML , xy , style=LOG_POPUP_STYLE , options="
 };
 
 
+
+const LOG_POPUP_DIV_ZINDEX = 2147483647;
+
+
 let log_popup_div_get = function()
 {
     if(log_popup_div) return log_popup_div;
@@ -8502,7 +8514,7 @@ let log_popup_div_get = function()
     log_popup_div.style.position        = "fixed";
     log_popup_div.style.left            = (window.innerWidth/2)+"px";
     log_popup_div.style.top             = "1em";
-    log_popup_div.style.zIndex          = "2147483647";
+    log_popup_div.style.zIndex          = LOG_POPUP_DIV_ZINDEX;
 
     log_popup_div.style.borderRadius    = "0 0.5em 0.5em 0";
     log_popup_div.style.borderStyle     = "solid";
@@ -8591,8 +8603,6 @@ let log_popup_scrollTo_el = function(text,el,with_mask,can_scroll=true,style=LOG
 
         let bcr      = el.getBoundingClientRect();
         tl_xy        = { x: bcr.left , y: bcr.top };
-
-
 
 
 
@@ -8799,7 +8809,10 @@ let div_mask_addEventListener = function(type,handler)
 
 
 
-return { log_popup
+return { name : "dom_popup"
+
+
+    ,    log_popup
     ,    log_popup_addEventListener
     ,    log_popup_div_get
     ,    log_popup_div_handles_event
@@ -8807,6 +8820,8 @@ return { log_popup
     ,    log_popup_hide
     ,    log_popup_scrollTo_el
     ,    log_popup_scrollTo_el_warn
+    ,    log_popup_warn
+
 
     ,    div_mask_get
     ,    div_mask_hide
@@ -37849,7 +37864,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220216:15h:42)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220220:18h:59)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -45207,6 +45222,8 @@ if( log_this) t_fly.t_log_event_status(caller+" .. CALLED BY "+ _caller, lf6);
 
 let t_SENTENCE_drag_listener = function(event)
 {
+if(event.altKey ) return;
+if(event.ctrlKey) return;
 
 let   caller = "t_SENTENCE_drag_listener";
 let log_this = LOG_MAP.EV2_MOVE;
@@ -60102,11 +60119,31 @@ let t_show_SNAPSHOT = function()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:18h:57)";
+
 let drag_cursor  = (function() {
+"use strict";
 
 
-
-let      drag_cursor_div;
+const CSS_DRAG_CURSOR_DIV_ONLOAD       = "onload";
+const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  2000;
+let       drag_cursor_div;
 
 
 
@@ -60144,10 +60181,11 @@ let show_drag_cursor = function()
         drag_cursor_div.style.zIndex          =      "2147483647";
         drag_cursor_div.style.opacity         =             "0.5";
 
+        drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
+        setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+
         document.documentElement.appendChild( drag_cursor_div );
     }
-    drag_cursor_div.style.left    = (onDown_XY.x - drag_cursor_div.offsetWidth)+"px";
-    drag_cursor_div.style.top     = (onDown_XY.y                         )+"px";
     drag_cursor_div.style.display = "block";
 };
 
@@ -60158,8 +60196,11 @@ let move_drag_cursor = function(e)
     if(!drag_cursor_div.style.display == "block") return;
 
     let      xy = t_util.get_event_XY(e);
-    drag_cursor_div.style.left    = (xy.x - drag_cursor_div.offsetWidth)+"px";
-    drag_cursor_div.style.top     = (xy.y                         )+"px";
+    let offset_x = drag_cursor_div.className
+        ? drag_cursor_div.offsetWidth / 2
+        : drag_cursor_div.offsetWidth;
+    drag_cursor_div.style.left    = (xy.x - offset_x)+"px";
+    drag_cursor_div.style.top     = (xy.y           )+"px";
 };
 
 let hide_drag_cursor                     = function() { if(drag_cursor_div) drag_cursor_div.style.display = "none"; };
@@ -60181,6 +60222,7 @@ return { name : "drag_cursor"
     ,    del_drag_cursor_CSS_NOT_MOVED_ENOUGH
 };
 }());
+
 
 
 
