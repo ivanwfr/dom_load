@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220217:18h:43)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220220:19h:36)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220217:18h:42)"; }
+#dom_host_css_tag   { content: "dom_host_css (220220:19h:04)"; }
 
 
 body.dark { background : #430; }
@@ -871,8 +871,12 @@ em.select0 { cursor : all-scroll !important; }
 
 
 
-#drag_cursor.move_on_cooldown    { content: "\\231B"      !important; background-color:rgba(000,255,000,0.5) !important; }
-#drag_cursor.not_moved_enough    { content: "\\25C4\\25BA" !important; background-color:rgba(000,000,255,0.5) !important; }
+#drag_cursor                  { transition    : transform 300ms ease-out; }
+#drag_cursor.onload           { transform     :  rotate(360deg) scale(3); }
+#drag_cursor.onload           { border-radius : 1em          !important;  }
+#drag_cursor.onload::after    { content       : "splitter"   !important;  }
+#drag_cursor.move_on_cooldown { content       : "\\231B"      !important; background-color:rgba(000,255,000,0.5) !important; }
+#drag_cursor.not_moved_enough { content       : "\\25C4\\25BA" !important; background-color:rgba(000,000,255,0.5) !important; }
 
 
 /*INLINE}}}*/
@@ -2162,7 +2166,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220216:14h:29)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220220:19h:01)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2300,6 +2304,8 @@ if(log_this) log6("→→→ long_press_handler");
 
 let t_SENTENCE_drag_listener = function(event)
 {
+if(event.altKey ) return;
+if(event.ctrlKey) return;
 
 let   caller = "t_SENTENCE_drag_listener";
 let log_this = DOM_SENTENCE_LOG;
@@ -2711,11 +2717,31 @@ let t_scrollIntoViewIfNeeded = function(el)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:18h:57)";
+
 let drag_cursor  = (function() {
+"use strict";
 
 
-
-let      drag_cursor_div;
+const CSS_DRAG_CURSOR_DIV_ONLOAD       = "onload";
+const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  2000;
+let       drag_cursor_div;
 
 
 
@@ -2753,10 +2779,11 @@ let show_drag_cursor = function()
         drag_cursor_div.style.zIndex          =      "2147483647";
         drag_cursor_div.style.opacity         =             "0.5";
 
+        drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
+        setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+
         document.documentElement.appendChild( drag_cursor_div );
     }
-    drag_cursor_div.style.left    = (onDown_XY.x - drag_cursor_div.offsetWidth)+"px";
-    drag_cursor_div.style.top     = (onDown_XY.y                         )+"px";
     drag_cursor_div.style.display = "block";
 };
 
@@ -2767,8 +2794,11 @@ let move_drag_cursor = function(e)
     if(!drag_cursor_div.style.display == "block") return;
 
     let      xy = t_util.get_event_XY(e);
-    drag_cursor_div.style.left    = (xy.x - drag_cursor_div.offsetWidth)+"px";
-    drag_cursor_div.style.top     = (xy.y                         )+"px";
+    let offset_x = drag_cursor_div.className
+        ? drag_cursor_div.offsetWidth / 2
+        : drag_cursor_div.offsetWidth;
+    drag_cursor_div.style.left    = (xy.x - offset_x)+"px";
+    drag_cursor_div.style.top     = (xy.y           )+"px";
 };
 
 let hide_drag_cursor                     = function() { if(drag_cursor_div) drag_cursor_div.style.display = "none"; };
@@ -2790,6 +2820,7 @@ return { name : "drag_cursor"
     ,    del_drag_cursor_CSS_NOT_MOVED_ENOUGH
 };
 }());
+
 
 
 
