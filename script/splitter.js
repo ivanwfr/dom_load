@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220220:19h:36)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220220:23h:16)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -2166,7 +2166,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220220:19h:01)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220220:23h:15)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2733,14 +2733,14 @@ let t_scrollIntoViewIfNeeded = function(el)
 
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:18h:57)";
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:23h:11)";
 
 let drag_cursor  = (function() {
 "use strict";
 
 
 const CSS_DRAG_CURSOR_DIV_ONLOAD       = "onload";
-const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  2000;
+const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  1000;
 let       drag_cursor_div;
 
 
@@ -2779,12 +2779,15 @@ let show_drag_cursor = function()
         drag_cursor_div.style.zIndex          =      "2147483647";
         drag_cursor_div.style.opacity         =             "0.5";
 
+        document.documentElement.appendChild( drag_cursor_div );
+    }
+    if( drag_cursor_div.style.display != "block")
+    {
         drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
         setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
 
-        document.documentElement.appendChild( drag_cursor_div );
+        drag_cursor_div.style.display  = "block";
     }
-    drag_cursor_div.style.display = "block";
 };
 
 

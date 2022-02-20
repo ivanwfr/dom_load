@@ -14,7 +14,7 @@
 /* exported drag_cursor, DRAG_CURSOR_JS_ID */
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:19h:04)";  /* eslint-disable-line no-unused-vars */
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:23h:11)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let drag_cursor  = (function() {
 "use strict"; /* eslint-disable-line strict */
@@ -64,12 +64,15 @@ console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",o
         drag_cursor_div.style.zIndex          =      "2147483647";
         drag_cursor_div.style.opacity         =             "0.5";
 
+        document.documentElement.appendChild( drag_cursor_div );
+    }
+    if( drag_cursor_div.style.display != "block")
+    {
         drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
         setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
 
-        document.documentElement.appendChild( drag_cursor_div );
+        drag_cursor_div.style.display  = "block";
     }
-    drag_cursor_div.style.display = "block";
 };
 /*}}}*/
 /*_ move_drag_cursor {{{*/

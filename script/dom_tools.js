@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220220:18h:59)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220220:23h:13)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -24123,14 +24123,14 @@ log("t_show_SNAPSHOT: snapshot_mail_body=["+t_util.ellipsis(snapshot_mail_body)+
 /* exported drag_cursor, DRAG_CURSOR_JS_ID */
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:18h:57)";  /* eslint-disable-line no-unused-vars */
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:23h:11)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let drag_cursor  = (function() {
 "use strict"; /* eslint-disable-line strict */
 
 /*{{{*/
 const CSS_DRAG_CURSOR_DIV_ONLOAD       = "onload";
-const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  2000;
+const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  1000;
 let       drag_cursor_div;
 
 /*
@@ -24173,12 +24173,15 @@ console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",o
         drag_cursor_div.style.zIndex          =      "2147483647";
         drag_cursor_div.style.opacity         =             "0.5";
 
+        document.documentElement.appendChild( drag_cursor_div );
+    }
+    if( drag_cursor_div.style.display != "block")
+    {
         drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
         setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
 
-        document.documentElement.appendChild( drag_cursor_div );
+        drag_cursor_div.style.display  = "block";
     }
-    drag_cursor_div.style.display = "block";
 };
 /*}}}*/
 /*_ move_drag_cursor {{{*/
