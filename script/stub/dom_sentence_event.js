@@ -13,7 +13,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220220:23h:15)";  /* eslint-disable-line no-unused-vars */
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220221:04h:18)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_sentence_event   = (function() {
 "use strict";
@@ -601,7 +601,7 @@ let t_scrollIntoViewIfNeeded = function(el)
 /* exported drag_cursor, DRAG_CURSOR_JS_ID */
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:23h:11)";  /* eslint-disable-line no-unused-vars */
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:04h:11)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let drag_cursor  = (function() {
 "use strict"; /* eslint-disable-line strict */
@@ -657,6 +657,9 @@ console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",o
     {
         drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
         setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+
+        drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
+        drag_cursor_div.style.top     = (window.innerHeight / 2)+"px";
 
         drag_cursor_div.style.display  = "block";
     }
@@ -730,7 +733,9 @@ return { name : DOM_SENTENCE_EVENT_JS_ID
 
 }());
 
+/*{{{
 setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
+}}}*/
 
 /*{{{
 "┌─────────────────────────────────────────────────────────────────────────────┐

@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220220:23h:16)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220221:04h:29)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -2166,7 +2166,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220220:23h:15)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220221:04h:18)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2733,7 +2733,7 @@ let t_scrollIntoViewIfNeeded = function(el)
 
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:23h:11)";
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:04h:11)";
 
 let drag_cursor  = (function() {
 "use strict";
@@ -2785,6 +2785,9 @@ let show_drag_cursor = function()
     {
         drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
         setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+
+        drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
+        drag_cursor_div.style.top     = (window.innerHeight / 2)+"px";
 
         drag_cursor_div.style.display  = "block";
     }
@@ -2847,7 +2850,7 @@ return { name : DOM_SENTENCE_EVENT_JS_ID
 
 }());
 
-setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
+
 
 
 
@@ -4376,6 +4379,7 @@ let splitter_load = function(e)
 try {
     console.log("dom_sentence_js:"); console.dir(dom_sentence_js); /* eslint-disable-line no-undef */
     console.log("dom_sentence   :"); console.dir(dom_sentence   );
+    setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
 } catch(ex) {}
         dom_sentence      .t_sentence_IMPORT      ( IPC_LOG );
         dom_sentence_event.t_SENTENCE_add_LISTENER( IPC_LOG );
