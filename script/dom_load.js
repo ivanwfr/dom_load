@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220221:04h:24)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220221:19h:41)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -241,7 +241,7 @@ let dom_tools_html_data = `
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220220:19h:04)"; }
+#dom_host_css_tag   { content: "dom_host_css (220221:19h:06)"; }
 
 
 body.dark { background : #430; }
@@ -1071,7 +1071,9 @@ em.select0 { cursor : all-scroll !important; }
 
 
 
-#drag_cursor                  { transition    : transform 300ms ease-out; }
+
+#drag_cursor.onload           { transition    : all       200ms ease-out; }
+#drag_cursor                  { transition    : transform 200ms ease-out; }
 #drag_cursor.onload           { transform     :  rotate(360deg) scale(3); }
 #drag_cursor.onload           { border-radius : 1em          !important;  }
 #drag_cursor.onload::after    { content       : "splitter"   !important;  }
@@ -37864,7 +37866,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220220:23h:13)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220221:19h:38)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -60135,7 +60137,7 @@ let t_show_SNAPSHOT = function()
 
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220220:23h:11)";
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:13)";
 
 let drag_cursor  = (function() {
 "use strict";
@@ -60185,8 +60187,14 @@ let show_drag_cursor = function()
     }
     if( drag_cursor_div.style.display != "block")
     {
-        drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
-        setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+
+        if(typeof dom_sentence_event != "undefined")
+        {
+            drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
+            drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
+            drag_cursor_div.style.top     = (window.innerHeight / 2)+"px";
+
+        }
 
         drag_cursor_div.style.display  = "block";
     }
@@ -60197,6 +60205,9 @@ let move_drag_cursor = function(e)
 {
     if(!drag_cursor_div                         ) return;
     if(!drag_cursor_div.style.display == "block") return;
+
+    if(                  drag_cursor_div.classList.contains( CSS_DRAG_CURSOR_DIV_ONLOAD ))
+        setTimeout(() => drag_cursor_div.classList.remove  ( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
 
     let      xy = t_util.get_event_XY(e);
     let offset_x = drag_cursor_div.className

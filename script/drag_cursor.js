@@ -3,18 +3,18 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* eslint-disable      no-unused-vars    */ /* REQUIRED WHEN EMBEDDED */
-/* globals document, console, setTimeout */ /* eslint-disable-line no-redeclare */
+/* eslint-disable      no-unused-vars    */         /* REQUIRED WHEN EMBEDDED */
+/* globals window, document, console, setTimeout */ /* eslint-disable-line no-redeclare */
 
 /* globals t_util, t_CURSOR_add_MOVE_LISTENER, t_CURSOR_del_MOVE_LISTENER */
 /* globals CSS_NOT_MOVED_ENOUGH, CSS_MOVE_ON_COOLDOWN */
 /* globals onDown_XY */
-/* eslint-ensable      no-unused-vars    */ /* REQUIRED WHEN EMBEDDED */
+/* eslint-ensable      no-unused-vars    */         /* REQUIRED WHEN EMBEDDED */
 
 /* exported drag_cursor, DRAG_CURSOR_JS_ID */
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:04h:11)";  /* eslint-disable-line no-unused-vars */
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:37)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let drag_cursor  = (function() {
 "use strict"; /* eslint-disable-line strict */
@@ -68,12 +68,15 @@ console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",o
     }
     if( drag_cursor_div.style.display != "block")
     {
-        drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
-        setTimeout(() => drag_cursor_div.classList.remove( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+        /* STANDALONE SPLITTER ACTIVATION {{{*/
+        if(typeof dom_sentence_event != "undefined")
+        {
+            drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
+            drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
+            drag_cursor_div.style.top     = (window.innerHeight / 2)+"px";
 
-        drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
-        drag_cursor_div.style.top     = (window.innerHeight / 2)+"px";
-
+        }
+        /*}}}*/
         drag_cursor_div.style.display  = "block";
     }
 };
@@ -83,6 +86,9 @@ let move_drag_cursor = function(e)
 {
     if(!drag_cursor_div                         ) return;
     if(!drag_cursor_div.style.display == "block") return;
+
+    if(                  drag_cursor_div.classList.contains( CSS_DRAG_CURSOR_DIV_ONLOAD ))
+        setTimeout(() => drag_cursor_div.classList.remove  ( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
 
     let      xy = t_util.get_event_XY(e);
     let offset_x = drag_cursor_div.className
