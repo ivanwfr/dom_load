@@ -83,7 +83,7 @@
  <!--}}}-->
 <!-- SCRIPT [inline] {{{ -->
 <script>
-DOM_LOAD_ID  = "splitter_embedded_html";    DOM_LOAD_TAG  = DOM_LOAD_ID+" (220220:19h:09)";
+DOM_LOAD_ID  = "splitter_embedded_html";    DOM_LOAD_TAG  = DOM_LOAD_ID+" (220223:19h:43)";
 let log_this = true;
 /* set_title {{{*/
 function set_title(e)
@@ -220,6 +220,1329 @@ window  .addEventListener("load"            , script_INIT  );
 ./script/dom_sentence.js
 */
 let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_scroll_js                                                            │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+/* globals console, window, document, localStorage, NodeFilter */
+/* globals setTimeout, clearTimeout */
+
+/* INLINE */
+/* globals dom_util , dom_sentence_util  */
+/* globals dom_tools, dom_sentence_event */
+
+/* OPTIONAL */
+/* globals dom_log    */
+/* globals dom_popup  */
+/* globals dom_view   */
+/* globals dom_scroll */
+
+/* exported dom_sentence, DOM_SENTENCE_JS_TAG */
+
+/* eslint-disable no-warning-comments */
+/* eslint-disable dot-notation        */
+
+const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:17h:50)";
+/*}}}*/
+let dom_sentence            = (function() {
+"use strict";
+let   DOM_SENTENCE_LOG      = false;
+let   DOM_SENTENCE_TAG      = false;
+
+/* IMPORT {{{*/
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-warning-comments */
+/*➔ t_sentence_IMPORT {{{*/
+/*{{{*/
+
+let t_util     ;
+let t_tools    ;
+
+/*......................................*/
+/*}}}*/
+let t_sentence_IMPORT  = function(_log_this,import_num)
+{
+    /* MODULE LOGGING TAGGING {{{*/
+    DOM_SENTENCE_LOG = DOM_SENTENCE_LOG || localStorage_getItem("DOM_SENTENCE_LOG");
+    DOM_SENTENCE_TAG = DOM_SENTENCE_TAG || localStorage_getItem("DOM_SENTENCE_TAG");
+
+    /*}}}*/
+    /* t_util {{{*/
+    if     (typeof dom_util           != "undefined") t_util  = dom_util         ; /* script/dom_util.js */
+    else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util; /* script/stub/dom_sentence_util.js */
+    else console.warn("MISSING STUB FOR: [dom_util]");
+
+    /*}}}*/
+    /* t_tools {{{*/
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools         ; /* script/dom_tools.js */
+    else if(typeof dom_sentence_event != "undefined") t_tools = dom_sentence_event; /* script/stub/dom_sentence_event.js */
+    else console.warn("MISSING STUB FOR: [dom_tools]");
+
+    /*}}}*/
+    sentence_INTERN();
+if(_log_this) log("➔ "+(import_num ? (import_num+" ") : "")+"t_sentence_IMPORT: "+t_util.name+", "+t_tools.name);
+};
+/*}}}*/
+/*_   sentence_INTERN {{{*/
+/* dom_log {{{*/
+
+let LOG_MAP = false;
+
+let lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lf0="";
+let lfX = [ lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9, lf0 ];
+
+let lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lb0="";
+let lbX = [ lb1 ,lb2 ,lb3 ,lb4 ,lb5 ,lb6 ,lb7 ,lb8 ,lb9, lb0 ];
+
+const lXX  = "border:1px solid gray; padding:0 .5em; border-radius:1em;";
+let lbA=lXX, lbB=lXX, lbC=lXX, lbF=lXX, lbH=lXX, lbL=lXX, lbR=lXX, lbS=lXX, lbb=lXX;
+
+let log                 = console.log;
+let log_key_val_group   = console.log;
+
+let console_dir         = (k,v) =&gt; { console.log("..."+k+":"); console.dir(v); };
+
+/*}}}*/
+let   sentence_INTERN   = function()
+{
+    /* dom_log OVERLOADED BY dom_log {{{*/
+    if((typeof dom_log != "undefined") &amp;&amp; (dom_log.LOG_BG_CSS))
+    {
+        LOG_MAP = dom_log.LOG_MAP;
+
+        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
+
+        log                 = dom_log.log;
+        log_key_val_group   = dom_log.log_key_val_group;
+        console_dir         = dom_log.console_dir;
+    }
+    /*}}}*/
+    /* lfX {{{*/
+    else if((typeof dom_log != "undefined") &amp;&amp; dom_log.lfX)
+    {
+        lbH = dom_log.lbH;
+        lbL = dom_log.lbL;
+        lbR = dom_log.lbR;
+        lbC = dom_log.lbC;
+        lfX = dom_log.lfX;
+        [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ] = lfX;
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
+/*}}}*/
+/* eslint-enable  no-unused-vars */
+/*}}}*/
+
+/*{{{*/
+const LF    = String.fromCharCode(10);
+
+let sentence_containers = [];
+/*}}}*/
+/* CSS {{{*/
+const CSS_SENTENCE_CONTAINER = "sentence_container";
+const CSS_SENTENCE           = "sentence";
+const CSS_CLAUSE             = "clause";
+const CSS_LAST_CLAUSE        = "last_clause";
+const CSS_OUTLINE            = "outlined";
+const CSS_DARK               = "dark";
+
+/* [fs1..fs12] ../stylesheet/dom_host.css {{{*/
+
+const E12_FONT_SIZE_LIST = ["fs1", "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11", "fs12"];
+
+let   e12_font_size      =  "fs5";
+/*}}}*/
+/* EVEN ODD {{{
+const CSS_EVEN               =     "even";
+const CSS_ODD                =                "odd";
+const CSS_EVEN_ODD_ARRAY     = [CSS_EVEN , CSS_ODD];
+}}}*/
+/*}}}*/
+
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ GET CONTAINER                                                          │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+
+/*➔ t_SENTENCE_GET_EL_CONTAINER {{{*/
+let t_SENTENCE_GET_EL_CONTAINER = function(el,_log_this)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_GET_EL_CONTAINER";
+let log_this = _log_this || LOG_MAP.S2_SELECT;
+
+/*}}}*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ NOTE:                                                                    │*/
+/*│ - As [el] cannot be a TEXT_NODE                                          │*/
+/*│ - it defaults to  EVENT target parent container                          │*/
+/*│ - that can have a huge textcontent                                       │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+
+    if(!t_util) console.warn("MISSING STUB FOR: [dom_util]");
+
+    /* [container] CSS_OUTLINE {{{*/
+    let container
+        =  t_util.get_el_parent_with_class(el,  CSS_OUTLINE     );
+    if( container )
+    {
+if(log_this) log(caller+": ...return CSS_OUTLINE container=["+t_util.get_n_lbl(container)+"]");
+
+        return { container };
+    }
+    /*}}}*/
+    /* [HTML TAG] {{{*/
+    container
+        =  t_util.get_el_parent_with_class(el, "container_light") /* ▼ ordered by priority... */
+        || t_util.get_el_parent_with_class(el, "container_dark" )
+
+    /* LIST */
+/*      || t_util.get_el_parent_with_tag  (el,  "LI"       ) */
+/*      || t_util.get_el_parent_with_tag  (el, "UL"        ) */
+/*      || t_util.get_el_parent_with_tag  (el, "OL"        ) */
+
+    /* TEXT */
+        || t_util.get_el_parent_with_tag  (el, "PRE"       )
+        || t_util.get_el_parent_with_tag  (el, "P"         )
+
+    /* TABLE */
+/*      || t_util.get_el_parent_with_tag  (el,  "TH"       ) */ /* single cell             */
+        || t_util.get_el_parent_with_tag  (el,  "TD"       )    /* single cell             */
+/*      || t_util.get_el_parent_with_tag  (el,  "THEAD"    ) */ /*        cell collection  */
+/*      || t_util.get_el_parent_with_tag  (el,  "TFOOT"    ) */ /*        cell collection  */
+/*      || t_util.get_el_parent_with_tag  (el,  "COLGROUP" ) */ /*        cell collection  */
+/*      || t_util.get_el_parent_with_tag  (el,  "CAPTION"  ) */ /*        cell collection  */
+/*      || t_util.get_el_parent_with_tag  (el,  "TBODY"    ) */ /*        cell collection  */
+        || t_util.get_el_parent_with_tag  (el, "TABLE"     )    /*        cell collection  */
+
+    /* GLOSSARY */
+/*      || t_util.get_el_parent_with_tag  (el,  "DT"       ) */ /* single cell Term        */
+/*      || t_util.get_el_parent_with_tag  (el,  "DD"       ) */ /* single cell Description */
+/*      || t_util.get_el_parent_with_tag  (el, "DL"        ) */ /*        cell collection  .. https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl */
+
+    /* COMPOSITION */
+        || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE")
+        || t_util.get_el_parent_with_tag  (el, "DIR"       )
+        || t_util.get_el_parent_with_tag  (el, "DIV"       )
+
+    /* DETAILS */
+/*      || t_util.get_el_parent_with_tag  (el,  "SUMMARY"  ) */
+        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
+    ;
+
+    if(!container)
+    {
+if(log_this) log(caller+": ...return NO container");
+        return "";
+    }
+    /*}}}*/
+    /* [CLICKED TITLE] ➔ [TITLE + DL] {{{*/
+/* eslint-disable no-unused-vars */
+    let c_next = container              .nextElementSibling;
+
+    let p_next = container.parentElement
+        ?        container.parentElement.nextElementSibling
+        :        null
+    ;
+
+    let group
+        = (!container)                          ? null
+/*      : ( c_next &amp;&amp; (c_next.tagName == "DL")) ? [ container               , c_next ] */
+/*      : ( p_next &amp;&amp; (p_next.tagName == "DL")) ? [ container.parentElement , p_next ] */
+        :                                         null
+    ;
+
+    /* [CLICKED DT] ➔ [CONTAINING DL] */
+    let dlist
+        = (!container)                        ? null
+        : ( container.nodeName == "DL"      ) ? container
+        : ( container.nodeName == "DT"      ) ? container.parentElement
+        :                                       null
+    ;
+
+    let table
+        = (!container)                        ? null
+        : ( container.nodeName ==  "THEAD"  ) ? container.parentElement
+        : ( container.nodeName ==  "TFOOT"  ) ? container.parentElement
+        : ( container.nodeName ==  "TBODY"  ) ? container.parentElement
+        : ( container.nodeName ==  "CAPTION") ? container.parentElement
+        : ( container.nodeName == "TABLE"   ) ? container
+        :                                      null
+    ;
+
+    let cells
+        =   group ?                        group
+/*      :   dlist ? dlist.querySelectorAll("DIV,DT,DD,TEMPLATE") */
+/*      :   table ? table.querySelectorAll(     "TH,TD,CAPTION") */
+        :           null
+    ;
+
+if(log_this &amp;&amp; (log_key_val_group != console.log))
+    log_key_val_group(caller
+                      , {   el
+                          ,                   el_tagName : el.tagName
+                          , container
+                          , container_textContent_length : container.textContent.length
+                          , table
+                          , dlist
+                          , group
+                          , cells
+                      }, lbH+lf4, false);
+
+if(log_this) log(caller+": ...return container=["+t_util.get_n_lbl(container)+"] .. cells=["+(cells ? "x"+cells.length : "")+"]");
+
+/* eslint-enable  no-unused-vars */
+/*}}}*/
+    return { container, cells };
+};
+/*}}}*/
+/*➔ t_SENTENCE_GET_EL_SENTENCE_CONTAINER {{{*/
+let t_SENTENCE_GET_EL_SENTENCE_CONTAINER = function(el)
+{
+    if( show_popup_container_shown )
+    {
+        /*.................................*/ let dom_popup_div = dom_popup.log_popup_div_get();
+        if(t_util.is_el_or_child_of_parent_el(el, dom_popup_div))
+        {
+            return show_popup_container_shown;
+        }
+    }
+    return t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
+};
+/*}}}*/
+/*➔ t_SENTENCE_GET_SENTENCE_CONTAINERS {{{*/
+let t_SENTENCE_GET_SENTENCE_CONTAINERS = function()
+{
+    return sentence_containers;
+};
+/*}}}*/
+/*➔ t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT {{{*/
+let t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT = function()
+{
+    if(typeof dom_view == "undefined") return [];
+
+    let el_array = [];
+    for(let i=0; i &lt; sentence_containers.length; ++i)
+    {
+        if(dom_view.t_view1_is_el_topLeft_or_bottomRight_in_viewport(sentence_containers[i]))
+            el_array.push( sentence_containers[i] );
+    }
+
+    return el_array;
+};
+/*}}}*/
+
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ SPLIT                                                                  │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+/* REGEX {{{*/
+/* RegEx Testing {{{
+:!start explorer "https://www.compart.com/en/unicode/category"
+:!start explorer "https://regexr.com/32oeg"
+
+}}}*/
+
+const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"; /* non-capturing-group */
+const             BOUNDARY = "\\W*[\\.,;:\\n\\r]+(?!\\w)"; /* non-capturing-group .. punct .. no adjacent letter */
+
+const            LAST_WORD = WORD +"{3,}";
+const           FIRST_WORD = WORD +"+";
+
+const CAPTURING_PREV_END   = "("    + LAST_WORD  +")"; /* p1 capturing group */
+const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"; /* p2 capturing group */
+const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"; /* p3 capturing group */
+
+/*}}}*/
+/*XXX*/
+/*➔ t_SENTENCE_SPLIT {{{*/
+/*{{{*/
+const SYMBOL_GEAR          = "\u2699";
+const SYMBOL_THEME         = "\u262F"; /* ☯ */
+/*{{{
+const SYMBOL_MAGNIFY_LEFT  = "\uD83D\uDD0D";
+const SYMBOL_MAGNIFY_RIGHT = "\uD83D\uDD0E";
+}}}*/
+const MAGNIFIED_STYLE      = "font-size  : 200% !important;";
+const LINE_HEIGHT_STYLE    = "line-height: 1em  !important;";
+
+const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
+const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
+const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important; border-radius:1em;";
+const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important; border-radius:1em;";
+
+let     theme_dark = false;
+let     magnified  = false;
+let     xpath_show = false;
+let  last_container;
+let regexp_SENTENCE;
+/*}}}*/
+let t_SENTENCE_SPLIT = function(container,e=null)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_SPLIT";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(container)+")", lbH+lf1);
+if( log_this) console_dir("container",container        );
+if( log_this &amp;&amp; e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
+/*}}}*/
+    if( check_tool_event(e) ) return;
+
+    if(!sentence_containers.includes( container ))
+        sentence_containers.push    ( container );
+
+    if(container.nodeName == "DETAILS") container.open = true;
+    /* [regexp_SENTENCE] .. [Firefox fail safe] {{{*/
+    if(!regexp_SENTENCE ) {
+        try {
+            regexp_SENTENCE = new RegExp(CAPTURING_PREV_END +  CAPTURING_BOUNDARY +  CAPTURING_NEXT_START,"gu");
+        } catch(ex) {
+            log(ex);
+        }
+        if(!regexp_SENTENCE)
+            regexp_SENTENCE = new RegExp(             "(\\w*)"+CAPTURING_BOUNDARY+"(\\w*)"               ,"gu");
+    }
+    /*}}}*/
+    /* RESTORE [contained containers] {{{*/
+    let   el;
+    while(el = t_util.get_el_child_with_class(container, dom_sentence.CSS_SENTENCE_CONTAINER))
+        t_SENTENCE_RESTORE_EL(el, e);
+
+    t_SENTENCE_RESTORE_EL(container, e);
+
+    /*}}}*/
+    /* REPLACE [container children] {{{*/
+    sentence_color_next = 1;
+/*{{{*/
+if( log_this) {
+    log("...LAST_WORD            %c"+LAST_WORD           , lbC+lf2);
+    log("...BOUNDARY             %c"+BOUNDARY            , lbC+lf3);
+    log("...FIRST_WORD           %c"+FIRST_WORD          , lbC+lf2);
+    log("...CAPTURING_PREV_END   %c"+CAPTURING_PREV_END  , lbC+lf5);
+    log("...CAPTURING_BOUNDARY   %c"+CAPTURING_BOUNDARY  , lbC+lf6);
+    log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
+}
+if( tag_this) {
+    log("%c "+regexp_SENTENCE, lbb+lbH+lf7);
+    log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
+}
+/*}}}*/
+
+    let textContent = t_util.t_get_htmlEntities( container.textContent.trim() );
+if( log_this) log("textContent:%c"+LF+textContent, lb8);
+
+    textContent = textContent.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
+
+    /*}}}*/
+    /* SAVE [innerHTML_SAVED] {{{*/
+    container.innerHTML_SAVED
+        = container.innerHTML;
+
+    /*}}}*/
+    /* REPLACE [innerHTML] .. [BUTTONS] .. [CSS_SENTENCE_CONTAINER CLASS] {{{*/
+    t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
+    if(theme_dark)
+        t_util.add_el_class(container, CSS_DARK);
+
+    container.style.touchAction = "none";
+
+    let style =      " float: right;"
+        +            " clear: right;"
+        +           " border: none;"
+        +           " margin: 0;"
+        +          " padding: 0;"
+        + " background-color: transparent;"
+        +            " color: #A00;"
+        +        " font-size: 24px;"
+        +      " font-weight: 900;"
+        +      " line-height: 1em;"
+    ;
+
+/*{{{
+    let   magnified_symbol
+        = magnified
+        ? SYMBOL_MAGNIFY_LEFT
+        : SYMBOL_MAGNIFY_RIGHT
+    ;
+}}}*/
+
+    let tools = ""
+        +    "&lt;button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'&gt;"+ SYMBOL_THEME     +"&lt;/button&gt;"
+/*{{{
+        +    "&lt;button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'&gt;"+ magnified_symbol +"&lt;/button&gt;"
+}}}*/
+        + ((typeof dom_popup != "undefined")
+           ? "&lt;button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'&gt;"+ SYMBOL_GEAR      +"&lt;/button&gt;" : "")
+    ;
+
+    let   theme_style
+        = theme_dark
+        ? THEME_STYLE_DARK
+        : THEME_STYLE_LIGHT
+    ;
+
+    let   magnified_style
+        = magnified
+        ? MAGNIFIED_STYLE
+        : ""
+    ;
+
+    container.innerHTML = tools
+        + "&lt;pre class='"+CSS_SENTENCE+" bg1' style=' "+LINE_HEIGHT_STYLE+" "+theme_style+" "+magnified_style+"'&gt;"
+        +  textContent
+        + "&lt;/pre&gt;";
+
+    if( theme_dark )
+        t_SENTENCE_SPLIT_set_parent_theme_dark( container );
+    else
+        t_SENTENCE_SPLIT_clr_parent_theme_dark( container );
+
+    /*}}}*/
+    /* ADD [CSS_LAST_CLAUSE] TO EVERY SENTENCE LAST PART {{{*/
+    let selector
+        = "."+ CSS_CLAUSE   +"+."+ CSS_SENTENCE /* a sentence that follows a clause */
+        + ","
+        + "."+ CSS_SENTENCE +"+."+ CSS_SENTENCE /* a sentence that follows a sentence */
+    ;
+/*{{{
+document.querySelectorAll(".clause+.sentence");
+document.querySelectorAll(".sentence+.sentence");
+document.querySelectorAll(".clause+.sentence,.sentence+.sentence");
+last_clause.style.outline= "2px dotted navy";
+}}}*/
+    let sentence_array = container.querySelectorAll( selector );
+if( tag_this) console_dir("sentence_array .. selector=["+selector+"]",sentence_array);
+
+    for(let i=0; i &lt; sentence_array.length; ++i)
+    {
+        let last_clause =   sentence_array[i].previousElementSibling;
+        t_util.add_el_class(last_clause, CSS_LAST_CLAUSE);
+
+if( log_this) console.log(last_clause);
+    }
+
+    /* Adding last sentence that is not part of those captured by selector .. (as it has no nextSibling) */
+    t_util.add_el_class(container.lastElementChild.lastElementChild, CSS_LAST_CLAUSE);
+
+    t_SENTENCE_FONTSIZE_APPLY( container );
+    /*}}}*/
+    /* OPTIONNAL [POPUP] CONTAINER .. [AND ITS XPATH] {{{*/
+    let innerHTML
+        = container.outerHTML;
+
+    if( xpath_show )
+        innerHTML
+            += "&lt;hr&gt;"
+            + "&lt;pre class='xpath'&gt;"
+            +  t_util.get_parent_tag_id_class_chain( container )
+            + "&lt;/pre&gt;";
+
+if( tag_this) log("container.innerHTML.length: %c"+container.innerHTML.length, lb7);
+if( log_this) log("container.innerHTML:%c"+LF+container.innerHTML, lb7);
+
+    /*}}}*/
+/*{{{*/
+if( log_this) log_key_val_group(            caller
+                               , {              el
+                                 , regexp_SENTENCE : String(regexp_SENTENCE)
+                                 ,  sentence_array
+                                 ,  last_container
+                                 ,     textContent : "(length: "+        textContent.length+") "+ t_util.ellipsis(textContent        )
+                                 ,       container : "(length: "+container.innerHTML.length+") "+ t_util.ellipsis(container.innerHTML)
+                                 ,      theme_dark
+                                 ,       magnified
+                                 ,      xpath_show
+                                 ,         callers : dom_log.get_callers &amp;&amp; dom_log.get_callers()
+                               }, lf4, true);
+/*}}}*/
+    /* [show_popup] {{{*/
+    show_popup(container, innerHTML);
+
+    /*}}}*/
+    /* APPLY CURRENT FONT SIZE TO POPUP SENTENCE SPLIT CONTAINER {{{*/
+    clear_popup();
+
+    /*}}}*/
+    last_container = container;
+};
+/*}}}*/
+/*_ t_SENTENCE_SPLIT_set_parent_theme_dark {{{*/
+let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
+{
+    let el_array = get_parent_chain(container);
+/*{{{
+console.log("t_SENTENCE_SPLIT_set_parent_theme_dark:",el_array)
+}}}*/
+    el_array.forEach((el) =&gt; {
+        el.style.backgroundColor_saved         = el.style.backgroundColor;
+        el.style.backgroundColor               = THEME_STYLE_BG_DARK;
+        if(            el.parentElement ) {
+            Array.from(el.parentElement.children).forEach((sl) =&gt; {
+                sl.style.backgroundColor_saved = sl.style.backgroundColor;
+                sl.style.backgroundColor       = THEME_STYLE_BG_DARK;
+            });
+        }
+    });
+};
+/*}}}*/
+/*_ t_SENTENCE_SPLIT_clr_parent_theme_dark {{{*/
+let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
+{
+    let el_array = get_parent_chain(container);
+/*{{{
+console.log("t_SENTENCE_SPLIT_clr_parent_theme_dark:",el_array)
+dom_log.log_caller();
+}}}*/
+    el_array.forEach((el) =&gt; {
+        el.style.backgroundColor       = el.style.backgroundColor_saved || "";
+        delete                           el.style.backgroundColor_saved;
+        if(            el.parentElement ) {
+            Array.from(el.parentElement.children).forEach((sl) =&gt; {
+                sl.style.backgroundColor = sl.style.backgroundColor_saved || "";
+                delete                   sl.style.backgroundColor_saved;
+            });
+        }
+    });
+};
+/*}}}*/
+/*_ t_SENTENCE_SPLIT_replace {{{*/
+/*{{{*/
+let sentence_color_next = 1;
+
+/*}}}*/
+let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+if(next_start == LF) next_start = "";
+
+if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
+                  ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
+/*{{{
+if( log_this) log("match=[%c"+t_util.show_CR_LF(match)+"]", lbC);
+if( log_this) console.table(arguments);
+
+:silent :!start explorer "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace\#Specifying_a_function_as_a_parameter"
+}}}*/
+/*}}}*/
+
+    let entering_a_clause
+        =  boundary.includes(",")
+        || boundary.includes(";")
+    /*  || boundary.includes(":")*/
+    ;
+
+    if(!entering_a_clause)
+        sentence_color_next += 1;
+
+    let className
+        = (entering_a_clause ? CSS_CLAUSE : CSS_SENTENCE)
+        + " bg"+(sentence_color_next % 10)
+    ;
+
+    return prev_end + boundary +"&lt;/span&gt;&lt;span style='"+LINE_HEIGHT_STYLE+"' class='"+className+"'&gt;"+ next_start;
+};
+/*}}}*/
+
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ TODO: inject-or-mark significant text containers                       │ */
+/* │                                                                        │ */
+/* │ createTreeWalker                                                       │ */
+/* │                                                                        │ */
+/* │ $APROJECTS/Chrome_Web_Store/SplitterExtension/stylesheet/dom_host.css  │ */
+/* │ $WPROJECTS/RTabs/Util/RTabs_Profiles/DEV/script/dom_select.js          │ */
+/* │ $WPROJECTS/RTabs/Util/RTabs_Profiles/DEV/script/dom_util.js            │ */
+/* │                                                                        │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+/*➔ outline_text_containers_in_view {{{*/
+let outline_text_containers_in_view = function(root=document.body)
+{
+/*{{{*/
+let   caller = "outline_text_containers_in_view";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+if( tag_this) log("%c"+caller, lbH+lf7);
+/*}}}*/
+    restore_text_containers_in_view();
+    let { text_container_in_view_array } = get_el_text_container_in_view_array( root );
+if(tag_this) console_dir("text_container_in_view_array", text_container_in_view_array);
+
+if(log_this) log("...outlining "+text_container_in_view_array.length+" containers");
+    text_container_in_view_array.forEach(
+                                         (el) =&gt; {
+                                             t_util.add_el_class(el, CSS_OUTLINE);
+                                             el.addEventListener("transitionend", outlined_transitionend_handler);
+                                         }
+                                        );
+
+};
+/*}}}*/
+/*_ outlined_transitionend_handler {{{*/
+let outlined_transitionend_handler = function(e)
+{
+/*{{{*/
+let   caller = "outlined_transitionend_handler";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+
+/*}}}*/
+if(log_this) console_dir(caller+": propertyName=["+e.propertyName+"] .. elapsedTime=["+e.elapsedTime+"]", e);
+};
+/*}}}*/
+/*➔ restore_text_containers_in_view {{{*/
+let restore_text_containers_in_view = function()
+{
+/*{{{*/
+let   caller = "restore_text_containers_in_view";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+if( tag_this) log("%c"+caller, lbH+lf8);
+/*}}}*/
+    node_in_view_filter_clear();
+    /* [CSS_OUTLINE] {{{*/
+    let outlined_containers = document.querySelectorAll("."+CSS_OUTLINE);
+    if( outlined_containers.length)
+    {
+        if(log_this) log("...restoring "+outlined_containers.length+" outlined containers");
+        for(let i=0; i &lt; outlined_containers.length; ++i)
+        {
+            let node = outlined_containers[i] ;
+
+            node.classList.remove( CSS_OUTLINE );
+
+            if(typeof node.title_saved != "undefined") { node.title = node.title_saved; delete       node.title_saved; }
+        }
+    }
+    else {
+if(log_this) log("...found no outlined containers to restore");
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ get_el_text_container_in_view_array {{{*/
+let get_el_text_container_in_view_array = function(root=document.body)
+{
+/*{{{*/
+let   caller = "get_el_text_container_in_view_array("+t_util.get_n_lbl(root)+")";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+
+if( log_this) console.time   (caller);
+    let time_start = new Date().getTime();
+/*}}}*/
+    let text_container_in_view_array = [];
+    let node;
+    if(node_in_view_filter(root) == NodeFilter.FILTER_ACCEPT)
+    {
+if( log_this) log("root is a LEAF");
+        text_container_in_view_array.push(root);
+    }
+    else {
+        let treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT, node_in_view_filter);
+        let last_accepted_parent;
+        while(node = treeWalker.nextNode())
+        {
+            if(!last_accepted_parent || !last_accepted_parent.contains(node))
+            {
+                last_accepted_parent = node;
+                text_container_in_view_array.push(node);
+            }
+        }
+    }
+    let time_end = new Date().getTime();
+if( log_this) console.timeEnd(caller);
+if( log_this) console_dir("text_container_in_view_array", text_container_in_view_array);
+    return { text_container_in_view_array , search_ms:(time_end - time_start) };
+};
+/*}}}*/
+/*_ node_in_view_filter_clear {{{*/
+/*{{{*/
+const CCS_REJECTED = "rejected";
+
+/*}}}*/
+let node_in_view_filter_clear = function()
+{
+/*{{{*/
+let   caller = "node_in_view_filter_clear";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+
+/*}}}*/
+    let node_array = document.querySelectorAll("."+CCS_REJECTED);
+    if(!node_array.length) return;
+
+if(log_this) log(caller+": restoring "+node_array.length+" rejected containers");
+    for(let i=0; i &lt; node_array.length; ++i)
+    {
+        let node = node_array[i];
+
+        node.classList.remove( CCS_REJECTED);
+
+        if(typeof node.title_saved != "undefined") { node.title = node.title_saved; delete       node.title_saved; }
+    }
+};
+/*}}}*/
+/*_ node_in_view_filter {{{*/
+/*{{{*/
+const FILTER_TAGS
+    = [   "PRE"
+        , "P"
+        , "TD"
+        , "TABLE"
+        , "BLOCKQUOTE"
+        , "DIR"
+        , "DIV"
+        , "DETAILS"
+    ];
+
+const NodeFilter_RETURN_VALUES
+    = {   [NodeFilter.FILTER_ACCEPT] : "FILTER_ACCEPT"
+        , [NodeFilter.FILTER_REJECT] : "FILTER_REJECT"
+        , [NodeFilter.FILTER_SKIP  ] : "FILTER_SKIP"
+    };
+
+const TEXT_LEN_MAX = 1024;
+
+/*}}}*/
+let node_in_view_filter = function(node)
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+
+/*}}}*/
+    /* REJECT TOOL {{{*/
+    let why = NodeFilter.FILTER_ACCEPT;
+    let why_not;
+
+    /*}}}*/
+    /* REJECT INVISIBLE {{{*/
+    if     ( node.style.display == "none"        ) { why = NodeFilter.FILTER_REJECT; why_not =     "DISPLAY_NONE"; }
+    else if( node.tagName       == "SCRIPT"      ) { why = NodeFilter.FILTER_REJECT; why_not =      node.tagName ; }
+    else if( node.tagName       == "STYLE"       ) { why = NodeFilter.FILTER_REJECT; why_not =      node.tagName ; }
+
+    /*}}}*/
+    /* REJECT FRAMING CONTAINER {{{*/
+    else if( node.tagName       == "TR"          ) { why = NodeFilter.FILTER_SKIP  ; why_not =      node.tagName ; }
+
+    /*}}}*/
+    /* ACCEPT FIXED CONTAINER {{{*/
+    else if( node.style.position == "fixed"      ) { why = NodeFilter.FILTER_ACCEPT; }
+
+    /*}}}*/
+    /* SKIP BIG CONTAINER .. EXPLORE SUB-TREE {{{*/
+    else if( node.children.length  &gt; 0           ) {
+        if(node.textContent.length &gt; TEXT_LEN_MAX) { why = NodeFilter.FILTER_SKIP  ; why_not = "BIG_WITH_CHILDREN"; }
+    }
+    /*}}}*/
+    /* ACCEPT SMALL FILTER_TAGS .. (P PRE TD TABLE ...) {{{*/
+/*  else if( node.tagName       == "TABLE"       ) { why = NodeFilter.FILTER_ACCEPT;                               } */
+    else if( FILTER_TAGS.includes(node.tagName)  ) { why = NodeFilter.FILTER_ACCEPT;                               }
+
+    /*}}}*/
+    /* REJECT LEAF WITH BOUNDING BOX OUT OF VIEW {{{*/
+    if(why != NodeFilter.FILTER_REJECT)
+    {
+        /* REJECT NO DIMENSION LEAF */
+        let bcr = node.getBoundingClientRect();
+        if(node.children.length == 0)
+        {
+            if     (bcr.height &lt; 1               ) { why = NodeFilter.FILTER_REJECT; why_not =        "NO HEIGHT"; }
+            else if(bcr.width  &lt; 1               ) { why = NodeFilter.FILTER_REJECT; why_not =         "NO WIDTH"; }
+            else if(bcr.top &gt; window.innerHeight ) { why = NodeFilter.FILTER_REJECT; why_not =           "BELLOW"; }
+            else if(bcr.bottom &lt; 0               ) { why = NodeFilter.FILTER_REJECT; why_not =            "ABOVE"; }
+        }
+        /* REJECT CONTAINER BELOW VIEW */
+        else if(    bcr.top &gt; window.innerHeight ) { why = NodeFilter.FILTER_REJECT; why_not = "CONTAINER BELLOW"; }
+
+        /* REJECT CONTAINER ABOVE VIEW */
+        else if(    bcr.bottom &lt; 0               ) { why = NodeFilter.FILTER_REJECT; why_not =  "CONTAINER ABOVE"; }
+
+        /* NOTE: ACCEPT CONTAINER ABOVE VIEW .. (as it may have spreading absolute children) */
+    }
+    /*}}}*/
+/*{{{*/
+if(log_this &amp;&amp; why_not) log("node_in_view_filter("+t_util.get_n_lbl(node)+"): .. "+why_not);
+if(log_this &amp;&amp; why    ) log("node_in_view_filter("+t_util.get_n_lbl(node)+"): .. "+why    );
+if(tag_this) {
+    if(      why_not ) {
+        t_util.add_el_class(node, CCS_REJECTED);
+        node.title_saved = node.title || "";
+        node.title       = node.tagName+" "+why_not;
+    }
+    else if( why ) {
+        node.title_saved = node.title || "";
+        node.title       = node.tagName+" "+NodeFilter_RETURN_VALUES[why];
+    }
+}
+/*}}}*/
+    return why;
+};
+/*}}}*/
+
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ FONTSIZE                                                               │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+/*➔ t_SENTENCE_drag_DXY {{{*/
+/*{{{*/
+const SENTENCE_DRAG_MOVED_ENOUGH =  64;
+const SENTENCE_DRAG_COOLDOWN_MS  = 500;
+let   sentence_drag_last_MS      =   0;
+
+let was_on_cooldown;
+let was_is_scrolling;
+/*}}}*/
+let t_SENTENCE_drag_DXY = function(dxy)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_drag_DXY";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
+
+let tag_this = DOM_SENTENCE_TAG || log_this;
+/*}}}*/
+    /* SENTENCE_DRAG_COOLDOWN_MS {{{*/
+    let  this_MS = new Date().getTime();
+
+    let time_ellapsed = (this_MS - sentence_drag_last_MS);
+    let on_cooldown   = (time_ellapsed &lt;  SENTENCE_DRAG_COOLDOWN_MS);
+    let is_scrolling  = (typeof dom_scroll != "undefined") ? dom_scroll.t_scroll_is_scrolling()
+        :               (typeof dom_tools  != "undefined") ? dom_tools .t_scroll_is_scrolling()
+        :                                                    false;
+
+if( tag_this &amp;&amp; (was_on_cooldown  != on_cooldown )) log("%c  COOLDOWN", lbH+lfX[on_cooldown  ? 6:0]);
+if( tag_this &amp;&amp; (was_is_scrolling != is_scrolling)) log("%c SCROLLING", lbH+lfX[is_scrolling ? 7:0]);
+    was_on_cooldown  = on_cooldown ;
+    was_is_scrolling = is_scrolling;
+
+    if( on_cooldown || is_scrolling) {
+        t_tools.t_add_MOVE_ON_COOLDOWN(SENTENCE_DRAG_COOLDOWN_MS - time_ellapsed);
+        sentence_drag_last_MS = this_MS;
+        return  true;
+    }
+    /*}}}*/
+    /* ONLY FROM A SENTENCE CONTAINER {{{*/
+    let from_container = document.querySelector("."+CSS_SENTENCE_CONTAINER);
+/*{{{
+console.log("from_container=["+from_container+"]")
+}}}*/
+    if(!from_container)
+        return false;
+
+    /*}}}*/
+    /* DXY .. f(SENTENCE_DRAG_MOVED_ENOUGH) {{{*/
+    let move_H_or_V  =  Math.abs(dxy.x     ) &gt; Math.abs(dxy.y);
+    let move_delta   = move_H_or_V ? dxy.x   :          dxy.y;
+    let moved_enough = (Math.abs(move_delta) &gt; SENTENCE_DRAG_MOVED_ENOUGH);
+
+    if(!moved_enough ) {
+        t_tools.t_add_NOT_MOVED_ENOUGH();
+        return false;
+    }
+    else {
+        t_tools.t_del_NOT_MOVED_ENOUGH();
+    }
+    /*}}}*/
+    /* SENTENCE-SPLIT OR FONT-ADJUST .. f(H or V){{{*/
+    let split_or_font = move_H_or_V;
+    let size_offset   = (move_delta &gt; 0) ? 1 : -1;
+
+/*{{{*/
+if( log_this) log_key_val_group(  caller
+                                  , { move_delta
+                                    , split_or_font
+                                    , size_offset
+                                  }
+                                  , lfX[split_or_font ? ((size_offset &gt; 0) ? 3:4) : ((size_offset &gt; 0) ? 5:6)]
+                                  , true);
+
+/*}}}*/
+    /*}}}*/
+    /* NEXT OR PREVIOUS SENTENCE-SPLIT {{{*/
+    if( split_or_font )
+    {
+        t_SENTENCE_split_at_offset(from_container, size_offset);
+    }
+    /*}}}*/
+    /* ADJUST SENTENCE FONT SIZE {{{*/
+    else {
+        t_SENTENCE_FONTSIZE_OFFSET( size_offset );
+    }
+    /*}}}*/
+if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
+    t_tools.t_del_MOVE_ON_COOLDOWN();
+    sentence_drag_last_MS = this_MS;
+    return true;
+};
+/*}}}*/
+/*_ t_SENTENCE_split_at_offset {{{*/
+let t_SENTENCE_split_at_offset = function(from_container,size_offset)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_split_at_offset";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
+
+/*
+:new C:/LOCAL/DATA/ANDROID/PROJECTS/iwintoo/XPH/javascript/xpath.js
+*/
+/*}}}*/
+
+    let offset_container = t_util.get_node_sibling_at_offset( from_container, size_offset);
+
+if( log_this) log_key_val_group( caller+"(size_offset=["+size_offset+"])"
+                                , {   from_container
+                                  , offset_container
+                                });
+
+    if( offset_container )
+    {
+        t_SENTENCE_RESTORE_EL    ( from_container   );
+        t_SENTENCE_SPLIT         ( offset_container );
+        t_SENTENCE_FONTSIZE_APPLY( offset_container );
+        t_SENTENCE_OUTLINE       ( offset_container );
+
+        t_tools.t_scrollIntoViewIfNeeded( offset_container );
+    }
+};
+/*}}}*/
+/*_ t_SENTENCE_OUTLINE {{{*/
+let t_SENTENCE_OUTLINE = function(sentence_el)
+{
+    let sentence_container = t_util.get_el_parent_with_class(sentence_el, CSS_SENTENCE_CONTAINER);
+    if( sentence_container ) sentence_container.classList.add(            CSS_OUTLINE           );
+};
+/*}}}*/
+/*_ t_SENTENCE_FONTSIZE_OFFSET {{{*/
+let t_SENTENCE_FONTSIZE_OFFSET = function(size_offset=0)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_FONTSIZE_OFFSET";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+
+/*}}}*/
+    /* APPLY [size_offset] to [e12_font_size] {{{*/
+    let num = size_offset + parseInt( e12_font_size.substring(2) );
+    num     = Math.max( 1, num);
+    num     = Math.min(12, num);
+
+    e12_font_size = "fs"+num;
+
+if( log_this) log(caller+": e12_font_size=["+e12_font_size+"]");
+    /*}}}*/
+    /* APPLY CURRENT FONT SIZE TO ALL SENTENCE SPLIT CONTAINER {{{*/
+    let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
+    for(let i=0; i &lt; node_list.length; ++i)
+        t_SENTENCE_FONTSIZE_APPLY(node_list[i]);
+
+    /*}}}*/
+    /* APPLY CURRENT FONT SIZE TO POPUP SENTENCE SPLIT CONTAINER {{{*/
+    clear_popup();
+
+    /*}}}*/
+    return node_list.length;
+};
+/*}}}*/
+/*_ t_SENTENCE_FONTSIZE_APPLY {{{*/
+let t_SENTENCE_FONTSIZE_APPLY = function(container)
+{
+    t_util.clear_el_classList(container, E12_FONT_SIZE_LIST);
+
+    container.classList.add( e12_font_size );
+
+    container.parentElement.style.maxHeight = "fit-content";
+};
+/*}}}*/
+
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ RESTORE                                                                │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+/*XXX*/
+/*➔ t_SENTENCE_RESTORE_EL {{{*/
+let t_SENTENCE_RESTORE_EL = function(el,e=null)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_RESTORE_EL";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+let tag_this = DOM_SENTENCE_TAG || log_this;
+if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
+if( log_this &amp;&amp; e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
+
+    if(!el) return "";
+    let consumed_by = "";
+/*}}}*/
+    if( check_tool_event(e) ) return consumed_by;
+    /* RESTORE [CSS_SENTENCE_CONTAINER] CONTAINERS {{{*/
+    let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
+    if( container )
+    {
+        consumed_by = "RESTORING CONTAINER SPLIT SENTENCES";
+
+/*{{{
+        if(container.nodeName == "DETAILS") container.open = false;
+}}}*/
+
+        t_util.del_el_class(container, CSS_SENTENCE_CONTAINER);
+
+        if( container.innerHTML_SAVED )
+        {
+if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_SAVED, 16)+"]", lf3);
+
+            container.style.touchAction = "";
+
+            container.innerHTML         =  container.innerHTML_SAVED;
+            delete                         container.innerHTML_SAVED;
+
+        }
+        t_SENTENCE_SPLIT_clr_parent_theme_dark( container );
+
+        sentence_containers.splice(sentence_containers.indexOf(container), 1); /* delete container (x1) */
+    }
+    /*}}}*/
+
+    t_util.clear_el_classList(el, E12_FONT_SIZE_LIST);
+
+    hide_popup();
+
+/*{{{*/
+if( log_this) log_key_val_group(        caller
+                               , {          el
+                                 ,   container
+                                 , consumed_by
+                                 ,     callers : dom_log.get_callers &amp;&amp; dom_log.get_callers()
+                               }, lf8, true);
+/*}}}*/
+if( tag_this) log("...return ["+consumed_by+"]");
+    return consumed_by;
+};
+/*}}}*/
+/*➔ t_SENTENCE_RESTORE_ALL {{{*/
+let t_SENTENCE_RESTORE_ALL = function(e=null)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_RESTORE_ALL";
+let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
+
+let tag_this = DOM_SENTENCE_TAG || log_this;
+if( tag_this) log("%c"+caller, lbH+lf2);
+if( log_this &amp;&amp; e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
+/*}}}*/
+    if( check_tool_event(e) ) return;
+    /* RESTORE SPLIT CONTAINERS {{{*/
+    let node_list = document.querySelectorAll("."+CSS_SENTENCE_CONTAINER);
+    for(let i = 0; i &lt;      node_list.length; ++i)
+        t_SENTENCE_RESTORE_EL(node_list[i], e);
+
+    /*}}}*/
+};
+/*}}}*/
+
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ TOOL                                                                   │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+/*_ t_SENTENCE_onresize {{{*/
+/*_ CHECK_TOOL_EVENT_DELAY {{{*/
+const CHECK_TOOL_EVENT_DELAY = 250;
+
+let check_tool_event_timer;
+/*}}}*/
+let t_SENTENCE_onresize = function(e=window.event)
+{
+    if( check_tool_event_timer ) clearTimeout( check_tool_event_timer );
+    /**/check_tool_event_timer = setTimeout(check_tool_event, CHECK_TOOL_EVENT_DELAY, e);
+};
+/*}}}*/
+/*_ check_tool_event {{{*/
+let check_tool_event = function(e=window.event)
+{
+/*{{{*/
+if(!e) return false;
+
+/*{{{
+let e_target    = e.target ? e.target : e.currentTarget;
+let e_target_id = e_target.id || e_target.tagName || "Window";
+console.log("check_tool_event: "+e.type+" ON ["+e_target_id+"]");
+console.dir(e);
+}}}*/
+/*}}}*/
+    /* RESIZE {{{*/
+    if(    last_container
+       &amp;&amp; (e.type == "resize")
+      ) {
+        t_SENTENCE_SPLIT( last_container );
+
+        return true;
+    }
+    /*}}}*/
+    /* TOGGLE [theme_dark] {{{*/
+    if(    last_container
+       &amp;&amp;  e
+       &amp;&amp;  e.target
+       &amp;&amp; (e.target.id == "dom_sentence_magnify")
+      ) {
+        magnified = !magnified;
+
+        t_SENTENCE_SPLIT( last_container );
+
+        return true;
+    }
+    /*}}}*/
+    /* TOGGLE [theme_dark] {{{*/
+    if(    last_container
+       &amp;&amp;  e
+       &amp;&amp;  e.target
+       &amp;&amp; (e.target.id == "dom_sentence_theme_dark")
+      ) {
+        theme_dark = !theme_dark;
+
+        t_SENTENCE_SPLIT( last_container );
+
+        return true;
+    }
+    /*}}}*/
+    /* TOGGLE [xpath_show] {{{*/
+    if(    last_container
+       &amp;&amp;  e
+       &amp;&amp;  e.target
+       &amp;&amp; (e.target.id == "dom_sentence_xpath_show")
+      ) {
+        xpath_show = !xpath_show;
+
+        t_SENTENCE_SPLIT( last_container );
+
+        return true;
+    }
+    /*}}}*/
+    return false;
+};
+/*}}}*/
+/*_ show_popup {{{*/
+let show_popup_container_shown;
+let show_popup = function(container,innerHTML)
+{
+    if(typeof dom_popup == "undefined") return;
+
+    if( xpath_show ) {
+        show_popup_container_shown = container;
+        dom_popup.log_popup({ message_HTML: innerHTML , options: "fixed" , theme_dark });
+    }
+    else
+        show_popup_container_shown = null;
+};
+/*}}}*/
+/*_ clear_popup {{{*/
+let clear_popup = function()
+{
+    if(typeof dom_popup == "undefined") return;
+
+    let dom_popup_div = dom_popup.log_popup_div_get();
+    if( dom_popup_div ) t_SENTENCE_FONTSIZE_APPLY( dom_popup_div );
+};
+/*}}}*/
+/*_ hide_popup {{{*/
+let hide_popup = function()
+{
+    if(typeof dom_popup == "undefined") return;
+
+    dom_popup.log_popup_hide();
+};
+/*}}}*/
+/*_ get_parent_chain {{{*/
+let get_parent_chain = function(el)
+{
+    let array = [];
+
+    while(          el.parentElement )
+    {
+        array.push( el.parentElement );
+        el        = el.parentElement;
+    }
+
+    return array;
+};
+/*}}}*/
+
+
+/* ➔ EXPORT {{{*/
+/*➔ t_store_set_state {{{*/
+let t_store_set_state = function(label,state)
+{
+    if(    state != undefined)
+    {
+        if(state) localStorage.setItem   (label, "true");
+        else      localStorage.removeItem(label        );
+        return !!state;
+    }
+    else {
+        return    localStorage.getItem   (label        );
+    }
+};
+/*}}}*/
+return { name : "dom_sentence"
+    ,    logging : (state) =&gt; DOM_SENTENCE_LOG = t_store_set_state("DOM_SENTENCE_LOG",state)
+    ,    tagging : (state) =&gt; DOM_SENTENCE_TAG = t_store_set_state("DOM_SENTENCE_TAG",state)
+    ,    t_sentence_IMPORT
+    ,    CSS_SENTENCE_CONTAINER
+
+    ,    t_SENTENCE_SPLIT
+
+    ,    t_SENTENCE_GET_SENTENCE_CONTAINERS
+    ,    t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT /* ...yet unused */
+    ,    t_SENTENCE_GET_EL_CONTAINER
+
+
+    ,    t_SENTENCE_RESTORE_EL
+    ,    t_SENTENCE_RESTORE_ALL
+    ,    t_SENTENCE_GET_EL_SENTENCE_CONTAINER
+    ,    t_SENTENCE_drag_DXY
+    ,    t_SENTENCE_onresize
+
+    /* DEBUG */
+    ,    o : outline_text_containers_in_view
+    ,    r : restore_text_containers_in_view
+    ,    f : node_in_view_filter_clear
+};
+/*}}}*/
+}());
+
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+"...           $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
+/*
+:!start /b explorer splitter_embedded.html
+*/
+
+/*INLINE}}}*/
+//@ sourceURL=dom_sentence.js
 `
 </pre> <!--}}}-->
 </details>
@@ -231,6 +1554,780 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 ./script/stub/dom_sentence_event.js
 */
 let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_sentence_event              [dom_sentence]..[dom_tools] dependencies │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals console, window */ /* eslint-disable-line no-unused-vars */
+/* globals setTimeout, clearTimeout */
+/* globals dom_sentence, dom_scroll, dom_log, dom_util, dom_sentence_util */
+/* globals chrome, document */
+
+/* exported DOM_SENTENCE_EVENT_JS_TAG, dom_sentence_event */
+
+/* eslint-disable no-warning-comments */
+
+const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220221:19h:38)";  /* eslint-disable-line no-unused-vars */
+/*}}}*/
+let dom_sentence_event   = (function() {
+"use strict";
+let   DOM_SENTENCE_LOG  = false;
+
+
+/* INLINE */
+/* console {{{*/
+/* eslint-disable no-unused-vars */
+
+let { LF
+    , dir
+    , log
+    , console_clear
+    , log0
+    , log1
+    , log2
+    , log3
+    , log4
+    , log5
+    , log6
+    , log7
+    , log8
+    , log9
+    , lfX
+}   = dom_log;
+
+    /*  t_util {{{*/
+    let t_util
+        = (typeof dom_util           != "undefined") ? dom_util          /* script/dom_util.js */
+        : (typeof dom_sentence_util  != "undefined") ? dom_sentence_util /* script/stub/dom_sentence_util.js */
+        :                                              undefined
+    ;
+
+    /*}}}*/
+/* eslint-enable  no-unused-vars */
+/*}}}*/
+
+/* DOWN ➔ LONG_PRESS_ARM - log1*/
+/*{{{*/
+const CLICK_DURATION       = 250;
+const LONG_PRESS_ARM_DELAY = CLICK_DURATION;
+const LONG_PRESS_DELAY     = CLICK_DURATION;
+
+let   long_press_timer;
+let   long_press_arm_timer;
+/*}}}*/
+/*_ t_pointerdown_listener {{{*/
+let t_pointerdown_listener = function(e)
+{
+if(e.altKey ) { console_clear("t_pointerdown_listener"); return; }
+if(e.ctrlKey) { log(e.type+" IGNORED .. f(e.ctrlKey)" ); return; }
+
+    set_onDown_XY(e);
+
+    t_pointerdown_handler(e);
+};
+/*}}}*/
+/*… t_pointerdown_handler {{{*/
+let t_pointerdown_handler = function(e)
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log1("→→ t_pointerdown_handler");
+/*}}}*/
+    let sentence_el = dom_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
+    if( sentence_el )
+    {
+if(log_this) log1("... ...sentence_el=["+sentence_el.tagName+"]"+LF);
+        preventDefault(e);
+
+        t_CURSOR_add_MOVE_LISTENER();
+    }
+    else {
+if(log_this) log1("... NO sentence_el"+LF);
+
+        add_long_press_arm_listener();
+    }
+};
+/*}}}*/
+
+/* DOWN ➔ LONG_PRESS_ARM ➔ LONG_PRESS - log6 */
+/*_ add_long_press_arm_listener .. (call burst debouncer) {{{*/
+let add_long_press_arm_listener = function()
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log6("→ add_long_press_arm_listener");
+/*}}}*/
+
+    if(long_press_timer    ) clearTimeout(long_press_timer      ); long_press_timer = null;
+
+    if(long_press_arm_timer) clearTimeout(long_press_arm_timer  );
+    long_press_arm_timer =     setTimeout(long_press_arm_handler, LONG_PRESS_ARM_DELAY);
+};
+/*}}}*/
+/*_ long_press_arm_handler {{{*/
+let long_press_arm_handler = function()
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if(log_this) log6("→→ long_press_arm_handler");
+/*}}}*/
+    long_press_arm_timer = null;
+
+    if(long_press_timer) clearTimeout(long_press_timer);
+    long_press_timer     = setTimeout(long_press_handler, LONG_PRESS_DELAY);
+};
+/*}}}*/
+/*_ long_press_handler ➔ SENTENCE_SPLIT {{{*/
+let long_press_handler  = function()
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if(log_this) log6("→→→ long_press_handler");
+/*}}}*/
+
+    let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
+    if(   container )
+    {
+        if( cells ) for(let i=0; i &lt; cells.length; ++i) dom_sentence.t_SENTENCE_SPLIT( cells[i]  );
+        else                                            dom_sentence.t_SENTENCE_SPLIT( container );
+        dom_sentence.t_SENTENCE_SPLIT( container );
+    }
+
+    dom_scroll.t_scrollIntoViewIfNeeded_set_EL( container );
+};
+/*}}}*/
+
+/* DOWN ➔ MOVE ➔ DRAG - log7 */
+/*_ t_SENTENCE_drag_listener {{{*/
+let t_SENTENCE_drag_listener = function(event)
+{
+if(event.altKey ) return;
+if(event.ctrlKey) return;
+/*{{{*/
+let   caller = "t_SENTENCE_drag_listener";
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log7(caller);
+/*}}}*/
+
+    get_onMoveDXY(event, caller);
+
+    if(onDown_EL &amp;&amp; dom_sentence.t_SENTENCE_drag_DXY( onMoveDXY ))
+    {
+        /* next move from here */
+/*{{{
+        zap_onMoveDXY();
+}}}*/
+        drag_cursor.move_drag_cursor(event);
+        event.preventDefault();
+    }
+    else if( drag_cursor.get_mouseUP_display_state() )
+    {
+        drag_cursor.move_drag_cursor(event);
+    }
+};
+/*}}}*/
+/*_ not moved enough {{{*/
+/*{{{*/
+const CSS_NOT_MOVED_ENOUGH = "not_moved_enough";
+
+/*}}}*/
+/*_ t_add_NOT_MOVED_ENOUGH {{{*/
+let t_add_NOT_MOVED_ENOUGH   = function()
+{
+/*{{{
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log8("t_add_NOT_MOVED_ENOUGH");
+}}}*/
+    document.body.classList.add(      CSS_NOT_MOVED_ENOUGH );
+    drag_cursor.add_drag_cursor_CSS_NOT_MOVED_ENOUGH();
+};
+/*}}}*/
+/*_ t_del_NOT_MOVED_ENOUGH {{{*/
+let t_del_NOT_MOVED_ENOUGH   = function()
+{
+/*{{{
+let log_this = DOM_SENTENCE_LOG;
+
+if(log_this) log7("t_del_NOT_MOVED_ENOUGH");
+}}}*/
+    document.body.classList.remove(   CSS_NOT_MOVED_ENOUGH);
+    drag_cursor.del_drag_cursor_CSS_NOT_MOVED_ENOUGH();
+};
+/*}}}*/
+/*}}}*/
+/*_ move cooldown {{{*/
+/*{{{*/
+const CSS_MOVE_ON_COOLDOWN = "move_on_cooldown";
+
+let move_on_cooldown_timer;
+/*}}}*/
+/*_ t_add_MOVE_ON_COOLDOWN {{{*/
+let t_add_MOVE_ON_COOLDOWN   = function(time_left)
+{
+    if( move_on_cooldown_timer ) return;
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+/*}}}*/
+if(log_this) log9("t_add_MOVE_ON_COOLDOWN");
+
+    if( move_on_cooldown_timer ) clearTimeout( move_on_cooldown_timer );
+    /**/move_on_cooldown_timer =   setTimeout( t_del_MOVE_ON_COOLDOWN, time_left);
+    document.body.classList.add(      CSS_MOVE_ON_COOLDOWN );
+    drag_cursor.add_drag_cursor_CSS_MOVE_ON_COOLDOWN();
+};
+/*}}}*/
+/*_ t_del_MOVE_ON_COOLDOWN {{{*/
+let t_del_MOVE_ON_COOLDOWN   = function()
+{
+    if(!move_on_cooldown_timer ) return;
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log0("t_del_MOVE_ON_COOLDOWN");
+/*}}}*/
+    if( move_on_cooldown_timer) clearTimeout( move_on_cooldown_timer );
+    /**/move_on_cooldown_timer = null;
+    document.body.classList.remove(   CSS_MOVE_ON_COOLDOWN );
+    drag_cursor.del_drag_cursor_CSS_MOVE_ON_COOLDOWN();
+
+    zap_onMoveDXY(); /* next move from here */
+};
+/*}}}*/
+/*}}}*/
+
+/* UP - log5 */
+/*_ t_pointerup_listener {{{*/
+let t_pointerup_listener  = function(e)
+{
+if(e.button) return;
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+/*}}}*/
+if( log_this) log5(LF+"→ t_pointerup_listener");
+
+    t_pointerup_handler(e);
+
+    /* RELOAD EXTENSION {{{*/
+    if(   e.ctrlKey
+       &amp;&amp; chrome
+       &amp;&amp; chrome.runtime
+       &amp;&amp; chrome.runtime.sendMessage
+      ) {
+        log("%c RELOADING EXTENSION: ("+DOM_SENTENCE_EVENT_JS_TAG+")", "background-color:red; border:1px; border-radius:1em; padding:0.5em;");
+
+        setTimeout(function() { chrome.runtime.sendMessage({ cmd : "reload" }); }, 1000);
+
+/*{{{
+        setTimeout(function() { document.location.reload();                     }, 2000);
+}}}*/
+        let el = document.createElement("DIV");
+        el.innerHTML
+            = "&lt;button"
+            + " onclick='document.location.reload();'"
+            + " style='"
+            + "  position        : fixed; left:"+(e.x)+"px; top:"+(e.y)+"px;"
+            + "  border          : 3px solid black;"
+            + "  border-radius   : 1em;"
+            + "  padding         : 0.5em;"
+            + "  color           : white;"
+            + "  background-color: red;"
+            + "  font-size       : 24px;"
+            + "'&gt;"
+            + "reload message sent to background script..."
+            + "&lt;hr&gt;"
+            + "&lt;b&gt;...click here to reload this page&lt;/b&gt;"
+            + "&lt;/button"
+        ;
+
+        setTimeout(() =&gt; { console.log("BUTTON"); document.body.appendChild(el); }, 1000);
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*… t_pointerup_handler {{{*/
+let t_pointerup_handler = function(e) /* eslint-disable-line no-unused-vars */
+{
+/*{{{*/
+let   caller = "t_pointerup_handler";
+let log_this = DOM_SENTENCE_LOG;
+
+    let consumed_by                  = "";
+/*}}}*/
+    /* [t_CURSOR_del_MOVE_LISTENER] {{{*/
+    let   this_MS                    = new Date().getTime();
+    let   delayMS                    = onDown_MS ? (this_MS - onDown_MS) : 0;
+    let   clicked                    = (delayMS &lt; CLICK_DURATION);
+/*{{{
+    let { onDown_container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
+}}}*/
+
+    t_CURSOR_del_MOVE_LISTENER();
+
+    /*}}}*/
+    /* [t_SENTENCE_RESTORE_EL] {{{*/
+    let   onDown_sentence_container  = t_util.get_el_parent_with_class(onDown_EL, "sentence_container");
+    let   some_sentence_container    =          document.querySelector(          ".sentence_container");
+    if(     clicked &amp;&amp; onDown_sentence_container)
+    {
+        consumed_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
+
+        dom_sentence.t_SENTENCE_RESTORE_EL(onDown_sentence_container, e);
+    }
+    /*}}}*/
+    /* [t_SENTENCE_RESTORE_ALL] {{{*/
+    else if(clicked &amp;&amp; some_sentence_container)
+    {
+        consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
+
+        dom_sentence.t_SENTENCE_RESTORE_ALL( e );
+        some_sentence_container = document.querySelector(".sentence_container");
+    }
+    /*}}}*/
+    /*{{{*/
+    else
+    {
+        consumed_by
+            = "UP ➔ CLICKED=["+clicked+"]"
+            +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]"
+            +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"
+            +  " .. onDown_sentence_container=["+ (onDown_sentence_container ? onDown_sentence_container .tagName : "")+"]"
+        ;
+
+    }
+    /*}}}*/
+    /* [clicked] .. [t_scrollIntoViewIfNeeded_set_EL] {{{*/
+    if( clicked )
+    {
+/*{{{
+console.log("onDown_sentence_container=["+t_util.get_id_or_tag(onDown_sentence_container)+"]")
+console.log("..some_sentence_container=["+t_util.get_id_or_tag(  some_sentence_container)+"]")
+}}}*/
+/*{{{
+console.log("...same node             = "+(onDown_sentence_container == some_sentence_container)+"]")
+}}}*/
+
+        if(      onDown_sentence_container ) dom_scroll.t_scrollIntoViewIfNeeded_set_EL( null                    ); /* STOP   [scrollIntoView] */
+        else if(   some_sentence_container ) dom_scroll.t_scrollIntoViewIfNeeded_set_EL( some_sentence_container ); /* CHANGE [scrollIntoView] */
+    }
+    /*}}}*/
+    /* [clearTimeout] LONG_PRESS {{{*/
+
+    if(long_press_timer    ) clearTimeout(long_press_timer    ); long_press_timer     = null;
+    if(long_press_arm_timer) clearTimeout(long_press_arm_timer); long_press_arm_timer = null;
+
+    /*}}}*/
+    /* [clr_onWork_EL] {{{*/
+    clr_onWork_EL( caller );
+
+    /*}}}*/
+if( log_this) log5("→→ "+caller+":"+ consumed_by);
+};
+/*}}}*/
+
+/* 0 - EVENT */
+/*{{{*/
+let onDown_EL = null;
+let onDown_MS = 0;
+let onDown_XY = { x:0, y:0 };
+let onMoveDXY = { x:0, y:0 };
+
+/*}}}*/
+/*  set_onDown_XY {{{*/
+let set_onDown_XY = function(e)
+{
+    onDown_EL   = t_util.t_get_event_target(e);
+    onDown_MS   = new Date().getTime();
+
+    let      xy = t_util.get_event_XY(e);
+    onDown_XY.x = xy.x;
+    onDown_XY.y = xy.y;
+
+    onMoveDXY.x = 0;
+    onMoveDXY.y = 0;
+};
+/*}}}*/
+/*  get_onMoveDXY {{{*/
+let get_onMoveDXY = function(e)
+{
+    if(e) {
+        let      xy = t_util.get_event_XY(e);
+        onMoveDXY.x = xy.x - onDown_XY.x;
+        onMoveDXY.y = xy.y - onDown_XY.y;
+    }
+    return onMoveDXY;
+};
+/*}}}*/
+/*  zap_onMoveDXY {{{*/
+let zap_onMoveDXY = function()
+{
+    onDown_XY.x += onMoveDXY.x;
+    onDown_XY.y += onMoveDXY.y;
+    drag_cursor.show_drag_cursor();
+    onMoveDXY.x  = 0;
+    onMoveDXY.y  = 0;
+};
+/*}}}*/
+/*  clr_onWork_EL {{{*/
+let clr_onWork_EL = function(_caller)
+{
+/*{{{*/
+let   caller = "clr_onWork_EL";
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log8(caller+": CALLED BY "+ _caller);
+/*}}}*/
+
+    onDown_EL   = null;
+    onDown_MS   = 0;
+    onDown_XY.x = 0; onDown_XY.y = 0;
+    onMoveDXY.x = 0; onMoveDXY.y = 0;
+};
+/*}}}*/
+
+/* LISTENER - log5 log7 */
+/*{{{*/
+let CAPTURE_TRUE_PASSIVE_FALSE  = { capture:true , passive:false };
+
+/*}}}*/
+/*➔ t_SENTENCE_add_LISTENER {{{*/
+let t_SENTENCE_add_LISTENER = function(_log_this,_tag_this)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_add_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+/*}}}*/
+if( log_this || _log_this || _tag_this) log5("➔ "+caller+LF);
+
+    if( ("ontouchstart" in document.documentElement)) {
+        add_listener_capture_active(   window, "touchstart", t_pointerdown_listener           ); /* DOWN   */
+        add_listener_capture_active(   window, "touchend"  , t_pointerup_listener             ); /* UP     */
+    }
+    else {
+        add_listener_capture_active(   window, "mousedown" , t_pointerdown_listener           ); /* DOWN   */
+        add_listener_capture_active(   window, "mouseup"   , t_pointerup_listener             ); /* UP     */
+    }
+
+    add_listener_capture_active(       window, "scroll"    ,   dom_scroll.t_scroll_listener   ); /* SCROLL */
+    add_listener_capture_active(       window, "resize"    , dom_sentence.t_SENTENCE_onresize ); /* RESIZE */
+};
+/*}}}*/
+/*➔ t_SENTENCE_del_LISTENER {{{*/
+let t_SENTENCE_del_LISTENER = function(_log_this,_tag_this)
+{
+/*{{{*/
+let   caller = "t_SENTENCE_del_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this || _log_this || _tag_this) log0("➔ "+caller+LF);
+/*}}}*/
+
+    if( ("ontouchstart" in document.documentElement)) {
+        remove_listener_capture_active(   window, "touchstart", t_pointerdown_listener);    /* DOWN  */
+        remove_listener_capture_active(   window, "touchend"  , t_pointerup_listener);      /* UP    */
+    }
+    else {
+        remove_listener_capture_active(   window, "mousedown" , t_pointerdown_listener);    /* DOWN  */
+        remove_listener_capture_active(   window, "mouseup"   , t_pointerup_listener);      /* UP    */
+    }
+
+    remove_listener_capture_active(   window, "scroll"    , dom_scroll.t_scroll_listener);  /* SCROLL*/
+};
+/*}}}*/
+/*_ t_CURSOR_add_MOVE_LISTENER {{{*/
+let t_CURSOR_add_MOVE_LISTENER = function()
+{
+/*{{{*/
+let   caller = "t_CURSOR_add_MOVE_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log7(caller);
+/*}}}*/
+    if("ontouchmove"  in document.documentElement) {
+        add_listener_capture_active(   window, "touchmove", t_SENTENCE_drag_listener);
+    }
+    else {
+        add_listener_capture_active(   window, "mousemove", t_SENTENCE_drag_listener);
+        add_listener_capture_active(   window, "wheel"    , t_SENTENCE_drag_listener);
+    }
+};
+/*}}}*/
+/*_ t_CURSOR_del_MOVE_LISTENER {{{*/
+let t_CURSOR_del_MOVE_LISTENER = function()
+{
+/*{{{*/
+let   caller = "t_CURSOR_del_MOVE_LISTENER";
+let log_this = DOM_SENTENCE_LOG;
+
+if(log_this) log0(caller);
+/*}}}*/
+
+    t_del_NOT_MOVED_ENOUGH();
+    t_del_MOVE_ON_COOLDOWN();
+
+    /* KEEP MOVING CURSOR WHILE MOUSE BUTTON IS UP */
+    if( drag_cursor.get_mouseUP_display_state() )
+        return;
+
+    /* STOP MOVING CURSOR WHILE MOUSE BUTTON IS UP */
+    if("ontouchmove"  in document.documentElement) {
+        remove_listener_capture_active(window, "touchmove", t_SENTENCE_drag_listener);
+    }
+    else {
+        remove_listener_capture_active(window, "mousemove", t_SENTENCE_drag_listener);
+        remove_listener_capture_active(window, "wheel"    , t_SENTENCE_drag_listener);
+    }
+
+    drag_cursor.hide_drag_cursor();
+};
+/*}}}*/
+/*_ add_listener_capture_active {{{*/
+let add_listener_capture_active = function(el, ev, fn)
+{
+    el.   addEventListener(ev, fn, CAPTURE_TRUE_PASSIVE_FALSE);
+};
+/*}}}*/
+/*_ remove_listener_capture_active {{{*/
+let remove_listener_capture_active = function(el, ev, fn, uc) /* eslint-disable-line no-unused-vars */
+{
+    el.removeEventListener(ev, fn, CAPTURE_TRUE_PASSIVE_FALSE);
+};
+/*}}}*/
+/*_ preventDefault {{{*/
+let preventDefault = function(e)
+{
+/*{{{*/
+let log_this = DOM_SENTENCE_LOG;
+
+if( log_this) log0("preventDefault");
+/*}}}*/
+    if(e.cancelable)
+    {
+        if( e.stopPropagation          ) e.stopPropagation         (); /* capturing and bubbling phases */
+        if( e.stopImmediatePropagation ) e.stopImmediatePropagation(); /* other listeners of the same event */
+        if( e.preventDefault           ) e.preventDefault          (); /* browser agent default .. (checkbox toggle) */
+    }
+};
+/*}}}*/
+
+/* LAYOUT */
+/*_ t_scrollIntoViewIfNeeded {{{*/
+let t_scrollIntoViewIfNeeded = function(el)
+{
+    document.getElementsByTagName("HTML")[0].style.scrollBehavior = "smooth"; /* (smooth|instant) */
+
+    let el_H2= Math.min(el.clientHeight/2, window.innerHeight/2);
+
+    let x     = el.offsetLeft;
+    let y     = el.offsetTop + el_H2 - window.innerHeight/2;
+
+    window.scrollTo(x, y);
+};
+/*}}}*/
+
+/* [drag_cursor] */
+/*
+../../script/drag_cursor.js
+*/
+/*INLINE{{{*/
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ drag_cursor                                                              │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* eslint-disable      no-unused-vars    */         /* REQUIRED WHEN EMBEDDED */
+/* globals window, document, console, setTimeout */ /* eslint-disable-line no-redeclare */
+
+/* globals t_util, t_CURSOR_add_MOVE_LISTENER, t_CURSOR_del_MOVE_LISTENER */
+/* globals CSS_NOT_MOVED_ENOUGH, CSS_MOVE_ON_COOLDOWN */
+/* globals onDown_XY */
+/* eslint-ensable      no-unused-vars    */         /* REQUIRED WHEN EMBEDDED */
+
+/* exported drag_cursor, DRAG_CURSOR_JS_ID */
+
+const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:13)";  /* eslint-disable-line no-unused-vars */
+/*}}}*/
+let drag_cursor  = (function() {
+"use strict"; /* eslint-disable-line strict */
+
+/*{{{*/
+const CSS_DRAG_CURSOR_DIV_ONLOAD       = "onload";
+const     DRAG_CURSOR_DIV_ONLOAD_DELAY =  1000;
+let       drag_cursor_div;
+
+/*
+let       drag_cursor_count = 0;
+*/
+/*}}}*/
+/*_ set_mouseUP_display_state  {{{*/
+/*{{{*/
+let mouseUP_display_state = true;
+
+/*}}}*/
+let set_mouseUP_display_state = function(state=true)
+{
+    mouseUP_display_state = state;
+
+    if(state) show_drag_cursor();
+
+    if(state) t_CURSOR_add_MOVE_LISTENER();
+    else      t_CURSOR_del_MOVE_LISTENER();
+};
+/*}}}*/
+let get_mouseUP_display_state = function() { return mouseUP_display_state; };
+/*_ show_drag_cursor {{{*/
+let show_drag_cursor = function()
+{
+/*{{{
+console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",onMoveDXY , "onDown_XY:",onDown_XY)
+}}}*/
+    if(!drag_cursor_div) {
+        drag_cursor_div = document.createElement("DIV");
+
+        drag_cursor_div.id                    =     "drag_cursor";
+        drag_cursor_div.style.pointerEvents   =            "none";
+        drag_cursor_div.style.position        =           "fixed";
+        drag_cursor_div.style.margin          =             "0px";
+        drag_cursor_div.style.padding         =            "16px";
+        drag_cursor_div.style.backgroundColor =            "#FF0";
+        drag_cursor_div.style.border          =  "3px solid #000";
+        drag_cursor_div.style.borderRadius    = "1em 0em 1em 1em";
+        drag_cursor_div.style.zIndex          =      "2147483647";
+        drag_cursor_div.style.opacity         =             "0.5";
+
+        document.documentElement.appendChild( drag_cursor_div );
+    }
+    if( drag_cursor_div.style.display != "block")
+    {
+        /* STANDALONE SPLITTER ACTIVATION {{{*/
+        if(typeof dom_sentence_event != "undefined")
+        {
+            drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
+            drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
+            drag_cursor_div.style.top     = (window.innerHeight / 2)+"px";
+
+        }
+        /*}}}*/
+        drag_cursor_div.style.display  = "block";
+    }
+};
+/*}}}*/
+/*_ move_drag_cursor {{{*/
+let move_drag_cursor = function(e)
+{
+    if(!drag_cursor_div                         ) return;
+    if(!drag_cursor_div.style.display == "block") return;
+
+    if(                  drag_cursor_div.classList.contains( CSS_DRAG_CURSOR_DIV_ONLOAD ))
+        setTimeout(() =&gt; drag_cursor_div.classList.remove  ( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
+
+    let      xy = t_util.get_event_XY(e);
+    let offset_x = drag_cursor_div.className
+        ? drag_cursor_div.offsetWidth / 2
+        : drag_cursor_div.offsetWidth;
+    drag_cursor_div.style.left    = (xy.x - offset_x)+"px";
+    drag_cursor_div.style.top     = (xy.y           )+"px";
+};
+/*}}}*/
+let hide_drag_cursor                     = function() { if(drag_cursor_div) drag_cursor_div.style.display = "none"; };
+let add_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(drag_cursor_div) drag_cursor_div.classList.add   (CSS_NOT_MOVED_ENOUGH); };
+let del_drag_cursor_CSS_NOT_MOVED_ENOUGH = function() { if(drag_cursor_div) drag_cursor_div.classList.remove(CSS_NOT_MOVED_ENOUGH); };
+let add_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(drag_cursor_div) drag_cursor_div.classList.add   (CSS_MOVE_ON_COOLDOWN); };
+let del_drag_cursor_CSS_MOVE_ON_COOLDOWN = function() { if(drag_cursor_div) drag_cursor_div.classList.remove(CSS_MOVE_ON_COOLDOWN); };
+
+/* EXPORT */
+return { name : "drag_cursor"
+    ,    set_mouseUP_display_state
+    ,    get_mouseUP_display_state
+    ,    show_drag_cursor
+    ,    hide_drag_cursor
+    ,    move_drag_cursor
+    ,    add_drag_cursor_CSS_MOVE_ON_COOLDOWN
+    ,    add_drag_cursor_CSS_NOT_MOVED_ENOUGH
+    ,    del_drag_cursor_CSS_MOVE_ON_COOLDOWN
+    ,    del_drag_cursor_CSS_NOT_MOVED_ENOUGH
+};
+}());
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+
+:e             $RPROFILES/script/dom_tools.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/stylesheet/dom_host.css
+"...           $RPROFILES/script/drag_cursor.js
+
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
+/*INLINE}}}*/
+/*}}}*/
+
+
+/* EXPORT */
+return { name : DOM_SENTENCE_EVENT_JS_ID
+    ,    t_SENTENCE_add_LISTENER
+    ,    t_SENTENCE_del_LISTENER
+    ,    t_scrollIntoViewIfNeeded
+    ,    t_add_MOVE_ON_COOLDOWN
+    ,    t_del_MOVE_ON_COOLDOWN
+    ,    t_add_NOT_MOVED_ENOUGH
+    ,    t_del_NOT_MOVED_ENOUGH
+    ,    set_mouseUP_display_state : drag_cursor.set_mouseUP_display_state
+    /* DEBUG */
+    ,    get_mouseUP_display_state : drag_cursor.get_mouseUP_display_state
+    ,  show_drag_cursor            : drag_cursor.show_drag_cursor
+    ,  hide_drag_cursor            : drag_cursor.hide_drag_cursor
+    ,  move_drag_cursor            : drag_cursor.move_drag_cursor
+};
+
+}());
+
+/*{{{
+setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
+}}}*/
+
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+"...           $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
+/*
+:!start /b explorer splitter_embedded.html
+*/
+/*INLINE}}}*/
+//@ sourceURL=dom_sentence_event.js
 `
 </pre> <!--}}}-->
 </details>
@@ -242,6 +2339,617 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 ./script/stub/dom_sentence_util.js
 */
 let dom_sentence_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_sentence_util               [dom_sentence] ➔ [dom_util] dependencies │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals console, window, document, Node */
+
+/* exported dom_sentence_util */
+
+const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util";
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220210:18h:39)";  /* eslint-disable-line no-unused-vars */
+/*}}}*/
+let dom_sentence_util    = (function() {
+"use strict";
+
+/* console {{{*/
+/* eslint-disable no-unused-vars */
+
+/* CSS */
+const lf1  = "color:#964B00;";
+const lf2  = "color:#FF0000;";
+const lf3  = "color:#FFA500;";
+const lf4  = "color:#FFFF00;";
+const lf5  = "color:#9ACD32;";
+const lf6  = "color:#6495ED;";
+const lf7  = "color:#EE82EE;";
+const lf8  = "color:#A0A0A0;";
+const lf9  = "color:#FFFFFF;";
+const lf0  = "color:#707070; text-shadow:#000 2px 2px 1px;"; /* offset-x offset-y blur-radius */
+const lfX  = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
+
+const lbH  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+const lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0 1ex; padding:0 .5em 0 .5em; border-radius:1em   0   0 1em; background:linear-gradient(to   left, #333 0%           ,#445 100%);";
+const lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
+const lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
+
+let dir               = console.dir;
+let log               = console.log;
+let logX = (msg,l_x) =&gt; console.log("%c"+msg, lbR+lfX[l_x]);
+let log0 = (msg)     =&gt;         logX(    msg, 0  );
+let log1 = (msg)     =&gt;         logX(    msg, 1  );
+let log2 = (msg)     =&gt;         logX(    msg, 2  );
+let log3 = (msg)     =&gt;         logX(    msg, 3  );
+let log4 = (msg)     =&gt;         logX(    msg, 4  );
+let log5 = (msg)     =&gt;         logX(    msg, 5  );
+let log6 = (msg)     =&gt;         logX(    msg, 6  );
+let log7 = (msg)     =&gt;         logX(    msg, 7  );
+let log8 = (msg)     =&gt;         logX(    msg, 8  );
+let log9 = (msg)     =&gt;         logX(    msg, 9  );
+
+let logs = { dir
+        ,    log
+        ,    log0
+        ,    log1
+        ,    log2
+        ,    log3
+        ,    log4
+        ,    log5
+        ,    log6
+        ,    log7
+        ,    log8
+        ,    log9
+    };
+
+/* eslint-enable  no-unused-vars */
+/*}}}*/
+
+/*➔ t_get_htmlEntities {{{ */
+/*{{{
+const regexp_HTML_AMP           = new RegExp("&amp;"                                        , "g");
+const regexp_HTML_LT            = new RegExp("&lt;"                                        , "g");
+const regexp_HTML_GT            = new RegExp("&gt;"                                        , "g");
+const regexp_HTML_APOS          = new RegExp("'", "g");
+const regexp_HTML_QUOTE         = new RegExp('"', "g");
+}}}*/
+const regexp_HTML_ENTITIES = new RegExp("[\\u00A0-\\u9999&lt;&gt;\\&amp;']", "gim");
+
+let t_get_htmlEntities = function(str)
+{
+/*{{{
+    return String(str)
+        .replace(regexp_HTML_AMP  , "&amp;amp;" )
+        .replace(regexp_HTML_LT   , "&amp;lt;"  )
+        .replace(regexp_HTML_GT   , "&amp;gt;"  )
+        .replace(regexp_HTML_APOS , "&amp;apos;")
+        .replace(regexp_HTML_QUOTE, "&amp;quot;")
+    ;
+}}}*/
+    return str.replace(regexp_HTML_ENTITIES, function(c) { return "&amp;#"+c.charCodeAt(0)+";"; });
+};
+/*}}}*/
+
+/*➔ [set_el_class] [add_el_class] [del_el_class] [has_el_class] [clear_el_classList] {{{*/
+let add_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(   !el.classList.contains( className )) el.classList.add   ( className ); };
+let del_el_class     = function(el, className) { if(!el || !el.classList) return      ; if(    el.classList.contains( className )) el.classList.remove( className ); };
+let set_el_class     = function(el, className) { if(!el || !el.classList) return      ;                                            el.className       = className  ; };
+let has_el_class     = function(el, className) { if(!el || !el.classList) return false; return el.classList.contains( className );                                   };
+/*_ clear_el_classList .. cycle_el_classList .. cycle_id_classList {{{*/
+let clear_el_classList = function(el_or_id, classList) { cycle_el_classList(el_or_id, classList, true); }; /* eslint-disable-line no-unused-vars */
+let cycle_el_classList = function(el_or_id, classList, remove_only)
+{
+    let el = (typeof               el_or_id == "object")
+        ?                          el_or_id
+        :  document.getElementById(el_or_id)
+    ;
+    /* REMOVE ALL OF [classList] */
+    let next_picked;
+    for(let i=0; i &lt;              classList.length; ++i) {
+        if(el.classList.contains( classList[i] ))
+        {
+            el.classList.remove ( classList[i] );
+            next_picked    =      classList[i+1];
+        }
+    }
+    if( remove_only ) return undefined;
+
+    /* WRAP [next_picked] */
+    if(!next_picked) next_picked = classList[0];
+/*{{{
+log("%c next_picked=["+next_picked+"]", lbH+lfX[parseInt(next_picked)])
+}}}*/
+
+    /* ADD [next_picked] */
+    if( next_picked) el.classList.add( next_picked );
+
+/*{{{
+let txt = "";
+for(let i=0; i &lt; classList.length; ++i) {
+    txt += (next_picked == classList[i])
+    ? " ["+classList[i]+"]"
+    :  " "+classList[i];
+}
+logXXX(txt);
+}}}*/
+    return next_picked;
+};
+
+let cycle_id_classList = cycle_el_classList; /* eslint-disable-line no-unused-vars */
+/*}}}*/
+/*_ flip_el_class .. flip_id_class {{{*/
+let flip_el_class = function(el_or_id, className)
+{
+    let el = (typeof               el_or_id == "object")
+        ?                          el_or_id
+        :  document.getElementById(el_or_id)
+    ;
+    if( has_el_class(el, className) ) del_el_class(el, className);
+    else                              add_el_class(el, className);
+};
+
+let flip_id_class = flip_el_class; /* eslint-disable-line no-unused-vars */
+/*}}}*/
+/*_ set_el_class_on_off {{{*/
+let set_el_class_on_off = function(el, className, on_off) /* eslint-disable-line no-unused-vars */
+{
+    if(on_off) add_el_class(el, className);
+    else       del_el_class(el, className);
+
+};
+/*}}}*/
+/*_ set_el_class_removing {{{*/
+let set_el_class_removing = function(el_or_id, class_to_add, classes_to_remove) /* string or collection */ /* eslint-disable-line no-unused-vars */
+{
+    if(       typeof      classes_to_remove != "object") classes_to_remove = [ classes_to_remove ];
+
+    let el = (typeof               el_or_id == "object")
+        ?                          el_or_id
+        :  document.getElementById(el_or_id)
+    ;
+    if(!el) return false; /* @hapens with dom_sticky.html */
+    /* [classes_to_remove] */
+    let removed = "";
+    for(let i=0; i &lt;               classes_to_remove.length; ++i)
+    {
+        if( el.classList.contains( classes_to_remove[i] )) {
+            el.classList.remove  ( classes_to_remove[i]  );
+            removed =              classes_to_remove[i]   ;
+        }
+    }
+
+    /* [class_to_add] */
+    if( class_to_add )
+    {
+        if(!el.classList.contains( class_to_add ))
+            el.classList.add     ( class_to_add );
+    }
+
+    return removed;
+};
+/*}}}*/
+/*  is_marked_to_hide {{{*/
+const MARKED_TO_HIDE        = "marked_to_hide";
+let is_marked_to_hide = function( node ) /* eslint-disable-line no-unused-vars */
+{
+    return has_el_class(node, MARKED_TO_HIDE);
+
+};
+/*}}}*/
+/*}}}*/
+
+/*➔ show_CR_LF {{{*/
+const regexp_CR              = new RegExp("\\r", "g");
+const regexp_LF              = new RegExp("\\n", "g");
+const SYMBOL_DOWN_LEFT_ARROW = "\u21B5";
+let show_CR_LF = function(text)
+{
+    return text
+        .   replace(regexp_CR,  "")
+        .   replace(regexp_LF, SYMBOL_DOWN_LEFT_ARROW)
+        .   trim()
+    ;
+};
+/*}}}*/
+/*➔ ellipsis {{{*/
+const HORIZONTAL_ELLLIPSIS = "\u2026";
+const ELLIPSIS_DEFAULT_LEN = 96;
+const ELLIPSIS_SHORT_LEN   = 48;
+
+let ellipsis_16 = function(msg) /* eslint-disable-line no-unused-vars */
+{
+    return mPadEnd( ellipsis(msg, 16) , 16);
+};
+
+let ellipsis_short = function(msg)
+{
+    return ellipsis(msg, ELLIPSIS_SHORT_LEN);
+};
+
+let ellipsis = function(_msg, len=ELLIPSIS_DEFAULT_LEN)
+{
+    let msg = show_CR_LF( String(_msg) );
+    return (msg.length    &lt;= len)
+        ?   msg
+        :   msg.substring(0, len-3)+HORIZONTAL_ELLLIPSIS
+    ;
+};
+/*}}}*/
+/*_ mPadStart .. mPadEnd {{{*/
+let mPadStart = function(s,l,c=" ") { s = String(s); while(s.length &lt; l) s = c+s; return s; }; /* eslint-disable-line no-unused-vars */
+
+let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length &lt; l) s = s+c; return s; };
+/*}}}*/
+
+/*➔ get_el_parent_fragment {{{*/
+let get_el_parent_fragment = function(el)
+{
+    while( el ) {
+        if(el.shadowRoot                             ) return el;
+        if(el.nodeType == Node.DOCUMENT_FRAGMENT_NODE) return el;
+        el              = el.parentNode;
+    }
+    return null;
+};
+/*}}}*/
+/*➔ get_el_parent_with_tag {{{*/
+let get_el_parent_with_tag = function(el,tag)
+{
+    if( el.nodeName == "#text")
+        el     = el.parentElement;
+
+    while(el &amp;&amp; (el.tagName != tag))
+        el     = el.parentElement;
+
+    if(    !el                        ) return null;
+    return (         tag == el.tagName) ? el : null;
+};
+/*}}}*/
+
+/*➔ get_el_parent_with_class {{{*/
+let get_el_parent_with_class = function(el, className)
+{
+    while(   el ) {
+        if(  el.classList.contains( className )) return el;
+        el = el.parentElement;
+    }
+    return null;
+};
+/*}}}*/
+/*➔ get_el_child_with_class {{{*/
+let get_el_child_with_class = function(parent,className,level=1)
+{
+    if(!parent) return null;
+
+    for(let c=0; c &lt; parent.children.length; ++c) {
+        /* direct child {{{*/
+        let child  = parent.children[c];
+        if((child != null) &amp;&amp; has_el_class(child, className)) {
+/*{{{
+log("get_el_child_with_class("+get_id_or_tag(parent)+" , "+className+" , "+level+") %c DIRECT CHILD "+get_id_or_tag(child)+"", lbH+lf4);
+}}}*/
+
+            return child;
+        }
+        /*}}}*/
+        /* descendant {{{*/
+        if(child.children.length)
+        {
+            if( child = get_el_child_with_class(child, className, level+1)) {
+/*{{{
+log("get_el_child_with_class("+get_id_or_tag(parent)+" , "+className+") %c LEVEL "+level+" DESCENDANT "+get_id_or_tag(child)+"", lbH+lf3);
+}}}*/
+
+                return child;
+            }
+        }
+        /*}}}*/
+    }
+
+    return null;
+};
+/*}}}*/
+/*➔ get_el_xy {{{*/
+let get_el_xy = function(el)
+{
+    if(!el) return null;
+    let  x = 0;
+    let  y = 0;
+
+    let cs = window.getComputedStyle(el);
+
+    if(   (cs.position == "fixed"   )
+       || (cs.position == "absolute")
+      ) {
+/*{{{
+log("%c"+(el.id || el.tagName)+" "+cs.position,lbH+lf7);
+}}}*/
+        x   = el.offsetLeft;
+        y   = el.offsetTop ;
+    }
+    else {
+/*{{{
+log("%c"+(el.id || el.tagName)+" "+cs.position,lbH+lf8);
+}}}*/
+        while(el) {
+            x  += el.offsetLeft;
+            y  += el.offsetTop ;
+            el  = el.offsetParent;
+        }
+/*{{{
+        let r = el.getBoundingClientRect();
+        y     = r.top  + window.scrollY;
+        x     = r.left + window.scrollX;
+}}}*/
+    }
+
+    return { x , y };
+};
+/*}}}*/
+/*_ get_id_or_tag {{{ */
+let get_id_or_tag = function(node)
+{
+    return !node           ? ("null_node"                        )
+        :   node.id        ? ("#"+ node.id                       )
+        :   node.className ? (node.tagName+"."+ node.classList[0])
+        :                    (node.tagName                       )
+    ;
+};
+/*}}}*/
+/*_ is_el_or_child_of_parent_el {{{*/
+let is_el_or_child_of_parent_el = function(el, parent_el)
+{
+    if(!parent_el) return false;
+
+    while(el &amp;&amp; (el != parent_el))
+        el     = el.parentElement;
+
+    return (el == parent_el);
+};
+/*}}}*/
+
+/*➔ get_n_lbl {{{ */
+let get_n_lbl = function(node)
+{
+    if(!node                 ) return "null_node";
+    if( node == window       ) return "window";
+    if( node == document.body) return "body";
+
+/*  if(node.id    ) try { return            node.tagName +"#"+ node.id                                ; } catch(ex) {} */
+
+    if(node.id    ) try { return       "#"+ node.id                                                   ; } catch(ex) {}
+    if(node.title ) try { return "title=["+ node.title +"]"                                           ; } catch(ex) {}
+
+    let                          n_lbl  = null;
+    try                 {        n_lbl  = node.tagName +(node.className ? ("."+ node.className) : "") ; } catch(ex) {}
+    if(   n_lbl )   try {        n_lbl += " .. TEXT=["+ truncate(node.textContent,  24)+"]"           ; } catch(ex) {}
+    if(   n_lbl )         return n_lbl;
+
+    try                 { return              "TEXT=["+ truncate(node.textContent,  24)+"]"           ; } catch(ex) {}
+    try                 { return                                 node.tagName                         ; } catch(ex) {}
+    try                 { return                                 node.nodeType                        ; } catch(ex) {}
+
+    return "";
+};
+/*}}}*/
+/*_ truncate {{{*/
+let truncate = function(_msg, length=80)
+{
+    let msg = strip_CR_LF( String(_msg) );
+    return (msg.length &lt;= length)
+        ?   msg
+        :   msg.substring(0, length-3)+"..."
+    ;
+};
+/*}}}*/
+/*_ strip_CR_LF {{{*/
+let strip_CR_LF = function(text)
+{
+    return text
+        .   replace(regexp_CR,  "")
+        .   replace(regexp_LF, " ")
+        .   trim()
+    ;
+};
+/*}}}*/
+
+/*➔ get_node_sibling_at_offset {{{*/
+let get_node_sibling_at_offset = function(node,offset)
+{
+    if(offset &gt; 0)
+    {
+        for(let next_node  = node.nextElementSibling
+            ;   next_node
+            ;   next_node  = next_node.nextElementSibling
+           ) {
+            if( next_node.nodeName == node.nodeName) {
+                if( offset ) offset -= 1;
+                if(!offset ) return next_node;
+            }
+        }
+    }
+    else {
+        for(let prev_node  = node.previousElementSibling
+            ;   prev_node
+            ;   prev_node  = prev_node.previousElementSibling
+           ) {
+            if( prev_node.nodeName == node.nodeName) {
+                if( offset ) offset += 1;
+                if(!offset ) return prev_node;
+            }
+        }
+    }
+    return null;
+ };
+/*}}}*/
+/*➔ get_parent_tag_id_class_chain {{{*/
+const LF    = String.fromCharCode(10);
+const PREFIX = "                               \u21B3";
+let get_parent_tag_id_class_chain = function(el)
+{
+    let array = [];
+
+    while( el )
+    {
+        let e_class = (el.id || el.className) ? "left"   : ""     ;
+        let i_class = (         el.className) ? "center" : "right";
+        let c_class =                                      "right";
+
+        let el_className = ellipsis_short(el.className);
+
+        let rank         = get_nodeName_rank(el);
+        let el_tagName   = el.tagName+( (rank &gt; 1) ? "["+rank+"]":"");
+
+        array.push(   (               "&lt;em class='tag   "+e_class+"'&gt;" + el_tagName   +"&lt;/em&gt;"     ) /* TAG     */
+                   +  (el.id        ? "&lt;em class='id    "+i_class+"'&gt;#"+ el.id        +"&lt;/em&gt;" : "") /* ID      */
+                   +  (el_className ? "&lt;em class='class "+c_class+"'&gt;."+ el_className +"&lt;/em&gt;" : "") /* CLASS   */
+                  );
+        el = el.parentElement;
+    }
+
+    let parent_id_class_chain = "";
+
+    for(let l=0, i=array.length-1; i&gt;=0; ++l, --i)
+        parent_id_class_chain
+            += ((l&gt;0) ? (LF+" "+PREFIX.slice(-l))+" " : "")
+            +            array[i];
+
+    return parent_id_class_chain;
+};
+/*}}}*/
+/*_ get_nodeName_rank {{{*/
+let get_nodeName_rank = function(node)
+{
+    if(node.nodeType == Node.ATTRIBUTE_NODE) return null;
+
+    let rank = 1;
+    for(let prev_node =      node.previousElementSibling
+    ;       prev_node
+    ;       prev_node = prev_node.previousElementSibling
+    ) {
+        if(prev_node.nodeName == node.nodeName)
+            rank += 1;
+    }
+    return rank;
+ };
+/*}}}*/
+
+/* EVENT */
+/*_ t_get_event_target {{{*/
+let t_get_event_target = function(e) /* eslint-disable-line complexity */
+{
+    let e_target = e.target ? e.target  : undefined;
+    let e_path_0 =  e.path  ? e.path[0] : undefined;
+    let e_path_1 =  e.path  ? e.path[1] : undefined;
+/*{{{
+console.log("e_path_0:",e_path_0)
+console.log("e_path_1:",e_path_1)
+console.log("e.path:"  ,e.path  )
+}}}*/
+
+    if     (e.path &amp;&amp; (e_path_0.tagName != "IMG"))  e_target = e_path_0;
+    else if(e.path &amp;&amp;  e_path_1                  )  e_target = e_path_1;
+    else if(e.originalTarget                     )  e_target = e.originalTarget;
+    else if(e.explicitOriginalTarget             )  e_target = e.explicitOriginalTarget;
+
+    let el;
+    e_target
+        = ((el = e_target.firstElementChild) &amp;&amp; (el.tagName == "INPUT")) ?                                         e_target.firstElementChild
+        : ((el = e_target                  ) &amp;&amp; (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
+        : ((el = e_target.parentElement    ) &amp;&amp; (el.htmlFor           )) ? (document.getElementById(el.htmlFor) || e_target)
+        : /*..........................................................*/                                           e_target
+    ;
+
+/*{{{
+console.log("t_get_event_target: return "+e_target.tagName+" "+e_target.className)
+console.log("e_target:",e_target)
+}}}*/
+    return e_target;
+};
+/*}}}*/
+/*_ get_event_XY {{{*/
+let get_event_XY = function(e)
+{
+    let x, y;
+    if(e.changedTouches) {
+        x = parseInt(e.changedTouches[0].clientX);
+        y = parseInt(e.changedTouches[0].clientY);
+    }
+    else {
+        x = parseInt(                  e.clientX);
+        y = parseInt(                  e.clientY);
+    }
+/*{{{
+if(log_this) log("get_event_XY: return { "+x+" , "+y+" }");
+}}}*/
+    return { x , y };
+};
+/*}}}*/
+
+/* EXPORT */
+/*{{{*/
+return { name : DOM_SENTENCE_UTIL_JS_ID
+
+    /* EVENT */
+    ,    t_get_event_target
+    ,    get_event_XY
+
+    , t_get_htmlEntities
+
+    , set_el_class
+    , add_el_class
+    , del_el_class
+    , has_el_class
+    , clear_el_classList
+
+    , show_CR_LF
+    , ellipsis
+
+    , get_el_parent_fragment
+    , get_el_parent_with_tag
+    , get_el_parent_with_class
+    , get_el_child_with_class
+    , get_el_xy
+    , get_id_or_tag
+    , is_el_or_child_of_parent_el
+
+    , get_n_lbl
+    , get_node_sibling_at_offset
+    , get_parent_tag_id_class_chain
+
+    , logs
+};
+/*}}}*/
+
+ }());
+
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+"...           $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
+/*INLINE}}}*/
+//@ sourceURL=dom_sentence_util.js
 `
 </pre> <!--}}}-->
 </details>
@@ -253,6 +2961,635 @@ let dom_sentence_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 ./script/stub/dom_scroll.js
 */
 let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_scroll_js                                                            │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals console, document, window */
+/* globals localStorage, setTimeout, clearTimeout */
+/* globals dom_tools, dom_util, dom_log */
+/* globals dom_sentence_event, dom_sentence_util */
+
+
+/* exported DOM_SCROLL_JS_TAG, dom_scroll */
+
+/* exported DOM_SCROLL_JS_TAG */
+
+const DOM_SCROLL_JS_ID         = "dom_scroll_js";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (220211:18h:17)";
+/*}}}*/
+let dom_scroll              = (function() {
+"use strict";
+let   DOM_SCROLL_LOG        = false;
+let   DOM_SCROLL_TAG        = false;
+
+/* IMPORT {{{*/
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-warning-comments */
+/*➔ t_scroll_IMPORT {{{*/
+/*{{{*/
+
+let t_util     ;
+let t_tools    ;
+
+/*......................................*/
+/*}}}*/
+let t_scroll_IMPORT  = function(_log_this,import_num)
+{
+    /* MODULE LOGGING TAGGING {{{*/
+    DOM_SCROLL_LOG = DOM_SCROLL_LOG || localStorage_getItem("DOM_SCROLL_LOG");
+    DOM_SCROLL_TAG = DOM_SCROLL_TAG || localStorage_getItem("DOM_SCROLL_TAG");
+
+    /*}}}*/
+    /* t_util {{{*/
+    if     (typeof dom_util           != "undefined") t_util  = dom_util         ; /* script/dom_util.js */
+    else if(typeof dom_sentence_util  != "undefined") t_util  = dom_sentence_util; /* script/stub/dom_sentence_util.js */
+    else console.warn("MISSING STUB FOR: [dom_util]");
+
+    /*}}}*/
+    /* t_tools {{{*/
+    if     (typeof dom_tools          != "undefined") t_tools = dom_tools         ; /* script/dom_tools.js */
+    else if(typeof dom_sentence_event != "undefined") t_tools = dom_sentence_event; /* script/stub/dom_sentence_event.js */
+    else console.warn("MISSING STUB FOR: [dom_tools]");
+
+    /*}}}*/
+    scroll_INTERN();
+if(_log_this) log("➔ "+(import_num ? (import_num+" ") : "")+"t_scroll_IMPORT: "+t_util.name+", "+t_tools.name);
+};
+/*}}}*/
+/*_   scroll_INTERN {{{*/
+/* dom_log {{{*/
+
+let LOG_MAP = false;
+
+let lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lf0="";
+let lfX = [ lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9, lf0 ];
+
+let lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lb0="";
+let lbX = [ lb1 ,lb2 ,lb3 ,lb4 ,lb5 ,lb6 ,lb7 ,lb8 ,lb9, lb0 ];
+
+const lXX  = "border:1px solid gray; padding:0 .5em; border-radius:1em;";
+let lbA=lXX, lbB=lXX, lbC=lXX, lbF=lXX, lbH=lXX, lbL=lXX, lbR=lXX, lbS=lXX, lbb=lXX;
+
+let log                 = console.log;
+let log_key_val_group   = console.log;
+let log_caller          = console.trace;
+
+let console_dir         = (k,v) =&gt; { console.log("..."+k+":"); console.dir(v); };
+
+/*}}}*/
+let   scroll_INTERN     = function()
+{
+    /* dom_log OVERLOADED BY dom_log {{{*/
+    if((typeof dom_log != "undefined") &amp;&amp; (dom_log.LOG_BG_CSS))
+    {
+        LOG_MAP = dom_log.LOG_MAP;
+
+        ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+        ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+        ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
+
+        log                 = dom_log.log;
+        log_key_val_group   = dom_log.log_key_val_group;
+        console_dir         = dom_log.console_dir;
+        log_caller          = dom_log.log_caller;
+    }
+    /*}}}*/
+    /* lfX {{{*/
+    else if((typeof dom_log != "undefined") &amp;&amp; dom_log.lfX)
+    {
+        lbH = dom_log.lbH;
+        lbL = dom_log.lbL;
+        lbR = dom_log.lbR;
+        lbC = dom_log.lbC;
+        lfX = dom_log.lfX;
+        [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ] = lfX;
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_ localStorage {{{*/
+let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
+let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
+let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
+/*}}}*/
+/* eslint-enable  no-unused-vars */
+/*}}}*/
+/*{{{*/
+const CSS_SCROLL_SMOOTH      = "scroll_smooth";
+
+const SCROLL_INTO_VIEW_DELAY = 500; /* eslint-disable-line no-unused-vars */
+const SCROLL_RECENTER_DELAY  = 500;
+
+let scrollIntoView_EL;
+
+let scroll_intoview_timer;
+let scroll_recenter_timer;
+
+let w_W = 1280, w_H = 1024;
+
+/*{{{
+let onScroll_XY = { x:0, y:0 };
+}}}*/
+
+/*}}}*/
+
+/* LISTENER */
+/*{{{*/
+
+const MAX_SCROLL_SMOOTH_DURATION    = 20000;
+const SCROLLED_ENOUGH               =    16; /* eslint-disable-line no-unused-vars */
+const SCROLL_DONE_COOLDOWN          =   250;
+
+let scroll_end_timeout              =  null;
+let scroll_end_last_scrollY         =     0;
+let scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout;
+
+/*}}}*/
+/*➔ t_scroll_listener {{{*/
+let t_scroll_listener = function(e)
+{
+/*{{{*/
+let   caller = "t_scroll_listener";
+let log_this = DOM_SCROLL_LOG;
+
+    if(!t_util) t_scroll_IMPORT(true);
+/*}}}*/
+
+    let scroll_details = "scrollY="+window.scrollY;
+
+if( log_this) log("%c"+caller+" %c "+ scroll_details, lbb+lbL+lf8, lbb+lbR+lf3);
+    scroll_listener_scroll_changed(e, scroll_details);
+};
+/*}}}*/
+/*_   scroll_listener_scroll_changed {{{*/
+let   scroll_listener_scroll_changed = function(e, scroll_details="")
+{
+/*{{{*/
+let   caller = "scroll_listener_scroll_changed";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this &amp;&amp; !scroll_end_timeout)
+    log("➔ %c"+caller+"%c"+ window.scrollX +" "+ window.scrollY +"%c"+ (scroll_details ? " scroll_details" : "")
+        ,  lbb+lbL+lf9,lbb+lbC+lf9                               ,lbb+lbR+lf9                                   );
+/*}}}*/
+    /* track and store [window_scrollY] {{{*/
+    if( scroll_end_timeout ) clearTimeout( scroll_end_timeout );
+    /**/scroll_end_timeout =   setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+
+    /*}}}*/
+};
+/*}}}*/
+/*_ t_scroll_is_scrolling {{{*/
+let t_scroll_is_scrolling = function()
+{
+/*{{{*/
+let   caller = "t_scroll_is_scrolling";
+let log_this = DOM_SCROLL_LOG;
+
+/*}}}*/
+    let result = (scroll_end_timeout != null);
+if( log_this) log("➔ %c"+caller+" %c "+ result
+                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
+    return result;
+};
+/*}}}*/
+/*_   scroll_listener_scroll_changed_scroll_end_handler {{{*/
+let   scroll_listener_scroll_changed_scroll_end_handler     = function()
+{
+/*{{{*/
+let   caller = "scroll_listener_scroll_changed_scroll_end_handler";
+let log_this = DOM_SCROLL_LOG;
+let tag_this = DOM_SCROLL_TAG || log_this;
+
+/*}}}*/
+
+    scroll_end_timeout = null;
+
+    let                   this_scrollY  =          window.scrollY;
+    let done_scrolling = (this_scrollY == scroll_end_last_scrollY);
+/*{{{
+console.log("... last=["+scroll_end_last_scrollY+"] .. this=["+this_scrollY+"] .. done_scrolling=["+done_scrolling+"]")
+}}}*/
+
+    /* SCROLLING NOT DONE .. REARM HANDLER */
+    if(!done_scrolling )
+    {
+        scroll_end_last_scrollY = this_scrollY;
+        scroll_end_timeout      = setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+    }
+    /* SCROLLING IS  DONE .. RECENTER ON [ELEMENT TO SCROLL INTO VIEW] */
+    else {
+        let scroll_details = "scrollY="+window.scrollY+" "+(scrollIntoView_EL ? t_util.get_id_or_tag(scrollIntoView_EL) : "");
+if( tag_this) log("➔ %c"+caller+" %c "+ scroll_details
+                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
+
+        if( scrollIntoView_EL )
+            on_scroll_end_scrollIntoViewIfNeeded();
+    }
+};
+/*}}}*/
+
+/* ELEMENT TO SCROLL INTO VIEW */
+/*➔ t_scrollIntoViewIfNeeded_set_EL {{{*/
+let t_scrollIntoViewIfNeeded_set_EL = function(el)
+{
+/*{{{*/
+let   caller = "t_scrollIntoViewIfNeeded_set_EL";
+let log_this = DOM_SCROLL_LOG;
+let tag_this = DOM_SCROLL_TAG || log_this;
+
+    if(!t_util) t_scroll_IMPORT(true);
+/*}}}*/
+
+    if(        scrollIntoView_EL
+       &amp;&amp;      scrollIntoView_EL.scrolledIntoView_handled_MS)
+        delete scrollIntoView_EL.scrolledIntoView_handled_MS;
+
+    scrollIntoView_EL = el;
+
+if( tag_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)
+                  ,lbL+lf4      ,lbR+lf4                                       );
+if( log_this) log_caller();
+
+    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+};
+/*}}}*/
+/*_   on_scroll_end_scrollIntoViewIfNeeded {{{*/
+let   on_scroll_end_scrollIntoViewIfNeeded = function(delay) /* eslint-disable-line no-unused-vars */
+{
+if( !scrollIntoView_EL ) return;
+/*{{{*/
+let   caller = "on_scroll_end_scrollIntoViewIfNeeded";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+     "%c scrollIntoView_EL.scrolledIntoView_handled_MS "+scrollIntoView_EL.scrolledIntoView_handled_MS+"%c delay "+delay
+                  ,lbL+lf4      ,lbR+lf4                                      ,lbH+lfX[scrollIntoView_EL.scrolledIntoView_handled_MS ? 5 : 6]                                        ,lbH+lf9         );
+/*}}}*/
+
+    /* CLEAR PENDING HANDLER */
+    if(scroll_intoview_timer) clearTimeout( scroll_intoview_timer );
+    scroll_intoview_timer = null;
+
+    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+};
+/*}}}*/
+/*_   on_scrollIntoView_EL {{{*/
+let   on_scrollIntoView_EL = function()
+{
+/*{{{
+log("%c on_scrollIntoView_EL", lbB)
+log("%c on_scrollIntoView_EL %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
+}}}*/
+    if(!scrollIntoView_EL ) return;
+    /* (native support) {{{*/
+    scrollIntoView_EL.scrollIntoView({ behavior : "smooth"  /* [auto]  , smooth          */
+                                     , block    : "nearest" /* [start] , center, nearest */
+                                     , inline   : "nearest" /* [start] , center, nearest */
+    });
+    scrollIntoView_EL = null; /* only once */
+
+/*
+    $0.scrollIntoView({behavior:"smooth" , block:"nearest" , inline:"nearest"});
+
+:!start explorer "https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView"
+*/
+    /*}}}*/
+    /* custom support {{{*/
+/*
+    if( delay == undefined)       delay = SCROLL_INTO_VIEW_DELAY;
+    if( delay ) scroll_intoview_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay);
+    else                                             scrollIntoViewIfNeeded_handler();
+*/
+    /*}}}*/
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_handler {{{*/
+/*{{{*/
+let scrollIntoView_was_needed;
+
+/*}}}*/
+let   scrollIntoViewIfNeeded_handler = function() /* eslint-disable-line no-unused-vars */
+{
+/*{{{*/
+let   caller = "scrollIntoViewIfNeeded_handler";
+let log_this = DOM_SCROLL_LOG;
+
+    scroll_intoview_timer = null;
+
+    if(!scrollIntoView_EL) return;
+
+    let el = scrollIntoView_EL;
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
+                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5 : 6]                  );
+
+    t_scrollIntoViewIfNeeded_set_EL( null );
+/*}}}*/
+    /* [?  scrolledIntoView_handled_MS]  {{{*/
+    if( el.scrolledIntoView_handled_MS )
+    {
+        let      this_MS = new Date().getTime();
+        let since_handled = this_MS - el.scrolledIntoView_handled_MS;
+        let  just_handled = (since_handled &lt; SCROLL_RECENTER_DELAY*3);
+
+if( log_this) log("%c  just_handled=["+just_handled+"]", lbH+lfX[just_handled ? 8:7]);
+
+        if( just_handled ) return;
+    }
+    /*}}}*/
+    /* SCROLL WHERE {{{*/
+    let xy = scrollIntoViewIfNeeded_get_scrollXY( el );
+    if(!xy) {
+
+        return;
+    }
+    /*}}}*/
+    /* NOT NEEDED {{{*/
+    if((window.scrollX == xy.x) &amp;&amp; (window.scrollY == xy.y))
+    {
+/*{{{
+if( log_this) log("%c SCROLL INTO VIEW NOT NEEDED %c "+window.scrollX+" "+window.scrollY, lbb+lbH+lf8, lbb+lbH+lf8);
+}}}*/
+
+        scrollIntoView_was_needed = false;
+if( log_this) log("%c scrollIntoView_was_needed=["+scrollIntoView_was_needed+"]", lbH+lf8);
+    }
+    /*}}}*/
+    /* IF NEEDED {{{*/
+    else {
+        scrollIntoView_was_needed = true;
+if( log_this) log("%c scrollIntoView_was_needed=["+scrollIntoView_was_needed+"]", lbH+lf8);
+
+if( log_this) log("SCROLL INTO VIEW %c DX=["+window.scrollX+" "+xy.x+"] %c DY=["+window.scrollY+" "+xy.y+"]"
+                  ,                 lbL+lf9                            ,lbR+lf9                             );
+        scrollIntoViewIfNeeded_then_recenter_handler_scrollTo(xy.x, xy.y);
+    }
+    /*}}}*/
+
+    /* should'nt we always recenter ? */
+    if(scrollIntoView_was_needed)
+    {
+if( log_this) log("RECENTERING");
+
+        if(scroll_recenter_timer) clearTimeout( scroll_recenter_timer );
+        scroll_recenter_timer = setTimeout(scrollIntoViewIfNeeded_then_recenter_handler, SCROLL_RECENTER_DELAY);
+    }
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_get_scrollXY {{{*/
+let   scrollIntoViewIfNeeded_get_scrollXY = function(el)
+{
+    return scrollIntoViewIfNeeded_get_scrollXY_with_options({ container:el , with_margin:false });
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_get_scrollXY_with_options {{{*/
+let   scrollIntoViewIfNeeded_get_scrollXY_with_options = function({ container })
+{
+/*{{{*/
+let caller = "scrollIntoViewIfNeeded_get_scrollXY_with_options";
+let log_this = DOM_SCROLL_LOG;
+
+/*}}}*/
+    /* VIEW {{{*/
+    w_W = window.innerWidth ;
+    w_H = window.innerHeight;
+    let view_rect
+        = {   left   : window.scrollX       + 16
+            , top    : window.scrollY       + 16
+            , right  : window.scrollX + w_W - 32
+            , bottom : window.scrollY + w_H - 32
+        };
+
+    view_rect.height
+        = view_rect.bottom
+        - view_rect.top
+    ;
+    /*}}}*/
+    /* EL {{{*/
+    let xy = t_util.get_el_xy(container, caller);
+/*{{{
+xy.el = container
+log_key_val_group(caller, xy, lf8, false)
+console.dir(container)
+log_caller()
+}}}*/
+    if(!xy) return null;
+
+    let e_W = container.clientWidth  || container.offsetWidth;
+    let e_H = container.clientHeight || container.offsetHeight;
+
+    let container_rect
+        = { left   : xy.x
+        ,   top    : xy.y
+        ,   right  : xy.x + e_W
+        ,   bottom : xy.y + e_H
+    };
+
+    container_rect.height
+        = container_rect.bottom
+        - container_rect.top
+    ;
+    /*}}}*/
+    /* OVER [top left bottom right] {{{*/
+    container_rect.seekTop
+        =  container_rect.top
+    ;
+    let over_top       = (container_rect.seekTop &lt; view_rect.top   );
+    let over_left      = (container_rect.left    &lt; view_rect.left  );
+    let over_bottom    = (container_rect.bottom  &gt; view_rect.bottom);
+    let over_right     = (container_rect.right   &gt; view_rect.right );
+
+    let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
+
+    let may_go_left    = (container_rect.right  &lt; window.innerWidth); /* i.e. still visible with no left margin */
+if(log_this) {
+    log_key_val_group("to_the_top .. over_something=["+over_something+"]"
+                      , {   container
+                          , container_rect
+                          , e_H
+                          , view_rect
+                          , window_scrollY : window.scrollY
+                          , over_something : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
+                      }, lfX[over_something ? 7:8], false);
+}
+
+    /*}}}*/
+    /* NOT NEEDED .. (return null) {{{*/
+    if(!!!over_something) return null; /* falsy coerced */ /* eslint-disable-line no-extra-boolean-cast */
+
+    /*}}}*/
+    /* scrollX scrollY {{{*/
+    let scrollX
+        = (over_left  ) ? container_rect.left                         - 16
+        : (over_right ) ? container_rect.right   - window.innerWidth  + 32
+        : may_go_left   ?                          0
+        :                                          window.scrollX;
+
+    let scrollY
+        = (over_top    ) ? container_rect.seekTop                     - 16
+        : (over_bottom ) ? container_rect.bottom - window.innerHeight + 32
+        :                                          window.scrollY;
+
+    /*}}}*/
+    /* FROM [over_bottom .. to_the_top] {{{*/
+    if(container.to_the_top &amp;&amp; over_bottom)
+    {
+        let scroll_more
+            = view_rect.height
+            - container_rect.height;
+/*{{{*/
+if(log_this)
+        log_key_val_group("to_the_top .. scroll_more=["+scroll_more+"]"
+                          , {   container
+                              , view_rect
+                              , container_rect
+                              , window_scrollY      : window.scrollY
+                              , over_something      : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
+                              , scrollY
+                              , scroll_more
+                              , scrollY_scroll_more : (scrollY + scroll_more)
+                          }, lfX[over_something ? 7:8], false);
+
+/*}}}*/
+        scrollY += scroll_more;
+    }
+    /*}}}*/
+    return { x : scrollX , y : scrollY };
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_then_recenter_handler {{{*/
+const CONTAINER_TOP_MARGIN = 64;
+let   scrollIntoViewIfNeeded_then_recenter_handler = function()
+{
+/*{{{*/
+let   caller = "scrollIntoViewIfNeeded_then_recenter_handler";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
+/*}}}*/
+    if( !scrollIntoView_EL) return;
+    let el = scrollIntoView_EL;
+    /* CONTAINER CENTER .. WINDOW CENTER{{{*/
+    scroll_recenter_timer   = null;
+
+    let recenter_dxy = t_util.get_el_xy(el, caller);
+    if(!recenter_dxy ) return;
+
+    let e_W = el.clientWidth  || el.offsetWidth;
+    let e_H = el.clientHeight || el.offsetHeight;
+
+    recenter_dxy.x    = recenter_dxy.x  /* container left   */
+        +     e_W/2 /* container center */
+        -     w_W/2 /*   window  center */
+    ;
+
+    recenter_dxy.y    = recenter_dxy.y  /* container top    */
+        +     e_H/2 /* container middle */
+        -     w_H/2 /*   window  middle */
+        -     CONTAINER_TOP_MARGIN
+    ;
+
+    /*}}}*/
+    /* RECENTER IS NEEDED .. (if not already there) {{{*/
+    if((window.scrollX != recenter_dxy.x) || (window.scrollY != recenter_dxy.y))
+    {
+        scrollIntoView_was_needed = true;
+
+        scrollIntoViewIfNeeded_then_recenter_handler_scrollTo(recenter_dxy.x, recenter_dxy.y);
+    }
+    /*}}}*/
+    /* RECENTER NOT NEEDED {{{*/
+    else {
+        scrollIntoView_was_needed = false;
+if( log_this) log("%c SCROLL RECENTER NOT NEEDED %c "+window.scrollX+" "+window.scrollY, lbb+lbH+lf6, lbb+lbH+lf6);
+
+    }
+    /*}}}*/
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo {{{*/
+let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo = function(x, y)
+{
+/*{{{*/
+let   caller = "scrollIntoViewIfNeeded_then_recenter_handler_scrollTo";
+let log_this = DOM_SCROLL_LOG;
+
+if( log_this) log("%c "+caller+"%c(x=["+x+"] , y=["+y+"])", lbL+lf6,lbR+lf6);
+/*}}}*/
+    /* SET SMOOTH SCROLL BEHAVIOR */
+    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior();
+
+    /* WINDOW SCROLL */
+    window.scrollTo(x, y);
+
+    /* SET LAST SCROLLED TIMESTAMP */
+    if( scrollIntoView_EL ) {
+        scrollIntoView_EL.scrolledIntoView_handled_MS = new Date().getTime();
+
+if( log_this) log("%c scrollIntoView_EL.scrolledIntoView_handled_MS=["+scrollIntoView_EL.scrolledIntoView_handled_MS+"]", lbH+lf6);
+    }
+
+    /* RESTORE USER SCROLL BEHAVIOR */
+    if(scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
+    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout   =   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior {{{*/
+let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior = function()
+{
+    let html  = document.getElementsByTagName("HTML")[0];
+
+    html.classList.add( CSS_SCROLL_SMOOTH );
+};
+/*}}}*/
+/*_   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior {{{*/
+let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior = function()
+{
+    /* restore user behavior */
+    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout = null;
+
+    let html  = document.getElementsByTagName("HTML")[0];
+
+    html.classList.remove( CSS_SCROLL_SMOOTH );
+};
+/*}}}*/
+
+
+/* EXPORT */
+return { name : "dom_scroll"
+    ,    t_scroll_listener
+    ,    t_scrollIntoViewIfNeeded_set_EL
+    ,    t_scroll_is_scrolling
+};
+}());
+
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+"...           $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
+/*INLINE}}}*/
+//@ sourceURL=dom_scroll.js
 `
 </pre> <!--}}}-->
 </details>
@@ -264,6 +3601,122 @@ let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 ./script/stub/dom_log.js
 */
 let dom_log_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_log [dir log log&lt;0-9&gt;]                                               │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+
+/* globals console */
+
+/* exported dom_log */
+
+const DOM_LOG_JS_ID        = "dom_log_js";
+const DOM_LOG_JS_TAG       = DOM_LOG_JS_ID  +" (220128:19h:09)";  /* eslint-disable-line no-unused-vars */
+/*}}}*/
+let dom_log = (function() {
+"use strict";
+
+
+/* SPECIAL_CHAR {{{*/
+const LF        = String.fromCharCode(10);
+
+/*}}}*/
+/* CSS {{{*/
+const lf1  = "color:#964B00;";
+const lf2  = "color:#FF0000;";
+const lf3  = "color:#FFA500;";
+const lf4  = "color:#FFFF00;";
+const lf5  = "color:#9ACD32;";
+const lf6  = "color:#6495ED;";
+const lf7  = "color:#EE82EE;";
+const lf8  = "color:#A0A0A0;";
+const lf9  = "color:#FFF; text-shadow:#000 1px 1px 1px; background:#666;";
+const lf0  = "color:#000; text-shadow:#FFF 1px 1px 1px; background:#666;";
+const lfX  = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
+
+/* eslint-disable no-unused-vars */
+const lbH  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex 1ex   0; padding:0 .5em 0 .5em; border-radius:1em 1em 1em 1em; background:linear-gradient(to bottom, #555 0%, #223 80%, #454 100%);";
+const lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0 1ex; padding:0 .5em 0 .5em; border-radius:1em   0   0 1em; background:linear-gradient(to   left, #333 0%           ,#445 100%);";
+const lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
+const lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
+/* eslint-enable  no-unused-vars */
+
+/*}}}*/
+
+/* console {{{*/
+
+let dir               = console.dir;
+let log               = console.log;
+let console_clear     = function(msg=null) { console.clear(); if(msg) console.log ("%c.. by "+msg,"color:#666; background:#111; border:0px solid #445; border-radius:1em;"); };
+
+let logX = (msg,l_x) =&gt; console.log("%c"+msg, lbR+lfX[l_x]);
+
+let log0 = (msg)     =&gt;         logX(    msg, 0  );
+let log1 = (msg)     =&gt;         logX(    msg, 1  );
+let log2 = (msg)     =&gt;         logX(    msg, 2  );
+let log3 = (msg)     =&gt;         logX(    msg, 3  );
+let log4 = (msg)     =&gt;         logX(    msg, 4  );
+let log5 = (msg)     =&gt;         logX(    msg, 5  );
+let log6 = (msg)     =&gt;         logX(    msg, 6  );
+let log7 = (msg)     =&gt;         logX(    msg, 7  );
+let log8 = (msg)     =&gt;         logX(    msg, 8  );
+let log9 = (msg)     =&gt;         logX(    msg, 9  );
+
+/*}}}*/
+
+/* EXPORT */
+/*{{{*/
+return {  LF
+        , console_clear
+        , dir
+        , log
+        , log0
+        , log1
+        , log2
+        , log3
+        , log4
+        , log5
+        , log6
+        , log7
+        , log8
+        , log9
+        , lbH
+        , lbL
+        , lbR
+        , lbC
+        , lfX
+    };
+
+/*}}}*/
+
+}());
+
+/*{{{
+"┌─────────────────────────────────────────────────────────────────────────────┐
+"│                                                                             │
+:e  $BROWSEEXT/SplitterExtension/manifest.json
+
+:e  $BROWSEEXT/SplitterExtension/javascript/background.js
+:e  $BROWSEEXT/SplitterExtension/javascript/content.js
+:e             $RPROFILES/script/dom_sentence.js
+:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_scroll.js
+:e             $RPROFILES/script/stub/dom_sentence_util.js
+"...           $RPROFILES/script/stub/dom_log.js
+:e             $RPROFILES/stylesheet/dom_host.css
+
+:e             $RPROFILES/script/dom_select.js
+:e             $RPROFILES/script/dom_util.js
+:e             $RPROFILES/script/dom_log.js
+
+:e             $RPROFILES/script/splitter.js
+:e             $RPROFILES/script/dom_load.js
+"│                                                                             │
+"└─────────────────────────────────────────────────────────────────────────────┘
+}}}*/
+/*INLINE}}}*/
+//@ sourceURL=dom_log.js
 `
 </pre> <!--}}}-->
 </details>
