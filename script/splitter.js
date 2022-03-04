@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220223:19h:42)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220304:20h:57)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220221:19h:06)"; }
+#dom_host_css_tag   { content: "dom_host_css (220304:17h:27)"; }
 
 
 body.dark { background : #430; }
@@ -727,7 +727,8 @@ em.select0 { cursor : all-scroll !important; }
 .sentence { max-width   : 64ch     !important; }
 .sentence { min-width   : 32ch     !important; }
 .sentence { overflow    : visible  !important; }
-.sentence { white-space : pre-line !important; }
+
+.sentence { white-space : normal   !important; }
 .sentence { text-align  : left     !important; }
 
 .sentence_container.fs1 , .sentence_container.fs1  * { font-size :  6px; }
@@ -2900,7 +2901,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220214:17h:50)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220304:20h:57)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3015,7 +3016,7 @@ const CSS_DARK               = "dark";
 
 const E12_FONT_SIZE_LIST = ["fs1", "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11", "fs12"];
 
-let   e12_font_size      =  "fs5";
+let   e12_font_size      =  "fs9";
 
 
 
@@ -3057,7 +3058,7 @@ if(log_this) log(caller+": ...return CSS_OUTLINE container=["+t_util.get_n_lbl(c
         || t_util.get_el_parent_with_class(el, "container_dark" )
 
 
-
+        || t_util.get_el_parent_with_tag  (el,  "LI"       )
 
 
 
@@ -3198,15 +3199,14 @@ let t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT = function()
 
 
 
-const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))";
-const             BOUNDARY = "\\W*[\\.,;:\\n\\r]+(?!\\w)";
-
-const            LAST_WORD = WORD +"{3,}";
+const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"   ;
+const             BOUNDARY = "\\W*[\\.,;:?\\n\\r]+(?!\\w)"  ;
+const            LAST_WORD = WORD +"{1,}";
 const           FIRST_WORD = WORD +"+";
 
-const CAPTURING_PREV_END   = "("    + LAST_WORD  +")";
-const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")";
-const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")";
+const CAPTURING_PREV_END   = "("    + LAST_WORD  +")"       ;
+const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"       ;
+const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"       ;
 
 
 
@@ -3283,10 +3283,14 @@ if( tag_this) {
 }
 
 
-    let textContent = t_util.t_get_htmlEntities( container.textContent.trim() );
-if( log_this) log("textContent:%c"+LF+textContent, lb8);
+    let text = t_util.t_get_htmlEntities( container.textContent.trim() );
 
-    textContent = textContent.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
+
+    text = strip_HTML( container.innerHTML );
+
+
+    text = text.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
+
 
 
 
@@ -3336,7 +3340,7 @@ if( log_this) log("textContent:%c"+LF+textContent, lb8);
 
     container.innerHTML = tools
         + "<pre class='"+CSS_SENTENCE+" bg1' style=' "+LINE_HEIGHT_STYLE+" "+theme_style+" "+magnified_style+"'>"
-        +  textContent
+        +  text
         + "</pre>";
 
     if( theme_dark )
@@ -3389,7 +3393,7 @@ if( log_this) log_key_val_group(            caller
                                  , regexp_SENTENCE : String(regexp_SENTENCE)
                                  ,  sentence_array
                                  ,  last_container
-                                 ,     textContent : "(length: "+        textContent.length+") "+ t_util.ellipsis(textContent        )
+                                 ,            text : "(length: "+        text.length+") "       + t_util.ellipsis(text               )
                                  ,       container : "(length: "+container.innerHTML.length+") "+ t_util.ellipsis(container.innerHTML)
                                  ,      theme_dark
                                  ,       magnified
@@ -3409,36 +3413,45 @@ if( log_this) log_key_val_group(            caller
 };
 
 
+
+
+const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/(li|LI|)>", "g");
+const regexp_HTML               = new RegExp("<[^>]*>"                       , "g");
+
+
+let strip_HTML = function(text)
+{
+    if(   !text) return "";
+    return text
+        .   replace(regexp_LI   , "."+LF)
+        .   replace(regexp_HTML , " "   )
+        .trim()
+    ;
+};
+
+
 let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
 {
-    let el_array = get_parent_chain(container);
+
+    let el_array = Array.from(document.getElementsByTagName("DIV"));
 
     el_array.forEach((el) => {
         el.style.backgroundColor_saved         = el.style.backgroundColor;
         el.style.backgroundColor               = THEME_STYLE_BG_DARK;
-        if(            el.parentElement ) {
-            Array.from(el.parentElement.children).forEach((sl) => {
-                sl.style.backgroundColor_saved = sl.style.backgroundColor;
-                sl.style.backgroundColor       = THEME_STYLE_BG_DARK;
-            });
-        }
+
     });
 };
 
 
 let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
 {
-    let el_array = get_parent_chain(container);
+
+    let el_array = Array.from(document.getElementsByTagName("DIV"));
 
     el_array.forEach((el) => {
-        el.style.backgroundColor       = el.style.backgroundColor_saved || "";
-        delete                           el.style.backgroundColor_saved;
-        if(            el.parentElement ) {
-            Array.from(el.parentElement.children).forEach((sl) => {
-                sl.style.backgroundColor = sl.style.backgroundColor_saved || "";
-                delete                   sl.style.backgroundColor_saved;
-            });
-        }
+        el.style.backgroundColor         = el.style.backgroundColor_saved || "";
+        delete                             el.style.backgroundColor_saved;
+
     });
 };
 
