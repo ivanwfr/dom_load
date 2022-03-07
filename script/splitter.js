@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220304:20h:57)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220307:16h:47)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,7 +41,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220304:17h:27)"; }
+#dom_host_css_tag   { content: "dom_host_css (220307:16h:37)"; }
 
 
 body.dark { background : #430; }
@@ -471,16 +471,16 @@ input:focus { border  : 6px solid transparent; }
 .cc9 , .select9 , .select9 em { color: #000 !important; background-color:#FFFFFF !important; padding:0 !important; }
 .cc0 , .select0 , .select0 em { color: #FFF !important; background-color:#202020 !important; padding:0 !important; }
 
-.bg1 { background-color : rgba(150,  75,   0, .9) !important; color : black !important; }
-.bg2 { background-color : rgba(255,   0,   0, .9) !important; color : black !important; }
-.bg3 { background-color : rgba(255, 165,   0, .9) !important; color : black !important; }
-.bg4 { background-color : rgba(255, 255,   0, .9) !important; color : black !important; }
-.bg5 { background-color : rgba(154, 205,  50, .9) !important; color : black !important; }
-.bg6 { background-color : rgba(100, 149, 237, .9) !important; color : black !important; }
-.bg7 { background-color : rgba(238, 130, 238, .9) !important; color : black !important; }
-.bg8 { background-color : rgba(160, 160, 160, .9) !important; color : black !important; }
-.bg9 { background-color : rgba(255, 255, 255, .9) !important; color : black !important; }
-.bg0 { background-color : rgba(128, 128, 128, .9) !important; color : black !important; }
+.bg1 { background-color : rgba(150,  75,   0, .9) !important; color : #FFF !important; }
+.bg2 { background-color : rgba(255,   0,   0, .9) !important; color : #FFF !important; }
+.bg3 { background-color : rgba(255, 165,   0, .9) !important; color : #000 !important; }
+.bg4 { background-color : rgba(255, 255,   0, .9) !important; color : #000 !important; }
+.bg5 { background-color : rgba(154, 205,  50, .9) !important; color : #000 !important; }
+.bg6 { background-color : rgba(100, 149, 237, .9) !important; color : #000 !important; }
+.bg7 { background-color : rgba(238, 130, 238, .9) !important; color : #000 !important; }
+.bg8 { background-color : rgba(160, 160, 160, .9) !important; color : #000 !important; }
+.bg9 { background-color : rgba(255, 255, 255, .9) !important; color : #000 !important; }
+.bg0 { background-color : rgba(128, 128, 128, .9) !important; color : #FFF !important; }
 
 .fg1 {            color : rgba(200,  99,   0, 1) !important; }
 .fg2 {            color : rgba(255,   0,   0, 1) !important; }
@@ -2901,7 +2901,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220304:20h:57)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220307:16h:47)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3476,6 +3476,7 @@ if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
     let entering_a_clause
         =  boundary.includes(",")
         || boundary.includes(";")
+        || boundary.includes( LF)
 
     ;
 

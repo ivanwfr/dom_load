@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220304:20h:57)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220307:16h:47)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -654,6 +654,7 @@ if( log_this) console.table(arguments);
     let entering_a_clause
         =  boundary.includes(",")
         || boundary.includes(";")
+        || boundary.includes( LF)
     /*  || boundary.includes(":")*/
     ;
 
