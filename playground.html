@@ -1247,7 +1247,7 @@ escapeXXX(`
 
   <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (220126:16h:07)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (220308:18h:34)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
@@ -3462,9 +3462,11 @@ style       = "border: 4px ridge #88F;"
 <!-- FOLD (details..summary) {{{-->
 <hr>
 <!-- populate_FOLD_PRE fold_FOLD_PRE FOLD_PRE {{{-->
-<button onclick="populate_FOLD_PRE();">populate_FOLD_PRE</button>
 <button onclick="fold_FOLD_PRE();"    >    fold_FOLD_PRE</button>
-➔  [dom_seek TARGETS]: <em>let.*=.*function</em> <em>const</em>
+<button onclick="clear_FOLD_PRE();"   >   clear_FOLD_PRE</button>
+<button onclick="populate_FOLD_PRE();">populate_FOLD_PRE</button>
+<button><em>const           </em></button>
+<button><em>let.*=.*function</em></button>
 
 <details><summary>FOLD_PRE</summary>
 <pre id="FOLD_PRE">
@@ -3476,170 +3478,207 @@ style       = "border: 4px ridge #88F;"
 <script>
 let fold_FOLD_PRE = function()
 {
-let pre = document.getElementById("FOLD_PRE");
+console.log("fold_FOLD_PRE");
+    let pre = document.getElementById("FOLD_PRE");
     dom_wot.t_WOT_FOLD_EL     ( pre );
     dom_details.details_onload( pre );
 };
-/*
-}:r script/dom_wot.js
-*/
+let clear_FOLD_PRE = function()
+{
+console.log("clear_FOLD_PRE");
+    let pre = document.getElementById("FOLD_PRE").innerHTML = "";
+};
 let populate_FOLD_PRE = function()
 {
+console.log("populate_FOLD_PRE");
     let pre = document.getElementById("FOLD_PRE");
-    /*{{{*/
+/*
+script/dom_wot.js
+*/
     pre.innerHTML = dom_util.escapeHTML(`
+/*INLINE{{{*/
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_wot                                                   (WALL OF TEXT) │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+/* eslint-disable no-warning-comments   */
 
-/* dom_wot_js */
-/* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
-/* JSHint {{{*/
-/* globals document, Node, NodeFilter */
-/* globals console, localStorage */
-/* globals dom_data    */
-/* globals dom_fly     */
-/* globals dom_i18n    */
-/* globals dom_log     */
-/* globals dom_prop    */
-/* globals dom_slot    */
-/* globals dom_store   */
-/* globals dom_tools   */
-/* globals dom_util    */
+/* globals console                      */
+/* globals document, Node, NodeFilter   */
+/* globals localStorage                 */
+
+/* globals dom_log                      */
+/* globals dom_util                     */
+/* globals dom_store                    */
+/* globals dom_tools                    */
 
 /* exported dom_wot, DOM_WOT_JS_TAG */
 
-/* eslint-disable no-warning-comments */
-/* eslint-disable dot-notation        */
-/*
-:update|1,$y *
-:!start explorer https://jshint.com/
-*/
-
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (210925:16h:24)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (220308:16h:26)";
 /*}}}*/
-let dom_wot  = (function() {
+let dom_wot             = (function() {
 "use strict";
-let   DOM_WOT_LOG        = false;
-let   DOM_WOT_TAG        = false;
-/* IMPORT */
-/*{{{*/
+let   DOM_WOT_LOG       = false;
+let   DOM_WOT_TAG       = false;
+
+/* IMPORT {{{*/
 /* eslint-disable no-unused-vars */
 /*➔ t_wot_IMPORT {{{*/
-/*{{{*/
-/*....................................*/
-let t_data     = {}        ;    /* 05 */
-let t_log      = {}        ;    /* 06 */
-let t_util     = {}        ;    /* 07 */
-let t_i18n     = {}        ;    /* 08 */
-let t_prop     = {}        ;    /* 09 */
-let t_store    = {}        ;    /* 10 */
-let t_fly      = {}        ;    /* 11 */
-/* ...................................*/
-/*  t_wording  = {}        ; */ /* 12 */
-/*  t_select   = {}        ; */ /* 13 */
-/*  t_wot      = {}        ; */ /* 13 */
-let t_slot     = {}        ;    /* 14 */
-/* ...................................*/
-/*  t_hide     = {}        ; */ /* 15 */
-/*  t_view     = {}        ; */ /* 16 */
-/*  t_sticky   = {}        ; */ /* 17 */
-/*  t_seek     = {}        ; */ /* 18 */
-/*  t_share    = {}        ; */ /* 19 */
-/* ...................................*/
-/*  t_grid     = {}        ; */ /* 20 */
-/*  t_gutter   = {}        ; */ /* 21 */
-/* ...................................*/
-/*  t_ipc      = {}        ; */ /* 22 */
-let t_tools    = {}        ;    /* 23 */
-/*....................................*/
-/*}}}*/
-let t_wot_IMPORT  = function(log_this)
+/* eslint-disable no-unused-vars */
+let t_wot_IMPORT        = function(_log_this,import_num)
 {
-/* LOAD {{{*/
-/* ...................................*/
-    t_data    = dom_data   ;    /* 05 */
-    t_log     = dom_log    ;    /* 06 */
-    t_util    = dom_util   ;    /* 07 */
-    t_i18n    = dom_i18n   ;    /* 08 */
-    t_prop    = dom_prop   ;    /* 09 */
-    t_store   = dom_store  ;    /* 10 */
-    t_fly     = dom_fly    ;    /* 11 */
-/* ...................................*/
-/*  t_wording = dom_wording; */ /* 12 */
-/*  t_select  = dom_select ; */ /* 13 */
-/*  t_wot     = dom_wot    ; */ /* 14 */
-    t_slot    = dom_slot   ;    /* 14 */
-/* ...................................*/
-/*  t_hide    = dom_hide   ; */ /* 15 */
-/*  t_view    = dom_view   ; */ /* 16 */
-/*  t_sticky  = dom_sticky ; */ /* 17 */
-/*  t_seek    = dom_seek   ; */ /* 18 */
-/*  t_share   = dom_share  ; */ /* 19 */
-/* ...................................*/
-/*  t_grid    = dom_grid   ; */ /* 20 */
-/*  t_gutter  = dom_gutter ; */ /* 21 */
-/* ...................................*/
-/*  t_ipc     = dom_ipc    ; */ /* 22 */
-    t_tools   = dom_tools  ;    /* 23 */
-/* ...................................*/
-/*}}}*/
-    select_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_WOT_LOG = DOM_WOT_LOG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_WOT_LOG"));
-    DOM_WOT_TAG = DOM_WOT_TAG || ((typeof dom_store != "undefined") && dom_store.t_store_getBool("DOM_WOT_TAG"));
+    DOM_WOT_LOG         = DOM_WOT_LOG       || localStorage_getItem("DOM_WOT_LOG");
+    DOM_WOT_TAG         = DOM_WOT_TAG       || localStorage_getItem("DOM_WOT_TAG");
 
     /*}}}*/
-if(log_this) log("%c 14 WOT", lbH+lf4);
+    wot_INTERN();
+if(_log_this) log("➔ "+(import_num ? (import_num+" ") : "")+"t_wot_IMPORT");
 };
 /*}}}*/
-/*_   select_INTERN {{{*/
+/*_   wot_INTERN {{{*/
 /*{{{*/
-
-/* t_log */
-let LOG_MAP;
-
-let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
-let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
-let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
-let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
-
-/*  prop */
-let prop;
+/* dom_data {{{*/
+const CSS_LINE_NUM = "line_num";
+const LF           = String.fromCharCode(10);
+const LINES_WOT    = "lines_wot"    ;
 
 /*}}}*/
-let   select_INTERN = function()
-{
-    /* t_log {{{*/
-    LOG_MAP = t_log.LOG_MAP;
+/* dom_log {{{*/
+let lb0="", lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lbX="";
+let lbA="", lbB="", lbC="", lbF="", lbH="", lbL="", lbR="", lbS="", lbb=""                ;
+let lf0="", lf1="", lf2="", lf3="", lf4="", lf5="", lf6="", lf7="", lf8="", lf9="", lfX="";
 
-    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = t_log.LOG_BG_CSS);
-    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = t_log.LOG_FG_CSS);
-    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = t_log.LOG_XX_CSS);
+let log=console.log, logBIG=log, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
 
-    log                 = t_log.log;
-    logBIG              = t_log.logBIG;
-    logXXX              = t_log.logXXX;
-    log_caller          = t_log.log_caller;
-    log_json_one_liner  = t_log.log_json_one_liner;
-    log_key_val         = t_log.log_key_val;
-    log_key_val_group   = t_log.log_key_val_group;
-    /*}}}*/
-    /* t_prop {{{*/
-    prop = t_prop;
-
-    /*}}}*/
-
-    select_DEPEND();
-};
+let console_dir=console.dir;
 /*}}}*/
-/*_   select_DEPEND {{{*/
-let   select_DEPEND = function()
-{
+/* dom_util {{{*/
 
+/* DOM */
+let add_el_class;
+let has_el_class;
+let get_el_title;
+let get_id_or_tag;
+
+/* REGEX */
+let escapeHTML;
+let strip_CR_LF;
+let get_first_word;
+
+/* STRING */
+let ellipsis;
+let mPadStart;
+
+/* RTabs */
+let is_marked_to_hide;
+
+/*}}}*/
+/* dom_store {{{*/
+
+let localStorage_delItem = (key    ) =>           localStorage.removeItem(key    );                                       /* eslint-disable-line no-unused-vars */
+let localStorage_getItem = (key    ) =>           localStorage.getItem   (key    );                                       /* eslint-disable-line no-unused-vars */
+let localStorage_setItem = (key,val) => { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); }; /* eslint-disable-line no-unused-vars */
+
+/*}}}*/
+/* dom_tools {{{*/
+let t_get_tool = (id) => document.getElementById(id);
+
+/*}}}*/
+/*}}}*/
+let   wot_INTERN        = function()
+{
+/*{{{*/
+let caller = "wot_INTERN";
+
+/*}}}*/
+    /* dom_log {{{*/
+    let dom_log_js
+        = (typeof dom_log != "undefined")
+        ?         dom_log
+        :         dom_wot_log;      /* script/dom_wot_log.js */ /* eslint-disable-line no-undef */
+
+    if( dom_log_js )
+    {
+        if(dom_log_js.LOG_BG_CSS) {
+            ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+            ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+            ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
+        }
+
+        ({  log
+         ,  logBIG
+         ,  logXXX
+         ,  log_caller
+         ,  log_json_one_liner
+         ,  log_key_val
+         ,  log_key_val_group
+         ,  console_dir
+        } = dom_log_js);
+
+if(DOM_WOT_LOG || DOM_WOT_TAG) logBIG(caller+": ["+dom_log_js.name+"]" , 4);
+    }
+    else {
+
+logBIG(caller+": [dom_log UNDEFINED]"   , 2);
+    }
+    /*}}}*/
+    /* dom_util {{{*/
+    let dom_util_js
+        = (typeof dom_util != "undefined")
+        ?         dom_util
+        :         dom_wot_util;     /* script/dom_wot_util.js */ /* eslint-disable-line no-undef */
+
+    if( dom_util_js )
+    {
+        ({  add_el_class        /* DOM */
+         ,  get_el_title
+         ,  get_id_or_tag
+         ,  has_el_class
+         ,  strip_CR_LF         /* REGEX */
+         ,  escapeHTML
+         ,  get_first_word
+         ,  ellipsis            /* STRING */
+         ,  mPadStart
+         ,  is_marked_to_hide   /* RTabs */
+        } = dom_util_js);
+
+if(DOM_WOT_LOG || DOM_WOT_TAG) logBIG(caller+": ["+dom_util_js.name+"]"    , 4);
+    }
+    else {
+
+logBIG(caller+": [dom_util UNDEFINED]"      , 2);
+    }
+    /*}}}*/
+    /* dom_store {{{*/
+    if(typeof dom_store != "undefined")
+    {
+        localStorage_getItem =          dom_store.t_store_getItem;
+        localStorage_setItem =          dom_store.t_store_set_value;
+        localStorage_delItem = (key) => dom_store.t_store_set_value(key,null);
+
+if(DOM_WOT_LOG || DOM_WOT_TAG) logBIG(caller+": ["+dom_store.name+"]"      , 4);
+    }
+    /*}}}*/
+    /* dom_tools {{{*/
+    if(typeof dom_tools != "undefined")
+    {
+        t_get_tool       = dom_tools.t_get_tool;
+
+if(DOM_WOT_LOG || DOM_WOT_TAG) logBIG(caller+": ["+dom_tools.name+"]"      , 4);
+    }
+    /*}}}*/
 };
+/* eslint-enable no-unused-vars */
 /*}}}*/
 /* eslint-enable  no-unused-vars */
 /*}}}*/
-/* FOLD {{{*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ ➔ FOLD                                                                   │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
+/*{{{*/
 const FOLD_OPEN   = "{{{";
 const BRACE_OPEN  =   "{";
 const BRACE_CLOSE =   "}";
@@ -3703,6 +3742,10 @@ if(logged_count++ < LOGGED_COUNT_MAX) log("is_line_brace_close("+line+") ...retu
 };
 /*}}}*/
 /*}}}*/
+
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ ➔ SPLIT WOT                                                              │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
 /*➔ t_WOT_SPLIT {{{*/
 /*{{{*/
 const WALL_OF_TEXT_PARENT   = "wall_of_text_parent";
@@ -3731,7 +3774,7 @@ let t_WOT_SPLIT = function() /* eslint-disable-line complexity */
     /*}}}*/
 /*{{{*/
 let   caller = "t_WOT_SPLIT";
-let log_this = LOG_MAP.T1_DOM_LOAD;
+let log_this = DOM_WOT_LOG;
 
 if( log_this) console.time(caller);
 /*}}}*/
@@ -3769,11 +3812,11 @@ if( log_this) log("%c"+caller+" %c "+text_node_array.length+" TEXT NODES FILTER_
 
         /* next truncated-trailer -- FIXME drops last line from MISSING-EOL-DOS-FILES */
         trailNoEOL
-            = textContent.endsWith(t_data.LF)
+            = textContent.endsWith(LF)
             ? ""
-            : textContent.substring( textContent.lastIndexOf(t_data.LF)+1 );
+            : textContent.substring( textContent.lastIndexOf(LF)+1 );
 
-        let lines      = textContent.split(t_data.LF);
+        let lines      = textContent.split(LF);
         LF_count      += lines.length;
 
         let last_line  = lines[lines.length-1];
@@ -3796,18 +3839,18 @@ if(log_this && (i < 2))
         /* EMPTY PARENT .. (on first node) {{{*/
         let               parent = text_node.parentNode;
         if(              !parent ) continue; /* already removed .. already handled */
-        if( !t_util.has_el_class(parent, WALL_OF_TEXT_PARENT) )
+        if( !has_el_class(parent, WALL_OF_TEXT_PARENT) )
         {
             parent.innerHTML = "";
-            t_util.add_el_class(parent, WALL_OF_TEXT_PARENT);
+            add_el_class(parent, WALL_OF_TEXT_PARENT);
         }
         /*}}}*/
 /*{{{*/
 if( log_this) {
     log("%c"+i, lbb+lbH+lf3);
-    t_log.console_dir("parent has "+ parent.children.length+" children", parent   );
-    t_log.console_dir("text_node", text_node);
-    log("%c "+t_util.get_id_or_tag(parent) +" "+ parent.textContent.length+" characters", lbH);
+    console_dir("parent has "+ parent.children.length+" children", parent   );
+    console_dir("text_node", text_node);
+    log("%c "+get_id_or_tag(parent) +" "+ parent.textContent.length+" characters", lbH);
 }
 /*}}}*/
         /* REFILL PARENT {{{*/
@@ -3820,24 +3863,24 @@ if( log_this) {
         node_count += 1;
         /*}}}*/
 /*{{{*/
-if( log_this) t_log.console_dir("...parent has "+parent.children.length+" children", parent);
+if( log_this) console_dir("...parent has "+parent.children.length+" children", parent);
 if( log_this) log(caller+": %c node_count=["+node_count+"] %c LF_count=["+LF_count+"] %c char_count=["+char_count+"]"
                   ,        lbL                            ,lbC                       ,lbR                            );
 /*}}}*/
     }
     /*}}}*/
     /* Show results in [split_wot] button tooltip {{{*/
-    let split_wot = t_tools.t_get_tool("split_wot");
+    let split_wot = t_get_tool("split_wot");
     if( split_wot )
         split_wot.title
-            = t_util.get_el_title( split_wot )
-                +t_data.LF +(LF_count ? (LF_count+" lines have been parsed") : "Found no WOT to parse"); /* TODO i18N */
+            = get_el_title( split_wot )
+                +LF +(LF_count ? (LF_count+" lines have been parsed") : "Found no WOT to parse"); /* TODO i18N */
     /*}}}*/
 /*{{{*/
 if( log_this && node_count) console.timeEnd(caller);
 
 if( log_this)
-    if(node_count) log("%c"+caller+"%c"+node_count+" WALLS OF TEXT %c "+char_count+" characters %c "+LF_count+" t_data.LF"
+    if(node_count) log("%c"+caller+"%c"+node_count+" WALLS OF TEXT %c "+char_count+" characters %c "+LF_count+" LF"
                        ,lbH+lf7    ,lbb+lbH+lf7                   ,lbH+lf7                     ,lbH+lf9            );
 /*}}}*/
 };
@@ -3846,7 +3889,7 @@ if( log_this)
 let t_WOT_FOLD_EL = function(el)
 {
     el.textContent = ""+ el.textContent; /* replace children */ /* eslint-disable-line no-self-assign */
-    let lines      = el.textContent.split(t_data.LF);
+    let lines      = el.textContent.split(LF);
     let line_num   = 1;
     let innerHTML;
     [line_num , innerHTML] = get_FOLD_EL_innerHTML(lines, line_num);
@@ -3855,10 +3898,13 @@ let t_WOT_FOLD_EL = function(el)
 };
 /*}}}*/
 
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ ➔ SPLIT HTML                                                             │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
 /*_ get_lines_innerHTML {{{*/
 let get_lines_innerHTML = function(lines, line_num) /* eslint-disable-line complexity */
 {
-    let with_line_num = t_store.t_store_getBool( t_data.LINES_WOT ); /* prop may not be ready yet */
+    let with_line_num = localStorage_getItem( LINES_WOT ); /* prop may not be ready yet */
 
     let innerHTML = "";
     let    l = 0;
@@ -3890,7 +3936,7 @@ let get_lines_innerHTML = function(lines, line_num) /* eslint-disable-line compl
 
             /*}}}*/
             /* pick line {{{*/
-            let h_line = t_util.escapeHTML(this_line);
+            let h_line = escapeHTML(this_line);
             /*{{{
 if(h_line.includes("#region")) log(h_line);
 }}}*/
@@ -3930,11 +3976,11 @@ if(h_line.includes("#region")) log(h_line);
             /*}}}*/
             /* p_line .. paragraph {{{*/
             if(with_line_num) {
-                let p_line = "<span class='"+t_data.CSS_LINE_NUM+"'>"+t_util.mPadStart(line_num, 6)+" </span>"+(h_line || "")+t_data.LF;
+                let p_line = "<span class='"+CSS_LINE_NUM+"'>"+mPadStart(line_num, 6)+" </span>"+(h_line || "")+LF;
                 paragraph += p_line;
             }
             else {
-                paragraph += (h_line || "")+t_data.LF;
+                paragraph += (h_line || "")+LF;
             }
 
             par_lines += 1;
@@ -3981,7 +4027,7 @@ if(h_line.includes("#region")) log(h_line);
 /*_ get_FOLD_EL_innerHTML {{{*/
 let get_FOLD_EL_innerHTML = function(lines,line_num) /* eslint-disable-line complexity */
 {
-    let with_line_num     = t_store.t_store_getBool( t_data.LINES_WOT ); /* prop may not be ready yet */
+    let with_line_num     = localStorage_getItem( LINES_WOT ); /* prop may not be ready yet */
     let innerHTML         = "";
     let    l              = 0;
     while((l < lines.length))
@@ -3994,7 +4040,7 @@ let get_FOLD_EL_innerHTML = function(lines,line_num) /* eslint-disable-line comp
         do {
             this_line     = lines[l  ];
             let next_line = lines[l+1] || "";
-            let h_line    = t_util.escapeHTML(this_line);
+            let h_line    = escapeHTML(this_line);
 
             let fold_close = is_line_fold_close(this_line);
             let fold_open  = is_line_fold_open (this_line);
@@ -4018,11 +4064,11 @@ let get_FOLD_EL_innerHTML = function(lines,line_num) /* eslint-disable-line comp
 
             /* p_line .. paragraph {{{*/
             if(with_line_num) {
-                let p_line = "<span class='"+t_data.CSS_LINE_NUM+"'>"+t_util.mPadStart(line_num, 6)+" </span>"+(h_line || "")+t_data.LF;
+                let p_line = "<span class='"+CSS_LINE_NUM+"'>"+mPadStart(line_num, 6)+" </span>"+(h_line || "")+LF;
                 paragraph += p_line;
             }
             else {
-                paragraph += (h_line || "")+t_data.LF;
+                paragraph += (h_line || "")+LF;
             }
             l            += 1;
             line_num     += 1;
@@ -4079,7 +4125,7 @@ let mNodeFilter_wall_of_text_block = function(node) /* eslint-disable-line compl
 {
 /*{{{*/
 let   caller = "mNodeFilter_wall_of_text_block";
-let log_this = LOG_MAP.S1_RANGE;
+let log_this = DOM_WOT_LOG;
 
 /*}}}*/
     /* FILTER DOM NODES {{{*/
@@ -4098,10 +4144,10 @@ let log_this = LOG_MAP.S1_RANGE;
     /* _______________________________________________ PRE or TEXT to split ________ */
     else if((!node.textContent                    ) /* TEXT NONE ___________________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "NO TEXT CONTENT"    ; }
     else if(( node.textContent.length < WOT_LENGTH) /* TEXT SHORT __________________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "["+ node.textContent.length+" char] <  [WOT_LENGTH "+WOT_LENGTH+"]"; }
-    else if(!t_util.get_first_word(      node.textContent) /* TEXT WORDS NONE _____________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "["+ node.textContent.length+" char] .. HAS NO WORDS"; }
+    else if(!get_first_word(      node.textContent) /* TEXT WORDS NONE _____________ */ ) { check_result = NodeFilter.FILTER_SKIP  ; details = "["+ node.textContent.length+" char] .. HAS NO WORDS"; }
 
     /* FILTER_REJECT _______________________________________________________________ */
-    else if(  t_util.is_marked_to_hide(node)               /* HIDDEN NDE __________________ */ ) { check_result = NodeFilter.FILTER_REJECT; details = "NODE MARKED TO HIDE"; }
+    else if(  is_marked_to_hide(node)               /* HIDDEN NODE _________________ */ ) { check_result = NodeFilter.FILTER_REJECT; details = "NODE MARKED TO HIDE"; }
 
     /* FILTER_ACCEPT */
     else                                                                                  { check_result = NodeFilter.FILTER_ACCEPT; details = "["+ node.textContent.length+" char]"; }
@@ -4128,14 +4174,16 @@ if(        log_this
         : (check_result == NodeFilter.FILTER_ACCEPT) ? lf4
         :                                              lf7;
 
-    log(caller+":%c WOT ("+reported_count+"/"+REPORTED_COUNT_MAX+"...) "+ npar.tagName +"["+npar.textContent.length+"c]."+ node.nodeName +"%c"+result+"%c"+details+"%c "+t_util.strip_CR_LF(t_util.ellipsis(node.textContent, 64))
+    log(caller+":%c WOT ("+reported_count+"/"+REPORTED_COUNT_MAX+"...) "+ npar.tagName +"["+npar.textContent.length+"c]."+ node.nodeName +"%c"+result+"%c"+details+"%c "+strip_CR_LF(ellipsis(node.textContent, 64))
         ,        lbL                                                                                                                      ,lbR+lfx    ,lbL         ,lbR                                                          );
 }
 /*}}}*/
     return check_result;
 };
 /*}}}*/
-/* ➔ EXPORT {{{*/
+
+/* ➔ EXPORT */
+/*{{{*/
 /*_ t_wot_set_state {{{*/
 let t_wot_set_state = function(label,state)
 {
@@ -4152,8 +4200,8 @@ let t_wot_set_state = function(label,state)
 /*}}}*/
 
 return { name    : "dom_wot"
-    ,    logging : (state) => { DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state); return DOM_WOT_LOG; }
-    ,    tagging : (state) => { DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state); return DOM_WOT_TAG; }
+    ,    logging : (state) => DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state)
+    ,    tagging : (state) => DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state)
     ,    t_wot_IMPORT
     ,    t_wot_set_state
 
@@ -4166,12 +4214,13 @@ return { name    : "dom_wot"
 /*}}}*/
 }());
 
+/*INLINE}}}*/
+//@ sourceURL=dom_wot.js
 `
 .replace(/\\/g,"\\\\")
 )
 .replace(/%u/g,"\\u")
 ;
-    /*}}}*/
     pre.parentElement.open = true;
 };
 </script>
@@ -4304,7 +4353,7 @@ let build_svg_X = function()
         ;
     svg_X.innerHTML     = "<path d='"+d+"'></path>";
 
-//console_dir("svg_X",svg_X)
+//console_dir(svg_X,"svg_X")
     /*}}}*/
     /* [svg_32] CLONE {{{*/
     let svg_32          = svg_X.cloneNode(true);
@@ -4317,7 +4366,7 @@ let build_svg_X = function()
     svg_32.style.borderWidth      =  "2px";
     svg_32.style.padding          =  "2px";
     svg_32.style.transform        =  "rotate(45deg)";
-//console_dir("svg_32",svg_32)
+//console_dir(svg_32,"svg_32")
 
     svg_X.parentElement.appendChild(svg_32);
     /*}}}*/
@@ -4325,13 +4374,13 @@ let build_svg_X = function()
     let cursor
 //      = "url('stylesheet/svg_32.svg') 16 16, pointer";
         = "url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnDQppZCAgICAgICAgICA9ICJzdmdfWCINCnhtbDpzcGFjZSAgID0gInByZXNlcnZlIg0KeG1sbnM6eGxpbmsgPSAiaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayINCnhtbG5zICAgICAgID0gImh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIg0KdmVyc2lvbiAgICAgPSAiMS4xIg0Kd2lkdGggICAgICAgPSAiMzJweCINCmhlaWdodCAgICAgID0gIjMycHgiDQp2aWV3Qm94ICAgICA9ICIwIDAgNTEyIDUxMiINCnN0eWxlICAgICAgID0gIg0KICAgIHdpZHRoICAgICAgICAgICAgOiAzMnB4Ow0KICAgIGhlaWdodCAgICAgICAgICAgOiAzMnB4Ow0KLyoNCiAgICBiYWNrZ3JvdW5kLWNvbG9yIDogI0YwRjQ7DQogICAgYm9yZGVyLWNvbG9yICAgICA6ICNGMEY4Ow0KICAgIGJvcmRlci1zdHlsZSAgICAgOiBvdXRzZXQ7DQogICAgYm9yZGVyLXJhZGl1cyAgICA6IDMycHg7DQogICAgYm9yZGVyLXdpZHRoICAgICA6IDJweDsNCiAgICBwYWRkaW5nICAgICAgICAgIDogMnB4Ow0KKi8NCiINCj4NCjxwYXRoIGQ9ICJNNDQzLjYsMzg3LjFMMzEyLjQsMjU1LjRsMTMxLjUtMTMwYzUuNC01LjQsNS40LTE0LjIsMC0xOS42bC0zNy40LTM3LjZjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDQNCiAgICBMMjU2LDE5Ny44TDEyNC45LDY4LjNjLTIuNi0yLjYtNi4xLTQtOS44LTRjLTMuNywwLTcuMiwxLjUtOS44LDRMNjgsMTA1LjljLTUuNCw1LjQtNS40LDE0LjIsMCwxOS42bDEzMS41LDEzMEw2OC40LDM4Ny4xDQogICAgYy0yLjYsMi42LTQuMSw2LjEtNC4xLDkuOGMwLDMuNywxLjQsNy4yLDQuMSw5LjhsMzcuNCwzNy42YzIuNywyLjcsNi4yLDQuMSw5LjgsNC4xYzMuNSwwLDcuMS0xLjMsOS44LTQuMUwyNTYsMzEzLjFsMTMwLjcsMTMxLjENCiAgICBjMi43LDIuNyw2LjIsNC4xLDkuOCw0LjFjMy41LDAsNy4xLTEuMyw5LjgtNC4xbDM3LjQtMzcuNmMyLjYtMi42LDQuMS02LjEsNC4xLTkuOEM0NDcuNywzOTMuMiw0NDYuMiwzODkuNyw0NDMuNiwzODcuMXoiLz4NCjwvc3ZnPg=='), pointer";
-//console_dir("cursor", cursor)
+//console_dir(cursor, "cursor")
 
     svg_X.parentElement.style.cursor = cursor;
 
-//console_dir("svg_X.parentElement"             ,svg_X.parentElement             )
-//console_dir("svg_X.parentElement.style"       ,svg_X.parentElement.style       )
-//console_dir("svg_X.parentElement.style.cursor",svg_X.parentElement.style.cursor)
+//console_dir(svg_X.parentElement             ,"svg_X.parentElement"             )
+//console_dir(svg_X.parentElement.style       ,"svg_X.parentElement.style"       )
+//console_dir(svg_X.parentElement.style.cursor,"svg_X.parentElement.style.cursor")
     /*}}}*/
 };
 /*}}}*/
@@ -4353,10 +4402,10 @@ let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LO
                 , { name : "dom_store"   , module : dom_store   } /* 10 */
                 , { name : "dom_fly"     , module : dom_fly     } /* 11 */
                 , { name : "dom_select"  , module : dom_select  } /* 13 */
-                , { name : "dom_wot"     , module : dom_wot     } /* 13 */
                 , { name : "dom_sticky"  , module : dom_sticky  } /* 17 */
                 , { name : "dom_seek"    , module : dom_seek    } /* 18 */
                 , { name : "dom_share"   , module : dom_share   } /* 19 */
+                , { name : "dom_grid"    , module : dom_grid    } /* -- */
                 , { name : "dom_tools"   , module : dom_tools   } /* 23 */
             ];
 
@@ -4442,8 +4491,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(state) { return DOM_LOADER_LOG = dom_store.t_store_set_state("DOM_LOADER_LOG",state); }
-        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.t_store_set_state("DOM_LOADER_TAG",state); }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 
@@ -4455,7 +4504,7 @@ if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 </script>
 <!--}}}-->
 <!--      doc_tools {{{-->
-<div  id="doc_tools" title="doc_tools_html_tag (210923:21h:09)" class="round_el doc_tool user_select_none minimized">
+<div  id="doc_tools" title="doc_tools_html_tag (210929:21h:31)" class="round_el doc_tool user_select_none minimized">
     <!-- STYLE {{{-->
     <style>
 /* doc_tools {{{*/
@@ -4693,10 +4742,10 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
                 <a title="logging dom_store"   class="em7 small">store  </a> <!-- 11 -->
                 <a title="logging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
                 <a title="logging dom_select"  class="em4 small">select </a> <!-- 14 -->
-                <a title="logging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
                 <a title="logging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
                 <a title="logging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
                 <a title="logging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_grid"    class="em5 small">grid   </a> <!-- -- -->
                 <a title="logging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
@@ -4712,10 +4761,10 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
                 <a title="tagging dom_store"   class="em7 small">store  </a> <!-- 11 -->
                 <a title="tagging dom_fly"     class="em2 small">fly    </a> <!-- 12 -->
                 <a title="tagging dom_select"  class="em4 small">select </a> <!-- 14 -->
-                <a title="tagging dom_wot"     class="em4 small">wot    </a> <!-- 14 -->
                 <a title="tagging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
                 <a title="tagging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
                 <a title="tagging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_grid"    class="em5 small">grid   </a> <!-- -- -->
                 <a title="tagging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
@@ -4800,6 +4849,7 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
         if(typeof DOM_STICKY_JS_TAG  === 'undefined') missing_ids += "\n DOM_STICKY_JS_TAG"   ; /* 17 */
         if(typeof DOM_SEEK_JS_TAG    === 'undefined') missing_ids += "\n DOM_SEEK_JS_TAG"     ; /* 18 */
         if(typeof DOM_SHARE_JS_TAG   === 'undefined') missing_ids += "\n DOM_SHARE_JS_TAG"    ; /* 19 */
+        if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* -- */
 
         if(typeof DOM_GRID_JS_TAG    === 'undefined') missing_ids += "\n DOM_GRID_JS_TAG"     ; /* 20 */
         if(typeof DOM_GUTTER_JS_TAG  === 'undefined') missing_ids += "\n DOM_GUTTER_JS_TAG"   ; /* 21 */
