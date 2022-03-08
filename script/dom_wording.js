@@ -9,7 +9,7 @@
 /* eslint-disable no-return-assign */
 
 const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211122:16h:58)';
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (220307:17h:39)';
 /*}}}*/
 let dom_wording = (function() {
 "use strict";
@@ -313,7 +313,7 @@ if( log_this) log(caller+": INSERTING ["+DOM_WORDING_CSS_ID+"]");
         + '::selection {               color : white                  !important; }'
         + '::selection {          background : red                    !important; }'
 
-        + ' .sentence_container * {    color : #FFF                   !important; }'
+        + ' .sentence_container * {    color : #FFF                             ; }'
         /* scrollbar {{{*/
         +' ::-webkit-scrollbar                       { width: 24px; }'
 
