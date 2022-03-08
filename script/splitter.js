@@ -9,8 +9,8 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /* eslint-disable no-unused-vars */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
-let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220307:16h:47)";
+let DOM_LOAD_ID         = "dom_splitter";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220308:18h:36)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -2900,8 +2900,9 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 
+
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220307:16h:47)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220308:15h:52)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3204,7 +3205,7 @@ const             BOUNDARY = "\\W*[\\.,;:?\\n\\r]+(?!\\w)"  ;
 const            LAST_WORD = WORD +"{1,}";
 const           FIRST_WORD = WORD +"+";
 
-const CAPTURING_PREV_END   = "("    + LAST_WORD  +")"       ;
+const CAPTURING_PREV_END   = "("    + LAST_WORD  +")?"      ;
 const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"       ;
 const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"       ;
 
@@ -3242,6 +3243,8 @@ if( log_this) console_dir("container",container        );
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if( check_tool_event(e) ) return;
+
+    if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get("theme_dark");
 
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
@@ -3414,9 +3417,9 @@ if( log_this) log_key_val_group(            caller
 
 
 
-
 const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/(li|LI|)>", "g");
 const regexp_HTML               = new RegExp("<[^>]*>"                       , "g");
+const regexp_PUNC               = new RegExp("\\s*([\\.,;]\\s*)"             , "g");
 
 
 let strip_HTML = function(text)
@@ -3425,6 +3428,7 @@ let strip_HTML = function(text)
     return text
         .   replace(regexp_LI   , "."+LF)
         .   replace(regexp_HTML , " "   )
+        .   replace(regexp_PUNC , "$1"  )
         .trim()
     ;
 };
@@ -3460,16 +3464,17 @@ let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
 let sentence_color_next = 1;
 
 
-let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
+let t_SENTENCE_SPLIT_replace = function(match, prev_end="", boundary="", next_start="")
 {
 
+let   caller = "t_SENTENCE_SPLIT_replace";
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
 if(next_start == LF) next_start = "";
 
-if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
-                  ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
+if( tag_this) log(caller+" %c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
+                  ,        lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
 
 
 
@@ -3992,6 +3997,12 @@ check_tool_event_timer = setTimeout(check_tool_event, CHECK_TOOL_EVENT_DELAY, e)
 };
 
 
+let t_SENTENCE_set_theme_dark = function(_theme_dark)
+{
+    theme_dark = !!_theme_dark;
+};
+
+
 let check_tool_event = function(e=window.event)
 {
 
@@ -4028,6 +4039,8 @@ if(!e) return false;
        && (e.target.id == "dom_sentence_theme_dark")
       ) {
         theme_dark = !theme_dark;
+
+        if((typeof dom_prop) != "undefined") dom_prop.set("theme_dark", theme_dark);
 
         t_SENTENCE_SPLIT( last_container );
 
@@ -4130,6 +4143,8 @@ return { name : "dom_sentence"
     ,    t_SENTENCE_GET_EL_SENTENCE_CONTAINER
     ,    t_SENTENCE_drag_DXY
     ,    t_SENTENCE_onresize
+
+    ,    t_SENTENCE_set_theme_dark
 
 
     ,    o : outline_text_containers_in_view
@@ -4379,18 +4394,18 @@ let get_el_sheet_first_rule_text_content = function(el)
 
 /** LOADING */
 /*{{{*/
-let IPC_LOG  = true;
+let IPC_LOG  = false;
 /*_ splitter_load {{{*/
 let splitter_load_has_been_called;
 let splitter_load = function(e)
 {
     splitter_load_has_been_called = true;
     if(e) {
-        console.log("%c HANDLING ["+e.type+"] EVENT"   , lbH+lf5);
+        console.log("%c "+DOM_LOAD_TAG+" HANDLING ["+e.type+"] EVENT"   , lbH+lf5);
      /* console.dir(e); */
     }
     else {
-        console.log("%c HANDLING [setTimeout] CALLBACK", lbH+lf7);
+        console.log("%c "+DOM_LOAD_TAG+" HANDLING [setTimeout] CALLBACK", lbH+lf7);
     }
 
     /* LOAD */
@@ -4399,8 +4414,10 @@ let splitter_load = function(e)
     /* EXEC */
     setTimeout(() => {
 try {
-    console.log("dom_sentence_js:"); console.dir(dom_sentence_js); /* eslint-disable-line no-undef */
+/*{{{
+    console.log("dom_sentence_js:"); console.dir(dom_sentence_js);
     console.log("dom_sentence   :"); console.dir(dom_sentence   );
+}}}*/
     setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
 } catch(ex) {}
         dom_sentence      .t_sentence_IMPORT      ( IPC_LOG );
