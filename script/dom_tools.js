@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220221:19h:38)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220308:16h:59)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -1765,7 +1765,7 @@ if(log_this) t_log.console_dir(caller+": FOUND DOC TOOL CLONES PANEL", playgroun
     /* add control buttons {{{*/
     let panel = playground_clones_panel;
     let id, el;
-    id = "t_sticky_reorder"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = "t_sticky_reorder"         ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
     id = "SEEK"                     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "em"  );
     id = t_seek.CSS_SEEK2_ONSLOTEL  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
     id = t_seek.CSS_SEEK1_ONRESUME  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
@@ -24123,7 +24123,7 @@ log("t_show_SNAPSHOT: snapshot_mail_body=["+t_util.ellipsis(snapshot_mail_body)+
 /* exported drag_cursor, DRAG_CURSOR_JS_ID */
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:13)";  /* eslint-disable-line no-unused-vars */
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:37)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let drag_cursor  = (function() {
 "use strict"; /* eslint-disable-line strict */
