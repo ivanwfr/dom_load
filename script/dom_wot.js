@@ -16,7 +16,7 @@
 /* exported dom_wot, DOM_WOT_JS_TAG */
 
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (211208:17h:11)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (220308:16h:26)";
 /*}}}*/
 let dom_wot             = (function() {
 "use strict";
@@ -701,8 +701,8 @@ let t_wot_set_state = function(label,state)
 /*}}}*/
 
 return { name    : "dom_wot"
-    ,    logging : (state) => { DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state); return DOM_WOT_LOG; }
-    ,    tagging : (state) => { DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state); return DOM_WOT_TAG; }
+    ,    logging : (state) => DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state)
+    ,    tagging : (state) => DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state)
     ,    t_wot_IMPORT
     ,    t_wot_set_state
 

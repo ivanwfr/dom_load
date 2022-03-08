@@ -12,7 +12,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_GUTTER_JS_ID      = "dom_gutter_js";
-const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (211122:16h:43)";
+const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (220308:18h:13)";
 /*}}}*/
 let dom_gutter  = (function() {
 "use strict";
@@ -425,8 +425,8 @@ let t_store_set_state = function(label,state)
 };
 /*}}}*/
 return { name : "dom_gutter"
-    , logging : (state) => { DOM_GUTTER_LOG = t_store_set_state("DOM_GUTTER_LOG",state); }
-    , tagging : (state) => { DOM_GUTTER_TAG = t_store_set_state("DOM_GUTTER_TAG",state); }
+    , logging : (state) => DOM_GUTTER_LOG = t_store_set_state("DOM_GUTTER_LOG",state)
+    , tagging : (state) => DOM_GUTTER_TAG = t_store_set_state("DOM_GUTTER_TAG",state)
     , t_gutter_IMPORT
 
     /* const */

@@ -23,7 +23,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220216:15h:26)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220308:16h:26)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -4375,8 +4375,8 @@ let t_store_set_state = function(label,state)
 };
 /*}}}*/
 return { name : "dom_util"
-    , logging : (state) => { DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
-    , tagging : (state) => { DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
+    , logging : (state) => DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state)
+    , tagging : (state) => DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state)
     , t_util_IMPORT
     , t_util_set_state : t_store_set_state
 

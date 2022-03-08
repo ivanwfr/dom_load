@@ -15,7 +15,7 @@
 /* exported dom_details, DOM_DETAILS_JS_TAG */
 
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211208:19h:54)";  /* eslint-disable-line no-unused-vars */
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (220308:16h:37)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_details         = (function() {
 "use strict";
@@ -701,8 +701,8 @@ let t_store_set_state = function(label,state)
 };
 /*}}}*/
 return { name    : "dom_details"
-    ,    logging : (state) => { DOM_DETAILS_LOG = t_store_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
-    ,    tagging : (state) => { DOM_DETAILS_TAG = t_store_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
+    ,    logging : (state) => DOM_DETAILS_LOG = t_store_set_state("DOM_DETAILS_LOG", state)
+    ,    tagging : (state) => DOM_DETAILS_TAG = t_store_set_state("DOM_DETAILS_TAG", state)
     ,    t_details_IMPORT
 
     /*   --------------------------------- CALLERS:       */

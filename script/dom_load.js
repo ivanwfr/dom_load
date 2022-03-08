@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220307:16h:49)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220308:18h:37)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -8874,7 +8874,7 @@ let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220216:15h:26)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220308:16h:26)";
 
 let dom_util    = (function() {
 "use strict";
@@ -12834,8 +12834,8 @@ let t_store_set_state = function(label,state)
 };
 
 return { name : "dom_util"
-    , logging : (state) => { DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state); return DOM_UTIL_LOG; }
-    , tagging : (state) => { DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state); return DOM_UTIL_TAG; }
+    , logging : (state) => DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state)
+    , tagging : (state) => DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state)
     , t_util_IMPORT
     , t_util_set_state : t_store_set_state
 
@@ -13830,7 +13830,7 @@ let dom_prop_js_data ="data:text/javascript;charset='utf-8',"+ `
 
 
 const DOM_PROP_JS_ID        = "dom_prop_js";
-const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (211122:23h:56)";
+const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (220308:16h:22)";
 
 
 let dom_prop    = (function() {
@@ -14279,8 +14279,8 @@ let t_store_set_state = function(label,state)
 };
 
 return { name : "dom_prop"
-    , logging : (state) => { DOM_PROP_LOG = t_store_set_state("DOM_PROP_LOG",state); }
-    , tagging : (state) => { DOM_PROP_TAG = t_store_set_state("DOM_PROP_TAG",state); }
+    , logging : (state) => DOM_PROP_LOG = t_store_set_state("DOM_PROP_LOG",state)
+    , tagging : (state) => DOM_PROP_TAG = t_store_set_state("DOM_PROP_TAG",state)
     , t_prop_IMPORT
 
     , init          : prop_init
@@ -17077,7 +17077,7 @@ let dom_wording_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (211122:16h:58)';
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (220307:17h:39)';
 
 let dom_wording = (function() {
 "use strict";
@@ -17348,7 +17348,7 @@ if( log_this) log(caller+": INSERTING ["+DOM_WORDING_CSS_ID+"]");
         + '::selection {               color : white                  !important; }'
         + '::selection {          background : red                    !important; }'
 
-        + ' .sentence_container * {    color : #FFF                   !important; }'
+        + ' .sentence_container * {    color : #FFF                             ; }'
 
         +' ::-webkit-scrollbar                       { width: 24px; }'
 
@@ -33173,7 +33173,7 @@ let dom_details_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (211208:19h:54)";
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (220308:16h:37)";
 
 let dom_details         = (function() {
 "use strict";
@@ -33843,8 +33843,8 @@ let t_store_set_state = function(label,state)
 };
 
 return { name    : "dom_details"
-    ,    logging : (state) => { DOM_DETAILS_LOG = t_store_set_state("DOM_DETAILS_LOG", state); return DOM_DETAILS_LOG; }
-    ,    tagging : (state) => { DOM_DETAILS_TAG = t_store_set_state("DOM_DETAILS_TAG", state); return DOM_DETAILS_TAG; }
+    ,    logging : (state) => DOM_DETAILS_LOG = t_store_set_state("DOM_DETAILS_LOG", state)
+    ,    tagging : (state) => DOM_DETAILS_TAG = t_store_set_state("DOM_DETAILS_TAG", state)
     ,    t_details_IMPORT
 
 
@@ -33893,7 +33893,7 @@ let dom_wot_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (211208:17h:11)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (220308:16h:26)";
 
 let dom_wot             = (function() {
 "use strict";
@@ -34558,8 +34558,8 @@ let t_wot_set_state = function(label,state)
 
 
 return { name    : "dom_wot"
-    ,    logging : (state) => { DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state); return DOM_WOT_LOG; }
-    ,    tagging : (state) => { DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state); return DOM_WOT_TAG; }
+    ,    logging : (state) => DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state)
+    ,    tagging : (state) => DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state)
     ,    t_wot_IMPORT
     ,    t_wot_set_state
 
@@ -34609,8 +34609,9 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 
+
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220307:16h:47)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220308:15h:52)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -34913,7 +34914,7 @@ const             BOUNDARY = "\\W*[\\.,;:?\\n\\r]+(?!\\w)"  ;
 const            LAST_WORD = WORD +"{1,}";
 const           FIRST_WORD = WORD +"+";
 
-const CAPTURING_PREV_END   = "("    + LAST_WORD  +")"       ;
+const CAPTURING_PREV_END   = "("    + LAST_WORD  +")?"      ;
 const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"       ;
 const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"       ;
 
@@ -34951,6 +34952,8 @@ if( log_this) console_dir("container",container        );
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if( check_tool_event(e) ) return;
+
+    if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get("theme_dark");
 
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
@@ -35123,9 +35126,9 @@ if( log_this) log_key_val_group(            caller
 
 
 
-
 const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/(li|LI|)>", "g");
 const regexp_HTML               = new RegExp("<[^>]*>"                       , "g");
+const regexp_PUNC               = new RegExp("\\s*([\\.,;]\\s*)"             , "g");
 
 
 let strip_HTML = function(text)
@@ -35134,6 +35137,7 @@ let strip_HTML = function(text)
     return text
         .   replace(regexp_LI   , "."+LF)
         .   replace(regexp_HTML , " "   )
+        .   replace(regexp_PUNC , "$1"  )
         .trim()
     ;
 };
@@ -35169,16 +35173,17 @@ let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
 let sentence_color_next = 1;
 
 
-let t_SENTENCE_SPLIT_replace = function(match, prev_end, boundary, next_start)
+let t_SENTENCE_SPLIT_replace = function(match, prev_end="", boundary="", next_start="")
 {
 
+let   caller = "t_SENTENCE_SPLIT_replace";
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 let tag_this = DOM_SENTENCE_TAG || log_this;
 
 if(next_start == LF) next_start = "";
 
-if( tag_this) log("%c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
-                  ,lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
+if( tag_this) log(caller+" %c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+next_start
+                  ,        lbL+lf5      ,lbC+lf6                         ,lbR+lf7       );
 
 
 
@@ -35701,6 +35706,12 @@ check_tool_event_timer = setTimeout(check_tool_event, CHECK_TOOL_EVENT_DELAY, e)
 };
 
 
+let t_SENTENCE_set_theme_dark = function(_theme_dark)
+{
+    theme_dark = !!_theme_dark;
+};
+
+
 let check_tool_event = function(e=window.event)
 {
 
@@ -35737,6 +35748,8 @@ if(!e) return false;
        && (e.target.id == "dom_sentence_theme_dark")
       ) {
         theme_dark = !theme_dark;
+
+        if((typeof dom_prop) != "undefined") dom_prop.set("theme_dark", theme_dark);
 
         t_SENTENCE_SPLIT( last_container );
 
@@ -35840,6 +35853,8 @@ return { name : "dom_sentence"
     ,    t_SENTENCE_drag_DXY
     ,    t_SENTENCE_onresize
 
+    ,    t_SENTENCE_set_theme_dark
+
 
     ,    o : outline_text_containers_in_view
     ,    r : restore_text_containers_in_view
@@ -35881,7 +35896,7 @@ let dom_grid_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211122:16h:42)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (220308:18h:13)";
 
 let dom_grid    = (function() {
 "use strict";
@@ -36848,8 +36863,8 @@ let t_store_set_state = function(label,state)
 };
 
 return { name : "dom_grid"
-    , logging : (state) => { DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state); }
-    , tagging : (state) => { DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state); }
+    , logging : (state) => DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state)
+    , tagging : (state) => DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state)
     ,    t_grid_IMPORT
 
     ,    t_grid_IS_ON_GRID
@@ -36907,7 +36922,7 @@ let dom_gutter_js_data ="data:text/javascript;charset='utf-8',"+ `
 
 
 const DOM_GUTTER_JS_ID      = "dom_gutter_js";
-const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (211122:16h:43)";
+const DOM_GUTTER_JS_TAG     = DOM_GUTTER_JS_ID  +" (220308:18h:13)";
 
 let dom_gutter  = (function() {
 "use strict";
@@ -37308,8 +37323,8 @@ let t_store_set_state = function(label,state)
 };
 
 return { name : "dom_gutter"
-    , logging : (state) => { DOM_GUTTER_LOG = t_store_set_state("DOM_GUTTER_LOG",state); }
-    , tagging : (state) => { DOM_GUTTER_TAG = t_store_set_state("DOM_GUTTER_TAG",state); }
+    , logging : (state) => DOM_GUTTER_LOG = t_store_set_state("DOM_GUTTER_LOG",state)
+    , tagging : (state) => DOM_GUTTER_TAG = t_store_set_state("DOM_GUTTER_TAG",state)
     , t_gutter_IMPORT
 
 
@@ -37880,7 +37895,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220221:19h:38)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220308:16h:59)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -39432,7 +39447,7 @@ if(log_this) t_log.console_dir(caller+": FOUND DOC TOOL CLONES PANEL", playgroun
 
     let panel = playground_clones_panel;
     let id, el;
-    id = "t_sticky_reorder"; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
+    id = "t_sticky_reorder"         ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
     id = "SEEK"                     ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "em"  );
     id = t_seek.CSS_SEEK2_ONSLOTEL  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
     id = t_seek.CSS_SEEK1_ONRESUME  ; el = t_clone_3_panel_id_bg_type_label(panel,id,"bg1", "input"); if(el) prop.set_EL(id, el);
@@ -60151,7 +60166,7 @@ let t_show_SNAPSHOT = function()
 
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:13)";
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:37)";
 
 let drag_cursor  = (function() {
 "use strict";

@@ -10,7 +10,7 @@
 /* exported dom_prop, DOM_PROP_JS_TAG */
 
 const DOM_PROP_JS_ID        = "dom_prop_js";
-const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (211122:23h:56)";
+const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (220308:16h:22)";
 
 /*}}}*/
 let dom_prop    = (function() {
@@ -464,8 +464,8 @@ let t_store_set_state = function(label,state)
 };
 /*}}}*/
 return { name : "dom_prop"
-    , logging : (state) => { DOM_PROP_LOG = t_store_set_state("DOM_PROP_LOG",state); }
-    , tagging : (state) => { DOM_PROP_TAG = t_store_set_state("DOM_PROP_TAG",state); }
+    , logging : (state) => DOM_PROP_LOG = t_store_set_state("DOM_PROP_LOG",state)
+    , tagging : (state) => DOM_PROP_TAG = t_store_set_state("DOM_PROP_TAG",state)
     , t_prop_IMPORT
 
     , init          : prop_init

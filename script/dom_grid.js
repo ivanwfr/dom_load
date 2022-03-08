@@ -13,7 +13,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (211122:16h:42)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (220308:18h:13)";
 /*}}}*/
 let dom_grid    = (function() {
 "use strict";
@@ -1014,8 +1014,8 @@ let t_store_set_state = function(label,state)
 };
 /*}}}*/
 return { name : "dom_grid"
-    , logging : (state) => { DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state); }
-    , tagging : (state) => { DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state); }
+    , logging : (state) => DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state)
+    , tagging : (state) => DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state)
     ,    t_grid_IMPORT
 
     ,    t_grid_IS_ON_GRID
