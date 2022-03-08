@@ -114,6 +114,7 @@ let check_modules_state = function(state_name,log_this=(DOM_LOADER_TAG || DOM_LO
                 , { name : "dom_sticky"  , module : dom_sticky  } /* 17 */
                 , { name : "dom_seek"    , module : dom_seek    } /* 18 */
                 , { name : "dom_share"   , module : dom_share   } /* 19 */
+                , { name : "dom_grid"    , module : dom_grid    } /* -- */
                 , { name : "dom_tools"   , module : dom_tools   } /* 23 */
             ];
 
@@ -212,7 +213,7 @@ if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 </script>
 <!--}}}-->
 <!--      doc_tools {{{-->
-<div  id="doc_tools" title="doc_tools_html_tag (210929:21h:31)" class="round_el doc_tool user_select_none minimized">
+<div  id="doc_tools" title="doc_tools_html_tag (220308:18h:16)" class="round_el doc_tool user_select_none minimized">
     <!-- STYLE {{{-->
     <style>
 /* doc_tools {{{*/
@@ -453,6 +454,7 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
                 <a title="logging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
                 <a title="logging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
                 <a title="logging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_grid"    class="em5 small">grid   </a> <!-- -- -->
                 <a title="logging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
@@ -471,6 +473,7 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
                 <a title="tagging dom_sticky"  class="em6 small">sticky </a> <!-- 18 -->
                 <a title="tagging dom_seek"    class="em4 small">seek   </a> <!-- 19 -->
                 <a title="tagging dom_share"   class="em5 small">share  </a> <!-- 20 -->
+                <a title="logging dom_grid"    class="em5 small">grid   </a> <!-- -- -->
                 <a title="tagging dom_tools"   class="em9 small">TOOLS  </a> <!-- 24 -->
             </div>
             <!--}}}-->
