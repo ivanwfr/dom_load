@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220308:18h:37)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220325:18h:50)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -8874,7 +8874,7 @@ let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220308:16h:26)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220309:19h:24)";
 
 let dom_util    = (function() {
 "use strict";
@@ -12521,8 +12521,8 @@ let parseURL = function(url)
 
 
 
-let cb_textArea = null;
 
+let cb_textArea = null;
 
 
 let t_copy_to_CLIPBOARD = function(copy_content)
@@ -12561,8 +12561,6 @@ if( log_this) log("%c window.getSelection():"+LF+"%c"+ellipsis(window.getSelecti
 
     if( !document.execCommand("copy") )
     {
-        log("%c*** COPY TO CLIPBOARD REJECTED ***", lb2);
-logXXX("%c USER EVENT CALLBACK REQUIRED ", lbb+lbH+lf2);
 
     }
     else {
@@ -17533,7 +17531,7 @@ let dom_select_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220214:18h:38)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220323:19h:39)";
 
 let dom_select  = (function() {
 "use strict";
@@ -19504,7 +19502,7 @@ if( log_this) t_log.log_TR_RESULT_set();
             ? (t_i18n.i18n_get(t_i18n.TOO_MANY ) +" (max "+TOO_MANY_SELECTIONS+")")
             :  t_i18n.i18n_get(t_i18n.NOT_FOUND);
 
-        t_tools.t_words_regex_no_match("<em>"+t_util.ellipsis_short(sel_text)+"</em> ➔ "+warning, tooltip);
+        t_tools.t_words_regex_no_match("<em>"+t_util.ellipsis_short(sel_text)+"</em> &#x2794; "+warning, tooltip);
 
 
 if( log_this) t_log.log_TR_RESULT_set();
@@ -34611,7 +34609,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220308:15h:52)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220325:18h:47)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -34704,7 +34702,7 @@ let   sentence_INTERN   = function()
 
 let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
 let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
-let localStorage_delItem = function(key    ) { localStorage.removeItem(key    ); };
+let localStorage_delItem = function(key    ) { localStorage.removeItem(key); };
 
 
 
@@ -34726,7 +34724,7 @@ const CSS_DARK               = "dark";
 
 const E12_FONT_SIZE_LIST = ["fs1", "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11", "fs12"];
 
-let   e12_font_size      =  "fs9";
+let   e12_font_size      =  "fs8";
 
 
 
@@ -34909,14 +34907,14 @@ let t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT = function()
 
 
 
-const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"   ;
-const             BOUNDARY = "\\W*[\\.,;:?\\n\\r]+(?!\\w)"  ;
-const            LAST_WORD = WORD +"{1,}";
-const           FIRST_WORD = WORD +"+";
+const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"    ;
+const             BOUNDARY =     "[\\.,;:?\)\\n\\r]+(?!\\w)" ;
+const            LAST_WORD = WORD    +"{1,}";
+const           FIRST_WORD = WORD    +"+";
 
-const CAPTURING_PREV_END   = "("    + LAST_WORD  +")?"      ;
-const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"       ;
-const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"       ;
+const CAPTURING_PREV_END   = "("     + LAST_WORD  +")?"      ;
+const CAPTURING_BOUNDARY   = "("     + BOUNDARY   +")"       ;
+const CAPTURING_NEXT_START = "(\\n+|"+ FIRST_WORD +")?"      ;
 
 
 
@@ -34953,7 +34951,8 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
 
     if( check_tool_event(e) ) return;
 
-    if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get("theme_dark");
+    if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get        ("theme_dark");
+    else                                 theme_dark = localStorage_getItem("theme_dark");
 
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
@@ -34990,8 +34989,8 @@ if( log_this) {
     log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
 }
 if( tag_this) {
-    log("%c "+regexp_SENTENCE, lbb+lbH+lf7);
-    log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
+    log("regexp_SENTENCE %c prev_end %c boundary %c next_start %c"+LF+regexp_SENTENCE
+        ,                lbL+lf5    ,lbC+lf6    ,lbR+lf7      ,"border:1px solid magenta;");
 }
 
 
@@ -35000,6 +34999,7 @@ if( tag_this) {
 
     text = strip_HTML( container.innerHTML );
 
+    t_util.t_copy_to_CLIPBOARD( text );
 
     text = text.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
 
@@ -35012,12 +35012,15 @@ if( tag_this) {
 
 
     t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
-    if(theme_dark)
-        t_util.add_el_class(container, CSS_DARK);
+    if( theme_dark ) {
+        t_util.add_el_class(    container, CSS_DARK);
+        t_util.add_el_class(document.body, CSS_DARK);
+    }
 
     container.style.touchAction = "none";
 
-    let style =      " float: right;"
+    let button_style
+        =                " float: right;"
         +            " clear: right;"
         +           " border: none;"
         +           " margin: 0;"
@@ -35028,14 +35031,17 @@ if( tag_this) {
         +      " font-weight: 900;"
         +      " line-height: 1em;"
     ;
+    let span_style
+        = "pointer-events: none"
+    ;
 
 
 
     let tools = ""
-        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME     +"</button>"
+        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_THEME     +"</span></button>"
 
         + ((typeof dom_popup != "undefined")
-           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR      +"</button>" : "")
+           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_GEAR      +"</span></button>" : "")
     ;
 
     let   theme_style
@@ -35122,6 +35128,7 @@ if( log_this) log_key_val_group(            caller
 
 
     last_container = container;
+    t_tools.t_scrollIntoViewIfNeeded( container );
 };
 
 
@@ -35129,6 +35136,7 @@ if( log_this) log_key_val_group(            caller
 const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/(li|LI|)>", "g");
 const regexp_HTML               = new RegExp("<[^>]*>"                       , "g");
 const regexp_PUNC               = new RegExp("\\s*([\\.,;]\\s*)"             , "g");
+const regexp_BLANK              = new RegExp("\\s+|(&nbsp;)+"                , "g");
 
 
 let strip_HTML = function(text)
@@ -35138,6 +35146,7 @@ let strip_HTML = function(text)
         .   replace(regexp_LI   , "."+LF)
         .   replace(regexp_HTML , " "   )
         .   replace(regexp_PUNC , "$1"  )
+        .   replace(regexp_BLANK , " "  )
         .trim()
     ;
 };
@@ -35190,7 +35199,7 @@ if( tag_this) log(caller+" %c"+prev_end+"%c"+t_util.show_CR_LF(boundary)+"%c"+ne
     let entering_a_clause
         =  boundary.includes(",")
         || boundary.includes(";")
-        || boundary.includes( LF)
+
 
     ;
 
@@ -35525,6 +35534,7 @@ if( log_this) log_key_val_group(  caller
 
     else {
         t_SENTENCE_FONTSIZE_OFFSET( size_offset );
+        t_tools.t_scrollIntoViewIfNeeded( from_container );
     }
 
 if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
@@ -35635,7 +35645,9 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
 
 
 
-        t_util.del_el_class(container, CSS_SENTENCE_CONTAINER);
+        t_util.del_el_class(    container, CSS_SENTENCE_CONTAINER);
+        t_util.del_el_class(    container, CSS_DARK);
+        t_util.del_el_class(document.body, CSS_DARK);
 
         if( container.innerHTML_SAVED )
         {
@@ -35709,6 +35721,7 @@ check_tool_event_timer = setTimeout(check_tool_event, CHECK_TOOL_EVENT_DELAY, e)
 let t_SENTENCE_set_theme_dark = function(_theme_dark)
 {
     theme_dark = !!_theme_dark;
+    localStorage_setItem("theme_dark", theme_dark);
 };
 
 
@@ -35748,6 +35761,7 @@ if(!e) return false;
        && (e.target.id == "dom_sentence_theme_dark")
       ) {
         theme_dark = !theme_dark;
+        localStorage_setItem("theme_dark", theme_dark);
 
         if((typeof dom_prop) != "undefined") dom_prop.set("theme_dark", theme_dark);
 
@@ -37895,7 +37909,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220308:16h:59)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220309:19h:13)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -53725,7 +53739,7 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIn
         if( delay == undefined)   delay = SCROLL_INTO_VIEW_DELAY;
 
         if( delay ) t_scroll_intoview_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay);
-        else                                                    scrollIntoViewIfNeeded_handler();
+        else                                             scrollIntoViewIfNeeded_handler();
     }
     else {
         t_scroll_intoview_timer = null;
@@ -53955,16 +53969,16 @@ if( log_this) t_fly.t_log_event_status(caller+"(container=["+t_util.get_id_or_ta
     let e_W = container.clientWidth  || container.offsetWidth;
     let e_H = container.clientHeight || container.offsetHeight;
 
-    let container_rect
+    let el_rect
         = { left   : xy.x
         ,   top    : xy.y
         ,   right  : xy.x + e_W
         ,   bottom : xy.y + e_H
     };
 
-    container_rect.height
-        = container_rect.bottom
-        - container_rect.top
+    el_rect.height
+        = el_rect.bottom
+        - el_rect.top
     ;
 
 
@@ -53976,25 +53990,29 @@ if( log_this) t_fly.t_log_event_status(caller+"(container=["+t_util.get_id_or_ta
     }
 
 
-    container_rect.seekTop
-        =  container_rect.top
+    el_rect.seekTop
+        =  el_rect.top
         -  added_seeker_height_atop
     ;
-    let over_top       = (container_rect.seekTop < view_rect.top   );
-    let over_left      = (container_rect.left    < view_rect.left  );
-    let over_bottom    = (container_rect.bottom  > view_rect.bottom);
-    let over_right     = (container_rect.right   > view_rect.right );
+    let over_left      = (el_rect.left    < view_rect.left  );
+    let over_top       = (el_rect.seekTop < view_rect.top   );
+    let over_right     = (el_rect.right   > view_rect.right );
+    let over_bottom    = (el_rect.bottom  > view_rect.bottom);
     let on_sentence    = has_el_class(container, t_sentence.CSS_SENTENCE_CONTAINER);
 
-    let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
+    let over_something
+        = (over_top    ? "T":"")
+        + (over_left   ? "L":"")
+        + (over_right  ? "R":"")
+        + (over_bottom ? "B":"");
 
-    let may_go_left    = (container_rect.right  < window.innerWidth);
+    let may_go_left    = (el_rect.right  < window.innerWidth);
 if(log_this) {
     log_key_val_group("to_the_top .. over_something=["+over_something+"]"
                       , {   container
                           , on_sentence
                           , added_seeker_height_atop
-                          , container_rect
+                          , el_rect
                           , e_H
                           , view_rect
                           , window_scrollY : window.scrollY
@@ -54009,16 +54027,18 @@ if(log_this) {
 
 
     let scrollX
-        = (over_left  ) ? container_rect.left                         - (with_margin ? t_data.VIEWPORT_MARGIN.left   : 16)
-        : (over_right ) ? container_rect.right   - window.innerWidth  + (with_margin ? t_data.VIEWPORT_MARGIN.right  : 32)
+        = (over_left  ) ? el_rect.left                         - (with_margin ? t_data.VIEWPORT_MARGIN.left   : 16)
+        : (over_right ) ? el_rect.right   - window.innerWidth  + (with_margin ? t_data.VIEWPORT_MARGIN.right  : 32)
         : may_go_left   ?                          0
         :                                          window.scrollX;
+    scrollX = Math.max(scrollX, 0);
 
     let scrollY
-        = (on_sentence ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
-        : (over_top    ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
-        : (over_bottom ) ? container_rect.bottom - window.innerHeight + (with_margin ? t_data.VIEWPORT_MARGIN.bottom : 32)
+        = (on_sentence ) ? el_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
+        : (over_top    ) ? el_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
+        : (over_bottom ) ? el_rect.bottom - window.innerHeight + (with_margin ? t_data.VIEWPORT_MARGIN.bottom : 32)
         :                                          window.scrollY;
+    scrollY = Math.max(scrollY, 0);
 
 
 
@@ -54026,13 +54046,13 @@ if(log_this) {
     {
         let scroll_more
             =  view_rect.height
-            - (container_rect.height + added_seeker_height_atop);
+            - (el_rect.height + added_seeker_height_atop);
 
 if(log_this)
         log_key_val_group("to_the_top .. scroll_more=["+scroll_more+"]"
                           , {   container
                               , view_rect
-                              , container_rect
+                              , el_rect
                               , window_scrollY      : window.scrollY
                               , over_something      : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
                               , scrollY
@@ -54044,7 +54064,8 @@ if(log_this)
         scrollY += scroll_more;
     }
 
-    return { x : scrollX , y : scrollY };
+    let    result = { x : scrollX , y : scrollY };
+    return result;
 };
 
 
@@ -54449,7 +54470,7 @@ let t_words_regex_no_match = function(pattern, msg)
     let words_regex  = t_get_tool("words_regex");
 
 
-    if( words_regex     ) words_regex.innerHTML = pattern;
+    if( words_regex  ) words_regex.innerHTML = pattern;
 
 
     if( tools_filter ) set_el_class_removing(tools_filter, CSS_FG2, FGX_CLASSLIST);
