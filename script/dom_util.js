@@ -23,7 +23,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220308:16h:26)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220309:19h:24)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -4051,11 +4051,11 @@ let parseURL = function(url)
 /*}}}*/
 /*}}}*/
 /* CLIPBOARD {{{*/
+/*_ t_copy_to_CLIPBOARD {{{*/
 /*{{{*/
 let cb_textArea = null;
 
 /*}}}*/
-/*_ t_copy_to_CLIPBOARD {{{*/
 let t_copy_to_CLIPBOARD = function(copy_content)
 {
 /*{{{*/
@@ -4099,9 +4099,9 @@ if( log_this) log("%c window.getSelection():"+LF+"%c"+ellipsis(window.getSelecti
 
     if( !document.execCommand("copy") )
     {
-        log("%c*** COPY TO CLIPBOARD REJECTED ***", lb2);
-logXXX("%c USER EVENT CALLBACK REQUIRED ", lbb+lbH+lf2);
 /*{{{
+        log("%c*** COPY TO CLIPBOARD REJECTED ***", lb2);
+        log("%c USER EVENT CALLBACK REQUIRED "    , lbb+lbH+lf2)
 }}}*/
     }
     else {
