@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220214:18h:38)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220323:19h:39)";
 /*}}}*/
 let dom_select  = (function() {
 "use strict";
@@ -2143,7 +2143,7 @@ if( log_this) t_log.log_TR_RESULT_set();
             ? (t_i18n.i18n_get(t_i18n.TOO_MANY ) +" (max "+TOO_MANY_SELECTIONS+")")
             :  t_i18n.i18n_get(t_i18n.NOT_FOUND);
 
-        t_tools.t_words_regex_no_match("<em>"+t_util.ellipsis_short(sel_text)+"</em> ➔ "+warning, tooltip);
+        t_tools.t_words_regex_no_match("<em>"+t_util.ellipsis_short(sel_text)+"</em> &#x2794; "+warning, tooltip);
 
         /*}}}*/
 if( log_this) t_log.log_TR_RESULT_set();
