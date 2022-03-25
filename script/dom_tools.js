@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220308:16h:59)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220309:19h:13)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -17174,7 +17174,7 @@ if( log_this) log_caller();
         if( delay == undefined)   delay = SCROLL_INTO_VIEW_DELAY;
 
         if( delay ) t_scroll_intoview_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay); /* async */
-        else                                                    scrollIntoViewIfNeeded_handler();       /* sync */
+        else                                             scrollIntoViewIfNeeded_handler();       /* sync */
     }
     else {
         t_scroll_intoview_timer = null;
@@ -17427,16 +17427,16 @@ log_caller()
     let e_W = container.clientWidth  || container.offsetWidth;
     let e_H = container.clientHeight || container.offsetHeight;
 
-    let container_rect
+    let el_rect
         = { left   : xy.x
         ,   top    : xy.y
         ,   right  : xy.x + e_W
         ,   bottom : xy.y + e_H
     };
 
-    container_rect.height
-        = container_rect.bottom
-        - container_rect.top
+    el_rect.height
+        = el_rect.bottom
+        - el_rect.top
     ;
     /*}}}*/
     /* SEEKER ACTIVE ABOVE CONTAINER {{{*/
@@ -17448,25 +17448,29 @@ log_caller()
     }
     /*}}}*/
     /* OVER [top left bottom right] {{{*/
-    container_rect.seekTop
-        =  container_rect.top
+    el_rect.seekTop
+        =  el_rect.top
         -  added_seeker_height_atop
     ;
-    let over_top       = (container_rect.seekTop < view_rect.top   );
-    let over_left      = (container_rect.left    < view_rect.left  );
-    let over_bottom    = (container_rect.bottom  > view_rect.bottom);
-    let over_right     = (container_rect.right   > view_rect.right );
+    let over_left      = (el_rect.left    < view_rect.left  );
+    let over_top       = (el_rect.seekTop < view_rect.top   );
+    let over_right     = (el_rect.right   > view_rect.right );
+    let over_bottom    = (el_rect.bottom  > view_rect.bottom);
     let on_sentence    = has_el_class(container, t_sentence.CSS_SENTENCE_CONTAINER);
 
-    let over_something = ((over_top ? "T":"")+(over_left ? "L":"")+(over_right ? "R":"")+(over_bottom ? "B":""));
+    let over_something
+        = (over_top    ? "T":"")
+        + (over_left   ? "L":"")
+        + (over_right  ? "R":"")
+        + (over_bottom ? "B":"");
 
-    let may_go_left    = (container_rect.right  < window.innerWidth); /* i.e. still visible with no left margin */
+    let may_go_left    = (el_rect.right  < window.innerWidth); /* i.e. still visible with no left margin */
 if(log_this) {
     log_key_val_group("to_the_top .. over_something=["+over_something+"]"
                       , {   container
                           , on_sentence
                           , added_seeker_height_atop
-                          , container_rect
+                          , el_rect
                           , e_H
                           , view_rect
                           , window_scrollY : window.scrollY
@@ -17481,16 +17485,18 @@ if(log_this) {
     /*}}}*/
     /* scrollX scrollY {{{*/
     let scrollX
-        = (over_left  ) ? container_rect.left                         - (with_margin ? t_data.VIEWPORT_MARGIN.left   : 16)
-        : (over_right ) ? container_rect.right   - window.innerWidth  + (with_margin ? t_data.VIEWPORT_MARGIN.right  : 32)
+        = (over_left  ) ? el_rect.left                         - (with_margin ? t_data.VIEWPORT_MARGIN.left   : 16)
+        : (over_right ) ? el_rect.right   - window.innerWidth  + (with_margin ? t_data.VIEWPORT_MARGIN.right  : 32)
         : may_go_left   ?                          0
         :                                          window.scrollX;
+    scrollX = Math.max(scrollX, 0);
 
     let scrollY
-        = (on_sentence ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
-        : (over_top    ) ? container_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
-        : (over_bottom ) ? container_rect.bottom - window.innerHeight + (with_margin ? t_data.VIEWPORT_MARGIN.bottom : 32)
+        = (on_sentence ) ? el_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
+        : (over_top    ) ? el_rect.seekTop                     - (with_margin ? t_data.VIEWPORT_MARGIN.top    : 16)
+        : (over_bottom ) ? el_rect.bottom - window.innerHeight + (with_margin ? t_data.VIEWPORT_MARGIN.bottom : 32)
         :                                          window.scrollY;
+    scrollY = Math.max(scrollY, 0);
 
     /*}}}*/
     /* FROM [over_bottom .. to_the_top] {{{*/
@@ -17498,13 +17504,13 @@ if(log_this) {
     {
         let scroll_more
             =  view_rect.height
-            - (container_rect.height + added_seeker_height_atop);
+            - (el_rect.height + added_seeker_height_atop);
 /*{{{*/
 if(log_this)
         log_key_val_group("to_the_top .. scroll_more=["+scroll_more+"]"
                           , {   container
                               , view_rect
-                              , container_rect
+                              , el_rect
                               , window_scrollY      : window.scrollY
                               , over_something      : ((over_top ? "T":"_")+(over_left ? "L":"_")+(over_right ? "R":"_")+(over_bottom ? "B":"_"))
                               , scrollY
@@ -17516,7 +17522,8 @@ if(log_this)
         scrollY += scroll_more;
     }
     /*}}}*/
-    return { x : scrollX , y : scrollY };
+    let    result = { x : scrollX , y : scrollY };
+    return result;
 };
 /*}}}*/
 /*_   scrollIntoViewIfNeeded_get_scrollXY {{{*/
@@ -17944,7 +17951,7 @@ let t_words_regex_no_match = function(pattern, msg)
     let words_regex  = t_get_tool("words_regex");
 
     /* DISPLAY REGEX */
-    if( words_regex     ) words_regex.innerHTML = pattern;
+    if( words_regex  ) words_regex.innerHTML = pattern;
 
     /* SET WARNING STYLE */
     if( tools_filter ) set_el_class_removing(tools_filter, CSS_FG2, FGX_CLASSLIST);
