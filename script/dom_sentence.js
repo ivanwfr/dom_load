@@ -22,7 +22,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220308:15h:52)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220325:18h:47)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -115,7 +115,7 @@ let   sentence_INTERN   = function()
 /*_ localStorage {{{*/
 let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
 let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
-let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
+let localStorage_delItem = function(key    ) { /*..........................................*/ localStorage.removeItem(key); };
 /*}}}*/
 /* eslint-enable  no-unused-vars */
 /*}}}*/
@@ -137,7 +137,7 @@ const CSS_DARK               = "dark";
 
 const E12_FONT_SIZE_LIST = ["fs1", "fs2", "fs3", "fs4", "fs5", "fs6", "fs7", "fs8", "fs9", "fs10", "fs11", "fs12"];
 
-let   e12_font_size      =  "fs9";
+let   e12_font_size      =  "fs8";
 /*}}}*/
 /* EVEN ODD {{{
 const CSS_EVEN               =     "even";
@@ -328,14 +328,14 @@ let t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT = function()
 
 }}}*/
 
-const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"   ; /* non-capturing-group */
-const             BOUNDARY = "\\W*[\\.,;:?\\n\\r]+(?!\\w)"  ; /* non-capturing-group .. punct .. no adjacent letter */
-const            LAST_WORD = WORD +"{1,}";
-const           FIRST_WORD = WORD +"+";
+const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"    ; /* non-capturing-group */
+const             BOUNDARY =     "[\\.,;:?\)\\n\\r]+(?!\\w)" ; /* non-capturing-group .. punct .. no adjacent letter */
+const            LAST_WORD = WORD    +"{1,}";
+const           FIRST_WORD = WORD    +"+";
 
-const CAPTURING_PREV_END   = "("    + LAST_WORD  +")?"      ; /* p1 capturing group */
-const CAPTURING_BOUNDARY   = "("    + BOUNDARY   +")"       ; /* p2 capturing group */
-const CAPTURING_NEXT_START = "(\\n|"+ FIRST_WORD +")"       ; /* p3 capturing group */
+const CAPTURING_PREV_END   = "("     + LAST_WORD  +")?"      ; /* p1 capturing group */
+const CAPTURING_BOUNDARY   = "("     + BOUNDARY   +")"       ; /* p2 capturing group */
+const CAPTURING_NEXT_START = "(\\n+|"+ FIRST_WORD +")?"      ; /* p3 capturing group */
 
 /*}}}*/
 /*XXX*/
@@ -375,7 +375,8 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
 /*}}}*/
     if( check_tool_event(e) ) return;
 
-    if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get("theme_dark");
+    if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get        ("theme_dark");
+    else                                 theme_dark = localStorage_getItem("theme_dark");
 
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
@@ -412,8 +413,8 @@ if( log_this) {
     log("...CAPTURING_NEXT_START %c"+CAPTURING_NEXT_START, lbC+lf7);
 }
 if( tag_this) {
-    log("%c "+regexp_SENTENCE, lbb+lbH+lf7);
-    log("%c prev_end %c boundary %c next_start",lbL+lf5 ,lbC+lf6 ,lbR+lf7);
+    log("regexp_SENTENCE %c prev_end %c boundary %c next_start %c"+LF+regexp_SENTENCE
+        ,                lbL+lf5    ,lbC+lf6    ,lbR+lf7      ,"border:1px solid magenta;");
 }
 /*}}}*/
 
@@ -424,8 +425,9 @@ log("text:%c"+LF+text, lf1)
 
     text = strip_HTML( container.innerHTML );
 /*{{{
-log("innerHTML:%c"+LF+text, lf2)
+log("innerHTML:%c"+LF+text, lf3)
 }}}*/
+    t_util.t_copy_to_CLIPBOARD( text );
 
     text = text.replace(regexp_SENTENCE, t_SENTENCE_SPLIT_replace) ;
 /*{{{
@@ -440,12 +442,15 @@ log("replace:%c"+LF+text, lf3)
     /*}}}*/
     /* REPLACE [innerHTML] .. [BUTTONS] .. [CSS_SENTENCE_CONTAINER CLASS] {{{*/
     t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
-    if(theme_dark)
-        t_util.add_el_class(container, CSS_DARK);
+    if( theme_dark ) {
+        t_util.add_el_class(    container, CSS_DARK);
+        t_util.add_el_class(document.body, CSS_DARK);
+    }
 
     container.style.touchAction = "none";
 
-    let style =      " float: right;"
+    let button_style
+        =                " float: right;"
         +            " clear: right;"
         +           " border: none;"
         +           " margin: 0;"
@@ -455,6 +460,9 @@ log("replace:%c"+LF+text, lf3)
         +        " font-size: 24px;"
         +      " font-weight: 900;"
         +      " line-height: 1em;"
+    ;
+    let span_style
+        = "pointer-events: none"
     ;
 
 /*{{{
@@ -466,12 +474,12 @@ log("replace:%c"+LF+text, lf3)
 }}}*/
 
     let tools = ""
-        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+style+"'>"+ SYMBOL_THEME     +"</button>"
+        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_THEME     +"</span></button>"
 /*{{{
-        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+style+"'>"+ magnified_symbol +"</button>"
+        +    "<button id='dom_sentence_magnify'    title='MAGNIFY'    style='"+button_style+"'><span style='"+span_style+"'>"+ magnified_symbol +"</span></button>"
 }}}*/
         + ((typeof dom_popup != "undefined")
-           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+style+"'>"+ SYMBOL_GEAR      +"</button>" : "")
+           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_GEAR      +"</span></button>" : "")
     ;
 
     let   theme_style
@@ -563,6 +571,7 @@ if( log_this) log_key_val_group(            caller
 
     /*}}}*/
     last_container = container;
+    t_tools.t_scrollIntoViewIfNeeded( container );
 };
 /*}}}*/
 /*_ strip_HTML {{{*/
@@ -570,6 +579,7 @@ if( log_this) log_key_val_group(            caller
 const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/(li|LI|)>", "g");
 const regexp_HTML               = new RegExp("<[^>]*>"                       , "g");
 const regexp_PUNC               = new RegExp("\\s*([\\.,;]\\s*)"             , "g");
+const regexp_BLANK              = new RegExp("\\s+|(&nbsp;)+"                , "g");
 
 /*}}}*/
 let strip_HTML = function(text)
@@ -579,6 +589,7 @@ let strip_HTML = function(text)
         .   replace(regexp_LI   , "."+LF)
         .   replace(regexp_HTML , " "   )
         .   replace(regexp_PUNC , "$1"  )
+        .   replace(regexp_BLANK , " "  )
         .trim()
     ;
 };
@@ -659,7 +670,7 @@ if( log_this) console.table(arguments);
     let entering_a_clause
         =  boundary.includes(",")
         || boundary.includes(";")
-        || boundary.includes( LF)
+    /*  || boundary.includes( LF)*/ /* ...caused missing sentence boundary detection */
     /*  || boundary.includes(":")*/
     ;
 
@@ -996,6 +1007,7 @@ if( log_this) log_key_val_group(  caller
     /* ADJUST SENTENCE FONT SIZE {{{*/
     else {
         t_SENTENCE_FONTSIZE_OFFSET( size_offset );
+        t_tools.t_scrollIntoViewIfNeeded( from_container );
     }
     /*}}}*/
 if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
@@ -1110,7 +1122,9 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
         if(container.nodeName == "DETAILS") container.open = false;
 }}}*/
 
-        t_util.del_el_class(container, CSS_SENTENCE_CONTAINER);
+        t_util.del_el_class(    container, CSS_SENTENCE_CONTAINER);
+        t_util.del_el_class(    container, CSS_DARK);
+        t_util.del_el_class(document.body, CSS_DARK);
 
         if( container.innerHTML_SAVED )
         {
@@ -1184,6 +1198,7 @@ let t_SENTENCE_onresize = function(e=window.event)
 let t_SENTENCE_set_theme_dark = function(_theme_dark)
 {
     theme_dark = !!_theme_dark;
+    localStorage_setItem("theme_dark", theme_dark);
 };
 /*}}}*/
 /*_ check_tool_event {{{*/
@@ -1228,6 +1243,7 @@ console.dir(e);
        && (e.target.id == "dom_sentence_theme_dark")
       ) {
         theme_dark = !theme_dark;
+        localStorage_setItem("theme_dark", theme_dark);
 
         if((typeof dom_prop) != "undefined") dom_prop.set("theme_dark", theme_dark);
 
