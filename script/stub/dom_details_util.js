@@ -10,7 +10,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_DETAILS_UTIL_JS_ID    = "dom_details_util_js";
-const DOM_DETAILS_UTIL_JS_TAG   = DOM_DETAILS_UTIL_JS_ID  +" (220204:17h:38)";
+const DOM_DETAILS_UTIL_JS_TAG   = DOM_DETAILS_UTIL_JS_ID  +" (220309:17h:26)";
 /*}}}*/
 let dom_details_util    = (function() {
 "use strict";
@@ -181,12 +181,20 @@ console.log("get_tool("+id+"): ...return ["+(el ? (el.id || el.tagName) : null)+
     return el;
 };
 /*}}}*/
+/*_ get_el_xy {{{*/
+let get_el_xy = function(el)
+{
+    let cr    = el.getBoundingClientRect();
+    return { x: window.scrollX + cr.x , y: window.scrollY + cr.y };
+};
+/*}}}*/
 
 return { name : "dom_details_util"
     ,    add_el_class
     ,    del_el_class
     ,    get_el_child_with_tag
     ,    get_el_sibling_with_tag
+    ,    get_el_xy
     ,    get_id_or_tag
     ,    get_id_or_tag_and_className
     ,    get_nodeXPath
