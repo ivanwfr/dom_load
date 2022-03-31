@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220325:18h:48)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220401:00h:33)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -41,10 +41,10 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220307:16h:37)"; }
+#dom_host_css_tag   { content: "dom_host_css (220325:20h:06)"; }
 
 
-body.dark { background : #430; }
+.dark * { background : #430; color: #DDD; }
 
 body.dimmed {
     filter : blur(2px) grayscale(100%) !important;
@@ -1011,7 +1011,7 @@ let dom_sentence_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util";
-const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220309:17h:55)";
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220331:19h:31)";
 
 let dom_sentence_util    = (function() {
 "use strict";
@@ -1377,6 +1377,14 @@ let is_el_or_child_of_parent_el = function(el, parent_el)
 };
 
 
+let is_el_or_child_of_class = function(el, className)
+{
+    while(el && !el.classList.contains(className))
+        el     = el.parentElement;
+    return el;
+};
+
+
 
 let get_n_lbl = function(node)
 {
@@ -1572,6 +1580,7 @@ return { name : DOM_SENTENCE_UTIL_JS_ID
     , get_el_child_with_class
     , get_el_xy
     , get_id_or_tag
+    , is_el_or_child_of_class
     , is_el_or_child_of_parent_el
 
     , get_n_lbl
@@ -2228,7 +2237,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220317:17h:51)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220401:00h:32)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2347,9 +2356,13 @@ let long_press_handler  = function()
 
 let log_this = DOM_SENTENCE_LOG;
 
-if(log_this) log6("→→→ long_press_handler");
+    let is_scrolling = dom_scroll.t_scroll_is_scrolling();
+if(     log_this && !is_scrolling) log6("→→→ long_press_handler: t_scroll_is_scrolling=["+is_scrolling+"] .. onDown_EL.className=["+onDown_EL.className+"]");
+else if(log_this                 ) log8("→→→ long_press_handler: t_scroll_is_scrolling=["+is_scrolling+"] .. onDown_EL.className=["+onDown_EL.className+"]");
 
     long_press_timer = null;
+
+    if( is_scrolling ) return;
 
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
     if(   container )
@@ -2364,29 +2377,31 @@ if(log_this) log6("→→→ long_press_handler");
 
 
 
-let t_SENTENCE_drag_listener = function(event)
+let t_SENTENCE_drag_listener = function(e)
 {
-if(event.altKey ) return;
-if(event.ctrlKey) return;
+if(e.altKey ) return;
+if(e.ctrlKey) return;
 
 let   caller = "t_SENTENCE_drag_listener";
 let log_this = DOM_SENTENCE_LOG;
 
-if( log_this) log7(caller);
+    let sentence_container_dragged = t_util.is_el_or_child_of_class(onDown_EL, dom_sentence.CSS_SENTENCE_CONTAINER);
+if(     log_this && sentence_container_dragged) log7(caller+": sentence_container_dragged=["+t_util.get_id_or_tag(sentence_container_dragged)+"]");
+else if(log_this                              ) log8(caller+": sentence_container_dragged=["+t_util.get_id_or_tag(sentence_container_dragged)+"]");
 
 
-    get_onMoveDXY(event, caller);
+    get_onMoveDXY(e, caller);
 
-    if(onDown_EL && dom_sentence.t_SENTENCE_drag_DXY( onMoveDXY ))
+    if(sentence_container_dragged && dom_sentence.t_SENTENCE_drag_DXY(onMoveDXY) )
     {
 
 
-        drag_cursor.move_drag_cursor(event);
-        event.preventDefault();
+        drag_cursor.move_drag_cursor(e);
+        preventDefault(e);
     }
     else if( drag_cursor.get_mouseUP_display_state() )
     {
-        drag_cursor.move_drag_cursor(event);
+        drag_cursor.move_drag_cursor(e);
     }
 };
 
@@ -2885,7 +2900,7 @@ let   scrollIntoViewIfNeeded_get_scrollXY = function(el)
 
 
 const DRAG_CURSOR_JS_ID       = "drag_cursor" ;
-const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:13)";
+const DRAG_CURSOR_JS_TAG      = DRAG_CURSOR_JS_ID +" (220221:19h:37)";
 
 let drag_cursor  = (function() {
 "use strict";
@@ -3051,7 +3066,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220325:18h:47)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220331:20h:10)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3954,15 +3969,15 @@ if( tag_this && (was_is_scrolling != is_scrolling)) log("%c SCROLLING", lbH+lfX[
 
 
     let split_or_font = move_H_or_V;
-    let size_offset   = (move_delta > 0) ? 1 : -1;
+    let split_delta   = (move_delta > 0) ? 1 : -1;
 
 
 if( log_this) log_key_val_group(  caller
                                   , { move_delta
                                     , split_or_font
-                                    , size_offset
+                                    , split_delta
                                   }
-                                  , lfX[split_or_font ? ((size_offset > 0) ? 3:4) : ((size_offset > 0) ? 5:6)]
+                                  , lfX[split_or_font ? ((split_delta > 0) ? 3:4) : ((split_delta > 0) ? 5:6)]
                                   , true);
 
 
@@ -3970,12 +3985,12 @@ if( log_this) log_key_val_group(  caller
 
     if( split_or_font )
     {
-        t_SENTENCE_split_at_offset(from_container, size_offset);
+        t_SENTENCE_split_at_offset(from_container, split_delta);
     }
 
 
     else {
-        t_SENTENCE_FONTSIZE_OFFSET( size_offset );
+        t_SENTENCE_FONTSIZE_OFFSET( split_delta );
         t_tools.t_scrollIntoViewIfNeeded( from_container );
     }
 
@@ -3986,7 +4001,7 @@ if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
 };
 
 
-let t_SENTENCE_split_at_offset = function(from_container,size_offset)
+let t_SENTENCE_split_at_offset = function(from_container,split_delta)
 {
 
 let   caller = "t_SENTENCE_split_at_offset";
@@ -3995,21 +4010,21 @@ let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
 
 
 
-    let offset_container = t_util.get_node_sibling_at_offset( from_container, size_offset);
+    let sibling_container = t_util.get_node_sibling_at_offset(from_container, split_delta);
 
-if( log_this) log_key_val_group( caller+"(size_offset=["+size_offset+"])"
+if( log_this) log_key_val_group( caller+"(split_delta=["+split_delta+"])"
                                 , {   from_container
-                                  , offset_container
+                                  , sibling_container
                                 });
 
-    if( offset_container )
+    if( sibling_container )
     {
-        t_SENTENCE_RESTORE_EL    ( from_container   );
-        t_SENTENCE_SPLIT         ( offset_container );
-        t_SENTENCE_FONTSIZE_APPLY( offset_container );
-        t_SENTENCE_OUTLINE       ( offset_container );
+        t_SENTENCE_RESTORE_EL    ( from_container    );
+        t_SENTENCE_SPLIT         ( sibling_container );
+        t_SENTENCE_FONTSIZE_APPLY( sibling_container );
+        t_SENTENCE_OUTLINE       ( sibling_container );
 
-        t_tools.t_scrollIntoViewIfNeeded( offset_container );
+        t_tools.t_scrollIntoViewIfNeeded( sibling_container );
     }
 };
 
@@ -4021,7 +4036,7 @@ let t_SENTENCE_OUTLINE = function(sentence_el)
 };
 
 
-let t_SENTENCE_FONTSIZE_OFFSET = function(size_offset=0)
+let t_SENTENCE_FONTSIZE_OFFSET = function(split_delta=0)
 {
 
 let   caller = "t_SENTENCE_FONTSIZE_OFFSET";
@@ -4029,7 +4044,7 @@ let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 
 
 
-    let num = size_offset + parseInt( e12_font_size.substring(2) );
+    let num = split_delta + parseInt( e12_font_size.substring(2) );
     num     = Math.max( 1, num);
     num     = Math.min(12, num);
 
@@ -4088,6 +4103,7 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
 
 
         t_util.del_el_class(    container, CSS_SENTENCE_CONTAINER);
+        t_util.add_el_class(    container, CSS_OUTLINE);
         t_util.del_el_class(    container, CSS_DARK);
         t_util.del_el_class(document.body, CSS_DARK);
 
