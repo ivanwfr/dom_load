@@ -22,7 +22,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220325:18h:47)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220331:20h:10)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -985,15 +985,15 @@ console.log("from_container=["+from_container+"]")
     /*}}}*/
     /* SENTENCE-SPLIT OR FONT-ADJUST .. f(H or V){{{*/
     let split_or_font = move_H_or_V;
-    let size_offset   = (move_delta > 0) ? 1 : -1;
+    let split_delta   = (move_delta > 0) ? 1 : -1;
 
 /*{{{*/
 if( log_this) log_key_val_group(  caller
                                   , { move_delta
                                     , split_or_font
-                                    , size_offset
+                                    , split_delta
                                   }
-                                  , lfX[split_or_font ? ((size_offset > 0) ? 3:4) : ((size_offset > 0) ? 5:6)]
+                                  , lfX[split_or_font ? ((split_delta > 0) ? 3:4) : ((split_delta > 0) ? 5:6)]
                                   , true);
 
 /*}}}*/
@@ -1001,12 +1001,12 @@ if( log_this) log_key_val_group(  caller
     /* NEXT OR PREVIOUS SENTENCE-SPLIT {{{*/
     if( split_or_font )
     {
-        t_SENTENCE_split_at_offset(from_container, size_offset);
+        t_SENTENCE_split_at_offset(from_container, split_delta);
     }
     /*}}}*/
     /* ADJUST SENTENCE FONT SIZE {{{*/
     else {
-        t_SENTENCE_FONTSIZE_OFFSET( size_offset );
+        t_SENTENCE_FONTSIZE_OFFSET( split_delta );
         t_tools.t_scrollIntoViewIfNeeded( from_container );
     }
     /*}}}*/
@@ -1017,7 +1017,7 @@ if(tag_this) log("%c  DRAG DONE", lbb+lbH+lf3);
 };
 /*}}}*/
 /*_ t_SENTENCE_split_at_offset {{{*/
-let t_SENTENCE_split_at_offset = function(from_container,size_offset)
+let t_SENTENCE_split_at_offset = function(from_container,split_delta)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_split_at_offset";
@@ -1028,21 +1028,21 @@ let log_this = DOM_SENTENCE_LOG || LOG_MAP.EV0_LISTEN;
 */
 /*}}}*/
 
-    let offset_container = t_util.get_node_sibling_at_offset( from_container, size_offset);
+    let sibling_container = t_util.get_node_sibling_at_offset(from_container, split_delta);
 
-if( log_this) log_key_val_group( caller+"(size_offset=["+size_offset+"])"
+if( log_this) log_key_val_group( caller+"(split_delta=["+split_delta+"])"
                                 , {   from_container
-                                  , offset_container
+                                  , sibling_container
                                 });
 
-    if( offset_container )
+    if( sibling_container )
     {
-        t_SENTENCE_RESTORE_EL    ( from_container   );
-        t_SENTENCE_SPLIT         ( offset_container );
-        t_SENTENCE_FONTSIZE_APPLY( offset_container );
-        t_SENTENCE_OUTLINE       ( offset_container );
+        t_SENTENCE_RESTORE_EL    ( from_container    );
+        t_SENTENCE_SPLIT         ( sibling_container );
+        t_SENTENCE_FONTSIZE_APPLY( sibling_container );
+        t_SENTENCE_OUTLINE       ( sibling_container );
 
-        t_tools.t_scrollIntoViewIfNeeded( offset_container );
+        t_tools.t_scrollIntoViewIfNeeded( sibling_container );
     }
 };
 /*}}}*/
@@ -1054,15 +1054,15 @@ let t_SENTENCE_OUTLINE = function(sentence_el)
 };
 /*}}}*/
 /*_ t_SENTENCE_FONTSIZE_OFFSET {{{*/
-let t_SENTENCE_FONTSIZE_OFFSET = function(size_offset=0)
+let t_SENTENCE_FONTSIZE_OFFSET = function(split_delta=0)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_FONTSIZE_OFFSET";
 let log_this = DOM_SENTENCE_LOG || LOG_MAP.S2_SELECT;
 
 /*}}}*/
-    /* APPLY [size_offset] to [e12_font_size] {{{*/
-    let num = size_offset + parseInt( e12_font_size.substring(2) );
+    /* APPLY [split_delta] to [e12_font_size] {{{*/
+    let num = split_delta + parseInt( e12_font_size.substring(2) );
     num     = Math.max( 1, num);
     num     = Math.min(12, num);
 
@@ -1123,6 +1123,7 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
 }}}*/
 
         t_util.del_el_class(    container, CSS_SENTENCE_CONTAINER);
+        t_util.add_el_class(    container, CSS_OUTLINE); /* as an highlight history marker */
         t_util.del_el_class(    container, CSS_DARK);
         t_util.del_el_class(document.body, CSS_DARK);
 
