@@ -1,8 +1,8 @@
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220307:16h:37)"; }
+#dom_host_css_tag   { content: "dom_host_css (220325:20h:06)"; }
 
 /* body {{{*/
-body.dark { background : #430; }
+.dark * { background : #430; color: #DDD; }
 
 body.dimmed {
     filter : blur(2px) grayscale(100%) !important;
