@@ -22,7 +22,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220331:20h:10)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220412:16h:56)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -598,20 +598,20 @@ let strip_HTML = function(text)
 let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container) /* eslint-disable-line no-unused-vars */
 {
 /*{{{
-    let el_array = get_parent_chain(container);
-}}}*/
     let el_array = Array.from(document.getElementsByTagName("DIV"));
+}}}*/
+    let el_array = get_parent_chain(container);
 /*{{{
 console.log("t_SENTENCE_SPLIT_set_parent_theme_dark:",el_array)
 }}}*/
     el_array.forEach((el) => {
-        el.style.backgroundColor_saved         = el.style.backgroundColor;
-        el.style.backgroundColor               = THEME_STYLE_BG_DARK;
+        el.style.background_saved         = el.style.background;
+        el.style.background               = THEME_STYLE_BG_DARK;
 /*{{{
         if(            el.parentElement ) {
             Array.from(el.parentElement.children).forEach((sl) => {
-                sl.style.backgroundColor_saved = sl.style.backgroundColor;
-                sl.style.backgroundColor       = THEME_STYLE_BG_DARK;
+                sl.style.background_saved = sl.style.background;
+                sl.style.background       = THEME_STYLE_BG_DARK;
             });
         }
 }}}*/
@@ -622,21 +622,21 @@ console.log("t_SENTENCE_SPLIT_set_parent_theme_dark:",el_array)
 let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container) /* eslint-disable-line no-unused-vars */
 {
 /*{{{
-    let el_array = get_parent_chain(container);
-}}}*/
     let el_array = Array.from(document.getElementsByTagName("DIV"));
+}}}*/
+    let el_array = get_parent_chain(container);
 /*{{{
 console.log("t_SENTENCE_SPLIT_clr_parent_theme_dark:",el_array)
 dom_log.log_caller();
 }}}*/
     el_array.forEach((el) => {
-        el.style.backgroundColor         = el.style.backgroundColor_saved || "";
-        delete                             el.style.backgroundColor_saved;
+        el.style.background         = el.style.background_saved || "";
+        delete                             el.style.background_saved;
 /*{{{
         if(            el.parentElement ) {
             Array.from(el.parentElement.children).forEach((sl) => {
-                sl.style.backgroundColor = sl.style.backgroundColor_saved || "";
-                delete                     sl.style.backgroundColor_saved;
+                sl.style.background = sl.style.background_saved || "";
+                delete                sl.style.background_saved;
             });
         }
 }}}*/
@@ -1237,7 +1237,7 @@ console.dir(e);
         return true;
     }
     /*}}}*/
-    /* TOGGLE [theme_dark] {{{*/
+    /* TOGGLE [theme_dark] .. BUTTON CLICKED {{{*/
     if(    last_container
        &&  e
        &&  e.target

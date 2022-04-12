@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220401:00h:33)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220412:16h:59)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -3066,7 +3066,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220331:20h:10)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220412:16h:56)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3612,11 +3612,11 @@ let strip_HTML = function(text)
 let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
 {
 
-    let el_array = Array.from(document.getElementsByTagName("DIV"));
+    let el_array = get_parent_chain(container);
 
     el_array.forEach((el) => {
-        el.style.backgroundColor_saved         = el.style.backgroundColor;
-        el.style.backgroundColor               = THEME_STYLE_BG_DARK;
+        el.style.background_saved         = el.style.background;
+        el.style.background               = THEME_STYLE_BG_DARK;
 
     });
 };
@@ -3625,11 +3625,11 @@ let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
 let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
 {
 
-    let el_array = Array.from(document.getElementsByTagName("DIV"));
+    let el_array = get_parent_chain(container);
 
     el_array.forEach((el) => {
-        el.style.backgroundColor         = el.style.backgroundColor_saved || "";
-        delete                             el.style.backgroundColor_saved;
+        el.style.background         = el.style.background_saved || "";
+        delete                             el.style.background_saved;
 
     });
 };
