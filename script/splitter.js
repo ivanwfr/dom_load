@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220412:16h:59)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220420:16h:02)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -34,17 +34,16 @@ let   console_log   = function(  msg     ) { try {                          cons
 let   console_warn  = function(  msg=null) { try {                          console.warn(               msg         );                 } catch(ex) {} };
 /*}}}*/
 
-  /**   1 HOST    CSS dom_host_css_data .. ESCAPE=[OR HOST CSS WONT WORK]  {{{*/
-/*
+  /**   1 HOST    CSS dom_host_css_data .. ESCAPE=[OR HOST CSS WONT WORK]  {{{*/ /*
 ../stylesheet/dom_host.css
  */
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220325:20h:06)"; }
+#dom_host_css_tag   { content: "dom_host_css (220420:16h:02)"; }
 
 
-.dark * { background : #430; color: #DDD; }
+.dark * { background : #111; color: #DDD; }
 
 body.dimmed {
     filter : blur(2px) grayscale(100%) !important;
@@ -433,13 +432,7 @@ DETAILS[open] > * {
 
 
 
-em {
-    background-color  : #fafafa;
-    border            : 0px solid #aaa;
-    border-radius     : 5px;
-    color             : #444;
-    font-style        : normal;
-}
+
 
 input       { border  : 6px #eee solid;        }
 input:focus { outline : 0;                     }
@@ -759,11 +752,11 @@ em.select0 { cursor : all-scroll !important; }
 
            .clause    { line-height      : 1em         !important ; }
 
-
-                   .dark .sentence {        color     : rgba(255,255,255,1.0)  ; }
-                   .dark *::before { display: none !important; }
-                   .dark *::after  { display: none !important; }
-
+    .dark *::before   {          display : none            !important; }
+    .dark *::after    {          display : none            !important; }
+body.dark .sentence   {           filter : brightness(80%) !important; }
+body.dark .sentence   {            color : #FFF                      ; }
+body.dark .clause     {            color : #111                      ; }
 
 .sentence             { border-top-width    : 3px; }
 .clause               { border-top-width    : 0  ; }
