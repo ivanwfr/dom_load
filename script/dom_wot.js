@@ -16,7 +16,7 @@
 /* exported dom_wot, DOM_WOT_JS_TAG */
 
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (220308:16h:26)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (220422:17h:54)";
 /*}}}*/
 let dom_wot             = (function() {
 "use strict";
@@ -263,6 +263,11 @@ const regexp_FUNCTION_JS    = new RegExp("\\/\\*[_ ]*(\\S+).*\\{\\{\\{\\*\\/");
 /*........................................../  * _   (FFFF)    ^  ^  ^       */
 const regexp_FUNCTION_LUA   = new RegExp(    "--[_ ]*(\\S+).*\\{\\{\\{");
 /*............................................-- _   (FFFF)    ^  ^  ^ */
+const regexp_IMAGE_ASCIIDOC = new RegExp(    '^image::([^\\[]*)(?:\\[([^\\]]+))\\]?'); /* eslint-disable-line quotes */
+
+/*{{{
+:!start explorer "https://regexr.com/32oeg"
+}}}*/
 
 let   wot_split_done = false;
 /*}}}*/
@@ -438,12 +443,14 @@ let get_lines_innerHTML = function(lines, line_num) /* eslint-disable-line compl
             /*}}}*/
             /* pick line {{{*/
             let h_line = escapeHTML(this_line);
-            /*{{{
+/*{{{
 if(h_line.includes("#region")) log(h_line);
 }}}*/
-            h_line     = h_line.replace(regexp_REGIONFOLD   , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
-            h_line     = h_line.replace(regexp_FUNCTION_JS  , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
-            h_line     = h_line.replace(regexp_FUNCTION_LUA , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line = h_line.replace(regexp_REGIONFOLD    , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line = h_line.replace(regexp_FUNCTION_JS   , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line = h_line.replace(regexp_FUNCTION_LUA  , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+
+            h_line = h_line.replace(regexp_IMAGE_ASCIIDOC, "<img src='$1' alt=$1 title=$2 />"); /* eslint-disable-line quotes */
 
             /*}}}*/
             /* region {{{*/
@@ -454,19 +461,21 @@ if(h_line.includes("#region")) log(h_line);
             }
             /*}}}*/
             /* function {{{*/
-            else if( next_line )
+            else if(       next_line
+                    && (   next_line.includes(" function(") /* javascript */
+                        || next_line.includes("function " ) /* LUA */
+                        || next_line.includes("private "  ) /* C# */
+                        || next_line.includes("protected ")
+                        || next_line.includes("public "   )
+                        || next_line.includes("static "   )
+                        || next_line.includes("void "     )
+                       )
+                   )
             {
-                if(      next_line.includes  (  " function(" ) /* javascript */
-                      || next_line.includes  (  "function "  ) /* LUA */
-                      || next_line.includes  (  "private "   ) /* C# */
-                      || next_line.includes  (  "protected " )
-                      || next_line.includes  (  "public "    )
-                      || next_line.includes  (  "static "    )
-                      || next_line.includes  (  "void "      )
-                  )
-                    h_line = h_line.replace("'>", " function'>");
-
+                h_line = h_line.replace("'>", " function'>");
             }
+            /*}}}*/
+            /* text_line {{{*/
             else {
                 h_line = "<span class='text_line'>"+h_line+"</span>";
             }
