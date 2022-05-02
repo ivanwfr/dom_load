@@ -746,7 +746,7 @@ let log_img_complete = function()
 if(log_this) log("onLOAD: img.complete=["+img.complete+"] src=["+img.src+"] src_defered=["+img.src_defered+"]");
     }
 };
-    /*}}}*/
+/*}}}*/
 
 /* =================== */
 /* === IMG PRELOAD === */

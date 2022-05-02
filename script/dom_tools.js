@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220309:19h:13)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220502:15h:17)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -13246,9 +13246,11 @@ if(log_this) t_log_option_changes(changes);
            ||   changes.includes( t_data.THEME_DARK     )
            ||   changes.includes("theme_DARK"           )
            ||   changes.includes("theme_LIGHT"          )
-      )
+      ) {
         t_select.t_sync_containers_hi();
+        t_sentence.t_SENTENCE_restore_text_containers_outlined();
 
+    }
     /*}}}*/
     /* WORDING {{{*/
     if(         changes.includes( t_data.ANCHOR_FREEZE  )
