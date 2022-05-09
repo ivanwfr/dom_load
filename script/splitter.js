@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220502:15h:20)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220509:17h:06)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -40,10 +40,10 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220502:14h:56)"; }
+#dom_host_css_tag   { content: "dom_host_css (220509:14h:40)"; }
 
 
-.dark * { background : #111; color: #DDD; }
+.dark * { background : rgba(17,17,17,0.5); color: rgba(221,221,221,0.5); }
 
 body.dimmed {
     filter : blur(2px) grayscale(100%) !important;
@@ -712,7 +712,7 @@ em.select0 { cursor : all-scroll !important; }
 .sentence_container.outlined {
     transition       : transform 150ms ease-in;
     transform        : rotate(1deg) scale(0.9);
-    opacity          : 0.8;
+
     outline          : 5px #000 dashed;
     box-shadow       : 3px 3px 12px 6px rgba(0,0,0,0.5);
     border           : 5px #000 dashed;
@@ -2231,7 +2231,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220401:00h:32)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220509:17h:06)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2293,6 +2293,8 @@ if(e.ctrlKey) { log(e.type+" IGNORED .. f(e.ctrlKey)" ); return; }
 
 let t_pointerdown_handler = function(e)
 {
+if( e.shiftKey ) console.log("t_pointerdown_handler: %c if( e.shiftKey ) return;", "background-color: #F008");
+    if( e.shiftKey ) return;
 
 let log_this = DOM_SENTENCE_LOG;
 
@@ -2345,9 +2347,11 @@ long_press_timer =       setTimeout(long_press_handler     , LONG_PRESS_DELAY);
 };
 
 
+const          MOVE_MIN = 5;
 let long_press_handler  = function()
 {
 
+let   caller = "long_press_handler";
 let log_this = DOM_SENTENCE_LOG;
 
     let is_scrolling = dom_scroll.t_scroll_is_scrolling();
@@ -2357,6 +2361,11 @@ else if(log_this                 ) log8("→→→ long_press_handler: t_scroll_
     long_press_timer = null;
 
     if( is_scrolling ) return;
+
+    let has_moved = (Math.abs(onMoveDXY.x) >= MOVE_MIN)
+        ||          (Math.abs(onMoveDXY.y) >= MOVE_MIN);
+console.log(caller+": %c onMoveDXY=["+onMoveDXY.x+" "+onMoveDXY.y+"]", ("color: "+(has_moved ? "red" : "green")+";"));
+    if( has_moved    ) return;
 
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
     if(   container )
@@ -3060,7 +3069,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220502:15h:16)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220509:16h:27)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3378,6 +3387,7 @@ const MAGNIFIED_STYLE      = "font-size  : 200% !important;";
 const LINE_HEIGHT_STYLE    = "line-height: 1em  !important;";
 
 const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
+const THEME_STYLE_FG_DARK  = "rgba(255,255,255,0.8)";
 const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
 const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important; border-radius:1em;";
 const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important; border-radius:1em;";
@@ -3612,6 +3622,8 @@ let t_SENTENCE_SPLIT_set_parent_theme_dark = function (container)
         el.style.background_saved         = el.style.background;
         el.style.background               = THEME_STYLE_BG_DARK;
 
+        el.style.color_saved              = el.style.color;
+        el.style.color                    = THEME_STYLE_FG_DARK;
     });
 };
 
@@ -3622,9 +3634,11 @@ let t_SENTENCE_SPLIT_clr_parent_theme_dark = function (container)
     let el_array = get_parent_chain(container);
 
     el_array.forEach((el) => {
-        el.style.background         = el.style.background_saved || "";
-        delete                             el.style.background_saved;
+        el.style.background               = el.style.background_saved || "";
+        delete                              el.style.background_saved;
 
+        el.style.color                    = el.style.color_saved      || "";
+        delete                              el.style.color_saved;
     });
 };
 

@@ -22,7 +22,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220502:15h:16)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220509:16h:27)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -351,6 +351,7 @@ const MAGNIFIED_STYLE      = "font-size  : 200% !important;";
 const LINE_HEIGHT_STYLE    = "line-height: 1em  !important;";
 
 const THEME_STYLE_BG_DARK  = "rgba( 32, 32, 32,0.8)";
+const THEME_STYLE_FG_DARK  = "rgba(255,255,255,0.8)";
 const THEME_STYLE_BG_LIGHT = "rgba(255,255,255,0.8)";
 const THEME_STYLE_DARK     = "color: #DDD !important; background-color: "+ THEME_STYLE_BG_DARK  +" !important; border-radius:1em;";
 const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME_STYLE_BG_LIGHT +" !important; border-radius:1em;";
@@ -607,14 +608,9 @@ console.log("t_SENTENCE_SPLIT_set_parent_theme_dark:",el_array)
     el_array.forEach((el) => {
         el.style.background_saved         = el.style.background;
         el.style.background               = THEME_STYLE_BG_DARK;
-/*{{{
-        if(            el.parentElement ) {
-            Array.from(el.parentElement.children).forEach((sl) => {
-                sl.style.background_saved = sl.style.background;
-                sl.style.background       = THEME_STYLE_BG_DARK;
-            });
-        }
-}}}*/
+
+        el.style.color_saved              = el.style.color;
+        el.style.color                    = THEME_STYLE_FG_DARK;
     });
 };
 /*}}}*/
@@ -630,16 +626,11 @@ console.log("t_SENTENCE_SPLIT_clr_parent_theme_dark:",el_array)
 dom_log.log_caller();
 }}}*/
     el_array.forEach((el) => {
-        el.style.background         = el.style.background_saved || "";
-        delete                             el.style.background_saved;
-/*{{{
-        if(            el.parentElement ) {
-            Array.from(el.parentElement.children).forEach((sl) => {
-                sl.style.background = sl.style.background_saved || "";
-                delete                sl.style.background_saved;
-            });
-        }
-}}}*/
+        el.style.background               = el.style.background_saved || "";
+        delete                              el.style.background_saved;
+
+        el.style.color                    = el.style.color_saved      || "";
+        delete                              el.style.color_saved;
     });
 };
 /*}}}*/

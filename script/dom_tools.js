@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220502:15h:17)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220509:14h:53)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -10194,6 +10194,11 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
     /* PRESERVE SELECTION FOR STICKY TOOL {{{*/
     if( t_get_current_sel_text() ) rejected_by = "t_get_current_sel_text";
 
+    /*}}}*/
+    /* [has_moved] {{{*/
+    check_has_moved(caller);
+
+    if(  has_moved )               rejected_by = "has_moved=["+has_moved+"]";
     /*}}}*/
     if(rejected_by)
     {
