@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220323:19h:39)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220727:03h:34)";
 /*}}}*/
 let dom_select  = (function() {
 "use strict";
@@ -190,7 +190,7 @@ let CCS = function()
             +t_data.LF +t_data.SYMBOL_ELLIPSIS +" "    +this.words_option
         ;
     };
-    /*}}}*/
+     /*}}}*/
     /*   this.num_toHTML {{{*/
     this.num_toHTML = function(num) {
         let slot_em    =              "slot=<em class='cc"+((this.slot) % SELECT_SLOT_MAX)+"'>"+ this.slot + "</em>";

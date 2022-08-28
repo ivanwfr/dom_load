@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220509:17h:06)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220828:20h:21)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -40,7 +40,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220509:14h:40)"; }
+#dom_host_css_tag   { content: "dom_host_css (220718:19h:07)"; }
 
 
 .dark * { background : rgba(17,17,17,0.5); color: rgba(221,221,221,0.5); }
@@ -694,6 +694,8 @@ em.select0 { cursor : all-scroll !important; }
     user-select   : none;
 
 }
+UL.sentence_container { display: block; }
+OL.sentence_container { display: block; }
 
 
 .rejected {
@@ -755,6 +757,7 @@ em.select0 { cursor : all-scroll !important; }
 
     .dark *::before   {          display : none            !important; }
     .dark *::after    {          display : none            !important; }
+body.dark IMG         {           filter : brightness(50%) !important; }
 body.dark .sentence   {           filter : brightness(80%) !important; }
 body.dark .sentence   {            color : #FFF                      ; }
 body.dark .clause     {            color : #111                      ; }
@@ -3069,7 +3072,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220509:16h:27)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220828:20h:17)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3168,7 +3171,8 @@ let localStorage_delItem = function(key    ) { localStorage.removeItem(key); };
 
 
 
-const LF    = String.fromCharCode(10);
+const LF                = String.fromCharCode(10);
+const UNICODE_BULLET    = "&#x2022;";
 
 let sentence_containers = [];
 
@@ -3197,114 +3201,116 @@ let   e12_font_size      =  "fs8";
 let t_SENTENCE_GET_EL_CONTAINER = function(el,_log_this)
 {
 
+
+
+
+
+
+
+
 let   caller = "t_SENTENCE_GET_EL_CONTAINER";
 let log_this = _log_this || LOG_MAP.S2_SELECT;
 
-
-
-
-
-
-
-
-
     if(!t_util) console.warn("MISSING STUB FOR: [dom_util]");
+    let container;
 
 
-    let container
-        =  t_util.get_el_parent_with_class(el,  CSS_OUTLINED    );
-    if( container )
-    {
-if(log_this) log(caller+": ...return CSS_OUTLINED container=["+t_util.get_n_lbl(container)+"]");
-
-        return { container };
-    }
-
-
-    container
-        =  t_util.get_el_parent_with_class(el, "container_light")
-        || t_util.get_el_parent_with_class(el, "container_dark" )
-
-
-        || t_util.get_el_parent_with_tag  (el,  "LI"       )
-
-
-
-
-        || t_util.get_el_parent_with_tag  (el, "PRE"       )
-        || t_util.get_el_parent_with_tag  (el, "P"         )
-
-
-
-        || t_util.get_el_parent_with_tag  (el,  "TD"       )
-
-
-
-
-
-        || t_util.get_el_parent_with_tag  (el, "TABLE"     )
-
-
-
-
-
-
-
-        || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE")
-        || t_util.get_el_parent_with_tag  (el, "DIR"       )
-        || t_util.get_el_parent_with_tag  (el, "DIV"       )
-
-
-
-        || t_util.get_el_parent_with_tag  (el, "DETAILS"   )
-    ;
 
     if(!container)
     {
-if(log_this) log(caller+": ...return NO container");
-        return "";
+        container =  null
+
+
+
+
+
+            || t_util.get_el_parent_with_tag  (el, "UL"             )
+            || t_util.get_el_parent_with_tag  (el, "OL"             )
+
+
+            || t_util.get_el_parent_with_tag  (el, "PRE"            )
+            || t_util.get_el_parent_with_tag  (el, "P"              )
+
+
+
+            || t_util.get_el_parent_with_tag  (el,  "TD"            )
+
+
+
+
+
+            || t_util.get_el_parent_with_tag  (el, "TABLE"          )
+
+
+
+
+
+
+
+            || t_util.get_el_parent_with_tag  (el, "BLOCKQUOTE"      )
+            || t_util.get_el_parent_with_tag  (el, "DIR"             )
+            || t_util.get_el_parent_with_tag  (el, "DIV"             )
+
+
+
+            || t_util.get_el_parent_with_tag  (el, "DETAILS"        )
+        ;
+
+    }
+
+
+    if(!container)
+    {
+        container
+        =  t_util.get_el_parent_with_class(el,  CSS_OUTLINED    );
+
+if(log_this && container) log(caller+": ...CSS_OUTLINED container=["+t_util.get_n_lbl(container)+"]");
     }
 
 
 
-    let c_next = container              .nextElementSibling;
+    let cells;
+    if(container)
+    {
+        let c_next = container              .nextElementSibling;
 
-    let p_next = container.parentElement
-        ?        container.parentElement.nextElementSibling
-        :        null
-    ;
+        let p_next = container.parentElement
+            ?        container.parentElement.nextElementSibling
+            :        null
+        ;
 
-    let group
-        = (!container)                          ? null
-
-
-        :                                         null
-    ;
-
-
-    let dlist
-        = (!container)                        ? null
-        : ( container.nodeName == "DL"      ) ? container
-        : ( container.nodeName == "DT"      ) ? container.parentElement
-        :                                       null
-    ;
-
-    let table
-        = (!container)                        ? null
-        : ( container.nodeName ==  "THEAD"  ) ? container.parentElement
-        : ( container.nodeName ==  "TFOOT"  ) ? container.parentElement
-        : ( container.nodeName ==  "TBODY"  ) ? container.parentElement
-        : ( container.nodeName ==  "CAPTION") ? container.parentElement
-        : ( container.nodeName == "TABLE"   ) ? container
-        :                                      null
-    ;
-
-    let cells
-        =   group ?                        group
+        let group
+            = (!container)                          ? null
 
 
-        :           null
-    ;
+            :                                         null
+        ;
+
+
+        let dlist
+            = (!container)                          ? null
+            : ( container.nodeName == "DL"      )   ? container
+            : ( container.nodeName == "DT"      )   ? container.parentElement
+            :                                         null
+        ;
+
+        let table
+            = (!container)                          ? null
+            : ( container.nodeName ==  "THEAD"  )   ? container.parentElement
+            : ( container.nodeName ==  "TFOOT"  )   ? container.parentElement
+            : ( container.nodeName ==  "TBODY"  )   ? container.parentElement
+            : ( container.nodeName ==  "CAPTION")   ? container.parentElement
+            : ( container.nodeName == "TABLE"   )   ? container
+            :                                         null
+        ;
+
+        cells
+            =   group ?                        group
+
+
+            :                                        null
+        ;
+
 
 if(log_this && (log_key_val_group != console.log))
     log_key_val_group(caller
@@ -3321,8 +3327,19 @@ if(log_this && (log_key_val_group != console.log))
 if(log_this) log(caller+": ...return container=["+t_util.get_n_lbl(container)+"] .. cells=["+(cells ? "x"+cells.length : "")+"]");
 
 
+    }
 
-    return { container, cells };
+
+
+    if(container)
+    {
+        return { container, cells };
+    }
+    else {
+if(log_this) log(caller+": ...return NO container");
+        return "";
+    }
+
 };
 
 
@@ -3368,7 +3385,7 @@ let t_SENTENCE_GET_SENTENCE_CONTAINERS_IN_VIEWPORT = function()
 
 
 const                 WORD = "\\s*(?:\\p{L}|_|\\(|-|\\))"    ;
-const             BOUNDARY =     "[\\.,;:?\)\\n\\r]+(?!\\w)" ;
+const             BOUNDARY =     "[\\.,;:?\\n\\r]+(?!\\w)"   ;
 const            LAST_WORD = WORD    +"{1,}";
 const           FIRST_WORD = WORD    +"+";
 
@@ -3382,6 +3399,7 @@ const CAPTURING_NEXT_START = "(\\n+|"+ FIRST_WORD +")?"      ;
 
 const SYMBOL_GEAR          = "\u2699";
 const SYMBOL_THEME         = "\u262F";
+const SYMBOL_SCROLL        = "\u2933";
 
 const MAGNIFIED_STYLE      = "font-size  : 200% !important;";
 const LINE_HEIGHT_STYLE    = "line-height: 1em  !important;";
@@ -3395,6 +3413,7 @@ const THEME_STYLE_LIGHT    = "color: #222 !important; background-color: "+ THEME
 let     theme_dark = false;
 let     magnified  = false;
 let     xpath_show = false;
+let  scroll_smooth =  true;
 let  last_container;
 let regexp_SENTENCE;
 
@@ -3410,15 +3429,32 @@ if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(container)+")", lbH+lf1);
 if( log_this) console_dir("container",container        );
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
+
     if( check_tool_event(e) ) return;
+
+
 
     if((typeof dom_prop) != "undefined") theme_dark = dom_prop.get        ("theme_dark");
     else                                 theme_dark = localStorage_getItem("theme_dark");
 
+
+
+
+    document.getElementsByTagName("HTML")[0].style.scrollBehavior
+        = scroll_smooth
+        ? "smooth"
+        : "auto"
+    ;
+
+
     if(!sentence_containers.includes( container ))
         sentence_containers.push    ( container );
 
+
+
     if(container.nodeName == "DETAILS") container.open = true;
+
+
 
     if(!regexp_SENTENCE ) {
         try {
@@ -3499,10 +3535,11 @@ if( tag_this) {
 
 
     let tools = ""
-        +    "<button id='dom_sentence_theme_dark' title='THEME DARK' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_THEME     +"</span></button>"
+        +    "<button id='dom_sentence_theme_dark' title='THEME DARK'    style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_THEME     +"</span></button>"
+        +    "<button id='dom_scroll_smooth'       title='SCROLL SMOOTH' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_SCROLL    +"</span></button>"
 
         + ((typeof dom_popup != "undefined")
-           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW' style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_GEAR      +"</span></button>" : "")
+           ? "<button id='dom_sentence_xpath_show' title='XPATH SHOW'    style='"+button_style+"'><span style='"+span_style+"'>"+ SYMBOL_GEAR      +"</span></button>" : "")
     ;
 
     let   theme_style
@@ -3575,6 +3612,7 @@ if( log_this) log_key_val_group(            caller
                                  ,            text : "(length: "+        text.length+") "       + t_util.ellipsis(text               )
                                  ,       container : "(length: "+container.innerHTML.length+") "+ t_util.ellipsis(container.innerHTML)
                                  ,      theme_dark
+                                 ,   scroll_smooth
                                  ,       magnified
                                  ,      xpath_show
                                  ,         callers : dom_log.get_callers && dom_log.get_callers()
@@ -3594,22 +3632,35 @@ if( log_this) log_key_val_group(            caller
 
 
 
-const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/(li|LI|)>", "g");
-const regexp_HTML               = new RegExp("<[^>]*>"                       , "g");
-const regexp_PUNC               = new RegExp("\\s*([\\.,;]\\s*)"             , "g");
-const regexp_BLANK              = new RegExp("\\s+|(&nbsp;)+"                , "g");
+const regexp_BRLI               = new RegExp("(<br>\\n*)+<\/li>"       , "gi");
+const regexp_BR                 = new RegExp("<br>"                    , "gi");
+const regexp_LI                 = new RegExp("\\s*([\\.,;]\\s*)*<\/li>", "gi");
+const regexp_MULTI              = new RegExp("(\\s*:\\n*\\s*)+"        , "gms");
+
+const regexp_HTML               = new RegExp("<[^>]*>"                 , "g" );
+const regexp_PUNC               = new RegExp("\\s*([\\.,;]\\s*)"       , "g" );
+const regexp_BLANK              = new RegExp("\\s+|(&nbsp;)+"          , "g" );
 
 
 let strip_HTML = function(text)
 {
     if(   !text) return "";
-    return text
-        .   replace(regexp_LI   , "."+LF)
-        .   replace(regexp_HTML , " "   )
-        .   replace(regexp_PUNC , "$1"  )
-        .   replace(regexp_BLANK , " "  )
-        .trim()
+
+
+    text = text
+        .   replace(regexp_BRLI  , "</li>")
+        .   replace(regexp_LI    , "."+LF+UNICODE_BULLET)
+        .   replace(regexp_BR    , ":"    )
+        .   replace(regexp_MULTI , ":"+LF )
     ;
+
+    text = text
+        .   replace(regexp_HTML  , " "    )
+        .   replace(regexp_PUNC  , "$1"   )
+        .   replace(regexp_BLANK , " "    )
+    ;
+
+    return text.trim();
 };
 
 
@@ -4226,12 +4277,41 @@ if(!e) return false;
        &&  e.target
        && (e.target.id == "dom_sentence_theme_dark")
       ) {
+
+
         theme_dark = !theme_dark;
+
+
         localStorage_setItem("theme_dark", theme_dark);
+
 
         if((typeof dom_prop) != "undefined") dom_prop.set("theme_dark", theme_dark);
 
+
         t_SENTENCE_SPLIT( last_container );
+
+        return true;
+    }
+
+
+    if(    last_container
+       &&  e
+       &&  e.target
+       && (e.target.id == "dom_scroll_smooth")
+      ) {
+
+
+        scroll_smooth = !scroll_smooth;
+
+
+        document.getElementsByTagName("HTML")[0] .style.scrollBehavior
+            = scroll_smooth ? "smooth" : "auto";
+
+
+        let distance = scroll_smooth ? 128 :  32;
+        let delay    = scroll_smooth ? 500 : 250;
+        window                   .scrollBy(0, distance);
+        setTimeout(() => { window.scrollBy(0,-distance); }, delay);
 
         return true;
     }
