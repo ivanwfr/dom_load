@@ -847,6 +847,22 @@ log("%c"+caller+"("+get_n_lbl(el)+"): "+ event.propertyName.toUpperCase(), lf7);
 
 /*}}}*/
 /* EVENTS {{{*/
+/*➔ get_parent_with_scrollbar {{{*/
+let get_parent_with_scrollbar = function(el)
+{
+    while(el && !has_scrollbar(el))
+        el = el.parentElement;
+    return el;
+};
+/*}}}*/
+/*➔ get_scrollable_parent {{{*/
+let get_scrollable_parent = function(el)
+{
+    while(el && el.parentElement && !el.parentElement.style.overflow) /* eslint-disable-line complexity */
+        el =    el.parentElement;
+    return el ? el.parentElement : null;
+};
+/*}}}*/
 /*➔ has_scrollbar {{{*/
 /*{{{*/
 const SCROLLABLE_TEXT_MIN_LENGTH = 12; /* as an attempt to skip button names */
@@ -4406,6 +4422,8 @@ return { name : "dom_util"
     , getPageHeight
     , get_el_transformOrigin
     , get_xy_tlbr_dist
+    , get_parent_with_scrollbar
+    , get_scrollable_parent
     , has_scrollbar
     , has_scrollbar_x
     , has_scrollbar_y

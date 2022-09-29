@@ -1019,6 +1019,10 @@ let log_this = DOM_SEEK_LOG || LOG_MAP.EV5_TOOL_CB;
 let tag_this = DOM_SEEK_TAG || log_this;
 
 /*}}}*/
+
+    delete node.scrolledIntoViewHandled;
+    t_tools.t_scrollIntoViewIfNeeded(node,0);
+
     /* TRANSFORM SAFE */
     let bcr = node.getBoundingClientRect();
     let   x = bcr.x + window.scrollX;
@@ -1125,11 +1129,13 @@ let t_seeker_get_last_seeked_slot_num = function()
 /*}}}*/
 /*…   seeker_move_above_XY {{{*/
 /*{{{*/
+/*{{{
 let SEEKER_MOVE_ABOVE_XY_DELAY = 2000;
+}}}*/
 
 let seeker_move_above_XY_timer;
 /*}}}*/
-let   seeker_move_above_XY = function(tool, xy, node)
+let   seeker_move_above_XY = function(tool, xy/*, node*/)
 {
 /* {{{*/
 let   caller = "seeker_move_above_XY";
@@ -1156,16 +1162,16 @@ if( log_this) log(caller+"("+t_util.get_n_lbl(tool)+", "+x+" "+y+"): body_zoom_p
     t_util.del_el_class(tool, "seek_bellow");
     t_util.add_el_class(tool, "seek_above" );
 
+/*{{{
     delete node.scrolledIntoViewHandled;
     t_tools.t_scrollIntoViewIfNeeded(node,0);
+}}}*/
 
     /* COPE WITH NEW NODE POSITION WHEN SCROLLED {{{*/
+/*{{{
     if( seeker_move_above_XY_timer ) clearTimeout( seeker_move_above_XY_timer );
     seeker_move_above_XY_timer     =   setTimeout( function() { t_tools.t_scrollIntoViewIfNeeded(node,0); }, SEEKER_MOVE_ABOVE_XY_DELAY);
-
-/*
- :!start explorer "https://www.franceculture.fr/programmes"
-*/
+}}}*/
     /*}}}*/
 };
 /*}}}*/
@@ -1188,7 +1194,7 @@ if( log_this) log(caller+": PENDING RECENTER INTERRUPTED BY "+ _caller);
 };
 /*}}}*/
 /*…   seeker_move_below_XY {{{*/
-let   seeker_move_below_XY = function(tool, xy, node)
+let   seeker_move_below_XY = function(tool, xy/*, node*/)
 {
 /* {{{*/
 let   caller = "seeker_move_below_XY";
@@ -1212,8 +1218,10 @@ if( log_this) log(caller+"("+t_util.get_n_lbl(tool)+", "+x+" "+y+"): body_zoom_p
     t_util.del_el_class(tool, "seek_above" );
     t_util.add_el_class(tool, "seek_bellow");
 
+/*{{{
     delete node.scrolledIntoViewHandled;
     t_tools.t_scrollIntoViewIfNeeded(node,0);
+}}}*/
 };
 /*}}}*/
 /*…   seeker3_PU_clear {{{*/

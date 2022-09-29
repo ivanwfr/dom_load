@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220509:14h:53)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220917:03h:10)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -17175,6 +17175,23 @@ if( log_this) log_caller();
     t_scrollIntoView_EL                 = el;
     if(t_scrollIntoView_EL)
     {
+        /* CENTERING WITHIN A SCROLLABLE CONTAINER {{{*/
+/*{{{
+        let scrollable_container = t_util.get_scrollable_parent(el);
+        if( scrollable_container )
+        {
+if( log_this) log("%c...centering within a scrollable container ["+t_util.get_id_or_tag(scrollable_container)+"]", lf8);
+}}}*/
+
+            set_scrollBehavior( "instant" );
+            t_scrollIntoView_EL.scrollIntoView({ block:"nearest", behavior:"auto" }); /* containers with a scrollbar (220915) */
+            sync_scroll_smooth();
+
+/*{{{
+            return;
+        }
+}}}*/
+
         t_scrollIntoView_EL.to_the_top  = to_the_top;
         delete t_scrollIntoView_EL.scrolledIntoViewHandled;
 
@@ -17253,7 +17270,7 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIn
         let since_handled = this_MS - el.scrolledIntoViewHandled;
         let  just_handled = (since_handled < SCROLL_RECENTER_DELAY*3);
 
-if( log_this) log("%c  just_handled=["+just_handled+"]", lbH+lfX[just_handled ? 8:7]);
+if( log_this) log("%c  just_handled=["+just_handled+"] "+parseInt(since_handled / 1000)+"s", lbH+lfX[just_handled ? 8:7]);
 
         if( just_handled ) return;
     }
