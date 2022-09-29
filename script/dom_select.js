@@ -21,7 +21,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220727:03h:34)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220917:03h:11)";
 /*}}}*/
 let dom_select  = (function() {
 "use strict";
@@ -249,11 +249,13 @@ log(caller+"%c SHOULD NOT BE COLLECTED %c'"+t_util.get_n_txt(node)+"'%c .. (thum
         let thumb_p_str = "";
         if( thumb_p ) {
             thumb_p_str = t_get_thumb_p_str( thumb_p );
+/*{{{
             if(!thumb_p_str)
             {
 log("%c *** INVALID thumb_p=["+thumb_p+"] .. container=["+t_util.get_n_lbl(container)+"] ccs_node=["+t_util.get_n_lbl(ccs_node)+"] ***", lbH+lf2);
 
             }
+}}}*/
         }
         this.thumbs[num-1] = thumb_p_str;
 

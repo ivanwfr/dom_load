@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220828:21h:15)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220922:23h:23)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -241,7 +241,7 @@ let dom_tools_html_data = `
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220718:19h:07)"; }
+#dom_host_css_tag   { content: "dom_host_css (220916:18h:32)"; }
 
 
 .dark * { background : rgba(17,17,17,0.5); color: rgba(221,221,221,0.5); }
@@ -9575,6 +9575,22 @@ let position_fixed_transitionend = function(event)
 
 
 
+let get_parent_with_scrollbar = function(el)
+{
+    while(el && !has_scrollbar(el))
+        el = el.parentElement;
+    return el;
+};
+
+
+let get_scrollable_parent = function(el)
+{
+    while(el && el.parentElement && !el.parentElement.style.overflow)
+        el =    el.parentElement;
+    return el ? el.parentElement : null;
+};
+
+
 
 const SCROLLABLE_TEXT_MIN_LENGTH = 12;
 
@@ -12861,6 +12877,8 @@ return { name : "dom_util"
     , getPageHeight
     , get_el_transformOrigin
     , get_xy_tlbr_dist
+    , get_parent_with_scrollbar
+    , get_scrollable_parent
     , has_scrollbar
     , has_scrollbar_x
     , has_scrollbar_y
@@ -17529,7 +17547,7 @@ let dom_select_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220727:03h:34)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (220917:03h:11)";
 
 let dom_select  = (function() {
 "use strict";
@@ -17750,11 +17768,7 @@ let CCS = function()
         let thumb_p_str = "";
         if( thumb_p ) {
             thumb_p_str = t_get_thumb_p_str( thumb_p );
-            if(!thumb_p_str)
-            {
-log("%c *** INVALID thumb_p=["+thumb_p+"] .. container=["+t_util.get_n_lbl(container)+"] ccs_node=["+t_util.get_n_lbl(ccs_node)+"] ***", lbH+lf2);
 
-            }
         }
         this.thumbs[num-1] = thumb_p_str;
 
@@ -30208,6 +30222,10 @@ let tag_this = DOM_SEEK_TAG || log_this;
 
 
 
+    delete node.scrolledIntoViewHandled;
+    t_tools.t_scrollIntoViewIfNeeded(node,0);
+
+
     let bcr = node.getBoundingClientRect();
     let   x = bcr.x + window.scrollX;
     let   y = bcr.y + window.scrollY;
@@ -30311,11 +30329,11 @@ let t_seeker_get_last_seeked_slot_num = function()
 
 
 
-let SEEKER_MOVE_ABOVE_XY_DELAY = 2000;
+
 
 let seeker_move_above_XY_timer;
 
-let   seeker_move_above_XY = function(tool, xy, node)
+let   seeker_move_above_XY = function(tool, xy)
 {
 
 let   caller = "seeker_move_above_XY";
@@ -30342,12 +30360,8 @@ if( log_this) log(caller+"("+t_util.get_n_lbl(tool)+", "+x+" "+y+"): body_zoom_p
     t_util.del_el_class(tool, "seek_bellow");
     t_util.add_el_class(tool, "seek_above" );
 
-    delete node.scrolledIntoViewHandled;
-    t_tools.t_scrollIntoViewIfNeeded(node,0);
 
 
-    if( seeker_move_above_XY_timer ) clearTimeout( seeker_move_above_XY_timer );
-    seeker_move_above_XY_timer     =   setTimeout( function() { t_tools.t_scrollIntoViewIfNeeded(node,0); }, SEEKER_MOVE_ABOVE_XY_DELAY);
 
 
 
@@ -30372,7 +30386,7 @@ if( log_this) log(caller+": PENDING RECENTER INTERRUPTED BY "+ _caller);
 };
 
 
-let   seeker_move_below_XY = function(tool, xy, node)
+let   seeker_move_below_XY = function(tool, xy)
 {
 
 let   caller = "seeker_move_below_XY";
@@ -30396,8 +30410,7 @@ if( log_this) log(caller+"("+t_util.get_n_lbl(tool)+", "+x+" "+y+"): body_zoom_p
     t_util.del_el_class(tool, "seek_above" );
     t_util.add_el_class(tool, "seek_bellow");
 
-    delete node.scrolledIntoViewHandled;
-    t_tools.t_scrollIntoViewIfNeeded(node,0);
+
 };
 
 
@@ -37998,7 +38011,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220509:14h:53)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220917:03h:10)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -53829,6 +53842,15 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIn
     t_scrollIntoView_EL                 = el;
     if(t_scrollIntoView_EL)
     {
+
+
+
+            set_scrollBehavior( "instant" );
+            t_scrollIntoView_EL.scrollIntoView({ block:"nearest", behavior:"auto" });
+            sync_scroll_smooth();
+
+
+
         t_scrollIntoView_EL.to_the_top  = to_the_top;
         delete t_scrollIntoView_EL.scrolledIntoViewHandled;
 
@@ -53907,7 +53929,7 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIn
         let since_handled = this_MS - el.scrolledIntoViewHandled;
         let  just_handled = (since_handled < SCROLL_RECENTER_DELAY*3);
 
-if( log_this) log("%c  just_handled=["+just_handled+"]", lbH+lfX[just_handled ? 8:7]);
+if( log_this) log("%c  just_handled=["+just_handled+"] "+parseInt(since_handled / 1000)+"s", lbH+lfX[just_handled ? 8:7]);
 
         if( just_handled ) return;
     }
