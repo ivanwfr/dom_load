@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220917:03h:10)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (221201:14h:51)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -1032,6 +1032,9 @@ let log_this = LOG_MAP.T1_DOM_LOAD;
 if(log_this) log(caller, "info");
 /*}}}*/
 
+    /* DOM_FREEZE */
+    if( t_store.t_store_getItem(t_data.DOM_FREEZE) ) t_util.t_REMOVE_EventListeners( document.body );
+
     /* USER_LANG */
     dom_i18n.i18n_set_args({ lang: t_store.t_store_getItem(t_data.USER_LANG) , caller });
 
@@ -1540,6 +1543,7 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id = "headsup"          ;             headsup = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) ) TOOL_panels.push( headsup );
     id = "thumb_p"          ;       toolbar_thumb = t_get_tool(id);
 
+    id =  t_data.DOM_FREEZE        ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.USER_LANG         ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     {
         let el = prop.get_EL(t_data.USER_LANG);
@@ -1826,6 +1830,7 @@ if( log_this) log("%c"+t_data.SD4+"%c "+caller, lbS+lf4, lbH+lf4);
     let el;
 
     if( el = toolbar_thumb                        ) { el.style.position   = "absolute"; el.style.left = " 7%"; el.style.top    = "  2%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.DOM_FREEZE      )) { el.style.position   = "absolute"; el.style.left = "70%"; el.style.top    = " 40%"; el.style.transform = ""; }
     if( el = prop.get_EL( t_data.USER_LANG       )) { el.style.position   = "absolute"; el.style.left = "45%"; el.style.top    = " 36%"; el.style.transform = ""; }
     if( el = prop.get_EL( t_data.ANCHOR_FREEZE   )) { el.style.position   = "absolute"; el.style.left = " 0%"; el.style.top    = " 19%"; el.style.transform = ""; }
     if( el = prop.get_EL( t_data.WORDING         )) { el.style.position   = "absolute"; el.style.left = " 0%"; el.style.top    = " 47%"; el.style.transform = ""; }
@@ -1908,6 +1913,7 @@ if( log_this) log("%c"+t_data.SD5+"%c "+caller, lbS+lf5, lbH+lf5);
 
     let id, state, value;
 
+    id = t_data.DOM_FREEZE           ; value =  t_store.t_store_getItem(id)           ; prop.set(id, value);
     id = t_data.USER_LANG            ; value =  t_store.t_store_getItem(id)           ; prop.set(id, value);
     id = t_data.ANCHOR_FREEZE        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.CONTAINERS_HI        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
@@ -2912,6 +2918,7 @@ if( log_this) log(caller);
     key = "window_scrollY"     ; value = scroll_last_scrollY   ; t_store.t_store_set_value(key, value);
 }}}*/
 
+    key = t_data.DOM_FREEZE    ; value = prop.get( key )       ; t_store.t_store_set_value(key, value);
     key = t_data.USER_LANG     ; value = prop.get( key )       ; t_store.t_store_set_value(key, value);
     key = t_data.ANCHOR_FREEZE ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
     key = t_data.CONTAINERS_HI ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
@@ -2969,7 +2976,7 @@ if( log_this) log(caller);
 /*…   save4_layout {{{*/
 /*{{{*/
 const STORE_CYCLE_CLASSLIST   = ["store_count1","store_count2","store_count3"];
-const STORE_CYCLE_CLEAR_DELAY = 1000;
+const STORE_CYCLE_CLEAR_DELAY = 250;
 
 let t_store4_save_site_layout_step = 0;
 /*}}}*/
@@ -9218,7 +9225,8 @@ if( log_this) prop.log_MAP(caller);
 /*}}}*/
     if(!id) return false;
     let result
-        =  (id ==  t_data.USER_LANG       )
+        =  (id ==  t_data.DOM_FREEZE      )
+        || (id ==  t_data.USER_LANG       )
         || (id ==  t_data.ANCHOR_FREEZE   )
         || (id ==  t_data.CONTAINERS_HI   )
         || (id ==  t_data.SCROLL_SMOOTH   )
@@ -12569,6 +12577,7 @@ let t_log_option_changes = function(changes)
         +"<tr><th>OPTIONS:</th></tr>"+LF
         +"<tr>"
         +" <td>"+ get_log_option_state( t_data.TOOLS_SCROLL       , prop.get( t_data.TOOLS_SCROLL      ) ) +"</td>"
+        +" <td>"+ get_log_option_state( t_data.DOM_FREEZE         , prop.get( t_data.DOM_FREEZE        ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.USER_LANG          , prop.get( t_data.USER_LANG         ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.ANCHOR_FREEZE      , prop.get( t_data.ANCHOR_FREEZE     ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.CONTAINERS_HI      , prop.get( t_data.CONTAINERS_HI     ) ) +"</td>"
@@ -13032,7 +13041,7 @@ if( log_this) log("...return %c"+state, lbX[state ? 4 : 6]);
 /*}}}*/
 /*…   prop_id_toggle {{{*/
 /*{{{*/
-const TOGGLE_LANG_RELOAD_DELAY = 2000; /* ALLOWING TO SELECT THE RIGHT LANG FLAG */
+const TOGGLE_RELOAD_DELAY = 2000; /* ALLOWING TO SELECT THE RIGHT LANG FLAG */
 
 let   location_reload_timeout;
 /*}}}*/
@@ -13112,7 +13121,7 @@ logBIG("RELOADING: changing from "+lang_applied+" to "+lang, 7);
             if( el ) t_util.add_el_class(el, "reloading");
 
             if( location_reload_timeout ) clearTimeout( location_reload_timeout );
-            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, TOGGLE_LANG_RELOAD_DELAY);
+            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, TOGGLE_RELOAD_DELAY);
         }
         else {
             if( el ) t_util.del_el_class(el, "reloading");
@@ -13126,9 +13135,29 @@ if( log_this)
                       , { user_lang
                         , array
                         , lang
-                        , TOGGLE_LANG_RELOAD_DELAY
+                        , TOGGLE_RELOAD_DELAY
                       } , lf5, false);
 /*}}}*/
+    }
+    break;
+
+    case  t_data.DOM_FREEZE      : changes += keyword; prop.toggle( keyword          );
+    {
+
+        /* STORE [state] */
+        let state = prop.get(     t_data.DOM_FREEZE);
+        t_store.t_store_set_value(t_data.DOM_FREEZE, state);
+
+        /* REMOVE EVENT LISTENERS */
+        if( state )
+            t_util.t_REMOVE_EventListeners();
+
+        /* RELOAD PAGE TO RESTORE LISTENERS */
+        if(!state)
+        {
+            if( location_reload_timeout ) clearTimeout( location_reload_timeout );
+            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, 0);
+        }
     }
     break;
 
@@ -17175,7 +17204,6 @@ if( log_this) log_caller();
     t_scrollIntoView_EL                 = el;
     if(t_scrollIntoView_EL)
     {
-        /* CENTERING WITHIN A SCROLLABLE CONTAINER {{{*/
 /*{{{
         let scrollable_container = t_util.get_scrollable_parent(el);
         if( scrollable_container )
@@ -24465,6 +24493,7 @@ return { name : "dom_tools"
     , get_onMoveDXY
     , remove_listener_capture_active
     , set_onDown_XY
+    , t_CURSOR_del_MOVE_LISTENER
     , t_pat_bag3_dump_all_csv
     , t_preventDefault
     , wording_3_CB_WORDS_RECYCLE

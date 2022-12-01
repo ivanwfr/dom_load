@@ -9,7 +9,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (220922:23h:23)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (221201:14h:53)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
@@ -42,7 +42,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_tools_html_data = `
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210929:21h:31)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (221124:17h:59)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -56,6 +56,7 @@ let dom_tools_html_data = `
  <div id="headsup"         class="transcript hidden"        title="headsup">
 
   <em  id="user_lang"      class="toolbag_button cc9"       title="user_lang">&nbsp;</em>
+  <em  id="dom_freeze"     class="toolbag_button cc9"       title="dom_freeze">&#x2744;</em>
 
   <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
   <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
@@ -6077,7 +6078,7 @@ let dom_data_js_data ="data:text/javascript;charset='utf-8',"+ `
 
 
 const DOM_DATA_JS_ID        = "dom_data_js";
-const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (220126:18h:04)";
+const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (221124:17h:57)";
 
 let dom_data    = (function() {
 "use strict";
@@ -6185,6 +6186,7 @@ const SYMBOL_PENCIL                 = "\u270E";
 const SYMBOL_CHECK_MARK_LIGHT       = "\u2713";
 const SYMBOL_CHECK_MARK             = "\u2714";
 const SYMBOL_HEAVY_BALLOT           = "\u2718";
+const SYMBOL_SNOWFLAKE              = "\u2744";
 const SYMBOL_RIGHT_ANGLE_BRACKET    = "\u276F";
 const SYMBOL_HEAVY_RIGHT_ARROW      = "\u2794";
 const SYMBOL_ROUND_RIGHT_ARROW      = "\u279C";
@@ -6445,6 +6447,8 @@ const CSS_STICKY_TOOL           = "sticky";
 const FLOATLOG                  = "FLOATLOG";
 
 const USER_LANG                 = "user_lang";
+const DOM_FREEZE                = "dom_freeze";
+
 const ANCHOR_FREEZE             = "anchor_freeze";
 const CONTAINERS_HI             = "containers_hi";
 const SCROLL_SMOOTH             = "scroll_smooth";
@@ -6881,6 +6885,8 @@ const DOC_TOOLS_ID            = "doc_tools";
 
 
         , FLOATLOG
+
+        , DOM_FREEZE
 
         , USER_LANG
         , ANCHOR_FREEZE
@@ -8872,7 +8878,7 @@ let dom_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220309:19h:24)";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (221124:17h:42)";
 
 let dom_util    = (function() {
 "use strict";
@@ -9573,6 +9579,73 @@ let position_fixed_transitionend = function(event)
 
 
 
+
+
+
+
+const MOUSE_EVENT_ATTRIBUTES
+= [ "onclick"
+  , "ondblclick"
+  , "onmousedown"
+  , "onmousemove"
+  , "onmouseout"
+  , "onmouseover"
+  , "onmouseup"
+  , "onmousewheel"
+  , "onwheel"
+];
+
+const KEYBOARD_EVENT_ATTRIBUTES
+= [ "onkeydown"
+  , "onkeypress"
+  , "onkeyup"
+];
+
+const FORM_EVENT_ATTRIBUTES
+= [ "onblur"
+  , "onchange"
+  , "onfocus"
+  , "oninput"
+  , "oninvalid"
+  , "onreset"
+  , "onsearch"
+  , "onselect"
+  , "onsubmit"
+];
+
+const ALL_EVENT_ATTRIBUTES
+    =       MOUSE_EVENT_ATTRIBUTES
+    .concat(KEYBOARD_EVENT_ATTRIBUTES)
+    .concat(FORM_EVENT_ATTRIBUTES    );
+
+
+
+let t_REMOVE_EventListeners = function()
+{
+
+let log_this = DOM_UTIL_TAG || DOM_UTIL_LOG || LOG_MAP.EV0_LISTEN;
+
+
+    let removed_count = 0;
+    for(let i = 0;         i <=  ALL_EVENT_ATTRIBUTES.length; ++i)
+    {
+        let attribute_name    =  ALL_EVENT_ATTRIBUTES[i];
+
+        let el_array          =  Array.from( document.querySelectorAll("["+attribute_name+"]") );
+if(!removed_count && el_array.length) log("%c REMOVING EVENT LISTENERS:", lb7);
+
+        el_array.forEach((el) => {
+if(log_this) log("["+attribute_name+"] .. "+get_id_or_node_path_tail(el));
+                             el.removeAttribute(attribute_name);
+                             removed_count += 1;
+                         });
+    }
+    if( !removed_count ) log("%c NO EVENT LISTENERS TO REMOVE"                 , lf8);
+    else                 log("%c ... "+removed_count+" event listeners removed", lf7);
+
+
+    document.body.replaceWith( document.body.cloneNode(true) );
+};
 
 
 let get_parent_with_scrollbar = function(el)
@@ -12406,6 +12479,7 @@ let   caller = "get_el_caption_lang";
 
         else if(el_id == "scroll_smooth"        ) el_caption_lang = i18n_get(dom_i18n.SCROLL_SMOOTH     , el_id);
         else if(el_id == "user_lang"            ) el_caption_lang = i18n_get(dom_i18n.USER_LANG         , el_id);
+        else if(el_id == "dom_freeze"           ) el_caption_lang = i18n_get(dom_i18n.DOM_FREEZE        , el_id);
         else if(el_id == "anchor_freeze"        ) el_caption_lang = i18n_get(dom_i18n.ANCHOR_FREEZE     , el_id);
         else if(el_id == "containers_hi"        ) el_caption_lang = i18n_get(dom_i18n.CONTAINERS_HI     , el_id);
         else if(el_id == "deny_or_allow"        ) el_caption_lang = i18n_get(dom_i18n.DENY_OR_ALLOW     , el_id);
@@ -12922,6 +12996,7 @@ return { name : "dom_util"
     , has_a_fixed_parent
     , node_toString
 
+    , t_REMOVE_EventListeners
     , t_REMOVE_ADS
     , t_REMOVE_ADS_results
     , t_TEXT_LINES_to_COLORED_HTML
@@ -13159,7 +13234,7 @@ let dom_i18n_js_data ="data:text/javascript;charset='utf-8',"+ `
 
 
 const DOM_I18N_JS_ID        = "dom_i18n_js";
-const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211122:23h:56)";
+const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (221124:17h:20)";
 
 let dom_i18n    = (function() {
 "use strict";
@@ -13409,6 +13484,7 @@ const SORT_SELECTION                 = "Sort selection";
 
 
 const SCROLL_SMOOTH                  = "Smooth or Instant scrolling";
+const DOM_FREEZE                     = "DOM freeze (Remove All Event Listeners)";
 const USER_LANG                      = "Interface language";
 const ANCHOR_FREEZE                  = "Disable links navigation";
 const CONTAINERS_HI                  = "Highlight paragraph containers";
@@ -13577,6 +13653,7 @@ const ARRAY_FR  = [
 
         , [ SCROLL_SMOOTH                    , "Défilement progressif ou instantané"                                    ]
         , [ USER_LANG                        , "Language de l'interface"                                                ]
+        , [ DOM_FREEZE                       , "DOM freeze (Suppression des Event Listeners)"                           ]
         , [ ANCHOR_FREEZE                    , "Blocage des liens de navigation"                                        ]
         , [ CONTAINERS_HI                    , "Coloration des paragraphes sélectionnés"                                ]
         , [ DENY_OR_ALLOW                    , "Deny or Allow (no-op pour le moment)"                                   ]
@@ -13739,6 +13816,7 @@ return { name : "dom_i18n"
 
 
     , SCROLL_SMOOTH
+    , DOM_FREEZE
     , USER_LANG
     , ANCHOR_FREEZE
     , CONTAINERS_HI
@@ -34627,7 +34705,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220828:20h:17)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220828:20h:20)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -38011,7 +38089,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (220917:03h:10)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (221201:14h:51)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -38867,6 +38945,9 @@ if(log_this) log(caller, "info");
 
 
 
+    if( t_store.t_store_getItem(t_data.DOM_FREEZE) ) t_util.t_REMOVE_EventListeners( document.body );
+
+
     dom_i18n.i18n_set_args({ lang: t_store.t_store_getItem(t_data.USER_LANG) , caller });
 
     load0_get_LOADER_ID();
@@ -39340,6 +39421,7 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id = "headsup"          ;             headsup = t_get_tool(id); if( is_a_DOM_LOAD_panel(id) ) TOOL_panels.push( headsup );
     id = "thumb_p"          ;       toolbar_thumb = t_get_tool(id);
 
+    id =  t_data.DOM_FREEZE        ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id =  t_data.USER_LANG         ; if(           tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     {
         let el = prop.get_EL(t_data.USER_LANG);
@@ -39624,6 +39706,7 @@ if( log_this) log("%c"+t_data.SD4+"%c "+caller, lbS+lf4, lbH+lf4);
     let el;
 
     if( el = toolbar_thumb                        ) { el.style.position   = "absolute"; el.style.left = " 7%"; el.style.top    = "  2%"; el.style.transform = ""; }
+    if( el = prop.get_EL( t_data.DOM_FREEZE      )) { el.style.position   = "absolute"; el.style.left = "70%"; el.style.top    = " 40%"; el.style.transform = ""; }
     if( el = prop.get_EL( t_data.USER_LANG       )) { el.style.position   = "absolute"; el.style.left = "45%"; el.style.top    = " 36%"; el.style.transform = ""; }
     if( el = prop.get_EL( t_data.ANCHOR_FREEZE   )) { el.style.position   = "absolute"; el.style.left = " 0%"; el.style.top    = " 19%"; el.style.transform = ""; }
     if( el = prop.get_EL( t_data.WORDING         )) { el.style.position   = "absolute"; el.style.left = " 0%"; el.style.top    = " 47%"; el.style.transform = ""; }
@@ -39706,6 +39789,7 @@ if( log_this) log("%c"+t_data.SD5+"%c "+caller, lbS+lf5, lbH+lf5);
 
     let id, state, value;
 
+    id = t_data.DOM_FREEZE           ; value =  t_store.t_store_getItem(id)           ; prop.set(id, value);
     id = t_data.USER_LANG            ; value =  t_store.t_store_getItem(id)           ; prop.set(id, value);
     id = t_data.ANCHOR_FREEZE        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
     id = t_data.CONTAINERS_HI        ; state = (t_store.t_store_getItem(id) == "true"); prop.set(id, state);
@@ -40636,6 +40720,7 @@ if( log_this) log(caller);
 
 
 
+    key = t_data.DOM_FREEZE    ; value = prop.get( key )       ; t_store.t_store_set_value(key, value);
     key = t_data.USER_LANG     ; value = prop.get( key )       ; t_store.t_store_set_value(key, value);
     key = t_data.ANCHOR_FREEZE ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
     key = t_data.CONTAINERS_HI ; value = prop.get( key )       ; t_store.t_store_set_state(key, value);
@@ -40690,7 +40775,7 @@ if( log_this) log(caller);
 
 
 const STORE_CYCLE_CLASSLIST   = ["store_count1","store_count2","store_count3"];
-const STORE_CYCLE_CLEAR_DELAY = 1000;
+const STORE_CYCLE_CLEAR_DELAY = 250;
 
 let t_store4_save_site_layout_step = 0;
 
@@ -46449,7 +46534,8 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
     if(!id) return false;
     let result
-        =  (id ==  t_data.USER_LANG       )
+        =  (id ==  t_data.DOM_FREEZE      )
+        || (id ==  t_data.USER_LANG       )
         || (id ==  t_data.ANCHOR_FREEZE   )
         || (id ==  t_data.CONTAINERS_HI   )
         || (id ==  t_data.SCROLL_SMOOTH   )
@@ -49534,6 +49620,7 @@ let t_log_option_changes = function(changes)
         +"<tr><th>OPTIONS:</th></tr>"+LF
         +"<tr>"
         +" <td>"+ get_log_option_state( t_data.TOOLS_SCROLL       , prop.get( t_data.TOOLS_SCROLL      ) ) +"</td>"
+        +" <td>"+ get_log_option_state( t_data.DOM_FREEZE         , prop.get( t_data.DOM_FREEZE        ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.USER_LANG          , prop.get( t_data.USER_LANG         ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.ANCHOR_FREEZE      , prop.get( t_data.ANCHOR_FREEZE     ) ) +"</td>"
         +" <td>"+ get_log_option_state( t_data.CONTAINERS_HI      , prop.get( t_data.CONTAINERS_HI     ) ) +"</td>"
@@ -49977,7 +50064,7 @@ if( log_this) log("...return %c"+state, lbX[state ? 4 : 6]);
 
 
 
-const TOGGLE_LANG_RELOAD_DELAY = 2000;
+const TOGGLE_RELOAD_DELAY = 2000;
 
 let   location_reload_timeout;
 
@@ -50055,7 +50142,7 @@ logBIG("RELOADING: changing from "+lang_applied+" to "+lang, 7);
             if( el ) t_util.add_el_class(el, "reloading");
 
             if( location_reload_timeout ) clearTimeout( location_reload_timeout );
-            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, TOGGLE_LANG_RELOAD_DELAY);
+            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, TOGGLE_RELOAD_DELAY);
         }
         else {
             if( el ) t_util.del_el_class(el, "reloading");
@@ -50069,9 +50156,29 @@ if( log_this)
                       , { user_lang
                         , array
                         , lang
-                        , TOGGLE_LANG_RELOAD_DELAY
+                        , TOGGLE_RELOAD_DELAY
                       } , lf5, false);
 
+    }
+    break;
+
+    case  t_data.DOM_FREEZE      : changes += keyword; prop.toggle( keyword          );
+    {
+
+
+        let state = prop.get(     t_data.DOM_FREEZE);
+        t_store.t_store_set_value(t_data.DOM_FREEZE, state);
+
+
+        if( state )
+            t_util.t_REMOVE_EventListeners();
+
+
+        if(!state)
+        {
+            if( location_reload_timeout ) clearTimeout( location_reload_timeout );
+            location_reload_timeout     =   setTimeout(function() { document.location.reload(); }, 0);
+        }
     }
     break;
 
@@ -53842,7 +53949,6 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIn
     t_scrollIntoView_EL                 = el;
     if(t_scrollIntoView_EL)
     {
-
 
 
             set_scrollBehavior( "instant" );
@@ -60601,6 +60707,7 @@ return { name : "dom_tools"
     , get_onMoveDXY
     , remove_listener_capture_active
     , set_onDown_XY
+    , t_CURSOR_del_MOVE_LISTENER
     , t_pat_bag3_dump_all_csv
     , t_preventDefault
     , wording_3_CB_WORDS_RECYCLE

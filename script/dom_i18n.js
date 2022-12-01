@@ -17,7 +17,7 @@
 */
 
 const DOM_I18N_JS_ID        = "dom_i18n_js";
-const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (211122:23h:56)";
+const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (221124:17h:20)";
 /*}}}*/
 let dom_i18n    = (function() {
 "use strict";
@@ -269,6 +269,7 @@ const SORT_SELECTION                 = "Sort selection";
 
 
 const SCROLL_SMOOTH                  = "Smooth or Instant scrolling";
+const DOM_FREEZE                     = "DOM freeze (Remove All Event Listeners)";
 const USER_LANG                      = "Interface language";
 const ANCHOR_FREEZE                  = "Disable links navigation";
 const CONTAINERS_HI                  = "Highlight paragraph containers";
@@ -437,6 +438,7 @@ const ARRAY_FR  = [
 
         , [ SCROLL_SMOOTH                    , "Défilement progressif ou instantané"                                    ]
         , [ USER_LANG                        , "Language de l'interface"                                                ]
+        , [ DOM_FREEZE                       , "DOM freeze (Suppression des Event Listeners)"                           ]
         , [ ANCHOR_FREEZE                    , "Blocage des liens de navigation"                                        ]
         , [ CONTAINERS_HI                    , "Coloration des paragraphes sélectionnés"                                ]
         , [ DENY_OR_ALLOW                    , "Deny or Allow (no-op pour le moment)"                                   ]
@@ -599,6 +601,7 @@ return { name : "dom_i18n"
 
 
     , SCROLL_SMOOTH
+    , DOM_FREEZE
     , USER_LANG
     , ANCHOR_FREEZE
     , CONTAINERS_HI

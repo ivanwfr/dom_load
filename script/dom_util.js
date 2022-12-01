@@ -23,7 +23,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (220309:19h:24)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (221124:17h:42)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -847,6 +847,73 @@ log("%c"+caller+"("+get_n_lbl(el)+"): "+ event.propertyName.toUpperCase(), lf7);
 
 /*}}}*/
 /* EVENTS {{{*/
+/*➔ t_REMOVE_EventListeners {{{*/
+/*{{{*/
+
+const MOUSE_EVENT_ATTRIBUTES
+= [ "onclick"
+  , "ondblclick"
+  , "onmousedown"
+  , "onmousemove"
+  , "onmouseout"
+  , "onmouseover"
+  , "onmouseup"
+  , "onmousewheel"
+  , "onwheel"
+];
+
+const KEYBOARD_EVENT_ATTRIBUTES
+= [ "onkeydown"
+  , "onkeypress"
+  , "onkeyup"
+];
+
+const FORM_EVENT_ATTRIBUTES
+= [ "onblur"
+  , "onchange"
+  , "onfocus"
+  , "oninput"
+  , "oninvalid"
+  , "onreset"
+  , "onsearch"
+  , "onselect"
+  , "onsubmit"
+];
+
+const ALL_EVENT_ATTRIBUTES
+    =       MOUSE_EVENT_ATTRIBUTES
+    .concat(KEYBOARD_EVENT_ATTRIBUTES)
+    .concat(FORM_EVENT_ATTRIBUTES    );
+
+/*}}}*/
+
+let t_REMOVE_EventListeners = function()
+{
+/*{{{*/
+let log_this = DOM_UTIL_TAG || DOM_UTIL_LOG || LOG_MAP.EV0_LISTEN;
+
+/*}}}*/
+    let removed_count = 0;
+    for(let i = 0;         i <=  ALL_EVENT_ATTRIBUTES.length; ++i)
+    {
+        let attribute_name    =  ALL_EVENT_ATTRIBUTES[i];
+
+        let el_array          =  Array.from( document.querySelectorAll("["+attribute_name+"]") );
+if(!removed_count && el_array.length) log("%c REMOVING EVENT LISTENERS:", lb7);
+
+        el_array.forEach((el) => {
+if(log_this) log("["+attribute_name+"] .. "+get_id_or_node_path_tail(el));
+                             el.removeAttribute(attribute_name);
+                             removed_count += 1;
+                         });
+    }
+    if( !removed_count ) log("%c NO EVENT LISTENERS TO REMOVE"                 , lf8);
+    else                 log("%c ... "+removed_count+" event listeners removed", lf7);
+
+    /* REMOVE EVENT LISTENERS */
+    document.body.replaceWith( document.body.cloneNode(true) );
+};
+/*}}}*/
 /*➔ get_parent_with_scrollbar {{{*/
 let get_parent_with_scrollbar = function(el)
 {
@@ -3933,6 +4000,7 @@ let   caller = "get_el_caption_lang";
 
         else if(el_id == "scroll_smooth"        ) el_caption_lang = i18n_get(dom_i18n.SCROLL_SMOOTH     , el_id);
         else if(el_id == "user_lang"            ) el_caption_lang = i18n_get(dom_i18n.USER_LANG         , el_id);
+        else if(el_id == "dom_freeze"           ) el_caption_lang = i18n_get(dom_i18n.DOM_FREEZE        , el_id);
         else if(el_id == "anchor_freeze"        ) el_caption_lang = i18n_get(dom_i18n.ANCHOR_FREEZE     , el_id);
         else if(el_id == "containers_hi"        ) el_caption_lang = i18n_get(dom_i18n.CONTAINERS_HI     , el_id);
         else if(el_id == "deny_or_allow"        ) el_caption_lang = i18n_get(dom_i18n.DENY_OR_ALLOW     , el_id);
@@ -4467,6 +4535,7 @@ return { name : "dom_util"
     , has_a_fixed_parent
     , node_toString
 
+    , t_REMOVE_EventListeners
     , t_REMOVE_ADS
     , t_REMOVE_ADS_results
     , t_TEXT_LINES_to_COLORED_HTML

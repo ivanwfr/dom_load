@@ -10,7 +10,7 @@
 */
 
 const DOM_DATA_JS_ID        = "dom_data_js";
-const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (220126:18h:04)";
+const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (221124:17h:57)";
 /*}}}*/
 let dom_data    = (function() {
 "use strict";
@@ -134,6 +134,7 @@ const SYMBOL_PENCIL                 = "\u270E"; /* ✎ */
 const SYMBOL_CHECK_MARK_LIGHT       = "\u2713"; /* ✓ */ /* eslint-disable-line no-unused-vars */
 const SYMBOL_CHECK_MARK             = "\u2714"; /* ✔ */
 const SYMBOL_HEAVY_BALLOT           = "\u2718"; /* ✘ */
+const SYMBOL_SNOWFLAKE              = "\u2744"; /* ❄ */
 const SYMBOL_RIGHT_ANGLE_BRACKET    = "\u276F";
 const SYMBOL_HEAVY_RIGHT_ARROW      = "\u2794"; /* ➔ */
 const SYMBOL_ROUND_RIGHT_ARROW      = "\u279C"; /* ➜ */
@@ -401,6 +402,8 @@ const CSS_STICKY_TOOL           = "sticky";
 const FLOATLOG                  = "FLOATLOG";
 
 const USER_LANG                 = "user_lang";
+const DOM_FREEZE                = "dom_freeze";
+
 const ANCHOR_FREEZE             = "anchor_freeze";
 const CONTAINERS_HI             = "containers_hi";
 const SCROLL_SMOOTH             = "scroll_smooth";
@@ -837,6 +840,8 @@ const DOC_TOOLS_ID            = "doc_tools";
         /* SETTINGS {{{*/
 
         , FLOATLOG
+
+        , DOM_FREEZE
 
         , USER_LANG
         , ANCHOR_FREEZE
