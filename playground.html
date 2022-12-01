@@ -759,7 +759,7 @@ console_dir("event.target",event.target);
 let select_container = function(container)
 {
 /*{{{
-log("select_container("+get_n_lbl(container)+")");
+log("select_container("+dom_util.get_n_lbl(container)+")");
 }}}*/
 
  /* SELECT */
@@ -1334,7 +1334,7 @@ escapeXXX(`
 
   <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (220816:15h:38)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (221124:17h:58)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
@@ -1427,12 +1427,12 @@ log("checkbox_clicked", lbb+lbH+lf3);
    let label_off = input.labels[0];
    let label_on  = input.labels[1];
 
-console_dir(input.id            , input    )
-console_dir(get_n_lbl(label_off), label_off)
-console_dir(get_n_lbl(label_on ), label_on )
+console_dir(input.id                     , input    )
+console_dir(dom_util.get_n_lbl(label_off), label_off)
+console_dir(dom_util.get_n_lbl(label_on ), label_on )
 
-   let    on_text = input.getAttribute("on" ) || SYMBOL_CHECK_MARK;
-   let   off_text = input.getAttribute("off") || SYMBOL_NOT_CHECKED;
+   let    on_text = input.getAttribute("on" ) || dom_data.SYMBOL_CHECK_MARK;
+   let   off_text = input.getAttribute("off") || dom_data.SYMBOL_NOT_CHECKED;
 
    label_off.innerHTML = input.checked ?  on_text : off_text;
    label_on .innerHTML = input.checked ? off_text :  on_text;
@@ -1575,6 +1575,7 @@ dom_tools_html_data = escape(`
  <div id="headsup"         class="transcript hidden"        title="headsup">
 
   <em  id="user_lang"      class="toolbag_button cc9"       title="user_lang">&nbsp;</em>
+  <em  id="dom_freeze"     class="toolbag_button cc9"       title="dom_freeze">&#x2744;</em>
 
   <em  id="thumb_p"                                         title="thumb_p">&#x0020;</em>
   <em  id="theme_dark"     class="toolbag_button cc8"       title="theme_dark">LIGHT</em>
