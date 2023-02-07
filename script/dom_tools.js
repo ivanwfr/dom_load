@@ -55,7 +55,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (221201:14h:51)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (230124:18h:02)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -2244,6 +2244,9 @@ logBIG(caller+" *** t_get_tool('dom_load_tags') failed");
     id =   "dom_grid_css";                              DOM_GRID_CSS_TAG   = load6_TOOL_CSS( id );
 
     let m_class = "em_missing";
+
+    /* (230124) https://groups.google.com/a/chromium.org/g/blink-dev/c/UYY2TRSL8_k
+    /* ➔  @see: https://developer.mozilla.org/en-US/docs/Web/API/TrustedHTML */
     dom_load_tags_el.innerHTML = ""
 
 + ("LOADER"+LF)
@@ -3454,22 +3457,22 @@ let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
-    if( value ) t_dom_EDIT_OR_STAGE_start(id, value);
-    else        t_dom_EDIT_OR_STAGE_end  (id, value);
+    if( value ) dom_EDIT_OR_STAGE_start(id, value);
+    else        dom_EDIT_OR_STAGE_end  (id, value);
 
 };
 /*}}}*/
-/*_ t_dom_EDIT_OR_STAGE_start {{{*/
-let t_dom_EDIT_OR_STAGE_start = function()
+/*_ dom_EDIT_OR_STAGE_start {{{*/
+let dom_EDIT_OR_STAGE_start = function()
 {
 /* {{{*/
-let   caller = "t_dom_EDIT_OR_STAGE_start"; if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
+let   caller = "dom_EDIT_OR_STAGE_start"; if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
 
-    t_start_DOM_EDITING();
+    start_DOM_EDITING();
 
     t_seek.t_seekzone8_show_gutter_xywh(0, 0, window.innerWidth, window.innerHeight);
 
@@ -3490,20 +3493,20 @@ if( log_this) log("%c"+caller, lbH+lf5);
     t_sync_wording( caller );
 };
 /*}}}*/
-/*_ t_dom_EDIT_OR_STAGE_end {{{*/
-let t_dom_EDIT_OR_STAGE_end = function ()
+/*_ dom_EDIT_OR_STAGE_end {{{*/
+let dom_EDIT_OR_STAGE_end = function ()
 {
 /* {{{*/
-let   caller = "t_dom_EDIT_OR_STAGE_end"; if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
+let   caller = "dom_EDIT_OR_STAGE_end"; if(typeof dom_prop_notify != "undefined") dom_prop_notify(caller);
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbH+lf5);
 /*}}}*/
 
     prop.set(t_data.EDIT_OR_STAGE, false);
-    t_stop_DOM_EDITING();
+    stop_DOM_EDITING();
 
-    t_dom_EDIT_drag_hotspot_off_gutter();
+    dom_EDIT_drag_hotspot_off_gutter();
     let xy = t_gutter.get_WINDOW_XY();
     if( xy ) t_tools_set_top_xy(xy.x, xy.y);
 
@@ -3523,11 +3526,11 @@ if( log_this) log("%c"+caller, lbH+lf5);
     t_sync_wording( caller );
 };
 /*}}}*/
-/*_ t_dom_EDIT_drag_hotspot_off_gutter {{{*/
-let t_dom_EDIT_drag_hotspot_off_gutter = function(x, y)
+/*_ dom_EDIT_drag_hotspot_off_gutter {{{*/
+let dom_EDIT_drag_hotspot_off_gutter = function(x, y)
 {
 /* {{{*/
-let   caller = "t_dom_EDIT_drag_hotspot_off_gutter";
+let   caller = "dom_EDIT_drag_hotspot_off_gutter";
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller+"("+x+", "+y+")", lbH+lf5);
@@ -3540,8 +3543,8 @@ if( log_this) log("%c"+caller+"("+x+", "+y+")", lbH+lf5);
     t_store_consider_page_items_worth_storing("HOTSPOT OFF GUTTER");
 };
 /*}}}*/
-/*_ t_start_DOM_EDITING {{{*/
-let t_start_DOM_EDITING = function()
+/*_ start_DOM_EDITING {{{*/
+let start_DOM_EDITING = function()
 {
     add_el_class(hotspot, t_data.DOM_EDITING);
 
@@ -3552,8 +3555,8 @@ let t_start_DOM_EDITING = function()
     }
 };
 /*}}}*/
-/*_ t_stop_DOM_EDITING {{{*/
-let t_stop_DOM_EDITING = function()
+/*_ stop_DOM_EDITING {{{*/
+let stop_DOM_EDITING = function()
 {
     del_el_class(hotspot, t_data.MARKED_TO_HIDE);
 
@@ -9617,7 +9620,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf9);
        &&  prop.get( t_data.EDIT_OR_STAGE )
        && !t_gutter.get_XY_URDL(h_x, h_y, "EDITING DONE .. dragging [hotspot] back IN-WINDOW")
       ) {
-        t_dom_EDIT_drag_hotspot_off_gutter(h_x, h_y);
+        dom_EDIT_drag_hotspot_off_gutter(h_x, h_y);
     }
 
     /* MOVING [mov_div] DONE */
