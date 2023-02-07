@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (221201:14h:53)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (230206:18h:02)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -40,7 +40,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (220916:18h:32)"; }
+#dom_host_css_tag   { content: "dom_host_css (230201:14h:13)"; }
 
 
 .dark * { background : rgba(17,17,17,0.5); color: rgba(221,221,221,0.5); }
@@ -721,7 +721,7 @@ OL.sentence_container { display: block; }
     background-color : rgba(221,255,221,0.5);
 }
 .sentence { max-width   : 64ch     !important; }
-.sentence { min-width   : 32ch     !important; }
+.sentence { min-width   : 50ch     !important; }
 .sentence { overflow    : visible  !important; }
 
 .sentence { white-space : normal   !important; }
@@ -1008,7 +1008,7 @@ let dom_sentence_util_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_UTIL_JS_ID        = "dom_sentence_util";
-const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (220331:19h:31)";
+const DOM_SENTENCE_UTIL_JS_TAG       = DOM_SENTENCE_UTIL_JS_ID  +" (230124:17h:09)";
 
 let dom_sentence_util    = (function() {
 "use strict";
@@ -1510,17 +1510,25 @@ let get_nodeName_rank = function(node)
 
 
 
+let get_event_target = function(e)
+{
+    let e_target = e.currentTarget || e.target;
+
+    let     e_path = e.composedPath();
+    if     (e_path[0] && (e_path[0].tagName != "IMG")) e_target = e_path[0]               ;
+    else if(e_path[1]                                ) e_target = e_path[1]               ;
+    else if(e_path[0]                                ) e_target = e_path[0]               ;
+
+    else if(e.originalTarget                         ) e_target = e.originalTarget        ;
+    else if(e.explicitOriginalTarget                 ) e_target = e.explicitOriginalTarget;
+
+    return e_target;
+};
+
+
 let t_get_event_target = function(e)
 {
-    let e_target = e.target ? e.target  : undefined;
-    let e_path_0 =  e.path  ? e.path[0] : undefined;
-    let e_path_1 =  e.path  ? e.path[1] : undefined;
-
-
-    if     (e.path && (e_path_0.tagName != "IMG"))  e_target = e_path_0;
-    else if(e.path &&  e_path_1                  )  e_target = e_path_1;
-    else if(e.originalTarget                     )  e_target = e.originalTarget;
-    else if(e.explicitOriginalTarget             )  e_target = e.explicitOriginalTarget;
+    let e_target = get_event_target(e);
 
     let el;
     e_target
@@ -1548,6 +1556,39 @@ let get_event_XY = function(e)
     }
 
     return { x , y };
+};
+
+
+
+
+let get_el_methodNames = function(obj,_filter_str)
+{
+    let    propertyNames = new Set();
+    let    current_obj   = obj;
+    do {
+        Object.getOwnPropertyNames( current_obj ).map((p_name) => propertyNames.add( p_name ) );
+    }
+    while((current_obj   = Object.getPrototypeOf( current_obj )));
+
+    let    propKeys      = [ ...propertyNames.keys() ];
+
+    let    methodNames   =  propKeys.filter((key) => typeof obj[key] === "function");
+
+    if(_filter_str)
+    {
+        let filter_str   = _filter_str.toLowerCase();
+        methodNames      = methodNames.filter((name) => name.toLowerCase().includes(filter_str));
+    }
+
+    return methodNames.sort();
+};
+
+
+let log_el_methodNames = function(_obj,_filter_str)
+{
+    console.dir( _obj );
+
+    console.dir(get_el_methodNames(_obj, _filter_str));
 };
 
 
@@ -1583,6 +1624,10 @@ return { name : DOM_SENTENCE_UTIL_JS_ID
     , get_n_lbl
     , get_node_sibling_at_offset
     , get_parent_tag_id_class_chain
+
+
+    , get_el_methodNames
+    , log_el_methodNames
 
     , logs
 };
@@ -2234,7 +2279,7 @@ let dom_sentence_event_js_data ="data:text/javascript;charset='utf-8',"+ escape(
 
 
 const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (220509:17h:06)";
+const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (230206:17h:57)";
 
 let dom_sentence_event   = (function() {
 "use strict";
@@ -2532,6 +2577,10 @@ let log_this = DOM_SENTENCE_LOG;
     let consumed_by                  = "";
 
 
+    let was_theme_dark = dom_sentence.t_SENTENCE_get_theme_dark();
+
+
+
     let   this_MS                    = new Date().getTime();
     let   delayMS                    = onDown_MS ? (this_MS - onDown_MS) : 0;
     let   clicked                    = (delayMS < CLICK_DURATION);
@@ -2551,22 +2600,30 @@ let log_this = DOM_SENTENCE_LOG;
     }
 
 
-    else if(clicked && some_sentence_container)
+    else if(clicked)
     {
-        consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
+        if(some_sentence_container)
+        {
+            consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
 
-        dom_sentence.t_SENTENCE_RESTORE_ALL( e );
-        some_sentence_container = document.querySelector(".sentence_container");
+            dom_sentence.t_SENTENCE_RESTORE_ALL( e );
+            some_sentence_container = document.querySelector(".sentence_container");
+        }
+        else {
+            consumed_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
+
+            dom_sentence.t_SENTENCE_restore_text_containers_outlined();
+        }
     }
 
 
     else
     {
         consumed_by
-            = "UP ➔ CLICKED=["+clicked+"]"
-            +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]"
-            +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"
-            +  " .. onDown_sentence_container=["+ (onDown_sentence_container ? onDown_sentence_container .tagName : "")+"]"
+            = "UP ➔ CLICKED=["+clicked+"]\n"
+            +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]\n"
+            +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]\n"
+            +  " .. onDown_sentence_container=["+ (onDown_sentence_container ? onDown_sentence_container.tagName : "")+"]"
         ;
 
     }
@@ -2590,6 +2647,19 @@ let log_this = DOM_SENTENCE_LOG;
 
     clr_onWork_EL( caller );
 
+
+
+    if(   chrome
+       && chrome.runtime
+       && chrome.runtime.sendMessage
+      ) {
+        let theme_dark  = dom_sentence.t_SENTENCE_get_theme_dark();
+        if( theme_dark != was_theme_dark ) {
+if( log_this) log("%c SETTING EXTENSION: ("+DOM_SENTENCE_EVENT_JS_TAG+") { theme_dark : "+theme_dark+" }", "background-color:red; border:1px; border-radius:1em; padding:0.5em;");
+
+            setTimeout(function() { chrome.runtime.sendMessage({ theme_dark }); }, 1000);
+        }
+    }
 
 if( log_this) log5("→→ "+caller+":"+ consumed_by);
 };
@@ -3042,6 +3112,7 @@ return { name : DOM_SENTENCE_EVENT_JS_ID
 ;
 
 /*}}}*/
+
   /**  6 SENTENCE JS dom_sentence_js_data .. ESCAPE=[t_data.LF +"Slot #"] {{{*/
 /*
 ../script/dom_sentence.js
@@ -3072,7 +3143,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (220828:20h:20)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (230206:17h:46)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -3511,7 +3582,7 @@ if( tag_this) {
     t_util.add_el_class(container, CSS_SENTENCE_CONTAINER);
     if( theme_dark ) {
         t_util.add_el_class(    container, CSS_DARK);
-        t_util.add_el_class(document.body, CSS_DARK);
+
     }
 
     container.style.touchAction = "none";
@@ -4131,7 +4202,8 @@ let t_SENTENCE_FONTSIZE_APPLY = function(container)
 
     container.classList.add( e12_font_size );
 
-    container.parentElement.style.maxHeight = "fit-content";
+    if( container.parentElement )
+        container.parentElement.style.maxHeight = "fit-content";
 };
 
 
@@ -4164,7 +4236,7 @@ if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH
         t_util.del_el_class(    container, CSS_SENTENCE_CONTAINER);
         t_util.add_el_class(    container, CSS_OUTLINED);
         t_util.del_el_class(    container, CSS_DARK);
-        t_util.del_el_class(document.body, CSS_DARK);
+
 
         if( container.innerHTML_SAVED )
         {
@@ -4235,10 +4307,15 @@ check_tool_event_timer = setTimeout(check_tool_event, CHECK_TOOL_EVENT_DELAY, e)
 };
 
 
-let t_SENTENCE_set_theme_dark = function(_theme_dark)
+let t_SENTENCE_set_theme_dark = function(state)
 {
-    theme_dark = !!_theme_dark;
-    localStorage_setItem("theme_dark", theme_dark);
+    localStorage_setItem("theme_dark", state);
+};
+
+
+let t_SENTENCE_get_theme_dark = function()
+{
+    return !!theme_dark;
 };
 
 
@@ -4414,6 +4491,7 @@ return { name : "dom_sentence"
     ,    t_SENTENCE_onresize
 
     ,    t_SENTENCE_set_theme_dark
+    ,    t_SENTENCE_get_theme_dark
     ,    t_SENTENCE_restore_text_containers_outlined
 
 
@@ -4479,51 +4557,66 @@ const lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
 
 /*}}}*/
 /*➔ dom_load {{{*/
-let dom_load = function() /* eslint-disable-line complexity */
+let dom_load = function(_dom_load_id=DOM_LOAD_ID) /* eslint-disable-line complexity */
 {
+/*{{{*/
 let log_this = IPC_LOG;
-if( log_this) console.log(DOM_LOAD_ID+": LOADING DATA");
-if( log_this) console.log(DOM_LOAD_ID+": document.contentType=["+document.contentType+"]");
-/*{{{
-}}}*/
-/*
+if( log_this) console.log(_dom_load_id+": LOADING DATA");
+if( log_this) console.log(_dom_load_id+": document.contentType=["+document.contentType+"]");
+/*}}}*/
+    /* CHECK ALREADY LOADED CONTENT-SCRIPT {{{*/
+    if(    typeof dom_log      != "undefined") {
+        if(typeof dom_sentence != "undefined") console.log(_dom_load_id+": dom_sentence is already loaded");
+        if(typeof dom_tools    != "undefined") console.log(_dom_load_id+   ": dom_tools is already loaded");
+        return false;
+    }
+    /*}}}*/
+/* Content-Security-Policy {{{
 let csp = document.querySelectorAll("[http-equiv='Content-Security-Policy']")[0];
 if( csp ) {
     console.log("%c"+csp.content, "font-size:200%; background-color:navy");
     csp.httpEquiv = "Content-Security-Policy";
     csp.content   = "default-src 'self' 'unsafe-inline' http://* https://* file://* data://*";
 }
-*/
-
+}}}*/
     let dom_load_success = true; /* the optimist at work */
     try {
-if( log_this) console.log(DOM_LOAD_ID+": LOADING DATA .. try");
+/* log {{{*/
+if( log_this) console.log(_dom_load_id+": LOADING DATA .. try");
 if( log_this) window.addEventListener("error", load_onerror, false);
-
+/*}}}*/
+        /* LOAD CSS {{{*/
         if(    dom_load_success && document.contentType.includes("xml") ) {
             if(dom_load_success && !load_css_pi( DOM_HOST_CSS_ID        , dom_host_css_data         ) ) dom_load_success = false;
         }
         else {
             if(dom_load_success && !load_css   ( DOM_HOST_CSS_ID        , dom_host_css_data         ) ) dom_load_success = false;
         }
+        /*}}}*/
+        /* LOAD JS - log .. sentence {{{*/
         if(    dom_load_success && !load_js    ( "dom_log_js"           , dom_log_js_data           ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_sentence_util_js" , dom_sentence_util_js_data ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_scroll_js_data"   , dom_scroll_js_data        ) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_sentence_event_js", dom_sentence_event_js_data) ) dom_load_success = false;
         if(    dom_load_success && !load_js    ( "dom_sentence_js"      , dom_sentence_js_data      ) ) dom_load_success = false;
-
+        /*}}}*/
     }
     catch(ex) {
-if( log_this) console.log(DOM_LOAD_ID+": LOADING DATA .. catch");
+/*{{{*/
+if( log_this) console.log(_dom_load_id+": LOADING DATA .. catch");
         console.dir(ex);
         dom_load_success = false;
+/*}}}*/
     }
     finally {
-if( log_this) console.log(DOM_LOAD_ID+": LOADING DATA .. finally");
+/*{{{*/
+if( log_this) console.log(_dom_load_id+": LOADING DATA .. finally");
 if( log_this) window.removeEventListener("error", load_onerror, false);
+/*}}}*/
     }
-if( log_this) console.log(DOM_LOAD_ID+": LOADING DATA .. [dom_load_success = "+dom_load_success+"]");
-
+/*{{{*/
+if( log_this) console.log(_dom_load_id+": LOADING DATA .. [dom_load_success = "+dom_load_success+"]");
+/*}}}*/
     return dom_load_success;
 };
 /*}}}*/
@@ -4679,7 +4772,7 @@ let splitter_load = function(e)
     }
 
     /* LOAD */
-    dom_load();
+    dom_load(DOM_LOAD_ID);
 
     /* EXEC */
     setTimeout(() => {

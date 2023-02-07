@@ -3,7 +3,7 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals Document, XPathEvaluator, XPathResult */
+/* globals Document, XPathEvaluator, XPathResult, Set */
 /* globals Node, NodeFilter, getComputedStyle */
 /* globals btoa, atob */
 /* globals console, localStorage */
@@ -23,7 +23,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (221124:17h:42)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (230124:17h:12)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -1107,7 +1107,7 @@ let log_this = DOM_UTIL_LOG;
 /*}}}*/
     let event_XY = get_event_XY(e);
 
-    let    e_target = e.path ? e.path[0] : e.target; /* Chrome || Firefox */
+    let    e_target = get_event_target(e);
     if(   !e_target                 ) return false;
     if(   !e_target.scrollWidth     ) return false;
     if(   !e_target.scrollHeight    ) return false;
@@ -1124,7 +1124,7 @@ let log_this = DOM_UTIL_LOG;
     let          bcr = e_target.getBoundingClientRect();
     let     bcr_left = (bcr.left                                ).toFixed(0);
     let     bcr_top  = (bcr.top                                 ).toFixed(0);
-    let     scale = t_get_panel_scale(e_target);
+    let        scale = t_get_panel_scale(e_target);
     let        x_max = (bcr.left + e_target.scrollWidth  * scale).toFixed(0);
     let        y_max = (bcr.top  + e_target.scrollHeight * scale).toFixed(0);
 
@@ -1291,19 +1291,55 @@ let get_event_XY = function(e)
     return { x , y };
 };
 /*}}}*/
-/*_ t_get_event_target {{{*/
+/*  get_event_target {{{*/
+let get_event_target = function(e,_log_this)
+{
+/*{{{
+_log_this=true;//FIXME
+}}}*/
+    let e_target = e.currentTarget || e.target;
+
+    /*┌───────────────────────────────────────────────────────────────────┐*/
+    /*│ It is different from [event.currentTarget] when the event handler │*/
+    /*│ is called during the BUBBLING                                     │*/
+    /*│ ..................or CAPTURING phase                              │*/
+    /*└───────────────────────────────────────────────────────────────────┘*/
+    let     e_path = e.composedPath();
+    if     (e_path[0] && (e_path[0].tagName != "IMG")) e_target = e_path[0]               ; /* pick first */
+    else if(e_path[1]                                ) e_target = e_path[1]               ; /* but skip first IMG */
+    else if(e_path[0]                                ) e_target = e_path[0]               ; /* .. if possible */
+
+    else if(e.originalTarget                         ) e_target = e.originalTarget        ;
+    else if(e.explicitOriginalTarget                 ) e_target = e.explicitOriginalTarget;
+
+if( _log_this )
+    log_key_val_group("...get_event_target("+e.type+")"
+                      , { e_target                 : get_id_or_tag(e_target                )
+                        , e_path_0                 : get_id_or_tag(e_path[0]               )
+                        , e_path_1                 : get_id_or_tag(e_path[1]               )
+                        , e_currentTarget          : get_id_or_tag(e.currentTarget         )
+                        , e_originalTarget         : get_id_or_tag(e.originalTarget        )
+                        , e_explicitOriginalTarget : get_id_or_tag(e.explicitOriginalTarget)
+                        ,                  callers : t_log.get_callers()
+                      }, lf7, false
+                     );
+
+    return e_target;
+};
+/*}}}*/
+/*➔ t_get_event_target {{{*/
 /*{{{*/
 let t_get_event_target_last_e;
 let t_get_event_target_last_e_target;
 
 /*}}}*/
-let t_get_event_target = function(e) /* eslint-disable-line complexity */
+let t_get_event_target = function(e,_log_this) /* eslint-disable-line complexity */
 {
 /*{{{*/
 let caller = "t_get_event_target";
-let log_this = DOM_UTIL_LOG;
+let log_this = _log_this || DOM_UTIL_LOG;
 
-if( log_this) caller += "("+e.type+" on "+get_id_or_tag((e.path ? e.path[0] : e.e_target))+")";
+if( log_this) caller += "("+e.type+" on "+get_id_or_tag((e.path ? e.path[0] : e.target))+")";
 if( log_this) log("%c"+caller, lbH+lf7);
 if( log_this) console.dir(e);
 /*}}}*/
@@ -1319,38 +1355,7 @@ if( log_this)
     }
     /*}}}*/
     /* NEW EVENT {{{*/
-    let e_target = e.target ? e.target  : undefined;
-    let e_path_0 =  e.path  ? e.path[0] : undefined;
-    let e_path_1 =  e.path  ? e.path[1] : undefined;
-/*{{{*/
-if( log_this ) {
-    log_key_val_group("...event path and target"
-                      , { e_target
-                        , e_path_0
-                        , e_path_1
-                        , e_originalTarget         : e.originalTarget
-                        , e_explicitOriginalTarget : e.explicitOriginalTarget
-                        ,                  callers : t_log.get_callers()
-                      }, lf7, false
-                     );
-
-}
-/*}}}*/
-
-    /*}}}*/
-    /*  e_target .. f(event) {{{*/
-    /* [event.target] {{{
-     * A reference to the object that dispatched the event.
-     * It is different from [event.currentTarget]
-     * . when the event handler is called
-     * . during the bubbling
-     * . or capturing phase of the event.
-     }}} */
-    if     (e.path && (e_path_0.tagName != "IMG")) {  e_target = e_path_0;                 /*log("e.path..................=["+ e.path                   +"]");*/ }
-    else if(e.path &&  e_path_1                  ) {  e_target = e_path_1;                 /*log("e.path..................=["+ e.path                   +"]");*/ }
-    else if(e.originalTarget                     ) {  e_target = e.originalTarget;         /*log("e.originalTarget........=["+ e.originalTarget         +"]");*/ }
-    else if(e.explicitOriginalTarget             ) {  e_target = e.explicitOriginalTarget; /*log("e.explicitOriginalTarget=["+ e.explicitOriginalTarget +"]");*/ }
-    else if(e_target                             ) {/*e_target = e_target;*/               /*log("e_target................=["+ e_target                 +"]");*/ }
+    let e_target = get_event_target(e,log_this);
 
     /*}}}*/
     /* skip proxy el {{{*/
@@ -1410,7 +1415,7 @@ if( log_this)
 };
 /*}}}*/
 /*_ get_handled_target {{{*/
-let et_handled_target = function(e, e_target, log_this) /* eslint-disable-line no-unused-vars, complexity */
+let get_handled_target = function(e, e_target, log_this) /* eslint-disable-line no-unused-vars, complexity */
 {
 let caller = "get_handled_target";
 
@@ -4442,6 +4447,39 @@ let get_parent_chain = function(el)
 /*}}}*/
 /*}}}*/
 
+/* OBJECT */
+/*{{{*/
+let get_el_methodNames = function(obj,_filter_str)
+{
+    let    propertyNames = new Set(); /* .. no duplicates */
+    let    current_obj   = obj;
+    do {
+        Object.getOwnPropertyNames( current_obj ).map((p_name) => propertyNames.add( p_name ) );
+    }
+    while((current_obj   = Object.getPrototypeOf( current_obj )));
+
+    let    propKeys      = [ ...propertyNames.keys() ];
+
+    let    methodNames   =  propKeys.filter((key) => typeof obj[key] === "function");
+
+    if(_filter_str)
+    {
+        let filter_str   = _filter_str.toLowerCase();
+        methodNames      = methodNames.filter((name) => name.toLowerCase().includes(filter_str));
+    }
+
+    return methodNames.sort();
+};
+/*}}}*/
+/*{{{*/
+let log_el_methodNames = function(_obj,_filter_str)
+{
+    console.dir( _obj );
+
+    console.dir(get_el_methodNames(_obj, _filter_str));
+};
+/*}}}*/
+
 /* EXPORT */
 /*{{{*/
 /*➔ t_store_set_state {{{*/
@@ -4474,9 +4512,9 @@ return { name : "dom_util"
     , get_el_parent_with_any_event_handler
     , is_event_on_scrollbar
     , send_onchange_event_to
-    ,    get_event_XY
-    ,    t_get_event_target
-    ,    t_prevent_reload
+    , get_event_XY
+    , t_get_event_target
+    , t_prevent_reload
 
     /*}}}*/
     /* XY {{{*/
@@ -4734,7 +4772,9 @@ return { name : "dom_util"
 
     /*}}}*/
 
-    /*}}}*/
+    /* OBJECT */
+    , get_el_methodNames
+    , log_el_methodNames
 
 };
 /*}}}*/
@@ -4784,3 +4824,4 @@ return { name : "dom_util"
 "│                                                                             │
 "└─────────────────────────────────────────────────────────────────────────────┘
 }}}*/
+

@@ -1247,7 +1247,8 @@ let log_this = DOM_STICKY_LOG;
 /*}}}*/
 
     /* DETECT SCROLLBARS */
-    let e_target = e ? e.path[0] : undefined;
+    let e_path   = e      ? e.composedPath() : undefined;
+    let e_target = e_path ? e_path[0]        : undefined;
     let sticky_pad_msg = get_sticky_pad_msg( sticky );
     let event_on_scrollbar
         =  e
