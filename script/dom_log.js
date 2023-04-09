@@ -344,7 +344,7 @@ let get_callers = function(level_max)
 {
     let xx, ex_stack;
     try {   xx.raise(); } catch(ex) { ex_stack = parse_ex_stack_FUNC_FILE_LINE_COL(ex.stack, level_max); }
-    return  ex_stack;
+    return  ex_stack.trim();
 };
 /*}}}*/
 /*_ parse_ex_stack_FUNC_FILE_LINE_COL {{{*/

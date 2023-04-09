@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (230206:18h:02)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (230409:19h:11)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -902,7 +902,7 @@ let dom_log_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_LOG_JS_ID        = "dom_log_js";
-const DOM_LOG_JS_TAG       = DOM_LOG_JS_ID  +" (220128:19h:09)";
+const DOM_LOG_JS_TAG       = DOM_LOG_JS_ID  +" (230320:15h:09)";
 
 let dom_log = (function() {
 "use strict";
@@ -931,6 +931,12 @@ const lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:
 const lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
 const lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
 
+const lbF  = "font-size:120%; font-weight:500; border:2px solid white;";
+let   L_ARD  =         "↓ ";
+let   L_ARL  = "        ← ";
+let   L_ARR  =         "→ ";
+let   L_ARU  =         "↑ ";
+
 
 
 
@@ -956,6 +962,74 @@ let log9 = (msg)     =>         logX(    msg, 9  );
 
 
 
+let log_caller = function(level_max)
+{
+    let stack_trace = get_callers( level_max );
+
+    if( stack_trace.includes(LF) ) console.log("%c"+stack_trace.replace(LF,"%c"+LF), lbH+lf6, lf8);
+    else                         { console.log("%c"+stack_trace                    , lf6+lbF     ); console.trace(); }
+};
+let get_callers = function(level_max)
+{
+    let xx, ex_stack;
+    try {   xx.raise(); } catch(ex) { ex_stack = parse_ex_stack_FUNC_FILE_LINE_COL(ex.stack, level_max); }
+    return  ex_stack.trim();
+};
+
+
+
+
+
+let parse_ex_stack_FUNC_FILE_LINE_COL = function(text, level_max=10)
+{
+    let  result = "";
+    let   lines = text.split(LF);
+    let     sym = L_ARL;
+    let line_match;
+    for(let i=2; i<=(2+level_max); ++i)
+    {
+        if( String(lines[i]).includes("at log_caller") ) continue;
+
+        if( line_match = get_ex_stack_line_match(lines[i]) )
+            result    += (result ? LF : "") + sym+" "+line_match;
+        sym = L_ARU;
+    }
+
+    if( !result.includes(LF) ) result += LF + sym +" ... (async)";
+
+    return result;
+};
+
+
+
+const regexp_FUNC_FILE_LINE_COL = new RegExp("\\s*at\\s*([^\\(]+)\\s+\\((?:[^\\/]*\\/)*(\..+?):(\\d+?):(\\d+?)");
+
+
+let get_ex_stack_line_match = function(ex_stack_line)
+{
+    let matches = regexp_FUNC_FILE_LINE_COL.exec(ex_stack_line);
+
+    if(!matches ) return "";
+
+    let func = matches[1].replace("Object.","");
+    let file = matches[2];
+    let line = matches[3];
+    let col  = matches[4];
+    let match= mPadStart(func, 48)+".. "+file+" "+line+":"+col;
+
+
+    return match;
+};
+
+
+
+let mPadStart = function(s,l,c=" ") { s = String(s); while(s.length < l) s = c+s; return s; };
+
+let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length < l) s = s+c; return s; };
+
+
+
+
 
 return {  LF
         , console_clear
@@ -976,6 +1050,9 @@ return {  LF
         , lbR
         , lbC
         , lfX
+
+    , get_callers
+    , log_caller
     };
 
 

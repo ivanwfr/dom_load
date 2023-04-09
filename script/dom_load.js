@@ -1,22 +1,23 @@
 javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 "use strict";
+/* eslint-disable no-redeclare */
+/* eslint-disable no-unused-vars */
 /* jshint esversion: 9, boss:true {{{*/
 /* globals send_IPC dom_ipc t_load */
 /* globals console, alert, window, document, setTimeout */
 /* eslint-disable no-unused-labels */
 /* eslint-disable no-alert */
-/* eslint-disable no-unused-vars */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_load";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (230206:18h:01)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (230409:19h:26)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_CSS_ID    = "dom_tools_css";
 let DOM_GRID_CSS_ID     = "dom_grid_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
 /* TOOLS ALREADY LOADED {{{*/
-if((typeof DOM_TOOLS_JS_ID) != "undefined") {
+if( document.getElementById("dom_tools_html_tag") ) {
     let   msg = "*** TOOLS ALREADY LOADED";
     try { msg += "\n*** DOM_TOOLS_JS_ID\n*** "+DOM_LOAD_ID ; alert(msg); } catch(ex) { console.log(msg); }
     return null;
@@ -34,6 +35,8 @@ let   console_dir   = function(o,msg=null) { try {                  if(msg) cons
 let   console_log   = function(  msg     ) { try {                          console.log (               msg         );                 } catch(ex) {} };
 let   console_warn  = function(  msg=null) { try {                          console.warn(               msg         );                 } catch(ex) {} };
 /*}}}*/
+/* eslint-enable  no-unused-vars */
+/* eslint-enable  no-redeclare */
 
   /**    1 TOOLS  HTML dom_tools_html_data {{{*/
 /*
@@ -7334,7 +7337,7 @@ let get_callers = function(level_max)
 {
     let xx, ex_stack;
     try {   xx.raise(); } catch(ex) { ex_stack = parse_ex_stack_FUNC_FILE_LINE_COL(ex.stack, level_max); }
-    return  ex_stack;
+    return  ex_stack.trim();
 };
 
 
@@ -61029,6 +61032,8 @@ dom_tools.t_load();
 /* DATA STRING LITERALS {{{*/
 /*{{{*/
 /* @see script/dom_log.js */
+/* eslint-disable no-unused-vars */
+
 const lbA  = "background-color:inherit;   color:inherit;";
 
 const lbF  = "font-size:120%; font-weight:500; border:2px solid white;";
@@ -61065,6 +61070,7 @@ const lf9  = "color:#FFFFFF;";
 const lf0  = "color:#000000;";
 const lfX = [ lf0 ,lf1 ,lf2 ,lf3 ,lf4 ,lf5 ,lf6 ,lf7 ,lf8 ,lf9 ];
 
+/* eslint-enable  no-unused-vars */
 /*}}}*/
 /*➔ dom_load {{{*/
 let dom_load = function(_dom_load_id=DOM_LOAD_ID) /* eslint-disable-line complexity */
@@ -61093,7 +61099,7 @@ if( csp ) {
     try {
 /* log {{{*/
 if( log_this) console.log(_dom_load_id+": LOADING DATA .. try");
-if( log_this) window.addEventListener("error", load_onerror, false);
+              window.addEventListener("error", load_onerror, false);
 /*}}}*/
         /* LOAD HTML {{{*/
         if(    dom_load_success && !load_html  ( "dom_tools_html" , dom_tools_html_data ) ) dom_load_success = false;
@@ -61149,7 +61155,7 @@ if( log_this) console.log(_dom_load_id+": LOADING DATA .. catch");
     finally {
 /*{{{*/
 if( log_this) console.log(_dom_load_id+": LOADING DATA .. finally");
-if( log_this) window.removeEventListener("error", load_onerror, false);
+              window.removeEventListener("error", load_onerror, false);
 /*}}}*/
     }
 /*{{{*/
@@ -61214,7 +61220,7 @@ console.log("%c *** "+TOOLS2_SANITY_CHECK_FAILED+"%c on %c"+scheme_id+" ", lbb+l
 /*… load_js {{{*/
 let load_js = function(id, scheme_arg) {
     if( !dom_check_scheme_arg("load_js", id, scheme_arg) ) { console.log("%c"+id+" %c BAD SCHEME ARG",lbL+lf2, lbR+lf2); return false; }
-    if( document.getElementById(id)                      ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return false; }
+    if( document.getElementById(id)                      ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return  true; }
     let el           = document.createElement("script");
     el.id            = id;
 
@@ -61225,15 +61231,14 @@ let load_js = function(id, scheme_arg) {
     el.defer         = true;
     el.addEventListener("error", load_onerror);
 
-    document.getElementsByTagName("head")[0].appendChild(el);
-
+try { document.getElementsByTagName("head")[0].appendChild(el); } catch(error) { console.log("load_js",error); }
     return true;
 };
 /*}}}*/
 /*… load_css {{{*/
 let load_css = function(id, scheme_arg) {
     if( !dom_check_scheme_arg("load_css", id, scheme_arg) ) { console.log("%c"+id+" %c BAD SCHEME ARG",lbL+lf2, lbR+lf2); return false; }
-    if( document.getElementById(          id            ) ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return false; }
+    if( document.getElementById(          id            ) ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return  true; }
     let el           = document.createElement("link");
     el.id            = id;
 
@@ -61243,7 +61248,7 @@ let load_css = function(id, scheme_arg) {
     el.rel           = "stylesheet";
     el.addEventListener("error", load_onerror);
 
-    document.getElementsByTagName("head")[0].appendChild(el);
+try { document.getElementsByTagName("head")[0].appendChild(el); } catch(error) { console.log("load_js",error); }
 
     return true;
 };
@@ -61251,7 +61256,7 @@ let load_css = function(id, scheme_arg) {
 /*… load_css_pi {{{*/
 let load_css_pi = function(id, scheme_arg) {
     if( !dom_check_scheme_arg("load_css_pi", id, scheme_arg) ) { console.log("%c"+id+" %c BAD SCHEME ARG",lbL+lf2, lbR+lf2); return false; }
-    if( document.getElementById(             id            ) ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return false; }
+    if( document.getElementById(             id            ) ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return  true; }
     let el           = document.createProcessingInstruction("xml-stylesheet", "href='"+ scheme_arg +"' type='text/css'");
     el.id            = id;
 
@@ -61266,7 +61271,7 @@ let load_css_pi = function(id, scheme_arg) {
 /*… load_html {{{*/
 let load_html = function(id, html) {
     if( !dom_check_scheme_arg("load_html", id, html) ) { console.log("%c"+id+" %c BAD SCHEME ARG",lbL+lf2, lbR+lf2); return false; }
-    if( document.getElementById(           id      ) ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return false; }
+    if( document.getElementById(           id      ) ) { console.log("%c"+id+" %c already loaded",lbL+lf3, lbR+lf3); return  true; }
     let el           = document.createElement("DIV");
     el.id            = id;
 
@@ -61275,13 +61280,13 @@ let load_html = function(id, html) {
     el.style.display = "none";
     el.addEventListener("error", load_onerror);
 
-    document.body.appendChild (el);
+try { document.body.appendChild(el); } catch(error) { console.log("load_js",error); }
 
     return true;
 };
 /*}}}*/
 /*… get_el_sheet_first_rule_text_content {{{*/
-let get_el_sheet_first_rule_text_content = function(el)
+let get_el_sheet_first_rule_text_content = function(el) /* eslint-disable-line no-unused-vars */
 {
     let tag = "";
     try {
@@ -61368,6 +61373,7 @@ let           extension_signature = "";
 let IPC_check_extension_signature = function()
 {
 let log_this = IPC_LOG;
+if( log_this) console.log("%c "+IPC_SCRIPT_ID+" %c CHEKING EXTENSION SIGNATURE", IPC_LOG_COLOR, lbF);
     /* BODY-ATTR [IPC_EXTENSION_ID] .. (a body attribute set by a browser extension) {{{*/
     if(typeof document.body.attributes[IPC_EXTENSION_ID] != "undefined")
     {
@@ -61380,6 +61386,10 @@ if( log_this) console.log("%c"+SYMBOL_GEAR+" %c"+IPC_SCRIPT_ID+" %c EXTENSION SI
 if( log_this) console.log("%c["+IPC_EXTENSION_ID+"]%c = %c"+extension_signature, IPC_MSG_COLOR, lbA, lbF+lb0);
     }
     /*}}}*/
+    else if(chrome && typeof chrome.runtime != "undefined") /* eslint-disable-line no-undef */
+    {
+        extension_signature = "Namespace 'chrome.runtime' is defined";
+    }
     /* EXTENSION SIGNATURE DETECTED .. (wait for a startup-message) {{{*/
     if(extension_signature)
     {
@@ -61388,7 +61398,7 @@ if( log_this) console.log("%c["+IPC_EXTENSION_ID+"]%c = %c"+extension_signature,
             dom_load(DOM_LOAD_ID);
         }
         else {
-            let ipc = dom_ipc.t_get_IPC( extension_signature );
+            let ipc = dom_ipc.t_ipc_PARSE( extension_signature );
             t_handle_ipc_message(ipc);
         }
     }
@@ -61412,7 +61422,7 @@ let calling_IPC_check_extension_signature
     && (typeof dom_load == "undefined");
 console.log("%c "+DOM_LOAD_ID+" %c          t_load: "+((typeof   t_load        == "undefined") ? "DEFINED" : "UNDEFINED"), lbH+lf5, lbH+lf5);
 console.log("%c "+DOM_LOAD_ID+" %c        dom_load: "+((typeof dom_load        == "undefined") ? "DEFINED" : "UNDEFINED"), lbH+lf5, lbH+lf6);
-console.log("%c "+DOM_LOAD_ID+" %c DOM_TOOLS_JS_ID: "+((typeof DOM_TOOLS_JS_ID == 'undefined') ? "DEFINED" : "UNDEFINED"), lbH+lf5, lbH+lf7);
+console.log("%c "+DOM_LOAD_ID+" %c DOM_TOOLS_JS_ID: "+((typeof DOM_TOOLS_JS_ID == "undefined") ? "DEFINED" : "UNDEFINED"), lbH+lf5, lbH+lf7);
 console.log("%c "+DOM_LOAD_ID+" %c calling_IPC_check_extension_signature=["+calling_IPC_check_extension_signature+"]"    , lbH+lf5, lbH+lf3);
 if( calling_IPC_check_extension_signature )
     console.log("calling IPC_check_extension_signature:");
