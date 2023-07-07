@@ -1,13 +1,15 @@
 /* dom_store_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
+/* eslint-disable no-redeclare */
 /* globals window, console, localStorage */
 /* globals dom_data, dom_log, dom_util, dom_prop */
+/* eslint-enable  no-redeclare */
 
 /* exported DOM_STORE_JS_TAG */
 
 const DOM_STORE_JS_ID       = "dom_store_js";
-const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (211122:23h:50)";
+const DOM_STORE_JS_TAG      = DOM_STORE_JS_ID   +" (230707:22h:16)";
 /*}}}*/
 let dom_store   = (function() {
 "use strict";
@@ -25,7 +27,7 @@ let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
 /*  t_i18n     = {}        ; */ /* 08 */
 let t_prop     = {}        ;    /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -54,7 +56,7 @@ let t_store_IMPORT  = function(log_this,import_num)
     t_util    = dom_util   ;    /* 07 */
 /*  t_i18n    = dom_i18n   ; */ /* 08 */
     t_prop    = dom_prop   ;    /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -130,6 +132,15 @@ let   store_INTERN = function()
 /* eslint-enable  no-unused-vars */
 /*}}}*/
 
+/* [localStorage] */
+/*_ localStorage {{{*/
+
+let localStorage_setItem = function(key,val) {          try { if(val)  localStorage.setItem   (key,val); else localStorage.removeItem(key); } catch(ex) {} };
+let localStorage_getItem = function(key    ) { let val; try {    val = localStorage.getItem   (key    );                                    } catch(ex) {} return val; };
+let localStorage_delItem = function(key    ) {          try { /*...*/  localStorage.removeItem(key    );                                    } catch(ex) {} };
+
+/*}}}*/
+
 /* OBSERVERS */
 /*… t_store_add_info_observer {{{*/
 /*{{{*/
@@ -174,16 +185,16 @@ logXXX("t_store_set_state(key=["+key+"] state=["+state+"])");
     /*}}}*/
     /* STORE  NEW {{{*/
     else if( state ) {
-        if(log_this) t_store_key_log("STORING  STATE",      key, state);
+if(log_this) t_store_key_log("STORING  STATE",      key, state);
 
-        store_setItem   (                           key, state);
+        store_site_or_page_setItem   (              key, state);
     }
     /*}}}*/
     /* REMOVE OLD {{{*/
     else if( v ) {
 if(log_this) t_store_key_log("REMOVING STATE",      key);
 
-        store_removeItem(                           key);
+        store_site_or_page_removeItem(              key);
     }
     /*}}}*/
     return !!state; /* return a truthy */
@@ -212,32 +223,29 @@ if(log_this) t_store_key_log("UNCHANGED VALUE", key, value);
     else if(value) {
 if(log_this) t_store_key_log("STORING   VALUE", key, value);
 
-        store_setItem(key , value);
+        store_site_or_page_setItem(key , value);
     }
     /*}}}*/
     /* REMOVE OLD {{{*/
     else if(v) {
 if(log_this) t_store_key_log("REMOVING  VALUE", key);
 
-        store_removeItem(key);
+        store_site_or_page_removeItem(key);
     }
     /*}}}*/
     return value;
 };
 /*}}}*/
-/*… store_setItem {{{*/
-let store_setItem = function(key,value)
+/*… store_site_or_page_setItem {{{*/
+let store_site_or_page_setItem = function(key,value)
 {
-/*{{{
-log("store_setItem("+key+")..key=["+ store_get_site_or_page_pfx_for_key(key)+"."+key+"]");
-}}}*/
-    localStorage        .setItem(    store_get_site_or_page_pfx_for_key(key)+"."+key, value);
+    localStorage_setItem( store_get_site_or_page_pfx_for_key(key)+"."+key, value);
 };
 /*}}}*/
-/*… store_removeItem {{{*/
-let store_removeItem = function(key)
+/*… store_site_or_page_removeItem {{{*/
+let store_site_or_page_removeItem = function(key)
 {
-    return  localStorage.removeItem( store_get_site_or_page_pfx_for_key(key)+"."+key       );
+    return  localStorage_delItem( store_get_site_or_page_pfx_for_key(key)+"."+key       );
 };
 /*}}}*/
 
@@ -245,16 +253,16 @@ let store_removeItem = function(key)
 /*➔ t_store_getBool {{{*/
 let t_store_getBool = function(key)
 {
-    return (localStorage.getItem(    store_get_site_or_page_pfx_for_key(key)+"."+key) == "true");
+    return (localStorage_getItem(    store_get_site_or_page_pfx_for_key(key)+"."+key) == "true");
 };
 /*}}}*/
 /*➔ t_store_getItem {{{*/
 let t_store_getItem = function(key, site_or_page)
 {
     let item
-        = (site_or_page == "page") ? localStorage.getItem( t_store_get_page_pfx()+"."+key)
-        : (site_or_page == "site") ? localStorage.getItem( t_store_get_site_pfx()+"."+key)
-        :                            localStorage.getItem( store_get_site_or_page_pfx_for_key( key )+"."+key)
+        = (site_or_page == "page") ? localStorage_getItem( t_store_get_page_pfx()+"."+key)
+        : (site_or_page == "site") ? localStorage_getItem( t_store_get_site_pfx()+"."+key)
+        :                            localStorage_getItem( store_get_site_or_page_pfx_for_key( key )+"."+key)
     ;
 /*{{{
     let lfs = store_isa_site_or_page_key(key) ? lf5 : lf7;
@@ -298,14 +306,17 @@ let t_store_has_some_page_keys = function()
     let some_page_keys = [];
     let site_pfx = t_store_get_site_pfx();
 
-    for(let i=localStorage.length-1; i>=0; --i)
-    {
-        let key      = localStorage.key(i);
-        if(   !key.startsWith( site_pfx        ) /* .. (page if not site) */
-           && !key.endsWith  ( "window_scrollY") /* ignore volatile page info */
-          )
-            some_page_keys.push(key);
-    }
+    try {
+        for(let   i = localStorage.length-1; i>=0; --i)
+        {
+            let key = localStorage.key(i);
+            if(   !key.startsWith( site_pfx        ) /* .. (page if not site) */
+                  && !key.endsWith  ( "window_scrollY") /* ignore volatile page info */
+              )
+                some_page_keys.push(key);
+        }
+    } catch(ex) {}
+
     return some_page_keys.length
         ?  some_page_keys
         :  ""
@@ -319,23 +330,25 @@ let t_store_log_site_and_page = function()
     let site_pfx = t_store_get_site_pfx();
     let page_pfx = t_store_get_page_pfx();
 
-    for(let i=localStorage.length-1; i>=0; --i)
-    {
-        let    key = localStorage.key(i);
-        if(   !key.includes( site_pfx )
-           && !key.includes( page_pfx )
-          )
-            continue;
-
-        let       val = localStorage[key];
-
-        let { filter_in  ,  filter_out } = store_FILTER(key,val);
-        if(   filter_in || !filter_out)
+    try {
+        for(let      i = localStorage.length-1; i>=0; --i)
         {
-            let value = localStorage.getItem( key );
-            results.push({key , value});
+            let    key = localStorage.key(i);
+            if(   !key.includes( site_pfx )
+               && !key.includes( page_pfx )
+              )
+                continue;
+
+            let    val = localStorage[key];
+
+            let { filter_in  ,  filter_out } = store_FILTER(key,val);
+            if(   filter_in || !filter_out)
+            {
+                let value = localStorage_getItem( key );
+                results.push({key , value});
+            }
         }
-    }
+    } catch(ex) {}
 
     t_log.console_table(results, "["+site_pfx+"] .. ["+page_pfx+"]");
     return results;/*//FIXME*/
@@ -416,14 +429,16 @@ log("%c site_pfx=["+site_pfx+"]", lbH+lf1);
 log("%c page_pfx=["+page_pfx+"]", lbH+lf1);
 }}}*/
     let page_items_keys_to_remove_array = [];
-    for(let i=localStorage.length-1; i>=0; --i)
-    {
-        let k = localStorage.key(i);
-        if( t_store_is_a_shared_item(site_pfx,page_pfx,i+1,k,log_this) )
+    try {
+        for(let i = localStorage.length-1; i>=0; --i)
         {
-            page_items_keys_to_remove_array.push(k);
+            let k = localStorage.key(i);
+            if( t_store_is_a_shared_item(site_pfx,page_pfx,i+1,k,log_this) )
+            {
+                page_items_keys_to_remove_array.push(k);
+            }
         }
-    }
+    } catch(ex) {}
     /*}}}*/
     /* REMOVE  [page_items_keys_to_remove_array] {{{*/
     if(page_items_keys_to_remove_array.length)
@@ -439,7 +454,7 @@ if( log_this) log("%c localStorage: %c SITE %c"+site_pfx+"%c PAGE %c"+page_pfx +
 if(log_this) log((i+1)+"%c removing %c"+k
                  ,      lbL+lf2    ,lbR+lf3);
 
-            localStorage.removeItem(k);
+            localStorage_delItem(k);
             removed_keys += (i+1)+" - "+store_key_tail(k)+LF;
         }
         _notify_info(  (  msg
@@ -468,7 +483,7 @@ let t_store_is_a_shared_item = function(site_pfx,page_pfx,num,key,log_this)
 /*{{{*/
 if(log_this) {
     let result = why_shared || why_not;
-    log(num+"%c "+t_util.mPadStart(result,16)+"%c"+t_util.mPadStart(key,48)+"%c"+ t_util.ellipsis(localStorage.getItem(key),32)
+    log(num+"%c "+t_util.mPadStart(result,16)+"%c"+t_util.mPadStart(key,48)+"%c"+ t_util.ellipsis(localStorage_getItem(key),32)
         ,    lbL+lfx                          ,lbC+lfx                      ,lbR+lfx                                           );
 }
 /*}}}*/
@@ -492,22 +507,24 @@ log("%c site_pfx=["+site_pfx+"]", lbH+lf1);
 log("%c page_pfx=["+page_pfx+"]", lbH+lf1);
 }}}*/
     let site_items_keys_to_remove_array = [];
-    for(let i=localStorage.length-1; i>=0; --i)
-    {
-        let k      = localStorage.key(      i);
-        if( k.startsWith( site_pfx ) )
+    try {
+        for(let i = localStorage.length-1; i>=0; --i)
         {
-/*{{{
-logXXX((i+1)+" %c "+k+" %c "+ localStorage.getItem( k ), lbL+lf3, lbR+lf4)
+            let k = localStorage.key(i);
+            if( k.startsWith( site_pfx ) )
+            {
+                /*{{{
+logXXX((i+1)+" %c "+k+" %c "+ localStorage_getItem( k ), lbL+lf3, lbR+lf4)
 }}}*/
-            site_items_keys_to_remove_array.push(k);
-        }
-        else {
-/*{{{
-logXXX((i+1)+" %c "+k+" %c "+ localStorage.getItem( k ), lbL+lf8, lbR+lf9)
+                site_items_keys_to_remove_array.push(k);
+            }
+            else {
+                /*{{{
+logXXX((i+1)+" %c "+k+" %c "+ localStorage_getItem( k ), lbL+lf8, lbR+lf9)
 }}}*/
+            }
         }
-    }
+    } catch(ex) {}
     /*}}}*/
     /* REMOVE  [site_items_keys_to_remove_array] {{{*/
     if(site_items_keys_to_remove_array.length)
@@ -523,8 +540,7 @@ if( log_this) log("%c localStorage: %c SITE %c"+site_pfx+"%c PAGE %c"+site_pfx +
 if(log_this) log((i+1)+"%c removing %c"+k
                  ,      lbL+lf2    ,lbR+lf3);
 
-            localStorage.removeItem(k);
-
+            localStorage_delItem(k);
             removed_keys += (i+1)+" - "+store_key_tail(k)+LF;
         }
         _notify_info(  (  msg
@@ -664,9 +680,9 @@ if( log_this) {
     {
         site_or_page_logged_keys.push(key);
 
-        let isa_site_key = store_isa_site_key( key          ); let l_s = isa_site_key ? lf2 : lf0;
-        let isa_page_key = store_isa_page_key( key          ); let l_p = isa_page_key ? lf6 : lf0;
-        let site_or_page =       t_prop.get( t_data.SITE_OR_PAGE ); let l_m = site_or_page ? lf2 : lf6;
+        let isa_site_key = store_isa_site_key      ( key                 ); let l_s = isa_site_key ? lf2 : lf0;
+        let isa_page_key = store_isa_page_key      ( key                 ); let l_p = isa_page_key ? lf6 : lf0;
+        let site_or_page = t_prop.get && t_prop.get( t_data.SITE_OR_PAGE ); let l_m = site_or_page ? lf2 : lf6;
 
         if(isa_site_key || isa_page_key || site_or_page)
         {
@@ -678,7 +694,7 @@ if( log_this) {
 /*}}}*/
     if( store_isa_site_key( key ) ) return  true;     /* EXPLICIT SITE SCOPE */
     if( store_isa_page_key( key ) ) return false;     /* EXPLICIT PAGE SCOPE */
-    /* CURRENT MODE or PAGE */      return t_prop.get( t_data.SITE_OR_PAGE );
+    /* CURRENT MODE or PAGE */      return t_prop.get && t_prop.get( t_data.SITE_OR_PAGE );
 };
 /*}}}*/
 /*… store_get_site_or_page_pfx_for_key {{{*/
@@ -740,11 +756,16 @@ let store_key_tail = function(k)
 /* EXPORT */
 /*{{{*/
 return { name : "dom_store"
-    , logging : (state) => DOM_STORE_LOG = t_store_set_state("DOM_STORE_LOG",state)
-    , tagging : (state) => DOM_STORE_TAG = t_store_set_state("DOM_STORE_TAG",state)
+    , logging : (state) => DOM_STORE_LOG = t_store.setItem("DOM_STORE_LOG",state)
+    , tagging : (state) => DOM_STORE_TAG = t_store.setItem("DOM_STORE_TAG",state)
     , t_store_IMPORT
 
     , SITE_URL_TEMPLATE
+
+    /* STORE */
+    , setItem : localStorage_setItem
+    , getItem : localStorage_getItem
+    , delItem : localStorage_delItem
 
     /* SET */
     , t_store_set_state

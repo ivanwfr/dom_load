@@ -2,9 +2,10 @@
 /*│ dom_tools                                                                │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
+/* eslint-disable no-redeclare */
 
 /* globals window, document, navigator */
-/* globals console, localStorage, setTimeout, clearTimeout, setInterval, clearInterval */
+/* globals console, setTimeout, clearTimeout, setInterval, clearInterval */
 /* globals Node, requestAnimationFrame, cancelAnimationFrame */
 /* globals getComputedStyle */
 
@@ -48,6 +49,8 @@
 /* globals playground_prop_CB  */
 /*└───────────────────────────┘*/
 
+/* eslint-enable  no-redeclare */
+
 /* eslint-disable no-unused-vars */
 /* eslint-disable complexity     */
 /* eslint-disable no-template-curly-in-string */
@@ -55,7 +58,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (230124:18h:02)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (230707:21h:10)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -332,7 +335,7 @@ let   tools_DEPEND = function()
 /*…   load_IMPORT .. globals {{{*/
 let   load_IMPORT = function()
 {
-let log_this = localStorage.getItem("DOM_TOOLS_TAG");
+let log_this; try { log_this = t_store.localStorage_getItem("DOM_TOOLS_TAG"); } catch(ex) {}
 
 let i =5; /*....................................... dom_data     EXPORT-ONLY */                 /* 05 */
 
@@ -1020,6 +1023,9 @@ let load_MS;
 /*}}}*/
 let t_load = function()
 {
+    if(LOG_MAP != undefined)
+    { console.log("%c"+dom_data.SYMBOL_WARNING+" "+DOM_TOOLS_JS_ID+": RELOADING...", dom_log.LOG_BG_CSS.lb6); t_reload(); return; }
+
     load_IMPORT(); /* set up modules cross-references */
 /*{{{*/
 let caller     = "t_load";
@@ -1048,6 +1054,7 @@ if(log_this) log(caller, "info");
             ,lbb+lbH+lf3                         ,lbb+lbL+lf8                 ,lbb+lbR+lf2              );
         return;
     }
+if( log_this) t_load_log_loaded_modules();
 
     load3_PLAYGROUND_PANELS();
 
@@ -1087,6 +1094,42 @@ if(log_this) log(caller, "info");
     load11_POST();    /* IPC .. INIT TOOLS .. INIT DOC_TOOLS */
 };
 /*}}}*/
+/*_ t_load_log_loaded_modules {{{*/
+let t_load_log_loaded_modules = function()
+{
+    let id;             let el;                                                let lfn =  0;
+    id = "dom_tools_html";  el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+
+    id = "dom_host_css";    el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_grid_css";    el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_tools_css";   el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+
+    id = "dom_data_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_log_js";      el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_popup_js";    el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_util_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_i18n_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_prop_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_store_js";    el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_fly_js";      el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_wording_js";  el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_select_js";   el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_slot_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_hide_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_view_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_sticky_js";   el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_seek_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_share_js";    el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_details_js";  el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_wot_js";      el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_sentence_js"; el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_grid_js";     el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_gutter_js";   el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_ipc_js";      el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+    id = "dom_tools_js";    el = t_get_tool(id); log("%c"+id+"%c"+(el ? el.id : "XXX"), lbL+lfX[++lfn % 10], lbR+lfX[el ? 9:2]);
+
+};
+        /*}}}*/
 /*➔ t_just_loaded {{{*/
 let t_just_loaded = function(action,delay,log_this)
 {
@@ -1109,6 +1152,12 @@ if(log_this)
 /*➔ t_unload {{{ */
 let t_unload = function()
 {
+    if(  (LOG_MAP == undefined)
+      ||  !dom_tools_html
+      || ( dom_tools_html.style.visibility != "visible")
+      )
+    { console.log("%c"+dom_data.SYMBOL_WARNING+" "+DOM_TOOLS_JS_ID+": NOT LOADED", dom_log.LOG_BG_CSS.lb6); return; }
+
 /*{{{*/
 let caller = "t_unload";
 let log_this = LOG_MAP.T1_DOM_LOAD;
@@ -1127,11 +1176,11 @@ if( log_this) log("MOVE TOOLS OFF GRID");
         t_move_TOOLS_OFF_GRID(caller);
 
 if( log_this) log("HIDE TOOLS");
-    if(dom_tools_html)
+    if( dom_tools_html)
         dom_tools_html.style.visibility = t_data.CSS_HIDDEN;
 
 if( log_this) log("SET t_data.WORDING OFF");
-    t_wording.dom_wording_cycle("OFF", false);
+    t_wording.t_wording_cycle("OFF", false);
 
 if( log_this) log("SEND IPC UNLOAD MESSAGE");
     let ipc = {    t_load : TOOLS5_UNLOADED
@@ -1384,7 +1433,11 @@ if( log_this) logBIG("DOM_LOAD_TAG ["+DOM_LOAD_TAG+"] FROM TEMPLATE LITERAL", lf
 /*}}}*/
 
 /*… load1_SHADOW {{{*/
+/*{{{*/
 let shadow_host;
+let shadow_root;
+
+/*}}}*/
 let load1_SHADOW = function()
 {
 /*{{{*/
@@ -1392,8 +1445,19 @@ let   caller = "load1_SHADOW";
 let log_this = DOM_TOOLS_LOG || LOG_MAP.T1_DOM_LOAD;
 
 if( log_this) log("%c"+t_data.SD1+"%c "+caller, lbS+lf1, lbH+lf1);
+if( log_this) log("%c shadow_host %c"+get_id_or_tag_and_className(shadow_host), lbL+lf1, lbR+lf1);
 /*}}}*/
-    /* [shadow_host] [shadow_root] {{{*/
+    /* [shadow_host] [shadow_host] {{{*/
+
+    /* IN CASE [shadow_host] HAS BEEN ALREADY BEEN CREATED BY [dom_load] */
+    if(!shadow_host)
+    {
+        shadow_host                 = document.querySelector("#shadow_host");
+        if(shadow_host) shadow_root = shadow_host.shadowRoot;
+    }
+
+if(!shadow_host)
+{
     shadow_host                         = document.createElement("DIV");
     shadow_host.id                      = "shadow_host";
     shadow_host.style.fontSize          = "initial";
@@ -1417,6 +1481,7 @@ if( log_this || DOM_TOOLS_TAG)    log("%c shadow_host.style.zIndex=["+shadow_hos
     }
 
     shadow_root.id     = "shadow_root";
+}
     /*}}}*/
     /* [shadow_root] HEAD charset utf-8 .. (200624: relying on script charset="utf-8" attribute instead) {{{*/
 /*{{{
@@ -1431,26 +1496,97 @@ if( log_this || DOM_TOOLS_TAG)    log("%c shadow_host.style.zIndex=["+shadow_hos
 }}}*/
     /*}}}*/
     /* load1_SHADOW_host [CSS HTML JS] {{{*/
+/*{{{*/
+/* eslint-disable no-undef */
+if(log_this && (typeof chrome != "undefined") && chrome.runtime) {
+    let script_array
+    = { "dom_data"        : (typeof dom_data       )
+      , "dom_log"         : (typeof dom_log        )
+      , "dom_popup"       : (typeof dom_popup      )
+      , "dom_util"        : (typeof dom_util       )
+      , "dom_i18n"        : (typeof dom_i18n       )
+      , "dom_prop"        : (typeof dom_prop       )
+      , "dom_store"       : (typeof dom_store      )
+      , "dom_fly"         : (typeof dom_fly        )
+      , "dom_wording"     : (typeof dom_wording    )
+      , "dom_select"      : (typeof dom_select     )
+      , "dom_hide"        : (typeof dom_hide       )
+      , "dom_view"        : (typeof dom_view       )
+      , "dom_sticky"      : (typeof dom_sticky     )
+      , "dom_seek"        : (typeof dom_seek       )
+      , "dom_share"       : (typeof dom_share      )
+      , "dom_details"     : (typeof dom_details    )
+      , "dom_wot"         : (typeof dom_wot        )
+      , "dom_sentence"    : (typeof dom_sentence   )
+      , "dom_gutter"      : (typeof dom_gutter     )
+      , "dom_ipc"         : (typeof dom_ipc        )
+      , "dom_tools"       : (typeof dom_tools      )
+      , "dom_grid"        : (typeof dom_grid       )
+    };
+    let script_js_array
+    = { "dom_data_js"     : (typeof dom_data_js     )
+      , "dom_log_js"      : (typeof dom_log_js      )
+      , "dom_popup_js"    : (typeof dom_popup_js    )
+      , "dom_util_js"     : (typeof dom_util_js     )
+      , "dom_i18n_js"     : (typeof dom_i18n_js     )
+      , "dom_prop_js"     : (typeof dom_prop_js     )
+      , "dom_store_js"    : (typeof dom_store_js    )
+      , "dom_fly_js"      : (typeof dom_fly_js      )
+      , "dom_wording_js"  : (typeof dom_wording_js  )
+      , "dom_select_js"   : (typeof dom_select_js   )
+      , "dom_hide_js"     : (typeof dom_hide_js     )
+      , "dom_view_js"     : (typeof dom_view_js     )
+      , "dom_sticky_js"   : (typeof dom_sticky_js   )
+      , "dom_seek_js"     : (typeof dom_seek_js     )
+      , "dom_share_js"    : (typeof dom_share_js    )
+      , "dom_details_js"  : (typeof dom_details_js  )
+      , "dom_wot_js"      : (typeof dom_wot_js      )
+      , "dom_sentence_js" : (typeof dom_sentence_js )
+      , "dom_gutter_js"   : (typeof dom_gutter_js   )
+      , "dom_ipc_js"      : (typeof dom_ipc_js      )
+      , "dom_tools_js"    : (typeof dom_tools_js    )
+      , "dom_grid_js"     : (typeof dom_grid_js     )
+    };
+
+    if(dom_log && dom_log.log_key_val)  dom_log.log_key_val("script_array", script_array);
+    else                                console.log        ("script_array", script_array);
+
+    if(dom_log && dom_log.log_key_val)  dom_log.log_key_val("script_js_array", script_js_array);
+    else                                console.log        ("script_js_array", script_js_array);
+}
+/* eslint-enable  no-undef */
+/*}}}*/
 
     let  id;
-    id = "dom_tools_html"; if( !load1_SHADOW_host(id) ) return id; /* fail early .. instead of shadowing dangling dependencies */
-    id = "dom_tools_css" ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_tools_js"  ; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_tools_html"   ; if(                  !load1_SHADOW_host(id) ) return id; /* fail early .. instead of shadowing dangling dependencies */
+    id = "dom_tools_css"    ; if(                  !load1_SHADOW_host(id) ) return id;
 
-    id = "dom_hide_js"   ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_select_js" ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_wot_js"    ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_wording_js"; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_data_js"      ; if(!dom_data     &&  !load1_SHADOW_host(id) ) return id;
 
-    id = "dom_data_js"   ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_log_js"    ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_popup_js"  ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_prop_js"   ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_store_js"  ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_share_js"  ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_util_js"   ; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_details_js"; if( !load1_SHADOW_host(id) ) return id;
-    id = "dom_i18n_js"   ; if( !load1_SHADOW_host(id) ) return id;
+    id = "dom_log_js"       ; if(!dom_log      &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_popup_js"     ; if(!dom_popup    &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_util_js"      ; if(!dom_util     &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_i18n_js"      ; if(!dom_i18n     &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_prop_js"      ; if(!dom_prop     &&  !load1_SHADOW_host(id) ) return id;
+
+    id = "dom_store_js"     ; if(!dom_store    &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_fly_js"       ; if(!dom_fly      &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_wording_js"   ; if(!dom_wording  &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_select_js"    ; if(!dom_select   &&  !load1_SHADOW_host(id) ) return id;
+
+    id = "dom_hide_js"      ; if(!dom_hide     &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_view_js"      ; if(!dom_view     &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_sticky_js"    ; if(!dom_sticky   &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_seek_js"      ; if(!dom_seek     &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_share_js"     ; if(!dom_share    &&  !load1_SHADOW_host(id) ) return id;
+
+    id = "dom_details_js"   ; if(!dom_details  &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_wot_js"       ; if(!dom_wot      &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_sentence_js"  ; if(!dom_sentence &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_gutter_js"    ; if(!dom_gutter   &&  !load1_SHADOW_host(id) ) return id;
+
+    id = "dom_ipc_js"       ; if(!dom_ipc      &&  !load1_SHADOW_host(id) ) return id;
+    id = "dom_tools_js"     ; if(!dom_tools    &&  !load1_SHADOW_host(id) ) return id;
 
     if( load1_SHADOW_host("dom_grid_html", true) ) /* OPTIONAL */
     {
@@ -1466,38 +1602,48 @@ if( log_this || DOM_TOOLS_TAG)    log("%c shadow_host.style.zIndex=["+shadow_hos
 let load1_SHADOW_host = function(id,optional)
 {
 /*{{{*/
-let caller = "load1_SHADOW_host";
+let   caller = "load1_SHADOW_host";
 let log_this = LOG_MAP.T1_DOM_LOAD;
+let tag_this = DOM_TOOLS_TAG || log_this;
 
 if( log_this) log(caller+"%c"+id, lbH+lf1);
 /*}}}*/
     if( id.includes(" ") ) { log("%c"+caller+" %c"+id+"%c ID INCLUDES A SPACE", lbH+lf3, lbL+lf2, lbR+lf2); return false; }
 
-    let el = document.querySelector("#"+id);
-    if(!el ) {
-        if(!optional) {
-            log("%c"+caller+" %c"+id+"%c ELEMENT IS MISSING" , lbH+lf3, lbL+lf2, lbR+lf2);
-            log_caller();
-        }
-        return false;
-    }
-
-    /* proxiedNode .. [https://www.wisdomjobs.com] .. [ special (/unique?) case] {{{*/
-    if(el.proxiedNode)
+    let el = (shadow_root && shadow_root.querySelector("#"+id));
+    if( el )
     {
-if(log_this) log("load1_SHADOW_host: using proxiedNode ["+el.proxiedNode.type+"]:");
-if(log_this) t_log.console_dir("el",el);
-        el = el.proxiedNode;
+        if(tag_this) log("%c"+caller+" %c"+id+"%c ALREADY SHADOWED"   , lbH+lf3, lbL+lf2, lbR+lf2);
+        if(log_this) log_caller();
     }
-    /*}}}*/
+    else {
+        el = document.querySelector("#"+id);
+        if(!el ) {
+            if(!optional) {
+                log("%c"+caller+" %c"+id+"%c ELEMENT IS MISSING" , lbH+lf3, lbL+lf2, lbR+lf2);
+                log_caller();
+            }
+            return false;
+        }
 
-    el.style.display = "inline";
+        /* proxiedNode .. [https://www.wisdomjobs.com] .. [ special (/unique?) case] {{{*/
+        if(el.proxiedNode)
+        {
+if(log_this) log(caller+": using proxiedNode ["+el.proxiedNode.type+"]:");
+if(log_this) t_log.console_dir("el",el);
+            el = el.proxiedNode;
+        }
+        /*}}}*/
 
-    shadow_root.appendChild( el );
+        el.style.display = "inline";
 
+        shadow_root.appendChild( el );
+        log("%c"+caller+" %c"+id+"%c ........SHADOWED"   , lbH+lf3, lbL+lf2, lbR+lf2);
+        log_caller();
+    }
+if( log_this) log(caller+"("+id+") %c       t_get_tool("+                          id +")"+ (      t_get_tool(id) ? " OK" : " FAILED"), lbF+lb7);
+if( log_this) log(caller+"("+id+") %c getComputedStyle("+t_util.get_node_id_or_tag(el)+")"+ (getComputedStyle(el) ? " OK" : " FAILED"), lbF+lb7);
 /*{{{
-console.log("load1_SHADOW_host("+id+") %c t_get_tool        "+ (t_get_tool(id)         ? " OK" : " FAILED"), lbF+lb7);
-console.log("load1_SHADOW_host("+id+") %c getComputedStyle"+ (getComputedStyle(el) ? " OK" : " FAILED"), lbF+lb7);
 }}}*/
     return true;
 };
@@ -2356,7 +2502,8 @@ if( log_this) log("%c"+caller+"("+t_util.get_id_or_tag_and_className(el)+")", lf
 /*}}}*/
     let    tag = ""; let result = "";
 
-    if(document.location.origin == "file://") /* see https://stackoverflow.com/questions/48753691/cannot-access-cssrules-from-local-css-file-in-chrome-64/49160760#49160760 */
+    /* see https://stackoverflow.com/questions/48753691/cannot-access-cssrules-from-local-css-file-in-chrome-64/49160760#49160760 */
+    if(document.location.origin == "file://")
     {
         tag = el.id+" ("+document.location.origin+")";
 /*      el.title = "file scheme location has a CORS policy\n...preventing access to style.sheet.cssrules content signature";*/
@@ -2700,8 +2847,9 @@ logBIG("adding (SLOWING DOWN !) MutationObserver");
     /*}}}*/
     /* TOOLS .. (display tools) {{{*/
 /*{{{
-    if(dom_tools_html) dom_tools_html.style.visibility = "visible";
 }}}*/
+    if(dom_tools_html) dom_tools_html.style.visibility = "visible";
+    if(dom_tools_html) dom_tools_html.style.display    =   "block";
 
     t_sync_layout(caller);
     /*}}}*/
@@ -3712,8 +3860,6 @@ log("t_REMOVE_ADS_changed("+id+" , "+state+") %c"+ (by_user_or_from_storage ? "b
 /*{{{*/
 let behavior_TOUCH_ELSE_DESKTOP;
 
-let shadow_root;
-
 let dom_grid_html; /* PLAYGROUND */
 
 let hotspot;
@@ -4051,7 +4197,8 @@ if( log_this) log("%c"+caller, lfX[state ? 5:8]);
     /* not while some TOOLS-TIER is active */
     if( prop.get( t_data.TOOLS_TIER2 ) )
     {
-        pulse_id( t_data.TOOLS_TIER2 );
+        pulse_id( t_data.TOOLS_TIER2       );
+        prop.set( t_data.TOOLS_TIER2, false);
 
         return;
     }
@@ -7847,7 +7994,7 @@ if( log_this) log(caller+": on_sticky=["+on_sticky+"]");
     /*}}}*/
     /* [quick_move] {{{*/
     let quick_move
-        = t_seek.t_seeker_is_seeker_PU_ONSEEKER()
+        =  t_seek.t_seeker_is_seeker_PU_ONSEEKER()
         || prop.get(t_data.TOOLS_TIER2)
     ;
 
@@ -11114,7 +11261,7 @@ logXXX("%c bag_id=["+bag_id+"]", lbH+lf8);
         case "dev_log_map"  :
         case "prop_bag"     : if(      prop_tools_CB(e_target)        )  consumed_by = bag_id; break;
 
-        case "fly_div"      : t_fly.t_fly_clr         (e_target         ); consumed_by = bag_id; break;
+        case "fly_div"      : t_fly.t_fly_clr       (e_target         ); consumed_by = bag_id; break;
 
         default:
 if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lbl(e_target)+"]"
@@ -23357,8 +23504,8 @@ let PULSE_BLACKLIST_ID_CSV = "tools_node";
 const PULSE_IN_DURATION    = 500;
 const PULSE_OUT_DURATION   = 500;
 
-let pulsing_id     = "";
-let pulsing_id_csv = "";
+let pulsing_id             = "";
+let pulsing_id_csv         = "";
 
 /*}}}*/
 /*_ pulse_id {{{*/
@@ -24240,7 +24387,7 @@ console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",o
     if( drag_cursor_div.style.display != "block")
     {
         /* STANDALONE SPLITTER ACTIVATION {{{*/
-        if(typeof dom_sentence_event != "undefined")
+        if(typeof dom_tools != "undefined")
         {
             drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
             drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
@@ -24293,7 +24440,7 @@ return { name : "drag_cursor"
 "│                                                                             │
 
 :e             $RPROFILES/script/dom_tools.js
-:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_tools.js
 :e             $RPROFILES/stylesheet/dom_host.css
 "...           $RPROFILES/script/drag_cursor.js
 
@@ -24305,25 +24452,11 @@ return { name : "drag_cursor"
 
 /* EXPORT tools */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 /* eslint-disable object-shorthand */
 
 return { name : "dom_tools"
-    , logging : function(state) { return DOM_TOOLS_LOG = t_store_set_state("DOM_TOOLS_LOG",state); }
-    , tagging : function(state) { return DOM_TOOLS_TAG = t_store_set_state("DOM_TOOLS_TAG",state); }
+    , logging : function(state) { return DOM_TOOLS_LOG = t_store.setItem("DOM_TOOLS_LOG",state); }
+    , tagging : function(state) { return DOM_TOOLS_TAG = t_store.setItem("DOM_TOOLS_TAG",state); }
     , t_tools_IMPORT
 
     /* CSS {{{*/
@@ -24450,7 +24583,6 @@ return { name : "dom_tools"
     ,    t_pattern_del_words_option_sfx
     ,    t_pattern_to_sel_text_words_option
     ,    t_pin_panel_at_XY
-    ,    t_reload
     ,    t_save_update_post
     ,    t_seek_set_container_selected
     ,    t_set_CSS_PINNED
@@ -24592,13 +24724,16 @@ return { name : "dom_tools"
 , load5_STORAGE_hotspot
 , t_IS_ON_GRID_observerCB
 , t_MASK_OR_HIDE_changed
+, t_activate_tools_tier1
 , t_click_panel_pin_CB
 , t_drag_hotspot_xy_delay
 , t_flash_unpinned_panels
 , t_is_a_tools_id_tier
+, t_load_log_loaded_modules
 , t_outline_viewport_top_containers
 , t_raise_pivot_PANEL
 , t_raise_pivot_PANEL_layout
+, t_reload
 , t_sync_layout
 , t_sync_styles
 , t_sync_tools_position
@@ -24610,15 +24745,7 @@ return { name : "dom_tools"
 , get_mouseUP_display_state     : drag_cursor.get_mouseUP_display_state
 , show_drag_cursor              : drag_cursor.show_drag_cursor
 , hide_drag_cursor              : drag_cursor.hide_drag_cursor
-/*
-    , t_storage_list : function()
-    {
-        chrome.storage.local.get(null, function(items) { for (key in items) {
-            console.log(key+"=["+items[key]+"]");
-            }
-        });
-    }
-*/
+
 };
 
 /*}}}*/
@@ -24633,30 +24760,41 @@ document.addEventListener("DOMContentLoaded", function(e) { console.log(DOM_TOOL
 let IPC_SCRIPT_ID    = DOM_TOOLS_JS_ID;
 let IPC_EXTENSION_ID = "background_js";
 
+const LF        = String.fromCharCode(10);
+const  log = console.log;
+const warn = console.warn;
+/*{{{
 let IPC_LOG          = dom_log.LOG_MAP.IPC_LOG;
-let IPC_LOG_COLOR    = dom_log.lb6;
-let IPC_MSG_COLOR    = dom_log.lbF+IPC_LOG_COLOR;
-let IPC_LBA_COLOR    = dom_log.lbA;
-let IPC_LBF_COLOR    = dom_log.lbF;
-let IPC_LBH_COLOR    = dom_log.lbH;
-let IPC_LF5_COLOR    = dom_log.lf5;
-let IPC_LB0_COLOR    = dom_log.lb0;
+    ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
+    ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
+    ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
+}}}*/
+const IPC_LOG          = true;
+const IPC_LB0_COLOR    = dom_log.LOG_BG_CSS.lb0;
+const IPC_LBA_COLOR    = dom_log.LOG_BG_CSS.lbA;
+const IPC_LBF_COLOR    = dom_log.LOG_BG_CSS.lbF;
+const IPC_LBH_COLOR    = dom_log.LOG_BG_CSS.lbH;
+
+const IPC_LF5_COLOR    = dom_log.LOG_FG_CSS.lf5;
+const IPC_LOG_COLOR    = dom_log.LOG_BG_CSS.lb6;
+const IPC_MSG_COLOR    = dom_log.LOG_XX_CSS.lbF + IPC_LOG_COLOR;
+
 /*}}}*/
 /*… t_handle_ipc_message {{{*/
 let t_handle_ipc_message = function(ipc)
 {
 "use strict";
 let log_this = IPC_LOG;
-if( log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_handle_ipc_message(ipc)"                        , IPC_LOG_COLOR, IPC_LBA_COLOR);
+if( log_this) log("%c "+IPC_SCRIPT_ID+" %c t_handle_ipc_message(ipc)"                        , IPC_LOG_COLOR, IPC_LBA_COLOR);
 
     /* [ipc.start] .. (ON-OFF) {{{*/
     if((typeof ipc.start != "undefined"))
     {
-        if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c EXTENSION INSTRUCTION DETECTED"            , IPC_LOG_COLOR, IPC_LBF_COLOR);
+        if(log_this) log("%c "+IPC_SCRIPT_ID+" %c EXTENSION INSTRUCTION DETECTED"            , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
         let script_loaded = t_ipc_handle_start(ipc.start);
 
-        if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c TOOLS LOADED AND WAITING "+script_loaded   , IPC_LOG_COLOR, IPC_LBF_COLOR);
+        if(log_this) log("%c "+IPC_SCRIPT_ID+" %c TOOLS LOADED AND WAITING "+script_loaded   , IPC_LOG_COLOR, IPC_LBF_COLOR);
     }
     /*}}}*/
     /* [ipc.theme] {{{*/
@@ -24672,19 +24810,19 @@ let t_ipc_handle_start = function(start)
 {
 "use strict";
 let log_this = IPC_LOG;
-    if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_start("+start+")"                 , IPC_LOG_COLOR, IPC_LBA_COLOR);
+    if(log_this) log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_start("+start+")"                 , IPC_LOG_COLOR, IPC_LBA_COLOR);
     /* ON {{{*/
     if(start == "ON")
     {
         if(!dom_ipc.t_ipc_is_IPC_SCRIPT_loaded() )
         {
-            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c LOADING "                              , IPC_LOG_COLOR, IPC_LBF_COLOR);
+            if(log_this) log("%c "+IPC_SCRIPT_ID+" %c LOADING "                              , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
             dom_tools.t_load();
             let script_loaded = ((typeof DOM_TOOLS_CSS_TAG != "undefined") && DOM_TOOLS_CSS_TAG);
 
-if(log_this) console.log("...DOM_TOOLS_CSS_TAG=["+ DOM_TOOLS_CSS_TAG +"]");
-if(log_this) console.log(".......script_loaded=["+ script_loaded     +"]");
+if(log_this) log("...DOM_TOOLS_CSS_TAG=["+ DOM_TOOLS_CSS_TAG +"]");
+if(log_this) log(".......script_loaded=["+ script_loaded     +"]");
             return script_loaded;
         }
         else {
@@ -24693,12 +24831,12 @@ if(log_this) console.log(".......script_loaded=["+ script_loaded     +"]");
             let dom_tools_html =   dom_tools.t_get_tool("dom_tools_html");
             if( dom_tools_html && (dom_tools_html.style.visibility == "hidden"))
             {
-                if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c RELOADING "                        , IPC_LOG_COLOR, IPC_LBF_COLOR);
+                if(log_this) log("%c "+IPC_SCRIPT_ID+" %c RELOADING "                        , IPC_LOG_COLOR, IPC_LBF_COLOR);
                 dom_tools.t_reload();
             }
             /* ALREADY LOADED */
             else {
-                if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c ALREADY LOADED .. RE-SENDING "+dom_tools.TOOLS4_DEPLOYED    , IPC_LOG_COLOR, IPC_LBF_COLOR);
+                if(log_this) log("%c "+IPC_SCRIPT_ID+" %c ALREADY LOADED .. RE-SENDING "+dom_tools.TOOLS4_DEPLOYED    , IPC_LOG_COLOR, IPC_LBF_COLOR);
                 let ipc
                     = { dom_tools_t_load : dom_tools.TOOLS4_DEPLOYED
                       ,           caller : DOM_TOOLS_JS_TAG+".t_ipc_handle_start"
@@ -24714,12 +24852,12 @@ if(log_this) console.log(".......script_loaded=["+ script_loaded     +"]");
     else {
         if( dom_ipc.t_ipc_is_IPC_SCRIPT_loaded() )
         {
-            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c UNLOADING "                            , IPC_LOG_COLOR, IPC_LBF_COLOR);
+            if(log_this) log("%c "+IPC_SCRIPT_ID+" %c UNLOADING "                            , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
             dom_tools.t_unload();
         }
         else {
-            if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c NOT YET LOADED"                        , IPC_LOG_COLOR, IPC_LBF_COLOR);
+            if(log_this) log("%c "+IPC_SCRIPT_ID+" %c NOT YET LOADED"                        , IPC_LOG_COLOR, IPC_LBF_COLOR);
 
             dom_ipc.t_wait_for_startup_message_from_extension( DOM_TOOLS_JS_ID );
         }
@@ -24734,36 +24872,68 @@ let t_ipc_handle_theme = function(theme)
 {
 "use strict";
 let log_this = IPC_LOG;
-if(log_this) console.log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_theme("+theme+")"                 , IPC_LOG_COLOR, IPC_LBA_COLOR);
+if(log_this) log("%c "+IPC_SCRIPT_ID+" %c t_ipc_handle_theme("+theme+")"                 , IPC_LOG_COLOR, IPC_LBA_COLOR);
 
     let t_theme = "theme_"+theme.toUpperCase();
-if(log_this) console.log("%c "+DOM_LOAD_ID+" calling dom_load", IPC_LBH_COLOR+IPC_LF5_COLOR.lf5);
+if(log_this) log("%c "+DOM_LOAD_ID+" calling dom_load", IPC_LBH_COLOR+IPC_LF5_COLOR);
     dom_tools.prop_id_toggle( t_theme );
 };
 /*}}}*/
 /*}}}*/
+if(IPC_LOG) log("%c "+DOM_TOOLS_JS_ID+" LOADING DONE ", IPC_LBH_COLOR+IPC_LF5_COLOR);
+/* RUNNING AS AN EXTENSION {{{*/
+/* eslint-disable no-undef */
+let running_as_an_extension = (typeof chrome != "undefined") && chrome.runtime;
+if( running_as_an_extension )
+{
+    let dom_tools_html_el       = document.querySelector("#dom_tools_html"); log("#dom_tools_html", dom_tools_html_el);
+    if(!dom_tools_html_el) {
+        if(IPC_LOG) log("%c LOADING AS AN EXTENSION ", IPC_MSG_COLOR);
+        if(IPC_LOG) log("manifest", chrome.runtime.getManifest());
+    }
+    else {
+        if(IPC_LOG) log("%c RUNNING AS AN EXTENSION ", IPC_MSG_COLOR);
+        //console.profile("t_load");
+        //dom_tools.t_load();
+        //console.profileEnd();
+if(IPC_LOG) log("%c LISTENING TO BACKGROUND SCRIPT MESSAGES", IPC_MSG_COLOR);
 
-/* STAND-ALONE .. EXTENSION STARTUP MESSAGE RECEIVED {{{*/
-if(IPC_LOG) console.log("%c "+DOM_TOOLS_JS_ID+" LOADING DONE ", IPC_LBH_COLOR+IPC_LF5_COLOR.lf5);
+        let t_onMessage_CB = function(message,sender,response_handler=null) /* eslint-disable-line strict */
+        {
+            if(IPC_LOG) log(  "%c HANDLING MESSAGE "+JSON.stringify(message) , IPC_MSG_COLOR);
+            switch( message.cmd )
+            {
+            case    "t_load"  : message.result = "CALLING ["+message.cmd+"] IN "+DOM_TOOLS_JS_TAG; dom_tools.t_load  ();  break;
+            case    "t_unload": message.result = "CALLING ["+message.cmd+"] IN "+DOM_TOOLS_JS_TAG; dom_tools.t_unload();  break;
+            default           : message.result = "IGNORING UNEXPECTED MESSAGE.cmd ["+  message.cmd  +"]"; warn();
+            }
+            if(response_handler) response_handler( message );
+            return false; // whether to wait for an async response .. or not
+        };
 
-let extension_signature
-    = document.body.attributes[IPC_EXTENSION_ID]
-    ? document.body.attributes[IPC_EXTENSION_ID].textContent
-    : "";
-if(IPC_LOG) console.log("%c["+IPC_EXTENSION_ID+"]%c = %c"+extension_signature, IPC_MSG_COLOR, IPC_LBA_COLOR, IPC_LBF_COLOR+IPC_LB0_COLOR);
-
-if(IPC_LOG) console.log("%c "+DOM_TOOLS_JS_ID+" calling t_load", IPC_LBH_COLOR+IPC_LF5_COLOR.lf5);
-
-/*{{{
-console.profile("t_load");
-}}}*/
-dom_tools.t_load();
-/*{{{
-console.profileEnd();
-}}}*/
+        chrome.runtime.onMessage.addListener( t_onMessage_CB );
+    }
+}
+/* eslint-enable  no-undef */
 /*}}}*/
+/* STAND-ALONE .. EXTENSION STARTUP MESSAGE RECEIVED {{{*/
+else {
+    let extension_signature
+        = document.body.attributes[IPC_EXTENSION_ID]
+        ? document.body.attributes[IPC_EXTENSION_ID].textContent
+        : "";
+    if(IPC_LOG) log("%c body.attributes[IPC_EXTENSION_ID "+IPC_EXTENSION_ID+"]%c = %c["+extension_signature+"]", IPC_MSG_COLOR, IPC_LBA_COLOR, IPC_LBF_COLOR+IPC_LB0_COLOR);
+
+    if(IPC_LOG) log("%c "+DOM_TOOLS_JS_ID+" calling t_load", IPC_LBH_COLOR+IPC_LF5_COLOR);
+
+    //console.profile("t_load");
+    dom_tools.t_load();
+    //console.profileEnd();
+}
+/*}}}*/
+
 /*
 :e splitter_embedded.html
-:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_tools.js
 */
 

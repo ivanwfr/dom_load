@@ -1,5 +1,5 @@
 
-#dom_tools_css_tag  { content: "dom_tools_css (220203:16h:26)"; }
+#dom_tools_css_tag  { content: "dom_tools_css (230627:15h:57)"; }
 
 /* flag {{{*/
 .flag, .flag.checked {
@@ -916,9 +916,10 @@ content          : '\2756';
     min-height     : 8em   !important;
     min-width      : 8em   !important;
 
+/*{{{
     padding        : 1em    !important;
-
-    font-size      : 200%   !important;
+    font-size      : 300%   !important;
+}}}*/
     line-height    : 100%   !important;
 
     text-align     : center !important;
@@ -3176,10 +3177,12 @@ padding    : 5px             !important;
 
 /* .pressed {{{*/
 
+/*{{{ 230627
 .pressed { transform        : scale(0.95); }
+.pressed { transform-origin :   50% 50%  ; }
+}}}*/
 .pressed { opacity          :       0.8  ; }
 /*{{{
-.pressed { transform-origin :   50% 50%  ; }
 }}}*/
 
 /*{{{

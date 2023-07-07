@@ -1,7 +1,7 @@
 /* dom_log_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
-
-/* globals console, localStorage, setTimeout, clearTimeout */
+/* eslint-disable no-redeclare              */
+/* globals console, setTimeout, clearTimeout */
 /* globals document, window, HTMLElement */
 /* globals dom_data   */
 /* globals dom_select */ /* OPTIONAL */
@@ -14,9 +14,10 @@
 /* eslint-disable no-warning-comments */
 /* eslint-disable prefer-spread */
 /* eslint-disable prefer-rest-params */
+/* eslint-enable  no-redeclare              */
 
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (220207:18h:58)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (230707:19h:35)";
 /*}}}*/
 let dom_log     = (function() {
 "use strict";
@@ -33,7 +34,7 @@ let t_data     = {}        ;    /* 05 */
 let t_util     = {}        ;    /* 07 */
 /*  t_i18n     = {}        ; */ /* 08 */
 /*  t_prop     = {}        ; */ /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -62,7 +63,7 @@ let t_log_IMPORT  = function(log_this)
     t_util    = dom_util   ;    /* 07 */
 /*  t_i18n    = dom_i18n   ; */ /* 08 */
 /*  t_prop    = dom_prop   ; */ /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -85,8 +86,8 @@ let t_log_IMPORT  = function(log_this)
 /*}}}*/
     log_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_LOG_LOG = DOM_LOG_LOG || localStorage_getItem("DOM_LOG_LOG");
-    DOM_LOG_TAG = DOM_LOG_TAG || localStorage_getItem("DOM_LOG_TAG");
+    DOM_LOG_LOG = DOM_LOG_LOG || dom_store.getItem("DOM_LOG_LOG");
+    DOM_LOG_TAG = DOM_LOG_TAG || dom_store.getItem("DOM_LOG_TAG");
 
     /*}}}*/
 if(log_this) log("%c 06 log", lbH+lf6);
@@ -109,16 +110,21 @@ let   L_FNC  =         "f ";
 let   L_WRN  =         "‼ ";
 
 /* t_util stubs */
-let add_el_class                = function( ) {  };
-let del_el_class                = function( ) {  };
-let get_n_lbl                   = function(n) { return (n ? n.tagName : "null_node"); }; /* eslint-disable-line no-unused-vars */
-let get_id_or_tag;
-let get_id_or_tag_and_className;
-let mPadStart                   = function(s) { return s; };
-let mPadEnd                     = function(s) { return s; };
-let strip_HTML                  = function(t) { return t; };
-let strip_console_formatting    = function(t) { return t; };
-let strip_pat                   = function(t) { return t; };
+let add_el_class                = function(   ) {  };
+let csv_add                     = function(c,v) { return (c ? (c+","+v) : v); };
+let del_el_class                = function(   ) {  };
+let ellipsis                    = function(t  ) { return t; };
+let get_id_or_tag               = function(p  ) { return p; };
+let get_id_or_tag_and_className = function(v  ) { return v; };
+let get_n_lbl                   = function(n  ) { return (n ? n.tagName : "null_node"); }; /* eslint-disable-line no-unused-vars */
+let get_node_path               = function(s  ) { return s; };
+let get_node_path_tail          = function(t  ) { return t; };
+let mPadEnd                     = function(s  ) { return s; };
+let mPadStart                   = function(s  ) { return s; };
+let not_an_anchor_target        = function(s  ) { return s; };
+let strip_HTML                  = function(t  ) { return t; };
+let strip_console_formatting    = function(t  ) { return t; };
+let strip_pat                   = function(t  ) { return t; };
 
 /*}}}*/
 let   log_INTERN = function()
@@ -142,9 +148,11 @@ let   log_INTERN = function()
     /* DOM-UTIL */
     add_el_class                = t_util.add_el_class;
     del_el_class                = t_util.del_el_class;
+    ellipsis                    = t_util.ellipsis;
     get_n_lbl                   = t_util.get_n_lbl;
     get_id_or_tag               = t_util.get_id_or_tag;
     get_id_or_tag_and_className = t_util.get_id_or_tag_and_className;
+    get_node_path_tail          = t_util.get_node_path_tail;
 
     /* STRINGS-UTIL */
     mPadStart                   = t_util.mPadStart;
@@ -155,11 +163,6 @@ let   log_INTERN = function()
 
     /*}}}*/
 };
-/*}}}*/
-/*_ localStorage {{{*/
-let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
-let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
-let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
 /*}}}*/
 /* eslint-enable no-unused-vars */
 /*}}}*/
@@ -372,14 +375,15 @@ let parse_ex_stack_FUNC_FILE_LINE_COL = function(text, level_max=10)
     for(let i=2; i<=(2+level_max); ++i)
     {
         if( String(lines[i]).includes("at log_caller") ) continue;
+        if( String(lines[i]).includes("log.js"       ) ) continue;
 
         if( line_match = get_ex_stack_line_match(lines[i]) )
             result    += (result ? LF : "") + sym+" "+line_match;
         sym = L_ARU; /* past first line arrow */
     }
-
+/*{{{
     if( !result.includes(LF) ) result += LF + sym +" ... (async)";
-
+}}}*/
     return result;
 };
 /*}}}*/
@@ -578,10 +582,6 @@ let logging_something = function()
 
 const dom_LOG_MAP
     = {   LOG_MAP
-/* CALLERS of dom_LOG_MAP: {{{
-/^[^/]*\<dom_LOG_MAP\>\s*[(=),}]
-C:/LOCAL/STORE/DEV/PROJECTS/RTabs/Util/RTabs_Profiles/DEV/script/dom_log.js:1409  t_store_set_state:1428:     , ...dom_LOG_MAP
-}}}*/
         , logging_load_LOG_MAP
         , logging_toggle
         , logging_something
@@ -589,8 +589,11 @@ C:/LOCAL/STORE/DEV/PROJECTS/RTabs/Util/RTabs_Profiles/DEV/script/dom_log.js:1409
 /*}}}*/
 
 /*➔ log_key_val {{{*/
+/*{{{*/
 const LF_HEAD = LF+"    ";
-let log_key_val       = function(name, o, lxx       ) { return log_key_val_group(name, o, lxx, false); };
+
+/*}}}*/
+let log_key_val       = function(name, o, lxx       ) { return log_key_val_group(name, o, lxx, true); };
 let log_key_val_group = function(name, o, lfx=7, group=true)
 {
     let lxx = (typeof lfx == "number")
@@ -598,7 +601,7 @@ let log_key_val_group = function(name, o, lfx=7, group=true)
         :             lfx;              /* or an fg color */
 
     if(!o) {
-        log(name+": %c null object ", (lxx || lb0));
+        console.log(name+": %c null object ", (lxx || lb0));
         return "";
     }
 
@@ -632,41 +635,42 @@ let log_key_val_group = function(name, o, lfx=7, group=true)
     else {
 
         let n = 1;
-        Object.keys(o).forEach( /*..................... [OWN PROPERTY] NAMES */
-                                function(key) {
-                                    let   val = o[key];
-                                    let   lfv = lf2;
-                                    try { lfv =        (val          ==  null        ) ?     lb0 /* NULL      */
-                                              :        (val          ==  undefined   ) ?     lb0 /* UNDEFINED */
-                                              :        (val          ==  "null_node" ) ?     lb0 /* NULL_NODE */
-                                              :        (val          ==  "NO"        ) ?     lf3 /* NOTHING   */
-                                              :        (val          ==  "[]"        ) ?     lf3 /* NOTHING   */
-                                              :        (val          ==  false       ) ?     lf2 /* FALSE     */
-                                              :        (val          ==  true        ) ?     lb5 /* TRUE      */
-                                              :        (typeof val   == "object"     ) ?     lf3 /* OBJECT    */
-                                              :  String(val).startsWith( L_NEW       ) ? lbH+lf9 /* CHANGED   */
-                                              :  String(val).startsWith( L_CHK       ) ?     lf8 /* CHECKED   */
-                                              :  String(val).includes  ( LF          ) ? lbF+lf5 /* SUBSTANCE */
-                                              :  String(val).includes  ( " "         ) ? lbH+lf5 /* ONE_LINER */
-                                              :                                              lf4 /* SOMETHING */
-                                        ;
-                                    } catch(ex) { val = LF+ex.message; lfv = lbb+lb2; }
+        Object.keys(o)
+            .forEach( /*..................... [OWN PROPERTY] NAMES */
+                      function(key) {
+                          let   val = o[key];
+                          let   l_v = lf2;
+                          try { l_v =      (val          ==  null        ) ?     lb0 /* NULL      */
+                                  :        (val          ==  undefined   ) ?     lb0 /* UNDEFINED */
+                                  :        (val          ==  "null_node" ) ?     lb0 /* NULL_NODE */
+                                  :        (val          ==  "NO"        ) ?     lf3 /* NOTHING   */
+                                  :        (val          ==  "[]"        ) ?     lf3 /* NOTHING   */
+                                  :        (val          ==  false       ) ?     lf3 /* FALSE     */
+                                  :        (val          ==  true        ) ?     lb5 /* TRUE      */
+                                  :        (typeof val   == "object"     ) ?     lb7 /* OBJECT    */
+                                  :  String(val).startsWith( L_NEW       ) ? lbH+lf9 /* CHANGED   */
+                                  :  String(val).startsWith( L_CHK       ) ?     lf8 /* CHECKED   */
+                                  :  String(val).includes  ( LF          ) ? lbF+lf5 /* SUBSTANCE */
+                                  :  String(val).includes  ( " "         ) ? lbH+lf5 /* ONE_LINER */
+                                  :                                              lf4 /* SOMETHING */
+                              ;
+                          } catch(ex) { val = LF+ex.message; l_v = lbb+lb2; }
 
-                                    let ovf = log_object_val_format(val, lxx);
+                          let ovf = log_object_val_format(val, lxx);
 
-                                    let lfo = ovf.includes("%c") ? lxx : " "; /* f(log_object_val_format .. parse_ex_stack_FUNC_FILE_LINE_COL) */ /* [" "] prevents Firefox [empty string] */
+                          let l_O = ovf.includes("%c") ? lxx : ""; /* f(log_object_val_format .. parse_ex_stack_FUNC_FILE_LINE_COL) */ /* [" "] prevents Firefox [empty string] */
 /*{{{
-//                                  if((typeof val == "object") && (ovf != "[]"))
-//                                      ovf = LF_HEAD+"┌───────────────────────────────────┐"
-//                                          + LF_HEAD+ ovf
-//                                          + LF_HEAD+"└───────────────────────────────────┘";
+                          if((typeof val == "object") && (ovf != "[]"))
+                              ovf = LF_HEAD+"┌───────────────────────────────────┐"
+                                  + LF_HEAD+ ovf
+                                  + LF_HEAD+"└───────────────────────────────────┘";
 }}}*/
-                                    log(     " %c|||%c "+mPadStart(   key, 36) +" %c"+ovf
-                                             , lb0 ,(lxx || lb0)                ,lfv ,lfo);
+                          console.log(" %c|||%c "+mPadStart(   key, 36) +" %c"+ovf
+                                      , lb0 ,(lxx || lb0)                 ,l_v,l_O);
 
-                                    result +=   "||| "  +             key      +" <em class='cc"+(++n)+"'>"+ ovf   +"</em><br>"+LF       ;
-                                }
-                              );
+                          result +=   "||| "  +             key      +" <em class='cc"+(++n)+"'>"+ ovf   +"</em><br>"+LF       ;
+                      }
+                    );
     }
     if(group) console.groupEnd();
     return result;
@@ -675,54 +679,83 @@ let log_key_val_group = function(name, o, lfx=7, group=true)
 /*➔ log_object_val_format {{{*/
 /*{{{*/
 const TEXT_LENGTH_MAX = 96;
-const regexp_LF = new RegExp("\\n", "g");
+/*{{{
+//const regexp_LF = new RegExp("\\n *", "g");
+}}}*/
 
 /*}}}*/
 let log_object_val_format = function(val,lxx)
 {
     let text;
-    try    { text = String(val); } catch(ex)         { text = LF+ex.message; }
-    if     (                                   !text ) text = "[]";
+    try    {                                            text = String(val); } catch(ex) { text = LF+ex.message; }
+    if     (                                   !text )  text = "[]";
 
-    if(       text.includes(        L_ARU           )) text = text.replace(L_ARU, " %c"); /* f(parse_ex_stack_FUNC_FILE_LINE_COL) */
+    if(       text.includes(        L_ARU           ))  text = text.replace(L_ARU, " %c"); /* f(parse_ex_stack_FUNC_FILE_LINE_COL) */
     if(      !text.includes(        LF              )
-         &&   text.length > TEXT_LENGTH_MAX          ) text = t_util.ellipsis(text, TEXT_LENGTH_MAX);
+         &&   text.length > TEXT_LENGTH_MAX          )  text = ellipsis(text, TEXT_LENGTH_MAX);
 
-    if     (               val instanceof HTMLElement) text = get_id_or_tag_and_className(val);
-    else if( Array.isArray(val)                      ) text = "ARRAY["+val.length+"] "+  t_util.ellipsis(val.toString().replace(/,/g," _ "), TEXT_LENGTH_MAX);
-    else if(        typeof val   == "object"         ) text = log_json(val, lxx);
-    else if(        typeof val   == "function"       ) text = L_FNC +" "+ (val.name || "anonymous");
-    else if(  text.includes(        LF              )) text = L_ARD+LF+text.replace(regexp_LF, LF);
+    if     (               val instanceof HTMLElement)  text = get_id_or_tag_and_className(val);
+    else if( Array.isArray(val)                      )  text = "ARRAY["+val.length+"] "+  ellipsis(val.toString().replace(/,/g," _ "), TEXT_LENGTH_MAX);
+    else if(        typeof val   == "object"         )  text = log_json(val,lxx);
+    else if(        typeof val   == "function"       ) {
+        if(String(val).indexOf("=>") >= 0)              text = L_FNC +" "+ (val.name || "anonymous")+" "+val;
+        else                                            text = L_FNC +" "+ (val.name || "anonymous");
+    }
 
     return    text;
 };
 /*}}}*/
+
 /*➔ log_json {{{*/
 /*{{{*/
 const regexp_BRACES = new RegExp("^{|}$"                    , "g");
 const regexp_BSLASH = new RegExp("\\\\"                     , "g");
+
 const regexp_COMMA  = new RegExp(" *, *"                    , "g");
 const regexp_QUOTE  = new RegExp("[\\u0022\\u0027]"         , "g"); /* "' */
+
 const regexp_URL_64 = new RegExp('"url":"([^"]{1,64})[^"]*"', "g"); /* eslint-disable-line quotes */
 
 /*}}}*/
-let log_json = function(val,lxx)
+let log_json = function(o,lxx)
 {
-    if(val == null     ) return "null";
-    if(val == undefined) return "undefined";
-    if(val.id          ) return "#"+val.id+(val.className ? ("."+val.className.replace(/ /g,".")) : "");
-    if(val.tagName     ) return     val.tagName;
+    if(o == null     ) return "null";
+    if(o == undefined) return "undefined";
+    if(o.id          ) return "#"+o.id+(o.className ? ("."+o.className.replace(/ /g,".")) : "");
+    if(o.tagName     ) return     o.tagName;
 
+    /* ONLY KEEP ATTRIBUTES WITH VALUES {{{*/
+    let         o_with_values = {};
+    Object.keys(o).filter((key) => {
+        let val = o[key];
+        if(   (val != null)
+           && (val !=    0)
+           && (val !=   "")
+          )
+            o_with_values[key] = val;
+    });
+    /*}}}*/
     let result = "";
     try {
         result
-            = JSON.stringify(val);
+            = JSON.stringify(o_with_values)
+            .   replace(regexp_URL_64, '"url":"$1..."') /* eslint-disable-line quotes */
+            .   replace(regexp_BRACES, "")
+            .   replace(regexp_QUOTE , "")
+            .   replace(regexp_BSLASH, "")
+            .   trim()
+/*{{{
+            .   replace(regexp_COMMA ,"\n")
+}}}*/
+            .   replace(regexp_COMMA ," , ")
+        ;
 
         if( result.length > 64)
             result
                 = result
                 .   replace(regexp_URL_64, '"url":"$1..."') /* eslint-disable-line quotes */
         ;
+
         result
             = result
             . replace(regexp_BRACES , "")
@@ -1192,9 +1225,9 @@ let log_label_URDL = function(label, urdl)
 let log_anchor_step = function(sticky, step, msg, anchor_from, anchor_to)
 {
 
-    let from =  t_util.get_node_path_tail( anchor_from);
+    let from =         get_node_path_tail( anchor_from);
     let   to = (anchor_to && (anchor_to != anchor_from))
-        ?       t_util.get_node_path_tail( anchor_to  )
+        ?              get_node_path_tail( anchor_to  )
         :       null;
 
     let sdx     = t_data.SDX[ step    % 10];
@@ -1232,16 +1265,16 @@ let log_anchor_step = function(sticky, step, msg, anchor_from, anchor_to)
 
     let s = /*step +" "+*/ msg + new_path;
 
-    sticky.skipped_csv = t_util.csv_add(sticky.skipped_csv, s);
+    sticky.skipped_csv = csv_add(sticky.skipped_csv, s);
 
 };
 /*}}}*/
 /*➔ log_not_an_anchor_target {{{*/
 let log_not_an_anchor_target = function(node)
 {
-    let result = t_util.not_an_anchor_target(node);
+    let result = not_an_anchor_target(node);
     if( result )
-        log("%c"+t_util.get_node_path(node)+" %c"+result+" .. NOT AN ANCHOR TARGET"
+        log("%c"+get_node_path(node)+" %c"+result+" .. NOT AN ANCHOR TARGET"
            ,lf8                              ,lbb+lbH                              );
 };
 /*}}}*/
@@ -1409,23 +1442,9 @@ const dom_log_transcript
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_log"
-    , logging : (state) => DOM_LOG_LOG = t_store_set_state("DOM_LOG_LOG",state)
-    , tagging : (state) => DOM_LOG_TAG = t_store_set_state("DOM_LOG_TAG",state)
+    , logging : (state) => DOM_LOG_LOG = t_store.setItem("DOM_LOG_LOG",state)
+    , tagging : (state) => DOM_LOG_TAG = t_store.setItem("DOM_LOG_TAG",state)
     , t_log_IMPORT
 
     /* MODULES */
@@ -1470,9 +1489,9 @@ return { name : "dom_log"
 :e  $BROWSEEXT/SplitterExtension/javascript/background.js
 :e  $BROWSEEXT/SplitterExtension/javascript/content.js
 :e             $RPROFILES/script/dom_sentence.js
-:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_tools.js
 :e             $RPROFILES/script/stub/dom_scroll.js
-:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_util.js
 :e             $RPROFILES/script/stub/dom_log.js
 :e             $RPROFILES/stylesheet/dom_host.css
 

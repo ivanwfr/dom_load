@@ -3,7 +3,7 @@
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals console, localStorage, window, document */
+/* globals console, window, document */
 /* globals MutationObserver */
 
 /* globals IPC_EXTENSION_ID, IPC_SCRIPT_ID, IPC_LOG_COLOR, IPC_MSG_COLOR */
@@ -19,7 +19,7 @@
 */
 
 const DOM_IPC_JS_ID         = "dom_ipc_js";
-const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (211122:16h:45)";
+const DOM_IPC_JS_TAG        = DOM_IPC_JS_ID     +" (230707:15h:03)";
 /*}}}*/
 let dom_ipc     = (function() {
 "use strict";
@@ -36,7 +36,7 @@ let t_log      = {}        ;    /* 06 */
 /*  t_util     = {}        ; */ /* 07 */
 /*  t_i18n     = {}        ; */ /* 08 */
 /*  t_prop     = {}        ; */ /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -65,7 +65,7 @@ let t_ipc_IMPORT  = function(log_this)
 /*  t_util    = dom_util   ; */ /* 07 */
 /*  t_i18n    = dom_i18n   ; */ /* 08 */
 /*  t_prop    = dom_prop   ; */ /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -413,7 +413,7 @@ let t_wait_for_startup_message_from_extension = function(_caller)
     if(DOM_IPC_LOG) console.log("%c "+IPC_SCRIPT_ID+" %c "+WAITING_FOR_STARTUP_MESSAGE, IPC_LOG_COLOR, lbF);
 
     let ipc = { t_load : WAITING_FOR_STARTUP_MESSAGE
-        ,   caller : _caller
+        ,       caller : _caller
     };
     t_ipc_SEND( ipc );
 
@@ -426,23 +426,9 @@ let t_wait_for_startup_message_from_extension = function(_caller)
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_ipc"
-    , logging : function(state) { return DOM_IPC_LOG = t_store_set_state("DOM_IPC_LOG",state); } /* eslint-disable-line object-shorthand */
-    , tagging : function(state) { return DOM_IPC_TAG = t_store_set_state("DOM_IPC_TAG",state); } /* eslint-disable-line object-shorthand */
+    , logging : function(state) { return DOM_IPC_LOG = t_store.setItem("DOM_IPC_LOG",state); } /* eslint-disable-line object-shorthand */
+    , tagging : function(state) { return DOM_IPC_TAG = t_store.setItem("DOM_IPC_TAG",state); } /* eslint-disable-line object-shorthand */
     , t_ipc_IMPORT
     , t_ipc_PARSE
     , t_ipc_add_MutationObserver

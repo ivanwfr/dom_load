@@ -1,11 +1,11 @@
 /* dom_fly */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (211122:16h:42)"; /* eslint-disable-line no-unused-vars */
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (230707:14h:33)"; /* eslint-disable-line no-unused-vars */
 let dom_fly     = (function() {
 "use strict";
 /* JSHint {{{*/
-/* globals console, localStorage, setTimeout, clearTimeout */
+/* globals console, setTimeout, clearTimeout */
 /* globals window, document */
 /* globals dom_data   */
 /* globals dom_i18n   */
@@ -1988,23 +1988,9 @@ if(DOM_FLY_LOG) t_log.log("fly_tooltip_category_className_array: adding %c["+cat
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_fly"
-    , logging : (state) => DOM_FLY_LOG = t_store_set_state("DOM_FLY_LOG",state)
-    , tagging : (state) => DOM_FLY_TAG = t_store_set_state("DOM_FLY_TAG",state)
+    , logging : (state) => DOM_FLY_LOG = t_store.setItem("DOM_FLY_LOG",state)
+    , tagging : (state) => DOM_FLY_TAG = t_store.setItem("DOM_FLY_TAG",state)
     , t_fly_IMPORT
 
     /* CONSTANTS {{{*/

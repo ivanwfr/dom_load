@@ -2,15 +2,17 @@
 /*│ dom_prop                                                                 │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
-/* globals  console, localStorage */
+/* eslint-disable no-redeclare */
+/* globals  console */
 
-/* globals  dom_data, dom_log, dom_util */
+/* globals  dom_data, dom_log, dom_util, dom_store */
 /* globals  dom_prop_notify */
 
 /* exported dom_prop, DOM_PROP_JS_TAG */
+/* eslint-enable  no-redeclare */
 
 const DOM_PROP_JS_ID        = "dom_prop_js";
-const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (220308:16h:22)";
+const DOM_PROP_JS_TAG       = DOM_PROP_JS_ID    +" (230707:15h:06)";
 
 /*}}}*/
 let dom_prop    = (function() {
@@ -19,8 +21,8 @@ let   DOM_PROP_LOG          = false;
 let   DOM_PROP_TAG          = false;
 
 /* IMPORT */
-/* eslint-disable no-unused-vars */
 /*{{{*/
+/* eslint-disable no-unused-vars */
 /*➔ t_prop_IMPORT {{{*/
 /* t_data .. t_tools {{{*/
 /*....................................*/
@@ -29,7 +31,7 @@ let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
 /*  t_i18n     = {}        ; */ /* 08 */
 /*  t_prop     = {}        ; */ /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -58,7 +60,7 @@ let t_prop_IMPORT  = function(log_this)
     t_util    = dom_util   ;    /* 07 */
 /*  t_i18n    = dom_i18n   ; */ /* 08 */
 /*  t_prop    = dom_prop   ; */ /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -81,8 +83,8 @@ let t_prop_IMPORT  = function(log_this)
 /*}}}*/
     prop_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_PROP_LOG = DOM_PROP_LOG || localStorage_getItem("DOM_PROP_LOG");
-    DOM_PROP_TAG = DOM_PROP_TAG || localStorage_getItem("DOM_PROP_TAG");
+    DOM_PROP_LOG = DOM_PROP_LOG || dom_store.getItem("DOM_PROP_LOG");
+    DOM_PROP_TAG = DOM_PROP_TAG || dom_store.getItem("DOM_PROP_TAG");
 
     /*}}}*/
 if(log_this) log("%c 08 prop", lbH+lf8);
@@ -129,11 +131,6 @@ let   prop_INTERN = function()
     /*}}}*/
 };
 /*}}}*/
-/*_ localStorage {{{*/
-let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
-let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
-let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
-/*}}}*/
 /* eslint-enable  no-unused-vars */
 /*}}}*/
 /* const {{{*/
@@ -171,24 +168,24 @@ let log_this = DOM_PROP_LOG || LOG_MAP.T3_LAYOUT;
         :                     "";
 
     let filter_value
-        = (last_arg  ===       true ) ? true
-        : (last_arg  ===      false ) ? false
-        : (last_arg  === "undefined") ? undefined
-        : (last_arg  ===  undefined ) ? undefined
+        = (last_arg  ==      "true" ) ? true
+        : (last_arg  ==     "false" ) ? false
+        : (last_arg  ==  "undefined") ? undefined
+        : (last_arg  ==   undefined ) ? undefined
         :                               "any";
 
     let filter_onchange
-        = (String(last_arg).toLowerCase() === "onchange");
+        = (String(last_arg).toLowerCase() == "onchange");
 
     /*}}}*/
     /* FIRST ARG .. [identifier] {{{*/
     let identifier
         =  (args.length >  0)
-        && (args[0]                       !==  true      )
-        && (args[0]                       !==  false     )
-        && (args[0]                       !==  undefined )
-        && (args[0]                       !== "undefined")
-        && (String(args[0]).toLowerCase() !==  "onchange")
+        && (args[0]                       !=  "true"     )
+        && (args[0]                       !=  "false"    )
+        && (args[0]                       !=   undefined )
+        && (args[0]                       !=  "undefined")
+        && (String(args[0]).toLowerCase() !=  "onchange" )
         ?   args[0]
         :   "";
 
@@ -449,23 +446,9 @@ if( log_this) prop.log(caller);
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_prop"
-    , logging : (state) => DOM_PROP_LOG = t_store_set_state("DOM_PROP_LOG",state)
-    , tagging : (state) => DOM_PROP_TAG = t_store_set_state("DOM_PROP_TAG",state)
+    , logging : (state) => DOM_PROP_LOG = t_store.setItem("DOM_PROP_LOG",state)
+    , tagging : (state) => DOM_PROP_TAG = t_store.setItem("DOM_PROP_TAG",state)
     , t_prop_IMPORT
 
     , init          : prop_init

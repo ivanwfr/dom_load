@@ -12,7 +12,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_GIFANIM_JS_ID     = "dom_gifanim_js";
-const DOM_GIFANIM_JS_TAG    =  DOM_GIFANIM_JS_ID+" (211119:17h:51)";
+const DOM_GIFANIM_JS_TAG    =  DOM_GIFANIM_JS_ID+" (230519:19h:24)";
 /*}}}*/
 /*{{{*/
 let LOG_THROTTLE_IMG_ONLOAD_DELAY = 2000;
@@ -25,7 +25,7 @@ let log_this = false;
 /* dom_log {{{*/
 /* eslint-disable no-unused-vars */
 
-log = log || console.log; /* eslint-disable-line no-global-assign */ /* eslint-disable-line no-native-reassign */
+//log = log || console.log; /* eslint-disable-line no-global-assign */ /* eslint-disable-line no-native-reassign */
 
 let lb0="", lb1="", lb2="", lb3="", lb4="", lb5="", lb6="", lb7="", lb8="", lb9="", lbX="";
 

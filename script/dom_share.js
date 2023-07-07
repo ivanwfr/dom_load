@@ -18,7 +18,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SHARE_JS_ID       = "dom_share_js";
-const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (211122:16h:48)";
+const DOM_SHARE_JS_TAG      = DOM_SHARE_JS_ID   +" (230707:22h:12)";
 /*}}}*/
 let dom_share   = (function() {
 "use strict";
@@ -350,7 +350,7 @@ if(log_this || DOM_SHARE_TAG) {
     /* STORAGE .. [EXPORT] .. [SHOW] {{{*/
     let export_key_val_array = [];
     let tooltip_keys         = [];
-    for(let i=localStorage.length-1; i>=0; --i)
+    for(let   i = localStorage.length-1; i>=0; --i)
     {
         let key = localStorage.key(i);
         let val = localStorage[key];
@@ -861,7 +861,7 @@ let log_this = DOM_SHARE_LOG || LOG_MAP.T7_SHARE;
 if( log_this || DOM_SHARE_TAG) log("%c REMOVING CURRENT STORAGE"+(free_form_user_keywords ? " (FREE FORM USER KEYWORDS)":""), lbb+lbH+lf8);
 
     removed_items_key_array = [];
-    for(let i = localStorage.length-1; i >= 0; --i)
+    for(let   i = localStorage.length-1; i >= 0; --i)
     {
         let key = localStorage.key(i);
         let val = localStorage[key];
@@ -909,7 +909,7 @@ if( log_this) {
     }
 
     for(let i = 0; i < removed_items_key_array.length; ++i)
-        localStorage.removeItem( removed_items_key_array[i] );
+        t_store.delItem( removed_items_key_array[i] );
 
     /*}}}*/
     /* SYNC  PATTERN AND STICKY {{{*/
@@ -1217,23 +1217,9 @@ if( log_this) log_key_val_group(caller, { data_hostname , data_page_pfx });
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_share"
-    , logging : (state) => DOM_SHARE_LOG = t_store_set_state("DOM_SHARE_LOG",state)
-    , tagging : (state) => DOM_SHARE_TAG = t_store_set_state("DOM_SHARE_TAG",state)
+    , logging : (state) => DOM_SHARE_LOG = t_store.setItem("DOM_SHARE_LOG",state)
+    , tagging : (state) => DOM_SHARE_TAG = t_store.setItem("DOM_SHARE_TAG",state)
     , t_share_IMPORT
 
     , t_share1_EXPORT

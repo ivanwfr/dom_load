@@ -10,7 +10,7 @@
 */
 
 const DOM_DATA_JS_ID        = "dom_data_js";
-const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (221124:17h:57)";
+const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (230427:13h:55)";
 /*}}}*/
 let dom_data    = (function() {
 "use strict";
@@ -44,7 +44,7 @@ SURROGATE PAIR CALCULATOR:
  << « » >>
 
 */
-const SYMBOL_FUNCTION               = "\u0083";
+const SYMBOL_FUNCTION               = "ƒ";        // "\u0083" // "No break here"
 const SYMBOL_SECTION                = "\u00A7"; /* § */
 const SYMBOL_LEFT_DBL_ANGLE         = "\u00AB"; /* « */
 const SYMBOL_PARAGRAPH              = "\u00B6"; /* ¶ */

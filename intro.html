@@ -1,7 +1,7 @@
 <!DOCTYPE html> <html lang="fr">
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (220401:00h:39)";
+  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (230707:20h:11)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
@@ -7144,16 +7144,16 @@ j0"qy$
   }
   /*}}}*/
   /* intro_IMPORT {{{*/
-  let log;
+//let log;
   function intro_IMPORT() {
     /* dom_log {{{*/
-      log = dom_log;
+//    log = dom_log;
 
     ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
     ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
     ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
 
-    log                 = dom_log.log;
+//  log                 = dom_log.log;
     logBIG              = dom_log.logBIG;
     logXXX              = dom_log.logXXX;
     log_caller          = dom_log.log_caller;
@@ -7226,7 +7226,7 @@ script/dom_tools.html
 dom_tools_html_data = escape(`
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210929:21h:31)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (221124:17h:59)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -7626,8 +7626,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(state) { return DOM_LOADER_LOG = dom_store.t_store_set_state("DOM_LOADER_LOG",state); }
-        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.t_store_set_state("DOM_LOADER_TAG",state); }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_store.setItem("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.setItem("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 

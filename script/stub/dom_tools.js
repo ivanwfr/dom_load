@@ -1,23 +1,23 @@
 /*┌──────────────────────────────────────────────────────────────────────────┐*/
-/*│ dom_sentence_event              [dom_sentence]..[dom_tools] dependencies │*/
+/*│ dom_tools                  [dom_sentence]..[dom_tools] dependencies      │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
 /* globals console, window */ /* eslint-disable-line no-unused-vars */
 /* globals setTimeout, clearTimeout */
-/* globals dom_sentence, dom_scroll, dom_log, dom_util, dom_sentence_util */
+/* globals dom_sentence, dom_scroll, dom_log, dom_util */
 /* globals chrome, document */
 
-/* exported DOM_SENTENCE_EVENT_JS_TAG, dom_sentence_event */
+/* exported DOM_TOOLS_JS_TAG, dom_tools */
 
 /* eslint-disable no-warning-comments */
 
-const DOM_SENTENCE_EVENT_JS_ID  = "dom_sentence_event";
-const DOM_SENTENCE_EVENT_JS_TAG = DOM_SENTENCE_EVENT_JS_ID +" (230206:17h:57)";  /* eslint-disable-line no-unused-vars */
+const DOM_TOOLS_JS_ID  = "dom_tools";
+const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (230707:21h:52)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
-let dom_sentence_event   = (function() {
+let dom_tools = (function() {
 "use strict";
-let   DOM_SENTENCE_LOG  = false;
+let   DOM_TOOLS_LOG  = false;
 
 
 /* INLINE */
@@ -43,8 +43,7 @@ let { LF
 
     /*  t_util {{{*/
     let t_util
-        = (typeof dom_util           != "undefined") ? dom_util          /* script/dom_util.js */
-        : (typeof dom_sentence_util  != "undefined") ? dom_sentence_util /* script/stub/dom_sentence_util.js */
+        = (typeof      dom_util != "undefined") ?      dom_util /*      script/dom_util.js */
         :                                              undefined
     ;
 
@@ -78,7 +77,7 @@ let t_pointerdown_handler = function(e)
 if( e.shiftKey ) console.log("t_pointerdown_handler: %c if( e.shiftKey ) return;", "background-color: #F008");/*//FIXME*/
     if( e.shiftKey ) return;
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log1("→→ t_pointerdown_handler");
 /*}}}*/
@@ -103,7 +102,7 @@ if(log_this) log1("... NO sentence_el"+LF);
 let add_long_press_arm_listener = function()
 {
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log6("→ add_long_press_arm_listener");
 /*}}}*/
@@ -118,7 +117,7 @@ if( log_this) log6("→ add_long_press_arm_listener");
 let long_press_arm_handler = function()
 {
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if(log_this) log6("→→ long_press_arm_handler");
 /*}}}*/
@@ -134,7 +133,7 @@ let long_press_handler  = function()
 {
 /*{{{*/
 let   caller = "long_press_handler";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
     let is_scrolling = dom_scroll.t_scroll_is_scrolling();
 if(     log_this && !is_scrolling) log6("→→→ long_press_handler: t_scroll_is_scrolling=["+is_scrolling+"] .. onDown_EL.className=["+onDown_EL.className+"]");
@@ -168,7 +167,7 @@ if(e.altKey ) return;
 if(e.ctrlKey) return;
 /*{{{*/
 let   caller = "t_SENTENCE_drag_listener";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
     let sentence_container_dragged = t_util.is_el_or_child_of_class(onDown_EL, dom_sentence.CSS_SENTENCE_CONTAINER);
 if(     log_this && sentence_container_dragged) log7(caller+": sentence_container_dragged=["+t_util.get_id_or_tag(sentence_container_dragged)+"]");
@@ -201,7 +200,7 @@ const CSS_NOT_MOVED_ENOUGH = "not_moved_enough";
 let t_add_NOT_MOVED_ENOUGH   = function()
 {
 /*{{{
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log8("t_add_NOT_MOVED_ENOUGH");
 }}}*/
@@ -213,7 +212,7 @@ if( log_this) log8("t_add_NOT_MOVED_ENOUGH");
 let t_del_NOT_MOVED_ENOUGH   = function()
 {
 /*{{{
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if(log_this) log7("t_del_NOT_MOVED_ENOUGH");
 }}}*/
@@ -233,7 +232,7 @@ let t_add_MOVE_ON_COOLDOWN   = function(time_left)
 {
     if( move_on_cooldown_timer ) return;
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 /*}}}*/
 if(log_this) log9("t_add_MOVE_ON_COOLDOWN");
@@ -249,7 +248,7 @@ let t_del_MOVE_ON_COOLDOWN   = function()
 {
     if(!move_on_cooldown_timer ) return;
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log0("t_del_MOVE_ON_COOLDOWN");
 /*}}}*/
@@ -269,7 +268,7 @@ let t_pointerup_listener  = function(e)
 {
 if(e.button) return;
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 /*}}}*/
 if( log_this) log5(LF+"→ t_pointerup_listener");
@@ -278,11 +277,11 @@ if( log_this) log5(LF+"→ t_pointerup_listener");
 
     /* RELOAD EXTENSION {{{*/
     if(   e.ctrlKey
-       && chrome
-       && chrome.runtime
-       && chrome.runtime.sendMessage
+       && (typeof chrome != "undefined")
+       &&         chrome.runtime
+       &&         chrome.runtime.sendMessage
       ) {
-        log("%c RELOADING EXTENSION: ("+DOM_SENTENCE_EVENT_JS_TAG+")", "background-color:red; border:1px; border-radius:1em; padding:0.5em;");
+        log("%c RELOADING EXTENSION: ("+DOM_TOOLS_JS_TAG+")", "background-color:red; border:1px; border-radius:1em; padding:0.5em;");
 
         setTimeout(function() { chrome.runtime.sendMessage({ cmd : "reload" }); }, 1000);
 
@@ -318,7 +317,7 @@ let t_pointerup_handler = function(e) /* eslint-disable-line no-unused-vars */
 {
 /*{{{*/
 let   caller = "t_pointerup_handler";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
     let consumed_by                  = "";
 /*}}}*/
@@ -368,9 +367,9 @@ let log_this = DOM_SENTENCE_LOG;
     else
     {
         consumed_by
-            = "UP ➔ CLICKED=["+clicked+"]\n"
-            +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]\n"
-            +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]\n"
+            = "UP ➔ CLICKED=["+clicked+"]"+LF
+            +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]"+LF
+            +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"+LF
             +  " .. onDown_sentence_container=["+ (onDown_sentence_container ? onDown_sentence_container.tagName : "")+"]"
         ;
 
@@ -402,13 +401,13 @@ console.log("...same node             = "+(onDown_sentence_container == some_sen
 
     /*}}}*/
     /* THEME: STORE CHANGE {{{*/
-    if(   chrome
-       && chrome.runtime
-       && chrome.runtime.sendMessage
+    if(   (typeof chrome != "undefined")
+       &&         chrome.runtime
+       &&         chrome.runtime.sendMessage
       ) {
         let theme_dark  = dom_sentence.t_SENTENCE_get_theme_dark();
         if( theme_dark != was_theme_dark ) {
-if( log_this) log("%c SETTING EXTENSION: ("+DOM_SENTENCE_EVENT_JS_TAG+") { theme_dark : "+theme_dark+" }", "background-color:red; border:1px; border-radius:1em; padding:0.5em;");
+if( log_this) log("%c SETTING EXTENSION: ("+DOM_TOOLS_JS_TAG+") { theme_dark : "+theme_dark+" }", "background-color:red; border:1px; border-radius:1em; padding:0.5em;");
 
             setTimeout(function() { chrome.runtime.sendMessage({ theme_dark }); }, 1000);
         }
@@ -466,7 +465,7 @@ let clr_onWork_EL = function(_caller)
 {
 /*{{{*/
 let   caller = "clr_onWork_EL";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log8(caller+": CALLED BY "+ _caller);
 /*}}}*/
@@ -488,7 +487,7 @@ let t_SENTENCE_add_LISTENER = function(_log_this,_tag_this)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_add_LISTENER";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 /*}}}*/
 if( log_this || _log_this || _tag_this) log5("➔ "+caller+LF);
@@ -511,7 +510,7 @@ let t_SENTENCE_del_LISTENER = function(_log_this,_tag_this)
 {
 /*{{{*/
 let   caller = "t_SENTENCE_del_LISTENER";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this || _log_this || _tag_this) log0("➔ "+caller+LF);
 /*}}}*/
@@ -533,7 +532,7 @@ let t_CURSOR_add_MOVE_LISTENER = function()
 {
 /*{{{*/
 let   caller = "t_CURSOR_add_MOVE_LISTENER";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log7(caller);
 /*}}}*/
@@ -551,7 +550,7 @@ let t_CURSOR_del_MOVE_LISTENER = function()
 {
 /*{{{*/
 let   caller = "t_CURSOR_del_MOVE_LISTENER";
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if(log_this) log0(caller);
 /*}}}*/
@@ -591,7 +590,7 @@ let remove_listener_capture_active = function(el, ev, fn, uc) /* eslint-disable-
 let preventDefault = function(e)
 {
 /*{{{*/
-let log_this = DOM_SENTENCE_LOG;
+let log_this = DOM_TOOLS_LOG;
 
 if( log_this) log0("preventDefault");
 /*}}}*/
@@ -795,7 +794,7 @@ console.log("%c show_drag_cursor", lfX[++drag_cursor_count % 10], "onMoveDXY:",o
     if( drag_cursor_div.style.display != "block")
     {
         /* STANDALONE SPLITTER ACTIVATION {{{*/
-        if(typeof dom_sentence_event != "undefined")
+        if(typeof dom_tools != "undefined")
         {
             drag_cursor_div.classList.add( CSS_DRAG_CURSOR_DIV_ONLOAD );
             drag_cursor_div.style.left    = (window.innerWidth  / 2)+"px";
@@ -848,7 +847,7 @@ return { name : "drag_cursor"
 "│                                                                             │
 
 :e             $RPROFILES/script/dom_tools.js
-:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_tools.js
 :e             $RPROFILES/stylesheet/dom_host.css
 "...           $RPROFILES/script/drag_cursor.js
 
@@ -860,7 +859,7 @@ return { name : "drag_cursor"
 
 
 /* EXPORT */
-return { name : DOM_SENTENCE_EVENT_JS_ID
+return { name : "dom_tools"
     ,    t_SENTENCE_add_LISTENER
     ,    t_SENTENCE_del_LISTENER
     ,    t_scrollIntoViewIfNeeded
@@ -879,7 +878,7 @@ return { name : DOM_SENTENCE_EVENT_JS_ID
 }());
 
 /*{{{
-setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
+setTimeout(stub_dom_event.set_mouseUP_display_state, 1000);
 }}}*/
 
 /*{{{
@@ -890,9 +889,9 @@ setTimeout(dom_sentence_event.set_mouseUP_display_state, 1000);
 :e  $BROWSEEXT/SplitterExtension/javascript/background.js
 :e  $BROWSEEXT/SplitterExtension/javascript/content.js
 :e             $RPROFILES/script/dom_sentence.js
-"...           $RPROFILES/script/stub/dom_sentence_event.js
+"...           $RPROFILES/script/stub/dom_tools.js
 :e             $RPROFILES/script/stub/dom_scroll.js
-:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_util.js
 :e             $RPROFILES/script/stub/dom_log.js
 :e             $RPROFILES/stylesheet/dom_host.css
 

@@ -2,18 +2,20 @@
 /*│ dom_util                                                                 │*/
 /*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
-
+/* eslint-disable no-redeclare */
 /* globals Document, XPathEvaluator, XPathResult, Set */
 /* globals Node, NodeFilter, getComputedStyle */
 /* globals btoa, atob */
-/* globals console, localStorage */
+/* globals console */
 /* globals window, document */
 
 /* globals dom_data    */
 /* globals dom_i18n    */ /* OPTIONAL */
 /* globals dom_log     */
+/* globals dom_store   */
 /* globals dom_tools   */ /* OPTIONAL */
-/*
+/* eslint-enable  no-redeclare */
+
 /* eslint-disable no-global-assign    */
 /* eslint-disable no-implicit-globals */
 /* eslint-disable no-mixed-operators  */
@@ -23,7 +25,7 @@
 /* exported dom_util */
 
 const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (230124:17h:12)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (230707:19h:52)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -41,7 +43,7 @@ let t_log      = {}        ;    /* 06 */
 /*  t_util     = {}        ; */ /* 07 */
 /*  t_i18n     = {}        ; */ /* 08 */
 /*  t_prop     = {}        ; */ /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -70,7 +72,7 @@ let t_util_IMPORT  = function(log_this)
 /*  t_util    = dom_util   ; */ /* 07 */
 /*  t_i18n    = dom_i18n   ; */ /* 08 */
 /*  t_prop    = dom_prop   ; */ /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -93,8 +95,8 @@ let t_util_IMPORT  = function(log_this)
 /*}}}*/
     util_INTERN();
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_UTIL_LOG = DOM_UTIL_LOG || localStorage_getItem("DOM_UTIL_LOG");
-    DOM_UTIL_TAG = DOM_UTIL_TAG || localStorage_getItem("DOM_UTIL_TAG");
+    DOM_UTIL_LOG = DOM_UTIL_LOG || dom_store.getItem("DOM_UTIL_LOG");
+    DOM_UTIL_TAG = DOM_UTIL_TAG || dom_store.getItem("DOM_UTIL_TAG");
 
     /*}}}*/
 if(log_this) log("%c 07 util", lbH+lf7);
@@ -140,11 +142,6 @@ let   util_INTERN = function()
     }
     /*}}}*/
 };
-/*}}}*/
-/*_ localStorage {{{*/
-let localStorage_setItem = function(key,val) { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); };
-let localStorage_getItem = function(key    ) { return  localStorage.getItem   (key    ); };
-let localStorage_delItem = function(key    ) { /*...*/ localStorage.removeItem(key    ); };
 /*}}}*/
 /* eslint-enable no-unused-vars */
 /*}}}*/
@@ -1467,7 +1464,7 @@ let get_shadow_root = function()
     return shadow_root;
 };
 /*}}}*/
-/*_ get_tool {{{*/
+/*➔ get_tool {{{*/
 let get_tool = function(id)
 {
     if( id.includes(" ") ) return null;
@@ -1490,7 +1487,7 @@ console.log("t_get_tool("+id+"): ...return ["+(el ? (el.id || el.tagName) : null
     return el;
 };
 /*}}}*/
-/*_ get_position_absolute_children {{{*/
+/*➔ get_position_absolute_children {{{*/
 let get_position_absolute_children = function(el,level=1)
 {
     /* leaf .. not a node {{{*/
@@ -1537,7 +1534,7 @@ log("%c get_position_absolute_children("+get_node_path(el)+") %c arr.length=["+a
     return arr;
 };
 /*}}}*/
-/*_ node_toString {{{ */
+/*➔ node_toString {{{ */
 let node_toString = function(node)
 {
     let caller = "node_toString";
@@ -1580,7 +1577,7 @@ let node_toString = function(node)
     return result;
 };
 /*}}}*/
-/*_ get_h_tag {{{ */
+/*➔ get_h_tag {{{ */
 let get_h_tag = function(node_nodeName) /* eslint-disable-line complexity */
 {
     let symbol;
@@ -1622,7 +1619,7 @@ let get_h_tag = function(node_nodeName) /* eslint-disable-line complexity */
     return              "<em class='cc3'>"+symbol+"<sup class='fg0'>"+name+"</sup></em>";
 };
 /*}}}*/
-/*_ get_n_lbl {{{ */
+/*➔ get_n_lbl {{{ */
 let get_n_lbl = function(node)
 {
     if(!node                 ) return "null_node";
@@ -1646,7 +1643,7 @@ let get_n_lbl = function(node)
     return "";
 };
 /*}}}*/
-/*_ get_n_str {{{ */
+/*➔ get_n_str {{{ */
 let get_n_str = function(node)
 {
     let                h_tag = get_h_tag( node.nodeName );
@@ -1660,14 +1657,14 @@ let get_n_str = function(node)
     return             n_str;
 };
 /*}}}*/
-/*_ get_n_txt{{{ */
+/*➔ get_n_txt{{{ */
 let get_n_txt = function(node)
 {
     if(!node) return "null_node";
     return strip_CR_LF( ellipsis(node.textContent.trim(), 64) );
 };
 /*}}}*/
-/*_ get_p_str {{{ */
+/*➔ get_p_str {{{ */
 let get_p_str = function(node)
 {
     let names = "";
@@ -1684,7 +1681,7 @@ let get_p_str = function(node)
     return names;
 };
 /*}}}*/
-/*_ get_t_str {{{ */
+/*➔ get_t_str {{{ */
 let get_t_str = function(node_nodeType)
 {
     switch(node_nodeType)
@@ -1707,7 +1704,7 @@ let get_t_str = function(node_nodeType)
     }
 };
 /*}}}*/
-/*_ get_id_or_tag {{{ */
+/*➔ get_id_or_tag {{{ */
 let get_id_or_tag = function(node)
 {
     return !node           ? ("null_node"                        )
@@ -1717,7 +1714,7 @@ let get_id_or_tag = function(node)
     ;
 };
 /*}}}*/
-/*_ get_id_or_tag_and_className {{{ */
+/*➔ get_id_or_tag_and_className {{{ */
 let get_id_or_tag_and_className = function(node)
 {
     let result
@@ -1730,7 +1727,7 @@ let get_id_or_tag_and_className = function(node)
 
 };
 /*}}}*/
-/*  get_parentage {{{*/
+/*➔ get_parentage {{{*/
 let get_parentage = function(node)
 {
     let names = get_id_or_tag(node);
@@ -1756,7 +1753,7 @@ let get_el_parent_fragment = function(el)
 };
 /*}}}*/
 
-/*_ has_a_fixed_parent {{{*/
+/*➔ has_a_fixed_parent {{{*/
 let has_a_fixed_parent = function(el)
 {
     while( el ) {
@@ -1766,7 +1763,7 @@ let has_a_fixed_parent = function(el)
     return false;
 };
 /*}}}*/
-/*_ get_document_el_at_XY {{{*/
+/*➔ get_document_el_at_XY {{{*/
 
 let get_document_el_at_XY = function(x,y) /* eslint-disable-line complexity */
 {
@@ -1859,7 +1856,7 @@ if( log_this) log("...return %c"+get_n_lbl(el_at_XY), lbH+lf4);
     return el_at_XY;
 };
 /*}}}*/
-/*_ get_abs_nodes {{{*/
+/*➔ get_abs_nodes {{{*/
 let     abs_nodes_cache;
 let get_abs_nodes = function()
 {
@@ -1868,7 +1865,7 @@ let get_abs_nodes = function()
     return abs_nodes_cache;
 };
 /*}}}*/
-/*_ get_selector_nodes {{{*/
+/*➔ get_selector_nodes {{{*/
 let get_selector_nodes = function(selector)
 {
     let nodes = Array.from( document.querySelectorAll(selector) );
@@ -1876,7 +1873,7 @@ t_log.console_dir(selector, nodes);
     return nodes;
 };
 /*}}}*/
-/*_ get_viewport_nodes {{{*/
+/*➔ get_viewport_nodes {{{*/
 let get_viewport_nodes = function()
 {
     let nodes = Array.from( document.querySelectorAll("*[style*='position:absolute']") );
@@ -4482,25 +4479,10 @@ let log_el_methodNames = function(_obj,_filter_str)
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(    state != undefined)
-    {
-        if(state) localStorage.setItem   (label, "true");
-        else      localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return    localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_util"
-    , logging : (state) => DOM_UTIL_LOG = t_store_set_state("DOM_UTIL_LOG", state)
-    , tagging : (state) => DOM_UTIL_TAG = t_store_set_state("DOM_UTIL_TAG", state)
+    , logging : (state) => DOM_UTIL_LOG = t_store.setItem("DOM_UTIL_LOG", state)
+    , tagging : (state) => DOM_UTIL_TAG = t_store.setItem("DOM_UTIL_TAG", state)
     , t_util_IMPORT
-    , t_util_set_state : t_store_set_state
 
     /* DOM */
     /* EVENT {{{*/
@@ -4809,9 +4791,9 @@ return { name : "dom_util"
 :e  $BROWSEEXT/SplitterExtension/javascript/background.js
 :e  $BROWSEEXT/SplitterExtension/javascript/content.js
 :e             $RPROFILES/script/dom_sentence.js
-:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_tools.js
 :e             $RPROFILES/script/stub/dom_scroll.js
-:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_util.js
 :e             $RPROFILES/script/stub/dom_log.js
 :e             $RPROFILES/stylesheet/dom_host.css
 

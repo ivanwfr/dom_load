@@ -1,7 +1,7 @@
 /* dom_seek_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals localStorage, window, document */
+/* globals window, document */
 /* globals setTimeout, clearTimeout */
 
 /* globals dom_data   */
@@ -24,7 +24,7 @@
 */
 
 const DOM_SEEK_JS_ID        = "dom_seek_js";
-const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (220216:15h:55)";
+const DOM_SEEK_JS_TAG       = DOM_SEEK_JS_ID    +" (230707:20h:06)";
 /*}}}*/
 let dom_seek    = (function() {
 "use strict";
@@ -43,7 +43,7 @@ let t_util     = {}        ;    /* 07 */
 /*  t_details  ............. OPTIONAL */
 let t_i18n     = {}        ;    /* 08 */
 let t_prop     = {}        ;    /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /*....................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -73,7 +73,7 @@ let t_seek_IMPORT   = function(log_this)
 /*  t_details  ............. OPTIONAL */
     t_i18n    = dom_i18n   ;    /* 08 */
     t_prop    = dom_prop   ;    /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -130,6 +130,14 @@ let   seek_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
+    /*}}}*/
+    /* dom_store {{{*/
+    if(typeof dom_store != "undefined")
+    {
+        t_store = dom_store;
+
+if(DOM_SEEK_LOG || DOM_SEEK_TAG) logBIG(DOM_SEEK_JS_ID+": ["+dom_store.name+"]"      , 4);
+    }
     /*}}}*/
 
     seek_DEPEND();
@@ -2738,23 +2746,9 @@ logBIG(caller+"(FROM ["+from_slot+" "+from_num+"] TO ["+to_slot+" "+to_num+"]", 
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_seek"
-    , logging : (state) => DOM_SEEK_LOG = t_store_set_state("DOM_SEEK_LOG",state)
-    , tagging : (state) => DOM_SEEK_TAG = t_store_set_state("DOM_SEEK_TAG",state)
+    , logging : (state) => DOM_SEEK_LOG = t_store.setItem("DOM_SEEK_LOG",state)
+    , tagging : (state) => DOM_SEEK_TAG = t_store.setItem("DOM_SEEK_TAG",state)
     , t_seek_IMPORT
 
     ,    CSS_SEEK0_ONDOC

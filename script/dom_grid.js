@@ -1,7 +1,7 @@
 /* dom_grid_js */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 
-/* globals window, document, setTimeout, clearTimeout, localStorage */
+/* globals window, document, setTimeout, clearTimeout */
 /* globals getComputedStyle */
 /* globals dom_data, dom_log, dom_util, dom_store, dom_tools */
 
@@ -13,7 +13,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_GRID_JS_ID        = "dom_grid_js";
-const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (220308:18h:13)";
+const DOM_GRID_JS_TAG       = DOM_GRID_JS_ID    +" (230707:14h:53)";
 /*}}}*/
 let dom_grid    = (function() {
 "use strict";
@@ -31,7 +31,7 @@ let t_log      = {}        ;    /* 06 */
 let t_util     = {}        ;    /* 07 */
 /*  t_i18n     = {}        ; */ /* 08 */
 /*  t_prop     = {}        ; */ /* 09 */
-/*  t_store    = {}        ; */ /* 10 */
+let t_store    = {}        ;    /* 10 */
 /*  t_fly      = {}        ; */ /* 11 */
 /* ...................................*/
 /*  t_wording  = {}        ; */ /* 12 */
@@ -60,7 +60,7 @@ let t_grid_IMPORT  = function(log_this)
     t_util    = dom_util   ;    /* 07 */
 /*  t_i18n    = dom_i18n   ; */ /* 08 */
 /*  t_prop    = dom_prop   ; */ /* 09 */
-/*  t_store   = dom_store  ; */ /* 10 */
+    t_store   = dom_store  ;    /* 10 */
 /*  t_fly     = dom_fly    ; */ /* 11 */
 /* ...................................*/
 /*  t_wording = dom_wording; */ /* 12 */
@@ -102,10 +102,6 @@ let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
 
 let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
 
-/* t_tools */
-let hotspot;
-let dom_grid_html;
-
 /* t_data */
 let CSS_HIDDEN;
 let CSS_ON_GRID;
@@ -128,11 +124,6 @@ let   grid_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
-    /*}}}*/
-    /* t_tools {{{*/
-    hotspot                     = t_tools.t_get_tool("hotspot");
-    dom_grid_html               = t_tools.t_get_tool("dom_grid_html");
-
     /*}}}*/
     /* t_data {{{*/
     CSS_HIDDEN                  = t_data.CSS_HIDDEN;
@@ -199,12 +190,13 @@ if(log_this) log("...caption.id=["+caption.id+"]");
     /*}}}*/
     /* SELECTING - DESELECTING {{{*/
     let tools_map = get_tools_map();
+    let hotspot   = t_tools.t_get_tool("hotspot");
 
     for(let i=0; i< tools_map.length; ++i)
     {
-        let   map = tools_map[i];
-        let panel =       map.panel;
-        if( panel == hotspot) continue;
+        let map         = tools_map[i];
+        let panel       =       map.panel;
+        if( panel      == hotspot) continue;
         let caption_id  = panel.id+"_"+GRID_CAPTION;
 if(log_this) log("...caption_id=["+caption_id+"]");
         if(caption_id == caption.id) {
@@ -256,13 +248,14 @@ let log_this = LOG_MAP.T2_GRID;
 if( log_this) log(caller);
 /*}}}*/
     /* create or get caption element {{{*/
-    let  shadow_root = t_tools.t_get_shadow_root();
-    let           gl = grid_getElement(panel.id+"_"+GRID_CAPTION);
+    let   shadow_root = t_tools.t_get_shadow_root();
+    let dom_grid_html = t_tools.t_get_tool("dom_grid_html");
+    let           gl  = grid_getElement(panel.id+"_"+GRID_CAPTION);
     if(!gl) {
-        gl           = document.createElement("EM");
-        gl.       id = panel.id+"_"+GRID_CAPTION;
-        gl.    title = panel.id;                    /* tooltip */
-        gl.className = GRID_CAPTION;
+        gl            = document.createElement("EM");
+        gl.       id  = panel.id+"_"+GRID_CAPTION;
+        gl.    title  = panel.id;                    /* tooltip */
+        gl.className  = GRID_CAPTION;
 
         if     (dom_grid_html) { dom_grid_html.appendChild(gl); if(log_this) log("dom_grid_html: "+caller); }
         else if(shadow_root  ) { shadow_root  .appendChild(gl); if(log_this) log(  "shadow_root: "+caller); }
@@ -304,13 +297,14 @@ let log_this = LOG_MAP.T2_GRID;
 if( log_this) log(caller);
 
     let tools_map = get_tools_map();
+    let hotspot   = t_tools.t_get_tool("hotspot");
 
     for(let i=0; i< tools_map.length; ++i)
     {
-        let   map  = tools_map[i];
-        let panel  =       map.panel;
-        if( panel == hotspot) continue;
-        let    gl  = grid_getElement(panel.id+"_"+GRID_CAPTION);
+        let map         = tools_map[i];
+        let panel       =       map.panel;
+        if( panel      == hotspot) continue;
+        let gl          = grid_getElement(panel.id+"_"+GRID_CAPTION);
         if(!gl)  continue;
         gl.classList.remove("grid_caption_show");
         gl.classList.add   ("grid_caption_hide");
@@ -371,7 +365,7 @@ let grid_onWork_EL_changed_handler = function()
     let caller = "grid_onWork_EL_changed_handler";
 if(LOG_MAP.T2_GRID) log("%c "+caller+": LOG_MAP.T2_GRID=["+LOG_MAP.T2_GRID+"]",lb9+lbF);
     /* GRID LOGGING ON-OFF {{{*/
-    if(typeof t_tools.t_get_onWork_EL_last_used == undefined) return;
+    if(typeof t_tools.t_get_onWork_EL_last_used == "undefined") return;
 
     let el = grid_getElement("headsup_l_check"); if(!el) return;
 
@@ -455,8 +449,8 @@ let log_this = LOG_MAP.T2_GRID;
     if(new_state == "toggle") new_state = !t_grid_IS_ON_GRID(caller);
 if( log_this) log("%c "+caller+": new_state=["+new_state+"]",lb9+lbF);
 
-    if( new_state ) { if(typeof t_tools.t_dimm_start != undefined) t_tools.t_dimm_start(caller); }
-    else            { if(typeof t_tools.t_dimm_stop  != undefined) t_tools.t_dimm_stop (caller); }
+    if( new_state ) { if(typeof t_tools.t_dimm_start != "undefined") t_tools.t_dimm_start(caller); }
+    else            { if(typeof t_tools.t_dimm_stop  != "undefined") t_tools.t_dimm_stop (caller); }
 
     if(!new_state )   t_tools.t_update_TOOLS_MAP_GEOMETRY(caller); /* not when grid_sized */
 
@@ -494,13 +488,14 @@ let log_this = LOG_MAP.T2_GRID;
 if( log_this) log("%c grid_sized_sync: CALLED BY ["+caller+"] .. grid_sized=["+grid_sized+"]", lb3);
 
     let tools_map = get_tools_map();
+    let hotspot   = t_tools.t_get_tool("hotspot");
 
     for(let i=0; i< tools_map.length; ++i)
     {
-        let   map = tools_map[i];
-        let panel =       map.panel;
-        if( panel == hotspot) continue;
-        if(!panel           ) continue;
+        let map         = tools_map[i];
+        let panel       =       map.panel;
+        if( panel      == hotspot) continue;
+        if(!panel                ) continue;
 
         if(grid_sized) {
             panel.style.maxHeight = (t_gh-t_mg)+"px";
@@ -603,15 +598,16 @@ if(log_this) log("%c "+caller,lb9+lbF);
 
     /*}}}*/
     let tools_map = get_tools_map();
+    let hotspot   = t_tools.t_get_tool("hotspot");
 
     let   num=0;
     for(let i=0; i< tools_map.length; ++i)
     {
         /* save current off-grid position {{{*/
-        let   map = tools_map[i];
-        let panel =       map.panel;
-        if( panel == hotspot) continue;
-        if(!panel           ) continue;
+        let map         = tools_map[i];
+        let panel       =       map.panel;
+        if( panel      == hotspot) continue;
+        if(!panel                ) continue;
 
         map.x = panel.offsetLeft;
         map.y = panel.offsetTop;
@@ -673,6 +669,7 @@ let grid_LAYOUT_OFF = function()
 if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
 
     let tools_map = get_tools_map();
+    let hotspot   = t_tools.t_get_tool("hotspot");
     if(!tools_map  ) return;
 /*}}}*/
 
@@ -680,10 +677,10 @@ if(LOG_MAP.T2_GRID) log("%c "+caller,lb9+lbF);
     for(let i=0; i< tools_map.length; ++i)
     {
         /* filter optional tool panels {{{*/
-        let   map = tools_map[i];
-        let panel =       map.panel;
-        if( panel == hotspot) continue;
-        if(!panel           ) continue;
+        let map         = tools_map[i];
+        let panel       =       map.panel;
+        if( panel      == hotspot) continue;
+        if(!panel                ) continue;
 
         /*num += 1;*/
         /*}}}*/
@@ -999,23 +996,9 @@ let grid_getElement = function(id)
 
 /* EXPORT */
 /*{{{*/
-/*➔ t_store_set_state {{{*/
-let t_store_set_state = function(label,state)
-{
-    if(          state != undefined)
-    {
-        if(      state) localStorage.setItem   (label, "true");
-        else            localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return          localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
 return { name : "dom_grid"
-    , logging : (state) => DOM_GRID_LOG = t_store_set_state("DOM_GRID_LOG",state)
-    , tagging : (state) => DOM_GRID_TAG = t_store_set_state("DOM_GRID_TAG",state)
+    , logging : (state) => DOM_GRID_LOG = t_store.setItem("DOM_GRID_LOG",state)
+    , tagging : (state) => DOM_GRID_TAG = t_store.setItem("DOM_GRID_TAG",state)
     ,    t_grid_IMPORT
 
     ,    t_grid_IS_ON_GRID

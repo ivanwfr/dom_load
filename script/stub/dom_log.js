@@ -8,7 +8,7 @@
 /* exported dom_log */
 
 const DOM_LOG_JS_ID        = "dom_log_js";
-const DOM_LOG_JS_TAG       = DOM_LOG_JS_ID  +" (230320:15h:09)";  /* eslint-disable-line no-unused-vars */
+const DOM_LOG_JS_TAG       = DOM_LOG_JS_ID  +" (230707:21h:39)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_log = (function() {
 "use strict";
@@ -51,6 +51,10 @@ let   L_ARU  =         "↑ ";
 let dir               = console.dir;
 let log               = console.log;
 let console_clear     = function(msg=null) { console.clear(); if(msg) console.log ("%c.. by "+msg,"color:#666; background:#111; border:0px solid #445; border-radius:1em;"); };
+
+let logBIG            = (msg)    => log("%c"+msg, "font-size:150%; font-weight:100;");
+let log_key_val       = (name,o) => { console.log(name+":"); console.dir(o); };
+let log_key_val_group = log_key_val;
 
 let logX = (msg,l_x) => console.log("%c"+msg, lbR+lfX[l_x]);
 
@@ -160,29 +164,34 @@ let mPadEnd   = function(s,l,c=" ") { s = String(s); while(s.length < l) s = s+c
 
 /* EXPORT */
 /*{{{*/
-return {  LF
-        , console_clear
-        , dir
-        , log
-        , log0
-        , log1
-        , log2
-        , log3
-        , log4
-        , log5
-        , log6
-        , log7
-        , log8
-        , log9
-        , lbH
-        , lbL
-        , lbR
-        , lbC
-        , lfX
+        return { name : "dom_log"
+            , LF
+            , console_clear
+            , dir
+            , log
+            , log0
+            , log1
+            , log2
+            , log3
+            , log4
+            , log5
+            , log6
+            , log7
+            , log8
+            , log9
+            , lbH
+            , lbL
+            , lbR
+            , lbC
+            , lfX
 
-    , get_callers
-    , log_caller
-    };
+            , logBIG
+            , log_key_val
+            , log_key_val_group
+
+            , get_callers
+            , log_caller
+        };
 
 /*}}}*/
 
@@ -196,9 +205,9 @@ return {  LF
 :e  $BROWSEEXT/SplitterExtension/javascript/background.js
 :e  $BROWSEEXT/SplitterExtension/javascript/content.js
 :e             $RPROFILES/script/dom_sentence.js
-:e             $RPROFILES/script/stub/dom_sentence_event.js
+:e             $RPROFILES/script/stub/dom_tools.js
 :e             $RPROFILES/script/stub/dom_scroll.js
-:e             $RPROFILES/script/stub/dom_sentence_util.js
+:e             $RPROFILES/script/stub/dom_util.js
 "...           $RPROFILES/script/stub/dom_log.js
 :e             $RPROFILES/stylesheet/dom_host.css
 

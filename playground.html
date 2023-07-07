@@ -1334,7 +1334,7 @@ escapeXXX(`
 
   <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (221124:17h:58)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (230707:20h:07)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
@@ -1348,13 +1348,13 @@ escapeXXX(`
   /* playground_IMPORT {{{*/
   function playground_IMPORT() {
     /* dom_log {{{*/
-      log = dom_log;
+    //log = dom_log;
 
     ({ lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX } = dom_log.LOG_BG_CSS);
     ({ lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX } = dom_log.LOG_FG_CSS);
     ({ lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb           } = dom_log.LOG_XX_CSS);
 
-    log                 = dom_log.log;
+//  log                 = dom_log.log;
     logBIG              = dom_log.logBIG;
     logXXX              = dom_log.logXXX;
     log_caller          = dom_log.log_caller;
@@ -1561,7 +1561,7 @@ script/dom_tools.html
 dom_tools_html_data = escape(`
 <!--INLINE{{{-->
 <!DOCTYPE html>
- <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (210929:21h:31)</span>
+ <span id = "dom_tools_html_tag" style="display:none">dom_tools_html (221124:17h:59)</span>
 
  <!-- hotspot {{{-->
  <div   id="hotspot"       class="hotspot_frame"            title="hotspot">
@@ -3651,7 +3651,6 @@ script/dom_wot.js
 
 /* globals console                      */
 /* globals document, Node, NodeFilter   */
-/* globals localStorage                 */
 
 /* globals dom_log                      */
 /* globals dom_util                     */
@@ -3661,7 +3660,7 @@ script/dom_wot.js
 /* exported dom_wot, DOM_WOT_JS_TAG */
 
 const DOM_WOT_JS_ID      = "dom_wot_js";
-const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (220308:16h:26)";
+const DOM_WOT_JS_TAG     = DOM_WOT_JS_ID  +" (230707:20h:03)";
 /*}}}*/
 let dom_wot             = (function() {
 "use strict";
@@ -3675,8 +3674,8 @@ let   DOM_WOT_TAG       = false;
 let t_wot_IMPORT        = function(_log_this,import_num)
 {
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_WOT_LOG         = DOM_WOT_LOG       || localStorage_getItem("DOM_WOT_LOG");
-    DOM_WOT_TAG         = DOM_WOT_TAG       || localStorage_getItem("DOM_WOT_TAG");
+    DOM_WOT_LOG         = DOM_WOT_LOG       || dom_store.getItem("DOM_WOT_LOG");
+    DOM_WOT_TAG         = DOM_WOT_TAG       || dom_store.getItem("DOM_WOT_TAG");
 
     /*}}}*/
     wot_INTERN();
@@ -3700,6 +3699,10 @@ let log=console.log, logBIG=log, logXXX, log_caller, log_json_one_liner, log_key
 
 let console_dir=console.dir;
 /*}}}*/
+/* dom_store {{{*/
+let t_store;
+
+/*}}}*/
 /* dom_util {{{*/
 
 /* DOM */
@@ -3719,13 +3722,6 @@ let mPadStart;
 
 /* RTabs */
 let is_marked_to_hide;
-
-/*}}}*/
-/* dom_store {{{*/
-
-let localStorage_delItem = (key    ) =>           localStorage.removeItem(key    );                                       /* eslint-disable-line no-unused-vars */
-let localStorage_getItem = (key    ) =>           localStorage.getItem   (key    );                                       /* eslint-disable-line no-unused-vars */
-let localStorage_setItem = (key,val) => { if(val) localStorage.setItem   (key,val); else localStorage.removeItem(key); }; /* eslint-disable-line no-unused-vars */
 
 /*}}}*/
 /* dom_tools {{{*/
@@ -3800,9 +3796,7 @@ logBIG(caller+": [dom_util UNDEFINED]"      , 2);
     /* dom_store {{{*/
     if(typeof dom_store != "undefined")
     {
-        localStorage_getItem =          dom_store.t_store_getItem;
-        localStorage_setItem =          dom_store.t_store_set_value;
-        localStorage_delItem = (key) => dom_store.t_store_set_value(key,null);
+        t_store = dom_store;
 
 if(DOM_WOT_LOG || DOM_WOT_TAG) logBIG(caller+": ["+dom_store.name+"]"      , 4);
     }
@@ -3908,6 +3902,11 @@ const regexp_FUNCTION_JS    = new RegExp("\\/\\*[_ ]*(\\S+).*\\{\\{\\{\\*\\/");
 /*........................................../  * _   (FFFF)    ^  ^  ^       */
 const regexp_FUNCTION_LUA   = new RegExp(    "--[_ ]*(\\S+).*\\{\\{\\{");
 /*............................................-- _   (FFFF)    ^  ^  ^ */
+const regexp_IMAGE_ASCIIDOC = new RegExp(    '^image::([^\\[]*)(?:\\[([^\\]]+))\\]?'); /* eslint-disable-line quotes */
+
+/*{{{
+:!start explorer "https://regexr.com/32oeg"
+}}}*/
 
 let   wot_split_done = false;
 /*}}}*/
@@ -4050,7 +4049,7 @@ let t_WOT_FOLD_EL = function(el)
 /*_ get_lines_innerHTML {{{*/
 let get_lines_innerHTML = function(lines, line_num) /* eslint-disable-line complexity */
 {
-    let with_line_num = localStorage_getItem( LINES_WOT ); /* prop may not be ready yet */
+    let with_line_num = t_store.getItem( LINES_WOT ); /* prop may not be ready yet */
 
     let innerHTML = "";
     let    l = 0;
@@ -4083,12 +4082,14 @@ let get_lines_innerHTML = function(lines, line_num) /* eslint-disable-line compl
             /*}}}*/
             /* pick line {{{*/
             let h_line = escapeHTML(this_line);
-            /*{{{
+/*{{{
 if(h_line.includes("#region")) log(h_line);
 }}}*/
-            h_line     = h_line.replace(regexp_REGIONFOLD   , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
-            h_line     = h_line.replace(regexp_FUNCTION_JS  , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
-            h_line     = h_line.replace(regexp_FUNCTION_LUA , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line = h_line.replace(regexp_REGIONFOLD    , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line = h_line.replace(regexp_FUNCTION_JS   , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+            h_line = h_line.replace(regexp_FUNCTION_LUA  , "<span class='"+WALL_OF_TEXT_BLOCK+"'>$1</span> "+h_line);
+
+            h_line = h_line.replace(regexp_IMAGE_ASCIIDOC, "<img src='$1' alt=$1 title=$2 />"); /* eslint-disable-line quotes */
 
             /*}}}*/
             /* region {{{*/
@@ -4099,19 +4100,21 @@ if(h_line.includes("#region")) log(h_line);
             }
             /*}}}*/
             /* function {{{*/
-            else if( next_line )
+            else if(       next_line
+                    && (   next_line.includes(" function(") /* javascript */
+                        || next_line.includes("function " ) /* LUA */
+                        || next_line.includes("private "  ) /* C# */
+                        || next_line.includes("protected ")
+                        || next_line.includes("public "   )
+                        || next_line.includes("static "   )
+                        || next_line.includes("void "     )
+                       )
+                   )
             {
-                if(      next_line.includes  (  " function(" ) /* javascript */
-                      || next_line.includes  (  "function "  ) /* LUA */
-                      || next_line.includes  (  "private "   ) /* C# */
-                      || next_line.includes  (  "protected " )
-                      || next_line.includes  (  "public "    )
-                      || next_line.includes  (  "static "    )
-                      || next_line.includes  (  "void "      )
-                  )
-                    h_line = h_line.replace("'>", " function'>");
-
+                h_line = h_line.replace("'>", " function'>");
             }
+            /*}}}*/
+            /* text_line {{{*/
             else {
                 h_line = "<span class='text_line'>"+h_line+"</span>";
             }
@@ -4173,7 +4176,7 @@ if(h_line.includes("#region")) log(h_line);
 /*_ get_FOLD_EL_innerHTML {{{*/
 let get_FOLD_EL_innerHTML = function(lines,line_num) /* eslint-disable-line complexity */
 {
-    let with_line_num     = localStorage_getItem( LINES_WOT ); /* prop may not be ready yet */
+    let with_line_num     = t_store.getItem( LINES_WOT ); /* prop may not be ready yet */
     let innerHTML         = "";
     let    l              = 0;
     while((l < lines.length))
@@ -4330,26 +4333,10 @@ if(        log_this
 
 /* ➔ EXPORT */
 /*{{{*/
-/*_ t_wot_set_state {{{*/
-let t_wot_set_state = function(label,state)
-{
-    if(    state != undefined)
-    {
-        if(state) localStorage.setItem   (label, "true");
-        else      localStorage.removeItem(label        );
-        return !!state;
-    }
-    else {
-        return    localStorage.getItem   (label        );
-    }
-};
-/*}}}*/
-
 return { name    : "dom_wot"
-    ,    logging : (state) => DOM_WOT_LOG = dom_wot.t_wot_set_state("DOM_WOT_LOG", state)
-    ,    tagging : (state) => DOM_WOT_TAG = dom_wot.t_wot_set_state("DOM_WOT_TAG", state)
+    ,    logging : (state) => DOM_WOT_LOG = t_store.setItem("DOM_WOT_LOG", state)
+    ,    tagging : (state) => DOM_WOT_TAG = t_store.setItem("DOM_WOT_TAG", state)
     ,    t_wot_IMPORT
-    ,    t_wot_set_state
 
     ,    t_WOT_FOLD_EL
     ,    t_WOT_SPLIT
@@ -4637,8 +4624,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(state) { return DOM_LOADER_LOG = dom_util.t_util_set_state("DOM_LOADER_LOG",state); }
-        , tagging : function(state) { return DOM_LOADER_TAG = dom_util.t_util_set_state("DOM_LOADER_TAG",state); }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_store.t_store_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.t_store_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 
