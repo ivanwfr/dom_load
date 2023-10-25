@@ -11,7 +11,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_STORE_JS_ID     = "dom_store_js";
-const DOM_STORE_JS_TAG    = DOM_STORE_JS_ID  +" (230707:21h:46)";
+const DOM_STORE_JS_TAG    = DOM_STORE_JS_ID  +" (230821:21h:18)";
 /*}}}*/
 let dom_store   = (function() {
 "use strict";
@@ -21,9 +21,11 @@ let dom_store   = (function() {
     let localStorage_delItem = function(key    ) {          try { /*...*/  localStorage.removeItem(key    );                                    } catch(ex) {} };
 
     return { name : "dom_store"
-        , setItem : localStorage_setItem
-        , getItem : localStorage_getItem
-        , delItem : localStorage_delItem
+        , t_store_delItem   : localStorage_delItem
+        , t_store_getItem   : localStorage_getItem
+        , t_store_setItem   : localStorage_setItem
+        , t_store_set_state : localStorage_setItem
+        , t_store_set_value : localStorage_setItem
 
     };
 }());

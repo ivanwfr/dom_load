@@ -58,7 +58,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (230707:21h:10)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (231001:02h:27)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -335,7 +335,7 @@ let   tools_DEPEND = function()
 /*…   load_IMPORT .. globals {{{*/
 let   load_IMPORT = function()
 {
-let log_this; try { log_this = t_store.localStorage_getItem("DOM_TOOLS_TAG"); } catch(ex) {}
+let log_this; try { log_this =          t_store.t_store_getBool("DOM_TOOLS_TAG"); } catch(ex) {}
 
 let i =5; /*....................................... dom_data     EXPORT-ONLY */                 /* 05 */
 
@@ -1452,36 +1452,36 @@ if( log_this) log("%c shadow_host %c"+get_id_or_tag_and_className(shadow_host), 
     /* IN CASE [shadow_host] HAS BEEN ALREADY BEEN CREATED BY [dom_load] */
     if(!shadow_host)
     {
-        shadow_host                 = document.querySelector("#shadow_host");
-        if(shadow_host) shadow_root = shadow_host.shadowRoot;
+        shadow_host                     = document.querySelector("#shadow_host");
     }
-
-if(!shadow_host)
-{
-    shadow_host                         = document.createElement("DIV");
-    shadow_host.id                      = "shadow_host";
-    shadow_host.style.fontSize          = "initial";
-    document.documentElement.appendChild( shadow_host );
-
-    if( shadow_host.attachShadow ) {
-        shadow_host.style.zIndex        = t_data.ZINDEX_SHADOW_HOST;
-/*{{{
-        shadow_host.style.zIndex        = parseInt((t_util.t_get_divs_style_z_index_max()+1000) / 1000) * 1000;
-}}}*/
-if( log_this || DOM_TOOLS_TAG)    log("%c shadow_host.style.zIndex=["+shadow_host.style.zIndex+"]", lbH+lf1);
-        shadow_host.style.fontSize      = t_data.FONT_SIZE_SHADOW_HOST;
-
-        shadow_root =                     shadow_host.attachShadow({mode: "open"});
+    if(shadow_host)
+    {
+        shadow_root                     = shadow_host.shadowRoot;
     }
     else {
-        logBIG(caller+": shadow_host.attachShadow is missing");
-        /* doc + tools event clash         */
-        /* shadow_root = document.body;    */
-        shadow_root    = shadow_host;
+        shadow_host                     = document.createElement("DIV");
+        shadow_host.id                  = "shadow_host";
+        document.documentElement.appendChild( shadow_host );
+
+        if( shadow_host.attachShadow ) {
+            shadow_root                 = shadow_host.attachShadow({mode: "open"});
+        }
+        else {
+            logBIG(caller+": shadow_host.attachShadow is missing");
+            /* doc + tools event clash         */
+            /* shadow_root              = document.body;    */
+            shadow_root                 = shadow_host;
+        }
+        shadow_root.id                  = "shadow_root";
     }
 
-    shadow_root.id     = "shadow_root";
-}
+    shadow_host.style.zIndex            = t_data.ZINDEX_SHADOW_HOST;
+    shadow_host.style.fontSize          = "initial";
+/*{{{
+    shadow_host.style.fontSize          = t_data.FONT_SIZE_SHADOW_HOST;
+}}}*/
+
+if( log_this || DOM_TOOLS_TAG)    log("%c shadow_host.style.zIndex=["+shadow_host.style.zIndex+"]", lbH+lf1);
     /*}}}*/
     /* [shadow_root] HEAD charset utf-8 .. (200624: relying on script charset="utf-8" attribute instead) {{{*/
 /*{{{
@@ -3841,6 +3841,7 @@ log("t_REMOVE_ADS_changed("+id+" , "+state+") %c"+ (by_user_or_from_storage ? "b
     if(state)
     {
         t_util.t_REMOVE_ADS(id);
+        t_util.t_REMOVE_FIXED();
 
         t_sticky.t_sticky_LOAD_ANCHORS_CHANGED();
 
@@ -20567,6 +20568,8 @@ let t_pat_bag_status_set_innerText = function(innerText)
 {
 let log_this = LOG_MAP.S0_PATTERN || LOG_MAP.S2_SELECT;
 
+    if(!fly_log) return;
+
     if(!em_pixels) {
         let    cs = window.getComputedStyle(fly_log);
         em_pixels = parseInt(cs.width) / 1.4;
@@ -24455,8 +24458,8 @@ return { name : "drag_cursor"
 /* eslint-disable object-shorthand */
 
 return { name : "dom_tools"
-    , logging : function(state) { return DOM_TOOLS_LOG = t_store.setItem("DOM_TOOLS_LOG",state); }
-    , tagging : function(state) { return DOM_TOOLS_TAG = t_store.setItem("DOM_TOOLS_TAG",state); }
+    , logging : function(state) { return DOM_TOOLS_LOG = t_store.t_store_set_state("DOM_TOOLS_LOG",state); }
+    , tagging : function(state) { return DOM_TOOLS_TAG = t_store.t_store_set_state("DOM_TOOLS_TAG",state); }
     , t_tools_IMPORT
 
     /* CSS {{{*/
@@ -24771,9 +24774,9 @@ let IPC_LOG          = dom_log.LOG_MAP.IPC_LOG;
 }}}*/
 const IPC_LOG          = true;
 const IPC_LB0_COLOR    = dom_log.LOG_BG_CSS.lb0;
-const IPC_LBA_COLOR    = dom_log.LOG_BG_CSS.lbA;
-const IPC_LBF_COLOR    = dom_log.LOG_BG_CSS.lbF;
-const IPC_LBH_COLOR    = dom_log.LOG_BG_CSS.lbH;
+const IPC_LBA_COLOR    = dom_log.LOG_XX_CSS.lbA;
+const IPC_LBF_COLOR    = dom_log.LOG_XX_CSS.lbF;
+const IPC_LBH_COLOR    = dom_log.LOG_XX_CSS.lbH;
 
 const IPC_LF5_COLOR    = dom_log.LOG_FG_CSS.lf5;
 const IPC_LOG_COLOR    = dom_log.LOG_BG_CSS.lb6;
@@ -24880,27 +24883,46 @@ if(log_this) log("%c "+DOM_LOAD_ID+" calling dom_load", IPC_LBH_COLOR+IPC_LF5_CO
 };
 /*}}}*/
 /*}}}*/
-if(IPC_LOG) log("%c "+DOM_TOOLS_JS_ID+" LOADING DONE ", IPC_LBH_COLOR+IPC_LF5_COLOR);
+if(IPC_LOG) log("%c "+DOM_TOOLS_JS_TAG+" LOADED ", IPC_LBH_COLOR+IPC_LF5_COLOR);
 /* RUNNING AS AN EXTENSION {{{*/
 /* eslint-disable no-undef */
 let running_as_an_extension = (typeof chrome != "undefined") && chrome.runtime;
 if( running_as_an_extension )
 {
-    let dom_tools_html_el       = document.querySelector("#dom_tools_html"); log("#dom_tools_html", dom_tools_html_el);
-    if(!dom_tools_html_el) {
-        if(IPC_LOG) log("%c LOADING AS AN EXTENSION ", IPC_MSG_COLOR);
-        if(IPC_LOG) log("manifest", chrome.runtime.getManifest());
+    let dom_tools_html
+        =       document.querySelector("#dom_tools_html");
+
+    if(!dom_tools_html)
+    {
+        let shadow_host
+            =   document.querySelector("#shadow_host");
+
+        let shadow_root
+            =   shadow_host
+            &&  shadow_host.shadowRoot;
+
+        dom_tools_html
+            =   shadow_root
+            &&  shadow_root.querySelector("#dom_tools_html");
+
+if(IPC_LOG) log("#shadow_host"   , shadow_host   );
+if(IPC_LOG) log("#shadow_root"   , shadow_root   );
     }
-    else {
-        if(IPC_LOG) log("%c RUNNING AS AN EXTENSION ", IPC_MSG_COLOR);
+if(IPC_LOG) log("#dom_tools_html", dom_tools_html);
+
+    if( dom_tools_html )
+    {
+if(IPC_LOG) log("● %c RUNNING AS AN EXTENSION ", IPC_MSG_COLOR);
+
         //console.profile("t_load");
         //dom_tools.t_load();
         //console.profileEnd();
-if(IPC_LOG) log("%c LISTENING TO BACKGROUND SCRIPT MESSAGES", IPC_MSG_COLOR);
 
+if(IPC_LOG) log("○ %c LISTENING TO BACKGROUND SCRIPT MESSAGES", IPC_LOG_COLOR);
         let t_onMessage_CB = function(message,sender,response_handler=null) /* eslint-disable-line strict */
         {
-            if(IPC_LOG) log(  "%c HANDLING MESSAGE "+JSON.stringify(message) , IPC_MSG_COLOR);
+if(IPC_LOG) log("● %c HANDLING MESSAGE "+JSON.stringify(message) , IPC_MSG_COLOR);
+
             switch( message.cmd )
             {
             case    "t_load"  : message.result = "CALLING ["+message.cmd+"] IN "+DOM_TOOLS_JS_TAG; dom_tools.t_load  ();  break;

@@ -2,14 +2,14 @@
 <html>
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (230707:20h:11)";
+  DOM_LOAD_ID       = "screenshots";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (230820:21h:57)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
  <head>
   <title>RTabs screenshots</title>
 <!-- TODO - LOAD RESOURCES ONLINE {{{
-/\v"(javascripts*|stylesheets*|images*)
+/\v"(javascript*|stylesheet*|images*)
   <base href="https://remotetabs.com/dev/rtabs/">
 }}}-->
   <!-- META {{{ -->
@@ -863,8 +863,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(state) { return DOM_LOADER_LOG = dom_store.setItem("DOM_LOADER_LOG",state); }
-        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.setItem("DOM_LOADER_TAG",state); }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_store.t_store_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.t_store_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 

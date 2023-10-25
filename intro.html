@@ -1,7 +1,7 @@
 <!DOCTYPE html> <html lang="fr">
 <!--{{{-->
 <script>
-  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (230707:20h:11)";
+  DOM_LOAD_ID       = "intro";      DOM_LOAD_TAG  = "RTabs "+DOM_LOAD_ID+" (230820:22h:52)";
   DOM_LOAD_PANELS   = "";
 </script>
 <!--}}}-->
@@ -9,7 +9,7 @@
  <head>
   <title>RTabs intro</title>
 <!-- TODO - LOAD RESOURCES ONLINE {{{
-/\v"(javascripts*|stylesheets*|images*)
+/\v"(javascript*|stylesheet*|images*)
   <base href="https://remotetabs.com/dev/rtabs/">
 }}}-->
   <!-- META {{{ -->
@@ -7626,8 +7626,8 @@ let dom_loader = (function()
 if(DOM_LOADER_LOG) console.log("DEFINING [dom_loader]");
 
     return { name : "dom_loader"
-        , logging : function(state) { return DOM_LOADER_LOG = dom_store.setItem("DOM_LOADER_LOG",state); }
-        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.setItem("DOM_LOADER_TAG",state); }
+        , logging : function(state) { return DOM_LOADER_LOG = dom_store.t_store_set_state("DOM_LOADER_LOG",state); }
+        , tagging : function(state) { return DOM_LOADER_TAG = dom_store.t_store_set_state("DOM_LOADER_TAG",state); }
 
         , toggle_module_state
 
@@ -7940,8 +7940,6 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
         const SOK = dom_data ? dom_data.SYMBOL_CHECK_MARK  : "-";
         const SKO = dom_data ? dom_data.SYMBOL_NOT_CHECKED : "X";
 
-        let missing_ids  = "";
-        let id;
         /*}}}*/
         /*  check_missing_id {{{*/
         let check_missing_id = function(id)
@@ -7963,6 +7961,9 @@ if(DOM_LOADER_LOG) log("%c unfold_this("+el.id+")", lbH+lf4);
             return "";
         };
         /*}}}*/
+
+        let missing_ids = "";
+        let id;
 
         id =     "dom_tools_html_tag";                missing_ids +=     check_missing_id(id) ;
       //id =     "dom_grid_html_tag" ;                missing_ids +=     check_missing_id(id) ;

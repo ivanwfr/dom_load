@@ -13,7 +13,7 @@
 /* exported DOM_SCROLL_JS_TAG */
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (230707:21h:45)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (230820:21h:11)";
 /*}}}*/
 let dom_scroll              = (function() {
 "use strict";
@@ -40,8 +40,8 @@ let t_scroll_IMPORT  = function(_log_this,import_num)
 
     /*}}}*/
     /* MODULE LOGGING TAGGING {{{*/
-    DOM_SCROLL_LOG = DOM_SCROLL_LOG || t_store.getItem("DOM_SCROLL_LOG");
-    DOM_SCROLL_TAG = DOM_SCROLL_TAG || t_store.getItem("DOM_SCROLL_TAG");
+    DOM_SCROLL_LOG = DOM_SCROLL_LOG || t_store.t_store_getItem("DOM_SCROLL_LOG");
+    DOM_SCROLL_TAG = DOM_SCROLL_TAG || t_store.t_store_getItem("DOM_SCROLL_TAG");
 
     /*}}}*/
     /* t_util {{{*/
@@ -593,8 +593,8 @@ let   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior =
 
 /* EXPORT */
 return { name : "dom_scroll"
-    ,    logging : (state) => DOM_SCROLL_LOG = t_store.setItem("DOM_SCROLL_LOG",state)
-    ,    tagging : (state) => DOM_SCROLL_TAG = t_store.setItem("DOM_SCROLL_TAG",state)
+    ,    logging : (state) => DOM_SCROLL_LOG = t_store.t_store_set_state("DOM_SCROLL_LOG",state)
+    ,    tagging : (state) => DOM_SCROLL_TAG = t_store.t_store_set_state("DOM_SCROLL_TAG",state)
     ,    t_scroll_listener
     ,    t_scrollIntoViewIfNeeded_set_EL
     ,    t_scroll_is_scrolling

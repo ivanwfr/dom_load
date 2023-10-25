@@ -13,7 +13,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID  = "dom_tools";
-const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (230707:21h:52)";  /* eslint-disable-line no-unused-vars */
+const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (230924:19h:23)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_tools = (function() {
 "use strict";
@@ -132,7 +132,7 @@ const          MOVE_MIN = 5;
 let long_press_handler  = function()
 {
 /*{{{*/
-let   caller = "long_press_handler";
+let   caller = "long_press_handler"; /* eslint-disable-line no-unused-vars */
 let log_this = DOM_TOOLS_LOG;
 
     let is_scrolling = dom_scroll.t_scroll_is_scrolling();
@@ -145,7 +145,9 @@ else if(log_this                 ) log8("→→→ long_press_handler: t_scroll_
 
     let has_moved = (Math.abs(onMoveDXY.x) >= MOVE_MIN)
         ||          (Math.abs(onMoveDXY.y) >= MOVE_MIN);
-console.log(caller+": %c onMoveDXY=["+onMoveDXY.x+" "+onMoveDXY.y+"]", ("color: "+(has_moved ? "red" : "green")+";"));/*//FIXME*/
+/*{{{
+console.log(caller+": %c onMoveDXY=["+onMoveDXY.x+" "+onMoveDXY.y+"]", ("color: "+(has_moved ? "red" : "green")+";"));
+}}}*/
     if( has_moved    ) return;
 
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER(onDown_EL, log_this);
