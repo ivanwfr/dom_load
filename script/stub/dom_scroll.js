@@ -13,7 +13,7 @@
 /* exported DOM_SCROLL_JS_TAG */
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (240711:19h:25)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (240801:15h:35)";
 /*}}}*/
 let dom_scroll              = (function() {
 "use strict";
@@ -295,7 +295,7 @@ log("%c t_scrollIntoViewIfNeeded %c "+t_util.get_id_or_tag(scrollIntoView_EL), l
 /*
     if( delay == undefined)       delay = SCROLL_INTO_VIEW_DELAY;
     if( delay ) scroll_intoview_timer = setTimeout(scrollIntoViewIfNeeded_handler, delay);
-    else                                             scrollIntoViewIfNeeded_handler();
+    else                                           scrollIntoViewIfNeeded_handler();
 */
     /*}}}*/
 };
@@ -316,8 +316,8 @@ let log_this = DOM_SCROLL_LOG;
     if(!scrollIntoView_EL) return;
 
     let el = scrollIntoView_EL;
-if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
-                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5 : 6]                  );
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c      el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
+                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5:6]                          );
 
     t_scrollIntoViewIfNeeded_set_EL( null );
 /*}}}*/
@@ -566,8 +566,8 @@ if( log_this) log("%c scrollIntoView_EL.scrolledIntoView_handled_MS=["+scrollInt
     }
 
     /* RESTORE USER SCROLL BEHAVIOR */
-    if(scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
-    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout   =   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
+    if( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
+    /**/scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout=   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
 };
 /*}}}*/
 /*_   scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_set_scrollBehavior {{{*/

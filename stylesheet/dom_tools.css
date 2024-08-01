@@ -1,5 +1,5 @@
 
-#dom_tools_css_tag  { content: "dom_tools_css (231027:18h:48) XXX"; }
+#dom_tools_css_tag  { content: "dom_tools_css (240801:15h:38) XXX"; }
 
 :host { all: initial; }
 
@@ -3769,8 +3769,8 @@ padding    : 5px             !important;
 #sel_bag.back>div { border-color               : red; }
 
 .back .current_slot_num { color:white; background:linear-gradient(to bottom, #F00, #000) !important; }
-          .standby .seeker_handle.back { transform  : rotate(-165deg) !important; }
-.back        .seeker_handle                { color                       :     red !important; }
+.standby     .seeker_handle.back           { transform                   : rotate(-165deg) !important; }
+.back        .seeker_handle                { color                       : red             !important; }
              .seeker_handle.back           { transform                   : translate(0, 20%) rotate(-180deg); }
              .seeker_handle.right.back     { transform                   : translate(0, 20%) rotate( 180deg); }
              .seeker_handle.back           { transition-duration         : 200ms; }

@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (240801:14h:30)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (240801:15h:41)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -1918,7 +1918,7 @@ let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (240711:19h:25)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (240801:15h:35)";
 
 let dom_scroll              = (function() {
 "use strict";
@@ -2206,8 +2206,8 @@ let log_this = DOM_SCROLL_LOG;
     if(!scrollIntoView_EL) return;
 
     let el = scrollIntoView_EL;
-if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
-                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5 : 6]                  );
+if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(el)+"%c      el.scrolledIntoView_handled_MS "+el.scrolledIntoView_handled_MS
+                  ,lbL+lf4      ,lbR+lf4                       ,lbH+lfX[el.scrolledIntoView_handled_MS ? 5:6]                          );
 
     t_scrollIntoViewIfNeeded_set_EL( null );
 
@@ -2449,8 +2449,8 @@ if( log_this) log("%c scrollIntoView_EL.scrolledIntoView_handled_MS=["+scrollInt
     }
 
 
-    if(scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
-    scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout   =   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
+    if( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout) clearTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout );
+scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout=   setTimeout( scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior, MAX_SCROLL_SMOOTH_DURATION);
 };
 
 
@@ -2515,7 +2515,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID  = "dom_tools_js";
-const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (240801:14h:06)";
+const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (240801:15h:10)";
 
 let dom_tools = (function() {
 "use strict";
@@ -2809,7 +2809,7 @@ let t_pointerup_handler = function(e)
 let   caller = "t_pointerup_handler";
 let log_this = DOM_TOOLS_LOG;
 
-    let handeled_by                  = "";
+    let handled_by                  = "";
 
 
     let was_theme_dark = dom_sentence.t_SENTENCE_get_theme_dark();
@@ -2829,7 +2829,7 @@ let log_this = DOM_TOOLS_LOG;
     let   some_sentence_container    =          document.querySelector(          ".sentence_container");
     if(     clicked && onDown_sentence_container)
     {
-        handeled_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
+        handled_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
 
         dom_sentence.t_SENTENCE_RESTORE_EL(onDown_sentence_container, e);
     }
@@ -2839,13 +2839,13 @@ let log_this = DOM_TOOLS_LOG;
     {
         if(some_sentence_container)
         {
-            handeled_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
+            handled_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
 
             dom_sentence.t_SENTENCE_RESTORE_ALL( e );
             some_sentence_container = document.querySelector(".sentence_container");
         }
         else {
-            handeled_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
+            handled_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
 
             dom_sentence.t_SENTENCE_restore_text_containers_outlined();
         }
@@ -2854,7 +2854,7 @@ let log_this = DOM_TOOLS_LOG;
 
     else
     {
-        handeled_by
+        handled_by
             = "UP ➔ CLICKED=["+clicked+"]"+LF
             +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]"+LF
             +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"+LF
@@ -2896,7 +2896,7 @@ if( log_this) log("%c SETTING EXTENSION: ("+DOM_TOOLS_JS_TAG+") { theme_dark : "
         }
     }
 
-if( log_this) log5("→→ "+caller+":"+ handeled_by);
+if( log_this) log5("→→ "+caller+":"+ handled_by);
 };
 
 
@@ -3378,7 +3378,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:14h:05)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:15h:10)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -4456,14 +4456,14 @@ if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if(!el) return "";
-    let handeled_by = "";
+    let handled_by = "";
 
-    if( check_tool_event(e) ) return handeled_by;
+    if( check_tool_event(e) ) return handled_by;
 
     let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
     if( container )
     {
-        handeled_by = "RESTORING CONTAINER SPLIT SENTENCES";
+        handled_by = "RESTORING CONTAINER SPLIT SENTENCES";
 
 
 
@@ -4496,12 +4496,12 @@ if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_S
 if( log_this) log_key_val_group(        caller
                                , {          el
                                  ,   container
-                                 , handeled_by
+                                 , handled_by
                                  ,     callers : dom_log.get_callers && dom_log.get_callers()
                                }, lf8, true);
 
-if( tag_this) log("...return ["+handeled_by+"]");
-    return handeled_by;
+if( tag_this) log("...return ["+handled_by+"]");
+    return handled_by;
 };
 
 

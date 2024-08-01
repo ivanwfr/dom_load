@@ -23,7 +23,7 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:14h:05)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:15h:10)";
 /*}}}*/
 let dom_sentence            = (function() {
 "use strict";
@@ -1157,14 +1157,14 @@ if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if(!el) return "";
-    let handeled_by = "";
+    let handled_by = "";
 /*}}}*/
-    if( check_tool_event(e) ) return handeled_by;
+    if( check_tool_event(e) ) return handled_by;
     /* RESTORE [CSS_SENTENCE_CONTAINER] CONTAINERS {{{*/
     let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
     if( container )
     {
-        handeled_by = "RESTORING CONTAINER SPLIT SENTENCES";
+        handled_by = "RESTORING CONTAINER SPLIT SENTENCES";
 
 /*{{{
         if(container.nodeName == "DETAILS") container.open = false;
@@ -1201,12 +1201,12 @@ if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_S
 if( log_this) log_key_val_group(        caller
                                , {          el
                                  ,   container
-                                 , handeled_by
+                                 , handled_by
                                  ,     callers : dom_log.get_callers && dom_log.get_callers()
                                }, lf8, true);
 /*}}}*/
-if( tag_this) log("...return ["+handeled_by+"]");
-    return handeled_by;
+if( tag_this) log("...return ["+handled_by+"]");
+    return handled_by;
 };
 /*}}}*/
 /*➔ t_SENTENCE_RESTORE_ALL {{{*/

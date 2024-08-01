@@ -9,7 +9,7 @@
 /* eslint-disable no-return-assign */
 
 const DOM_WORDING_JS_ID     = "dom_wording_js";
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +" (240801:14h:06)";
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +" (240801:15h:10)";
 /*}}}*/
 let dom_wording = (function() {
 "use strict";
@@ -423,7 +423,7 @@ if( log_this)
     if( dissmissed_by )
         return;
 
-    t_tools.t_event_add_e_handeled_by(e, caller);
+    t_tools.t_event_add_e_handled_by(e, caller);
 
     if( e.ctrlKey ) return;
 

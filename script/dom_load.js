@@ -14,7 +14,7 @@
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 const DOM_LOAD_ID    = "dom_load";
-const DOM_LOAD_TAG   =  DOM_LOAD_ID +" (240801:14h:38)";
+const DOM_LOAD_TAG   =  DOM_LOAD_ID +" (240801:16h:03)";
 /*}}}*/
 javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 "use strict";
@@ -1257,7 +1257,7 @@ let dom_grid_css_data ="data:text/css,"+ `
 let dom_tools_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 
-#dom_tools_css_tag  { content: "dom_tools_css (231027:18h:48) XXX"; }
+#dom_tools_css_tag  { content: "dom_tools_css (240801:15h:38) XXX"; }
 
 :host { all: initial; }
 
@@ -4404,8 +4404,8 @@ background-size    : 100% 100% !important;
 #sel_bag.back>div { border-color               : red; }
 
 .back .current_slot_num { color:white; background:linear-gradient(to bottom, #F00, #000) !important; }
-          .standby .seeker_handle.back { transform  : rotate(-165deg) !important; }
-.back        .seeker_handle                { color                       :     red !important; }
+.standby     .seeker_handle.back           { transform                   : rotate(-165deg) !important; }
+.back        .seeker_handle                { color                       : red             !important; }
              .seeker_handle.back           { transform                   : translate(0, 20%) rotate(-180deg); }
              .seeker_handle.right.back     { transform                   : translate(0, 20%) rotate( 180deg); }
              .seeker_handle.back           { transition-duration         : 200ms; }
@@ -15685,7 +15685,7 @@ let dom_fly_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (240801:14h:24)";
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (240801:15h:19)";
 let dom_fly     = (function() {
 "use strict";
 
@@ -16405,7 +16405,7 @@ let log_get_event_status_string = function(filter)
 
     let event_status
         =       "EVENT CAPTURED BY "              + o.captured_by                 + t_data.LF
-        +       "EVENT HANDELED BY "              + o.handeled_by                 + t_data.LF
+        +       "EVENT HANDLED BY "               + o.handled_by                  + t_data.LF
         +       "...................was_a_click: "+ o.was_a_click                 + t_data.LF
         +       "............selection_progress: "+ o.selection_progress          + t_data.LF
         +       ".....................onSeekXYL: "+ o.onSeekXYL                   + t_data.LF
@@ -16471,7 +16471,7 @@ let log_get_event_status_object = function()
 
 
     let                 captured_by_changed = (!event_status_object_prev || (event_status_object.captured_by                 != event_status_object_prev.captured_by                ));
-    let                 handeled_by_changed = (!event_status_object_prev || (event_status_object.handeled_by                 != event_status_object_prev.handeled_by                ));
+    let                  handled_by_changed = (!event_status_object_prev || (event_status_object.handled_by                  != event_status_object_prev.handled_by                 ));
     let                   has_moved_changed = (!event_status_object_prev || (event_status_object.has_moved                   != event_status_object_prev.has_moved                  ));
     let                 was_a_click_changed = (!event_status_object_prev || (event_status_object.was_a_click                 != event_status_object_prev.was_a_click                ));
     let          selection_progress_changed = (!event_status_object_prev || (event_status_object.selection_progress          != event_status_object_prev.selection_progress         ));
@@ -16484,7 +16484,7 @@ let log_get_event_status_object = function()
     if(!event_status_object_prev)                                                           event_status_object_prev = {};
 
     let o = { captured_by                 : (                 captured_by_changed ? (t_log.L_NEW+ event_status_object.captured_by                 +t_log.L_ARL + event_status_object_prev.captured_by                 ) : t_log.L_CHK+ event_status_object_prev.captured_by                 )
-        ,     handeled_by                 : (                 handeled_by_changed ? (t_log.L_NEW+ event_status_object.handeled_by                 +t_log.L_ARL + event_status_object_prev.handeled_by                 ) : t_log.L_CHK+ event_status_object_prev.handeled_by                 )
+        ,     handled_by                  : (                  handled_by_changed ? (t_log.L_NEW+ event_status_object.handled_by                  +t_log.L_ARL + event_status_object_prev.handled_by                  ) : t_log.L_CHK+ event_status_object_prev.handled_by                  )
         ,     has_moved                   : (                   has_moved_changed ? (t_log.L_NEW+ event_status_object.has_moved                   +t_log.L_ARL + event_status_object_prev.has_moved                   ) : t_log.L_CHK+ event_status_object_prev.has_moved                   )
         ,     was_a_click                 : (                 was_a_click_changed ? (t_log.L_NEW+ event_status_object.was_a_click                 +t_log.L_ARL + event_status_object_prev.was_a_click                 ) : t_log.L_CHK+ event_status_object_prev.was_a_click                 )
         ,     selection_progress          : (          selection_progress_changed ? (t_log.L_NEW+ event_status_object.selection_progress          +t_log.L_ARL + event_status_object_prev.selection_progress          ) : t_log.L_CHK+ event_status_object_prev.selection_progress          )
@@ -17078,14 +17078,14 @@ if( log_this) t_log.log(caller);
 
 let   event_LOG_TOOLTIP_handler = function(_caller)
 {
-    let handeled_by_html
+    let handled_by_html
         = "<pre class='fg0'>"
         +   "<em class='big cc9'>"+_caller+"</em>"
-        +   t_tools.t_get_handeled_by_table()
+        +   t_tools.t_get_handled_by_table()
         + "</pre>"
     ;
 
-    t_fly_tooltip_update(handeled_by_html, t_data.CSS_EVENT_LOG);
+    t_fly_tooltip_update(handled_by_html, t_data.CSS_EVENT_LOG);
 };
 
 
@@ -17672,7 +17672,7 @@ let dom_wording_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_WORDING_JS_ID     = "dom_wording_js";
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +" (240801:14h:06)";
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +" (240801:15h:10)";
 
 let dom_wording = (function() {
 "use strict";
@@ -18048,7 +18048,7 @@ if( log_this)
     if( dissmissed_by )
         return;
 
-    t_tools.t_event_add_e_handeled_by(e, caller);
+    t_tools.t_event_add_e_handled_by(e, caller);
 
     if( e.ctrlKey ) return;
 
@@ -24419,7 +24419,7 @@ let dom_sticky_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (240801:14h:24)";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (240801:15h:11)";
 
 let dom_sticky  = (function() {
 "use strict";
@@ -25721,15 +25721,15 @@ if( log_this) log("%c TOUCHED "+sticky.touched+"%c sticky_dimmed=["+sticky_dimme
 
 
 
-    let handeled_by;
+    let handled_by;
     if(has_el_class(sticky, CSS_HAS_FOCUS))
     {
 
         if(sticky.touched == STICKY_PAD)
         {
-            handeled_by = "WHILE EDITING: IGNORING TOUCHED "+sticky.touched+" "+sticky.id;
+            handled_by = "WHILE EDITING: IGNORING TOUCHED "+sticky.touched+" "+sticky.id;
 
-if( tag_this) log("%c "+handeled_by, lf5);
+if( tag_this) log("%c "+handled_by, lf5);
         }
 
 
@@ -25744,44 +25744,44 @@ if( tag_this) log("%c DONE EDITING "+sticky.id, lbH+lf5);
     }
 
 
-    if(!handeled_by && sticky_dimmed)
+    if(!handled_by && sticky_dimmed)
     {
-        handeled_by = "MOVING A HIDING STICKY "+sticky.id;
+        handled_by = "MOVING A HIDING STICKY "+sticky.id;
 
         t_sticky_set_onWork_STICKY(sticky, e);
 
-        t_sticky_SET_DIMMED(false, handeled_by);
+        t_sticky_SET_DIMMED(false, handled_by);
 
         t_tools.t_add_tool_pointermove_listener(caller);
     }
 
 
-    if(!handeled_by)
+    if(!handled_by)
     {
         if(sticky.touched == STICKY_HAND)
         {
-            handeled_by = "MOVING STICKY "+sticky.id;
+            handled_by = "MOVING STICKY "+sticky.id;
 
             t_tools.t_add_tool_pointermove_listener(caller);
         }
     }
 
 
-    if(!handeled_by)
+    if(!handled_by)
     {
         let change_dir
             =  (sticky.touched == STICKY_ROTATE)
             || (sticky.touched == STICKY_PAD   ) && has_el_class(sticky, CSS_FIXED );
 
         if( change_dir ) {
-            handeled_by = "POINTING STICKY "+sticky.id;
+            handled_by = "POINTING STICKY "+sticky.id;
 
             t_tools.t_add_tool_pointermove_listener(caller);
         }
     }
 
 
-    if(!handeled_by)
+    if(!handled_by)
     {
         let change_layout
             =  (sticky.touched == STICKY_REFONT)
@@ -25790,7 +25790,7 @@ if( tag_this) log("%c DONE EDITING "+sticky.id, lbH+lf5);
         ;
 
         if( change_layout ) {
-            handeled_by = "RESIZING STICKY "+sticky.id;
+            handled_by = "RESIZING STICKY "+sticky.id;
 
             let xy = t_util.get_event_XY(e);
             onDown_XY.x = xy.x;
@@ -25828,14 +25828,14 @@ if( tag_this ) {
         :                                     0;
 
     let l_2
-        = handeled_by && handeled_by.startsWith("MOV"  ) ? 5
-        : handeled_by && handeled_by.startsWith("POINT") ? 6
+        = handled_by && handled_by.startsWith("MOV"  ) ? 5
+        : handled_by && handled_by.startsWith("POINT") ? 6
         :                                                  7;
 
-    log("%c DOWN %c"+sticky.touched +"%c"+(handeled_by || "TOUCHING "+sticky.touched), lbb+lb1, lbL+lfX[l_1], lbR+lfX[l_2]);
+    log("%c DOWN %c"+sticky.touched +"%c"+(handled_by || "TOUCHING "+sticky.touched), lbb+lb1, lbL+lfX[l_1], lbR+lfX[l_2]);
 }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -26147,7 +26147,7 @@ if( log_this) log(caller+"("+timestamp+")");
             if(sticky_RESIZE_request) sticky_RESIZE_request.requestID = requestAnimationFrame( sticky_RESIZE2_AnimationFrame );
         }, 1000/60);
 
-    let handeled_by
+    let handled_by
         = (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FONT  ) ? sticky_RESIZE3_PAD_FONT_handler()
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FLOW  ) ? sticky_RESIZE4_PAD_FLOW_handler()
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_WIDTH ) ? sticky_RESIZE5_PAD_SIZE_handler()
@@ -26155,10 +26155,10 @@ if( log_this) log(caller+"("+timestamp+")");
         :                                                             undefined
     ;
 
-    if(handeled_by) sticky_RESIZE6_MSG_FIT(sticky_RESIZE_request.sticky, handeled_by);
+    if(handled_by) sticky_RESIZE6_MSG_FIT(sticky_RESIZE_request.sticky, handled_by);
 
 
-if(log_this && handeled_by) {
+if(log_this && handled_by) {
     let lfx
         = (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FLOW  ) ? lf3
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FONT  ) ? lf4
@@ -26166,7 +26166,7 @@ if(log_this && handeled_by) {
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_HEIGHT) ? lf6
         :                                                             lf2
     ;
-    log("%c"+(handeled_by || "NOT HANDELED"), lbH+lfx);
+    log("%c"+(handled_by || "NOT HANDLED"), lbH+lfx);
 }
 
 };
@@ -26210,7 +26210,7 @@ if( log_this) log("%c onDown_fontSize_px=["+sticky_RESIZE3_pad_msg.onDown_fontSi
         = onMoveDXY.y
         * (sticky_RESIZE_request.from_ABOVE ? -1 : 1);
 
-    return sticky_RESIZE3_PAD_FONT(sticky, d_y).handeled_by;
+    return sticky_RESIZE3_PAD_FONT(sticky, d_y).handled_by;
 };
 
 
@@ -26314,17 +26314,17 @@ if( log_this) caller +="("+sticky.id+" , "+d_y+")";
     let font_unchanged     = (fontSize_next == fontSize_px );
 
 
-    let handeled_by;
+    let handled_by;
     if( font_unchanged   )
     {
-        handeled_by = "FONT UNCHANGED";
+        handled_by = "FONT UNCHANGED";
 
     }
 
 
     let contained_H;
     let contained_V;
-    if(!handeled_by) {
+    if(!handled_by) {
         [  contained_H , contained_V] = is_contained_by_parent(pad_msg);
 
         if(contained_V || shrinking) {
@@ -26340,18 +26340,18 @@ if( log_this) caller +="("+sticky.id+" , "+d_y+")";
 
 
 
-    if(!handeled_by && expanding_too_big)
+    if(!handled_by && expanding_too_big)
     {
         if     (fontSize_from     ) pad_msg.style.fontSize = fontSize_from     +"px";
         else if(fontSize_contained) pad_msg.style.fontSize = fontSize_contained+"px";
 
-        handeled_by = "EXPANDING TOO BIG";
+        handled_by = "EXPANDING TOO BIG";
     }
 
 
-    if(!handeled_by && shrinking && contained_V)
+    if(!handled_by && shrinking && contained_V)
     {
-        handeled_by = "SHRINKED CONTAINED";
+        handled_by = "SHRINKED CONTAINED";
 
     }
 
@@ -26362,7 +26362,7 @@ if( log_this) caller +="("+sticky.id+" , "+d_y+")";
 
 
     let result
-        = {   handeled_by       : handeled_by || pad_msg.style.fontSize
+        = {   handled_by       : handled_by || pad_msg.style.fontSize
             , expanding_too_big
             , fontSize_to       : parseFloat( pad_msg.style.fontSize )
             , contained_H
@@ -26393,7 +26393,7 @@ if( log_this) {
         :                  lbH+lf4;
 
     log_key_val( caller
-                 + t_data.TAB + (handeled_by || "FONT CHANGED")
+                 + t_data.TAB + (handled_by || "FONT CHANGED")
                  + " .. "        + pad_msg.style.fontSize
                  + t_data.TAB
                  , result
@@ -26443,10 +26443,10 @@ let   sticky_RESIZE4_PAD_FLOW_handler = function()
     }
 
 
-    let handeled_by = sticky_RESIZE4_PAD_FLOW_NEXT(sticky);
+    let handled_by = sticky_RESIZE4_PAD_FLOW_NEXT(sticky);
 
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -26635,10 +26635,10 @@ let   sticky_RESIZE5_PAD_SIZE_handler = function()
     }
 
 
-    let handeled_by = sticky_RESIZE5_PAD_WH(sticky);
+    let handled_by = sticky_RESIZE5_PAD_WH(sticky);
 
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -26748,14 +26748,14 @@ if( log_this) log(caller , { w , maxWidth  : pad_msg.style.maxWidth
 
 
 
-let   sticky_RESIZE6_MSG_FIT = function(sticky, handeled_by)
+let   sticky_RESIZE6_MSG_FIT = function(sticky, handled_by)
 {
 
 let   caller = "sticky_RESIZE6_MSG_FIT";
 let log_this = DOM_STICKY_LOG;
 
 if( log_this)
-    log("%c "+caller+"( %c"+get_n_lbl(sticky)+"%c) %c"+handeled_by
+    log("%c "+caller+"( %c"+get_n_lbl(sticky)+"%c) %c"+handled_by
         ,lf5           ,lbH+lf5                      ,lbA,lb4            );
 
 
@@ -35246,7 +35246,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:14h:05)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:15h:10)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -36324,14 +36324,14 @@ if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if(!el) return "";
-    let handeled_by = "";
+    let handled_by = "";
 
-    if( check_tool_event(e) ) return handeled_by;
+    if( check_tool_event(e) ) return handled_by;
 
     let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
     if( container )
     {
-        handeled_by = "RESTORING CONTAINER SPLIT SENTENCES";
+        handled_by = "RESTORING CONTAINER SPLIT SENTENCES";
 
 
 
@@ -36364,12 +36364,12 @@ if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_S
 if( log_this) log_key_val_group(        caller
                                , {          el
                                  ,   container
-                                 , handeled_by
+                                 , handled_by
                                  ,     callers : dom_log.get_callers && dom_log.get_callers()
                                }, lf8, true);
 
-if( tag_this) log("...return ["+handeled_by+"]");
-    return handeled_by;
+if( tag_this) log("...return ["+handled_by+"]");
+    return handled_by;
 };
 
 
@@ -38581,7 +38581,7 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (240801:14h:26)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (240801:15h:31)";
 
 let dom_tools   = (function() {
 "use strict";
@@ -43018,45 +43018,45 @@ if(log_this && t_preventDefault_caller) {
 
 
 
-let t_event_handeled_by = "";
+let t_event_handled_by = "";
 
 
 
-let t_event_set_e_handeled_by = function(e, handeled_by)
+let t_event_set_e_handled_by = function(e, handled_by)
 {
-    t_event_handeled_by = handeled_by;
+    t_event_handled_by = handled_by;
 };
 
 
-let t_event_add_e_handeled_by = function(e, handeled_by)
+let t_event_add_e_handled_by = function(e, handled_by)
 {
 let log_this = DOM_TOOLS_LOG && !onDown_SHIFT && t_log.logging_something();
-if( log_this) log("t_event_add_e_handeled_by: %c "+handeled_by, lb0);
+if( log_this) log("t_event_add_e_handled_by: %c "+handled_by, lb0);
 if( log_this) log_caller();
 
 
-    t_event_handeled_by
-        += t_event_handeled_by ? LF+handeled_by
-        :                           handeled_by;
+    t_event_handled_by
+        += t_event_handled_by ? LF+handled_by
+        :                           handled_by;
 };
 
 
-let t_event_has_been_handeled = function()
+let t_event_has_been_handled = function()
 {
 
 
-    return   t_event_handeled_by.includes(LF)
-        ? LF+t_event_handeled_by
-        :    t_event_handeled_by
+    return   t_event_handled_by.includes(LF)
+        ? LF+t_event_handled_by
+        :    t_event_handled_by
     ;
 
 };
 
 
-let t_event_clr_handeled = function()
+let t_event_clr_handled = function()
 {
 
-    t_event_handeled_by  = "";
+    t_event_handled_by  = "";
 };
 
 
@@ -43174,7 +43174,7 @@ let t_log_clr_status = function()
 {
     t_fly.t_fly_clr_status();
 
-    t_event_clr_handeled();
+    t_event_clr_handled();
     t_preventDefault_caller  = "";
 };
 
@@ -44306,7 +44306,7 @@ if(log_this) log(caller+": pivot_magnified: %c "+new_state+" ", (new_state ? lb2
 
 
 
-let mousedown_handeled_by = "";
+let mousedown_handled_by = "";
 
 
 let t_pointerdown_listener = function(e)
@@ -44335,32 +44335,32 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
 
 
 
-    if(onDown_CTRL ) { log(); caller="onDown_CTRL"  ; t_preventDefault(e, caller); t_event_set_e_handeled_by(e, caller); return; }
-    if(onDown_ALT  ) { log(); caller="onDown_ALT "  ; t_preventDefault(e, caller); t_event_set_e_handeled_by(e, caller); t_log.console_clear     (caller); t_fly.t_fly_init(caller); return; }
-    if(onDown_SHIFT) { log(); caller="onDown_SHIFT "; t_preventDefault(e, caller); t_event_set_e_handeled_by(e, caller); t_log.console_clear_post(caller); t_fly.t_fly_init(caller); return; }
+    if(onDown_CTRL ) { log(); caller="onDown_CTRL"  ; t_preventDefault(e, caller); t_event_set_e_handled_by(e, caller); return; }
+    if(onDown_ALT  ) { log(); caller="onDown_ALT "  ; t_preventDefault(e, caller); t_event_set_e_handled_by(e, caller); t_log.console_clear     (caller); t_fly.t_fly_init(caller); return; }
+    if(onDown_SHIFT) { log(); caller="onDown_SHIFT "; t_preventDefault(e, caller); t_event_set_e_handled_by(e, caller); t_log.console_clear_post(caller); t_fly.t_fly_init(caller); return; }
 
 
-    let                handeled_by = "";                               let  handeled_by_css =  "";
-    if(!handeled_by) { handeled_by = onDown_0_MULTITOUCH               (e); handeled_by_css = lf9; }
-    if(!handeled_by) { handeled_by = onDown_1_INIT_CTRL_DEBOUNCE_INPUT (e); handeled_by_css = lf1; }
-    if(!handeled_by) { handeled_by = onDown_2_slot_fullscreen_DRAG     (e); handeled_by_css = lf3; }
-    if(!handeled_by) { handeled_by = onDown_3_TOOL_PRESS               (e); handeled_by_css = lf4; }
-    if(!handeled_by) { handeled_by = onDown_4_STICKY_PICK              (e); handeled_by_css = lf2; }
-    if(!handeled_by) { handeled_by = onDown_5_TOOL_PICK                (e); handeled_by_css = lf5; }
-    if(!handeled_by) { handeled_by = onDown_6_TOOL_MOVE                (e); handeled_by_css = lf6; }
-    if(!handeled_by) { handeled_by = onDown_7_SENTENCE                 (e); handeled_by_css = lf7; }
-    if(!handeled_by) { handeled_by = onDown_8_DOC_SELECT_OR_SEEK       (e); handeled_by_css = lf8; }
-    if(!handeled_by) { handeled_by = e.type+" BUBBLING"; onDown_9_STALL( ); handeled_by_css = lf9; }
+    let               handled_by = "";                               let  handled_by_css =  "";
+    if(!handled_by) { handled_by = onDown_0_MULTITOUCH               (e); handled_by_css = lf9; }
+    if(!handled_by) { handled_by = onDown_1_INIT_CTRL_DEBOUNCE_INPUT (e); handled_by_css = lf1; }
+    if(!handled_by) { handled_by = onDown_2_slot_fullscreen_DRAG     (e); handled_by_css = lf3; }
+    if(!handled_by) { handled_by = onDown_3_TOOL_PRESS               (e); handled_by_css = lf4; }
+    if(!handled_by) { handled_by = onDown_4_STICKY_PICK              (e); handled_by_css = lf2; }
+    if(!handled_by) { handled_by = onDown_5_TOOL_PICK                (e); handled_by_css = lf5; }
+    if(!handled_by) { handled_by = onDown_6_TOOL_MOVE                (e); handled_by_css = lf6; }
+    if(!handled_by) { handled_by = onDown_7_SENTENCE                 (e); handled_by_css = lf7; }
+    if(!handled_by) { handled_by = onDown_8_DOC_SELECT_OR_SEEK       (e); handled_by_css = lf8; }
+    if(!handled_by) { handled_by = e.type+" BUBBLING"; onDown_9_STALL( ); handled_by_css = lf9; }
 
-if( tag_this  && !mousedown_handeled_by) log("%c"+handeled_by, lbH+handeled_by_css);
-    mousedown_handeled_by = handeled_by;
+if( tag_this && !mousedown_handled_by) log("%c"+handled_by, lbH+handled_by_css);
+    mousedown_handled_by = handled_by;
 
 
-if( log_this) t_fly.t_log_event_status(t_data.SYMBOL_RIGHT_ARROW+" "+handeled_by, lbb+handeled_by_css);
+if( log_this) t_fly.t_log_event_status(t_data.SYMBOL_RIGHT_ARROW+" "+handled_by, lbb+handled_by_css);
 
     if( t_log.logging_something() )
         t_fly.t_log_transcript_event_top("<span class='big'>"+ t_data.SYMBOL_DOWN_ARROW +"</span>"
-            +                            "<em>"+               handeled_by              +"</em>"  );
+            +                            "<em>"+               handled_by              +"</em>"  );
 
 
 
@@ -44387,7 +44387,7 @@ let   caller = "onDown_1_INIT_CTRL_DEBOUNCE_INPUT";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 
 if( log_this) log("%c"+caller, lbF+lb1);
-    let handeled_by = "";
+    let handled_by = "";
 
 
     t_log_clr_status();
@@ -44405,10 +44405,10 @@ if( log_this) log("%c"+caller, lbF+lb1);
 
     onMove_selection_removed    = false;
 
-          mousedown_handeled_by = "";
-    mouselong_press_handeled_by = "";
-          mousemove_handeled_by = "";
-            mouseup_handeled_by = "";
+          mousedown_handled_by = "";
+    mouselong_press_handled_by = "";
+          mousemove_handled_by = "";
+            mouseup_handled_by = "";
 
     move_cooldown_handler();
 
@@ -44442,15 +44442,15 @@ if( log_this) log("%c"+caller, lbF+lb1);
 
         if(behavior_TOUCH_ELSE_DESKTOP)
         {
-            handeled_by    = "DOWN A SCROLLABLE STICKY";
+            handled_by    = "DOWN A SCROLLABLE STICKY";
             onDown_EL      = sticky;
 
             t_sticky.t_sticky_scroll_STICKY_PAD_MSG( e_target );
 
             t_seek.t_seeker_PU_hide("instant");
 
-if( log_this) log("%c"+handeled_by, lbH+lf8);
-            return     handeled_by;
+if( log_this) log("%c"+handled_by, lbH+lf8);
+            return     handled_by;
         }
     }
 
@@ -44458,11 +44458,11 @@ if( log_this) log("%c"+handeled_by, lbH+lf8);
     let event_on_scrollbar = t_util.is_event_on_scrollbar( e );
     if( event_on_scrollbar && behavior_TOUCH_ELSE_DESKTOP)
     {
-        handeled_by = "DOWN ["+t_util.get_id_or_tag(e_target)+"] SCROLLBAR";
+        handled_by = "DOWN ["+t_util.get_id_or_tag(e_target)+"] SCROLLBAR";
         onDown_EL   = e_target;
 
-if( log_this) log("%c"+handeled_by, lbH+lf1);
-        return         handeled_by;
+if( log_this) log("%c"+handled_by, lbH+lf1);
+        return         handled_by;
     }
 
 
@@ -44486,13 +44486,13 @@ if( log_this) log("%c"+handeled_by, lbH+lf1);
 
     if(t_is_bouncing_e_type(e.type, "t_pointerdown_listener", T_EVENT_DEBOUNCE_DELAY))
     {
-        handeled_by = "BOUNCING [EVENT <= "+T_EVENT_DEBOUNCE_DELAY+" ms]";
+        handled_by = "BOUNCING [EVENT <= "+T_EVENT_DEBOUNCE_DELAY+" ms]";
 
-        t_clear( handeled_by );
+        t_clear( handled_by );
     }
 
-if( log_this && handeled_by) t_fly.t_log_event_status(caller+": "+handeled_by, lf1);
-    return      handeled_by;
+if( log_this && handled_by) t_fly.t_log_event_status(caller+": "+handled_by, lf1);
+    return      handled_by;
 };
 
 
@@ -44507,12 +44507,12 @@ if( log_this) log("%c"+caller, lbF+lb2);
     if(!div_slot_containers_displayed()         ) return "";
     if(!has_el_class(onWork_EL, CSS_FULLSCREEN )) return "";
 
-    let handeled_by = "START CONTAINERS FULLSCREEN DRAG";
+    let handled_by = "START CONTAINERS FULLSCREEN DRAG";
 
     t_add_tool_pointermove_listener(caller);
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf2);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf2);
+    return      handled_by;
 };
 
 
@@ -44693,14 +44693,14 @@ let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 if( log_this) log("%c"+caller, lbF+lb4);
     if(!onWork_EL) return "";
 
-    let handeled_by = t_sticky.t_sticky_onDown(e);
+    let handled_by = t_sticky.t_sticky_onDown(e);
 
     set_onWork_EL_pressed();
 
-    if(handeled_by) t_preventDefault(e, "PREVENTING PAGE SCROLL WHILE "+handeled_by);
+    if(handled_by) t_preventDefault(e, "PREVENTING PAGE SCROLL WHILE "+handled_by);
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf4);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf4);
+    return      handled_by;
 };
 
 
@@ -44716,7 +44716,7 @@ if( log_this) log("%c"+caller, lbF+lb5);
 
     let e_target = t_get_event_target(e);
 
-    let     handeled_by = "";
+    let     handled_by = "";
 
 
     if(t_fly.t_doc_evt_div_get())
@@ -44746,7 +44746,7 @@ if( log_this) log("%c"+caller, lbF+lb5);
 if( log_this && mouse_down_on_a_push_pin) log("%c...MOUSE DOWN ON %c"+onWork_EL.id+" PUSH PIN", lf5, lbH+lf1);
 
 
-    if(    !handeled_by
+    if(    !handled_by
         && !mouse_down_on_a_push_pin
         && (onWork_PANEL                                  )
         && (onWork_PANEL                  != dimm_mask    )
@@ -44769,7 +44769,7 @@ if( log_this) log("%c...PIVOT PANEL SWITCH TO %c"+onWork_PANEL.id, lf5, lbH+lf5)
                 +      " TO ["+ get_n_lbl(onWork_PANEL) +"]"
                 + LF+"...onWork_EL=["+ get_n_lbl(onWork_EL) +"]"
             ;
-            t_event_add_e_handeled_by(e, msg);
+            t_event_add_e_handled_by(e, msg);
 
             onWork_MOVABLE_CHILD      = null;
 
@@ -44790,7 +44790,7 @@ if( log_this) log("%c...PIVOT PANEL %c CURRENT", lf5, lbH+lf6);
 
 
             if(e_target && (e_target.tagName == "INPUT"))
-                handeled_by = "INPUT CLICKED";
+                handled_by = "INPUT CLICKED";
 
         }
 
@@ -44810,11 +44810,11 @@ if( log_this) log("%c...PIVOT PANEL %c HOTSPOT", lf5, lbH+lf5);
 
         t_seek.t_seeker_PU_hide("instant");
 
-        handeled_by = CSS_BUTTONS_POD;
+        handled_by = CSS_BUTTONS_POD;
     }
 
 
-    if(!handeled_by)
+    if(!handled_by)
     {
 
         let    onWork_EL_lbl        = get_n_lbl                  ( onWork_EL    );
@@ -44871,8 +44871,8 @@ if( log_this)
 
     }
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf5);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf5);
+    return      handled_by;
 };
 
 
@@ -44893,7 +44893,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf6);
        && !onWork_MOVABLE_PANEL       ) return "";
     if( call_t_grid_IS_SIZED(caller)  ) return "";
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( t_seek.t_seeker_PU_is_active() )
@@ -44909,12 +44909,12 @@ if(log_this) log("...%c[mouse_down_on_a_push_pin: "+mouse_down_on_a_push_pin+"]%
 
     if( mouse_down_on_a_push_pin )
     {
-        handeled_by = "START TOOL_DRAG PUSH_PIN ["+get_n_lbl(onWork_PANEL)+"]";
+        handled_by = "START TOOL_DRAG PUSH_PIN ["+get_n_lbl(onWork_PANEL)+"]";
 
         onDown_6_TOOL_DRAG_PUSH_PIN(e);
     }
     else {
-        handeled_by = "START TOOL_DRAG PANEL ["+get_n_lbl(onWork_PANEL)+"]";
+        handled_by = "START TOOL_DRAG PANEL ["+get_n_lbl(onWork_PANEL)+"]";
 
         t_flash_unpinned_panels();
 
@@ -44934,8 +44934,8 @@ if(log_this) log("...%c[mouse_down_on_a_push_pin: "+mouse_down_on_a_push_pin+"]%
 
 
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf6);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf6);
+    return      handled_by;
 };
 
 
@@ -45053,7 +45053,7 @@ let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lbF+lb7);
 if( log_this) t_fly.t_log_event_status(caller, lf7);
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( t_util.is_el_child_of_id(onWork_EL, t_data.DOC_TOOLS_ID) )
@@ -45067,15 +45067,15 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
     let sentence_el        = t_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
     if( sentence_el )
     {
-        handeled_by += " .. ON A SENTENCE ELEMENT";
+        handled_by += " .. ON A SENTENCE ELEMENT";
 
-        t_preventDefault(e, handeled_by);
+        t_preventDefault(e, handled_by);
 
         t_CURSOR_add_MOVE_LISTENER(caller);
     }
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf7);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf7);
+    return      handled_by;
 };
 
 
@@ -45088,7 +45088,7 @@ let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lbF+lb8);
 if( log_this) t_fly.t_log_event_status(caller, lf8);
-    let handeled_by = "";
+    let handled_by = "";
 
 
 
@@ -45101,13 +45101,13 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
 
 
 
-    if(!handeled_by && !t_preventDefault_has_been_called())
+    if(!handled_by && !t_preventDefault_has_been_called())
     {
 
         if( t_is_an_embedded_doc_tool(onWork_EL,log_this) )
         {
-            handeled_by = "BUBBLE EVENT";
-            let msg = handeled_by+" .. ["+get_id_or_tag(onWork_EL)+"]";
+            handled_by = "BUBBLE EVENT";
+            let msg = handled_by+" .. ["+get_id_or_tag(onWork_EL)+"]";
 
             t_acceptBubble(e, msg, log_this);
         }
@@ -45117,30 +45117,30 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
         {
             if(onWork_EL.tagName == "A")
             {
-                handeled_by += " .. (t_data.WORDING) or (ANCHOR FREEZED)";
-                t_preventDefault(e, handeled_by);
+                handled_by += " .. (t_data.WORDING) or (ANCHOR FREEZED)";
+                t_preventDefault(e, handled_by);
             }
             else if(t_util.get_el_event_handler(onWork_EL, caller) != null)
             {
-                handeled_by += ".. (EVENT HANDLER FREEZED)";
-                t_preventDefault(e, handeled_by);
+                handled_by += ".. (EVENT HANDLER FREEZED)";
+                t_preventDefault(e, handled_by);
             }
         }
 
     }
 
 
-    if(   !handeled_by
+    if(   !handled_by
        && !has_el_class(onWork_EL, t_data.CSS_SCROLLING)
        &&  t_seek.t_seeker_has_TARGET()
       ) {
-        handeled_by = "SEEK TOOL ["+t_seek.t_seeker_get_TOOL_label()+"] ON DOC";
+        handled_by = "SEEK TOOL ["+t_seek.t_seeker_get_TOOL_label()+"] ON DOC";
         add_page_pointermove_listener( caller );
         add_long_press_listener("ON DOWN DOC TOOL");
     }
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf8);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf8);
+    return      handled_by;
 };
 
 
@@ -45247,7 +45247,7 @@ const DIR_NUM_PREV        = "DIR_NUM_PREV";
 const DIR_SLOT_NEXT       = "DIR_SLOT_NEXT";
 const DIR_SLOT_PREV       = "DIR_SLOT_PREV";
 
-let mousemove_handeled_by = "";
+let mousemove_handled_by = "";
 let onMove_selection_removed;
 
 
@@ -45259,7 +45259,7 @@ let   caller = "t_PAGE_pointermove_drag";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
 let tag_this = DOM_TOOLS_TAG || log_this;
-if(LOG_MAP.EV7_DISPATCH && !mousemove_handeled_by) t_fly.t_log_event_status(caller);
+if(LOG_MAP.EV7_DISPATCH && !mousemove_handled_by) t_fly.t_log_event_status(caller);
 
     if(!onWork_EL                             ) return false;
     if(!onWork_EL.id                          ) return false;
@@ -45271,22 +45271,22 @@ if(!log_this) log_this = onDown_CTRL;
 
 
 
-    let                handeled_by = "";                       let  log_css = lbF;
-    if(!handeled_by) { handeled_by = onMove_0_MULTITOUCH       (e); log_css = lb9; }
-    if(!handeled_by) { handeled_by = onMove_1_ON_COOLDOWN      (e); log_css = lb1; }
-    if(!handeled_by) { handeled_by = onMove_4_MUST_MOVE_MORE   (e); log_css = lb2; }
-    if(!handeled_by) { handeled_by = onMove_5_GRAB_SELECTION   (e); log_css = lb5; }
-    if(!handeled_by) { handeled_by = onMove_6_GRAB_STICKY      (e); log_css = lb6; }
+    let               handled_by = "";                       let  log_css = lbF;
+    if(!handled_by) { handled_by = onMove_0_MULTITOUCH       (e); log_css = lb9; }
+    if(!handled_by) { handled_by = onMove_1_ON_COOLDOWN      (e); log_css = lb1; }
+    if(!handled_by) { handled_by = onMove_4_MUST_MOVE_MORE   (e); log_css = lb2; }
+    if(!handled_by) { handled_by = onMove_5_GRAB_SELECTION   (e); log_css = lb5; }
+    if(!handled_by) { handled_by = onMove_6_GRAB_STICKY      (e); log_css = lb6; }
 
 
-if( tag_this && (mousemove_handeled_by != handeled_by)) log("%c"+handeled_by, log_css);
+if( tag_this && (mousemove_handled_by != handled_by)) log("%c"+handled_by, log_css);
 
 
-    mousemove_handeled_by = handeled_by;
+    mousemove_handled_by = handled_by;
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("PAGE POINTER MOVED");
 
-    return (mousemove_handeled_by != "");
+    return (mousemove_handled_by != "");
 };
 
 
@@ -45297,7 +45297,7 @@ if(e.ctrlKey) { log("%c TOOL POINTER MOVE IGNORED .. f(e.ctrlKey)", lbH+lf2); de
 let   caller = "t_TOOL_pointermove_drag";
 let log_this = LOG_MAP.EV2_MOVE;
 
-if(LOG_MAP.EV7_DISPATCH && !mousemove_handeled_by) t_fly.t_log_event_status(caller);
+if(LOG_MAP.EV7_DISPATCH && !mousemove_handled_by) t_fly.t_log_event_status(caller);
 
 
 
@@ -45334,16 +45334,16 @@ if(LOG_MAP.EV7_DISPATCH && !mousemove_handeled_by) t_fly.t_log_event_status(call
 
 
 
-    let                handeled_by = "";                                let log_css =  "";
-    if(!handeled_by) { handeled_by = onMove_0_MULTITOUCH       (e        ); log_css = lb9; }
-    if(!handeled_by) { handeled_by = onMove_1_STICKY_TOOL_SEEK (e        ); log_css = lb1; }
-    if(!handeled_by) { handeled_by = onMove_2_STICKY_TOOL_MOVE (e        ); log_css = lb2; }
-    if(!handeled_by) { handeled_by = onMove_3_DIV_MAGNIFY      (e        ); log_css = lb3; }
-    if(!handeled_by) { handeled_by = onMove_4_MUST_MOVE_MORE   (e        ); log_css = lb4; }
-    if(!handeled_by) { handeled_by = onMove_5_GRAB_SELECTION   (e        ); log_css = lb5; }
-    if(!handeled_by) { handeled_by = onMove_6_GRAB_TOOL_PANEL  (e, x, y  ); log_css = lb6; }
-    if(!handeled_by) { handeled_by = onMove_7_GRAB_TOOL_CHILD  (e, x, y  ); log_css = lb7; }
-    if(!handeled_by) { handeled_by = "DRAGGING ["+get_n_lbl(onWork_EL)+"]"; log_css = lb8;
+    let               handled_by = "";                                let log_css =  "";
+    if(!handled_by) { handled_by = onMove_0_MULTITOUCH       (e        ); log_css = lb9; }
+    if(!handled_by) { handled_by = onMove_1_STICKY_TOOL_SEEK (e        ); log_css = lb1; }
+    if(!handled_by) { handled_by = onMove_2_STICKY_TOOL_MOVE (e        ); log_css = lb2; }
+    if(!handled_by) { handled_by = onMove_3_DIV_MAGNIFY      (e        ); log_css = lb3; }
+    if(!handled_by) { handled_by = onMove_4_MUST_MOVE_MORE   (e        ); log_css = lb4; }
+    if(!handled_by) { handled_by = onMove_5_GRAB_SELECTION   (e        ); log_css = lb5; }
+    if(!handled_by) { handled_by = onMove_6_GRAB_TOOL_PANEL  (e, x, y  ); log_css = lb6; }
+    if(!handled_by) { handled_by = onMove_7_GRAB_TOOL_CHILD  (e, x, y  ); log_css = lb7; }
+    if(!handled_by) { handled_by = "DRAGGING ["+get_n_lbl(onWork_EL)+"]"; log_css = lb8;
 
         if(onWork_PANEL && !t_raise_pivot_PANEL_posted_since_onDown(caller)
            &&               is_a_spread_drag()
@@ -45370,10 +45370,10 @@ if(LOG_MAP.EV7_DISPATCH && !mousemove_handeled_by) t_fly.t_log_event_status(call
     }
 
 
-if( log_this  && (mousemove_handeled_by != handeled_by)) log("%c "+caller+": %c "+handeled_by, lb9, log_css);
+if( log_this && (mousemove_handled_by != handled_by)) log("%c "+caller+": %c "+handled_by, lb9, log_css);
 
 
-    mousemove_handeled_by = handeled_by;
+    mousemove_handled_by = handled_by;
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("TOOL POINTER MOVED");
 };
@@ -45444,8 +45444,8 @@ if( log_this) log("%c OFF  GUTTER %c HIDE"
 let onMove_0_MULTITOUCH = function(e)
 {
 
-    let    handeled_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
-    return handeled_by;
+    let    handled_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
+    return handled_by;
 };
 
 
@@ -45453,13 +45453,13 @@ let onMove_1_ON_COOLDOWN = function(e)
 {
     let caller = "onMove_1_ON_COOLDOWN";
 
-    let                                           handeled_by = "";
-    if     ( dom_scroll.t_scroll_not_done_yet() ) handeled_by = "SCROLLING";
-    else if( move_cooldown_is_pending()         ) handeled_by = "MOVE COOLDOWN "+move_cooldown_reason;
+    let                                           handled_by = "";
+    if     ( dom_scroll.t_scroll_not_done_yet() ) handled_by = "SCROLLING";
+    else if( move_cooldown_is_pending()         ) handled_by = "MOVE COOLDOWN "+move_cooldown_reason;
 
-    if(handeled_by)
+    if(handled_by)
     {
-        handeled_by += ".. (set_onDown_XY tracking)";
+        handled_by += ".. (set_onDown_XY tracking)";
 
         set_onDown_XY(e, caller);
         onMoveDXY.x = 0;
@@ -45467,7 +45467,7 @@ let onMove_1_ON_COOLDOWN = function(e)
     }
 
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -45478,26 +45478,26 @@ let onMove_1_STICKY_TOOL_SEEK = function(e)
 let   caller = "onMove_1_STICKY_TOOL_SEEK";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
-    log_this = log_this && !mousemove_handeled_by;
-    let handeled_by = "";
+    log_this = log_this && !mousemove_handled_by;
+    let handled_by = "";
 
 
     let sticky = t_sticky.t_sticky_get_SEEK_NEXT(log_this);
     if(!sticky ) {
 
-if( log_this && !mousemove_handeled_by) log("%c"+caller+"%c NO STICKY SEEK TARGET", lbL+lf1, lbR+lb8);
-        return handeled_by;
+if( log_this && !mousemove_handled_by) log("%c"+caller+"%c NO STICKY SEEK TARGET", lbL+lf1, lbR+lb8);
+        return handled_by;
     }
 
 
     if( sticky != onDown_EL) {
 
-if( log_this && !mousemove_handeled_by) log("%c"+caller+"%c NO GRABBED STICKY", lbL+lf1, lbR+lb8);
-        return handeled_by;
+if( log_this && !mousemove_handled_by) log("%c"+caller+"%c NO GRABBED STICKY", lbL+lf1, lbR+lb8);
+        return handled_by;
     }
 
 
-    handeled_by = caller+": SEEKER MOVE TO STICKY";
+    handled_by = caller+": SEEKER MOVE TO STICKY";
 if( log_this) t_sticky.t_sticky_LOG(sticky, caller);
 
     t_seek.t_seeker_onMove2_ON_NEXT_STICKY(sticky, onDown_SCROLL_XY);
@@ -45506,8 +45506,8 @@ if( log_this) t_sticky.t_sticky_LOG(sticky, caller);
         t_seek.t_seeker_PU_show();
 
 
-if( log_this) log("%c"+caller+"%c "+handeled_by+" "+sticky.id, lbL+lf1, lbR+lf9);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c "+handled_by+" "+sticky.id, lbL+lf1, lbR+lf9);
+    return handled_by;
 };
 
 
@@ -45520,7 +45520,7 @@ let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
     if(!onWork_EL) return "";
 
 
-    let sticky = t_sticky.t_sticky_get_onWork_STICKY(log_this && !mousemove_handeled_by);
+    let sticky = t_sticky.t_sticky_get_onWork_STICKY(log_this && !mousemove_handled_by);
     if(!sticky ) return "";
 
     check_has_moved( caller );
@@ -45535,19 +45535,19 @@ if(log_this) log("HIDE SEEK TOOL");
     }
 
 
-    let handeled_by = "";
-    if(!handeled_by && t_sticky.t_sticky_is_RESIZING  (   sticky))
-        handeled_by = onMove_2_STICKY_TOOL_MOVE_RESIZE(e, sticky, log_this);
+    let handled_by = "";
+    if(!handled_by && t_sticky.t_sticky_is_RESIZING  (   sticky))
+        handled_by = onMove_2_STICKY_TOOL_MOVE_RESIZE(e, sticky, log_this);
 
-    if(!handeled_by && t_sticky.t_sticky_is_ORIENTING (   sticky))
-        handeled_by = onMove_2_STICKY_TOOL_MOVE_DIR   (e, sticky, log_this);
+    if(!handled_by && t_sticky.t_sticky_is_ORIENTING (   sticky))
+        handled_by = onMove_2_STICKY_TOOL_MOVE_DIR   (e, sticky, log_this);
 
-    if(!handeled_by )
-        handeled_by = onMove_2_STICKY_TOOL_MOVE_STICKY(e, sticky, log_this);
+    if(!handled_by )
+        handled_by = onMove_2_STICKY_TOOL_MOVE_STICKY(e, sticky, log_this);
 
 
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf9);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handled_by, lbH+lf2, lbL+lf4, lbR+lf9);
+    return handled_by;
 };
 
 
@@ -45556,17 +45556,17 @@ let onMove_2_STICKY_TOOL_MOVE_STICKY = function(e,sticky,log_this)
 
 let   caller = "onMove_2_STICKY_TOOL_MOVE_STICKY";
 
-log_this = log_this && !mousemove_handeled_by;
+log_this = log_this && !mousemove_handled_by;
 
-    let handeled_by = "MOVE";
+    let handled_by = "MOVE";
 
 
     let  x = onDown_TOOL_XY.x + onMoveDXY.x;
     let  y = onDown_TOOL_XY.y + onMoveDXY.y;
     t_sticky.t_sticky_onMove(x,y);
 
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf3);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handled_by, lbH+lf2, lbL+lf4, lbR+lf3);
+    return handled_by;
 };
 
 
@@ -45575,41 +45575,41 @@ let onMove_2_STICKY_TOOL_MOVE_RESIZE = function(e,sticky,log_this)
 
 let   caller = "onMove_2_STICKY_TOOL_MOVE_RESIZE";
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( move_cooldown_is_pending() )
     {
-log_this = log_this && !mousemove_handeled_by;
+log_this = log_this && !mousemove_handled_by;
 
-        handeled_by = "RESIZE ON COOLDOWN "+move_cooldown_reason;
+        handled_by = "RESIZE ON COOLDOWN "+move_cooldown_reason;
     }
 
 
     else {
         if(!has_moved) {
-            handeled_by     = "STICKY RESIZE STARTING";
+            handled_by     = "STICKY RESIZE STARTING";
 
-            t_set_has_moved(handeled_by);
+            t_set_has_moved(handled_by);
 
-log_this = log_this && !mousemove_handeled_by;
+log_this = log_this && !mousemove_handled_by;
         }
         else {
             if(!t_sticky.t_sticky_is_RESIZING() ) {
-                handeled_by = "STICKY RESIZE LAUNCHING";
+                handled_by = "STICKY RESIZE LAUNCHING";
 
                 t_sticky.t_sticky_RESIZE(sticky);
             }
             else {
-                handeled_by = "STICKY RESIZE HANDLING";
+                handled_by = "STICKY RESIZE HANDLING";
 
-log_this = log_this && !mousemove_handeled_by;
+log_this = log_this && !mousemove_handled_by;
             }
         }
     }
 
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf4);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handled_by, lbH+lf2, lbL+lf4, lbR+lf4);
+    return handled_by;
 };
 
 
@@ -45618,25 +45618,25 @@ let onMove_2_STICKY_TOOL_MOVE_DIR = function(e,sticky,log_this)
 
 let   caller = "onMove_2_STICKY_TOOL_MOVE_DIR";
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( move_cooldown_is_pending() )
     {
-log_this = log_this && !mousemove_handeled_by;
+log_this = log_this && !mousemove_handled_by;
 
-        handeled_by = "DIR ON COOLDOWN "+move_cooldown_reason;
+        handled_by = "DIR ON COOLDOWN "+move_cooldown_reason;
 
         set_onDown_XY(e, caller);
     }
 
 
-    if(!handeled_by) {
+    if(!handled_by) {
         if(!has_moved)
         {
-log_this = log_this && !mousemove_handeled_by;
+log_this = log_this && !mousemove_handled_by;
 
-            handeled_by = "TRACK DIR JUST STARTED";
+            handled_by = "TRACK DIR JUST STARTED";
         }
         else {
             let dir
@@ -45644,7 +45644,7 @@ log_this = log_this && !mousemove_handeled_by;
                 ? ((onMoveDXY.x > 0) ? "RIGHT" : "LEFT")
                 : ((onMoveDXY.y > 0) ?  "DOWN" : "UP"  )
             ;
-            handeled_by = "TRACK DIR "+sticky.touched+" "+dir;
+            handled_by = "TRACK DIR "+sticky.touched+" "+dir;
 
             t_sticky.t_sticky_TRACK_DIR(sticky, dir);
 
@@ -45652,8 +45652,8 @@ log_this = log_this && !mousemove_handeled_by;
         }
     }
 
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf5);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handled_by, lbH+lf2, lbL+lf4, lbR+lf5);
+    return handled_by;
 };
 
 
@@ -45666,8 +45666,8 @@ let   caller = "onMove_3_DIV_MAGNIFY";
     if( !fullscreen_slot_container       ) return "";
     if( !div_slot_containers             ) return "";
 
-    let handeled_by = t_util.get_id_or_tag(onWork_EL);
-    t_preventDefault(e, caller+" "+handeled_by);
+    let handled_by = t_util.get_id_or_tag(onWork_EL);
+    t_preventDefault(e, caller+" "+handled_by);
 
 
     if(move_cooldown_is_pending() )
@@ -45707,7 +45707,7 @@ let   caller = "onMove_3_DIV_MAGNIFY";
         }
     }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -45729,7 +45729,7 @@ let caller = "onMove_4_MUST_MOVE_MORE";
 
 let log_this = (LOG_MAP.EV0_LISTEN || LOG_MAP.EV2_MOVE);
 if(!log_this) log_this = onDown_CTRL;
-    log_this = log_this && !mousemove_handeled_by;
+    log_this = log_this && !mousemove_handled_by;
 
 if( log_this) t_fly.t_log_event_status(caller, lf4);
 
@@ -45754,8 +45754,8 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
         let dxy  = Math.abs(onMoveDXY.x + onMoveDXY.y);
         if( dxy >= 3*MOVED_ENOUGH)
         {
-            if( mousemove_handeled_by == HAS_NOT_MOVED_ENOUGH)
-                mousemove_handeled_by  =                   "";
+            if( mousemove_handled_by == HAS_NOT_MOVED_ENOUGH)
+                mousemove_handled_by  =                   "";
 
             return     HAS_MOVED_ENOUGH;
         }
@@ -45853,28 +45853,28 @@ if( log_this) t_fly.t_log_event_status(caller, lbH+lf5);
 
 
 
-    let handeled_by = "";
+    let handled_by = "";
     if( move_cooldown_is_pending() )
     {
-        handeled_by = "SELECTION ON COOLDOWN";
+        handled_by = "SELECTION ON COOLDOWN";
 
-if(log_this) logBIG(handeled_by +": "+ move_cooldown_reason);
+if(log_this) logBIG(handled_by +": "+ move_cooldown_reason);
 
-        return handeled_by;
+        return handled_by;
     }
 
 
     let slot  = t_get_onWork_EL_slot();
-    if( slot <= 0) return handeled_by;
+    if( slot <= 0) return handled_by;
     if(!t_select.t_select_get_ccs_length() )
     {
 if( log_this) log(caller+": SLOT #"+slot+" NOT CURRENLTY INITIALIZED");
 
         if(t_preventDefault_caller) t_restoreDefault("NOT CURRENLTY INITIALIZED");
 
-        return handeled_by;
+        return handled_by;
     }
-    handeled_by = "SCROLL TO [SLOT NUM]";
+    handled_by = "SCROLL TO [SLOT NUM]";
 
 
     if( is_long_press_pending() )
@@ -46033,9 +46033,9 @@ if( log_this)
 
 }
 
-if( log_this) log("%c"+caller+"%c"+handeled_by+"%c"+slot+" "+num+" %c"+(quick_move ? " [quick_move]" : "")
-                  ,lbH+lf5    ,lbL+lf5         ,lbR+lf5           ,lbH+lf4                                );
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c"+handled_by+"%c"+slot+" "+num+" %c"+(quick_move ? " [quick_move]" : "")
+                  ,lbH+lf5    ,lbL+lf5        ,lbR+lf5           ,lbH+lf4                                );
+    return handled_by;
 };
 
 
@@ -46195,7 +46195,7 @@ let onMove_6_GRAB_TOOL_PANEL = function(e,x,y)
 
 let   caller = "onMove_6_GRAB_TOOL_PANEL";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
-    log_this = log_this && !mousemove_handeled_by;
+    log_this = log_this && !mousemove_handled_by;
 
 if( log_this) log("%c"+caller, lbH+lf6);
 
@@ -46203,16 +46203,16 @@ if( log_this) log("%c"+caller, lbH+lf6);
     if( onWork_MOVABLE_CHILD) return "";
     if(!onWork_PANEL        ) return "";
 
-    let handeled_by = "";
+    let handled_by = "";
 
-    if(!handeled_by)
+    if(!handled_by)
     {
 if( t_util.is_el_or_child_of_class(onWork_EL, "zoomed")    )
-        handeled_by = "zoomed onWork_EL=["+t_util.get_id_or_tag(onWork_EL)+"]";
+        handled_by = "zoomed onWork_EL=["+t_util.get_id_or_tag(onWork_EL)+"]";
 
     }
 
-    if(!handeled_by && t_touching_a_scrollable_panel(e))
+    if(!handled_by && t_touching_a_scrollable_panel(e))
     {
 
 
@@ -46222,18 +46222,18 @@ if( t_util.is_el_or_child_of_class(onWork_EL, "zoomed")    )
         ;
 if( log_this) log(caller+": panel_scrollbar_showing "+panel_scrollbar_showing);
         if( panel_scrollbar_showing )
-            handeled_by = "SCROLLABLE PANEL ["+get_n_lbl(onWork_PANEL)+"]";
+            handled_by = "SCROLLABLE PANEL ["+get_n_lbl(onWork_PANEL)+"]";
     }
 
 
-    if(!handeled_by && onWork_PANEL.classList.contains(t_data.CSS_PINNED))
+    if(!handled_by && onWork_PANEL.classList.contains(t_data.CSS_PINNED))
     {
         onMove_5_TOOL_PANEL_PINNED(x, y);
-        handeled_by = "TOOL PINNED ["+get_n_lbl(onWork_PANEL)+"]";
+        handled_by = "TOOL PINNED ["+get_n_lbl(onWork_PANEL)+"]";
     }
 
 
-    if(!handeled_by && !onWork_PANEL.classList.contains(t_data.CSS_PINNED))
+    if(!handled_by && !onWork_PANEL.classList.contains(t_data.CSS_PINNED))
     {
         let moving_a_panel
             =                               onWork_PANEL
@@ -46244,8 +46244,8 @@ if( log_this) log(caller+": panel_scrollbar_showing "+panel_scrollbar_showing);
         if( moving_a_panel ) del_el_class(pivspot, t_data.CSS_HIDDEN);
     }
 
-if(log_this) log("%c"+handeled_by, lbb+lbH+lf6);
-    return handeled_by;
+if(log_this) log("%c"+handled_by, lbb+lbH+lf6);
+    return handled_by;
 };
 
 
@@ -46255,11 +46255,11 @@ let onMove_6_GRAB_STICKY = function(e)
 let   caller = "onMove_6_GRAB_STICKY";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
-    log_this = log_this && !mousemove_handeled_by;
+    log_this = log_this && !mousemove_handled_by;
 
 
 if( log_this ) t_fly.t_log_event_status_if_changed(caller,  lf6 );
-    let handeled_by = "";
+    let handled_by = "";
 
 
 
@@ -46281,10 +46281,10 @@ if( log_this) {
                       , lfX[l_x], true);
 }
 
-    if(!sticky) return handeled_by;
+    if(!sticky) return handled_by;
 
     let onSeekXYL   = t_seek.t_seeker_get_onSeekXYL();
-    handeled_by = onSeekXYL.label;
+    handled_by = onSeekXYL.label;
 
 
     if( is_long_press_pending() )
@@ -46298,7 +46298,7 @@ if( log_this) {
     {
 if( log_this) log("%c NO SEEK ON STICKY_RING", lf8);
 
-        return handeled_by;
+        return handled_by;
     }
 
 
@@ -46346,18 +46346,18 @@ if( log_this) log("%c NO SEEK ON STICKY_RING", lf8);
 
 if( log_this)
 {
-    handeled_by += " ["+get_n_lbl(sticky)+"]";
+    handled_by += " ["+get_n_lbl(sticky)+"]";
 
     log_key_val_group("STICKY NEXT "+get_n_lbl(sticky)
                       , {   onMoveDXY : onMoveDXY.x+" "+onMoveDXY.y
                         ,  quick_move
                         ,         dir
-                        , handeled_by
+                        , handled_by
                       }
                       , lfX[sticky ? sticky.num : 2], true);
 }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -46367,7 +46367,7 @@ let onMove_7_GRAB_TOOL_CHILD = function(e,x,y)
 
 let   caller = "onMove_7_GRAB_TOOL_CHILD";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
-    log_this = log_this && !mousemove_handeled_by;
+    log_this = log_this && !mousemove_handled_by;
 
 if( log_this) log("%c"+caller+"%c onWork_EL "+get_n_lbl(onWork_EL)+" %c onWork_MOVABLE_CHILD "+get_n_lbl(onWork_MOVABLE_CHILD), lbH+lf7, lbH+lf6, lbH+lf5);
 
@@ -46376,7 +46376,7 @@ if(!onWork_EL           ) return "";
 if(!onWork_MOVABLE_CHILD) return "";
 
 
-    let handeled_by = "MOVING onWork_EL=["+get_n_lbl(onWork_EL)+"] .. mov_src_div=["+get_n_lbl(mov_src_div)+"]";
+    let handled_by = "MOVING onWork_EL=["+get_n_lbl(onWork_EL)+"] .. mov_src_div=["+get_n_lbl(mov_src_div)+"]";
 
     let ox = (onDown_XY.x - onDown_TOOL_XY.x);
     let oy = (onDown_XY.y - onDown_TOOL_XY.y);
@@ -46404,7 +46404,7 @@ if(!onWork_MOVABLE_CHILD) return "";
     if( pat_bag9_grab_item_is_mov_div() )
     {
         let bag_at_xy = t_pat_bag9_get_bag_at_xy(e,x,y);
-        handeled_by+= " .. bag_at_xy=["+bag_at_xy.id+"]";
+        handled_by+= " .. bag_at_xy=["+bag_at_xy.id+"]";
 
         let   e_W = onWork_EL.offsetWidth ;
         let   e_H = onWork_EL.offsetHeight;
@@ -46423,14 +46423,14 @@ if(!onWork_MOVABLE_CHILD) return "";
     }
 
 
-    return handeled_by;
+    return handled_by;
 };
 
 
 
 
 
-let mouseup_handeled_by = "";
+let mouseup_handled_by = "";
 
 
 
@@ -46505,7 +46505,7 @@ if( log_this) {
     log_key_val( caller+": details"
                  , {   behavior_TOUCH_ELSE_DESKTOP
                      , t_preventDefault_caller
-                     , t_event_handeled_by
+                     , t_event_handled_by
                      , clicked
                      , dblclicked
                      , fullscreen_slot_container   : t_util.get_id_or_tag(fullscreen_slot_container)
@@ -46518,33 +46518,33 @@ if( log_this) {
 }
 
 
-    let                handeled_by = "";                                            let handeled_by_css =  "";
-    if(!handeled_by) { handeled_by = onUp_0_MULTITOUCH         (e                    ); handeled_by_css = lf9; }
-    if(!handeled_by) { handeled_by = onUp_1_TOOL_GRID_TIER_CB  (e, clicked,dblclicked); handeled_by_css = lf1; }
-    if(!handeled_by) { handeled_by = onUp_2_SLOT_CONTAINER_CB  (e, clicked           ); handeled_by_css = lf2; }
-    if(!handeled_by) { handeled_by = onUp_3_STICKY_TOOL_CB     (e, clicked,dblclicked); handeled_by_css = lf3; }
-    if(!handeled_by) { handeled_by = onUp_3_SEEKER_TOOL_CB     (e, clicked,dblclicked); handeled_by_css = lf3; }
-    if(!handeled_by) { handeled_by = onUp_3_DOC_TOOL_CB        (e, clicked,dblclicked); handeled_by_css = lf3; }
-    if(!handeled_by) { handeled_by = onUp_4_DOC_TOUCH_CB       (e, clicked,dblclicked); handeled_by_css = lf4; }
-    if(!handeled_by) { handeled_by = onUp_5_TOOL_ONCLICK       (e, clicked,dblclicked); handeled_by_css = lf5; }
-    if(!handeled_by) { handeled_by = onUp_7_DOC_SENTENCES      (e, clicked,dblclicked); handeled_by_css = lf7; }
-    if(!handeled_by) { handeled_by = onUp_7_DOC_WORDING        (e, clicked,dblclicked); handeled_by_css = lf7; }
-    if(!handeled_by) { handeled_by = onUp_8_ON_EVENT_HANDELED  (e                    ); handeled_by_css = lf8; }
-    if(!handeled_by) { handeled_by = e.type+" BUBBLING";                                handeled_by_css = lf9; }
+    let               handled_by = "";                                            let handled_by_css =  "";
+    if(!handled_by) { handled_by = onUp_0_MULTITOUCH         (e                    ); handled_by_css = lf9; }
+    if(!handled_by) { handled_by = onUp_1_TOOL_GRID_TIER_CB  (e, clicked,dblclicked); handled_by_css = lf1; }
+    if(!handled_by) { handled_by = onUp_2_SLOT_CONTAINER_CB  (e, clicked           ); handled_by_css = lf2; }
+    if(!handled_by) { handled_by = onUp_3_STICKY_TOOL_CB     (e, clicked,dblclicked); handled_by_css = lf3; }
+    if(!handled_by) { handled_by = onUp_3_SEEKER_TOOL_CB     (e, clicked,dblclicked); handled_by_css = lf3; }
+    if(!handled_by) { handled_by = onUp_3_DOC_TOOL_CB        (e, clicked,dblclicked); handled_by_css = lf3; }
+    if(!handled_by) { handled_by = onUp_4_DOC_TOUCH_CB       (e, clicked,dblclicked); handled_by_css = lf4; }
+    if(!handled_by) { handled_by = onUp_5_TOOL_ONCLICK       (e, clicked,dblclicked); handled_by_css = lf5; }
+    if(!handled_by) { handled_by = onUp_7_DOC_SENTENCES      (e, clicked,dblclicked); handled_by_css = lf7; }
+    if(!handled_by) { handled_by = onUp_7_DOC_WORDING        (e, clicked,dblclicked); handled_by_css = lf7; }
+    if(!handled_by) { handled_by = onUp_8_ON_EVENT_HANDLED   (e                    ); handled_by_css = lf8; }
+    if(!handled_by) { handled_by = e.type+" BUBBLING";                                handled_by_css = lf9; }
 
-if( tag_this  && !mouseup_handeled_by) log("%c"+handeled_by, lbH+handeled_by_css);
+if( tag_this  && !mouseup_handled_by) log("%c"+handled_by, lbH+handled_by_css);
 
-    mouseup_handeled_by = handeled_by;
+    mouseup_handled_by = handled_by;
  onUp_9_ON_MOUSEUP_DONE    (e);
 
 
 
 
 
-if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+handeled_by, handeled_by_css);
-    if(handeled_by && log_this)
+if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+handled_by, handled_by_css);
+    if(handled_by && log_this)
         t_fly.t_log_transcript_event_bot("<span class='big'>"+ t_data.SYMBOL_UP_ARROW +"</span>"
-            +                      "<em>"+               handeled_by     +"</em>");
+            +                      "<em>"+               handled_by     +"</em>");
 
 
 
@@ -46577,13 +46577,13 @@ if( log_this) t_fly.t_log_event_status(caller, lf1);
 
     let is_on_grid = call_t_grid_IS_ON_GRID(caller);
 
-    let handeled_by = "";
+    let handled_by = "";
 
     if(!is_on_grid && has_moved)
     {
         if(check_big_moved(caller) ) {
 if( log_this) logBIG("BIG MOVE .. CLICK DENY", lf2);
-            return handeled_by;
+            return handled_by;
         }
         else {
 if( log_this) logBIG("SMALL MOVE .. CLICK ALLOW", lf7);
@@ -46592,24 +46592,24 @@ if( log_this) logBIG("SMALL MOVE .. CLICK ALLOW", lf7);
 
 
 
-    if(!handeled_by && dblclicked && !is_on_grid)
+    if(!handled_by && dblclicked && !is_on_grid)
     {
         if(onWork_EL == hotring) {
-            handeled_by     = "MOVING TOOLS ON GRID";
+            handled_by     = "MOVING TOOLS ON GRID";
 
             t_move_TOOLS_ON_GRID("DOUBLE CLICK");
         }
     }
 
 
-    if(   !handeled_by
+    if(   !handled_by
        &&  is_on_grid
       ) {
 
         if((onWork_EL == hotring) || dimm_mask_is(onWork_EL))
         {
             if( !was_a_too_early_last_result() ) {
-                handeled_by = " MOVING TOOLS OFF GRID";
+                handled_by = " MOVING TOOLS OFF GRID";
 
                 t_move_TOOLS_OFF_GRID("CLICK");
 
@@ -46623,7 +46623,7 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
 
 
         else {
-            handeled_by = " SELECT TOOLS ON GRID ";
+            handled_by = " SELECT TOOLS ON GRID ";
 
             t_grid.t_grid_TOOLS_SELECT(e);
         }
@@ -46631,16 +46631,16 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
     }
 
 
-    if(   !handeled_by
+    if(   !handled_by
        && !is_on_grid
        && (onWork_EL == hotring)
       ) {
         prop.set(t_data.TOOLS_TIER2, false);
         if( t_activate_tools_tier1("CLICK") ) {
-            handeled_by = "HOTSPOT CLICKED .. SELECT "+ t_data.TOOLS_TIER2;
+            handled_by = "HOTSPOT CLICKED .. SELECT "+ t_data.TOOLS_TIER2;
         }
         else {
-            handeled_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
+            handled_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
             if( t_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
                 t_tools_show  ();
             }
@@ -46650,8 +46650,8 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
         }
     }
 
-if(log_this) log(handeled_by);
-    return       handeled_by;
+if(log_this) log(handled_by);
+    return       handled_by;
 };
 
 
@@ -46697,11 +46697,11 @@ if(log_this) logBIG("TOO EARLY: FOR "+ caller);                                 
         :                             onWork_EL
     ;
 
-    let handeled_by               =  "ON "+ t_util.get_id_or_tag( onWork_EL );
+    let handled_by               =  "ON "+ t_util.get_id_or_tag( onWork_EL );
 
 if(log_this) {
     log_key_val(   caller
-               , { handeled_by
+               , { handled_by
                  , clicked_COPY_TO_CLIPBOARD
                  , clicked_MAGNIFY_START
                  , clicked_PREV
@@ -46727,12 +46727,12 @@ if(log_this) {
     }
 
 
-    if     (clicked_MAGNIFY_START                      ) { handeled_by = clicked_MAGNIFY_START    +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_PREV                               ) { handeled_by = clicked_PREV             +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_NEXT                               ) { handeled_by = clicked_NEXT             +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_MONO                               ) { handeled_by = clicked_MONO             +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_MAGNIFY_STOP                       ) { handeled_by = clicked_MAGNIFY_STOP     +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_COPY_TO_CLIPBOARD && clicked_target) { handeled_by = clicked_COPY_TO_CLIPBOARD+" .. "+handeled_by;
+    if     (clicked_MAGNIFY_START                      ) { handled_by = clicked_MAGNIFY_START    +" .. "+handled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_PREV                               ) { handled_by = clicked_PREV             +" .. "+handled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_NEXT                               ) { handled_by = clicked_NEXT             +" .. "+handled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_MONO                               ) { handled_by = clicked_MONO             +" .. "+handled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_MAGNIFY_STOP                       ) { handled_by = clicked_MAGNIFY_STOP     +" .. "+handled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_COPY_TO_CLIPBOARD && clicked_target) { handled_by = clicked_COPY_TO_CLIPBOARD+" .. "+handled_by;
         let container_to_copy_from
             = (clicked_target.id == "button_COPY_ALL_parent_div")
             ?  clicked_target.parentElement
@@ -46750,22 +46750,22 @@ if(log_this) {
 
     else if( clicked_target )
     {
-        handeled_by += " .. SCROLL TO "+t_onclick_target_handle_scroll_to_slot_num(clicked_target, caller);
+        handled_by += " .. SCROLL TO "+t_onclick_target_handle_scroll_to_slot_num(clicked_target, caller);
 
         dimm_stop( caller );
     }
 
 
     else {
-        handeled_by += " .. SCROLL BACK TO DIM START POINT";
+        handled_by += " .. SCROLL BACK TO DIM START POINT";
 
         dom_scroll.t_window_scrollTo(0, onDown_SCROLL_XY.y);
 
         dimm_stop( caller );
     }
 
-if(log_this)  log("%c"+caller+":%c"+LF+handeled_by, lf2, lbF+lf2);
-    return handeled_by;
+if(log_this)  log("%c"+caller+":%c"+LF+handled_by, lf2, lbF+lf2);
+    return handled_by;
 };
 
 
@@ -46778,20 +46778,20 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 if( log_this) t_fly.t_log_event_status(caller, lf3);
 
 
-    let handeled_by = "";
+    let handled_by = "";
     let sticky      = t_sticky.t_sticky_get_onWork_STICKY();
     if( sticky && has_el_class(sticky, t_data.CSS_HAS_FOCUS))
     {
 if( log_this) log("%c sticky.touched=["+sticky.touched+"]", lf3);
 
         if( t_sticky.t_sticky_is_EDITING( sticky ) )
-            handeled_by = "IGNORING EDITED STICKY "+sticky.id;
+            handled_by = "IGNORING EDITED STICKY "+sticky.id;
 
         else if( t_sticky.t_sticky_EDIT_DONE() )
-            handeled_by = "LEAVING  EDITED STICKY "+sticky.id;
+            handled_by = "LEAVING  EDITED STICKY "+sticky.id;
 
-if( log_this) log(caller+"%c handeled_by=["+handeled_by+"]", lbH+lf3);
-        return handeled_by;
+if( log_this) log(caller+"%c handled_by=["+handled_by+"]", lbH+lf3);
+        return handled_by;
     }
     let sticky_is_EDITING   = t_sticky.t_sticky_is_EDITING( sticky );
 
@@ -46820,7 +46820,7 @@ if( log_this) {
     let rejected_by = "";
 
 
-    if(!handeled_by && onDown_sticky)
+    if(!handled_by && onDown_sticky)
     {
         rejected_by
             = !clicked                          ?     "NO CLICK"
@@ -46834,18 +46834,18 @@ if( log_this) {
            && !has_moved
            && !prop.get(t_data.EDIT_OR_STAGE)
           )
-            handeled_by = t_sticky.t_sticky_CLICK_CB(sticky);
+            handled_by = t_sticky.t_sticky_CLICK_CB(sticky);
 
     }
 
 
 if(log_this) {
-    if     (handeled_by) log("%c"+caller+":%c handeled_by %c STICKY "+handeled_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
+    if     (handled_by ) log("%c"+caller+":%c handled_by %c STICKY "+handled_by  , lbb+lbH+lf3, lbL, lbb+lbH+lf4);
     else if(rejected_by) log("%c"+caller+":%c rejected_by %c PAGE "  +rejected_by, lbb+lbH+lf3, lbL, lbb+lbH+lf8);
-    else                 log("%c"+caller+":%c NOT HANDELED"                      , lbb+lbH+lf3,      lbb+lbH+lf8);
+    else                 log("%c"+caller+":%c NOT HANDLED"                       , lbb+lbH+lf3,      lbb+lbH+lf8);
 }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -46857,10 +46857,10 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) t_fly.t_log_event_status(caller, lf3);
 
-    let          handeled_by = "";
-    if( clicked) handeled_by = t_seek.t_seeker_onClick();
-if(log_this   && handeled_by) log("%c"+caller+":%c handeled_by %c SEEKER: "+handeled_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
-    return       handeled_by;
+    let          handled_by = "";
+    if( clicked) handled_by = t_seek.t_seeker_onClick();
+if(log_this   && handled_by) log("%c"+caller+":%c handled_by %c SEEKER: "+handled_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
+    return       handled_by;
 };
 
 
@@ -46874,9 +46874,9 @@ if( log_this) log("%c"+caller, lf3);
 
     if( !onWork_EL                  ) return "";
     if( dblclicked                  ) return "";
-    if( t_event_has_been_handeled() ) return "";
+    if( t_event_has_been_handled() ) return "";
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( clicked )
@@ -46886,11 +46886,11 @@ if( log_this) log("%c"+caller, lf3);
             :         null;
         if(doc_div) {
             if(has_el_class(onWork_EL, CSS_CLOSEPIN)) {
-                handeled_by     = "EMBEDDED TOOL: CLOSING "+doc_div.id;
+                handled_by     = "EMBEDDED TOOL: CLOSING "+doc_div.id;
                 t_fly.t_doc_div_clear(doc_div.id);
             }
             else {
-                handeled_by     = "EMBEDDED TOOL: CLICK IGNORED";
+                handled_by     = "EMBEDDED TOOL: CLICK IGNORED";
             }
         }
         else {
@@ -46901,8 +46901,8 @@ if(log_this) log("NO DOC EMBEDDED TOOL");
 
 
 
-if(log_this) log(handeled_by);
-    return       handeled_by;
+if(log_this) log(handled_by);
+    return       handled_by;
 };
 
 
@@ -46925,8 +46925,8 @@ if( log_this) log("%c"+caller, lf4);
         : ( prop.get( t_data.ANCHOR_FREEZE )) ? t_data.ANCHOR_FREEZE
         : ( prop.get( t_data.WORDING       )) ? t_data.WORDING
         : ( dblclicked                      ) ? "dblclicked"
-        : ( t_event_has_been_handeled()     ) ? t_event_handeled_by
-        :                                        ""
+        : ( t_event_has_been_handled()      ) ? t_event_handled_by
+        :                                       ""
     ;
 
     if(rejected_by) {
@@ -46947,11 +46947,11 @@ if( log_this) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf4, lbA, lf9);
 
 
 if( log_this) log("...handler=["+el_event_handler.label+"]");
-    let handeled_by = onUp_45_el_event_handler(e, el_event_handler);
+    let handled_by = onUp_45_el_event_handler(e, el_event_handler);
 
 
-if( log_this) log("%c"+caller+"%c handeled_by %c"+handeled_by, lbL, lbC, lbR+lf4);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c handled_by %c"+handled_by, lbL, lbC, lbR+lf4);
+    return handled_by;
 };
 
 
@@ -46964,14 +46964,14 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 if( log_this) t_fly.t_log_event_status(caller+"(clicked "+clicked+")", lf5);
 
     let rejected_by
-    = ( t_event_has_been_handeled()       ) ? t_event_handeled_by
+    = ( t_event_has_been_handled()       ) ? t_event_handled_by
     : (!t_is_a_tool_el(onWork_EL, caller) ) ? "NOT A TOOL ["+get_n_lbl(onWork_EL)+"]"
     :                                          "";
 if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf5, lbA, lf9);
     if(rejected_by) return "";
 if( log_this) log("%c"+caller, lf5);
 
-    let handeled_by = "ON TOOL .. ["+get_n_lbl(onWork_EL)+"]";
+    let handled_by = "ON TOOL .. ["+get_n_lbl(onWork_EL)+"]";
 
 
     let sticky = t_sticky.t_sticky_get_onWork_STICKY();
@@ -47005,9 +47005,9 @@ if(log_this) log("%c [CLICKED + SMALL MOVE] .. CANCEL MOVE  ON ["+get_n_lbl(onWo
 
 
     if(dblclicked) {
-        if(      clear_DBLCLICK_for_panel( onWork_PANEL  ) ) { handeled_by += " DBLCLICK PANEL CLEAR"; t_clear(caller);                                  }
-        else if( filter_STANDBY_for_panel( onWork_PANEL  ) ) { handeled_by += " DBLCLICK STANDBY"    ; t_onClick_1_onWork_EL(0, true); }
-        else if( shake_ON_DBLCLICK_for   ( onWork_PANEL  ) ) { handeled_by += " DBLCLICK TOOL PANEL" ;
+        if(      clear_DBLCLICK_for_panel( onWork_PANEL  ) ) { handled_by += " DBLCLICK PANEL CLEAR"; t_clear(caller);                                  }
+        else if( filter_STANDBY_for_panel( onWork_PANEL  ) ) { handled_by += " DBLCLICK STANDBY"    ; t_onClick_1_onWork_EL(0, true); }
+        else if( shake_ON_DBLCLICK_for   ( onWork_PANEL  ) ) { handled_by += " DBLCLICK TOOL PANEL" ;
 
 
             if(onWork_EL == onWork_PANEL)
@@ -47032,7 +47032,7 @@ if(log_this) log("%c [CLICKED + SMALL MOVE] .. CANCEL MOVE  ON ["+get_n_lbl(onWo
       ) {
         if( clicked ) {
             prop.toggle( t_data.MASK_OR_HIDE );
-            handeled_by += " CLICK .. NODE TO HIDE "+ (prop.get( t_data.MASK_OR_HIDE ) ? "MASKED" : "HIDDEN");
+            handled_by += " CLICK .. NODE TO HIDE "+ (prop.get( t_data.MASK_OR_HIDE ) ? "MASKED" : "HIDDEN");
         }
 
 
@@ -47047,24 +47047,24 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
 
         t_seek.t_seeker_PU_hide("instant");
 
-        handeled_by = "";
+        handled_by = "";
     }
 
 
     else if( clicked && !has_moved) {
-        if     ( sticky             == onWork_EL                 ) { handeled_by += " .. CLICK [sticky]"       ; t_onClick_1_onWork_EL(               ); }
-        else if( dimm_mask          == onWork_EL                 ) { handeled_by += " .. CLICK [dimm_mask]"    ; t_onClick_1_onWork_EL(               ); }
-        else if( filter_SEL_CLICK_for (onWork_EL               ) ) { handeled_by += " .. CLICK [DOC SEL CLICK]"; t_onClick_1_onWork_EL(0, false       ); }
-        else if( has_el_class         (onWork_EL, CSS_PUSH_PIN ) ) { handeled_by += " .. CLICK [push_pin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_el_class         (onWork_EL, CSS_CLOSEPIN ) ) { handeled_by += " .. CLICK [closepin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_el_class         (onWork_EL, CSS_SCALEPIN ) ) { handeled_by += " .. CLICK [scalepin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_el_class         (onWork_EL, CSS_CLEARPIN ) ) { handeled_by += " .. CLICK [clearpin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_onclick_for      (onWork_EL               ) ) { handeled_by += " .. CLICK [onWork_EL]"    ; t_onClick_1_onWork_EL(               ); }
-        else if( has_onclick_for      (onWork_PANEL            ) ) { handeled_by += " .. CLICK [onWork_PANEL]" ; t_onClick_1_onWork_EL(T_ONCLICK_DELAY); }
+        if     ( sticky             == onWork_EL                 ) { handled_by += " .. CLICK [sticky]"       ; t_onClick_1_onWork_EL(               ); }
+        else if( dimm_mask          == onWork_EL                 ) { handled_by += " .. CLICK [dimm_mask]"    ; t_onClick_1_onWork_EL(               ); }
+        else if( filter_SEL_CLICK_for (onWork_EL               ) ) { handled_by += " .. CLICK [DOC SEL CLICK]"; t_onClick_1_onWork_EL(0, false       ); }
+        else if( has_el_class         (onWork_EL, CSS_PUSH_PIN ) ) { handled_by += " .. CLICK [push_pin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_el_class         (onWork_EL, CSS_CLOSEPIN ) ) { handled_by += " .. CLICK [closepin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_el_class         (onWork_EL, CSS_SCALEPIN ) ) { handled_by += " .. CLICK [scalepin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_el_class         (onWork_EL, CSS_CLEARPIN ) ) { handled_by += " .. CLICK [clearpin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_onclick_for      (onWork_EL               ) ) { handled_by += " .. CLICK [onWork_EL]"    ; t_onClick_1_onWork_EL(               ); }
+        else if( has_onclick_for      (onWork_PANEL            ) ) { handled_by += " .. CLICK [onWork_PANEL]" ; t_onClick_1_onWork_EL(T_ONCLICK_DELAY); }
         else {
             let el_event_handler =  t_util.get_el_event_handler(onWork_EL, caller);
             if( el_event_handler )
-                handeled_by += onUp_45_el_event_handler(e, el_event_handler);
+                handled_by += onUp_45_el_event_handler(e, el_event_handler);
         }
     }
 
@@ -47075,14 +47075,14 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
 
           ) {
             if(mov_dst_div != mov_src_div)
-                handeled_by += t_pat_bag9_move_pattern_from_src_to_dst_div();
+                handled_by += t_pat_bag9_move_pattern_from_src_to_dst_div();
             else
-                handeled_by += " MOVING PATTERN IN "+get_n_lbl(mov_dst_div);
+                handled_by += " MOVING PATTERN IN "+get_n_lbl(mov_dst_div);
         }
 
 
         else if(onWork_PANEL) {
-            handeled_by += " TOOL MOVED";
+            handled_by += " TOOL MOVED";
 
 
             let is_a_pinned_transcript
@@ -47096,7 +47096,7 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
             {
                 let  xy = t_util.get_el_xy(onWork_PANEL, caller);
                 t_store.t_store_set_value(key, JSON.stringify(xy));
-                handeled_by += " (a pinned transcript)";
+                handled_by += " (a pinned transcript)";
             }
             else {
                 t_store.t_store_set_value(key, null);
@@ -47107,10 +47107,10 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
     }
 
 
-    if(handeled_by) t_event_add_e_handeled_by(e, handeled_by);
+    if(handled_by) t_event_add_e_handled_by(e, handled_by);
 
-if( log_this) log("...return %c"+handeled_by, lbH+lf5);
-    return handeled_by;
+if( log_this) log("...return %c"+handled_by, lbH+lf5);
+    return handled_by;
 };
 
 
@@ -47252,7 +47252,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) log("%c"+caller, lbb+lf7);
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
 if( log_this) log("behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]");
@@ -47260,22 +47260,22 @@ if( log_this) log("t_preventDefault_caller=["+t_preventDefault_caller+"]");
 
     if(behavior_TOUCH_ELSE_DESKTOP && t_preventDefault_caller)
     {
-        handeled_by = "MOBILE  CALLING EVENT HANDLER ["+ get_n_lbl(onWork_EL) +"] ["+el_event_handler.label+"] HANDLER";
+        handled_by = "MOBILE  CALLING EVENT HANDLER ["+ get_n_lbl(onWork_EL) +"] ["+el_event_handler.label+"] HANDLER";
 
         if(t_preventDefault_caller) t_restoreDefault("ON TOUCH UP");
 
         el_event_handler.handler(e);
-        t_cache_armed_by( handeled_by );
+        t_cache_armed_by( handled_by );
     }
 
 
     else {
-        handeled_by = "BUBBLING TO DOC EVENT HANDLER: ["+ el_event_handler.label +"]";
+        handled_by = "BUBBLING TO DOC EVENT HANDLER: ["+ el_event_handler.label +"]";
 
     }
 
-if( log_this) log("%c"+caller+"%c handeled_by %c"+handeled_by, lbL, lbC, lbR+lf3);
-    return handeled_by;
+if( log_this) log("%c"+caller+"%c handled_by %c"+handled_by, lbL, lbC, lbR+lf3);
+    return handled_by;
 };
 
 
@@ -47295,7 +47295,7 @@ if(!is_a_DOM_LOAD_featured_function(caller)) return "";
         = (!clicked                           ) ? "!clicked"
         : ( has_moved                         ) ? has_moved
         : (onDown_TOUCHES > 1                 ) ? ""
-        : ( t_event_has_been_handeled()       ) ? t_event_handeled_by
+        : ( t_event_has_been_handled()       ) ? t_event_handled_by
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
@@ -47305,7 +47305,7 @@ if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf
 if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()+"%c onDown_TOUCHES=["+onDown_TOUCHES+"]"
                    ,lf7        ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8]  ,lbH+lfX[dblclicked ? 5:8]       ,lbH+lf8                               );
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER( onDown_EL );
@@ -47315,30 +47315,30 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         if( cells )
         {
             for(let i=0; i < cells.length; ++i)
-                handeled_by
+                handled_by
                     =     t_sentence.t_SENTENCE_RESTORE_EL(cells[i], e)
-                    ||    handeled_by
+                    ||    handled_by
             ;
         }
 
 
 
-        if(!handeled_by)
+        if(!handled_by)
         {
             if(!t_util.is_el_child_of_id(onWork_EL, "log_popup_div") )
             {
 
-                handeled_by = t_sentence.t_SENTENCE_RESTORE_EL(container, e);
+                handled_by = t_sentence.t_SENTENCE_RESTORE_EL(container, e);
             }
             else {
                 if( t_util.is_el_child_of_class(onWork_EL, "xpath") )
                 {
-                    handeled_by = "CLOSING LOG POPUP";
+                    handled_by = "CLOSING LOG POPUP";
 
                     t_popup.log_popup_hide();
                 }
                 else {
-                    handeled_by = "RESTORING ALL CONTAINERS SENTENCES";
+                    handled_by = "RESTORING ALL CONTAINERS SENTENCES";
 
                     t_sentence.t_SENTENCE_RESTORE_ALL( e );
                 }
@@ -47348,11 +47348,11 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         drag_cursor.set_mouseUP_display_state(false);
     }
 
-    if( handeled_by )
-        t_event_set_e_handeled_by(e, handeled_by);
+    if( handled_by )
+        t_event_set_e_handled_by(e, handled_by);
 
-if(log_this && handeled_by) log("%c"+handeled_by, lbb+lbH+lf7);
-    return     handeled_by;
+if(log_this && handled_by) log("%c"+handled_by, lbb+lbH+lf7);
+    return     handled_by;
 };
 
 
@@ -47367,7 +47367,7 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
         = (!clicked                           ) ? "!clicked"
         : ( has_moved                         ) ? has_moved
         : (onDown_TOUCHES > 1                 ) ? ""
-        : ( t_event_has_been_handeled()       ) ? t_event_handeled_by
+        : ( t_event_has_been_handled()       ) ? t_event_handled_by
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
@@ -47377,16 +47377,16 @@ if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf
 if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()
                   ,lf7         ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8] ,lbH+lfX[dblclicked ? 5:8]     );
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
-    if(!handeled_by && !(dblclicked || (onDown_TOUCHES > 1)))
+    if(!handled_by && !(dblclicked || (onDown_TOUCHES > 1)))
     {
         if( was_a_misclick() )
         {
 if(log_this) logBIG("WAS A MISSCLICK", lf3);
 
-            handeled_by = "DOC MISSCLICK";
+            handled_by = "DOC MISSCLICK";
 
         }
         else {
@@ -47394,20 +47394,20 @@ if(log_this) logBIG("WAS A MISSCLICK", lf3);
             if( t_seek.t_seeker_has_TARGET() )
             {
                 let slot    = t_get_onWork_EL_slot();
-                handeled_by = "DOC CLICK: CLEAR SLOT #"+slot;
+                handled_by = "DOC CLICK: CLEAR SLOT #"+slot;
 
                 clear_clicked_slot( slot );
             }
 
 
-            if(!handeled_by && prop.get( t_data.EDIT_OR_STAGE ))
+            if(!handled_by && prop.get( t_data.EDIT_OR_STAGE ))
             {
-                handeled_by = t_tools_hide_onDown_XY();
+                handled_by = t_tools_hide_onDown_XY();
 
             }
 
 
-            else if(!handeled_by && onWork_EL)
+            else if(!handled_by && onWork_EL)
             {
 
                 let has_event_handler       = t_util.get_el_event_handler(onWork_EL,caller);
@@ -47425,34 +47425,34 @@ if( log_this) log_key_val(    "ON A DOC WORD"
 
                 if(user_select_allowed && (!has_event_handler || !is_an_embedded_doc_tool))
                 {
-                    handeled_by = "DOC CLICK .. NO HANDLER for ["+t_util.get_n_lbl(onWork_EL)+"]";
+                    handled_by = "DOC CLICK .. NO HANDLER for ["+t_util.get_n_lbl(onWork_EL)+"]";
 
 
 
-                    onUp_7_DOC_CB_CLICK_WORD(handeled_by);
+                    onUp_7_DOC_CB_CLICK_WORD(handled_by);
                 }
 
 
                 else {
                     if(is_an_embedded_doc_tool)
                     {
-if(log_this) log("DOC CLICK .. NOT HANDELED .. EMBEDDED DOC TOOL "+get_id_or_tag(onWork_EL));
+if(log_this) log("DOC CLICK .. NOT HANDLED .. EMBEDDED DOC TOOL "+get_id_or_tag(onWork_EL));
 
                         t_acceptBubble(e, caller+" EMBEDDED DOC TOOL", log_this);
                     }
                     else if(prop.get(t_data.ANCHOR_FREEZE) || prop.get(t_data.WORDING))
                     {
-                        handeled_by = "DOC CLICK .. HANDLER FREEZED";
+                        handled_by = "DOC CLICK .. HANDLER FREEZED";
 
-                        t_preventDefault(e, caller+" "+handeled_by);
+                        t_preventDefault(e, caller+" "+handled_by);
 
-                        onUp_7_DOC_CB_CLICK_WORD(handeled_by);
+                        onUp_7_DOC_CB_CLICK_WORD(handled_by);
                     }
                     else {
 
-                        handeled_by = "DOC CLICK .. NO FREEZED HANDLER .. NO EMBEDDED TOOL";
+                        handled_by = "DOC CLICK .. NO FREEZED HANDLER .. NO EMBEDDED TOOL";
 
-                        t_acceptBubble(e, caller+" "+handeled_by);
+                        t_acceptBubble(e, caller+" "+handled_by);
                     }
                 }
 
@@ -47461,8 +47461,8 @@ if(log_this) log("DOC CLICK .. NOT HANDELED .. EMBEDDED DOC TOOL "+get_id_or_tag
         }
     }
 
-if(log_this && handeled_by) log("%c"+handeled_by, lbb+lbH+lf7);
-    return     handeled_by;
+if(log_this && handled_by) log("%c"+handled_by, lbb+lbH+lf7);
+    return     handled_by;
 };
 
 
@@ -47519,14 +47519,14 @@ if( log_this) log("%c"+caller+" %c touchedWord_slot %c "+touchedWord_slot, lbL+l
 
 
 
-let onUp_8_ON_EVENT_HANDELED = function(e)
+let onUp_8_ON_EVENT_HANDLED = function(e)
 {
-let   caller = "onUp_8_ON_EVENT_HANDELED";
+let   caller = "onUp_8_ON_EVENT_HANDLED";
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
-if( log_this) log("%c"+caller +" "+t_event_handeled_by, lf8);
+if( log_this) log("%c"+caller +" "+t_event_handled_by, lf8);
 
-    return t_event_has_been_handeled();
+    return t_event_has_been_handled();
 };
 
 
@@ -47590,7 +47590,7 @@ if(log_this) {
                  , was_a_click    : was_a_click   ()
                  , was_a_dblclick : was_a_dblclick()
                  ,      has_moved
-                 ,       HANDELED : t_event_handeled_by
+                 ,        HANDLED : t_event_handled_by
                  }, lf9);
 }
 
@@ -47792,7 +47792,7 @@ const LONG_PRESS_ARM     = "long_press_arm";
 let long_press_caller;
 let long_press_timer;
 let long_press_arm_timer;
-let mouselong_press_handeled_by = "";
+let mouselong_press_handled_by = "";
 
 
 
@@ -47952,43 +47952,43 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
     t_seek.t_seeker_PU_disarm();
 
 
-    let                handeled_by = "";                               let handeled_by_css =  "";
-    if(!handeled_by) { handeled_by = onLong_press1_HOTSPOT             (); handeled_by_css = lf1; }
-    if(!handeled_by) { handeled_by = onLong_press2_TOOLS_ON_GRID       (); handeled_by_css = lf2; }
-    if(!handeled_by) { handeled_by = onLong_press3_EDIT_OR_STAGE       (); handeled_by_css = lf3; }
-    if(!handeled_by) { handeled_by = onLong_press4_SENTENCE            (); handeled_by_css = lf3; }
-    if(!handeled_by) { handeled_by = onLong_press5_TOOL_EL             (); handeled_by_css = lf4; }
-    if(!handeled_by) { handeled_by = onLong_press6_TOOL_TOOLTIP        (); handeled_by_css = lf6; }
-    if(!handeled_by) { handeled_by = onLong_press7_TOOL_PANEL_MAGNIFY  (); handeled_by_css = lf7; }
-    if(!handeled_by) { handeled_by = onLong_press8_HOTSPOT_PANEL_UNHIDE(); handeled_by_css = lf8; }
-    if(!handeled_by) { handeled_by = onLong_press9_SLOTTED_WORD        (); handeled_by_css = lf9; }
+    let               handled_by = "";                               let handled_by_css =  "";
+    if(!handled_by) { handled_by = onLong_press1_HOTSPOT             (); handled_by_css = lf1; }
+    if(!handled_by) { handled_by = onLong_press2_TOOLS_ON_GRID       (); handled_by_css = lf2; }
+    if(!handled_by) { handled_by = onLong_press3_EDIT_OR_STAGE       (); handled_by_css = lf3; }
+    if(!handled_by) { handled_by = onLong_press4_SENTENCE            (); handled_by_css = lf3; }
+    if(!handled_by) { handled_by = onLong_press5_TOOL_EL             (); handled_by_css = lf4; }
+    if(!handled_by) { handled_by = onLong_press6_TOOL_TOOLTIP        (); handled_by_css = lf6; }
+    if(!handled_by) { handled_by = onLong_press7_TOOL_PANEL_MAGNIFY  (); handled_by_css = lf7; }
+    if(!handled_by) { handled_by = onLong_press8_HOTSPOT_PANEL_UNHIDE(); handled_by_css = lf8; }
+    if(!handled_by) { handled_by = onLong_press9_SLOTTED_WORD        (); handled_by_css = lf9; }
 
 
-    if(!handeled_by) {
-        handeled_by = "NO LONG-PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
+    if(!handled_by) {
+        handled_by = "NO LONG-PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
 
-if(tag_this) log("%c "+caller+" %c *** "+handeled_by+" ***", lbb+lbL+lf9, lbb+lbR+lf2);
-if(tag_this) t_fly.t_log_event_status(caller+": "+handeled_by);
+if(tag_this) log("%c "+caller+" %c *** "+handled_by+" ***", lbb+lbL+lf9, lbb+lbR+lf2);
+if(tag_this) t_fly.t_log_event_status(caller+": "+handled_by);
     }
 
-if( tag_this && !mouselong_press_handeled_by) log("%c"+handeled_by, lbH+handeled_by_css);
-    mouselong_press_handeled_by = handeled_by;
+if( tag_this && !mouselong_press_handled_by) log("%c"+handled_by, lbH+handled_by_css);
+    mouselong_press_handled_by = handled_by;
 
     if(log_this)
         t_fly.t_log_transcript_event_bot( "<span style='color:white;'>"+t_data.SYMBOL_CHECK_MARK+"</span>"
-            +                      " long press <em>"+ handeled_by +"</em>"
+            +                      " long press <em>"+ handled_by +"</em>"
         );
 
 
-if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+handeled_by, handeled_by_css);
+if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+handled_by, handled_by_css);
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("LONG-PRESS");
 };
 
 
-let t_get_mouselong_press_handeled_by = function()
+let t_get_mouselong_press_handled_by = function()
 {
-    return mouselong_press_handeled_by;
+    return mouselong_press_handled_by;
 
 };
 
@@ -48003,34 +48003,34 @@ let onLong_press1_HOTSPOT = function()
     let in_gutter      = t_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
     let while_editing  =  prop.get( t_data.EDIT_OR_STAGE );
     let is_on_grid     = call_t_grid_IS_ON_GRID(caller);
-    let handeled_by    = "";
+    let handled_by    = "";
 
 
-    if(!handeled_by && in_gutter && while_editing) {
+    if(!handled_by && in_gutter && while_editing) {
 
         prop.toggle( t_data.EDIT_OR_STAGE );
 
-        handeled_by = t_data.EDIT_OR_STAGE +" done .. HOTSPOT LONG-PRESS IN GUTTER .. WHILE EDITING";
+        handled_by = t_data.EDIT_OR_STAGE +" done .. HOTSPOT LONG-PRESS IN GUTTER .. WHILE EDITING";
     }
 
 
-    if(!handeled_by && !is_on_grid)
+    if(!handled_by && !is_on_grid)
     {
-        handeled_by = "HOTSPOT LONG-PRESS MOVING TOOLS ON GRID";
+        handled_by = "HOTSPOT LONG-PRESS MOVING TOOLS ON GRID";
 
         t_move_TOOLS_ON_GRID("LONG-PRESS");
     }
 
 
-    if(!handeled_by &&  is_on_grid)
+    if(!handled_by &&  is_on_grid)
     {
         prop.set(t_data.TOOLS_TIER2, false);
         t_activate_tools_tier1("LONG-PRESS");
 
-        handeled_by = "HOTSPOT LONG-PRESS .. SELECT "+ t_data.TOOLS_TIER2;
+        handled_by = "HOTSPOT LONG-PRESS .. SELECT "+ t_data.TOOLS_TIER2;
     }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -48039,27 +48039,27 @@ let onLong_press2_TOOLS_ON_GRID = function()
 
 let   caller = "onLong_press2_TOOLS_ON_GRID";
 
-    let handeled_by = "";
+    let handled_by = "";
 
     if( !dimm_mask_displayed() ) return "";
 
-    if(!handeled_by && call_t_grid_IS_ON_GRID(caller))
+    if(!handled_by && call_t_grid_IS_ON_GRID(caller))
     {
         t_move_TOOLS_OFF_GRID("LONG-PRESS");
 
-        handeled_by = "MOVING TOOLS OFF GRID";
+        handled_by = "MOVING TOOLS OFF GRID";
     }
 
-    if(!handeled_by && has_el_class(pat_bag, CSS_OPEN_BAG))
+    if(!handled_by && has_el_class(pat_bag, CSS_OPEN_BAG))
     {
         t_pat_bag_close(caller,caller);
 
         dimm_stop(caller);
 
-        handeled_by = "CLOSING [pat_bag]";
+        handled_by = "CLOSING [pat_bag]";
     }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -48086,7 +48086,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
 
 if( log_this) t_fly.t_log_event_status(caller, lf4);
     let rejected_by = "";
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( t_is_a_tool_el          (onWork_EL, caller         )) rejected_by = "t_is_a_tool_el";
@@ -48115,7 +48115,7 @@ if( log_this && rejected_by) log("%c"+rejected_by, lb4);
 
         if( cells )
         {
-            handeled_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
+            handled_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
 
             for(let i=0; i < cells.length; ++i)
             {
@@ -48124,17 +48124,17 @@ if( log_this && rejected_by) log("%c"+rejected_by, lb4);
         }
 
 
-        if(!handeled_by)
+        if(!handled_by)
         {
-            handeled_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
+            handled_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
 
             t_sentence.t_SENTENCE_SPLIT( container );
         }
     }
 
 
-if( log_this && handeled_by) log("%c"+handeled_by, lf4);
-    return      handeled_by;
+if( log_this && handled_by) log("%c"+handled_by, lf4);
+    return      handled_by;
 };
 
 
@@ -48146,7 +48146,7 @@ let log_this = LOG_MAP.EV4_LONG_PRESS;
 
 
 if( log_this) t_fly.t_log_event_status(caller, lf5);
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( behavior_TOUCH_ELSE_DESKTOP )
@@ -48159,44 +48159,44 @@ if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP
 
     let el_slot = t_get_onWork_EL_slot();
     if( el_slot > 0) {
-if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT HANDELED", lf8);
+if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT HANDLED", lf8);
 
-        return handeled_by;
+        return handled_by;
     }
 
 
-    if(!handeled_by) {
+    if(!handled_by) {
         let sticky  = t_sticky.t_sticky_get_onWork_STICKY();
         if( sticky && has_el_class(sticky, t_data.CSS_HAS_FOCUS))
         {
-            handeled_by = "IGNORING EDITED STICKY "+sticky.id;
+            handled_by = "IGNORING EDITED STICKY "+sticky.id;
 
-if( log_this) t_log.logSD1("%c"+caller+"%c"+handeled_by, lbH+lf8);
+if( log_this) t_log.logSD1("%c"+caller+"%c"+handled_by, lbH+lf8);
         }
         else {
-            handeled_by = onLong_press5_TOOL_STICKY(log_this);
+            handled_by = onLong_press5_TOOL_STICKY(log_this);
 
         }
     }
 
 
-    if(!handeled_by
+    if(!handled_by
        &&      onWork_EL
        && (   (onWork_EL.id == t_data.bag_rot      )
            || (onWork_EL.id == t_data.WORDS_BAG_ROT))
       ) {
-        handeled_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
-if( log_this) t_log.logSD2("%c"+caller+"%c"+handeled_by, lbH+lf5);
+        handled_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
+if( log_this) t_log.logSD2("%c"+caller+"%c"+handled_by, lbH+lf5);
 
         t_fly.t_fly_tooltip_update(bag_rot.title, bag_rot.id);
     }
 
 
     let div_slot_containers_child_pressed = t_util.is_el_or_child_of_parent_el(onWork_EL, div_slot_containers);
-    if(!handeled_by && div_slot_containers_child_pressed)
+    if(!handled_by && div_slot_containers_child_pressed)
     {
-        handeled_by = "START CONTAINERS CHILD DRAG";
-if( log_this) t_log.logSD3("%c"+caller+"%c"+handeled_by, lbH+lf5);
+        handled_by = "START CONTAINERS CHILD DRAG";
+if( log_this) t_log.logSD3("%c"+caller+"%c"+handled_by, lbH+lf5);
 
         t_slot_container_set_fullscreen( onWork_EL );
         t_add_tool_pointermove_listener(caller);
@@ -48205,8 +48205,8 @@ if( log_this) t_log.logSD3("%c"+caller+"%c"+handeled_by, lbH+lf5);
 
 
 
-if(log_this && !handeled_by) log("%c"+caller+"%c NOT HANDELED", lbL+lf5, lbR+lf8);
-    return      handeled_by;
+if(log_this && !handled_by) log("%c"+caller+"%c NOT HANDLED", lbL+lf5, lbR+lf8);
+    return      handled_by;
 };
 
 
@@ -48233,20 +48233,20 @@ if( log_this) {
 }
 
 
-    let handeled_by         = "";
+    let handled_by         = "";
 
 
 
 
 
-    if(!handeled_by && (current_sel_text || onDown_SEL_TEXT))
+    if(!handled_by && (current_sel_text || onDown_SEL_TEXT))
     {
         if(!onDown_SEL_TEXT && !current_sel_text)
             clr_SELECTION_PROGRESS("NEW STICKY FROM PAGE-SELECTION", log_this);
 
         if(pinned_sticky_count < t_sticky.STICKY_MAX) {
-            handeled_by = onLong_press5_TOOL_STICKY_SEL_TEXT(log_this);
-if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf1);
+            handled_by = onLong_press5_TOOL_STICKY_SEL_TEXT(log_this);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handled_by, lbL+lf4,lbR+lf1);
         }
         else {
             logBIG("(pinned_sticky_count >= t_sticky.STICKY_MAX) .. ("+pinned_sticky_count+" >= "+t_sticky.STICKY_MAX+")");
@@ -48254,19 +48254,19 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf1);
     }
 
 
-    if(!handeled_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
+    if(!handled_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
     {
-        handeled_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf2);
+        handled_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handled_by, lbL+lf4,lbR+lf2);
 
         t_sticky.t_sticky_format_pad(sticky);
     }
 
 
-    if(!handeled_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
+    if(!handled_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
     {
-        handeled_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf3);
+        handled_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handled_by, lbL+lf4,lbR+lf3);
 
         return "";
     }
@@ -48277,7 +48277,7 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf3);
 
 
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -48290,18 +48290,18 @@ let onLong_press5_TOOL_STICKY_SEL_TEXT = function(log_this=true)
 
 let   caller = "onLong_press5_TOOL_STICKY_SEL_TEXT";
 
-    let      handeled_by = "";
+    let      handled_by = "";
 
 
 
     if(onUp_MS > onDown_MS)
     {
-        handeled_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
-if( log_this) t_log.log(    "%c"+caller+": "+ handeled_by
+        handled_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
+if( log_this) t_log.log(    "%c"+caller+": "+ handled_by
                     ,        lbH+lf8                     );
 
-        clr_SELECTION_PROGRESS(handeled_by, log_this);
-        return handeled_by;
+        clr_SELECTION_PROGRESS(handled_by, log_this);
+        return handled_by;
     }
 
 
@@ -48312,8 +48312,8 @@ if( log_this) t_log.log(    "%c"+caller+": "+ handeled_by
     {
         tic_SELECTION_PROGRESS();
 
-        handeled_by     = "LONG-PRESS .. SELECTION CHANGED";
-if( log_this) t_log.log( "%c"+caller+": "+ handeled_by
+        handled_by     = "LONG-PRESS .. SELECTION CHANGED";
+if( log_this) t_log.log( "%c"+caller+": "+ handled_by
                         +"%c"+LF+"FROM %c"+ t_util.ellipsis_short(t_util.strip_CR_LF( last_sel_text))
                         +"%c"+LF+"TO.. %c"+ t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
                         ,lbH+lf4
@@ -48335,8 +48335,8 @@ if( log_this) t_log.log( "%c"+caller+": "+ handeled_by
 
         if( unchanged_countdown )
         {
-            handeled_by     = "LONG-PRESS .. SELECTION STEADY";
-if( log_this) t_log.log("%c"+caller+": "+ handeled_by+"%c unchanged x"+unchanged_countdown
+            handled_by     = "LONG-PRESS .. SELECTION STEADY";
+if( log_this) t_log.log("%c"+caller+": "+ handled_by+"%c unchanged x"+unchanged_countdown
                         ,lbH+lf4                      ,lbb+lbH+lfX[    unchanged_countdown]);
 
             let next_interval = SEL_TEXT_TIC_TOC_INTERVAL / 3;
@@ -48348,29 +48348,29 @@ if( log_this) t_log.log("%c"+caller+": "+ handeled_by+"%c unchanged x"+unchanged
 
         else if(last_sel_text)
         {
-            handeled_by = "LONG-PRESS .. SELECTION ADD STICKY";
-if(log_this) t_log.logSD4( "%c"+caller+": "+handeled_by+"=["+handeled_by+"]"
+            handled_by = "LONG-PRESS .. SELECTION ADD STICKY";
+if(log_this) t_log.logSD4( "%c"+caller+": "+handled_by+"=["+handled_by+"]"
                     +"%c"+LF+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
                     ,lbH+lf4
                     ,lbb+lb9);
 
-            clr_SELECTION_PROGRESS(handeled_by, log_this);
+            clr_SELECTION_PROGRESS(handled_by, log_this);
 
             onLong_press5_STICKY_ADD_NEW(current_sel_text, log_this);
         }
 
 
         else {
-            handeled_by = "LONG-PRESS .. SELECTION IS EMPTY";
-if(log_this) t_log.logSD4("%c"+caller+": "+handeled_by
+            handled_by = "LONG-PRESS .. SELECTION IS EMPTY";
+if(log_this) t_log.logSD4("%c"+caller+": "+handled_by
                     ,lbH+lf4                    );
 
-            clr_SELECTION_PROGRESS(handeled_by, log_this);
+            clr_SELECTION_PROGRESS(handled_by, log_this);
         }
 
     }
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -48418,7 +48418,7 @@ if( log_this)
                 }, lf6);
 if( log_this) t_fly.t_log_event_status(caller, lf6);
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if(onWork_PANEL == t_fly.t_fly_div_get()     ) return "";
@@ -48431,12 +48431,12 @@ if( log_this) t_fly.t_log_event_status(caller, lf6);
     ;
 
     if( title ) {
-        handeled_by = "SHOWING TOOLTIP ["+t_util.ellipsis_short(t_util.strip_CR_LF(title))+"]";
+        handled_by = "SHOWING TOOLTIP ["+t_util.ellipsis_short(t_util.strip_CR_LF(title))+"]";
 
         t_fly.t_fly_tooltip( title );
     }
-if( log_this) t_log.logSD5("%c"+caller+"%c"+handeled_by, lbL+lf6,lbR+lf6);
-    return handeled_by;
+if( log_this) t_log.logSD5("%c"+caller+"%c"+handled_by, lbL+lf6,lbR+lf6);
+    return handled_by;
 };
 
 
@@ -48754,9 +48754,9 @@ let log_this = LOG_MAP.EV5_TOOL_CB;
 if( log_this) t_fly.t_log_event_status(caller, lf5);
 
 
-    if( t_event_has_been_handeled() )
+    if( t_event_has_been_handled() )
     {
-if(log_this) t_log.console_warn("*** "+caller+": ALREADY HANDELED BY:"+LF+t_event_handeled_by);
+if(log_this) t_log.console_warn("*** "+caller+": ALREADY HANDLED BY:"+LF+t_event_handled_by);
 
         return;
     }
@@ -48837,63 +48837,63 @@ if( log_this)
 
 if( log_this) pattern_log_bag_csv(caller);
 
-    let handeled_by = "";
+    let handled_by = "";
 
 
     let                 e_target_name  = e_target.id.toLowerCase();
-    if(!handeled_by && (e_target_name == "behavior"       ))             { handeled_by = e_target.id;       t_fly.t_log_behavior();               }
-    if(!handeled_by && (e_target_name == "highlight"      ))             { handeled_by = e_target.id;       t_outline_viewport_top_containers();  }
-    if(!handeled_by && (e_target_name == "regex"          ))             { handeled_by = e_target.id;       t_fly.t_log_regex();                  }
-    if(!handeled_by && (e_target_name == "clear"          ))             { handeled_by = e_target.id;       t_clear(caller);                      }
-    if(!handeled_by && (e_target_name == "import"         ))             { handeled_by = e_target.id;       t_share.t_share3_IMPORT_UI(e_target); }
-    if(!handeled_by && (e_target_name == "reload"         ))             { handeled_by = e_target.id;       document.location.reload();           }
+    if(!handled_by && (e_target_name == "behavior"       ))             { handled_by = e_target.id;       t_fly.t_log_behavior();               }
+    if(!handled_by && (e_target_name == "highlight"      ))             { handled_by = e_target.id;       t_outline_viewport_top_containers();  }
+    if(!handled_by && (e_target_name == "regex"          ))             { handled_by = e_target.id;       t_fly.t_log_regex();                  }
+    if(!handled_by && (e_target_name == "clear"          ))             { handled_by = e_target.id;       t_clear(caller);                      }
+    if(!handled_by && (e_target_name == "import"         ))             { handled_by = e_target.id;       t_share.t_share3_IMPORT_UI(e_target); }
+    if(!handled_by && (e_target_name == "reload"         ))             { handled_by = e_target.id;       document.location.reload();           }
 
-    if(!handeled_by && (e_target_name == t_data.CSS_FLY_CLIPBOARD))      { handeled_by = t_data.CSS_FLY_CLIPBOARD;                                }
+    if(!handled_by && (e_target_name == t_data.CSS_FLY_CLIPBOARD))      { handled_by = t_data.CSS_FLY_CLIPBOARD;                                }
 
-    if(!handeled_by && (e_target_name == "export"         ))             { handeled_by = e_target.id;       t_share.t_share1_EXPORT   (e_target);
+    if(!handled_by && (e_target_name == "export"         ))             { handled_by = e_target.id;       t_share.t_share1_EXPORT   (e_target);
  t_share.t_share2_MAILTO_UI(e_target); }
-    if(!handeled_by && has_el_class(e_target, t_data.CSS_MAILTO))        { handeled_by = t_data.CSS_MAILTO; t_share.t_share2_MAILTO_UI(e_target); }
+    if(!handled_by && has_el_class(e_target, t_data.CSS_MAILTO))        { handled_by = t_data.CSS_MAILTO; t_share.t_share2_MAILTO_UI(e_target); }
 
 
 
-    if(!handeled_by && onWork_PANEL && bag_id) {
-        if(!handeled_by && has_el_class(e_target, CSS_PUSH_PIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_PUSH_PIN; }
-        if(!handeled_by && has_el_class(e_target, CSS_CLOSEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_CLOSEPIN; }
-        if(!handeled_by && has_el_class(e_target, CSS_SCALEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_SCALEPIN; }
-        if(!handeled_by && has_el_class(e_target, CSS_CLEARPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_CLEARPIN; }
+    if(!handled_by && onWork_PANEL && bag_id) {
+        if(!handled_by && has_el_class(e_target, CSS_PUSH_PIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handled_by = bag_id+"."+CSS_PUSH_PIN; }
+        if(!handled_by && has_el_class(e_target, CSS_CLOSEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handled_by = bag_id+"."+CSS_CLOSEPIN; }
+        if(!handled_by && has_el_class(e_target, CSS_SCALEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handled_by = bag_id+"."+CSS_SCALEPIN; }
+        if(!handled_by && has_el_class(e_target, CSS_CLEARPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handled_by = bag_id+"."+CSS_CLEARPIN; }
     }
 
 
-    if(!handeled_by && t_seek.t_seeker_get_node_bag_id( e_target ))
+    if(!handled_by && t_seek.t_seeker_get_node_bag_id( e_target ))
     {
-        t_seek.t_seeker_onClick(); handeled_by = "SEEKER "+bag_id;
+        t_seek.t_seeker_onClick(); handled_by = "SEEKER "+bag_id;
 
     }
 
 
-    if(!handeled_by && bag_id)
+    if(!handled_by && bag_id)
     {
 
         switch( bag_id )
         {
-        case "sel_bag"      : t_onClick_1_sel(e_target, bag_id ); handeled_by = bag_id; break;
+        case "sel_bag"      : t_onClick_1_sel(e_target, bag_id        ); handled_by = bag_id; break;
 
         case "pat_bag"      :
         case "off_bag"      :
         case "alt_bag"      :
-        case "bak_bag"      : t_handle_1_pat_bag    (e_target         ); handeled_by = bag_id; break;
+        case "bak_bag"      : t_handle_1_pat_bag    (e_target         ); handled_by = bag_id; break;
 
 
-        case "headsup_bw"   : t_body_layout_CB      (e_target         ); handeled_by = bag_id; break;
-        case "headsup_bz"   : t_body_zoom_CB        (e_target         ); handeled_by = bag_id; break;
-        case "headsup_fs"   : t_body_font_size_CB   (e_target         ); handeled_by = bag_id; break;
+        case "headsup_bw"   : t_body_layout_CB      (e_target         ); handled_by = bag_id; break;
+        case "headsup_bz"   : t_body_zoom_CB        (e_target         ); handled_by = bag_id; break;
+        case "headsup_fs"   : t_body_font_size_CB   (e_target         ); handled_by = bag_id; break;
 
-        case "dom_traversal": if(t_dom_traversal_CB (e_target, "click")) handeled_by = bag_id; break;
+        case "dom_traversal": if(t_dom_traversal_CB (e_target, "click")) handled_by = bag_id; break;
 
         case "dev_log_map"  :
-        case "prop_bag"     : if(      prop_tools_CB(e_target)        )  handeled_by = bag_id; break;
+        case "prop_bag"     : if(      prop_tools_CB(e_target)        )  handled_by = bag_id; break;
 
-        case "fly_div"      : t_fly.t_fly_clr       (e_target         ); handeled_by = bag_id; break;
+        case "fly_div"      : t_fly.t_fly_clr       (e_target         ); handled_by = bag_id; break;
 
         default:
 if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lbl(e_target)+"]"
@@ -48903,21 +48903,21 @@ if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lb
     }
 
 
-    if(!handeled_by)
+    if(!handled_by)
     {
         if( t_onClick_1_e_target(e_target) )
-            handeled_by = "["+e_target.id+"] HANDLER";
+            handled_by = "["+e_target.id+"] HANDLER";
 
     }
 
 
-    if(!handeled_by)
+    if(!handled_by)
     {
         switch(e_target.id)
         {
-        case "pat_sort"            : t_handle_1_pat_bag_sort_cycle(); handeled_by = e_target.id; break;
+        case "pat_sort"            : t_handle_1_pat_bag_sort_cycle(      ); handled_by = e_target.id; break;
 
-        case "t_log.console_clear" : t_log.console_clear   (caller); handeled_by = e_target.id; break;
+        case "t_log.console_clear" : t_log.console_clear          (caller); handled_by = e_target.id; break;
 
         case "dimm_mask"           : {
             if( !was_a_too_early_last_result() ) {
@@ -48926,12 +48926,12 @@ if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lb
                     t_sticky.t_sticky_RING_stop("dimm_start");
             }
         }
-        handeled_by = e_target.id;
+        handled_by = e_target.id;
         break;
 
-        case t_data.WORDS_RECYCLE  : t_wording_3_CB    (e_target, "click"); handeled_by = e_target.id; break;
-        case t_data.WORDS_BAG_ROT  : t_handle_1_pat_bag(e_target         ); handeled_by = e_target.id; break;
-        case t_data.WORDS_FILTER   : t_wording_3_CB    (e_target, "click"); handeled_by = e_target.id; break;
+        case t_data.WORDS_RECYCLE  : t_wording_3_CB    (e_target, "click"); handled_by = e_target.id; break;
+        case t_data.WORDS_BAG_ROT  : t_handle_1_pat_bag(e_target         ); handled_by = e_target.id; break;
+        case t_data.WORDS_FILTER   : t_wording_3_CB    (e_target, "click"); handled_by = e_target.id; break;
 
         default:
 if(log_this) log("%c"+caller+"%c NO EXTRA HANDLER FOR %c e_target=["+get_n_lbl(e_target)+"]"
@@ -48941,12 +48941,12 @@ if(log_this) log("%c"+caller+"%c NO EXTRA HANDLER FOR %c e_target=["+get_n_lbl(e
     }
 
 
-    if(!handeled_by && e_target.id)
+    if(!handled_by && e_target.id)
     {
-        handeled_by = prop_id_state_CB(e_target.id, "toggle");
+        handled_by = prop_id_state_CB(e_target.id, "toggle");
     }
 
-if( log_this) log("%c"+caller+"%c handeled_by "+handeled_by, lbL, lbR+lf3);
+if( log_this) log("%c"+caller+"%c handled_by "+handled_by, lbL, lbR+lf3);
 };
 
 
@@ -49422,28 +49422,28 @@ let   caller = "t_ESCAPE_2_CURRENT_STATE";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) log(caller);
-    let handeled_by = "";
+    let handled_by = "";
 
 
     if( call_t_grid_IS_ON_GRID() )
     {
-        handeled_by ="ESCAPE FROM TOOLS ON GRID";
+        handled_by ="ESCAPE FROM TOOLS ON GRID";
 
         t_move_TOOLS_OFF_GRID("ESCAPE");
     }
 
 
-    if(!handeled_by && div_slot_containers_displayed())
+    if(!handled_by && div_slot_containers_displayed())
     {
 
         if( has_el_class(div_slot_containers, CSS_FULLSCREEN))
         {
-            handeled_by = "ESCAPE SLOT CONTAINERS FULLSCREEN";
+            handled_by = "ESCAPE SLOT CONTAINERS FULLSCREEN";
 
             t_slot_container_set_fullscreen();
         }
         else {
-            handeled_by = "ESCAPE SLOT CONTAINERS DISPLAYED";
+            handled_by = "ESCAPE SLOT CONTAINERS DISPLAYED";
 
             dom_scroll.t_window_scrollTo(0, onDown_SCROLL_XY.y);
             dimm_stop( caller );
@@ -49451,14 +49451,14 @@ if( log_this) log(caller);
     }
 
 
-    if(!handeled_by && t_sticky.t_sticky_EDIT_DONE())
+    if(!handled_by && t_sticky.t_sticky_EDIT_DONE())
     {
-        handeled_by ="ESCAPE STICKY RELEASED FOCUS";
+        handled_by ="ESCAPE STICKY RELEASED FOCUS";
 
     }
 
 
-    if(!handeled_by) {
+    if(!handled_by) {
 
 
 if( log_this) t_fly.t_log_event_status(caller, lf4);
@@ -49470,8 +49470,8 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
         }
     }
 
-if( log_this) log("%c"+caller+": %c"+handeled_by, lbH+lf4, lbH+lf4);
-    return handeled_by;
+if( log_this) log("%c"+caller+": %c"+handled_by, lbH+lf4, lbH+lf4);
+    return handled_by;
 };
 
 
@@ -49502,7 +49502,7 @@ if( log_this) log_key_val_group(caller+" .. "+get_n_lbl(e_target)+" .. "+action
                           , { e_target
                             , action
                             , has_moved
-                            , t_event_handeled_by
+                            , t_event_handled_by
                           }, lf3, true);
 
     t_wording_3_CB_timout = null;
@@ -50056,7 +50056,7 @@ let   caller = "prop_tools_CB(e_target=["+get_n_lbl(e_target)+"]";
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbb+lbH+lf7);
-    let handeled_by = "";
+    let handled_by = "";
 
 
     let keyword = ""; try { keyword = e_target.id                ; } catch(ex) {}
@@ -50065,7 +50065,7 @@ if( log_this) log("%c"+caller, lbb+lbH+lf7);
 
 
 
-    if( has_moved                          ) return handeled_by;
+    if( has_moved                          ) return handled_by;
 
 
 
@@ -50084,7 +50084,7 @@ log("%c "+caller+": %c TOGGLED keyword=["+ keyword +"]",lb9, lbF);
 
         t_save_update_post("DOC LOGGING CB");
 
-        handeled_by = "t_log.logging_toggle("+keyword+")";
+        handled_by = "t_log.logging_toggle("+keyword+")";
     }
 
 
@@ -50093,7 +50093,7 @@ log("%c "+caller+": %c TOGGLED keyword=["+ keyword +"]",lb9, lbF);
 
     t_layout_changed();
 
-    return handeled_by;
+    return handled_by;
 };
 
 
@@ -50723,12 +50723,12 @@ if( log_this) log(caller);
 
     if( log_this) log("...................keyword %c["+ keyword                 +"]", lb0);
     if( log_this) log(".................has_moved %c "+ has_moved               +" ", lb2);
-    if( log_this) log("....t_event_handeled_by %c "+ t_event_handeled_by  +" ", lb2);
+    if( log_this) log("........t_event_handled_by %c "+ t_event_handled_by      +" ", lb2);
     if( log_this) log("...t_preventDefault_caller %c "+ t_preventDefault_caller +" ", lb2);
 
-    let                                    rejected_by = "";
-    if     ( has_moved                   ) rejected_by = "has_moved";
-    else if( t_event_has_been_handeled() ) rejected_by = t_event_handeled_by;
+    let                                           rejected_by = "";
+    if     ( has_moved                          ) rejected_by = "has_moved";
+    else if( t_event_has_been_handled()         ) rejected_by = t_event_handled_by;
 
 
 if(log_this && rejected_by) log(caller+": %c rejected_by ["+ rejected_by+"]", lb2);
@@ -51150,13 +51150,13 @@ if(log_this) log_caller();
 
 
 
-let t_get_handeled_by_table = function()
+let t_get_handled_by_table = function()
 {
     return "<table>"
-        + "<tr><td class='cc1'>"+t_data.SYMBOL_BULB+ " DOWN  </td><td>"+ t_util.ellipsis(      mousedown_handeled_by, 56)+"</td></tr>"
-        + "<tr><td class='cc2'>"+t_data.SYMBOL_BULB+ " MOVE  </td><td>"+ t_util.ellipsis(      mousemove_handeled_by, 56)+"</td></tr>"
-        + "<tr><td class='cc3'>"+t_data.SYMBOL_BULB+ " PRESS </td><td>"+ t_util.ellipsis(mouselong_press_handeled_by, 56)+"</td></tr>"
-        + "<tr><td class='cc4'>"+t_data.SYMBOL_BULB+ " UP    </td><td>"+ t_util.ellipsis(        mouseup_handeled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc1'>"+t_data.SYMBOL_BULB+ " DOWN  </td><td>"+ t_util.ellipsis(      mousedown_handled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc2'>"+t_data.SYMBOL_BULB+ " MOVE  </td><td>"+ t_util.ellipsis(      mousemove_handled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc3'>"+t_data.SYMBOL_BULB+ " PRESS </td><td>"+ t_util.ellipsis(mouselong_press_handled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc4'>"+t_data.SYMBOL_BULB+ " UP    </td><td>"+ t_util.ellipsis(        mouseup_handled_by, 56)+"</td></tr>"
         + "</table>"
     ;
 };
@@ -55101,7 +55101,7 @@ let t_get_event_status_object = function()
     let has_been_scrolled_by_script = dom_scroll.get_has_been_scrolled_by_script();
 
     return {              captured_by : (t_preventDefault_caller ? (t_preventDefault_caller ) : "" )
-        ,                 handeled_by : (t_event_handeled_by  ? (t_event_handeled_by  ) : "" )
+        ,                  handled_by : (t_event_handled_by      ? (t_event_handled_by      ) : "" )
         ,              window_scrollY :                             window.scrollY
         , has_been_scrolled_by_script :                            (has_been_scrolled_by_script ?                      has_been_scrolled_by_script : "NO")
         ,                   has_moved :                            (has_moved                   ? has_moved.replace(":",":"+LF+t_data.SYMBOL_RIGHT_ARROW) : "NO")
@@ -61260,7 +61260,7 @@ return { name : "dom_tools"
     ,    t_dom_tools_html_set_el_class_on_off
     ,    t_focus
     ,    t_get_EL_num
-    ,    t_get_handeled_by_table
+    ,    t_get_handled_by_table
     ,    t_get_container_selected
     ,    t_get_current_sel_text
     ,    t_get_event_status_object
@@ -61380,10 +61380,10 @@ return { name : "dom_tools"
 
     , t_tools_panel_select
 
-    , t_event_add_e_handeled_by
-    , t_event_clr_handeled
-    , t_event_has_been_handeled
-    , t_event_set_e_handeled_by
+    , t_event_add_e_handled_by
+    , t_event_clr_handled
+    , t_event_has_been_handled
+    , t_event_set_e_handled_by
     , t_handle_1_pat_bag
     , t_hide_hotspot
     , t_layout_changed
@@ -61417,7 +61417,7 @@ return { name : "dom_tools"
     , get_onDown_SHIFT    : function()  { return onDown_SHIFT; }
     , get_onDown_CTRL     : function()  { return onDown_CTRL ; }
     , get_onDown_ALT      : function()  { return onDown_ALT  ; }
-    , t_get_mouselong_press_handeled_by
+    , t_get_mouselong_press_handled_by
 
 
     , t_add_NOT_MOVED_ENOUGH
