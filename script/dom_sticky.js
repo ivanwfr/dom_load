@@ -21,7 +21,7 @@
 /* eslint-disable prefer-object-spread */
 
 const DOM_STICKY_JS_ID      = "dom_sticky_js";
-const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (230820:21h:10)";
+const DOM_STICKY_JS_TAG     = DOM_STICKY_JS_ID  +" (240801:14h:24)";
 /*}}}*/
 let dom_sticky  = (function() {
 "use strict";
@@ -1356,67 +1356,67 @@ console_dir("sticky.className",sticky.className);
 }}}*/
     /*}}}*/
     /* [EDITING    or IGNORE] .. WHILE EDITING {{{*/
-    let consumed_by;
+    let handeled_by;
     if(has_el_class(sticky, CSS_HAS_FOCUS))
     {
         /* IGNORE TOUCHED PAD WHILE EDITING {{{*/
         if(sticky.touched == STICKY_PAD)
         {
-            consumed_by = "WHILE EDITING: IGNORING TOUCHED "+sticky.touched+" "+sticky.id;
+            handeled_by = "WHILE EDITING: IGNORING TOUCHED "+sticky.touched+" "+sticky.id;
 
-if( tag_this) log("%c "+consumed_by, lf5);
+if( tag_this) log("%c "+handeled_by, lf5);
         }
         /*}}}*/
-        /* OR DONE EDTING .. !consumed_by {{{*/
+        /* OR DONE EDTING .. !handeled_by {{{*/
         else {
             t_sticky_EDIT_DONE();
 
 if( tag_this) log("%c DONE EDITING "+sticky.id, lbH+lf5);
 
-            /* DOWN NOT CONSUMED .. fall through */
+            /* DOWN NOT HANDELED .. fall through */
         }
         /*}}}*/
     }
     /*}}}*/
     /* [UNDIMM MOVE-LISTENER] .. WHILE DIMMED {{{*/
-    if(!consumed_by && sticky_dimmed)
+    if(!handeled_by && sticky_dimmed)
     {
-        consumed_by = "MOVING A HIDING STICKY "+sticky.id;
+        handeled_by = "MOVING A HIDING STICKY "+sticky.id;
 
         t_sticky_set_onWork_STICKY(sticky, e);
 
-        t_sticky_SET_DIMMED(false, consumed_by);
+        t_sticky_SET_DIMMED(false, handeled_by);
 
         t_tools.t_add_tool_pointermove_listener(caller);
     }
     /*}}}*/
     /* [XY     MOVE-LISTENER] .. TOUCHED=[STICKY_HAND] {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
         if(sticky.touched == STICKY_HAND)
         {
-            consumed_by = "MOVING STICKY "+sticky.id;
+            handeled_by = "MOVING STICKY "+sticky.id;
 
             t_tools.t_add_tool_pointermove_listener(caller);
         }
     }
     /*}}}*/
     /* [DIR    MOVE-LISTENER] .. TOUCHED=[ROTATE or FIXED-PAD] {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
         let change_dir
             =  (sticky.touched == STICKY_ROTATE)
             || (sticky.touched == STICKY_PAD   ) && has_el_class(sticky, CSS_FIXED );
 
         if( change_dir ) {
-            consumed_by = "POINTING STICKY "+sticky.id;
+            handeled_by = "POINTING STICKY "+sticky.id;
 
             t_tools.t_add_tool_pointermove_listener(caller);
         }
     }
     /*}}}*/
     /* [LAYOUT MOVE-LISTENER] .. TOUCHED=[REFONT or REFLOW or RESIZE] {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
         let change_layout
             =  (sticky.touched == STICKY_REFONT)
@@ -1425,7 +1425,7 @@ if( tag_this) log("%c DONE EDITING "+sticky.id, lbH+lf5);
         ;
 
         if( change_layout ) {
-            consumed_by = "RESIZING STICKY "+sticky.id;
+            handeled_by = "RESIZING STICKY "+sticky.id;
 
             let xy = t_util.get_event_XY(e);
             onDown_XY.x = xy.x;
@@ -1463,14 +1463,14 @@ if( tag_this ) {
         :                                     0;
 
     let l_2
-        = consumed_by && consumed_by.startsWith("MOV"  ) ? 5
-        : consumed_by && consumed_by.startsWith("POINT") ? 6
+        = handeled_by && handeled_by.startsWith("MOV"  ) ? 5
+        : handeled_by && handeled_by.startsWith("POINT") ? 6
         :                                                  7;
 
-    log("%c DOWN %c"+sticky.touched +"%c"+(consumed_by || "TOUCHING "+sticky.touched), lbb+lb1, lbL+lfX[l_1], lbR+lfX[l_2]);
+    log("%c DOWN %c"+sticky.touched +"%c"+(handeled_by || "TOUCHING "+sticky.touched), lbb+lb1, lbL+lfX[l_1], lbR+lfX[l_2]);
 }
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*}}}*/
@@ -1786,7 +1786,7 @@ if( log_this) log(caller+"("+timestamp+")");
             if(sticky_RESIZE_request) sticky_RESIZE_request.requestID = requestAnimationFrame( sticky_RESIZE2_AnimationFrame );
         }, 1000/60);
 
-    let consumed_by
+    let handeled_by
         = (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FONT  ) ? sticky_RESIZE3_PAD_FONT_handler()
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FLOW  ) ? sticky_RESIZE4_PAD_FLOW_handler()
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_WIDTH ) ? sticky_RESIZE5_PAD_SIZE_handler()
@@ -1794,10 +1794,10 @@ if( log_this) log(caller+"("+timestamp+")");
         :                                                             undefined
     ;
 
-    if(consumed_by) sticky_RESIZE6_MSG_FIT(sticky_RESIZE_request.sticky, consumed_by);
+    if(handeled_by) sticky_RESIZE6_MSG_FIT(sticky_RESIZE_request.sticky, handeled_by);
 
 /*{{{*/
-if(log_this && consumed_by) {
+if(log_this && handeled_by) {
     let lfx
         = (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FLOW  ) ? lf3
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_FONT  ) ? lf4
@@ -1805,7 +1805,7 @@ if(log_this && consumed_by) {
         : (sticky_RESIZE_request.resize_type == RESIZE_TYPE_HEIGHT) ? lf6
         :                                                             lf2
     ;
-    log("%c"+(consumed_by || "NOT CONSUMED"), lbH+lfx);
+    log("%c"+(handeled_by || "NOT HANDELED"), lbH+lfx);
 }
 /*}}}*/
 };
@@ -1849,7 +1849,7 @@ if( log_this) log("%c onDown_fontSize_px=["+sticky_RESIZE3_pad_msg.onDown_fontSi
         = onMoveDXY.y
         * (sticky_RESIZE_request.from_ABOVE ? -1 : 1);
     /*}}}*/
-    return sticky_RESIZE3_PAD_FONT(sticky, d_y).consumed_by;
+    return sticky_RESIZE3_PAD_FONT(sticky, d_y).handeled_by;
 };
 /*}}}*/
 /*_   sticky_start_RESIZING {{{*/
@@ -1965,18 +1965,18 @@ if( log_this) log("%c "+caller, lf3);
 
     let font_unchanged     = (fontSize_next == fontSize_px );
     /*}}}*/
-    /* [consumed_by] SAME FONT {{{*/
-    let consumed_by;
+    /* [handeled_by] SAME FONT {{{*/
+    let handeled_by;
     if( font_unchanged   )
     {
-        consumed_by = "FONT UNCHANGED";
+        handeled_by = "FONT UNCHANGED";
 
     }
     /*}}}*/
     /* APPLY [fontSize_next] .. f(contained_V or shrinking) {{{*/
     let contained_H;
     let contained_V;
-    if(!consumed_by) {
+    if(!handeled_by) {
         [  contained_H , contained_V] = is_contained_by_parent(pad_msg);
 
         if(contained_V || shrinking) {
@@ -1990,10 +1990,10 @@ if( log_this) log("%c "+caller, lf3);
     /* EXPANDING .. TOO BIG .. SHRINKING BAK {{{*/
     let expanding_too_big = !shrinking && (pad_too_high || !contained_V);
 /* {{{
-    if(!consumed_by && expanding_too_big)
+    if(!handeled_by && expanding_too_big)
     {
         if(fontSize_delta > 0) {
-            consumed_by = "EXPANDING TOO BIG .. SHRINKING BACK";
+            handeled_by = "EXPANDING TOO BIG .. SHRINKING BACK";
 
             sticky_RESIZE3_PAD_FONT(sticky,-d_y);
         }
@@ -2001,18 +2001,18 @@ if( log_this) log("%c "+caller, lf3);
 }}}*/
     /*}}}*/
     /* EXPANDING .. TOO BIG {{{*/
-    if(!consumed_by && expanding_too_big)
+    if(!handeled_by && expanding_too_big)
     {
         if     (fontSize_from     ) pad_msg.style.fontSize = fontSize_from     +"px";
         else if(fontSize_contained) pad_msg.style.fontSize = fontSize_contained+"px";
 
-        consumed_by = "EXPANDING TOO BIG";
+        handeled_by = "EXPANDING TOO BIG";
     }
     /*}}}*/
     /* SHRINKING .. CONTAINED {{{*/
-    if(!consumed_by && shrinking && contained_V)
+    if(!handeled_by && shrinking && contained_V)
     {
-        consumed_by = "SHRINKED CONTAINED";
+        handeled_by = "SHRINKED CONTAINED";
 
     }
     /*}}}*/
@@ -2023,7 +2023,7 @@ if( log_this) log("%c "+caller, lf3);
     /*}}}*/
     /* result {{{*/
     let result
-        = {   consumed_by       : consumed_by || pad_msg.style.fontSize
+        = {   handeled_by       : handeled_by || pad_msg.style.fontSize
             , expanding_too_big
             , fontSize_to       : parseFloat( pad_msg.style.fontSize )
             , contained_H
@@ -2056,7 +2056,7 @@ if( log_this) {
         :                  lbH+lf4;
 
     log_key_val( caller
-                 + t_data.TAB + (consumed_by || "FONT CHANGED")
+                 + t_data.TAB + (handeled_by || "FONT CHANGED")
                  + " .. "        + pad_msg.style.fontSize
                  + t_data.TAB
                  , result
@@ -2106,10 +2106,10 @@ let   sticky_RESIZE4_PAD_FLOW_handler = function()
     }
     /*}}}*/
     /* NEXT FLOW STYLE {{{*/
-    let consumed_by = sticky_RESIZE4_PAD_FLOW_NEXT(sticky);
+    let handeled_by = sticky_RESIZE4_PAD_FLOW_NEXT(sticky);
 
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_   sticky_RESIZE4_PAD_FLOW_NEXT {{{*/
@@ -2328,10 +2328,10 @@ log("sticky_RESIZE5_PAD_SIZE_handler"
     }
     /*}}}*/
     /* NEXT PAD WIDTH HEIGHT {{{*/
-    let consumed_by = sticky_RESIZE5_PAD_WH(sticky);
+    let handeled_by = sticky_RESIZE5_PAD_WH(sticky);
 
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_   sticky_RESIZE5_PAD_WH {{{*/
@@ -2443,14 +2443,14 @@ if( log_this) log(caller , { w , maxWidth  : pad_msg.style.maxWidth
 /*}}}*/
 /* RESIZE6_FIT_PAD */
 /*_   sticky_RESIZE6_MSG_FIT {{{*/
-let   sticky_RESIZE6_MSG_FIT = function(sticky, consumed_by)
+let   sticky_RESIZE6_MSG_FIT = function(sticky, handeled_by)
 {
 /*{{{*/
 let   caller = "sticky_RESIZE6_MSG_FIT";
 let log_this = DOM_STICKY_LOG;
 
 if( log_this)
-    log("%c "+caller+"( %c"+get_n_lbl(sticky)+"%c) %c"+consumed_by
+    log("%c "+caller+"( %c"+get_n_lbl(sticky)+"%c) %c"+handeled_by
         ,lf5           ,lbH+lf5                      ,lbA,lb4            );
 
 /*}}}*/
@@ -4800,7 +4800,7 @@ if( log_this) log("%c"+caller+"("+get_n_lbl(sticky)+","+ellipsis_short(sel_text)
     let msg = escapeHTML( sel_text );
     sticky_change_msg(sticky, msg);
 
-    /* consume page selection */
+    /* handle page selection */
     t_tools.t_window_getSelection_removeAllRanges();
 };
 /*}}}*/

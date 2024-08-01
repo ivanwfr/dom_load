@@ -8,8 +8,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-return-assign */
 
-const DOM_WORDING_JS_ID     = 'dom_wording_js';
-const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +' (230820:21h:11)';
+const DOM_WORDING_JS_ID     = "dom_wording_js";
+const DOM_WORDING_JS_TAG    = DOM_WORDING_JS_ID +" (240801:14h:06)";
 /*}}}*/
 let dom_wording = (function() {
 "use strict";
@@ -122,7 +122,7 @@ let   wording_INTERN = function()
 
 /* const */
 /*{{{*/
-const DOM_WORDING_CSS_ID    = 'dom_wording_css';
+const DOM_WORDING_CSS_ID    = "dom_wording_css";
 
 /*}}}*/
 
@@ -423,7 +423,7 @@ if( log_this)
     if( dissmissed_by )
         return;
 
-    t_tools.t_event_add_e_consumed_by(e, caller);
+    t_tools.t_event_add_e_handeled_by(e, caller);
 
     if( e.ctrlKey ) return;
 

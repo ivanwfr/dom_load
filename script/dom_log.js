@@ -8,6 +8,7 @@
 /* globals dom_store  */ /* OPTIONAL */
 /* globals dom_tools  */ /* OPTIONAL */
 /* globals dom_util   */
+/* globals dom_grid   */
 
 /* exported DOM_LOG_JS_TAG */
 
@@ -17,7 +18,7 @@
 /* eslint-enable  no-redeclare              */
 
 const DOM_LOG_JS_ID         = "dom_log_js";
-const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (231025:15h:31)";
+const DOM_LOG_JS_TAG        = DOM_LOG_JS_ID  +" (240602:02h:12)";
 /*}}}*/
 let dom_log     = (function() {
 "use strict";
@@ -122,6 +123,7 @@ let get_node_path_tail          = function(t  ) { return t; };
 let mPadEnd                     = function(s  ) { return s; };
 let mPadStart                   = function(s  ) { return s; };
 let not_an_anchor_target        = function(s  ) { return s; };
+let strip_CR_LF                 = function(t  ) { return t; };
 let strip_HTML                  = function(t  ) { return t; };
 let strip_console_formatting    = function(t  ) { return t; };
 let strip_pat                   = function(t  ) { return t; };
@@ -157,6 +159,7 @@ let   log_INTERN = function()
     /* STRINGS-UTIL */
     mPadStart                   = t_util.mPadStart;
     mPadEnd                     = t_util.mPadEnd;
+    strip_CR_LF                 = t_util.strip_CR_LF;
     strip_HTML                  = t_util.strip_HTML;
     strip_console_formatting    = t_util.strip_console_formatting;
     strip_pat                   = t_util.strip_pat;
@@ -199,9 +202,9 @@ let log_IMPORT = function() /* eslint-disable-line complexity */
 };
 /*}}}*/
 
-// ┌───────────────────────────────────────────────────────────────────────────┐
-// │ LOG DATA                                                                  │
-// └───────────────────────────────────────────────────────────────────────────┘
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ LOG DATA                                                               │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
 /*➔ dom_log_STRING {{{*/
 const dom_log_STRING
     = {   L_ARL
@@ -224,7 +227,7 @@ const lbL  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:
 const lbR  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0 1ex   0   0; padding:0 .5em 0 .5em; border-radius:  0 1em 1em   0; background:linear-gradient(to  right, #333 0%           ,#544 100%);";
 const lbC  = "font-weight:900; line-height:1.5em; border:1px solid gray; margin:   0   0   0   0; padding:0 .5em 0 .5em; border-radius:  0   0   0   0;";
 
-/*const lmL  =  "margin-left: 5em;";*//* TODO: patch with $APROJECTS/Chrome_Web_Store/RTabsExtension/javascript/log.js */
+/*const lmL  =  "margin-left: 5em;";*/ /* TODO: patch with $APROJECTS/Chrome_Web_Store/RTabsExtension/javascript/log.js */
 
 const lb1  = "background:#964B00; color:black; padding:0 0.5em;";
 const lb2  = "background:#FF0000; color:black; padding:0 0.5em;";
@@ -265,7 +268,8 @@ const dom_log_CSS
 const BACKSLASH = String.fromCharCode(92);
 const FORESLASH = String.fromCharCode(47);
 const LF        = String.fromCharCode(10);
-const CS        = "color:#666; background:#111; border:0px solid #445; border-radius:1em;";
+const CS        = "font-size:200%; color: gray; background:black; border:3px solid gray; border-radius:1em; padding:0 1em; font-style:oblique;";
+const SHV       = "\u26A1"; /* HIGH VOLTAGE SIGN ⚡*/
 
 const dom_log_CHAR
     = {   BACKSLASH
@@ -276,9 +280,9 @@ const dom_log_CHAR
 
 /*}}}*/
 
-// ┌───────────────────────────────────────────────────────────────────────────┐
-// │ LOG ACTIVATION                                                            │
-// └───────────────────────────────────────────────────────────────────────────┘
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ LOG ACTIVATION                                                         │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
 /*➔ dom_LOG_MAP {{{*/
 /* LOG_MAP {{{*/
 const LOG_MAP = {
@@ -447,21 +451,14 @@ const dom_LOG_MAP
     };
 /*}}}*/
 
-// ┌───────────────────────────────────────────────────────────────────────────┐
-// │ CONSOLE                                                                   │
-// └───────────────────────────────────────────────────────────────────────────┘
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ CONSOLE                                                                │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
 /*➔ dom_log_console {{{*/
-const console_clear = function(  msg=null) { console.clear(); if(msg) console.log ("%c.. by "+msg,CS);                   };
-const console_dir   = function(a1,a2=null) {
-    let o   = (a2) ? a2 : a1;
-    let msg = (a2) ? a1 : null;
-    if( msg )
-        console.log ("%c"+msg+":",CS);
-    console.dir  (o);
-};
-const console_table = function(o,msg=null) {                  if(msg) console.log ("%c"+msg+":"  ,CS); console.table(o); };
-const console_log   = function(  msg     ) {                          console.log (     msg         );                   };
-const console_warn  = function(  msg=null) {                          console.warn(     msg         );                   };
+
+//nst console_clear = function(  msg=null) { console.clear(); if(msg) console.log ("%c cleared by "+SHV+msg+SHV, CS); };
+const console_clear = function(  msg=null) { console_clear_post(msg); };
+/*_ console_clear_post {{{*/
 /*{{{*/
 const CONSOLE_CLEAR_COOLDOWN_DELAY = 1000;
 
@@ -471,15 +468,30 @@ let console_clear_post = function(msg=null)
 {
     if( console_clear_cooldown_timeout )
     {
-        log("%c CONSOLE CLEARED BY "+msg+" %c LOG PRESERVED FOR "+CONSOLE_CLEAR_COOLDOWN_DELAY+"ms", lbb+lbH+lf8, lbb+lbH+lf9);
+        if( msg )
+            console.log("%c cleared by "+SHV+msg+SHV+" %c LOG PRESERVED FOR "+CONSOLE_CLEAR_COOLDOWN_DELAY+"ms", CS, lbH+lf8);
     }
     else {
-        log(); /* clear log buffers */
-        console_clear( msg );
+        console.clear();
+        if( msg )
+            console.log("%c cleared by "+SHV+msg+SHV, CS);
+
         console_clear_cooldown_timeout
             = setTimeout( function() { console_clear_cooldown_timeout = null; }
                         , CONSOLE_CLEAR_COOLDOWN_DELAY);
     }
+};
+/*}}}*/
+
+const console_table = function(o,msg=null) {                  if(msg) console.log ("%c"+msg+":"  ,CS); console.table(o); };
+const console_log   = function(  msg     ) {                          console.log (     msg         );                   };
+const console_warn  = function(  msg=null) {                          console.warn(     msg         );                   };
+const console_dir   = function(a1,a2=null) {
+    let o   = (a2) ? a2 : a1;
+    let msg = (a2) ? a1 : null;
+    if( msg )
+        console.log ("%c"+msg+":",CS);
+    console.dir  (o);
 };
 
 const dom_log_console
@@ -492,9 +504,9 @@ const dom_log_console
     };
 /*}}}*/
 
-// ┌───────────────────────────────────────────────────────────────────────────┐
-// │ LOG FORMATTING                                                            │
-// └───────────────────────────────────────────────────────────────────────────┘
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ LOG FORMATTING                                                         │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
 /*➔ dom_log_SYM_DIGIT {{{*/
 
 let logSD0 = function(          format, ...args) { _logSD(dom_data.SD0, lf0, format, ...args); };
@@ -524,12 +536,12 @@ const dom_log_SYM_DIGIT
 
 /*}}}*/
 
-// ┌───────────────────────────────────────────────────────────────────────────┐
-// │ LOG DATA TYPES                                                            │
-// └───────────────────────────────────────────────────────────────────────────┘
-//{{{
+/* ┌────────────────────────────────────────────────────────────────────────┐ */
+/* │ LOG DATA TYPES                                                         │ */
+/* └────────────────────────────────────────────────────────────────────────┘ */
+/*{{{*/
 
-// LOG TRACE
+/* LOG TRACE */
 /*➔ dom_log_log {{{*/
 /*{{{*/
 
@@ -589,6 +601,16 @@ let   log_is_full = false;
 /*}}}*/
 let log = function(first_arg, ...args) /* eslint-disable-line complexity */
 {
+/*{{{
+[Exception:
+    TypeError: 'caller', 'callee', and 'arguments' properties
+    may not be accessed on strict mode functions
+    or the arguments objects
+    for calls to them at Function.invokeGetter (<anonymous>:3:28)
+]
+console.log("log.prototype.caller=["+log.prototype.caller+"]");
+console.dir(log);
+}}}*/
 if(DOM_LOG_LOG || DOM_LOG_TAG) log_caller();
     /* CLEAR {{{*/
     if     (!first_arg                        ) first_arg = CLEAR;
@@ -888,7 +910,7 @@ const dom_log_log
     };
 /*}}}*/
 
-// LOG PROCESS
+/* LOG PROCESS */
 /*➔ log_caller {{{*/
 let log_caller = function(level_max)
 {
@@ -974,7 +996,7 @@ log("..match..........=["+match     +"]");
 };
 /*}}}*/
 
-// LOG OBJECTS
+/* LOG OBJECTS */
 /*➔ log_key_val {{{*/
 /*{{{*/
 const LF_HEAD = LF+"    ";
@@ -1066,9 +1088,6 @@ let log_key_val_group = function(name, o, lfx=7, group=true)
 /*➔ log_object_val_format {{{*/
 /*{{{*/
 const TEXT_LENGTH_MAX = 96;
-/*{{{
-//const regexp_LF = new RegExp("\\n *", "g");
-}}}*/
 
 /*}}}*/
 let log_object_val_format = function(val,lxx)
@@ -1093,7 +1112,7 @@ let log_object_val_format = function(val,lxx)
 };
 /*}}}*/
 
-// LOG JSON
+/* LOG JSON */
 /*➔ log_json {{{*/
 /*{{{*/
 const regexp_BRACES = new RegExp("^{|}$"                    , "g");
@@ -1209,7 +1228,7 @@ let log_json_one_liner = function(val)
 };
 /*}}}*/
 
-// LOG ANCHOR
+/* LOG ANCHOR */
 /*➔ log_label_URDL {{{*/
 let log_label_URDL = function(label, urdl)
 {
@@ -1310,7 +1329,7 @@ let log_not_an_anchor_target = function(node)
 };
 /*}}}*/
 
-// LOG TRANSCRIPT
+/* LOG TRANSCRIPT */
 /*➔ dom_log_transcript {{{*/
 /*{{{*/
 let log_tr1;
@@ -1472,7 +1491,326 @@ const dom_log_transcript
     };
 /*}}}*/
 
-//}}}
+/*}}} */
+
+/*┌─────────────────────────────────────────────────────────────────────────┐ */
+/*│ js_timer.js                                        _TAG=(240000:00h:00) │ */
+/*└─────────────────────────────────────────────────────────────────────────┘ */
+/*{{{*/
+/* globals  localStorage, Map */
+/* exported js_timer */
+/*{{{*/
+const LOG_IMG = "<img class='topic_img' src='/eRoomData/icons/smfolder7.gif'>";
+const JS_TIMER_JS_ID    = "js_timer_js";
+const JS_TIMER_JS_TAG   = JS_TIMER_JS_ID+" (240000:00h:00)"; /* eslint-disable-line no-unused-vars */
+
+/*}}}*/
+let JS_TIMER_LOG        = (localStorage.getItem("JS_TIMER_LOG") == "true");
+let JS_TIMER_TAG        = (localStorage.getItem("JS_TIMER_TAG") == "true");
+let js_timer = (function() {
+"use strict"; /* eslint-disable-line no-unused-vars */ /* eslint-disable-line strict */
+
+
+/*{{{*/
+
+const MS_PER_DAY            = 86400000;
+
+let   timer_dict;
+let   timer_TBODY_innerHTML;
+let   pending_timers = 0;
+/*}}}*/
+/*➔ clearTimers {{{*/
+let clearTimers = function()
+{
+/*{{{*/
+let   caller = "clearTimers";
+let log_this = JS_TIMER_LOG;
+let tag_this = JS_TIMER_TAG || log_this;
+
+if( tag_this) log(caller);
+/*}}}*/
+    timer_dict              = new Map();
+    timer_TBODY_innerHTML   = "";
+    pending_timers          = 0;
+};
+/*}}}*/
+/*➔ startTimer {{{*/
+let startTimer = function(name)
+{
+/*{{{*/
+let   caller = "startTimer";
+let log_this = JS_TIMER_LOG;
+
+if( log_this) log(caller+"("+ name +"):");
+/*}}}*/
+    /*  timer_dict init {{{*/
+    if(!timer_dict) clearTimers();
+
+    /*}}}*/
+    /* named timer init {{{*/
+if( log_this) log("...named timer init:");
+    if( timer_dict.get(name) == undefined)
+    {
+        let timer
+            = {   name
+                , order : 1+timer_dict.size /* call order        */
+                , level : 0
+                , calls : 0                 /* # [start  + stop] */
+                , total : 0                 /* ∑ [start to stop] */
+                , start : 0                 /* last start        */
+                , stop  : 0                 /* last stop         */
+            };
+        timer_dict.set(name, timer);
+
+if( log_this) log("%c"+caller+"%c"+timer.order+"%c"+name, lbL,lbC+lfX[timer.order%10],lbR+lbX[timer.order%10]);
+    }
+
+    let timer       = timer_dict.get(name);
+    timer.start     = new Date().getTime() % MS_PER_DAY;        /* since midnight                            */
+    timer.level     = Math.max(timer.level, pending_timers);    /* how many started (not yet stopped) timers */
+    pending_timers += 1;
+
+    /*}}}*/
+if( log_this) log( "...startTimer("+ name +")=["+ timer_dict.get(name).start +"]");
+};
+/*}}}*/
+/*➔ stopTimer {{{*/
+let stopTimer = function(name)
+{
+/*{{{*/
+let   caller = "stopTimer";
+let log_this = JS_TIMER_LOG;
+
+if( log_this) log(caller+"("+ name +"):");
+/*}}}*/
+    /* timer not started {{{*/
+    if(   !timer_dict
+       || (timer_dict.get(name) == undefined)
+    ) {
+        log(caller+": timer ["+ name +"] not started");
+
+        return;
+    }
+
+    /*}}}*/
+    /* calls stop total level {{{*/
+    let timer      = timer_dict.get(name);
+    let start_time = timer.start;
+    let stop_time  = new Date().getTime() % MS_PER_DAY; /* since midnight */
+
+
+    timer.calls   += 1;
+    timer.stop     =  stop_time;
+    timer.total   += (stop_time - start_time);
+    pending_timers -= 1;
+    timer.level = Math.max(timer.level, pending_timers); /* how many started (not yet stopped) timers */
+
+    /*}}}*/
+if( log_this && (timer.calls<2)) dom_log.log_key_val(caller+"("+name+")", timer);
+};
+/*}}}*/
+/*➔ logTimers {{{*/
+let logTimers = function(title,l_x) /* alias logSession in asp */
+{
+/*{{{*/
+let   caller = "logTimers";
+let log_this = JS_TIMER_LOG;
+let tag_this = JS_TIMER_TAG || log_this;
+
+/*}}}*/
+if( tag_this) dom_log.log_TOP(caller+" "+strip_CR_LF(title), l_x);
+if( log_this) log("timer_TBODY_innerHTML=["+ timer_TBODY_innerHTML +"]");
+    /* populate timer_TBODY_innerHTML {{{*/
+    if(!timer_dict) clearTimers();
+    let timer_names = [];
+    timer_dict.forEach((timer) => timer_names.push( timer.name ));
+
+    timer_names.forEach((name) => logTimer( name ));
+    /*}}}*/
+    /* Update PAGE JS_TIMER_DIV .. f(timer_TBODY_innerHTML) {{{*/
+    let notify_innerHTML      = "";
+    if(timer_TBODY_innerHTML != "")
+    {
+
+        let div_timers_style
+            = title.includes(    "NodeIterator")
+            ?  "background-color: orange;"
+            :  "background-color: lightBlue;"
+        ;
+
+        notify_innerHTML = ""
+            +"<span class='topic_span'>"         + LOG_IMG
+            +" <em class='cc"+l_x+"'>JS_TIMERS: "+ title.replaceAll(LF,"<br>&nbsp;") +"</em>"
+            +"</span>"
+            +"<div     id='div_timers' style='"  + div_timers_style                  +"'>"
+            +" <div class='info_log'>"
+            +"  <table id='table_timers'> "      + timer_TBODY_innerHTML             +" </table>"
+            +" </div>"
+            +"</div>"
+        ;
+
+/* [JS_TIMER_DIV] {{{*/
+if( tag_this && (typeof js_details == "undefined")) {
+
+    let JS_TIMER_DIV       = document.getElementById("JS_TIMER_DIV");
+    if( JS_TIMER_DIV )        JS_TIMER_DIV.parentElement.removeChild( JS_TIMER_DIV );
+
+    JS_TIMER_DIV           = document.createElement("DIV");
+    JS_TIMER_DIV.id        = "JS_TIMER_DIV";
+    JS_TIMER_DIV.title     = "";
+
+    let close_listener = "this.parentElement.style.display='none';";
+    JS_TIMER_DIV.innerHTML = ""
+        +"<div"
+        +" style='cursor     : help;"
+        +"  padding          : 0 0 0em 0;"
+        +"  border           : solid 4px #222;"
+        +"  border-radius    : 1em;"
+        +"  background-color : rgba(192,192,192,0.9);"
+        +"  padding          : 0.5em;"
+        +"  position         : fixed; left: 0.5em; bottom: 0.5em;"
+        +" '>"
+        +" <button style='float:right;' onclick="+close_listener+">X</button>"
+        +  notify_innerHTML
+        +"</div>"
+    ;
+
+    document.body.insertBefore(JS_TIMER_DIV, null);
+}
+/*}}}*/
+/* transcript2 {{{
+//      let transcript2 = dom_util.get_tool("transcript2");
+//      transcript2.insertBefore(JS_TIMER_DIV, null);
+//      dom_grid.t_grid_TOOLS_SELECT_panel(transcript2, true);
+//      dom_tools.t_sync_tools_tier2(caller);
+}}}*/
+    }
+    /*}}}*/
+    clearTimers();
+    /* [notify_innerHTML] {{{*/
+/*{{{
+    let fragment_input = document.getElementById("fragment_input");
+    if( fragment_input )
+        fragment_input.setAttribute("data-notifyHTML", notify_innerHTML);
+
+if( tag_this) js_details.notify( notify_innerHTML );
+}}}*/
+    /*}}}*/
+if( tag_this) dom_log.log_BOT(caller+" "+strip_CR_LF(title), l_x);
+};
+/*}}}*/
+/*_ logTimer {{{*/
+let logTimer = function(name) /* alias traceTimer in asp */
+{
+/*{{{*/
+let   caller = "logTimer";
+let log_this = JS_TIMER_LOG;
+let tag_this = JS_TIMER_TAG || log_this;
+
+if( log_this) log(caller+"( "+ name +" ):");
+/*}}}*/
+    /* not started {{{*/
+    if(   !timer_dict
+       || (timer_dict.get(name) == undefined)
+      ) {
+        log(caller+": timer ["+ name +"] not started");
+
+        return;
+    }
+    /*}}}*/
+    /* log timer into [timer_TBODY_innerHTML] {{{*/
+    let timer    = timer_dict.get   (name);
+if( log_this && (timer.calls<2)) dom_log.log_key_val(caller+"("+name+")", timer);
+
+    let timeHTML = get_duration_HTML(timer.total     );
+    let CallHTML =                  (timer.calls == 1) ? "" : "(for "+timer.calls+" calls)";
+    let tr_class
+        = (timer.total > 500)
+        ? ("tr_timer cc"+timer.level)
+        : ("tr_timer fg"+timer.level)
+    ;
+
+    let orderHTML = ("__"+timer.order                                              ).slice(-2          );
+    let levelHTML = ("\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF\u25CF").slice(-timer.level);
+    /**/levelHTML = (                              levelHTML+"....................").slice(0,12        );
+
+    /*}}}*/
+    /* timer_TBODY_innerHTML {{{*/
+if( tag_this) {
+    let total = mPadStart(timer.total ?                    timer.total+"ms" : "--", 6);
+    let calls = mPadEnd  (dom_data.SYMBOL_CIRCLE_CLOCKWISE+" "+timer.calls        , 3);
+    dom_log.log_key_val(orderHTML
+                                  +" ● "+ total
+                                  +  " "+ calls
+                                  +" ● "+ name
+                                  , timer, lbX[timer.order%10]);
+}
+
+    timer_TBODY_innerHTML
+        +="<tr class='"+ tr_class  +"'>"
+        +" <th> "      + orderHTML +" "+ levelHTML +" "+ name +"</th>"
+        +" <td> "      + timeHTML  +"                           </td>"
+        +" <td> "      + CallHTML  +"                           </td>"
+        +"</tr>";
+    /*}}}*/
+if( log_this) log("..."+caller+"("+ name +")=["+ timer_dict.get(name) +"ms]");
+};
+/*}}}*/
+/*_ get_duration_HTML {{{*/
+let get_duration_HTML = function(ms)
+{
+    let   msg = get_duration( ms );
+
+    if(   msg.includes(  "-")
+       || msg.includes("0.0")
+       || msg.includes("0.1")
+       || msg.includes("0.2")
+       || msg.includes("0.3")
+       || msg.includes("0.4")
+      ) {
+        msg = "<span class='fg0' style='filter:opacity(0.5);'>"                + msg +"</span>";
+    }
+    else {
+        msg = "<span style='font-weight:bolder;'>"+ msg +"</span>";
+    }
+
+    return msg;
+};
+/*}}}*/
+/*_ get_duration {{{*/
+let get_duration = function(ms)
+{
+    if(ms == 0) return "-";
+
+    let duration = "";
+    if(     ms <  1000) duration = " 0."+ (      "000"+ ms).slice(    -3) +"s";
+    else if(ms < 60000) duration = " "  + parseInt    ( ms/1000         ) +"s";
+    else                duration =        parseInt    ((ms/1000) / 60, 0) +"m "+ ((ms/1000) % 60) +"s";
+
+    if((ms > 1000) && (ms < 100000)) {
+        let tenth = parseInt(ms % 1000 / 100);
+        if( tenth > 0)
+            duration += tenth;
+    }
+    return duration;
+};
+/*}}}*/
+/* EXPORT {{{*/
+return { name : "js_timer"
+    , logging : (state) => { if(state != undefined) { JS_TIMER_LOG = state; localStorage.setItem("JS_TIMER_LOG", JS_TIMER_LOG); } return JS_TIMER_LOG; }
+    , tagging : (state) => { if(state != undefined) { JS_TIMER_TAG = state; localStorage.setItem("JS_TIMER_TAG", JS_TIMER_TAG); } return JS_TIMER_TAG; }
+
+    , clearTimers
+    , startTimer
+    , stopTimer
+    , logTimers /* alias logSession in asp */
+    /* DEBUG */
+    , get_duration
+};
+
+/*}}}*/
+}());
+/*}}}*/
 
 /* EXPORT {{{*/
 
@@ -1505,13 +1843,15 @@ return { name : "dom_log"
     , log_not_an_anchor_target
     , log_object_val_format
     , log_anchor_step
+
+    , js_timer
 };
 
 /*}}}*/
 
 })();
 
-// @see $APROJECTS/Chrome_Web_Store/RTabsExtension/javascript/log.js
+/* @see $APROJECTS/Chrome_Web_Store/RTabsExtension/javascript/log.js */
 /* @see {{{
 "┌─────────────────────────────────────────────────────────────────────────────┐
 "│                                                                             │
@@ -1540,3 +1880,8 @@ return { name : "dom_log"
 
 }}}*/
 
+/*{{{
+// TODO refactoring ● see C:/LOCAL/DEV/DEVEL/EMC/Extensions/ExportCMT/script/js_select.js
+// TODO refactoring ● see C:/LOCAL/DEV/DEVEL/EMC/Extensions/ExportCMT/script/js_log.js
+// $RPROFILES/playground.html
+}}}*/

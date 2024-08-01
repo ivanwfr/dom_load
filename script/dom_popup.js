@@ -14,8 +14,8 @@
 :!start explorer https://jshint.com/
 */
 
-const DOM_POPUP_JS_ID         = "dom_popup";
-const DOM_POPUP_JS_TAG        =  DOM_POPUP_JS_ID +" (220218:15h:22)";
+const DOM_POPUP_JS_ID         = "dom_popup_js";
+const DOM_POPUP_JS_TAG        =  DOM_POPUP_JS_ID +" (240530:17h:59)";
 /*}}}*/
 let dom_popup = (function() {
 "use strict";
@@ -198,14 +198,15 @@ let log_popup_scrollTo_el = function(text,el,with_mask,can_scroll=true,style=LOG
         let w_top    = (window.scrollY                     ) + MARGIN_WIDTH;
         let w_bottom = (window.scrollY + window.innerHeight) - MARGIN_WIDTH;
 
-        let had_to_scroll;
-
         let    xy    = get_el_ancestor_xy(el);
         tl_xy        = { x: window.scrollX+ xy.x , y: window.scrollY+ xy.y };
 
+        let had_to_scroll;
         if     (tl_xy.y > w_bottom) { window.scrollTo(window.scrollX, tl_xy.y - window.innerHeight/10); had_to_scroll = true; }
         else if(tl_xy.y < w_top   ) { window.scrollTo(window.scrollX, tl_xy.y - window.innerHeight/10); had_to_scroll = true; }
+
         let scrollBehavior = getComputedStyle(document.documentElement).scrollBehavior;
+
         if(can_scroll && had_to_scroll && (scrollBehavior == "smooth"))
         {
             log_popup_div.style.display = "none";
@@ -269,16 +270,15 @@ let last_scroll_Y;
 /*}}}*/
 let log_popup_follow_el_on_scroll_done = function(text,el,with_mask)
 {
-    if(window.scrollY == last_scroll_Y)
+    /* SCROLL STILL IN PROGRESS */
+    if(window.scrollY != last_scroll_Y)
     {
-        log_popup_scrollTo_el(text,el,with_mask,false); /* !can_scroll, only once */
-
-    }
-    else {
         last_scroll_Y = window.scrollY;
-
         setTimeout(function() { log_popup_follow_el_on_scroll_done(text,el,with_mask); }, SCROLL_SAMPLING_DELAY);
+        return
     }
+    /* SCROLL DONE */
+    log_popup_scrollTo_el(text,el,with_mask,false); /* !can_scroll, only once */
 };
 /*}}}*/
 /*➔ log_popup_div_handles_event {{{*/

@@ -10,7 +10,7 @@
 */
 
 const DOM_DATA_JS_ID        = "dom_data_js";
-const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (231001:01h:55)";
+const DOM_DATA_JS_TAG       = DOM_DATA_JS_ID  +" (240718:16h:20)";
 /*}}}*/
 let dom_data    = (function() {
 "use strict";
@@ -118,9 +118,9 @@ const SYMBOL_RECYCLE                = "\u267B";
 const SYMBOL_RELOAD                 = "\u21BB";
 const SYMBOL_ANCHOR                 = "\u2693"; /* ⚓*/
 const SYMBOL_CROSSED_SWORDS         = "\u2694"; /* ⚔ */
-const SYMBOL_GEAR                   = "\u2699";
+const SYMBOL_GEAR                   = "\u2699"; /* ⚙ */
 const SYMBOL_THEME                  = "\u262F"; /* ☯ */
-const SYMBOL_WARNING                = "\u26A0";
+const SYMBOL_WARNING                = "\u26A0"; /* ⚠ */
 const SYMBOL_WHITE_CIRCLE           = "\u26AA"; /* MEDIUM_WHITE */
 const SYMBOL_BLMED_CIRCLE           = "\u26AB"; /* MEDIUM */
 const SYMBOL_PARTNERSHIP            = "\u26AF";
@@ -146,6 +146,7 @@ const SYMBOL_RIGHT_WAVE_ARROW       = "\u2933";
 const SYMBOL_R_CLOS_ARROW           = "\u2941";
 const SYMBOL_STAR                   = "\u2B50";
 const SYMBOL_LARGE_CIRCLE           = "\u2B55"; /* HEAVY */
+const SYMBOL_CIRCLE_CLOCKWISE       = "\u2B6E"; /* ⭮ */
 
 const SYMBOL_DIRECT_HIT             = "\uD83C\uDFAF"; /* "\u1F3AF"; */
 const SYMBOL_BULB                   = "\uD83D\uDCA1";
@@ -185,7 +186,7 @@ const SAD                           = "\u2193"; /* &#x2193; .. SYMBOL ARROW DOWN
 
 const SYN                           = "\u25CF"; /* &#x25CF; .. SYMBOL BLACK CIRCLE ● OM */
 const SBS                           = "\u2605"; /* &#x2605; .. SYMBOL BLACK STAR   ★ *2 */
-const SHV                           = "\u26A1"; /* &#x26A1; .. HIGH VOLTAGE SIGN        */
+const SHV                           = "\u26A1"; /* &#x26A1; .. HIGH VOLTAGE SIGN     ⚡ */
 
 const SD1                           = "\u2460"; /* &#x2460; .. &#x2776; .. CIRCLED DIGIT  1 ❶ */
 const SD2                           = "\u2461"; /* &#x2461; .. &#x2777; .. CIRCLED DIGIT  2 ❷ */
@@ -443,11 +444,12 @@ const WORDS_DROP_CASE           = "words_drop_case";
 const WORDS_DROP_ING            = "words_drop_ing" ;
 const WORDS_DROP_S              = "words_drop_s"   ;
 const WORDS_EXACT               = "words_exact"    ;
-const WORDS_FILTER              = "words_filter"    ;
+const WORDS_FILTER              = "words_filter"   ;
 const WORDS_HEAD_TAIL           = "words_head_tail";
 const WORDS_OPCYCLE             = "words_opcycle"  ;
 const WORDS_RECYCLE             = "words_recycle"  ;
 const WORDS_SEGMENT             = "words_segment"  ;
+const WORDS_REGEXR              = "words_regexr"   ;
 
 /*_DOC_EMBEDDED_TOOLS_*/
 const SQUEEZE_CYCLE             = "squeeze_cycle";
@@ -769,6 +771,7 @@ const DOC_TOOLS_ID            = "doc_tools";
         , SYMBOL_BLMED_CIRCLE
         , SYMBOL_LARGE_CIRCLE
         , SYMBOL_WHITE_CIRCLE
+        , SYMBOL_CIRCLE_CLOCKWISE
 
         , SYMBOL_UP
         , SYMBOL_RIGHT
@@ -889,6 +892,7 @@ const DOC_TOOLS_ID            = "doc_tools";
         , WORDS_OPCYCLE
         , WORDS_RECYCLE
         , WORDS_SEGMENT
+        , WORDS_REGEXR
 
         /*_DOC_EMBEDDED_TOOLS_*/
         , SQUEEZE_CYCLE

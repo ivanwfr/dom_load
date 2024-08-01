@@ -15,7 +15,7 @@
 /* exported dom_details, DOM_DETAILS_JS_TAG */
 
 const DOM_DETAILS_JS_ID        = "dom_details_js";
-const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (230820:22h:06)";  /* eslint-disable-line no-unused-vars */
+const DOM_DETAILS_JS_TAG       = DOM_DETAILS_JS_ID  +" (240322:18h:05)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_details         = (function() {
 "use strict";
@@ -162,9 +162,10 @@ if(log_this && open) log("➔ "+el.id+(el.open ? " OPENED":" NOT OPENED"));
     /*}}}*/
     /* 1. LISTEN TO DETAILS EVENT {{{*/
     Array.from(details_array).forEach( (el) => {
-        if(!el.id) return;
-        el.addEventListener("mousedown", details_onmousedown);
-        el.addEventListener("toggle"   , details_ontoggle   );
+        if( el.id ) {
+            el.addEventListener("mousedown", details_onmousedown);
+            el.addEventListener("toggle"   , details_ontoggle   );
+        }
     });
 
     /*}}}*/

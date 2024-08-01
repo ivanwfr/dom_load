@@ -1,5 +1,5 @@
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (230928:19h:12)"; }
+#dom_host_css_tag   { content: "dom_host_css (240113:00h:44)"; }
 
 /* body {{{*/
 .dark * { background : rgba(17,17,17,0.5); color: rgba(221,221,221,0.5); }
@@ -744,6 +744,13 @@ em.select0 { cursor : all-scroll !important; }
 }
 /*}}}*/
 /* sentence clause outline {{{*/
+/* TODO (240113) {{{
+let clone                = $0.cloneNode(true);
+    clone.id             = "sentence_container_clone";
+    clone.style.position = "absolute";
+    clone.style.top      = $0.getBoundingClientRect().top + window.scrollY+"px";
+document.body            .appendChild( clone );
+}}}*/
 
 .sentence_container {
     all           : initial;

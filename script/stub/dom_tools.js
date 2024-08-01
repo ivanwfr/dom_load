@@ -12,8 +12,8 @@
 
 /* eslint-disable no-warning-comments */
 
-const DOM_TOOLS_JS_ID  = "dom_tools";
-const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (230924:19h:23)";  /* eslint-disable-line no-unused-vars */
+const DOM_TOOLS_JS_ID  = "dom_tools_js";
+const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (240801:14h:06)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_tools = (function() {
 "use strict";
@@ -321,7 +321,7 @@ let t_pointerup_handler = function(e) /* eslint-disable-line no-unused-vars */
 let   caller = "t_pointerup_handler";
 let log_this = DOM_TOOLS_LOG;
 
-    let consumed_by                  = "";
+    let handeled_by                  = "";
 /*}}}*/
     /* THEME: GET CURRENT {{{*/
     let was_theme_dark = dom_sentence.t_SENTENCE_get_theme_dark();
@@ -343,7 +343,7 @@ let log_this = DOM_TOOLS_LOG;
     let   some_sentence_container    =          document.querySelector(          ".sentence_container");
     if(     clicked && onDown_sentence_container)
     {
-        consumed_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
+        handeled_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
 
         dom_sentence.t_SENTENCE_RESTORE_EL(onDown_sentence_container, e);
     }
@@ -353,13 +353,13 @@ let log_this = DOM_TOOLS_LOG;
     {
         if(some_sentence_container)
         {
-            consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
+            handeled_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
 
             dom_sentence.t_SENTENCE_RESTORE_ALL( e );
             some_sentence_container = document.querySelector(".sentence_container");
         }
         else {
-            consumed_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
+            handeled_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
 
             dom_sentence.t_SENTENCE_restore_text_containers_outlined();
         }
@@ -368,7 +368,7 @@ let log_this = DOM_TOOLS_LOG;
     /*{{{*/
     else
     {
-        consumed_by
+        handeled_by
             = "UP ➔ CLICKED=["+clicked+"]"+LF
             +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]"+LF
             +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"+LF
@@ -415,7 +415,7 @@ if( log_this) log("%c SETTING EXTENSION: ("+DOM_TOOLS_JS_TAG+") { theme_dark : "
         }
     }
     /*}}}*/
-if( log_this) log5("→→ "+caller+":"+ consumed_by);
+if( log_this) log5("→→ "+caller+":"+ handeled_by);
 };
 /*}}}*/
 

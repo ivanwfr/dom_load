@@ -13,7 +13,7 @@
 /* exported DOM_SCROLL_JS_TAG */
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (230820:21h:11)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (240711:19h:25)";
 /*}}}*/
 let dom_scroll              = (function() {
 "use strict";
@@ -137,8 +137,8 @@ const MAX_SCROLL_SMOOTH_DURATION    = 20000;
 const SCROLLED_ENOUGH               =    16; /* eslint-disable-line no-unused-vars */
 const SCROLL_DONE_COOLDOWN          =   250;
 
-let scroll_end_timeout              =  null;
-let scroll_end_last_scrollY         =     0;
+let scroll_DONE_timeout             =  null;
+let scroll_DONE_last_scrollY        =     0;
 let scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout;
 
 /*}}}*/
@@ -155,64 +155,50 @@ let log_this = DOM_SCROLL_LOG;
     let scroll_details = "scrollY="+window.scrollY;
 
 if( log_this) log("%c"+caller+" %c "+ scroll_details, lbb+lbL+lf8, lbb+lbR+lf3);
-    scroll_listener_scroll_changed(e, scroll_details);
+    t_scroll_listener_scroll_changed(e, scroll_details);
 };
 /*}}}*/
-/*_   scroll_listener_scroll_changed {{{*/
-let   scroll_listener_scroll_changed = function(e, scroll_details="")
+/*_ t_scroll_listener_scroll_changed {{{*/
+let t_scroll_listener_scroll_changed = function(e, scroll_details="")
 {
 /*{{{*/
-let   caller = "scroll_listener_scroll_changed";
+let   caller = "t_scroll_listener_scroll_changed";
 let log_this = DOM_SCROLL_LOG;
 
-if( log_this && !scroll_end_timeout)
+if( log_this && !scroll_DONE_timeout)
     log("➔ %c"+caller+"%c"+ window.scrollX +" "+ window.scrollY +"%c"+ (scroll_details ? " scroll_details" : "")
         ,  lbb+lbL+lf9,lbb+lbC+lf9                               ,lbb+lbR+lf9                                   );
 /*}}}*/
     /* track and store [window_scrollY] {{{*/
-    if( scroll_end_timeout ) clearTimeout( scroll_end_timeout );
-    /**/scroll_end_timeout =   setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+    if( scroll_DONE_timeout ) clearTimeout( scroll_DONE_timeout );
+    /**/scroll_DONE_timeout =   setTimeout(t_scroll_listener_scroll_changed_scroll_DONE_handler, SCROLL_DONE_COOLDOWN);
 
     /*}}}*/
 };
 /*}}}*/
-/*_ t_scroll_is_scrolling {{{*/
-let t_scroll_is_scrolling = function()
+/*_ t_scroll_listener_scroll_changed_scroll_DONE_handler {{{*/
+let t_scroll_listener_scroll_changed_scroll_DONE_handler     = function()
 {
 /*{{{*/
-let   caller = "t_scroll_is_scrolling";
-let log_this = DOM_SCROLL_LOG;
-
-/*}}}*/
-    let result = (scroll_end_timeout != null);
-if( log_this) log("➔ %c"+caller+" %c "+ result
-                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
-    return result;
-};
-/*}}}*/
-/*_   scroll_listener_scroll_changed_scroll_end_handler {{{*/
-let   scroll_listener_scroll_changed_scroll_end_handler     = function()
-{
-/*{{{*/
-let   caller = "scroll_listener_scroll_changed_scroll_end_handler";
+let   caller = "t_scroll_listener_scroll_changed_scroll_DONE_handler";
 let log_this = DOM_SCROLL_LOG;
 let tag_this = DOM_SCROLL_TAG || log_this;
 
 /*}}}*/
 
-    scroll_end_timeout = null;
+    scroll_DONE_timeout = null;
 
     let                   this_scrollY  =          window.scrollY;
-    let done_scrolling = (this_scrollY == scroll_end_last_scrollY);
+    let done_scrolling = (this_scrollY == scroll_DONE_last_scrollY);
 /*{{{
-console.log("... last=["+scroll_end_last_scrollY+"] .. this=["+this_scrollY+"] .. done_scrolling=["+done_scrolling+"]")
+console.log("... last=["+scroll_DONE_last_scrollY+"] .. this=["+this_scrollY+"] .. done_scrolling=["+done_scrolling+"]")
 }}}*/
 
     /* SCROLLING NOT DONE .. REARM HANDLER */
     if(!done_scrolling )
     {
-        scroll_end_last_scrollY = this_scrollY;
-        scroll_end_timeout      = setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+        scroll_DONE_last_scrollY = this_scrollY;
+        scroll_DONE_timeout      = setTimeout(t_scroll_listener_scroll_changed_scroll_DONE_handler, SCROLL_DONE_COOLDOWN);
     }
     /* SCROLLING IS  DONE .. RECENTER ON [ELEMENT TO SCROLL INTO VIEW] */
     else {
@@ -221,12 +207,26 @@ if( tag_this) log("➔ %c"+caller+" %c "+ scroll_details
                   ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
 
         if( scrollIntoView_EL )
-            on_scroll_end_scrollIntoViewIfNeeded();
+            t_scrollIntoViewIfNeeded_on_scroll_DONE();
     }
 };
 /*}}}*/
+/*➔ t_scroll_is_scrolling {{{*/
+let t_scroll_is_scrolling = function()
+{
+/*{{{*/
+let   caller = "t_scroll_is_scrolling";
+let log_this = DOM_SCROLL_LOG;
 
-/* ELEMENT TO SCROLL INTO VIEW */
+/*}}}*/
+    let result = (scroll_DONE_timeout != null);
+if( log_this) log("➔ %c"+caller+" %c "+ result
+                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
+    return result;
+};
+/*}}}*/
+
+/* ELEMENT TO SCROLL INTO VIEW ● ON SCROLL DONE */
 /*➔ t_scrollIntoViewIfNeeded_set_EL {{{*/
 let t_scrollIntoViewIfNeeded_set_EL = function(el)
 {
@@ -248,15 +248,15 @@ if( tag_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)
                   ,lbL+lf4      ,lbR+lf4                                       );
 if( log_this) log_caller();
 
-    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+    if( scrollIntoView_EL ) t_scrollIntoViewIfNeeded();
 };
 /*}}}*/
-/*_   on_scroll_end_scrollIntoViewIfNeeded {{{*/
-let   on_scroll_end_scrollIntoViewIfNeeded = function(delay) /* eslint-disable-line no-unused-vars */
+/*_ t_scrollIntoViewIfNeeded_on_scroll_DONE {{{*/
+let t_scrollIntoViewIfNeeded_on_scroll_DONE = function(delay) /* eslint-disable-line no-unused-vars */
 {
 if( !scrollIntoView_EL ) return;
 /*{{{*/
-let   caller = "on_scroll_end_scrollIntoViewIfNeeded";
+let   caller = "t_scrollIntoViewIfNeeded_on_scroll_DONE";
 let log_this = DOM_SCROLL_LOG;
 
 if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+     "%c scrollIntoView_EL.scrolledIntoView_handled_MS "+scrollIntoView_EL.scrolledIntoView_handled_MS+"%c delay "+delay
@@ -267,15 +267,15 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+  
     if(scroll_intoview_timer) clearTimeout( scroll_intoview_timer );
     scroll_intoview_timer = null;
 
-    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+    if( scrollIntoView_EL ) t_scrollIntoViewIfNeeded();
 };
 /*}}}*/
-/*_   on_scrollIntoView_EL {{{*/
-let   on_scrollIntoView_EL = function()
+/*_ t_scrollIntoViewIfNeeded {{{*/
+let t_scrollIntoViewIfNeeded = function()
 {
 /*{{{
-log("%c on_scrollIntoView_EL", lbB)
-log("%c on_scrollIntoView_EL %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
+log("%c t_scrollIntoViewIfNeeded", lbB)
+log("%c t_scrollIntoViewIfNeeded %c "+t_util.get_id_or_tag(scrollIntoView_EL), lbL+lf6,lbR+lf6);
 }}}*/
     if(!scrollIntoView_EL ) return;
     /* (native support) {{{*/

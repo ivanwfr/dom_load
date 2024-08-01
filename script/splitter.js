@@ -10,7 +10,7 @@ javascript: (function () { /* eslint-disable-line no-labels, no-unused-labels */
 /*}}}*/
 /* DOM_LOAD_ID {{{*/
 let DOM_LOAD_ID         = "dom_splitter";
-let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (231025:15h:32)";
+let DOM_LOAD_TAG        =  DOM_LOAD_ID +" (240801:14h:30)";
 let DOM_HOST_CSS_ID     = "dom_host_css";
 let DOM_TOOLS_HTML_ID   = "dom_tools_html";
 /*}}}*/
@@ -40,7 +40,7 @@ let   console_warn  = function(  msg=null) { try {                          cons
 let dom_host_css_data ="data:text/css,"+ escape(`
 /*INLINE{{{*/
 @charset "utf-8";
-#dom_host_css_tag   { content: "dom_host_css (230928:19h:12)"; }
+#dom_host_css_tag   { content: "dom_host_css (240113:00h:44)"; }
 
 
 .dark * { background : rgba(17,17,17,0.5); color: rgba(221,221,221,0.5); }
@@ -683,6 +683,7 @@ em.select0 { cursor : all-scroll !important; }
     transform        : translate(-50%,-50%) !important;
     text-shadow      : white    1px 1px 2px !important;
 }
+
 
 
 
@@ -1917,7 +1918,7 @@ let dom_scroll_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SCROLL_JS_ID         = "dom_scroll_js";
-const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (230820:21h:11)";
+const DOM_SCROLL_JS_TAG        = DOM_SCROLL_JS_ID  +" (240711:19h:25)";
 
 let dom_scroll              = (function() {
 "use strict";
@@ -2039,8 +2040,8 @@ const MAX_SCROLL_SMOOTH_DURATION    = 20000;
 const SCROLLED_ENOUGH               =    16;
 const SCROLL_DONE_COOLDOWN          =   250;
 
-let scroll_end_timeout              =  null;
-let scroll_end_last_scrollY         =     0;
+let scroll_DONE_timeout             =  null;
+let scroll_DONE_last_scrollY        =     0;
 let scrollIntoViewIfNeeded_then_recenter_handler_scrollTo_clr_scrollBehavior_timeout;
 
 
@@ -2057,25 +2058,58 @@ let log_this = DOM_SCROLL_LOG;
     let scroll_details = "scrollY="+window.scrollY;
 
 if( log_this) log("%c"+caller+" %c "+ scroll_details, lbb+lbL+lf8, lbb+lbR+lf3);
-    scroll_listener_scroll_changed(e, scroll_details);
+    t_scroll_listener_scroll_changed(e, scroll_details);
 };
 
 
-let   scroll_listener_scroll_changed = function(e, scroll_details="")
+let t_scroll_listener_scroll_changed = function(e, scroll_details="")
 {
 
-let   caller = "scroll_listener_scroll_changed";
+let   caller = "t_scroll_listener_scroll_changed";
 let log_this = DOM_SCROLL_LOG;
 
-if( log_this && !scroll_end_timeout)
+if( log_this && !scroll_DONE_timeout)
     log("➔ %c"+caller+"%c"+ window.scrollX +" "+ window.scrollY +"%c"+ (scroll_details ? " scroll_details" : "")
         ,  lbb+lbL+lf9,lbb+lbC+lf9                               ,lbb+lbR+lf9                                   );
 
 
-    if( scroll_end_timeout ) clearTimeout( scroll_end_timeout );
-scroll_end_timeout =   setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
+    if( scroll_DONE_timeout ) clearTimeout( scroll_DONE_timeout );
+scroll_DONE_timeout =   setTimeout(t_scroll_listener_scroll_changed_scroll_DONE_handler, SCROLL_DONE_COOLDOWN);
 
 
+};
+
+
+let t_scroll_listener_scroll_changed_scroll_DONE_handler     = function()
+{
+
+let   caller = "t_scroll_listener_scroll_changed_scroll_DONE_handler";
+let log_this = DOM_SCROLL_LOG;
+let tag_this = DOM_SCROLL_TAG || log_this;
+
+
+
+    scroll_DONE_timeout = null;
+
+    let                   this_scrollY  =          window.scrollY;
+    let done_scrolling = (this_scrollY == scroll_DONE_last_scrollY);
+
+
+
+    if(!done_scrolling )
+    {
+        scroll_DONE_last_scrollY = this_scrollY;
+        scroll_DONE_timeout      = setTimeout(t_scroll_listener_scroll_changed_scroll_DONE_handler, SCROLL_DONE_COOLDOWN);
+    }
+
+    else {
+        let scroll_details = "scrollY="+window.scrollY+" "+(scrollIntoView_EL ? t_util.get_id_or_tag(scrollIntoView_EL) : "");
+if( tag_this) log("➔ %c"+caller+" %c "+ scroll_details
+                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
+
+        if( scrollIntoView_EL )
+            t_scrollIntoViewIfNeeded_on_scroll_DONE();
+    }
 };
 
 
@@ -2086,43 +2120,10 @@ let   caller = "t_scroll_is_scrolling";
 let log_this = DOM_SCROLL_LOG;
 
 
-    let result = (scroll_end_timeout != null);
+    let result = (scroll_DONE_timeout != null);
 if( log_this) log("➔ %c"+caller+" %c "+ result
                   ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
     return result;
-};
-
-
-let   scroll_listener_scroll_changed_scroll_end_handler     = function()
-{
-
-let   caller = "scroll_listener_scroll_changed_scroll_end_handler";
-let log_this = DOM_SCROLL_LOG;
-let tag_this = DOM_SCROLL_TAG || log_this;
-
-
-
-    scroll_end_timeout = null;
-
-    let                   this_scrollY  =          window.scrollY;
-    let done_scrolling = (this_scrollY == scroll_end_last_scrollY);
-
-
-
-    if(!done_scrolling )
-    {
-        scroll_end_last_scrollY = this_scrollY;
-        scroll_end_timeout      = setTimeout(scroll_listener_scroll_changed_scroll_end_handler, SCROLL_DONE_COOLDOWN);
-    }
-
-    else {
-        let scroll_details = "scrollY="+window.scrollY+" "+(scrollIntoView_EL ? t_util.get_id_or_tag(scrollIntoView_EL) : "");
-if( tag_this) log("➔ %c"+caller+" %c "+ scroll_details
-                  ,  lbb+lbL+lf0 ,lbb+lbR+lf0         );
-
-        if( scrollIntoView_EL )
-            on_scroll_end_scrollIntoViewIfNeeded();
-    }
 };
 
 
@@ -2148,15 +2149,15 @@ if( tag_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)
                   ,lbL+lf4      ,lbR+lf4                                       );
 if( log_this) log_caller();
 
-    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+    if( scrollIntoView_EL ) t_scrollIntoViewIfNeeded();
 };
 
 
-let   on_scroll_end_scrollIntoViewIfNeeded = function(delay)
+let t_scrollIntoViewIfNeeded_on_scroll_DONE = function(delay)
 {
 if( !scrollIntoView_EL ) return;
 
-let   caller = "on_scroll_end_scrollIntoViewIfNeeded";
+let   caller = "t_scrollIntoViewIfNeeded_on_scroll_DONE";
 let log_this = DOM_SCROLL_LOG;
 
 if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+     "%c scrollIntoView_EL.scrolledIntoView_handled_MS "+scrollIntoView_EL.scrolledIntoView_handled_MS+"%c delay "+delay
@@ -2167,11 +2168,11 @@ if( log_this) log("%c "+caller+" %c "+t_util.get_id_or_tag(scrollIntoView_EL)+  
     if(scroll_intoview_timer) clearTimeout( scroll_intoview_timer );
     scroll_intoview_timer = null;
 
-    if( scrollIntoView_EL ) on_scrollIntoView_EL();
+    if( scrollIntoView_EL ) t_scrollIntoViewIfNeeded();
 };
 
 
-let   on_scrollIntoView_EL = function()
+let t_scrollIntoViewIfNeeded = function()
 {
 
     if(!scrollIntoView_EL ) return;
@@ -2513,8 +2514,8 @@ let dom_tools_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 
-const DOM_TOOLS_JS_ID  = "dom_tools";
-const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (230924:19h:23)";
+const DOM_TOOLS_JS_ID  = "dom_tools_js";
+const DOM_TOOLS_JS_TAG = DOM_TOOLS_JS_ID +" (240801:14h:06)";
 
 let dom_tools = (function() {
 "use strict";
@@ -2808,7 +2809,7 @@ let t_pointerup_handler = function(e)
 let   caller = "t_pointerup_handler";
 let log_this = DOM_TOOLS_LOG;
 
-    let consumed_by                  = "";
+    let handeled_by                  = "";
 
 
     let was_theme_dark = dom_sentence.t_SENTENCE_get_theme_dark();
@@ -2828,7 +2829,7 @@ let log_this = DOM_TOOLS_LOG;
     let   some_sentence_container    =          document.querySelector(          ".sentence_container");
     if(     clicked && onDown_sentence_container)
     {
-        consumed_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
+        handeled_by = "UP ➔ ... RESTORE [onDown_sentence_container]";
 
         dom_sentence.t_SENTENCE_RESTORE_EL(onDown_sentence_container, e);
     }
@@ -2838,13 +2839,13 @@ let log_this = DOM_TOOLS_LOG;
     {
         if(some_sentence_container)
         {
-            consumed_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
+            handeled_by = "UP ➔ ... CLICKED .. SENTENCE RESTORE ALL";
 
             dom_sentence.t_SENTENCE_RESTORE_ALL( e );
             some_sentence_container = document.querySelector(".sentence_container");
         }
         else {
-            consumed_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
+            handeled_by = "UP ➔ ... CLICKED .. SENTENCE CLEAR ALL";
 
             dom_sentence.t_SENTENCE_restore_text_containers_outlined();
         }
@@ -2853,7 +2854,7 @@ let log_this = DOM_TOOLS_LOG;
 
     else
     {
-        consumed_by
+        handeled_by
             = "UP ➔ CLICKED=["+clicked+"]"+LF
             +  " .. some_sentence_container  =["+ (some_sentence_container   ? some_sentence_container  .tagName : "")+"]"+LF
             +  " .. onDown_EL                =["+ (onDown_EL                 ? onDown_EL                .tagName : "")+"]"+LF
@@ -2895,7 +2896,7 @@ if( log_this) log("%c SETTING EXTENSION: ("+DOM_TOOLS_JS_TAG+") { theme_dark : "
         }
     }
 
-if( log_this) log5("→→ "+caller+":"+ consumed_by);
+if( log_this) log5("→→ "+caller+":"+ handeled_by);
 };
 
 
@@ -3377,7 +3378,7 @@ let dom_sentence_js_data ="data:text/javascript;charset='utf-8',"+ escape(`
 
 
 const DOM_SENTENCE_JS_ID      = "dom_sentence_js";
-const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (230928:19h:21)";
+const DOM_SENTENCE_JS_TAG     = DOM_SENTENCE_JS_ID  +" (240801:14h:05)";
 
 let dom_sentence            = (function() {
 "use strict";
@@ -4455,14 +4456,14 @@ if( tag_this) log("%c"+caller+"("+t_util.get_n_lbl(el)+")", lbH+lf2);
 if( log_this && e) log("%c type=["+e.type+"] e.target.id=["+e.target.id+"]", lbH+lf3);
 
     if(!el) return "";
-    let consumed_by = "";
+    let handeled_by = "";
 
-    if( check_tool_event(e) ) return consumed_by;
+    if( check_tool_event(e) ) return handeled_by;
 
     let container = t_util.get_el_parent_with_class(el, CSS_SENTENCE_CONTAINER);
     if( container )
     {
-        consumed_by = "RESTORING CONTAINER SPLIT SENTENCES";
+        handeled_by = "RESTORING CONTAINER SPLIT SENTENCES";
 
 
 
@@ -4495,12 +4496,12 @@ if( tag_this) log("%c...innerHTML_SAVED=["+t_util.ellipsis(container.innerHTML_S
 if( log_this) log_key_val_group(        caller
                                , {          el
                                  ,   container
-                                 , consumed_by
+                                 , handeled_by
                                  ,     callers : dom_log.get_callers && dom_log.get_callers()
                                }, lf8, true);
 
-if( tag_this) log("...return ["+consumed_by+"]");
-    return consumed_by;
+if( tag_this) log("...return ["+handeled_by+"]");
+    return handeled_by;
 };
 
 

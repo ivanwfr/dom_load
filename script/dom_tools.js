@@ -58,7 +58,7 @@
 /* eslint-disable no-warning-comments */
 
 const DOM_TOOLS_JS_ID       = "dom_tools_js" ;
-const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (231001:02h:27)";
+const DOM_TOOLS_JS_TAG      = DOM_TOOLS_JS_ID   +" (240801:14h:26)";
 /*}}}*/
 let dom_tools   = (function() {
 "use strict";
@@ -613,6 +613,7 @@ const CSS_BUTTON_PREV           = "button_prev";
         words_head_tail
         words_opcycle
         words_regex
+        words_regexr
         words_segment
         words_recycle
     pat_bag
@@ -1246,8 +1247,8 @@ if( log_this) log("...since_t_load=["+since_t_load+"ms] .. PREVENT_RELOAD_DELAY=
         /*}}}*/
         /* USER EVENT & TOOL .. (check options) {{{*/
         let frame_had_a_user_gesture      = (onWork_EL_last_used != null);
-        let requesting_tool_name =          (onWork_EL           != null) ? (onWork_EL          .id || onWork_EL          .title).toLowerCase()
-        :                                   (onWork_EL_last_used != null) ? (onWork_EL_last_used.id || onWork_EL_last_used.title).toLowerCase()
+        let requesting_tool_name =          (onWork_EL           != null) ? (onWork_EL          .id || onWork_EL          .title || "").toLowerCase()
+        :                                   (onWork_EL_last_used != null) ? (onWork_EL_last_used.id || onWork_EL_last_used.title || "").toLowerCase()
         :                                                                   "";
 
         let all_csv = t_util.csv_cat(pat_csv, off_csv);
@@ -1639,7 +1640,7 @@ if(log_this) t_log.console_dir("el",el);
 
         shadow_root.appendChild( el );
         log("%c"+caller+" %c"+id+"%c ........SHADOWED"   , lbH+lf3, lbL+lf2, lbR+lf2);
-        log_caller();
+if( tag_this) log_caller();
     }
 if( log_this) log(caller+"("+id+") %c       t_get_tool("+                          id +")"+ (      t_get_tool(id) ? " OK" : " FAILED"), lbF+lb7);
 if( log_this) log(caller+"("+id+") %c getComputedStyle("+t_util.get_node_id_or_tag(el)+")"+ (getComputedStyle(el) ? " OK" : " FAILED"), lbF+lb7);
@@ -1741,6 +1742,7 @@ if( log_this) log("%c"+t_data.SD2+"%c "+caller, lbS+lf2, lbH+lf2);
     id = t_data.WORDS_OPCYCLE    ; if(            tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id = t_data.WORDS_RECYCLE    ; if(            tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
     id = t_data.WORDS_BAG_ROT    ; if(            tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
+    id = t_data.WORDS_REGEXR     ; if(            tool = t_get_tool(id)) load2_TOOLS_prop_set_EL(id, tool);
 
     for(const iD of get_words_drop_affix_array())
         if(                                       tool = t_get_tool(iD)) load2_TOOLS_prop_set_EL(iD, tool);
@@ -2002,12 +2004,13 @@ if( log_this) log("%c"+t_data.SD4+"%c "+caller, lbS+lf4, lbH+lf4);
 
     /*}}}*/
     /* headsup_w {{{*/
-    if( el = prop.get_EL( t_data.WORDS_EXACT     )) { el.style.position   = "absolute"; el.style.left =  "10px"; el.style.top = " 52px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDS_SEGMENT   )) { el.style.position   = "absolute"; el.style.left =  "55px"; el.style.top = " 38px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDS_HEAD_TAIL )) { el.style.position   = "absolute"; el.style.left = "100px"; el.style.top = " 52px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDS_OPCYCLE   )) { el.style.position   = "absolute"; el.style.left =  "55px"; el.style.top = " 85px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDS_RECYCLE   )) { el.style.position   = "absolute"; el.style.left = "100px"; el.style.top = "100px"; el.style.transform = "" /*"initial"*/; }
-    if( el = prop.get_EL( t_data.WORDS_BAG_ROT   )) { el.style.position   = "absolute"; el.style.left =  "10px"; el.style.top = "125px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_EXACT     )) { el.style.position   = "absolute"; el.style.left =  "10px"; el.style.top    = " 52px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_SEGMENT   )) { el.style.position   = "absolute"; el.style.left =  "55px"; el.style.top    = " 38px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_HEAD_TAIL )) { el.style.position   = "absolute"; el.style.left = "100px"; el.style.top    = " 52px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_OPCYCLE   )) { el.style.position   = "absolute"; el.style.left =  "55px"; el.style.top    = " 85px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_RECYCLE   )) { el.style.position   = "absolute"; el.style.left = "100px"; el.style.top    = "100px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_BAG_ROT   )) { el.style.position   = "absolute"; el.style.left =  "10px"; el.style.top    = "125px"; el.style.transform = "" /*"initial"*/; }
+    if( el = prop.get_EL( t_data.WORDS_REGEXR    )) { el.style.position   = "absolute"; el.style.right=   "2px"; el.style.bottom = "  2px"; el.style.transform = "" /*"initial"*/; }
 
     let    top =  48; /* MAGIC NUMBER */
     let   left = 155; /* MAGIC NUMBER */
@@ -4847,55 +4850,55 @@ if(log_this && t_preventDefault_caller) {
 };
 /*}}}*/
 
-/* EVENT CONSUMED BY (dispatched-to handler with highest prority) */
+/* EVENT HANDELED BY (dispatched-to handler with highest prority) */
 /*{{{*/
-let t_event_consumed_cause = "";
+let t_event_handeled_by = "";
 
 /*}}}*/
-/*_ t_event_set_e_consumed_by {{{*/
-let t_event_set_e_consumed_by = function(e, consume_cause)
+/*_ t_event_set_e_handeled_by {{{*/
+let t_event_set_e_handeled_by = function(e, handeled_by)
 {
-    t_event_consumed_cause = consume_cause;
+    t_event_handeled_by = handeled_by;
 };
 /*}}}*/
-/*_ t_event_add_e_consumed_by {{{*/
-let t_event_add_e_consumed_by = function(e, consume_cause)
+/*_ t_event_add_e_handeled_by {{{*/
+let t_event_add_e_handeled_by = function(e, handeled_by)
 {
 let log_this = DOM_TOOLS_LOG && !onDown_SHIFT && t_log.logging_something();
-if( log_this) log("t_event_add_e_consumed_by: %c "+consume_cause, lb0);
+if( log_this) log("t_event_add_e_handeled_by: %c "+handeled_by, lb0);
 if( log_this) log_caller();
 
 /*{{{
-    t_event_consumed_cause += (t_event_consumed_cause ? " .. " : "")+ consume_cause;
+    t_event_handeled_by += (t_event_handeled_by ? " .. " : "")+ handeled_by;
 }}}*/
-    t_event_consumed_cause
-        += t_event_consumed_cause ? LF+consume_cause
-        :                              consume_cause;
+    t_event_handeled_by
+        += t_event_handeled_by ? LF+handeled_by
+        :                           handeled_by;
 };
 /*}}}*/
-/*_ t_event_has_been_consumed {{{*/
-let t_event_has_been_consumed = function()
+/*_ t_event_has_been_handeled {{{*/
+let t_event_has_been_handeled = function()
 {
 /*
-if(t_event_consumed_cause) log("t_event_has_been_consumed(): [%c "+t_event_consumed_cause+" %c]", lbF+lb8,lbA);
+if(t_event_handeled_by) log("t_event_has_been_handeled(): [%c "+t_event_handeled_by+" %c]", lbF+lb8,lbA);
 */
 /*{{{
-    return t_event_consumed_cause;
+    return t_event_handeled_by;
 }}}*/
-    return   t_event_consumed_cause.includes(LF)
-        ? LF+t_event_consumed_cause             /* start multi-line with a newline */
-        :    t_event_consumed_cause
+    return   t_event_handeled_by.includes(LF)
+        ? LF+t_event_handeled_by             /* start multi-line with a newline */
+        :    t_event_handeled_by
     ;
 
 };
 /*}}}*/
-/*_ t_event_clr_consumed {{{*/
-let t_event_clr_consumed = function()
+/*_ t_event_clr_handeled {{{*/
+let t_event_clr_handeled = function()
 {
 /*
-if(t_event_consumed_cause) log("t_event_has_been_consumed(): [%c "+t_event_consumed_cause+" %c]", lbF+lb8,lbA);
+if(t_event_handeled_by) log("t_event_has_been_handeled(): [%c "+t_event_handeled_by+" %c]", lbF+lb8,lbA);
 */
-    t_event_consumed_cause   = "";
+    t_event_handeled_by  = "";
 };
 /*}}}*/
 /*_ t_is_an_embedded_doc_tool {{{*/
@@ -5017,7 +5020,7 @@ let t_log_clr_status = function()
 {
     t_fly.t_fly_clr_status();
 
-    t_event_clr_consumed();
+    t_event_clr_handeled();
     t_preventDefault_caller  = "";
 };
 /*}}}*/
@@ -6255,7 +6258,7 @@ if(log_this) log(caller+": pivot_magnified: %c "+new_state+" ", (new_state ? lb2
 /** DOWN {{{*/
 /*{{{*/
 
-let mousedown_consumed_by = "";
+let mousedown_handeled_by = "";
 /*}}}*/
 /*  t_pointerdown_listener {{{*/
 let t_pointerdown_listener = function(e)
@@ -6286,32 +6289,32 @@ if( prop.get(t_data.PIN_SEEKSPOT) ) log("%c onDown_MS %c"+(onDown_MS / 1000), lb
     /*}}}*/
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     /* return .. [CTRL right-button-menu override] [SHIFT] [ALT] {{{*/
-    if(onDown_CTRL ) { log(); caller="onDown_CTRL"  ; t_preventDefault(e, caller); t_event_set_e_consumed_by(e, caller); /*.......................................................*/ return; }
-    if(onDown_ALT  ) { log(); caller="onDown_ALT "  ; t_preventDefault(e, caller); t_event_set_e_consumed_by(e, caller); t_log.console_clear     (caller); t_fly.t_fly_init(caller); return; }
-    if(onDown_SHIFT) { log(); caller="onDown_SHIFT "; t_preventDefault(e, caller); t_event_set_e_consumed_by(e, caller); t_log.console_clear_post(caller); t_fly.t_fly_init(caller); return; }
+    if(onDown_CTRL ) { log(); caller="onDown_CTRL"  ; t_preventDefault(e, caller); t_event_set_e_handeled_by(e, caller); /*.......................................................*/ return; }
+    if(onDown_ALT  ) { log(); caller="onDown_ALT "  ; t_preventDefault(e, caller); t_event_set_e_handeled_by(e, caller); t_log.console_clear     (caller); t_fly.t_fly_init(caller); return; }
+    if(onDown_SHIFT) { log(); caller="onDown_SHIFT "; t_preventDefault(e, caller); t_event_set_e_handeled_by(e, caller); t_log.console_clear_post(caller); t_fly.t_fly_init(caller); return; }
     /*}}}*/
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    let                consumed_by = "";                               let  consumed_by_css =  "";
-    if(!consumed_by) { consumed_by = onDown_0_MULTITOUCH               (e); consumed_by_css = lf9; }
-    if(!consumed_by) { consumed_by = onDown_1_INIT_CTRL_DEBOUNCE_INPUT (e); consumed_by_css = lf1; }
-    if(!consumed_by) { consumed_by = onDown_2_slot_fullscreen_DRAG     (e); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onDown_3_TOOL_PRESS               (e); consumed_by_css = lf4; }
-    if(!consumed_by) { consumed_by = onDown_4_STICKY_PICK              (e); consumed_by_css = lf2; }
-    if(!consumed_by) { consumed_by = onDown_5_TOOL_PICK                (e); consumed_by_css = lf5; }
-    if(!consumed_by) { consumed_by = onDown_6_TOOL_MOVE                (e); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onDown_7_SENTENCE                 (e); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = onDown_8_DOC_SELECT_OR_SEEK       (e); consumed_by_css = lf8; }
-    if(!consumed_by) { consumed_by = e.type+" BUBBLING"; onDown_9_STALL( ); consumed_by_css = lf9; }
+    let                handeled_by = "";                               let  handeled_by_css =  "";
+    if(!handeled_by) { handeled_by = onDown_0_MULTITOUCH               (e); handeled_by_css = lf9; }
+    if(!handeled_by) { handeled_by = onDown_1_INIT_CTRL_DEBOUNCE_INPUT (e); handeled_by_css = lf1; }
+    if(!handeled_by) { handeled_by = onDown_2_slot_fullscreen_DRAG     (e); handeled_by_css = lf3; }
+    if(!handeled_by) { handeled_by = onDown_3_TOOL_PRESS               (e); handeled_by_css = lf4; }
+    if(!handeled_by) { handeled_by = onDown_4_STICKY_PICK              (e); handeled_by_css = lf2; }
+    if(!handeled_by) { handeled_by = onDown_5_TOOL_PICK                (e); handeled_by_css = lf5; }
+    if(!handeled_by) { handeled_by = onDown_6_TOOL_MOVE                (e); handeled_by_css = lf6; }
+    if(!handeled_by) { handeled_by = onDown_7_SENTENCE                 (e); handeled_by_css = lf7; }
+    if(!handeled_by) { handeled_by = onDown_8_DOC_SELECT_OR_SEEK       (e); handeled_by_css = lf8; }
+    if(!handeled_by) { handeled_by = e.type+" BUBBLING"; onDown_9_STALL( ); handeled_by_css = lf9; }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-if( tag_this && !mousedown_consumed_by) log("%c"+consumed_by, lbH+consumed_by_css);
-    mousedown_consumed_by = consumed_by;
+if( tag_this  && !mousedown_handeled_by) log("%c"+handeled_by, lbH+handeled_by_css);
+    mousedown_handeled_by = handeled_by;
 
-    /* consumed_by {{{*/
-if( log_this) t_fly.t_log_event_status(t_data.SYMBOL_RIGHT_ARROW+" "+consumed_by, lbb+consumed_by_css);
+    /* handeled_by {{{*/
+if( log_this) t_fly.t_log_event_status(t_data.SYMBOL_RIGHT_ARROW+" "+handeled_by, lbb+handeled_by_css);
 
     if( t_log.logging_something() )
         t_fly.t_log_transcript_event_top("<span class='big'>"+ t_data.SYMBOL_DOWN_ARROW +"</span>"
-            +                            "<em>"+               consumed_by              +"</em>"  );
+            +                            "<em>"+               handeled_by              +"</em>"  );
 
     /*}}}*/
 
@@ -6328,8 +6331,8 @@ let onDown_0_MULTITOUCH = function(e)
 {
     onDown_TOUCHES     = e.touches ? e.touches.length : 1;
 /*{{{
-    let    consumed_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
-    return consumed_by;
+    let    handeled_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
+    return handeled_by;
 }}}*/
 };
 /*}}}*/
@@ -6341,7 +6344,7 @@ let   caller = "onDown_1_INIT_CTRL_DEBOUNCE_INPUT";
 let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 
 if( log_this) log("%c"+caller, lbF+lb1);
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* ONDOWN HANDLERS INIT {{{*/
     t_log_clr_status();
@@ -6359,10 +6362,10 @@ if( log_this) log("%c"+caller, lbF+lb1);
 
     onMove_selection_removed    = false;
 
-    mousedown_consumed_by       = "";
-    mouselong_press_consumed_by = "";
-    mousemove_consumed_by       = "";
-    mouseup_consumed_by         = "";
+          mousedown_handeled_by = "";
+    mouselong_press_handeled_by = "";
+          mousemove_handeled_by = "";
+            mouseup_handeled_by = "";
 
     move_cooldown_handler();
 
@@ -6389,7 +6392,7 @@ if( log_this) log("%c"+caller, lbF+lb1);
 /*
  :!start explorer "https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action"
 */
-    /* ONDOWN A SCROLLABLE STICKY .. consume .. return {{{*/
+    /* ONDOWN A SCROLLABLE STICKY .. handle .. return {{{*/
     let e_target           = t_get_event_target(e);
     let sticky             = t_sticky.t_sticky_e_target_STICKY(e_target);
     let sticky_scrollable  = t_sticky.t_sticky_onDown_a_scrollable_STICKY(sticky, e_target);
@@ -6398,27 +6401,27 @@ if( log_this) log("%c"+caller, lbF+lb1);
         /* A TOUCH DEVICE MAY SCROLL THE TEXT WITH NO SCROLLBAR */
         if(behavior_TOUCH_ELSE_DESKTOP)
         {
-            consumed_by    = "DOWN A SCROLLABLE STICKY";
+            handeled_by    = "DOWN A SCROLLABLE STICKY";
             onDown_EL      = sticky;
 
             t_sticky.t_sticky_scroll_STICKY_PAD_MSG( e_target );
 
             t_seek.t_seeker_PU_hide("instant");
 
-if( log_this) log("%c"+consumed_by, lbH+lf8);
-            return consumed_by;
+if( log_this) log("%c"+handeled_by, lbH+lf8);
+            return     handeled_by;
         }
     }
     /*}}}*/
-    /* ONDOWN A SCROLLBAR .. consume .. return {{{*/
+    /* ONDOWN A SCROLLBAR .. handle .. return {{{*/
     let event_on_scrollbar = t_util.is_event_on_scrollbar( e );
     if( event_on_scrollbar && behavior_TOUCH_ELSE_DESKTOP)
     {
-        consumed_by = "DOWN ["+t_util.get_id_or_tag(e_target)+"] SCROLLBAR";
+        handeled_by = "DOWN ["+t_util.get_id_or_tag(e_target)+"] SCROLLBAR";
         onDown_EL   = e_target;
 
-if( log_this) log("%c"+consumed_by, lbH+lf1);
-        return consumed_by;
+if( log_this) log("%c"+handeled_by, lbH+lf1);
+        return         handeled_by;
     }
     /*}}}*/
     /* ONDOWN TARGET EL {{{*/
@@ -6447,16 +6450,16 @@ if( log_this) log("%c"+consumed_by, lbH+lf1);
     }
 }}}*/
     /*}}}*/
-    /* CONSUME CLICK BURST {{{*/
+    /* HANDLE CLICK BURST {{{*/
     if(t_is_bouncing_e_type(e.type, "t_pointerdown_listener", T_EVENT_DEBOUNCE_DELAY))
     {
-        consumed_by = "BOUNCING [EVENT <= "+T_EVENT_DEBOUNCE_DELAY+" ms]";
+        handeled_by = "BOUNCING [EVENT <= "+T_EVENT_DEBOUNCE_DELAY+" ms]";
 
-        t_clear( consumed_by );
+        t_clear( handeled_by );
     }
     /*}}}*/
-if( log_this && consumed_by) t_fly.t_log_event_status(caller+": "+consumed_by, lf1);
-    return consumed_by;
+if( log_this && handeled_by) t_fly.t_log_event_status(caller+": "+handeled_by, lf1);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_2_slot_fullscreen_DRAG {{{*/
@@ -6471,12 +6474,12 @@ if( log_this) log("%c"+caller, lbF+lb2);
     if(!div_slot_containers_displayed()         ) return "";
     if(!has_el_class(onWork_EL, CSS_FULLSCREEN )) return "";
 
-    let consumed_by = "START CONTAINERS FULLSCREEN DRAG";
+    let handeled_by = "START CONTAINERS FULLSCREEN DRAG";
 
     t_add_tool_pointermove_listener(caller);
 
-if( log_this && consumed_by) log("%c"+consumed_by, lf2);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf2);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_3_TOOL_PRESS {{{*/
@@ -6489,7 +6492,7 @@ let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 if( log_this) log("%c"+caller, lbF+lb3);
 /*}}}*/
 /* TODO child of [dimm_mask] .. [div_slot_containers fullscreen selected container] */
-    /* ADD LONG-PRESS TIMER .. (do not consume) {{{*/
+    /* ADD LONG-PRESS TIMER .. (do not handle) {{{*/
     if( onDown_3_TOOL_PRESS_has_long_press_handler() )
     {
 if( log_this) log("%c ADDING LONG-PRESS TIMER:", lbF+lf3);
@@ -6663,14 +6666,14 @@ let log_this = LOG_MAP.EV1_DOWN || LOG_MAP.EV0_LISTEN;
 if( log_this) log("%c"+caller, lbF+lb4);
     if(!onWork_EL) return "";
 /*}}}*/
-    let consumed_by = t_sticky.t_sticky_onDown(e);
+    let handeled_by = t_sticky.t_sticky_onDown(e);
 
     set_onWork_EL_pressed();
 
-    if(consumed_by) t_preventDefault(e, "PREVENTING PAGE SCROLL WHILE "+consumed_by);
+    if(handeled_by) t_preventDefault(e, "PREVENTING PAGE SCROLL WHILE "+handeled_by);
 
-if( log_this && consumed_by) log("%c"+consumed_by, lf4);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf4);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_5_TOOL_PICK {{{*/
@@ -6691,7 +6694,7 @@ logXXX("..........................................e_target=["+ t_util.get_id_or_
 logXXX("..................................e_target.tagName=["+ e_target.tagName                                  +"]");
 } catch(ex) {}
 }}}*/
-    let     consumed_by = "";
+    let     handeled_by = "";
     /*}}}*/
     /* PLAYGROUND [doc_evt_div] {{{*/
     if(t_fly.t_doc_evt_div_get())
@@ -6754,7 +6757,7 @@ logXXX(".....INPUT FOCUS TO CHILD ["+ t_util.get_n_txt(el                    ) +
 if( log_this && mouse_down_on_a_push_pin) log("%c...MOUSE DOWN ON %c"+onWork_EL.id+" PUSH PIN", lf5, lbH+lf1);
     /*}}}*/
     /* PIVOT PANEL SWITCH .. (move tool drag) {{{*/
-    if(    !consumed_by
+    if(    !handeled_by
         && !mouse_down_on_a_push_pin
         && (onWork_PANEL                                  )
         && (onWork_PANEL                  != dimm_mask    )
@@ -6782,7 +6785,7 @@ if( log_this) log("%c...PIVOT PANEL SWITCH TO %c"+onWork_PANEL.id, lf5, lbH+lf5)
                 +      " TO ["+ get_n_lbl(onWork_PANEL) +"]"
                 + LF+"...onWork_EL=["+ get_n_lbl(onWork_EL) +"]"
             ;
-            t_event_add_e_consumed_by(e, msg);
+            t_event_add_e_handeled_by(e, msg);
 
             onWork_MOVABLE_CHILD      = null;
 
@@ -6803,7 +6806,7 @@ if( log_this) log("%c...PIVOT PANEL %c CURRENT", lf5, lbH+lf6);
 
             /* INPUT CLICKED */
             if(e_target && (e_target.tagName == "INPUT"))
-                consumed_by = "INPUT CLICKED";
+                handeled_by = "INPUT CLICKED";
 
         }
         /*}}}*/
@@ -6825,11 +6828,11 @@ if( log_this) log("%c...PIVOT PANEL %c HOTSPOT", lf5, lbH+lf5);
 */
         t_seek.t_seeker_PU_hide("instant");
 
-        consumed_by = CSS_BUTTONS_POD;
+        handeled_by = CSS_BUTTONS_POD;
     }
     /*}}}*/
     /* WHETHER TO CALL [t_preventDefault] .. f(onWork_EL or onWork_PANEL handler) {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
 /*{{{
 if( log_this) log("%c...ACCEPT BUBBLE or PREVENT DEFAULT...", lf5);
@@ -6900,8 +6903,8 @@ log("...mouse_down_on_a_push_pin...................: "+ mouse_down_on_a_push_pin
 
     }
     /*}}}*/
-if( log_this && consumed_by) log("%c"+consumed_by, lf5);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf5);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_6_TOOL_MOVE {{{*/
@@ -6926,7 +6929,7 @@ log("%c onWork_MOVABLE_PANEL.....%c"+ get_n_lbl( onWork_MOVABLE_PANEL ) +"]", lb
        && !onWork_MOVABLE_PANEL       ) return ""; /* NO MOVING TOOL */
     if( call_t_grid_IS_SIZED(caller)  ) return ""; /* ON GRID */
 
-    let consumed_by = "";
+    let handeled_by = "";
     /*}}}*/
     /* SEEKER ACTIVE HIDE {{{*/
     if( t_seek.t_seeker_PU_is_active() )
@@ -6942,12 +6945,12 @@ if(log_this) log("...%c[mouse_down_on_a_push_pin: "+mouse_down_on_a_push_pin+"]%
 
     if( mouse_down_on_a_push_pin )
     {
-        consumed_by = "START TOOL_DRAG PUSH_PIN ["+get_n_lbl(onWork_PANEL)+"]";
+        handeled_by = "START TOOL_DRAG PUSH_PIN ["+get_n_lbl(onWork_PANEL)+"]";
 
         onDown_6_TOOL_DRAG_PUSH_PIN(e);
     }
     else {
-        consumed_by = "START TOOL_DRAG PANEL ["+get_n_lbl(onWork_PANEL)+"]";
+        handeled_by = "START TOOL_DRAG PANEL ["+get_n_lbl(onWork_PANEL)+"]";
 
         t_flash_unpinned_panels();
 /*{{{
@@ -6974,8 +6977,8 @@ if(log_this) log("...%c[mouse_down_on_a_push_pin: "+mouse_down_on_a_push_pin+"]%
 
     /*}}}*/
     /*}}}*/
-if( log_this && consumed_by) log("%c"+consumed_by, lf6);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf6);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_6_TOOL_DRAG_PUSH_PIN {{{*/
@@ -7095,7 +7098,7 @@ let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lbF+lb7);
 if( log_this) t_fly.t_log_event_status(caller, lf7);
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* NOT WHEN ON DOC TOOLS {{{*/
     if( t_util.is_el_child_of_id(onWork_EL, t_data.DOC_TOOLS_ID) )
@@ -7109,15 +7112,15 @@ if( log_this) log("NOT WHEN ON DOC TOOLS ["+t_util.get_n_lbl(onWork_EL)+"]");
     let sentence_el        = t_sentence.t_SENTENCE_GET_EL_SENTENCE_CONTAINER(onDown_EL);
     if( sentence_el )
     {
-        consumed_by += " .. ON A SENTENCE ELEMENT";
+        handeled_by += " .. ON A SENTENCE ELEMENT";
 
-        t_preventDefault(e, consumed_by);
+        t_preventDefault(e, handeled_by);
 
         t_CURSOR_add_MOVE_LISTENER(caller);
     }
     /*}}}*/
-if( log_this && consumed_by) log("%c"+consumed_by, lf7);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf7);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_8_DOC_SELECT_OR_SEEK .. t_data.WORDING {{{*/
@@ -7130,7 +7133,7 @@ let log_this = LOG_MAP.T4_PIVOT || LOG_MAP.EV1_DOWN;
 
 if( log_this) log("%c"+caller, lbF+lb8);
 if( log_this) t_fly.t_log_event_status(caller, lf8);
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
 /*{{{
 /\(^\|let\|const\|;\|[{}()]\)\+\s*\(\w\+\.\)\?
@@ -7151,13 +7154,13 @@ logXXX("SELECT WORD: anchor_freeze........................=["+ prop.get( t_data.
 logXXX("SELECT WORD: t_preventDefault_has_been_called()...=["+ t_preventDefault_has_been_called() +"]");
 logXXX("SELECT WORD: onWork_EL.tagName....................=["+ onWork_EL.tagName                  +"]");
 }}}*/
-    if(!consumed_by && !t_preventDefault_has_been_called())
+    if(!handeled_by && !t_preventDefault_has_been_called())
     {
-        /* BUBBLE EVENT {{{*/
+        /* DOWN ON A [doc_tool] ● BUBBLE EVENT {{{*/
         if( t_is_an_embedded_doc_tool(onWork_EL,log_this) )
         {
-            consumed_by = "BUBBLE EVENT";
-            let msg = consumed_by+" .. ["+get_id_or_tag(onWork_EL)+"]";
+            handeled_by = "BUBBLE EVENT";
+            let msg = handeled_by+" .. ["+get_id_or_tag(onWork_EL)+"]";
 
             t_acceptBubble(e, msg, log_this);
         }
@@ -7167,30 +7170,30 @@ logXXX("SELECT WORD: onWork_EL.tagName....................=["+ onWork_EL.tagName
         {
             if(onWork_EL.tagName == "A")
             {
-                consumed_by += " .. (t_data.WORDING) or (ANCHOR FREEZED)";
-                t_preventDefault(e, consumed_by);
+                handeled_by += " .. (t_data.WORDING) or (ANCHOR FREEZED)";
+                t_preventDefault(e, handeled_by);
             }
             else if(t_util.get_el_event_handler(onWork_EL, caller) != null)
             {
-                consumed_by += ".. (EVENT HANDLER FREEZED)";
-                t_preventDefault(e, consumed_by);
+                handeled_by += ".. (EVENT HANDLER FREEZED)";
+                t_preventDefault(e, handeled_by);
             }
         }
         /*}}}*/
     }
     /*}}}*/
     /* SEEK TOOL HAS A TARGET {{{*/
-    if(   !consumed_by
+    if(   !handeled_by
        && !has_el_class(onWork_EL, t_data.CSS_SCROLLING)
        &&  t_seek.t_seeker_has_TARGET()
       ) {
-        consumed_by = "SEEK TOOL ["+t_seek.t_seeker_get_TOOL_label()+"] ON DOC";
+        handeled_by = "SEEK TOOL ["+t_seek.t_seeker_get_TOOL_label()+"] ON DOC";
         add_page_pointermove_listener( caller );
         add_long_press_listener("ON DOWN DOC TOOL");
     }
     /*}}}*/
-if( log_this && consumed_by) log("%c"+consumed_by, lf8);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf8);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onDown_9_STALL .. handler .. is_pending {{{*/
@@ -7306,7 +7309,7 @@ const DIR_NUM_PREV        = "DIR_NUM_PREV";
 const DIR_SLOT_NEXT       = "DIR_SLOT_NEXT";
 const DIR_SLOT_PREV       = "DIR_SLOT_PREV";
 
-let mousemove_consumed_by = "";
+let mousemove_handeled_by = "";
 let onMove_selection_removed;
 /*}}}*/
 /*… t_PAGE_pointermove_drag {{{*/
@@ -7318,7 +7321,7 @@ let   caller = "t_PAGE_pointermove_drag";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
 let tag_this = DOM_TOOLS_TAG || log_this;
-if(LOG_MAP.EV7_DISPATCH && !mousemove_consumed_by) t_fly.t_log_event_status(caller);
+if(LOG_MAP.EV7_DISPATCH && !mousemove_handeled_by) t_fly.t_log_event_status(caller);
 
     if(!onWork_EL                             ) return false; /* moving element .. none */
     if(!onWork_EL.id                          ) return false; /* moving element .. unknown */
@@ -7330,22 +7333,22 @@ if(!log_this) log_this = onDown_CTRL;
 
     /*}}}*/
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    let                consumed_by = "";                       let  log_css = lbF;
-    if(!consumed_by) { consumed_by = onMove_0_MULTITOUCH       (e); log_css = lb9; }
-    if(!consumed_by) { consumed_by = onMove_1_ON_COOLDOWN      (e); log_css = lb1; }
-    if(!consumed_by) { consumed_by = onMove_4_MUST_MOVE_MORE   (e); log_css = lb2; }
-    if(!consumed_by) { consumed_by = onMove_5_GRAB_SELECTION   (e); log_css = lb5; }
-    if(!consumed_by) { consumed_by = onMove_6_GRAB_STICKY      (e); log_css = lb6; }
+    let                handeled_by = "";                       let  log_css = lbF;
+    if(!handeled_by) { handeled_by = onMove_0_MULTITOUCH       (e); log_css = lb9; }
+    if(!handeled_by) { handeled_by = onMove_1_ON_COOLDOWN      (e); log_css = lb1; }
+    if(!handeled_by) { handeled_by = onMove_4_MUST_MOVE_MORE   (e); log_css = lb2; }
+    if(!handeled_by) { handeled_by = onMove_5_GRAB_SELECTION   (e); log_css = lb5; }
+    if(!handeled_by) { handeled_by = onMove_6_GRAB_STICKY      (e); log_css = lb6; }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    /* consumed_by {{{*/
-if( tag_this && (mousemove_consumed_by != consumed_by)) log("%c"+consumed_by, log_css);
+    /* handeled_by {{{*/
+if( tag_this && (mousemove_handeled_by != handeled_by)) log("%c"+handeled_by, log_css);
 
     /*}}}*/
-    mousemove_consumed_by = consumed_by;
+    mousemove_handeled_by = handeled_by;
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("PAGE POINTER MOVED");
 
-    return (mousemove_consumed_by != "");
+    return (mousemove_handeled_by != "");
 };
 /*}}}*/
 /*… t_TOOL_pointermove_drag {{{*/
@@ -7356,7 +7359,7 @@ if(e.ctrlKey) { log("%c TOOL POINTER MOVE IGNORED .. f(e.ctrlKey)", lbH+lf2); de
 let   caller = "t_TOOL_pointermove_drag";
 let log_this = LOG_MAP.EV2_MOVE;
 
-if(LOG_MAP.EV7_DISPATCH && !mousemove_consumed_by) t_fly.t_log_event_status(caller);
+if(LOG_MAP.EV7_DISPATCH && !mousemove_handeled_by) t_fly.t_log_event_status(caller);
 /*{{{
 if( log_this) t_fly.t_log_event_status(caller, lf2);
 }}}*/
@@ -7395,16 +7398,16 @@ if( log_this) t_fly.t_log_event_status(caller, lf2);
 
     /*}}}*/
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    let                consumed_by = "";                                let log_css =  "";
-    if(!consumed_by) { consumed_by = onMove_0_MULTITOUCH       (e        ); log_css = lb9; }
-    if(!consumed_by) { consumed_by = onMove_1_STICKY_TOOL_SEEK (e        ); log_css = lb1; }
-    if(!consumed_by) { consumed_by = onMove_2_STICKY_TOOL_MOVE (e        ); log_css = lb2; }
-    if(!consumed_by) { consumed_by = onMove_3_DIV_MAGNIFY      (e        ); log_css = lb3; }
-    if(!consumed_by) { consumed_by = onMove_4_MUST_MOVE_MORE   (e        ); log_css = lb4; }
-    if(!consumed_by) { consumed_by = onMove_5_GRAB_SELECTION   (e        ); log_css = lb5; }
-    if(!consumed_by) { consumed_by = onMove_6_GRAB_TOOL_PANEL  (e, x, y  ); log_css = lb6; }
-    if(!consumed_by) { consumed_by = onMove_7_GRAB_TOOL_CHILD  (e, x, y  ); log_css = lb7; }
-    if(!consumed_by) { consumed_by = "DRAGGING ["+get_n_lbl(onWork_EL)+"]"; log_css = lb8;
+    let                handeled_by = "";                                let log_css =  "";
+    if(!handeled_by) { handeled_by = onMove_0_MULTITOUCH       (e        ); log_css = lb9; }
+    if(!handeled_by) { handeled_by = onMove_1_STICKY_TOOL_SEEK (e        ); log_css = lb1; }
+    if(!handeled_by) { handeled_by = onMove_2_STICKY_TOOL_MOVE (e        ); log_css = lb2; }
+    if(!handeled_by) { handeled_by = onMove_3_DIV_MAGNIFY      (e        ); log_css = lb3; }
+    if(!handeled_by) { handeled_by = onMove_4_MUST_MOVE_MORE   (e        ); log_css = lb4; }
+    if(!handeled_by) { handeled_by = onMove_5_GRAB_SELECTION   (e        ); log_css = lb5; }
+    if(!handeled_by) { handeled_by = onMove_6_GRAB_TOOL_PANEL  (e, x, y  ); log_css = lb6; }
+    if(!handeled_by) { handeled_by = onMove_7_GRAB_TOOL_CHILD  (e, x, y  ); log_css = lb7; }
+    if(!handeled_by) { handeled_by = "DRAGGING ["+get_n_lbl(onWork_EL)+"]"; log_css = lb8;
         /* DRAG UNPINNED PANELS (FLASH) {{{*/
         if(onWork_PANEL && !t_raise_pivot_PANEL_posted_since_onDown(caller)
            &&               is_a_spread_drag()
@@ -7430,11 +7433,11 @@ if( log_this) t_fly.t_log_event_status(caller, lf2);
         /*}}}*/
     }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    /* consumed_by {{{*/
-if( log_this && (mousemove_consumed_by != consumed_by)) log("%c "+caller+": %c "+consumed_by, lb9, log_css);
+    /* handeled_by {{{*/
+if( log_this  && (mousemove_handeled_by != handeled_by)) log("%c "+caller+": %c "+handeled_by, lb9, log_css);
 
     /*}}}*/
-    mousemove_consumed_by = consumed_by;
+    mousemove_handeled_by = handeled_by;
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("TOOL POINTER MOVED");
 };
@@ -7511,8 +7514,8 @@ t_spread_log(hotspot);
 let onMove_0_MULTITOUCH = function(e)
 {
 
-    let    consumed_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
-    return consumed_by;
+    let    handeled_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
+    return handeled_by;
 };
 /*}}}*/
 /*… onMove_1_ON_COOLDOWN {{{*/
@@ -7520,13 +7523,13 @@ let onMove_1_ON_COOLDOWN = function(e)
 {
     let caller = "onMove_1_ON_COOLDOWN";
 
-    let                                           consumed_by = "";
-    if     ( dom_scroll.t_scroll_not_done_yet() ) consumed_by = "SCROLLING";
-    else if( move_cooldown_is_pending()         ) consumed_by = "MOVE COOLDOWN "+move_cooldown_reason;
+    let                                           handeled_by = "";
+    if     ( dom_scroll.t_scroll_not_done_yet() ) handeled_by = "SCROLLING";
+    else if( move_cooldown_is_pending()         ) handeled_by = "MOVE COOLDOWN "+move_cooldown_reason;
 
-    if(consumed_by)
+    if(handeled_by)
     {
-        consumed_by += ".. (set_onDown_XY tracking)";
+        handeled_by += ".. (set_onDown_XY tracking)";
 
         set_onDown_XY(e, caller);
         onMoveDXY.x = 0;
@@ -7534,9 +7537,9 @@ let onMove_1_ON_COOLDOWN = function(e)
     }
 
 /*{{{
-logXXX(consumed_by);
+logXXX(handeled_by);
 }}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /* TOOL */
@@ -7547,26 +7550,26 @@ let onMove_1_STICKY_TOOL_SEEK = function(e)
 let   caller = "onMove_1_STICKY_TOOL_SEEK";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
-    log_this = log_this && !mousemove_consumed_by; /* LOG FIRST MOVE ONLY */
-    let consumed_by = "";
+    log_this = log_this && !mousemove_handeled_by; /* LOG FIRST MOVE ONLY */
+    let handeled_by = "";
 /*}}}*/
     /* NO STICKY SEEK TARGET {{{*/
     let sticky = t_sticky.t_sticky_get_SEEK_NEXT(log_this);
     if(!sticky ) {
 
-if( log_this && !mousemove_consumed_by) log("%c"+caller+"%c NO STICKY SEEK TARGET", lbL+lf1, lbR+lb8);
-        return consumed_by;
+if( log_this && !mousemove_handeled_by) log("%c"+caller+"%c NO STICKY SEEK TARGET", lbL+lf1, lbR+lb8);
+        return handeled_by;
     }
     /*}}}*/
     /* NO GRABBED STICKY {{{*/
     if( sticky != onDown_EL) {
 
-if( log_this && !mousemove_consumed_by) log("%c"+caller+"%c NO GRABBED STICKY", lbL+lf1, lbR+lb8);
-        return consumed_by;
+if( log_this && !mousemove_handeled_by) log("%c"+caller+"%c NO GRABBED STICKY", lbL+lf1, lbR+lb8);
+        return handeled_by;
     }
     /*}}}*/
     /* SEEKER MOVE TO STICKY {{{*/
-    consumed_by = caller+": SEEKER MOVE TO STICKY";
+    handeled_by = caller+": SEEKER MOVE TO STICKY";
 if( log_this) t_sticky.t_sticky_LOG(sticky, caller);
 
     t_seek.t_seeker_onMove2_ON_NEXT_STICKY(sticky, onDown_SCROLL_XY);
@@ -7575,8 +7578,8 @@ if( log_this) t_sticky.t_sticky_LOG(sticky, caller);
         t_seek.t_seeker_PU_show();
 
     /*}}}*/
-if( log_this) log("%c"+caller+"%c "+consumed_by+" "+sticky.id, lbL+lf1, lbR+lf9);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c "+handeled_by+" "+sticky.id, lbL+lf1, lbR+lf9);
+    return handeled_by;
 };
 /*}}}*/
 /*… onMove_2_STICKY_TOOL_MOVE {{{*/
@@ -7589,7 +7592,7 @@ let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
     if(!onWork_EL) return "";
 /*}}}*/
     /* [sticky] [check_has_moved] {{{*/
-    let sticky = t_sticky.t_sticky_get_onWork_STICKY(log_this && !mousemove_consumed_by);
+    let sticky = t_sticky.t_sticky_get_onWork_STICKY(log_this && !mousemove_handeled_by);
     if(!sticky ) return "";
 
     check_has_moved( caller );
@@ -7604,19 +7607,19 @@ if(log_this) log("HIDE SEEK TOOL");
     }
     /*}}}*/
     /* RESIZE .. DIR .. MOVE {{{*/
-    let consumed_by = "";
-    if(!consumed_by && t_sticky.t_sticky_is_RESIZING  (   sticky))
-        consumed_by = onMove_2_STICKY_TOOL_MOVE_RESIZE(e, sticky, log_this);
+    let handeled_by = "";
+    if(!handeled_by && t_sticky.t_sticky_is_RESIZING  (   sticky))
+        handeled_by = onMove_2_STICKY_TOOL_MOVE_RESIZE(e, sticky, log_this);
 
-    if(!consumed_by && t_sticky.t_sticky_is_ORIENTING (   sticky))
-        consumed_by = onMove_2_STICKY_TOOL_MOVE_DIR   (e, sticky, log_this);
+    if(!handeled_by && t_sticky.t_sticky_is_ORIENTING (   sticky))
+        handeled_by = onMove_2_STICKY_TOOL_MOVE_DIR   (e, sticky, log_this);
 
-    if(!consumed_by )
-        consumed_by = onMove_2_STICKY_TOOL_MOVE_STICKY(e, sticky, log_this);
+    if(!handeled_by )
+        handeled_by = onMove_2_STICKY_TOOL_MOVE_STICKY(e, sticky, log_this);
 
     /*}}}*/
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+consumed_by, lbH+lf2, lbL+lf4, lbR+lf9);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf9);
+    return handeled_by;
 };
 /*}}}*/
 /*_ onMove_2_STICKY_TOOL_MOVE_STICKY .. t_sticky_onMove {{{*/
@@ -7625,17 +7628,17 @@ let onMove_2_STICKY_TOOL_MOVE_STICKY = function(e,sticky,log_this)
 /*{{{*/
 let   caller = "onMove_2_STICKY_TOOL_MOVE_STICKY";
 
-log_this = log_this && !mousemove_consumed_by;
+log_this = log_this && !mousemove_handeled_by;
 
-    let consumed_by = "MOVE";
+    let handeled_by = "MOVE";
 /*}}}*/
 
     let  x = onDown_TOOL_XY.x + onMoveDXY.x;
     let  y = onDown_TOOL_XY.y + onMoveDXY.y;
     t_sticky.t_sticky_onMove(x,y);
 
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+consumed_by, lbH+lf2, lbL+lf4, lbR+lf3);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf3);
+    return handeled_by;
 };
 /*}}}*/
 /*_ onMove_2_STICKY_TOOL_MOVE_RESIZE .. t_sticky_RESIZE {{{*/
@@ -7644,41 +7647,41 @@ let onMove_2_STICKY_TOOL_MOVE_RESIZE = function(e,sticky,log_this)
 /*{{{*/
 let   caller = "onMove_2_STICKY_TOOL_MOVE_RESIZE";
 
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* TRACK MOUSE WHILE ON COOLDOWN {{{*/
     if( move_cooldown_is_pending() )
     {
-log_this = log_this && !mousemove_consumed_by;
+log_this = log_this && !mousemove_handeled_by;
 
-        consumed_by = "RESIZE ON COOLDOWN "+move_cooldown_reason;
+        handeled_by = "RESIZE ON COOLDOWN "+move_cooldown_reason;
     }
     /*}}}*/
     /* OR RESIZE .. AND START COOLDOWN {{{*/
     else {
         if(!has_moved) {
-            consumed_by     = "STICKY RESIZE STARTING";
+            handeled_by     = "STICKY RESIZE STARTING";
 
-            t_set_has_moved(consumed_by);
+            t_set_has_moved(handeled_by);
 
-log_this = log_this && !mousemove_consumed_by;
+log_this = log_this && !mousemove_handeled_by;
         }
         else {
             if(!t_sticky.t_sticky_is_RESIZING() ) {
-                consumed_by = "STICKY RESIZE LAUNCHING";
+                handeled_by = "STICKY RESIZE LAUNCHING";
 
                 t_sticky.t_sticky_RESIZE(sticky);
             }
             else {
-                consumed_by = "STICKY RESIZE HANDLING";
+                handeled_by = "STICKY RESIZE HANDLING";
 
-log_this = log_this && !mousemove_consumed_by;
+log_this = log_this && !mousemove_handeled_by;
             }
         }
     }
     /*}}}*/
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+consumed_by, lbH+lf2, lbL+lf4, lbR+lf4);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf4);
+    return handeled_by;
 };
 /*}}}*/
 /*_ onMove_2_STICKY_TOOL_MOVE_DIR ..... t_sticky_TRACK_DIR {{{*/
@@ -7687,25 +7690,25 @@ let onMove_2_STICKY_TOOL_MOVE_DIR = function(e,sticky,log_this)
 /*{{{*/
 let   caller = "onMove_2_STICKY_TOOL_MOVE_DIR";
 
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* MOUSE ON COOLDOWN .. TRACK LAST XY {{{*/
     if( move_cooldown_is_pending() )
     {
-log_this = log_this && !mousemove_consumed_by;
+log_this = log_this && !mousemove_handeled_by;
 
-        consumed_by = "DIR ON COOLDOWN "+move_cooldown_reason;
+        handeled_by = "DIR ON COOLDOWN "+move_cooldown_reason;
 
         set_onDown_XY(e, caller);
     }
     /*}}}*/
     /* OR TRACK DIR .. AND START COOLDOWN {{{*/
-    if(!consumed_by) {
+    if(!handeled_by) {
         if(!has_moved)
         {
-log_this = log_this && !mousemove_consumed_by;
+log_this = log_this && !mousemove_handeled_by;
 
-            consumed_by = "TRACK DIR JUST STARTED";
+            handeled_by = "TRACK DIR JUST STARTED";
         }
         else {
             let dir
@@ -7713,7 +7716,7 @@ log_this = log_this && !mousemove_consumed_by;
                 ? ((onMoveDXY.x > 0) ? "RIGHT" : "LEFT")
                 : ((onMoveDXY.y > 0) ?  "DOWN" : "UP"  )
             ;
-            consumed_by = "TRACK DIR "+sticky.touched+" "+dir;
+            handeled_by = "TRACK DIR "+sticky.touched+" "+dir;
 
             t_sticky.t_sticky_TRACK_DIR(sticky, dir);
 
@@ -7721,8 +7724,8 @@ log_this = log_this && !mousemove_consumed_by;
         }
     }
     /*}}}*/
-if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+consumed_by, lbH+lf2, lbL+lf4, lbR+lf5);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c "+get_n_lbl(sticky)+" %c "+handeled_by, lbH+lf2, lbL+lf4, lbR+lf5);
+    return handeled_by;
 };
 /*}}}*/
 /*… onMove_3_DIV_MAGNIFY {{{*/
@@ -7735,8 +7738,8 @@ let   caller = "onMove_3_DIV_MAGNIFY";
     if( !fullscreen_slot_container       ) return "";
     if( !div_slot_containers             ) return "";
 
-    let consumed_by = t_util.get_id_or_tag(onWork_EL);
-    t_preventDefault(e, caller+" "+consumed_by);
+    let handeled_by = t_util.get_id_or_tag(onWork_EL);
+    t_preventDefault(e, caller+" "+handeled_by);
 /*}}}*/
     /* ON COOLDOWN .. IGNORE MOUSE {{{*/
     if(move_cooldown_is_pending() )
@@ -7778,7 +7781,7 @@ logBIG(dir, lf7);
         }
     }
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /* TOOL & DOC */
@@ -7789,7 +7792,7 @@ const HAS_MOVED_ENOUGH     = "";
 
 let onMove_4_MUST_MOVE_MORE = function(e)
 {
-/* [has_moved] {{{*/
+/* [has_moved] .. [del_long_press_listener] {{{*/
 let caller = "onMove_4_MUST_MOVE_MORE";
 
     if(has_moved && is_long_press_pending())
@@ -7800,7 +7803,7 @@ let caller = "onMove_4_MUST_MOVE_MORE";
 /*{{{*/
 let log_this = (LOG_MAP.EV0_LISTEN || LOG_MAP.EV2_MOVE);
 if(!log_this) log_this = onDown_CTRL;
-    log_this = log_this && !mousemove_consumed_by; /* LOG FIRST MOVE ONLY */
+    log_this = log_this && !mousemove_handeled_by; /* LOG FIRST MOVE ONLY */
 
 if( log_this) t_fly.t_log_event_status(caller, lf4);
 /*}}}*/
@@ -7818,23 +7821,24 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
         }
     }
     /*}}}*/
-    /* YES WHILE SEEKING [sticky] {{{*/
+    /* HAS TO WHILE SEEKING [sticky] .. MAY LAG {{{*/
     let   sticky  = t_sticky.t_sticky_get_onWork_STICKY();
     if(onWork_EL ==       sticky)
     {
         let dxy  = Math.abs(onMoveDXY.x + onMoveDXY.y);
         if( dxy >= 3*MOVED_ENOUGH)
         {
-            if(mousemove_consumed_by == HAS_NOT_MOVED_ENOUGH)
-            mousemove_consumed_by = ""; /* CLEAR MOVE HANDLING LOCK */
-            return HAS_MOVED_ENOUGH;
+            if( mousemove_handeled_by == HAS_NOT_MOVED_ENOUGH)
+                mousemove_handeled_by  =                   ""; /* CLEAR MOVE HANDLING LOCK */
+
+            return     HAS_MOVED_ENOUGH;
         }
         else {
             return HAS_NOT_MOVED_ENOUGH;
         }
     }
     /*}}}*/
-    /* NOT FOR [fly_div] .. NO LAG {{{*/
+    /* BUT NOT FOR [fly_div] .. NO LAG {{{*/
     if(onWork_PANEL == t_fly.t_fly_div_get())
     {
 /*
@@ -7936,28 +7940,28 @@ if( log_this) logBIG(caller+": pivot_PANEL_changed_since_onDown=["+pivot_PANEL_c
     }
 }}}*/
     /* TRACK MOUSE WHILE ON COOLDOWN .. return {{{*/
-    let consumed_by = "";
+    let handeled_by = "";
     if( move_cooldown_is_pending() )
     {
-        consumed_by = "SELECTION ON COOLDOWN";
+        handeled_by = "SELECTION ON COOLDOWN";
 
-if(log_this) logBIG(consumed_by +": "+ move_cooldown_reason);
+if(log_this) logBIG(handeled_by +": "+ move_cooldown_reason);
 
-        return consumed_by;
+        return handeled_by;
     }
     /*}}}*/
     /* REQUIRES CURRENT SLOT OR [last_selected_slot] {{{*/
     let slot  = t_get_onWork_EL_slot();
-    if( slot <= 0) return consumed_by;
+    if( slot <= 0) return handeled_by;
     if(!t_select.t_select_get_ccs_length() )
     {
 if( log_this) log(caller+": SLOT #"+slot+" NOT CURRENLTY INITIALIZED");
 
         if(t_preventDefault_caller) t_restoreDefault("NOT CURRENLTY INITIALIZED");
 
-        return consumed_by;
+        return handeled_by;
     }
-    consumed_by = "SCROLL TO [SLOT NUM]";
+    handeled_by = "SCROLL TO [SLOT NUM]";
     /*}}}*/
     /* LONG-PRESS dismiss {{{*/
     if( is_long_press_pending() )
@@ -8003,8 +8007,8 @@ if( log_this) log(caller+": on_sticky=["+on_sticky+"]");
     /*}}}*/
     /* [slot] [num] .. (onWork_EL) .. (dir) {{{*/
     let to_slot = slot;
-    let     num = t_get_onWork_EL_num();
-    let  to_num = num;
+    let  to_num = t_get_onWork_EL_num();
+    let     num = to_num;
     let num_max = t_select.t_select_get_slot_nodes_length(slot);
     switch(dir) {
         /* [SEEKER MOVE GRAB] {{{*/
@@ -8019,8 +8023,8 @@ if( log_this) log(caller+": on_sticky=["+on_sticky+"]");
         case DIR_NUM_NEXT:  {
             to_num = num + 1;
             to_num = 1 + (num_max + (to_num-1)) % num_max;
-            if((to_num < num) && quick_move) {
-                to_num = num;
+            if((to_num <  num) && quick_move) {
+                to_num =  num;
 /*{{{
 t_log.logSD5("%c NO BAKWARD NUM  wrapscan on quick_move", lbb+lbH+lf1);
 }}}*/
@@ -8032,8 +8036,8 @@ t_log.logSD5("%c NO BAKWARD NUM  wrapscan on quick_move", lbb+lbH+lf1);
         case DIR_NUM_PREV:  {
             to_num = num - 1;
             to_num = 1 + (num_max + (to_num-1)) % num_max;
-            if((to_num  > num) && quick_move) {
-                to_num = num;
+            if((to_num >  num) && quick_move) {
+                to_num =  num;
 /*{{{
 t_log.logSD5("%c NO FORWARD NUM  wrapscan on quick_move", lbb+lbH+lf2);
 }}}*/
@@ -8131,9 +8135,9 @@ if( log_this)
 
 }
 /*}}}*/
-if( log_this) log("%c"+caller+"%c"+consumed_by+"%c"+slot+" "+num+" %c"+(quick_move ? " [quick_move]" : "")
+if( log_this) log("%c"+caller+"%c"+handeled_by+"%c"+slot+" "+num+" %c"+(quick_move ? " [quick_move]" : "")
                   ,lbH+lf5    ,lbL+lf5         ,lbR+lf5           ,lbH+lf4                                );
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /* SENTENCE */
@@ -8297,7 +8301,7 @@ let onMove_6_GRAB_TOOL_PANEL = function(e,x,y)
 /*{{{*/
 let   caller = "onMove_6_GRAB_TOOL_PANEL";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
-    log_this = log_this && !mousemove_consumed_by; /* LOG FIRST MOVE ONLY */
+    log_this = log_this && !mousemove_handeled_by; /* LOG FIRST MOVE ONLY */
 
 if( log_this) log("%c"+caller, lbH+lf6);
 /*}}}*/
@@ -8305,19 +8309,19 @@ if( log_this) log("%c"+caller, lbH+lf6);
     if( onWork_MOVABLE_CHILD) return "";
     if(!onWork_PANEL        ) return "";
 
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
 if( t_util.is_el_or_child_of_class(onWork_EL, "zoomed")    )
-        consumed_by = "zoomed onWork_EL=["+t_util.get_id_or_tag(onWork_EL)+"]";
+        handeled_by = "zoomed onWork_EL=["+t_util.get_id_or_tag(onWork_EL)+"]";
 
     }
     /* PANELS WITH SCROLLABLE CONTENT {{{*/
-    if(!consumed_by && t_touching_a_scrollable_panel(e))
+    if(!handeled_by && t_touching_a_scrollable_panel(e))
     {
 /*{{{
-if( log_this) t_fly.t_log_event_status(caller+" "+consumed_by, lf6);
+if( log_this) t_fly.t_log_event_status(caller+" "+handeled_by, lf6);
 if( log_this) log(onWork_PANEL.id +" .. [scrollHeight "+onWork_PANEL.scrollHeight+"] > [clientHeight "+onWork_PANEL.clientHeight+"]");
 if( log_this) log(onWork_PANEL.id +" .. [scrollWidth  "+onWork_PANEL.scrollWidth +"] > [clientWidth  "+onWork_PANEL.clientWidth +"]");
 }}}*/
@@ -8328,18 +8332,18 @@ if( log_this) log(onWork_PANEL.id +" .. [scrollWidth  "+onWork_PANEL.scrollWidth
         ;
 if( log_this) log(caller+": panel_scrollbar_showing "+panel_scrollbar_showing);
         if( panel_scrollbar_showing )
-            consumed_by = "SCROLLABLE PANEL ["+get_n_lbl(onWork_PANEL)+"]";
+            handeled_by = "SCROLLABLE PANEL ["+get_n_lbl(onWork_PANEL)+"]";
     }
     /*}}}*/
     /* MOVE A PINNED PANEL {{{*/
-    if(!consumed_by && onWork_PANEL.classList.contains(t_data.CSS_PINNED))
+    if(!handeled_by && onWork_PANEL.classList.contains(t_data.CSS_PINNED))
     {
         onMove_5_TOOL_PANEL_PINNED(x, y);
-        consumed_by = "TOOL PINNED ["+get_n_lbl(onWork_PANEL)+"]";
+        handeled_by = "TOOL PINNED ["+get_n_lbl(onWork_PANEL)+"]";
     }
     /*}}}*/
     /* UNHIDE PANELS [pivspot] .. f(!pinned) {{{*/
-    if(!consumed_by && !onWork_PANEL.classList.contains(t_data.CSS_PINNED))
+    if(!handeled_by && !onWork_PANEL.classList.contains(t_data.CSS_PINNED))
     {
         let moving_a_panel
             =                               onWork_PANEL
@@ -8356,8 +8360,8 @@ if( log_this) log(caller+": panel_scrollbar_showing "+panel_scrollbar_showing);
         if( moving_a_panel ) del_el_class(pivspot, t_data.CSS_HIDDEN);
     }
     /*}}}*/
-if(log_this) log("%c"+consumed_by, lbb+lbH+lf6);
-    return consumed_by;
+if(log_this) log("%c"+handeled_by, lbb+lbH+lf6);
+    return handeled_by;
 };
 /*}}}*/
 /*… onMove_6_GRAB_STICKY {{{*/
@@ -8367,13 +8371,13 @@ let onMove_6_GRAB_STICKY = function(e)
 let   caller = "onMove_6_GRAB_STICKY";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
 
-    log_this = log_this && !mousemove_consumed_by; /* LOG FIRST MOVE ONLY */
+    log_this = log_this && !mousemove_handeled_by; /* LOG FIRST MOVE ONLY */
 
 /*{{{
 if( log_this ) t_log.console_clear(caller);
 }}}*/
 if( log_this ) t_fly.t_log_event_status_if_changed(caller,  lf6 );
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* NO STICKY GRABBED {{{*/
 /*{{{
@@ -8397,10 +8401,10 @@ if( log_this) {
                       , lfX[l_x], true);
 }
 
-    if(!sticky) return consumed_by;
+    if(!sticky) return handeled_by;
 
     let onSeekXYL   = t_seek.t_seeker_get_onSeekXYL();
-    consumed_by = onSeekXYL.label;
+    handeled_by = onSeekXYL.label;
     /*}}}*/
     /* DISMISS LONG_PRESS LISTENER .. f(has_moved) {{{*/
     if( is_long_press_pending() )
@@ -8414,7 +8418,7 @@ if( log_this) {
     {
 if( log_this) log("%c NO SEEK ON STICKY_RING", lf8);
 
-        return consumed_by;
+        return handeled_by;
     }
     /*}}}*/
     /* [quick_move] {{{*/
@@ -8466,18 +8470,18 @@ logXXX(caller+": .. onMoveDXY=["+onMoveDXY.x+" "+onMoveDXY.y+"]");
 /*{{{*/
 if( log_this)
 {
-    consumed_by += " ["+get_n_lbl(sticky)+"]";
+    handeled_by += " ["+get_n_lbl(sticky)+"]";
 
     log_key_val_group("STICKY NEXT "+get_n_lbl(sticky)
                       , {   onMoveDXY : onMoveDXY.x+" "+onMoveDXY.y
                         ,  quick_move
                         ,         dir
-                        , consumed_by
+                        , handeled_by
                       }
                       , lfX[sticky ? sticky.num : 2], true);
 }
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /* TOOL CHILD */
@@ -8487,7 +8491,7 @@ let onMove_7_GRAB_TOOL_CHILD = function(e,x,y)
 /*{{{*/
 let   caller = "onMove_7_GRAB_TOOL_CHILD";
 let log_this = LOG_MAP.EV2_MOVE || LOG_MAP.T6_SLOT;
-    log_this = log_this && !mousemove_consumed_by; /* LOG FIRST MOVE ONLY */
+    log_this = log_this && !mousemove_handeled_by; /* LOG FIRST MOVE ONLY */
 
 if( log_this) log("%c"+caller+"%c onWork_EL "+get_n_lbl(onWork_EL)+" %c onWork_MOVABLE_CHILD "+get_n_lbl(onWork_MOVABLE_CHILD), lbH+lf7, lbH+lf6, lbH+lf5);
 /*}}}*/
@@ -8496,7 +8500,7 @@ if(!onWork_EL           ) return "";
 if(!onWork_MOVABLE_CHILD) return "";
 
 /*}}}*/
-    let consumed_by = "MOVING onWork_EL=["+get_n_lbl(onWork_EL)+"] .. mov_src_div=["+get_n_lbl(mov_src_div)+"]";
+    let handeled_by = "MOVING onWork_EL=["+get_n_lbl(onWork_EL)+"] .. mov_src_div=["+get_n_lbl(mov_src_div)+"]";
     /* MOUSE_XY TO PANEL_TOP_LEFT OFFSET .. [ox oy] {{{*/
     let ox = (onDown_XY.x - onDown_TOOL_XY.x);
     let oy = (onDown_XY.y - onDown_TOOL_XY.y);
@@ -8525,7 +8529,7 @@ if(!onWork_MOVABLE_CHILD) return "";
     if( pat_bag9_grab_item_is_mov_div() )
     {
         let bag_at_xy = t_pat_bag9_get_bag_at_xy(e,x,y);
-        consumed_by+= " .. bag_at_xy=["+bag_at_xy.id+"]";
+        handeled_by+= " .. bag_at_xy=["+bag_at_xy.id+"]";
 
         let   e_W = onWork_EL.offsetWidth ;
         let   e_H = onWork_EL.offsetHeight;
@@ -8544,14 +8548,14 @@ if(!onWork_MOVABLE_CHILD) return "";
     }
     /*}}}*/
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*}}}*/
 /** UP {{{*/
 /*{{{*/
 
-let mouseup_consumed_by = "";
+let mouseup_handeled_by = "";
 /*}}}*/
 /* t_pointerup_listener {{{*/
 /*{{{*/
@@ -8644,7 +8648,7 @@ if( log_this) {
     log_key_val( caller+": details"
                  , {   behavior_TOUCH_ELSE_DESKTOP
                      , t_preventDefault_caller
-                     , t_event_consumed_cause
+                     , t_event_handeled_by
                      , clicked
                      , dblclicked
                      , fullscreen_slot_container   : t_util.get_id_or_tag(fullscreen_slot_container)
@@ -8656,26 +8660,28 @@ if( log_this) {
     t_fly.t_log_event_status(caller, lf8);
 }
 /*}}}*/
-    /* EVENT CONSUME OR BUBBLE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    let                consumed_by = "";                                            let consumed_by_css =  "";
-    if(!consumed_by) { consumed_by = onUp_0_MULTITOUCH         (e                    ); consumed_by_css = lf9; }
-    if(!consumed_by) { consumed_by = onUp_1_TOOL_GRID_TIER_CB  (e, clicked,dblclicked); consumed_by_css = lf1; }
-    if(!consumed_by) { consumed_by = onUp_2_SLOT_CONTAINER_CB  (e, clicked           ); consumed_by_css = lf2; }
-    if(!consumed_by) { consumed_by = onUp_3_STICKY_TOOL_CB     (e, clicked,dblclicked); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onUp_3_SEEKER_TOOL_CB     (e, clicked,dblclicked); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onUp_3_DOC_TOOL_CB        (e, clicked,dblclicked); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onUp_4_DOC_TOUCH_CB       (e, clicked,dblclicked); consumed_by_css = lf4; }
-    if(!consumed_by) { consumed_by = onUp_5_TOOL_ONCLICK       (e, clicked,dblclicked); consumed_by_css = lf5; }
-    if(!consumed_by) { consumed_by = onUp_7_DOC_SENTENCES      (e, clicked,dblclicked); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = onUp_7_DOC_WORDING        (e, clicked,dblclicked); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = onUp_8_ON_EVENT_CONSUMED  (e                    ); consumed_by_css = lf8; }
-    if(!consumed_by) { consumed_by = e.type+" BUBBLING";                                consumed_by_css = lf9; }
-if( tag_this && !mouseup_consumed_by) log("%c"+consumed_by, lbH+consumed_by_css);
-    mouseup_consumed_by = consumed_by;
+    /* EVENT HANDLE OR BUBBLE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    let                handeled_by = "";                                            let handeled_by_css =  "";
+    if(!handeled_by) { handeled_by = onUp_0_MULTITOUCH         (e                    ); handeled_by_css = lf9; }
+    if(!handeled_by) { handeled_by = onUp_1_TOOL_GRID_TIER_CB  (e, clicked,dblclicked); handeled_by_css = lf1; }
+    if(!handeled_by) { handeled_by = onUp_2_SLOT_CONTAINER_CB  (e, clicked           ); handeled_by_css = lf2; }
+    if(!handeled_by) { handeled_by = onUp_3_STICKY_TOOL_CB     (e, clicked,dblclicked); handeled_by_css = lf3; }
+    if(!handeled_by) { handeled_by = onUp_3_SEEKER_TOOL_CB     (e, clicked,dblclicked); handeled_by_css = lf3; }
+    if(!handeled_by) { handeled_by = onUp_3_DOC_TOOL_CB        (e, clicked,dblclicked); handeled_by_css = lf3; }
+    if(!handeled_by) { handeled_by = onUp_4_DOC_TOUCH_CB       (e, clicked,dblclicked); handeled_by_css = lf4; }
+    if(!handeled_by) { handeled_by = onUp_5_TOOL_ONCLICK       (e, clicked,dblclicked); handeled_by_css = lf5; }
+    if(!handeled_by) { handeled_by = onUp_7_DOC_SENTENCES      (e, clicked,dblclicked); handeled_by_css = lf7; }
+    if(!handeled_by) { handeled_by = onUp_7_DOC_WORDING        (e, clicked,dblclicked); handeled_by_css = lf7; }
+    if(!handeled_by) { handeled_by = onUp_8_ON_EVENT_HANDELED  (e                    ); handeled_by_css = lf8; }
+    if(!handeled_by) { handeled_by = e.type+" BUBBLING";                                handeled_by_css = lf9; }
+/*{{{*/
+if( tag_this  && !mouseup_handeled_by) log("%c"+handeled_by, lbH+handeled_by_css);
+/*}}}*/
+    mouseup_handeled_by = handeled_by;
     /*............................*/ onUp_9_ON_MOUSEUP_DONE    (e);
-    /* DONE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
+    /* DONE @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
 
-    /* consumed_by {{{*/
+    /* handeled_by {{{*/
 /*{{{
 log("%c"+caller+":", lbF);
 log("_ e..........path[0]=["+get_n_lbl(e.path[0])+"]");
@@ -8684,14 +8690,14 @@ log("_ e..........bubbles=["+e.bubbles+"]");
 log("_ e.......cancelable=["+e.cancelable+"]");
 log("_ e.....cancelBubble=["+e.cancelBubble+"]");
 log("_ e.defaultPrevented=["+e.defaultPrevented+"]");
-log(consumed_by);
-if( log_this) log("%c"+caller+" %c "+consumed_by, lbL+lf8, lbR+lf9);
+log(handeled_by);
+if( log_this) log("%c"+caller+" %c "+handeled_by, lbL+lf8, lbR+lf9);
 }}}*/
 
-if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+consumed_by, consumed_by_css);
-    if(consumed_by && log_this)
+if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+handeled_by, handeled_by_css);
+    if(handeled_by && log_this)
         t_fly.t_log_transcript_event_bot("<span class='big'>"+ t_data.SYMBOL_UP_ARROW +"</span>"
-            +                      "<em>"+               consumed_by     +"</em>");
+            +                      "<em>"+               handeled_by     +"</em>");
 
     /*}}}*/
     /* rewind nested collapsed logging {{{*/
@@ -8709,8 +8715,8 @@ let onUp_0_MULTITOUCH = function(e)
 if( prop.get(t_data.PIN_SEEKSPOT) ) log("%c DOWN-UP %c"+((onUp_MS - onDown_MS) / 1000), lbL+lf4,lbR+lf4);
 }}}*/
 /*{{{
-    let    consumed_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
-    return consumed_by;
+    let    handeled_by = ((onDown_TOUCHES > 1) ? "MULTI-TOUCH x"+onDown_TOUCHES : "");
+    return handeled_by;
 }}}*/
 };
 /*}}}*/
@@ -8729,13 +8735,13 @@ if( log_this) t_fly.t_log_event_status(caller, lf1);
 
     let is_on_grid = call_t_grid_IS_ON_GRID(caller);
 
-    let consumed_by = "";
+    let handeled_by = "";
 
     if(!is_on_grid && has_moved)
     {
         if(check_big_moved(caller) ) {
 if( log_this) logBIG("BIG MOVE .. CLICK DENY", lf2);
-            return consumed_by;
+            return handeled_by;
         }
         else {
 if( log_this) logBIG("SMALL MOVE .. CLICK ALLOW", lf7);
@@ -8744,24 +8750,24 @@ if( log_this) logBIG("SMALL MOVE .. CLICK ALLOW", lf7);
 
 /*}}}*/
     /* MOVING TOOLS ON GRID .. f(hotring) {{{*/
-    if(!consumed_by && dblclicked && !is_on_grid)
+    if(!handeled_by && dblclicked && !is_on_grid)
     {
         if(onWork_EL == hotring) {
-            consumed_by     = "MOVING TOOLS ON GRID";
+            handeled_by     = "MOVING TOOLS ON GRID";
 
             t_move_TOOLS_ON_GRID("DOUBLE CLICK");
         }
     }
     /*}}}*/
     /*  TOOLS ARE ON GRID {{{*/
-    if(   !consumed_by
+    if(   !handeled_by
        &&  is_on_grid
       ) {
         /* MOVING TOOLS OFF GRID .. f(hotring || dimm_mask) {{{*/
         if((onWork_EL == hotring) || dimm_mask_is(onWork_EL))
         {
             if( !was_a_too_early_last_result() ) {
-                consumed_by = " MOVING TOOLS OFF GRID";
+                handeled_by = " MOVING TOOLS OFF GRID";
 
                 t_move_TOOLS_OFF_GRID("CLICK");
 
@@ -8775,7 +8781,7 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
         /*}}}*/
         /* ELSE: SELECT TOOLS ON GRID {{{*/
         else {
-            consumed_by = " SELECT TOOLS ON GRID ";
+            handeled_by = " SELECT TOOLS ON GRID ";
 
             t_grid.t_grid_TOOLS_SELECT(e);
         }
@@ -8783,16 +8789,16 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
     }
     /*}}}*/
     /* NOT ON GRID .. ACTIVATE TIER0 TOOLS {{{*/
-    if(   !consumed_by
+    if(   !handeled_by
        && !is_on_grid
        && (onWork_EL == hotring)
       ) {
         prop.set(t_data.TOOLS_TIER2, false);
         if( t_activate_tools_tier1("CLICK") ) {
-            consumed_by = "HOTSPOT CLICKED .. SELECT "+ t_data.TOOLS_TIER2;
+            handeled_by = "HOTSPOT CLICKED .. SELECT "+ t_data.TOOLS_TIER2;
         }
         else {
-            consumed_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
+            handeled_by = "HOTSPOT CLICKED .. NO TOOL PANEL SELECTED";
             if( t_gutter.is_hotspot_IN(hotspot, "HOTSPOT CLICKED") ) {
                 t_tools_show  ();
             }
@@ -8802,8 +8808,8 @@ if(log_this) logBIG("TOO EARLY: NOT MOVING TOOLS OFF GRID");
         }
     }
     /*}}}*/
-if(log_this) log(consumed_by);
-    return consumed_by;
+if(log_this) log(handeled_by);
+    return       handeled_by;
 };
 /*}}}*/
 /*… onUp_2_SLOT_CONTAINER_CB {{{*/
@@ -8849,11 +8855,11 @@ if(log_this) logBIG("TOO EARLY: FOR "+ caller);                                 
         :                             onWork_EL
     ;
 
-    let consumed_by               =  "ON "+ t_util.get_id_or_tag( onWork_EL );
+    let handeled_by               =  "ON "+ t_util.get_id_or_tag( onWork_EL );
 
 if(log_this) {
     log_key_val(   caller
-               , { consumed_by
+               , { handeled_by
                  , clicked_COPY_TO_CLIPBOARD
                  , clicked_MAGNIFY_START
                  , clicked_PREV
@@ -8883,12 +8889,12 @@ logXXX("#"+i+" "+child.className+" .. on_grid_top=["+child.on_grid_top+"]");
     }
     /*}}}*/
     /* MAGNIFY_START {{{*/
-    if     (clicked_MAGNIFY_START                      ) { consumed_by = clicked_MAGNIFY_START    +" .. "+consumed_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_PREV                               ) { consumed_by = clicked_PREV             +" .. "+consumed_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_NEXT                               ) { consumed_by = clicked_NEXT             +" .. "+consumed_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_MONO                               ) { consumed_by = clicked_MONO             +" .. "+consumed_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_MAGNIFY_STOP                       ) { consumed_by = clicked_MAGNIFY_STOP     +" .. "+consumed_by; t_slot_container_set_fullscreen( clicked_target ); }
-    else if(clicked_COPY_TO_CLIPBOARD && clicked_target) { consumed_by = clicked_COPY_TO_CLIPBOARD+" .. "+consumed_by;
+    if     (clicked_MAGNIFY_START                      ) { handeled_by = clicked_MAGNIFY_START    +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_PREV                               ) { handeled_by = clicked_PREV             +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_NEXT                               ) { handeled_by = clicked_NEXT             +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_MONO                               ) { handeled_by = clicked_MONO             +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_MAGNIFY_STOP                       ) { handeled_by = clicked_MAGNIFY_STOP     +" .. "+handeled_by; t_slot_container_set_fullscreen( clicked_target ); }
+    else if(clicked_COPY_TO_CLIPBOARD && clicked_target) { handeled_by = clicked_COPY_TO_CLIPBOARD+" .. "+handeled_by;
         let container_to_copy_from
             = (clicked_target.id == "button_COPY_ALL_parent_div")
             ?  clicked_target.parentElement
@@ -8912,22 +8918,22 @@ log(container_to_copy_from.innerHTML)
     /* SCROLL TO [clicked_target] .. [dimm_stop] {{{*/
     else if( clicked_target )
     {
-        consumed_by += " .. SCROLL TO "+t_onclick_target_handle_scroll_to_slot_num(clicked_target, caller);
+        handeled_by += " .. SCROLL TO "+t_onclick_target_handle_scroll_to_slot_num(clicked_target, caller);
 
         dimm_stop( caller );
     }
     /*}}}*/
     /* SCROLL BACK TO DIM START POINT .. [dimm_stop] {{{*/
     else {
-        consumed_by += " .. SCROLL BACK TO DIM START POINT";
+        handeled_by += " .. SCROLL BACK TO DIM START POINT";
 
         dom_scroll.t_window_scrollTo(0, onDown_SCROLL_XY.y);
 
         dimm_stop( caller );
     }
     /*}}}*/
-if(log_this)  log("%c"+caller+":%c"+LF+consumed_by, lf2, lbF+lf2);
-    return consumed_by;
+if(log_this)  log("%c"+caller+":%c"+LF+handeled_by, lf2, lbF+lf2);
+    return handeled_by;
 };
 /*}}}*/
 /*… onUp_3_STICKY_TOOL_CB {{{*/
@@ -8940,20 +8946,20 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 if( log_this) t_fly.t_log_event_status(caller, lf3);
 /*}}}*/
     /* EDITING STICKY {{{*/
-    let consumed_by = "";
+    let handeled_by = "";
     let sticky      = t_sticky.t_sticky_get_onWork_STICKY();
     if( sticky && has_el_class(sticky, t_data.CSS_HAS_FOCUS))
     {
 if( log_this) log("%c sticky.touched=["+sticky.touched+"]", lf3);
 
         if( t_sticky.t_sticky_is_EDITING( sticky ) )
-            consumed_by = "IGNORING EDITED STICKY "+sticky.id;
+            handeled_by = "IGNORING EDITED STICKY "+sticky.id;
 
         else if( t_sticky.t_sticky_EDIT_DONE() )
-            consumed_by = "LEAVING  EDITED STICKY "+sticky.id;
+            handeled_by = "LEAVING  EDITED STICKY "+sticky.id;
 
-if( log_this) log(caller+"%c consumed_by=["+consumed_by+"]", lbH+lf3);
-        return consumed_by;
+if( log_this) log(caller+"%c handeled_by=["+handeled_by+"]", lbH+lf3);
+        return handeled_by;
     }
     let sticky_is_EDITING   = t_sticky.t_sticky_is_EDITING( sticky );
     /*}}}*/
@@ -8982,7 +8988,7 @@ if( log_this) {
     let rejected_by = "";
 /*}}}*/
     /* STICKY CLICK .. TRANSITION {{{*/
-    if(!consumed_by && onDown_sticky)
+    if(!handeled_by && onDown_sticky)
     {
         rejected_by
             = !clicked                          ?     "NO CLICK"
@@ -8996,18 +9002,18 @@ if( log_this) {
            && !has_moved
            && !prop.get(t_data.EDIT_OR_STAGE)
           )
-            consumed_by = t_sticky.t_sticky_CLICK_CB(sticky);
+            handeled_by = t_sticky.t_sticky_CLICK_CB(sticky);
 
     }
     /*}}}*/
 /*{{{*/
 if(log_this) {
-    if     (consumed_by) log("%c"+caller+":%c consumed_by %c STICKY "+consumed_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
+    if     (handeled_by) log("%c"+caller+":%c handeled_by %c STICKY "+handeled_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
     else if(rejected_by) log("%c"+caller+":%c rejected_by %c PAGE "  +rejected_by, lbb+lbH+lf3, lbL, lbb+lbH+lf8);
-    else                 log("%c"+caller+":%c NOT CONSUMED"                      , lbb+lbH+lf3,      lbb+lbH+lf8);
+    else                 log("%c"+caller+":%c NOT HANDELED"                      , lbb+lbH+lf3,      lbb+lbH+lf8);
 }
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*… onUp_3_SEEKER_TOOL_CB {{{*/
@@ -9019,20 +9025,16 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) t_fly.t_log_event_status(caller, lf3);
 /*}}}*/
-
-    let consumed_by = "";
-
-    if( clicked ) consumed_by = t_seek.t_seeker_onClick();
-
-if(log_this && consumed_by) log("%c"+caller+":%c consumed_by %c SEEKER: "+consumed_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
-
-    return consumed_by;
+    let          handeled_by = "";
+    if( clicked) handeled_by = t_seek.t_seeker_onClick();
+if(log_this   && handeled_by) log("%c"+caller+":%c handeled_by %c SEEKER: "+handeled_by, lbb+lbH+lf3, lbL, lbb+lbH+lf4);
+    return       handeled_by;
 };
 /*}}}*/
 /*… onUp_3_DOC_TOOL_CB {{{*/
 let onUp_3_DOC_TOOL_CB = function(e,clicked,dblclicked)
 {
-    /* clicked dblclicked consumed TOOL {{{*/
+    /* clicked dblclicked handeled TOOL {{{*/
 let   caller = "onUp_3_DOC_TOOL_CB";
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
@@ -9040,9 +9042,9 @@ if( log_this) log("%c"+caller, lf3);
 
     if( !onWork_EL                  ) return "";
     if( dblclicked                  ) return "";
-    if( t_event_has_been_consumed() ) return "";
+    if( t_event_has_been_handeled() ) return "";
 
-    let consumed_by = "";
+    let handeled_by = "";
     /*}}}*/
     /* [clicked doc_div] .. (PLAYGROUND EMBEDDED TOOL) {{{*/
     if( clicked )
@@ -9052,11 +9054,11 @@ if( log_this) log("%c"+caller, lf3);
             :         null;
         if(doc_div) {
             if(has_el_class(onWork_EL, CSS_CLOSEPIN)) {
-                consumed_by     = "EMBEDDED TOOL: CLOSING "+doc_div.id;
+                handeled_by     = "EMBEDDED TOOL: CLOSING "+doc_div.id;
                 t_fly.t_doc_div_clear(doc_div.id);
             }
             else {
-                consumed_by     = "EMBEDDED TOOL: CLICK IGNORED";
+                handeled_by     = "EMBEDDED TOOL: CLICK IGNORED";
             }
         }
         else {
@@ -9070,13 +9072,13 @@ if(log_this) log("NO DOC EMBEDDED TOOL");
           && !has_moved
           && (onWork_PANEL == hotspot)
       ) {
-        consumed_by = "hotspot LONG CLICK: ... DO SOMETHING";
+        handeled_by = "hotspot LONG CLICK: ... DO SOMETHING";
 
     }
 }}}*/
     /*}}}*/
-if(log_this) log(consumed_by);
-    return consumed_by;
+if(log_this) log(handeled_by);
+    return       handeled_by;
 };
 /*}}}*/
 /*… onUp_4_DOC_TOUCH_CB {{{*/
@@ -9088,7 +9090,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) log("%c"+caller, lf4);
 /*}}}*/
-    /* rejected_by .. f(!clicked OR dblclicked OR t_event_has_been_consumed) {{{*/
+    /* rejected_by .. f(!clicked OR dblclicked OR t_event_has_been_handeled) {{{*/
     let is_a_tool               = t_is_a_tool_el(onWork_EL, caller);
     let is_an_embedded_doc_tool = t_is_an_embedded_doc_tool(onWork_EL,log_this);
 
@@ -9099,7 +9101,7 @@ if( log_this) log("%c"+caller, lf4);
         : ( prop.get( t_data.ANCHOR_FREEZE )) ? t_data.ANCHOR_FREEZE
         : ( prop.get( t_data.WORDING       )) ? t_data.WORDING
         : ( dblclicked                      ) ? "dblclicked"
-        : ( t_event_has_been_consumed()     ) ? t_event_consumed_cause
+        : ( t_event_has_been_handeled()     ) ? t_event_handeled_by
         :                                        ""
     ;
 
@@ -9121,11 +9123,11 @@ if( log_this) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf4, lbA, lf9);
     /*}}}*/
     /* el_event_handler .. CALLING {{{*/
 if( log_this) log("...handler=["+el_event_handler.label+"]");
-    let consumed_by = onUp_45_el_event_handler(e, el_event_handler);
+    let handeled_by = onUp_45_el_event_handler(e, el_event_handler);
 
     /*}}}*/
-if( log_this) log("%c"+caller+"%c consumed_by %c"+consumed_by, lbL, lbC, lbR+lf4);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c handeled_by %c"+handeled_by, lbL, lbC, lbR+lf4);
+    return handeled_by;
 };
 /*}}}*/
 /*… onUp_5_TOOL_ONCLICK {{{*/
@@ -9138,14 +9140,14 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 if( log_this) t_fly.t_log_event_status(caller+"(clicked "+clicked+")", lf5);
 
     let rejected_by
-    = ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
+    = ( t_event_has_been_handeled()       ) ? t_event_handeled_by
     : (!t_is_a_tool_el(onWork_EL, caller) ) ? "NOT A TOOL ["+get_n_lbl(onWork_EL)+"]"
     :                                          "";
 if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf5, lbA, lf9);
     if(rejected_by) return "";
 if( log_this) log("%c"+caller, lf5);
 
-    let consumed_by = "ON TOOL .. ["+get_n_lbl(onWork_EL)+"]";
+    let handeled_by = "ON TOOL .. ["+get_n_lbl(onWork_EL)+"]";
     /*}}}*/
     /* PANEL or [sticky] MOVED .. TOOLS LAYOUT STORAGE UPDATE {{{*/
     let sticky = t_sticky.t_sticky_get_onWork_STICKY();
@@ -9193,9 +9195,9 @@ logXXX(caller+": ...dblclicked=["+dblclicked+"]");
 }}}*/
 
     if(dblclicked) {
-        if(      clear_DBLCLICK_for_panel( onWork_PANEL  ) ) { consumed_by += " DBLCLICK PANEL CLEAR"; t_clear(caller);                                  }
-        else if( filter_STANDBY_for_panel( onWork_PANEL  ) ) { consumed_by += " DBLCLICK STANDBY"    ; t_onClick_1_onWork_EL(0, true); }
-        else if( shake_ON_DBLCLICK_for   ( onWork_PANEL  ) ) { consumed_by += " DBLCLICK TOOL PANEL" ;
+        if(      clear_DBLCLICK_for_panel( onWork_PANEL  ) ) { handeled_by += " DBLCLICK PANEL CLEAR"; t_clear(caller);                                  }
+        else if( filter_STANDBY_for_panel( onWork_PANEL  ) ) { handeled_by += " DBLCLICK STANDBY"    ; t_onClick_1_onWork_EL(0, true); }
+        else if( shake_ON_DBLCLICK_for   ( onWork_PANEL  ) ) { handeled_by += " DBLCLICK TOOL PANEL" ;
 
             /* Toggle-EQUIP clicked panel toolpins */
             if(onWork_EL == onWork_PANEL)
@@ -9220,19 +9222,19 @@ logXXX(caller+": ...dblclicked=["+dblclicked+"]");
       ) {
         if( clicked ) {
             prop.toggle( t_data.MASK_OR_HIDE );
-            consumed_by += " CLICK .. NODE TO HIDE "+ (prop.get( t_data.MASK_OR_HIDE ) ? "MASKED" : "HIDDEN");
+            handeled_by += " CLICK .. NODE TO HIDE "+ (prop.get( t_data.MASK_OR_HIDE ) ? "MASKED" : "HIDDEN");
         }
         /* TODO: to make [dblclicked] work .. [clicked] should be prevented somehow */
 /*{{{
         if(dblclicked) {
-            consumed_by += " DBLCLICK .. NODE TO CLEAR HIDDEN NODES";
+            handeled_by += " DBLCLICK .. NODE TO CLEAR HIDDEN NODES";
             t_hide.dom_hide1_reset();
         }
 }}}*/
     }
     /*}}}*/
 /*{{{
-logBIG(caller+": "+consumed_by, lbb+lf7);
+logBIG(caller+": "+handeled_by, lbb+lf7);
 }}}*/
     /* CLICKED SEEK TOOL .. HIDING {{{*/
     if(clicked && is_a_seeker_target(onWork_EL)  && t_seek.t_seeker_has_TARGET())
@@ -9242,24 +9244,24 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
 
         t_seek.t_seeker_PU_hide("instant");
 
-        consumed_by = "";
+        handeled_by = "";
     }
     /*}}}*/
     /* CLICKED .. PIVOT-MAGNIFY .. CLICK-HANDLER .. [t_onClick_1_onWork_EL] {{{*/
     else if( clicked && !has_moved) {
-        if     ( sticky             == onWork_EL                 ) { consumed_by += " .. CLICK [sticky]"       ; t_onClick_1_onWork_EL(               ); }
-        else if( dimm_mask          == onWork_EL                 ) { consumed_by += " .. CLICK [dimm_mask]"    ; t_onClick_1_onWork_EL(               ); }
-        else if( filter_SEL_CLICK_for (onWork_EL               ) ) { consumed_by += " .. CLICK [DOC SEL CLICK]"; t_onClick_1_onWork_EL(0, false       ); }
-        else if( has_el_class         (onWork_EL, CSS_PUSH_PIN ) ) { consumed_by += " .. CLICK [push_pin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_el_class         (onWork_EL, CSS_CLOSEPIN ) ) { consumed_by += " .. CLICK [closepin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_el_class         (onWork_EL, CSS_SCALEPIN ) ) { consumed_by += " .. CLICK [scalepin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_el_class         (onWork_EL, CSS_CLEARPIN ) ) { consumed_by += " .. CLICK [clearpin]"     ; t_onClick_1_onWork_EL(               ); }
-        else if( has_onclick_for      (onWork_EL               ) ) { consumed_by += " .. CLICK [onWork_EL]"    ; t_onClick_1_onWork_EL(               ); }
-        else if( has_onclick_for      (onWork_PANEL            ) ) { consumed_by += " .. CLICK [onWork_PANEL]" ; t_onClick_1_onWork_EL(T_ONCLICK_DELAY); }
+        if     ( sticky             == onWork_EL                 ) { handeled_by += " .. CLICK [sticky]"       ; t_onClick_1_onWork_EL(               ); }
+        else if( dimm_mask          == onWork_EL                 ) { handeled_by += " .. CLICK [dimm_mask]"    ; t_onClick_1_onWork_EL(               ); }
+        else if( filter_SEL_CLICK_for (onWork_EL               ) ) { handeled_by += " .. CLICK [DOC SEL CLICK]"; t_onClick_1_onWork_EL(0, false       ); }
+        else if( has_el_class         (onWork_EL, CSS_PUSH_PIN ) ) { handeled_by += " .. CLICK [push_pin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_el_class         (onWork_EL, CSS_CLOSEPIN ) ) { handeled_by += " .. CLICK [closepin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_el_class         (onWork_EL, CSS_SCALEPIN ) ) { handeled_by += " .. CLICK [scalepin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_el_class         (onWork_EL, CSS_CLEARPIN ) ) { handeled_by += " .. CLICK [clearpin]"     ; t_onClick_1_onWork_EL(               ); }
+        else if( has_onclick_for      (onWork_EL               ) ) { handeled_by += " .. CLICK [onWork_EL]"    ; t_onClick_1_onWork_EL(               ); }
+        else if( has_onclick_for      (onWork_PANEL            ) ) { handeled_by += " .. CLICK [onWork_PANEL]" ; t_onClick_1_onWork_EL(T_ONCLICK_DELAY); }
         else {
             let el_event_handler =  t_util.get_el_event_handler(onWork_EL, caller);
             if( el_event_handler )
-                consumed_by += onUp_45_el_event_handler(e, el_event_handler);
+                handeled_by += onUp_45_el_event_handler(e, el_event_handler);
         }
     }
     /*}}}*/
@@ -9272,14 +9274,14 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
 }}}*/
           ) {
             if(mov_dst_div != mov_src_div)
-                consumed_by += t_pat_bag9_move_pattern_from_src_to_dst_div();
+                handeled_by += t_pat_bag9_move_pattern_from_src_to_dst_div();
             else
-                consumed_by += " MOVING PATTERN IN "+get_n_lbl(mov_dst_div);
+                handeled_by += " MOVING PATTERN IN "+get_n_lbl(mov_dst_div);
         }
         /*}}}*/
         /* TOOL PANEL MOVED {{{*/
         else if(onWork_PANEL) {
-            consumed_by += " TOOL MOVED";
+            handeled_by += " TOOL MOVED";
 
             /* TRANSCRIPT MOVED {{{*/
             let is_a_pinned_transcript
@@ -9293,7 +9295,7 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
             {
                 let  xy = t_util.get_el_xy(onWork_PANEL, caller);
                 t_store.t_store_set_value(key, JSON.stringify(xy));
-                consumed_by += " (a pinned transcript)";
+                handeled_by += " (a pinned transcript)";
             }
             else {
                 t_store.t_store_set_value(key, null);
@@ -9304,10 +9306,10 @@ if( log_this) log("%c clicked ON %c SEEKER %c"+t_seek.t_seeker_get_TOOL_label()+
     }
     /*}}}*/
     /* TODO - make clear what is prevented by this call... */
-    if(consumed_by) t_event_add_e_consumed_by(e, consumed_by);
+    if(handeled_by) t_event_add_e_handeled_by(e, handeled_by);
 
-if( log_this) log("...return %c"+consumed_by, lbH+lf5);
-    return consumed_by;
+if( log_this) log("...return %c"+handeled_by, lbH+lf5);
+    return handeled_by;
 };
 /*}}}*/
 /*…   shake_ON_DBLCLICK_for {{{*/
@@ -9451,7 +9453,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
 if( log_this) log("%c"+caller, lbb+lf7);
 /*}}}*/
-    let consumed_by = "";
+    let handeled_by = "";
     /* MOBILE el_event_handler .. CALLING {{{*/
 
 if( log_this) log("behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP+"]");
@@ -9459,25 +9461,25 @@ if( log_this) log("t_preventDefault_caller=["+t_preventDefault_caller+"]");
 
     if(behavior_TOUCH_ELSE_DESKTOP && t_preventDefault_caller)
     {
-        consumed_by = "MOBILE  CALLING EVENT HANDLER ["+ get_n_lbl(onWork_EL) +"] ["+el_event_handler.label+"] HANDLER";
+        handeled_by = "MOBILE  CALLING EVENT HANDLER ["+ get_n_lbl(onWork_EL) +"] ["+el_event_handler.label+"] HANDLER";
 
         if(t_preventDefault_caller) t_restoreDefault("ON TOUCH UP");
 
         el_event_handler.handler(e);
-        t_cache_armed_by( consumed_by );
+        t_cache_armed_by( handeled_by );
     }
     /*}}}*/
     /* DESKTOP DOC EVENT HANDLER .. BUBBLING {{{*/
     else {
-        consumed_by = "BUBBLING TO DOC EVENT HANDLER: ["+ el_event_handler.label +"]";
+        handeled_by = "BUBBLING TO DOC EVENT HANDLER: ["+ el_event_handler.label +"]";
 /*{{{
-t_fly.t_fly_tooltip(consumed_by);
-t_fly.t_log_event_status(caller+" "+consumed_by, lf5);
+t_fly.t_fly_tooltip(handeled_by);
+t_fly.t_log_event_status(caller+" "+handeled_by, lf5);
 }}}*/
     }
     /*}}}*/
-if( log_this) log("%c"+caller+"%c consumed_by %c"+consumed_by, lbL, lbC, lbR+lf3);
-    return consumed_by;
+if( log_this) log("%c"+caller+"%c handeled_by %c"+handeled_by, lbL, lbC, lbR+lf3);
+    return handeled_by;
 };
 /*}}}*/
 
@@ -9497,7 +9499,7 @@ if(!is_a_DOM_LOAD_featured_function(caller)) return "";
         = (!clicked                           ) ? "!clicked"
         : ( has_moved                         ) ? has_moved
         : (onDown_TOUCHES > 1                 ) ? ""
-        : ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
+        : ( t_event_has_been_handeled()       ) ? t_event_handeled_by
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
@@ -9507,7 +9509,7 @@ if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf
 if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()+"%c onDown_TOUCHES=["+onDown_TOUCHES+"]"
                    ,lf7        ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8]  ,lbH+lfX[dblclicked ? 5:8]       ,lbH+lf8                               );
 
-    let consumed_by = "";
+    let handeled_by = "";
     /*}}}*/
     /* [container   clicked] .. RESTORING CONTAINER SENTENCES .. f(on a sentence container) {{{*/
     let { container , cells } = dom_sentence.t_SENTENCE_GET_EL_CONTAINER( onDown_EL );
@@ -9517,30 +9519,30 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         if( cells )
         {
             for(let i=0; i < cells.length; ++i)
-                consumed_by
+                handeled_by
                     =     t_sentence.t_SENTENCE_RESTORE_EL(cells[i], e)
-                    ||    consumed_by
+                    ||    handeled_by
             ;
         }
 
         /*}}}*/
         /* RESTORING SINGLE CONTAINER {{{*/
-        if(!consumed_by)
+        if(!handeled_by)
         {
             if(!t_util.is_el_child_of_id(onWork_EL, "log_popup_div") )
             {
 
-                consumed_by = t_sentence.t_SENTENCE_RESTORE_EL(container, e);
+                handeled_by = t_sentence.t_SENTENCE_RESTORE_EL(container, e);
             }
             else {
                 if( t_util.is_el_child_of_class(onWork_EL, "xpath") )
                 {
-                    consumed_by = "CLOSING LOG POPUP";
+                    handeled_by = "CLOSING LOG POPUP";
 
                     t_popup.log_popup_hide();
                 }
                 else {
-                    consumed_by = "RESTORING ALL CONTAINERS SENTENCES";
+                    handeled_by = "RESTORING ALL CONTAINERS SENTENCES";
 
                     t_sentence.t_SENTENCE_RESTORE_ALL( e );
                 }
@@ -9550,11 +9552,11 @@ if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicke
         drag_cursor.set_mouseUP_display_state(false);
     }
     /*}}}*/
-    if( consumed_by )
-        t_event_set_e_consumed_by(e, consumed_by);
+    if( handeled_by )
+        t_event_set_e_handeled_by(e, handeled_by);
 
-if(log_this && consumed_by) log("%c"+consumed_by, lbb+lbH+lf7);
-    return consumed_by;
+if(log_this && handeled_by) log("%c"+handeled_by, lbb+lbH+lf7);
+    return     handeled_by;
 };
 /*}}}*/
 /*… onUp_7_DOC_WORDING {{{*/
@@ -9569,7 +9571,7 @@ let log_this = !onDown_SHIFT && (LOG_MAP.EV3_UP || LOG_MAP.T1_DOM_LOAD);
         = (!clicked                           ) ? "!clicked"
         : ( has_moved                         ) ? has_moved
         : (onDown_TOUCHES > 1                 ) ? ""
-        : ( t_event_has_been_consumed()       ) ? t_event_consumed_cause
+        : ( t_event_has_been_handeled()       ) ? t_event_handeled_by
         : ( t_is_a_tool_el(onWork_EL, caller) ) ? "[onWork_EL] IS A TOOL"
         : ( t_seek.t_seeker_PU_is_active()    ) ? "[seeker_PU] IS ACTIVE"
         :                                          "";
@@ -9579,16 +9581,16 @@ if( log_this && rejected_by) log("%c"+caller+"%c rejected_by %c"+rejected_by, lf
 if( log_this) log("%c"+caller+"%c clicked "+clicked  +"%c dblclicked "+dblclicked+"%c was_a_click "+was_a_click()
                   ,lf7         ,lbL+lfX[clicked ? 5:8] ,lbR+lfX[dblclicked ? 5:8] ,lbH+lfX[dblclicked ? 5:8]     );
 
-    let consumed_by = "";
+    let handeled_by = "";
     /*}}}*/
     /* DOC [clicked   ] .. WORD SELECTION {{{*/
-    if(!consumed_by && !(dblclicked || (onDown_TOUCHES > 1)))
+    if(!handeled_by && !(dblclicked || (onDown_TOUCHES > 1)))
     {
         if( was_a_misclick() )
         {
 if(log_this) logBIG("WAS A MISSCLICK", lf3);
 
-            consumed_by = "DOC MISSCLICK";
+            handeled_by = "DOC MISSCLICK";
 
         }
         else {
@@ -9596,20 +9598,20 @@ if(log_this) logBIG("WAS A MISSCLICK", lf3);
             if( t_seek.t_seeker_has_TARGET() )
             {
                 let slot    = t_get_onWork_EL_slot();
-                consumed_by = "DOC CLICK: CLEAR SLOT #"+slot;
+                handeled_by = "DOC CLICK: CLEAR SLOT #"+slot;
 
                 clear_clicked_slot( slot );
             }
             /*}}}*/
             /* 2/3 -!t_data.EDIT_OR_STAGE ON HOTSPOT IN GUTTER .. HIDE CONTAINER {{{ */
-            if(!consumed_by && prop.get( t_data.EDIT_OR_STAGE ))
+            if(!handeled_by && prop.get( t_data.EDIT_OR_STAGE ))
             {
-                consumed_by = t_tools_hide_onDown_XY();
+                handeled_by = t_tools_hide_onDown_XY();
 
             }
             /*}}}*/
             /* 3/3 - ON A DOC WORD .. ADD A SELECTION {{{*/
-            else if(!consumed_by && onWork_EL)
+            else if(!handeled_by && onWork_EL)
             {
                 /* [SELECT WORD] .. (NO EVENT HANDLER) {{{*/
                 let has_event_handler       = t_util.get_el_event_handler(onWork_EL,caller);
@@ -9627,34 +9629,34 @@ if( log_this) log_key_val(    "ON A DOC WORD"
 
                 if(user_select_allowed && (!has_event_handler || !is_an_embedded_doc_tool))
                 {
-                    consumed_by = "DOC CLICK .. NO HANDLER for ["+t_util.get_n_lbl(onWork_EL)+"]";
+                    handeled_by = "DOC CLICK .. NO HANDLER for ["+t_util.get_n_lbl(onWork_EL)+"]";
 
                     /* no default to prevent from */
 
-                    onUp_7_DOC_CB_CLICK_WORD(consumed_by);
+                    onUp_7_DOC_CB_CLICK_WORD(handeled_by);
                 }
                 /*}}}*/
                 /* [EVENT HANDLER FREEZED OR BUBBLE TO] .. OR .. [CLICK WORD] {{{*/
                 else {
                     if(is_an_embedded_doc_tool)
                     {
-if(log_this) log("DOC CLICK .. NOT CONSUMED .. EMBEDDED DOC TOOL "+get_id_or_tag(onWork_EL));
+if(log_this) log("DOC CLICK .. NOT HANDELED .. EMBEDDED DOC TOOL "+get_id_or_tag(onWork_EL));
 
                         t_acceptBubble(e, caller+" EMBEDDED DOC TOOL", log_this);
                     }
                     else if(prop.get(t_data.ANCHOR_FREEZE) || prop.get(t_data.WORDING))
                     {
-                        consumed_by = "DOC CLICK .. HANDLER FREEZED";
+                        handeled_by = "DOC CLICK .. HANDLER FREEZED";
 
-                        t_preventDefault(e, caller+" "+consumed_by);
+                        t_preventDefault(e, caller+" "+handeled_by);
 
-                        onUp_7_DOC_CB_CLICK_WORD(consumed_by);
+                        onUp_7_DOC_CB_CLICK_WORD(handeled_by);
                     }
                     else {
                         /* NOTE: [anchor_freeze should have been processed by onUp_4_DOC_TOUCH_CB] */
-                        consumed_by = "DOC CLICK .. NO FREEZED HANDLER .. NO EMBEDDED TOOL";
+                        handeled_by = "DOC CLICK .. NO FREEZED HANDLER .. NO EMBEDDED TOOL";
 
-                        t_acceptBubble(e, caller+" "+consumed_by);
+                        t_acceptBubble(e, caller+" "+handeled_by);
                     }
                 }
                 /*}}}*/
@@ -9663,8 +9665,8 @@ if(log_this) log("DOC CLICK .. NOT CONSUMED .. EMBEDDED DOC TOOL "+get_id_or_tag
         }
     }
     /*}}}*/
-if(log_this && consumed_by) log("%c"+consumed_by, lbb+lbH+lf7);
-    return consumed_by;
+if(log_this && handeled_by) log("%c"+handeled_by, lbb+lbH+lf7);
+    return     handeled_by;
 };
 /*}}}*/
 /*… onUp_7_DOC_CB_CLICK_WORD .. t_data.WORDING {{{*/
@@ -9731,15 +9733,15 @@ if( log_this) log("%c"+caller+" %c touchedWord_slot %c "+touchedWord_slot, lbL+l
 };
 /*}}}*/
 
-/*… onUp_8_ON_EVENT_CONSUMED {{{*/
-let onUp_8_ON_EVENT_CONSUMED = function(e)
+/*… onUp_8_ON_EVENT_HANDELED {{{*/
+let onUp_8_ON_EVENT_HANDELED = function(e)
 {
-let   caller = "onUp_8_ON_EVENT_CONSUMED";
+let   caller = "onUp_8_ON_EVENT_HANDELED";
 let log_this = !onDown_SHIFT && LOG_MAP.EV3_UP;
 
-if( log_this) log("%c"+caller +" "+t_event_consumed_cause, lf8);
+if( log_this) log("%c"+caller +" "+t_event_handeled_by, lf8);
 
-    return t_event_has_been_consumed();
+    return t_event_has_been_handeled();
 };
 /*}}}*/
 /*… onUp_9_ON_MOUSEUP_DONE {{{*/
@@ -9806,7 +9808,7 @@ if(log_this) {
                  , was_a_click    : was_a_click   ()
                  , was_a_dblclick : was_a_dblclick()
                  ,      has_moved
-                 ,       CONSUMED : t_event_consumed_cause
+                 ,       HANDELED : t_event_handeled_by
                  }, lf9);
 }
 /*}}}*/
@@ -10028,7 +10030,7 @@ const LONG_PRESS_ARM     = "long_press_arm";
 let long_press_caller;
 let long_press_timer;
 let long_press_arm_timer;
-let mouselong_press_consumed_by = "";
+let mouselong_press_handeled_by = "";
 /*}}}*/
 /*{{{*/
 /*  add_long_press_listener .. (call burst debouncer) {{{*/
@@ -10209,43 +10211,43 @@ if(LOG_MAP.EV7_DISPATCH) t_fly.t_log_event_status(caller);
     t_seek.t_seeker_PU_disarm();
 
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
-    let                consumed_by = "";                               let consumed_by_css =  "";
-    if(!consumed_by) { consumed_by = onLong_press1_HOTSPOT             (); consumed_by_css = lf1; }
-    if(!consumed_by) { consumed_by = onLong_press2_TOOLS_ON_GRID       (); consumed_by_css = lf2; }
-    if(!consumed_by) { consumed_by = onLong_press3_EDIT_OR_STAGE       (); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onLong_press4_SENTENCE            (); consumed_by_css = lf3; }
-    if(!consumed_by) { consumed_by = onLong_press5_TOOL_EL             (); consumed_by_css = lf4; }
-    if(!consumed_by) { consumed_by = onLong_press6_TOOL_TOOLTIP        (); consumed_by_css = lf6; }
-    if(!consumed_by) { consumed_by = onLong_press7_TOOL_PANEL_MAGNIFY  (); consumed_by_css = lf7; }
-    if(!consumed_by) { consumed_by = onLong_press8_HOTSPOT_PANEL_UNHIDE(); consumed_by_css = lf8; }
-    if(!consumed_by) { consumed_by = onLong_press9_SLOTTED_WORD        (); consumed_by_css = lf9; }
+    let                handeled_by = "";                               let handeled_by_css =  "";
+    if(!handeled_by) { handeled_by = onLong_press1_HOTSPOT             (); handeled_by_css = lf1; }
+    if(!handeled_by) { handeled_by = onLong_press2_TOOLS_ON_GRID       (); handeled_by_css = lf2; }
+    if(!handeled_by) { handeled_by = onLong_press3_EDIT_OR_STAGE       (); handeled_by_css = lf3; }
+    if(!handeled_by) { handeled_by = onLong_press4_SENTENCE            (); handeled_by_css = lf3; }
+    if(!handeled_by) { handeled_by = onLong_press5_TOOL_EL             (); handeled_by_css = lf4; }
+    if(!handeled_by) { handeled_by = onLong_press6_TOOL_TOOLTIP        (); handeled_by_css = lf6; }
+    if(!handeled_by) { handeled_by = onLong_press7_TOOL_PANEL_MAGNIFY  (); handeled_by_css = lf7; }
+    if(!handeled_by) { handeled_by = onLong_press8_HOTSPOT_PANEL_UNHIDE(); handeled_by_css = lf8; }
+    if(!handeled_by) { handeled_by = onLong_press9_SLOTTED_WORD        (); handeled_by_css = lf9; }
     /* @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ */
     /* NO LONG-PRESS ACTION FOR [onWork_EL]  {{{*/
-    if(!consumed_by) {
-        consumed_by = "NO LONG-PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
+    if(!handeled_by) {
+        handeled_by = "NO LONG-PRESS ACTION FOR ["+get_n_lbl(onWork_EL)+"]";
 
-if(tag_this) log("%c "+caller+" %c *** "+consumed_by+" ***", lbb+lbL+lf9, lbb+lbR+lf2);
-if(tag_this) t_fly.t_log_event_status(caller+": "+consumed_by);
+if(tag_this) log("%c "+caller+" %c *** "+handeled_by+" ***", lbb+lbL+lf9, lbb+lbR+lf2);
+if(tag_this) t_fly.t_log_event_status(caller+": "+handeled_by);
     }
     /*}}}*/
-if( tag_this && !mouselong_press_consumed_by) log("%c"+consumed_by, lbH+consumed_by_css);
-    mouselong_press_consumed_by = consumed_by;
+if( tag_this && !mouselong_press_handeled_by) log("%c"+handeled_by, lbH+handeled_by_css);
+    mouselong_press_handeled_by = handeled_by;
     /* ALL DONE {{{*/
     if(log_this)
         t_fly.t_log_transcript_event_bot( "<span style='color:white;'>"+t_data.SYMBOL_CHECK_MARK+"</span>"
-            +                      " long press <em>"+ consumed_by +"</em>"
+            +                      " long press <em>"+ handeled_by +"</em>"
         );
 
     /*}}}*/
-if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+consumed_by, consumed_by_css);
+if( log_this) t_fly.t_log_event_status(caller+" "+t_data.SYMBOL_RIGHT_ARROW+" "+handeled_by, handeled_by_css);
 
     if(prop.get(t_data.PIN_SEEKSPOT) && prop.get(t_data.FLOATLOG)) t_fly.t_event_LOG_TOOLTIP("LONG-PRESS");
 };
 /*}}}*/
-/*……t_get_mouselong_press_consumed_by {{{*/
-let t_get_mouselong_press_consumed_by = function()
+/*……t_get_mouselong_press_handeled_by {{{*/
+let t_get_mouselong_press_handeled_by = function()
 {
-    return mouselong_press_consumed_by;
+    return mouselong_press_handeled_by;
 
 };
 /*}}}*/
@@ -10260,34 +10262,34 @@ let onLong_press1_HOTSPOT = function()
     let in_gutter      = t_gutter.is_hotspot_IN(hotspot, "LONG-PRESS IN GUTTER");
     let while_editing  =  prop.get( t_data.EDIT_OR_STAGE );
     let is_on_grid     = call_t_grid_IS_ON_GRID(caller);
-    let consumed_by    = "";
+    let handeled_by    = "";
 /*}}}*/
     /* IN GUTTER WHILE EDITING {{{*/
-    if(!consumed_by && in_gutter && while_editing) {
+    if(!handeled_by && in_gutter && while_editing) {
 
         prop.toggle( t_data.EDIT_OR_STAGE );
 
-        consumed_by = t_data.EDIT_OR_STAGE +" done .. HOTSPOT LONG-PRESS IN GUTTER .. WHILE EDITING";
+        handeled_by = t_data.EDIT_OR_STAGE +" done .. HOTSPOT LONG-PRESS IN GUTTER .. WHILE EDITING";
     }
     /*}}}*/
     /* MOVING TOOLS ON GRID {{{*/
-    if(!consumed_by && !is_on_grid)
+    if(!handeled_by && !is_on_grid)
     {
-        consumed_by = "HOTSPOT LONG-PRESS MOVING TOOLS ON GRID";
+        handeled_by = "HOTSPOT LONG-PRESS MOVING TOOLS ON GRID";
 
         t_move_TOOLS_ON_GRID("LONG-PRESS");
     }
     /*}}}*/
     /* OR ACTIVATE TIER1 TOOLS {{{*/
-    if(!consumed_by &&  is_on_grid)
+    if(!handeled_by &&  is_on_grid)
     {
         prop.set(t_data.TOOLS_TIER2, false);
         t_activate_tools_tier1("LONG-PRESS");
 
-        consumed_by = "HOTSPOT LONG-PRESS .. SELECT "+ t_data.TOOLS_TIER2;
+        handeled_by = "HOTSPOT LONG-PRESS .. SELECT "+ t_data.TOOLS_TIER2;
     }
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*… onLong_press2_TOOLS_ON_GRID {{{*/
@@ -10296,27 +10298,27 @@ let onLong_press2_TOOLS_ON_GRID = function()
 /* {{{*/
 let   caller = "onLong_press2_TOOLS_ON_GRID";
 
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     if( !dimm_mask_displayed() ) return "";
 
-    if(!consumed_by && call_t_grid_IS_ON_GRID(caller))
+    if(!handeled_by && call_t_grid_IS_ON_GRID(caller))
     {
         t_move_TOOLS_OFF_GRID("LONG-PRESS");
 
-        consumed_by = "MOVING TOOLS OFF GRID";
+        handeled_by = "MOVING TOOLS OFF GRID";
     }
 
-    if(!consumed_by && has_el_class(pat_bag, CSS_OPEN_BAG))
+    if(!handeled_by && has_el_class(pat_bag, CSS_OPEN_BAG))
     {
         t_pat_bag_close(caller,caller);
 
         dimm_stop(caller);
 
-        consumed_by = "CLOSING [pat_bag]";
+        handeled_by = "CLOSING [pat_bag]";
     }
 
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*… onLong_press3_EDIT_OR_STAGE {{{*/
@@ -10343,7 +10345,7 @@ let log_this = !onDown_SHIFT && LOG_MAP.EV4_LONG_PRESS;
 
 if( log_this) t_fly.t_log_event_status(caller, lf4);
     let rejected_by = "";
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* SKIP TOOLS {{{*/
     if( t_is_a_tool_el          (onWork_EL, caller         )) rejected_by = "t_is_a_tool_el";
@@ -10372,7 +10374,7 @@ if( log_this && rejected_by) log("%c"+rejected_by, lb4);
         /* SPLITTING MULTIPLE CELLS */
         if( cells )
         {
-            consumed_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
+            handeled_by += "SPLITTING TABLE "+cells.length+" CELLS SENTENCES";
 
             for(let i=0; i < cells.length; ++i)
             {
@@ -10381,17 +10383,17 @@ if( log_this && rejected_by) log("%c"+rejected_by, lb4);
         }
 
         /* SPLITTING SINGLE CELL */
-        if(!consumed_by)
+        if(!handeled_by)
         {
-            consumed_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
+            handeled_by += "SPLITTING ["+container.nodeName+"] SENTENCES";
 
             t_sentence.t_SENTENCE_SPLIT( container );
         }
     }
     /*}}}*/
 
-if( log_this && consumed_by) log("%c"+consumed_by, lf4);
-    return consumed_by;
+if( log_this && handeled_by) log("%c"+handeled_by, lf4);
+    return      handeled_by;
 };
 /*}}}*/
 /*… onLong_press5_TOOL_EL {{{*/
@@ -10405,7 +10407,7 @@ let log_this = LOG_MAP.EV4_LONG_PRESS;
 if( log_this) t_log.console_clear(caller);
 }}}*/
 if( log_this) t_fly.t_log_event_status(caller, lf5);
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* [onLong_press_scroll_freezed] {{{*/
     if( behavior_TOUCH_ELSE_DESKTOP )
@@ -10418,44 +10420,44 @@ if( log_this) log("%c behavior_TOUCH_ELSE_DESKTOP=["+behavior_TOUCH_ELSE_DESKTOP
     /* WORD SLOT .. IGNORE {{{*/
     let el_slot = t_get_onWork_EL_slot();
     if( el_slot > 0) {
-if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT CONSUMED", lf8);
+if(log_this) logBIG(caller+": SLOT #"+el_slot+" PRESSED .. NOT HANDELED", lf8);
 
-        return consumed_by;
+        return handeled_by;
     }
     /*}}}*/
     /* 1 - [sticky] {{{*/
-    if(!consumed_by) {
+    if(!handeled_by) {
         let sticky  = t_sticky.t_sticky_get_onWork_STICKY();
         if( sticky && has_el_class(sticky, t_data.CSS_HAS_FOCUS))
         {
-            consumed_by = "IGNORING EDITED STICKY "+sticky.id;
+            handeled_by = "IGNORING EDITED STICKY "+sticky.id;
 
-if( log_this) t_log.logSD1("%c"+caller+"%c"+consumed_by, lbH+lf8);
+if( log_this) t_log.logSD1("%c"+caller+"%c"+handeled_by, lbH+lf8);
         }
         else {
-            consumed_by = onLong_press5_TOOL_STICKY(log_this);
+            handeled_by = onLong_press5_TOOL_STICKY(log_this);
 
         }
     }
     /*}}}*/
     /* 2 - [pat_bag.bag_rot] .. (FLY-LOG bag_rot.title) {{{*/
-    if(!consumed_by
+    if(!handeled_by
        &&      onWork_EL
        && (   (onWork_EL.id == t_data.bag_rot      )
            || (onWork_EL.id == t_data.WORDS_BAG_ROT))
       ) {
-        consumed_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
-if( log_this) t_log.logSD2("%c"+caller+"%c"+consumed_by, lbH+lf5);
+        handeled_by = "HANDLING LONG-PRESS ON "+bag_rot.id;
+if( log_this) t_log.logSD2("%c"+caller+"%c"+handeled_by, lbH+lf5);
 
         t_fly.t_fly_tooltip_update(bag_rot.title, bag_rot.id);
     }
     /*}}}*/
     /* 3 - [div_slot_containers child] {{{*/
     let div_slot_containers_child_pressed = t_util.is_el_or_child_of_parent_el(onWork_EL, div_slot_containers);
-    if(!consumed_by && div_slot_containers_child_pressed)
+    if(!handeled_by && div_slot_containers_child_pressed)
     {
-        consumed_by = "START CONTAINERS CHILD DRAG";
-if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbH+lf5);
+        handeled_by = "START CONTAINERS CHILD DRAG";
+if( log_this) t_log.logSD3("%c"+caller+"%c"+handeled_by, lbH+lf5);
 
         t_slot_container_set_fullscreen( onWork_EL );
         t_add_tool_pointermove_listener(caller);
@@ -10464,17 +10466,17 @@ if( log_this) t_log.logSD3("%c"+caller+"%c"+consumed_by, lbH+lf5);
     /* XXX [dimm_mask] .. t_slot_container_set_fullscreen {{{*/
 /*{{{ TODO [dimm_mask] has no children
     let                dimm_mask_child_pressed = t_util.is_el_or_child_of_parent_el(onWork_EL,  dimm_mask);
-    if(!consumed_by && dimm_mask_child_pressed )
+    if(!handeled_by && dimm_mask_child_pressed )
     {
-        consumed_by = "LONG-PRESS ON SLOT CONTAINER .. [t_slot_container_set_fullscreen]";
-if( log_this) t_log.logSD8("%c"+caller+"%c"+consumed_by, lbH+lf5);
+        handeled_by = "LONG-PRESS ON SLOT CONTAINER .. [t_slot_container_set_fullscreen]";
+if( log_this) t_log.logSD8("%c"+caller+"%c"+handeled_by, lbH+lf5);
 
         t_slot_container_set_fullscreen( onWork_EL );
     }
 }}}*/
     /*}}}*/
-if(log_this && !consumed_by) log("%c"+caller+"%c NOT CONSUMED", lbL+lf5, lbR+lf8);
-    return consumed_by;
+if(log_this && !handeled_by) log("%c"+caller+"%c NOT HANDELED", lbL+lf5, lbR+lf8);
+    return      handeled_by;
 };
 /*}}}*/
 /*……onLong_press5_TOOL_STICKY {{{*/
@@ -10503,15 +10505,15 @@ if( log_this) {
 }
 /*}}}*/
 
-    let consumed_by         = "";
+    let handeled_by         = "";
 /*}}}*/
     /* XXX 1 - LONG-PRESS ON [sticky] .. EDIT [msg] {{{*/
 /*{{{
     if(sticky && t_sticky.t_sticky_is_EDITING(sticky) )
     {
         if(is_a_DOM_LOAD_featured_function("t_sticky.t_sticky_EDIT")) {
-            consumed_by = "LONG-PRESS ON ["+sticky.id+"] .. TO EDIT CONTENT";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
+            handeled_by = "LONG-PRESS ON ["+sticky.id+"] .. TO EDIT CONTENT";
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf1);
 
             t_seek.t_seeker_PU_hide("instant");
 
@@ -10521,14 +10523,14 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
 }}}*/
     /*}}}*/
     /* 1 - LONG-PRESS WITH [onDown_SEL_TEXT] .. NEW STICKY FROM PAGE-SELECTION {{{*/
-    if(!consumed_by && (current_sel_text || onDown_SEL_TEXT))
+    if(!handeled_by && (current_sel_text || onDown_SEL_TEXT))
     {
         if(!onDown_SEL_TEXT && !current_sel_text)
             clr_SELECTION_PROGRESS("NEW STICKY FROM PAGE-SELECTION", log_this);
 
         if(pinned_sticky_count < t_sticky.STICKY_MAX) {
-            consumed_by = onLong_press5_TOOL_STICKY_SEL_TEXT(log_this);
-if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
+            handeled_by = onLong_press5_TOOL_STICKY_SEL_TEXT(log_this);
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf1);
         }
         else {
             logBIG("(pinned_sticky_count >= t_sticky.STICKY_MAX) .. ("+pinned_sticky_count+" >= "+t_sticky.STICKY_MAX+")");
@@ -10536,32 +10538,32 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf1);
     }
     /*}}}*/
     /* 2 - LONG PRES ON MSG .. FORMAT {{{*/
-    if(!consumed_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
+    if(!handeled_by && t_sticky.t_sticky_onDown_a_STICKY_PAD(sticky))
     {
-        consumed_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf2);
+        handeled_by         = "LONG-PRESS ON STICKY PAD "+sticky.id+".. FORMAT MSG";
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf2);
 
         t_sticky.t_sticky_format_pad(sticky);
     }
     /*}}}*/
     /* 3 - LONG-PRESS ON TOOL .. SHOW TOOLTIP {{{*/
-    if(!consumed_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
+    if(!handeled_by && (!sticky && t_is_a_tool_el(onWork_EL, caller)))
     {
-        consumed_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf3);
+        handeled_by         = "LONG-PRESS ON TOOL "+onWork_EL.id+".. SHOW TOOLTIP";
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf3);
 
         return "";
     }
     /*}}}*/
     /* XXX 4 - LONG-PRESS .. ON PAGE BACKGROUND (no page selection) .. STICKY RING {{{*/
 /*{{{
-    if(   !consumed_by
+    if(   !handeled_by
        &&  sticky
        && !t_sticky.t_sticky_is_MOVING   (sticky)
        && !t_sticky.t_sticky_is_ORIENTING(sticky)
       ) {
-        consumed_by         = "LONG-PRESS ON PAGE BACKGROUND .. SHOW STICKY RING .. x"+pinned_sticky_count+" PINNED STICKY";
-if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf5);
+        handeled_by         = "LONG-PRESS ON PAGE BACKGROUND .. SHOW STICKY RING .. x"+pinned_sticky_count+" PINNED STICKY";
+if( log_this) t_log.logSD4("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf5);
 
         t_seek.t_seeker_PU_hide("instant");
 
@@ -10571,10 +10573,10 @@ if( log_this) t_log.logSD4("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf5);
     /*}}}*/
     /* XXX 5 - LONG-PRESS ON [PAGE EMPTY AREA] .. [NO onWork_PANEL] .. ADD FIRST STICKY {{{*/
 /*{{{
-    if(!consumed_by && !sticky && !onWork_PANEL)
+    if(!handeled_by && !sticky && !onWork_PANEL)
     {
-        consumed_by         = "LONG-PRESS ON PAGE BACKGROUND .. ADD FIRST EMPTY STICKY";
-if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf5);
+        handeled_by         = "LONG-PRESS ON PAGE BACKGROUND .. ADD FIRST EMPTY STICKY";
+if( log_this) t_log.logSD5("%c"+caller+"%c"+handeled_by, lbL+lf4,lbR+lf5);
 
         sticky = t_sticky.t_sticky_NEW_XY_SEL_TEXT(onDown_XY.x, onDown_XY.y, t_data.SYMBOL_DIRECT_HIT);
 
@@ -10587,7 +10589,7 @@ if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf4,lbR+lf5);
     }
 }}}*/
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*……onLong_press5_TOOL_STICKY_SEL_TEXT {{{*/
@@ -10600,7 +10602,7 @@ let onLong_press5_TOOL_STICKY_SEL_TEXT = function(log_this=true)
 /*{{{*/
 let   caller = "onLong_press5_TOOL_STICKY_SEL_TEXT";
 
-    let      consumed_by = "";
+    let      handeled_by = "";
 /*}}}*/
     /* CLR .. LONG-PRESS RELEASED {{{*/
 /*{{{
@@ -10610,12 +10612,12 @@ log("%c .DOWN-NOW=["+((new Date().getTime() - onDown_MS) / 1000)+"]", lbH+lf4);
 }}}*/
     if(onUp_MS > onDown_MS)
     {
-        consumed_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
-if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
+        handeled_by     = "LONG-PRESS RELEASED .. SELECTION DROPPED";
+if( log_this) t_log.log(    "%c"+caller+": "+ handeled_by
                     ,        lbH+lf8                     );
 
-        clr_SELECTION_PROGRESS(consumed_by, log_this);
-        return consumed_by;
+        clr_SELECTION_PROGRESS(handeled_by, log_this);
+        return handeled_by;
     }
     /*}}}*/
     /* TIC .. SELECTION CHANGE .. START CHECK INTERVAL {{{*/
@@ -10626,8 +10628,8 @@ if( log_this) t_log.log(    "%c"+caller+": "+ consumed_by
     {
         tic_SELECTION_PROGRESS();
         /* START TIC INTERVAL {{{*/
-        consumed_by     = "LONG-PRESS .. SELECTION CHANGED";
-if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
+        handeled_by     = "LONG-PRESS .. SELECTION CHANGED";
+if( log_this) t_log.log( "%c"+caller+": "+ handeled_by
                         +"%c"+LF+"FROM %c"+ t_util.ellipsis_short(t_util.strip_CR_LF( last_sel_text))
                         +"%c"+LF+"TO.. %c"+ t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
                         ,lbH+lf4
@@ -10649,8 +10651,8 @@ if( log_this) t_log.log( "%c"+caller+": "+ consumed_by
         /* TOC COUNT .. NEXT INTERVAL {{{*/
         if( unchanged_countdown )
         {
-            consumed_by     = "LONG-PRESS .. SELECTION STEADY";
-if( log_this) t_log.log("%c"+caller+": "+ consumed_by+"%c unchanged x"+unchanged_countdown
+            handeled_by     = "LONG-PRESS .. SELECTION STEADY";
+if( log_this) t_log.log("%c"+caller+": "+ handeled_by+"%c unchanged x"+unchanged_countdown
                         ,lbH+lf4                      ,lbb+lbH+lfX[    unchanged_countdown]);
 
             let next_interval = SEL_TEXT_TIC_TOC_INTERVAL / 3;
@@ -10662,29 +10664,29 @@ if( log_this) t_log.log("%c"+caller+": "+ consumed_by+"%c unchanged x"+unchanged
         /* TOC DONE: .. SELECTION ADD STICKY {{{*/
         else if(last_sel_text)
         {
-            consumed_by = "LONG-PRESS .. SELECTION ADD STICKY";
-if(log_this) t_log.logSD4( "%c"+caller+": "+consumed_by+"=["+consumed_by+"]"
+            handeled_by = "LONG-PRESS .. SELECTION ADD STICKY";
+if(log_this) t_log.logSD4( "%c"+caller+": "+handeled_by+"=["+handeled_by+"]"
                     +"%c"+LF+t_util.ellipsis_short(t_util.strip_CR_LF(current_sel_text))
                     ,lbH+lf4
                     ,lbb+lb9);
 
-            clr_SELECTION_PROGRESS(consumed_by, log_this);
+            clr_SELECTION_PROGRESS(handeled_by, log_this);
 
             onLong_press5_STICKY_ADD_NEW(current_sel_text, log_this);
         }
         /*}}}*/
         /* TOC DONE: .. SELECTION IS EMPTY {{{*/
         else {
-            consumed_by = "LONG-PRESS .. SELECTION IS EMPTY";
-if(log_this) t_log.logSD4("%c"+caller+": "+consumed_by
+            handeled_by = "LONG-PRESS .. SELECTION IS EMPTY";
+if(log_this) t_log.logSD4("%c"+caller+": "+handeled_by
                     ,lbH+lf4                    );
 
-            clr_SELECTION_PROGRESS(consumed_by, log_this);
+            clr_SELECTION_PROGRESS(handeled_by, log_this);
         }
         /*}}}*/
     }
     /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*……onLong_press5_STICKY_ADD_NEW {{{*/
@@ -10708,7 +10710,7 @@ if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf5);
 if(log_this) log("onDown_EL %c "+get_n_lbl(onDown_EL), lbH+lf5);
 }}}*/
 
-    /* AND CONSUME SELECTION */
+    /* AND HANDLE SELECTION */
     t_window_getSelection_removeAllRanges(caller);
     onDown_SEL_TEXT = "";
 
@@ -10741,7 +10743,7 @@ if( log_this)
                 }, lf6);
 if( log_this) t_fly.t_log_event_status(caller, lf6);
 
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
 /*{{{
     let sticky  =     t_sticky.t_sticky_get_onWork_STICKY();
@@ -10757,12 +10759,12 @@ if( log_this) t_fly.t_log_event_status(caller, lf6);
     ;
 
     if( title ) {
-        consumed_by = "SHOWING TOOLTIP ["+t_util.ellipsis_short(t_util.strip_CR_LF(title))+"]";
+        handeled_by = "SHOWING TOOLTIP ["+t_util.ellipsis_short(t_util.strip_CR_LF(title))+"]";
 
         t_fly.t_fly_tooltip( title );
     }
-if( log_this) t_log.logSD5("%c"+caller+"%c"+consumed_by, lbL+lf6,lbR+lf6);
-    return consumed_by;
+if( log_this) t_log.logSD5("%c"+caller+"%c"+handeled_by, lbL+lf6,lbR+lf6);
+    return handeled_by;
 };
 /*}}}*/
 /*… onLong_press7_TOOL_PANEL_MAGNIFY {{{*/
@@ -11113,10 +11115,10 @@ let log_this = LOG_MAP.EV5_TOOL_CB;
 
 if( log_this) t_fly.t_log_event_status(caller, lf5);
 /*}}}*/
-    /* return .. f(t_event_has_been_consumed) {{{*/
-    if( t_event_has_been_consumed() )
+    /* return .. f(t_event_has_been_handeled) {{{*/
+    if( t_event_has_been_handeled() )
     {
-if(log_this) t_log.console_warn("*** "+caller+": ALREADY CONSUMED BY:"+LF+t_event_consumed_cause);
+if(log_this) t_log.console_warn("*** "+caller+": ALREADY HANDELED BY:"+LF+t_event_handeled_by);
 
         return;
     }
@@ -11201,41 +11203,41 @@ if( log_this) pattern_log_bag_csv(caller);
 /*{{{
 if( log_this) t_fly.t_log_event_status(caller, lf1);
 }}}*/
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* [test_panel] {{{*/
     let                 e_target_name  = e_target.id.toLowerCase();
-    if(!consumed_by && (e_target_name == "behavior"       ))             { consumed_by = e_target.id;       t_fly.t_log_behavior();               }
-    if(!consumed_by && (e_target_name == "highlight"      ))             { consumed_by = e_target.id;       t_outline_viewport_top_containers();  }
-    if(!consumed_by && (e_target_name == "regex"          ))             { consumed_by = e_target.id;       t_fly.t_log_regex();                  }
-    if(!consumed_by && (e_target_name == "clear"          ))             { consumed_by = e_target.id;       t_clear(caller);                      }
-    if(!consumed_by && (e_target_name == "import"         ))             { consumed_by = e_target.id;       t_share.t_share3_IMPORT_UI(e_target); }
-    if(!consumed_by && (e_target_name == "reload"         ))             { consumed_by = e_target.id;       document.location.reload();           }
+    if(!handeled_by && (e_target_name == "behavior"       ))             { handeled_by = e_target.id;       t_fly.t_log_behavior();               }
+    if(!handeled_by && (e_target_name == "highlight"      ))             { handeled_by = e_target.id;       t_outline_viewport_top_containers();  }
+    if(!handeled_by && (e_target_name == "regex"          ))             { handeled_by = e_target.id;       t_fly.t_log_regex();                  }
+    if(!handeled_by && (e_target_name == "clear"          ))             { handeled_by = e_target.id;       t_clear(caller);                      }
+    if(!handeled_by && (e_target_name == "import"         ))             { handeled_by = e_target.id;       t_share.t_share3_IMPORT_UI(e_target); }
+    if(!handeled_by && (e_target_name == "reload"         ))             { handeled_by = e_target.id;       document.location.reload();           }
 
-    if(!consumed_by && (e_target_name == t_data.CSS_FLY_CLIPBOARD))      { consumed_by = t_data.CSS_FLY_CLIPBOARD;                                }
+    if(!handeled_by && (e_target_name == t_data.CSS_FLY_CLIPBOARD))      { handeled_by = t_data.CSS_FLY_CLIPBOARD;                                }
 
-    if(!consumed_by && (e_target_name == "export"         ))             { consumed_by = e_target.id;       t_share.t_share1_EXPORT   (e_target);
+    if(!handeled_by && (e_target_name == "export"         ))             { handeled_by = e_target.id;       t_share.t_share1_EXPORT   (e_target);
         /*...............................................................................................*/ t_share.t_share2_MAILTO_UI(e_target); }
-    if(!consumed_by && has_el_class(e_target, t_data.CSS_MAILTO))        { consumed_by = t_data.CSS_MAILTO; t_share.t_share2_MAILTO_UI(e_target); }
+    if(!handeled_by && has_el_class(e_target, t_data.CSS_MAILTO))        { handeled_by = t_data.CSS_MAILTO; t_share.t_share2_MAILTO_UI(e_target); }
 
     /*}}}*/
     /* 1/6 CB BAG PIN  {{{*/
-    if(!consumed_by && onWork_PANEL && bag_id) {
-        if(!consumed_by && has_el_class(e_target, CSS_PUSH_PIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); consumed_by = bag_id+"."+CSS_PUSH_PIN; }
-        if(!consumed_by && has_el_class(e_target, CSS_CLOSEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); consumed_by = bag_id+"."+CSS_CLOSEPIN; }
-        if(!consumed_by && has_el_class(e_target, CSS_SCALEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); consumed_by = bag_id+"."+CSS_SCALEPIN; }
-        if(!consumed_by && has_el_class(e_target, CSS_CLEARPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); consumed_by = bag_id+"."+CSS_CLEARPIN; }
+    if(!handeled_by && onWork_PANEL && bag_id) {
+        if(!handeled_by && has_el_class(e_target, CSS_PUSH_PIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_PUSH_PIN; }
+        if(!handeled_by && has_el_class(e_target, CSS_CLOSEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_CLOSEPIN; }
+        if(!handeled_by && has_el_class(e_target, CSS_SCALEPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_SCALEPIN; }
+        if(!handeled_by && has_el_class(e_target, CSS_CLEARPIN)) { t_click_panel_pin_CB(onWork_PANEL, e_target); handeled_by = bag_id+"."+CSS_CLEARPIN; }
     }
     /*}}}*/
     /* 2/6 CB SEEKER {{{*/
-    if(!consumed_by && t_seek.t_seeker_get_node_bag_id( e_target ))
+    if(!handeled_by && t_seek.t_seeker_get_node_bag_id( e_target ))
     {
-        t_seek.t_seeker_onClick(); consumed_by = "SEEKER "+bag_id;
+        t_seek.t_seeker_onClick(); handeled_by = "SEEKER "+bag_id;
 
     }
     /*}}}*/
     /* 3/6 CB BAG DELEGATE {{{*/
-    if(!consumed_by && bag_id)
+    if(!handeled_by && bag_id)
     {
 /*{{{
 log("%c"+get_n_lbl(e_target)+" .. bag_id=["+bag_id+"]", lb6);
@@ -11243,26 +11245,26 @@ logXXX("%c bag_id=["+bag_id+"]", lbH+lf8);
 }}}*/
         switch( bag_id )
         {
-        case "sel_bag"      : t_onClick_1_sel(e_target, bag_id ); consumed_by = bag_id; break;
+        case "sel_bag"      : t_onClick_1_sel(e_target, bag_id ); handeled_by = bag_id; break;
 
         case "pat_bag"      :
         case "off_bag"      :
         case "alt_bag"      :
-        case "bak_bag"      : t_handle_1_pat_bag    (e_target         ); consumed_by = bag_id; break;
+        case "bak_bag"      : t_handle_1_pat_bag    (e_target         ); handeled_by = bag_id; break;
 
 /*{{{
-        case "headsup_w"    : t_wording_3_CB         (e_target, "click"); consumed_by = bag_id; break;
+        case "headsup_w"    : t_wording_3_CB         (e_target, "click"); handeled_by = bag_id; break;
 }}}*/
-        case "headsup_bw"   : t_body_layout_CB      (e_target         ); consumed_by = bag_id; break;
-        case "headsup_bz"   : t_body_zoom_CB        (e_target         ); consumed_by = bag_id; break;
-        case "headsup_fs"   : t_body_font_size_CB   (e_target         ); consumed_by = bag_id; break;
+        case "headsup_bw"   : t_body_layout_CB      (e_target         ); handeled_by = bag_id; break;
+        case "headsup_bz"   : t_body_zoom_CB        (e_target         ); handeled_by = bag_id; break;
+        case "headsup_fs"   : t_body_font_size_CB   (e_target         ); handeled_by = bag_id; break;
 
-        case "dom_traversal": if(t_dom_traversal_CB (e_target, "click")) consumed_by = bag_id; break;
+        case "dom_traversal": if(t_dom_traversal_CB (e_target, "click")) handeled_by = bag_id; break;
 
         case "dev_log_map"  :
-        case "prop_bag"     : if(      prop_tools_CB(e_target)        )  consumed_by = bag_id; break;
+        case "prop_bag"     : if(      prop_tools_CB(e_target)        )  handeled_by = bag_id; break;
 
-        case "fly_div"      : t_fly.t_fly_clr       (e_target         ); consumed_by = bag_id; break;
+        case "fly_div"      : t_fly.t_fly_clr       (e_target         ); handeled_by = bag_id; break;
 
         default:
 if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lbl(e_target)+"]"
@@ -11272,21 +11274,21 @@ if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lb
     }
     /*}}}*/
     /* 4/6 CB [e_target] {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
         if( t_onClick_1_e_target(e_target) )
-            consumed_by = "["+e_target.id+"] HANDLER";
+            handeled_by = "["+e_target.id+"] HANDLER";
 
     }
     /*}}}*/
     /* 5/6 CB EXTRA [e_target] {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
         switch(e_target.id)
         {
-        case "pat_sort"            : t_handle_1_pat_bag_sort_cycle(); consumed_by = e_target.id; break;
+        case "pat_sort"            : t_handle_1_pat_bag_sort_cycle(); handeled_by = e_target.id; break;
 
-        case "t_log.console_clear" : t_log.console_clear   (caller); consumed_by = e_target.id; break;
+        case "t_log.console_clear" : t_log.console_clear   (caller); handeled_by = e_target.id; break;
 
         case "dimm_mask"           : {
             if( !was_a_too_early_last_result() ) {
@@ -11295,12 +11297,12 @@ if(log_this) log("%c"+caller+"%c ["+bag_id+"] has no delegation from ["+get_n_lb
                     t_sticky.t_sticky_RING_stop("dimm_start");
             }
         }
-        consumed_by = e_target.id;
+        handeled_by = e_target.id;
         break;
 
-        case t_data.WORDS_RECYCLE  : t_wording_3_CB    (e_target, "click"); consumed_by = e_target.id; break;
-        case t_data.WORDS_BAG_ROT  : t_handle_1_pat_bag(e_target         ); consumed_by = e_target.id; break;
-        case t_data.WORDS_FILTER   : t_wording_3_CB    (e_target, "click"); consumed_by = e_target.id; break;
+        case t_data.WORDS_RECYCLE  : t_wording_3_CB    (e_target, "click"); handeled_by = e_target.id; break;
+        case t_data.WORDS_BAG_ROT  : t_handle_1_pat_bag(e_target         ); handeled_by = e_target.id; break;
+        case t_data.WORDS_FILTER   : t_wording_3_CB    (e_target, "click"); handeled_by = e_target.id; break;
 
         default:
 if(log_this) log("%c"+caller+"%c NO EXTRA HANDLER FOR %c e_target=["+get_n_lbl(e_target)+"]"
@@ -11310,12 +11312,12 @@ if(log_this) log("%c"+caller+"%c NO EXTRA HANDLER FOR %c e_target=["+get_n_lbl(e
     }
     /*}}}*/
     /* 6/6 DEFAULT PROP TOGGLE [e_target] {{{*/
-    if(!consumed_by && e_target.id)
+    if(!handeled_by && e_target.id)
     {
-        consumed_by = prop_id_state_CB(e_target.id, "toggle");
+        handeled_by = prop_id_state_CB(e_target.id, "toggle");
     }
     /*}}}*/
-if( log_this) log("%c"+caller+"%c consumed_by "+consumed_by, lbL, lbR+lf3);
+if( log_this) log("%c"+caller+"%c handeled_by "+handeled_by, lbL, lbR+lf3);
 };
 /*}}}*/
 /*➔ t_onClick_1_e_target {{{*/
@@ -11826,30 +11828,30 @@ let   caller = "t_ESCAPE_2_CURRENT_STATE";
 let log_this = LOG_MAP.EV0_LISTEN;
 
 if( log_this) log(caller);
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
     /* TOOLS ON GRID {{{*/
     if( call_t_grid_IS_ON_GRID() )
     {
-        consumed_by ="ESCAPE FROM TOOLS ON GRID";
+        handeled_by ="ESCAPE FROM TOOLS ON GRID";
 
         t_move_TOOLS_OFF_GRID("ESCAPE");
     }
     /*}}}*/
     /* SLOT CONTAINERS DISPLAYED {{{*/
-    if(!consumed_by && div_slot_containers_displayed())
+    if(!handeled_by && div_slot_containers_displayed())
     {
 /*{{{
 log("...div_slot_containers.className=["+div_slot_containers.className+"]")
 }}}*/
         if( has_el_class(div_slot_containers, CSS_FULLSCREEN))
         {
-            consumed_by = "ESCAPE SLOT CONTAINERS FULLSCREEN";
+            handeled_by = "ESCAPE SLOT CONTAINERS FULLSCREEN";
 
             t_slot_container_set_fullscreen();
         }
         else {
-            consumed_by = "ESCAPE SLOT CONTAINERS DISPLAYED";
+            handeled_by = "ESCAPE SLOT CONTAINERS DISPLAYED";
 
             dom_scroll.t_window_scrollTo(0, onDown_SCROLL_XY.y);
             dimm_stop( caller );
@@ -11857,14 +11859,14 @@ log("...div_slot_containers.className=["+div_slot_containers.className+"]")
     }
     /*}}}*/
     /* STICKY {{{*/
-    if(!consumed_by && t_sticky.t_sticky_EDIT_DONE())
+    if(!handeled_by && t_sticky.t_sticky_EDIT_DONE())
     {
-        consumed_by ="ESCAPE STICKY RELEASED FOCUS";
+        handeled_by ="ESCAPE STICKY RELEASED FOCUS";
 
     }
     /*}}}*/
     /* NOTHING TO ESCAPE FROM {{{*/
-    if(!consumed_by) {
+    if(!handeled_by) {
 /*{{{
         t_log.console_clear("NOTHING TO ESCAPE FROM");
 }}}*/
@@ -11878,8 +11880,8 @@ if( log_this) t_fly.t_log_event_status(caller, lf4);
         }
     }
     /*}}}*/
-if( log_this) log("%c"+caller+": %c"+consumed_by, lbH+lf4, lbH+lf4);
-    return consumed_by;
+if( log_this) log("%c"+caller+": %c"+handeled_by, lbH+lf4, lbH+lf4);
+    return handeled_by;
 };
 /*}}}*/
 /*}}}*/
@@ -11910,7 +11912,7 @@ if( log_this) log_key_val_group(caller+" .. "+get_n_lbl(e_target)+" .. "+action
                           , { e_target
                             , action
                             , has_moved
-                            , t_event_consumed_cause
+                            , t_event_handeled_by
                           }, lf3, true);
 
     t_wording_3_CB_timout = null;
@@ -12494,9 +12496,9 @@ let   caller = "prop_tools_CB(e_target=["+get_n_lbl(e_target)+"]";
 let log_this = LOG_MAP.T3_LAYOUT;
 
 if( log_this) log("%c"+caller, lbb+lbH+lf7);
-    let consumed_by = "";
+    let handeled_by = "";
 /*}}}*/
-    /* [has_moved] [t_preventDefault_has_been_called] [t_event_has_been_consumed] {{{*/
+    /* [has_moved] [t_preventDefault_has_been_called] [t_event_has_been_handeled] {{{*/
     let keyword = ""; try { keyword = e_target.id                ; } catch(ex) {}
     if(!keyword)      try { keyword = e_target.title      .trim(); } catch(ex) {}
     if(!keyword)      try { keyword = e_target.textContent.trim(); } catch(ex) {}
@@ -12508,18 +12510,18 @@ if( log_this) {
     log("%c...............e_target.title......=["+           e_target.title           +"]", lf8);
     log("%c............................keyword=["+ keyword                            +"]", lf8);
     log("%c..........................has_moved=["+ has_moved                          +"]", lf8);
-    log("%c..........t_event_has_been_consumed=["+ t_event_has_been_consumed       () +"]", lf8);
+    log("%c..........t_event_has_been_handeled=["+ t_event_has_been_handeled       () +"]", lf8);
     log("%c...t_preventDefault_has_been_called=["+ t_preventDefault_has_been_called() +"]", lf8);
 }
 }}}*/
 
-    if( has_moved                          ) return consumed_by;
+    if( has_moved                          ) return handeled_by;
 /*{{{
-    if( t_preventDefault_has_been_called() ) return consumed_by;
+    if( t_preventDefault_has_been_called() ) return handeled_by;
 }}}*/
 /*{{{
-    if( e_target.tagName != "EM"           ) return consumed_by;
-    if( t_event_has_been_consumed()        ) return consumed_by;
+    if( e_target.tagName != "EM"           ) return handeled_by;
+    if( t_event_has_been_handeled()        ) return handeled_by;
 }}}*/
     /*}}}*/
     /* parse [keyword] {{{*/
@@ -12537,7 +12539,7 @@ log("%c "+caller+": %c TOGGLED keyword=["+ keyword +"]",lb9, lbF);
 
         t_save_update_post("DOC LOGGING CB");
 
-        consumed_by = "t_log.logging_toggle("+keyword+")";
+        handeled_by = "t_log.logging_toggle("+keyword+")";
     }
     /*}}}*/
     /* SYNC TOOL CLONES {{{*/
@@ -12546,7 +12548,7 @@ log("%c "+caller+": %c TOGGLED keyword=["+ keyword +"]",lb9, lbF);
     /*}}}*/
     t_layout_changed();
 
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_ t_select calls {{{*/
@@ -12580,7 +12582,7 @@ if( log_this) t_fly.t_log_event_status(caller, lf5);
     if( has_moved                   ) return false;
     if(e_target.tagName == "INPUT"  ) return false;
 /*{{{
-    if( t_event_has_been_consumed() ) return false; .. set by onUp_5_TOOL_ONCLICK
+    if( t_event_has_been_handeled() ) return false; .. set by onUp_5_TOOL_ONCLICK
 }}}*/
 
     /*}}}*/
@@ -13204,16 +13206,16 @@ let log_this = LOG_MAP.EV5_TOOL_CB;
 
 if( log_this) log(caller);
 /*}}}*/
-    /* [has_moved] [t_preventDefault_has_been_called] [t_event_has_been_consumed] {{{*/
+    /* [has_moved] [t_preventDefault_has_been_called] [t_event_has_been_handeled] {{{*/
 
     if( log_this) log("...................keyword %c["+ keyword                 +"]", lb0);
     if( log_this) log(".................has_moved %c "+ has_moved               +" ", lb2);
-    if( log_this) log("....t_event_consumed_cause %c "+ t_event_consumed_cause  +" ", lb2);
+    if( log_this) log("....t_event_handeled_by %c "+ t_event_handeled_by  +" ", lb2);
     if( log_this) log("...t_preventDefault_caller %c "+ t_preventDefault_caller +" ", lb2);
 
     let                                    rejected_by = "";
     if     ( has_moved                   ) rejected_by = "has_moved";
-    else if( t_event_has_been_consumed() ) rejected_by = t_event_consumed_cause;
+    else if( t_event_has_been_handeled() ) rejected_by = t_event_handeled_by;
 /*
     else if( t_preventDefault_has_been_called() ) rejected_by = t_preventDefault_caller;
 */
@@ -13645,14 +13647,14 @@ if(log_this) log_caller();
 /*}}}*/
 /*}}}*/
 /** LOG {{{*/
-/*_ t_get_consumed_by_table {{{*/
-let t_get_consumed_by_table = function()
+/*_ t_get_handeled_by_table {{{*/
+let t_get_handeled_by_table = function()
 {
     return "<table>"
-        + "<tr><td class='cc1'>"+t_data.SYMBOL_BULB+ " DOWN  </td><td>"+ t_util.ellipsis(mousedown_consumed_by      , 56)+"</td></tr>"
-        + "<tr><td class='cc2'>"+t_data.SYMBOL_BULB+ " MOVE  </td><td>"+ t_util.ellipsis(mousemove_consumed_by      , 56)+"</td></tr>"
-        + "<tr><td class='cc3'>"+t_data.SYMBOL_BULB+ " PRESS </td><td>"+ t_util.ellipsis(mouselong_press_consumed_by, 56)+"</td></tr>"
-        + "<tr><td class='cc4'>"+t_data.SYMBOL_BULB+ " UP    </td><td>"+ t_util.ellipsis(mouseup_consumed_by        , 56)+"</td></tr>"
+        + "<tr><td class='cc1'>"+t_data.SYMBOL_BULB+ " DOWN  </td><td>"+ t_util.ellipsis(      mousedown_handeled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc2'>"+t_data.SYMBOL_BULB+ " MOVE  </td><td>"+ t_util.ellipsis(      mousemove_handeled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc3'>"+t_data.SYMBOL_BULB+ " PRESS </td><td>"+ t_util.ellipsis(mouselong_press_handeled_by, 56)+"</td></tr>"
+        + "<tr><td class='cc4'>"+t_data.SYMBOL_BULB+ " UP    </td><td>"+ t_util.ellipsis(        mouseup_handeled_by, 56)+"</td></tr>"
         + "</table>"
     ;
 };
@@ -17895,7 +17897,7 @@ let t_get_event_status_object = function()
     let has_been_scrolled_by_script = dom_scroll.get_has_been_scrolled_by_script();
 
     return {              captured_by : (t_preventDefault_caller ? (t_preventDefault_caller ) : "" )
-        ,                 consumed_by : (t_event_consumed_cause  ? (t_event_consumed_cause  ) : "" )
+        ,                 handeled_by : (t_event_handeled_by  ? (t_event_handeled_by  ) : "" )
         ,              window_scrollY :                             window.scrollY
         , has_been_scrolled_by_script :                            (has_been_scrolled_by_script ?                      has_been_scrolled_by_script : "NO")
         ,                   has_moved :                            (has_moved                   ? has_moved.replace(":",":"+LF+t_data.SYMBOL_RIGHT_ARROW) : "NO")
@@ -24411,7 +24413,7 @@ let move_drag_cursor = function(e)
     if(                  drag_cursor_div.classList.contains( CSS_DRAG_CURSOR_DIV_ONLOAD ))
         setTimeout(() => drag_cursor_div.classList.remove  ( CSS_DRAG_CURSOR_DIV_ONLOAD ), DRAG_CURSOR_DIV_ONLOAD_DELAY);
 
-    let      xy = t_util.get_event_XY(e);
+    let       xy = t_util.get_event_XY(e);
     let offset_x = drag_cursor_div.className
         ? drag_cursor_div.offsetWidth / 2
         : drag_cursor_div.offsetWidth;
@@ -24554,7 +24556,7 @@ return { name : "dom_tools"
     ,    t_dom_tools_html_set_el_class_on_off
     ,    t_focus
     ,    t_get_EL_num
-    ,    t_get_consumed_by_table
+    ,    t_get_handeled_by_table
     ,    t_get_container_selected
     ,    t_get_current_sel_text
     ,    t_get_event_status_object
@@ -24674,10 +24676,10 @@ return { name : "dom_tools"
     /* PROXY dom_fly */
     , t_tools_panel_select
 
-    , t_event_add_e_consumed_by
-    , t_event_clr_consumed
-    , t_event_has_been_consumed
-    , t_event_set_e_consumed_by
+    , t_event_add_e_handeled_by
+    , t_event_clr_handeled
+    , t_event_has_been_handeled
+    , t_event_set_e_handeled_by
     , t_handle_1_pat_bag
     , t_hide_hotspot
     , t_layout_changed
@@ -24711,7 +24713,7 @@ return { name : "dom_tools"
     , get_onDown_SHIFT    : function()  { return onDown_SHIFT; }
     , get_onDown_CTRL     : function()  { return onDown_CTRL ; }
     , get_onDown_ALT      : function()  { return onDown_ALT  ; }
-    , t_get_mouselong_press_consumed_by
+    , t_get_mouselong_press_handeled_by
 
     /* STATUS INDICATOR */
     , t_add_NOT_MOVED_ENOUGH

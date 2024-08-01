@@ -8,7 +8,7 @@
 /* exported dom_slot, DOM_SLOT_JS_TAG */
 
 const DOM_SLOT_JS_ID        = "dom_slot_js";
-const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (230820:21h:10)";
+const DOM_SLOT_JS_TAG       = DOM_SLOT_JS_ID  +" (240621:19h:17)";
 /*}}}*/
 let dom_slot    = (function() {
 "use strict";
@@ -283,7 +283,7 @@ let log_this = DOM_SLOT_LOG || LOG_MAP.S3_SLOT;
     let cleared_count = 0;
     for(let i = 0; i < sel_list.length; ++i)
     {
-        sel_list[i].outerHTML = sel_list[i].innerHTML;
+        sel_list[i].outerHTML = sel_list[i].innerHTML+" ";/*//FIXME .. should use [words_option] ? */
         cleared_count += 1;
     }
 

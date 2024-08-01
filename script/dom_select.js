@@ -1,4 +1,6 @@
-/* dom_select_js */
+/*┌──────────────────────────────────────────────────────────────────────────┐*/
+/*│ dom_select_js                                                            │*/
+/*└──────────────────────────────────────────────────────────────────────────┘*/
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true {{{*/
 /* globals console, setTimeout, clearTimeout */
 /* globals window, document, Node, NodeFilter */
@@ -21,13 +23,13 @@
 /* eslint-disable dot-notation        */
 
 const DOM_SELECT_JS_ID      = "dom_select_js";
-const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (230820:21h:10)";
+const DOM_SELECT_JS_TAG     = DOM_SELECT_JS_ID  +" (240621:19h:15)";
 /*}}}*/
-let dom_select  = (function() {
+let dom_select              = (function() {
 "use strict";
 let   DOM_SELECT_LOG        = false;
 let   DOM_SELECT_TAG        = false;
-
+// TODO refactoring ● see C:/LOCAL/DEV/DEVEL/EMC/Extensions/ExportCMT/script/js_select.js
 /* IMPORT */
 /*{{{*/
 /* eslint-disable no-unused-vars */
@@ -108,7 +110,7 @@ let lb0, lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lbX;
 let lbA, lbB, lbC, lbF, lbH, lbL, lbR, lbS, lbb          ;
 let lf0, lf1, lf2, lf3, lf4, lf5, lf6, lf7, lf8, lf9, lfX;
 let log, logBIG, logXXX, log_caller, log_json_one_liner, log_key_val, log_key_val_group;
-
+let js_timer;
 /*  prop */
 let prop;
 
@@ -129,6 +131,7 @@ let   select_INTERN = function()
     log_json_one_liner  = t_log.log_json_one_liner;
     log_key_val         = t_log.log_key_val;
     log_key_val_group   = t_log.log_key_val_group;
+    js_timer            = t_log.js_timer;
     /*}}}*/
     /* t_prop {{{*/
     prop = t_prop;
@@ -187,7 +190,7 @@ let CCS = function()
             +t_data.LF +"Slot #"                +this.slot
             +t_data.LF +t_data.SYMBOL_ELLIPSIS +" "    +this.nodes.length + " item"     +((this.nodes.length > 1) ? "s":"")
             +t_data.LF +t_data.SYMBOL_ELLIPSIS +" in " +uniq_containers   + " container"+((  uniq_containers > 1) ? "s":"")
-            +t_data.LF +t_data.SYMBOL_ELLIPSIS +" "    +this.words_option
+            +t_data.LF +t_data.SYMBOL_ELLIPSIS +" "    +(this.words_option || "no words_option")
         ;
     };
      /*}}}*/
@@ -463,20 +466,23 @@ let touchedWord_range_parent;
 let touchedWord_slot;
 
 /*}}}*/
-let touchedWord = function(x,y) /* eslint-disable-line complexity */
+let touchedWord = function(x,y,selection_range,options={ traversal:"NodeTEXT", NO_SELECTION_ADDRANGE:true }) /* eslint-disable-line complexity */
 {
+    let touched_text;
+try {       js_timer.startTimer("touchedWord");
 /*{{{*/
 let   caller = "touchedWord(x="+x+" , y="+y+")";
 let log_this = LOG_MAP.S1_RANGE;
+let tag_this = DOM_SELECT_TAG || log_this;
 
-if(log_this) log(caller);
+if( tag_this) log(caller);
 /*}}}*/
     /* get_range_from_XY {{{ */
     touchedWord_range_parent = null;
 
-    let  rangeFromXY = get_range_from_XY(x, y);
+    let rangeFromXY = selection_range || get_range_from_XY(x, y);
+    if(!rangeFromXY ) {
 
-    if( !rangeFromXY ) {
 if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: NO RANGE AT ["+x+"@"+y+"]</em>");
         return;
     }
@@ -494,8 +500,8 @@ if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: CLEAR CLICKED S
     /* 2/3 selected word range {{{*/
     let range = touchedWord_adjust( rangeFromXY );
     if(!range ) {
-if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: NO WORD RANGE</em>");
 
+if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: NO WORD RANGE</em>");
         return;
     }
     /*}}}*/
@@ -517,6 +523,7 @@ console_dir("range.startContainer.parentElement", range.startContainer.parentEle
 if(log_this) t_log.log_TR_RESULT_set( rangeToString(range, caller) );
 
     slot = get_slot_for_range(range);
+if( tag_this) log("slot=["+slot+"]");
     if( slot >= 0) {
 if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: CLEAR ADJUSTED SLOT #"+slot+"</em>");
         t_slot.t_clear_slot( slot );
@@ -526,7 +533,7 @@ if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: CLEAR ADJUSTED 
     /* Select new range {{{*/
 
   /*let touched_text =  t_util.get_first_word( range.toString(), caller);*/
-    let touched_text =                  range.toString();
+    /**/touched_text =                  range.toString();
 if(log_this) log("touched_text=["+touched_text+"]");
 
     if( touched_text )
@@ -535,7 +542,7 @@ if(log_this) t_log.log_TR_SELECT_set("<em class='big'>SELECTION: FILTER=["+touch
 /*{{{
 logXXX("...touched_text=["+touched_text+"]")
 }}}*/
-        /* [t_data.WORDS_SEGMENT] .. (RAW REGEX FILTER) .. (escaped otherwise) */
+        /* [t_data.WORDS_SEGMENT] .. (RAW REGEX FILTER) .. (escaped otherwise) {{{*/
         if(!prop.get(t_data.WORDS_SEGMENT) ) {
             let escaped_filter = t_escapeREGEX( touched_text );
 
@@ -547,6 +554,7 @@ if( log_this) log(   ".....touched_text: %c"+ touched_text
                    ,                     lb3
                  );
         }
+        /*}}}*/
         /* optional suffix regex */
         if(range.drop) {
             touched_text += "("+range.drop+")?";
@@ -558,11 +566,29 @@ logXXX("...range.drop["+range.drop+"] .. touched_text=["+touched_text+"]")
         touchedWord_range_parent = range.startContainer.parentNode;
 
         t_tools.t_words_regex_reset( touched_text);
-        check_TreeWalker(      "", touched_text);
+        check_Traversal (options, "", touched_text);
 
+if( tag_this) log("check_Traversal("+t_util.ellipsis(touched_text,32)+")");
         return;
     }
+    else {
+if( tag_this) log("NO touched_text");
+    }
     /*}}}*/
+} finally {
+/* logTimers {{{*/
+            js_timer.stopTimer ("touchedWord");
+
+    let title  = '"'+ t_util.ellipsis(touched_text)+'"'+  t_data.LF+" \u25CF "+         options.traversal; /* eslint-disable-line quotes */
+    /**/title += options.NO_SELECTION_ADDRANGE         ? (t_data.LF+" \u25CF NO_SELECTION_ADDRANGE") : "";
+
+    let l_x    = (options.traversal == "NodeTEXT"    ) ? 1
+        :        (options.traversal == "NodeIterator") ? 2 : 3; /* "TreeWalker" */
+    /**/l_x   += options.NO_SELECTION_ADDRANGE         ? 3 : 0;
+
+            js_timer.logTimers(title, l_x);
+/*}}}*/
+}
 };
 /*}}}*/
 /*_ get_slot_for_range {{{*/
@@ -572,6 +598,7 @@ const SEL_CLASS_PREFIX = "select";
 /*}}}*/
 let get_slot_for_range = function(range)
 {
+try {       js_timer.startTimer("get_slot_for_range");
 /*{{{*/
 let caller = "get_slot_for_range";
 let log_this = LOG_MAP.S3_SLOT;
@@ -594,6 +621,7 @@ if( log_this) log(caller+"("+range.toString()+"): return ["+slot+"] .. (startCon
     if((slot >=0) && !ccs[slot]) ccs[slot] = new CCS();
 
     return slot;
+} finally { js_timer.stopTimer ("get_slot_for_range"); }
 };
 /*}}}*/
 /*  t_escapeREGEX {{{*/
@@ -624,6 +652,7 @@ let t_escapeREGEX = function (text)
 /*  touchedWord_adjust {{{ */
 let touchedWord_adjust = function(range)
 {
+try {       js_timer.startTimer("touchedWord_adjust");
 /*{{{*/
 let   caller = "touchedWord_adjust";
 let log_this = LOG_MAP.S1_RANGE;
@@ -668,6 +697,7 @@ if(log_this) log("...GOT WORD FROM SYNTAXIC LOOKUP %c["+t_util.strip_CR_LF(word_
     /*}}}*/
 if(log_this) log("... GOT NO WORD FROM SYNTAXIC LOOKUP %c["+t_util.strip_CR_LF(range.toString())+"]", lb5);
     return null;
+} finally { js_timer.stopTimer ("touchedWord_adjust"); }
 };
 /* }}}*/
 /*_ touchedWord_adjust_1_in_embedding_container {{{*/
@@ -688,6 +718,7 @@ if( log_this) t_log.console_dir(caller+"(range)", range);
     let node_longword = (node_parent.textContent && (node_parent.textContent.length > S_TOUCHED_WORD_LENGTH_MAX));
     let node_inline
         =  (node_parent.tagName == "A"     )
+        || (node_parent.tagName == "B"     )
         || (node_parent.tagName == "CITE"  )
         || (node_parent.tagName == "CODE"  )
         || (node_parent.tagName == "EM"    )
@@ -859,7 +890,7 @@ if(log_this) {
 let touchedWord_adjust_2_in_selection_word_bounds = function(range)
 {
 /*{{{*/
-let   caller = "touchedWord_adjust_2_in_selection";
+let   caller = "touchedWord_adjust_2_in_selection_word_bounds";
 let log_this = LOG_MAP.S1_RANGE;
 
 if( log_this) log(caller+"("+range.toString()+"):");
@@ -897,6 +928,7 @@ if(log_this) log("...range=%c["+ range.toString() +"]", lb3);
 /*_ touchedWord_adjust_3_word_syntaxic_lookup {{{*/
 let touchedWord_adjust_3_word_syntaxic_lookup = function(range) /* eslint-disable-line complexity */
 {
+try {       js_timer.startTimer("touchedWord_adjust_3_word_syntaxic_lookup");
 /*{{{*/
 let   caller = "touchedWord_adjust_3_word_syntaxic_lookup";
 let log_this = LOG_MAP.S1_RANGE;
@@ -994,8 +1026,11 @@ if(log_this) log("%c FOUND NO TEXT NODE", lb2);
 if(log_this) log("SELECTED WORD s=["+s+"] e=["+e+"] l=["+word.length+"] word: <em>"+word+"</em> FROM: <em>"+ t_util.truncate(t_util.trim_node_textContent(node)) +"</em>");
     return range;
     /*}}}*/
+} finally { js_timer.stopTimer ("touchedWord_adjust_3_word_syntaxic_lookup"); }
 };
 /*}}}*/
+
+
 
 /*}}}*/
 /* WORD {{{*/
@@ -1130,6 +1165,7 @@ if(log_this && tse.drop) {
 /*_ range_setStart_at_end_of_previous_text_node {{{ */
 let range_setStart_at_end_of_previous_text_node = function(range)
 {
+try {       js_timer.startTimer("range_setStart_at_end_of_previous_text_node");
 /*{{{*/
 let   caller = "range_setStart_at_end_of_previous_text_node";
 let log_this = LOG_MAP.S1_RANGE;
@@ -1151,11 +1187,13 @@ if( log_this) log(caller+"("+range.toString()+"):");
     /*}}}*/
 if(log_this) log(caller+": %c PREVIOUS-TEXT-NODE=["+ t_util.node_toString(node) +"]", lbF+lb6);
     return node;
+} finally { js_timer.stopTimer ("range_setStart_at_end_of_previous_text_node"); }
 };
 /*}}}*/
 /*_ getPreviousTextNode {{{ */
 let getPreviousTextNode = function(node) /* eslint-disable-line complexity */
 {
+try {       js_timer.startTimer("getPreviousTextNode");
 /*{{{*/
 let   caller = "getPreviousTextNode";
 let log_this = LOG_MAP.S1_RANGE;
@@ -1232,6 +1270,7 @@ if(log_this) log("SEARCHING ROOT: "+ t_util.node_toString(root));
     }
     return previousNode;
     /*}}}*/
+} finally { js_timer.stopTimer ("getPreviousTextNode"); }
 };
 /*}}}*/
 /*_ pattern_toHTML {{{*/
@@ -1263,7 +1302,7 @@ let t_slot_visibility_changed = function()
 {
 /*{{{*/
 let caller = "t_slot_visibility_changed";
-let log_this = DOM_SELECT_LOG || DOM_SELECT_TAG || LOG_MAP.S3_SLOT;
+let log_this = DOM_SELECT_LOG || LOG_MAP.S3_SLOT;
 
 if( log_this) log("%c "+caller, lbH+lf3);
 /*}}}*/
@@ -1374,9 +1413,11 @@ let   slot_visible_num_array_update = function(slot)
 {
 /*{{{*/
 let   caller = "slot_visible_num_array_update";
-let log_this = DOM_SELECT_TAG || DOM_SELECT_LOG || LOG_MAP.S3_SLOT;
+let log_this = DOM_SELECT_LOG || LOG_MAP.S3_SLOT;
+let tag_this = DOM_SELECT_TAG || log_this;
+if( tag_this) caller += "(slot "+slot+")";
 
-if( log_this) log("%c "+caller+"("+slot+")", lbH+lf4);
+if( log_this) log("%c "+caller, lbH+lf4);
 /*}}}*/
 
     if(!ccs[slot]) return;
@@ -1388,7 +1429,8 @@ if( log_this) log("%c "+caller+"("+slot+")", lbH+lf4);
         if( is_slot_num_visible(slot, num) )
             ccs[slot].visible_num_array.push(     num );
     }
-if( log_this) log(ccs[slot].visible_num_array);
+if( tag_this) log("%c"+caller+"%c"+ccs[slot].visible_num_array.length+" / "+ccs[slot].nodes.length, lf4, lbH+lf4);
+if( log_this) log( ccs[slot].visible_num_array);
 };
 /*}}}*/
 /*…   is_slot_num_visible {{{*/
@@ -1398,8 +1440,7 @@ let   is_slot_num_visible = function(slot, num) /* eslint-disable-line complexit
 let   caller = "is_slot_num_visible";
 let log_this = DOM_SELECT_LOG || LOG_MAP.S3_SLOT;
 
-let tag_this = DOM_SELECT_TAG || log_this;
-if( tag_this) caller += "(slot "+slot+"  num "+num+")";
+if( log_this) caller += "(slot "+slot+"  num "+num+")";
 if( log_this ) log("%c"+caller, lbH+lf4);
 /*}}}*/
     /* [slot] {{{*/
@@ -1469,12 +1510,57 @@ if(log_this) log(".count=["+ count +"]");
     ;
 
     /*}}}*/
-if( tag_this ) log("%c"+caller+": ...return "+visible, lbH+lfX[visible ? 5:2]);
+if( log_this ) log("%c"+caller+": ...return "+visible, lbH+lfX[visible ? 5:2]);
     return visible;
 };
 /*}}}*/
+/*_ get_parent_with_overflow {{{ */
+let get_parent_with_overflow = function(node)
+{
+    for(let parent  = node
+        ;   parent && parent.style
+        ;   parent  = parent.parentNode
+    ) {
+        let computedStyle = window.getComputedStyle(parent);
+        if( computedStyle.overflow && (computedStyle.overflow != "visible"))
+        {
+logXXX(t_util.get_n_lbl(parent)+" %c overflow ["+parent.style.overflow+"] %c COMPUTED ["+computedStyle.overflow+"]"
+    ,                      lbL+lf6                                ,lbR+lf7);
+/*
+*/
+            return parent;
+        }
+    }
+    return null;
+};
+/*}}}*/
+/*➔ t_clear_slot_all {{{ */
+let t_clear_slot_all = function()
+{
+    let caller = "t_clear_slot_all";
+let log_this = LOG_MAP.S2_SELECT || LOG_MAP.S3_SLOT;
 
-/*… t_set_last_selected_slot_num {{{*/
+    let cleared_count   = 0;
+    let cleared_pat_csv = "";
+
+    for(let slot = ccs.length-1; slot >= 1        ; --slot)
+    {
+        let       pattern    = ccs[slot] ? ccs[slot].pattern : "";
+
+        let clear_slot_count = t_slot.t_clear_slot( slot );
+
+        if( clear_slot_count && pattern)
+            cleared_pat_csv  = t_util.csv_add(cleared_pat_csv, pattern);
+
+        cleared_count       += clear_slot_count;
+    }
+
+if(log_this) log(caller+": "+cleared_count+" words highlighting cleared");
+    return cleared_pat_csv;
+};
+/*}}}*/
+
+/*➔ t_set_last_selected_slot_num {{{*/
 /*{{{*/
 let last_selected_thumb_p = 0;
 let last_selected_slot    =-1;
@@ -1507,26 +1593,20 @@ if( log_this) log("%c"+caller+"(slot=["+slot+"], num=["+num+"], thumb_p=["+thumb
 };
 /*}}}*/
 
-/*_ get_parent_with_overflow {{{ */
-let get_parent_with_overflow = function(node)
+/*➔ get_last_selected_slot {{{*/
+let get_last_selected_slot = function()
 {
-    for(let parent  = node
-        ;   parent && parent.style
-        ;   parent  = parent.parentNode
-    ) {
-        let computedStyle = window.getComputedStyle(parent);
-        if( computedStyle.overflow && (computedStyle.overflow != "visible"))
-        {
-logXXX(t_util.get_n_lbl(parent)+" %c overflow ["+parent.style.overflow+"] %c COMPUTED ["+computedStyle.overflow+"]"
-    ,                      lbL+lf6                                ,lbR+lf7);
-/*
-*/
-            return parent;
-        }
-    }
-    return null;
+    return last_selected_slot;
 };
 /*}}}*/
+/*➔ clear_last_selected_slot {{{*/
+let clear_last_selected_slot = function()
+{
+    last_selected_slot    = -1;
+    last_selected_num     = -1;
+};
+/*}}}*/
+
 /*… scroll_thumb_p_to_onSeek_XY {{{*/
 let scroll_thumb_p_to_onSeek_XY = function(thumb_p, slot, onSeekXYL)
 {
@@ -1560,20 +1640,6 @@ if(log_this) log("%c PAGE "+page_height+" %c thumb_p "+thumb_p+" %c scrollY "+Ma
  TODO: option to choose between showing thumb_p-values -OR- dot-list
  TODO: swipe over dot-list to scroll forward or backward
 */
-/*}}}*/
-
-/*  get_last_selected_slot {{{*/
-let get_last_selected_slot = function()
-{
-    return last_selected_slot;
-};
-/*}}}*/
-/*  clear_last_selected_slot {{{*/
-let clear_last_selected_slot = function()
-{
-    last_selected_slot    = -1;
-    last_selected_num     = -1;
-};
 /*}}}*/
 /*… highlight_data_thumb_p {{{*/
 let highlight_data_thumb_p = function(thumb_p, slot) /* eslint-disable-line complexity */
@@ -1692,31 +1758,6 @@ if(log_this) log(".DEDICATED SLOT TOOL HIGHLIGHTED: slot_num_id=["+slot_num_id+"
         }
     }
     /*}}}*/
-};
-/*}}}*/
-/*  t_clear_slot_all {{{ */
-let t_clear_slot_all = function()
-{
-    let caller = "t_clear_slot_all";
-let log_this = LOG_MAP.S2_SELECT || LOG_MAP.S3_SLOT;
-
-    let cleared_count   = 0;
-    let cleared_pat_csv = "";
-
-    for(let slot = ccs.length-1; slot >= 1        ; --slot)
-    {
-        let       pattern    = ccs[slot] ? ccs[slot].pattern : "";
-
-        let clear_slot_count = t_slot.t_clear_slot( slot );
-
-        if( clear_slot_count && pattern)
-            cleared_pat_csv  = t_util.csv_add(cleared_pat_csv, pattern);
-
-        cleared_count       += clear_slot_count;
-    }
-
-if(log_this) log(caller+": "+cleared_count+" words highlighting cleared");
-    return cleared_pat_csv;
 };
 /*}}}*/
 
@@ -1889,9 +1930,13 @@ let log_this = LOG_MAP.S1_RANGE;
 let       msg_log  = "";
 if( log_this) msg_log += caller+"(x="+x+" , y="+y+")";
 /*}}}*/
+    /* [get_range_from_caret] {{{*/
     let       range = get_range_from_caret(x,y);
+
+    /*}}}*/
+    /* [not_a_range] {{{*/
     let not_a_range = (range && !range.setStart); /* !range.setStart (i.e. Firefox) */
-    if(not_a_range && range && range.offsetNode)
+    if( not_a_range && range && range.offsetNode)
     {
 /*{{{*/
 if(log_this) {
@@ -1905,7 +1950,8 @@ if(log_this) {
         new_range.setStart(range.offsetNode, range.offset);
         range = new_range;
     }
-/* log {{{*/
+    /*}}}*/
+/*{{{*/
 if(log_this) {
     if(range) {
         msg_log += rangeToString(range, caller);
@@ -2041,23 +2087,30 @@ let rangeToString = function(range, rangeName="RANGE")
 
 /** TRAVERSAL */
 /*{{{*/
-/*  check_Traversal check_TreeWalker check_NodeIterator {{{*/
+/*  check_Traversal check_TreeWalker check_NodeIterator check_Traversal {{{*/
 /*{{{*/
 let root_last_used_id;
 
 /*}}}*/
-let check_NodeIterator = function(           tag_or_id, pattern) { return check_Traversal("NodeIterator", tag_or_id, pattern); };
-let check_TreeWalker   = function(           tag_or_id, pattern) { return check_Traversal("TreeWalker"  , tag_or_id, pattern); };
-let check_Traversal    = function(traversal, tag_or_id, pattern) /* eslint-disable-line complexity */
+let check_NodeTEXT     = function(           tag_or_id, pattern) { return check_Traversal({ traversal: "NodeTEXT"     }, tag_or_id, pattern); };
+let check_NodeIterator = function(           tag_or_id, pattern) { return check_Traversal({ traversal: "NodeIterator" }, tag_or_id, pattern); };
+let check_TreeWalker   = function(           tag_or_id, pattern) { return check_Traversal({ traversal: "TreeWalker"   }, tag_or_id, pattern); };
+let check_Traversal    = function(  options, tag_or_id, pattern) /* eslint-disable-line complexity */
 {
+try {       js_timer.startTimer("check_Traversal: \u25CF "+options.traversal);
 /* {{{*/
 let   caller = "check_traversal";
 let log_this = LOG_MAP.S3_SLOT;
+let tag_this = DOM_SELECT_TAG || log_this;
 
-if( log_this) log("%c"+caller+" %c traversal=["+traversal+"] %c tag_or_id=["+tag_or_id+"] %c pattern=["+pattern+"]"
-    ,             lbH         ,lbL                         ,lbC                         ,lbR                      );
-if( log_this) t_log.log_TR_SELECT_add("<em class='cc3'>caller</em> traversal=<em class='cc3'>"+traversal+"</em> tag_or_id=<em class='cc4'>"+tag_or_id+"</em> pattern=<em class='cc6'>"+pattern+"</em>");
+if( tag_this) log("%c"+caller+" %c traversal=["+options.traversal+"] %c tag_or_id=["+tag_or_id+"] %c pattern=["+pattern+"]"
+    ,             lbH+lbb+lb4 ,lbL                         ,lbC                         ,lbR                      );
+if( tag_this) t_log.log_TR_SELECT_add("<em class='cc3'>caller</em> traversal=<em class='cc3'>"+options.traversal+"</em> tag_or_id=<em class='cc4'>"+tag_or_id+"</em> pattern=<em class='cc6'>"+pattern+"</em>");
+if( tag_this) t_log.log_key_val_group("options", options, 4, false);
 /*}}}*/
+
+    let mDomTraversal;
+try {       js_timer.startTimer("check_Traversal_1");
     /* !pattern .. return {{{*/
     if( !pattern ) {
         log("%c"+caller+" %c no pattern to look for", lbL, lbR+lf3);
@@ -2073,28 +2126,36 @@ if( log_this) t_log.log_TR_SELECT_add("<em class='cc3'>caller</em> traversal=<em
     /* searched root {{{*/
     let root = pick_tag_or_id_node(tag_or_id, caller);
 
-    let mDomTraversal
-        = (traversal == "NodeIterator")
-        ?  document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter_function)
-        :  document.createTreeWalker  (root, NodeFilter.SHOW_ALL , mNodeFilter_function);
+    /**/mDomTraversal
+        = (options.traversal == "NodeTEXT"    ) ?  document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter_function)
+        : (options.traversal == "NodeIterator") ?  document.createNodeIterator(root, NodeFilter.SHOW_TEXT, mNodeFilter_function)
+        :                                          document.createTreeWalker  (root, NodeFilter.SHOW_ALL , mNodeFilter_function);
 
 if( log_this) log("<em class='cc3'>"+ t_util.object_label(mDomTraversal) +"</em> ID: <em class='cc4'>"+tag_or_id+"</em>");
 
     /*}}}*/
+} finally { js_timer.stopTimer ("check_Traversal_1"); }
+
+    let words_option;
+    let node_array;
+try {       js_timer.startTimer("check_Traversal_2");
     /* pattern matching node_array .. return {{{*/
     let clicked_selection
         = t_tools.t_get_onDown_EL(caller);
 
-    mNodeRegexP         = get_mNodeRegexP(pattern);
+    mNodeRegexP
+        = get_mNodeRegexP(pattern);
 if( log_this) log("mNodeRegexP=["+mNodeRegexP+"]");
 
     if(!mNodeRegexP) return;
 
-    let words_option = mNodeRegexP.words_option;
+    /**/words_option
+        = mNodeRegexP.words_option || "";
 
-    let node_array
+    /**/node_array
         = get_traversal_node_array(pattern, clicked_selection, mDomTraversal);
 
+if( tag_this) log("● node_array=[ x"+node_array.length+" ]");//FIXME
     /*}}}*/
     /* !node_array .. return {{{*/
     if(!node_array) {
@@ -2152,6 +2213,9 @@ if( log_this) t_log.log_TR_RESULT_set();
         return;
     }
     /*}}}*/
+} finally { js_timer.stopTimer ("check_Traversal_2"); }
+
+try {       js_timer.startTimer("check_Traversal_3");
     /* COLLECT TO FREE SLOT {{{*/
 /*{{{*/
 if( log_this) {
@@ -2180,7 +2244,7 @@ if( log_this) {
     {
 if( log_this) log("<em class='cc0' style='font-size:300%;'>"+(i+1)+"/"+node_array.length+"</em>");
 
-        collect_node_matches_to_slot(touchedWord_slot, node_array[i], pattern, words_option);
+        collect_NODE_MATCHES_to_slot(touchedWord_slot, node_array[i], pattern, words_option, options);
 
         can_collect_more = (ccs[touchedWord_slot].nodes.length < TOO_MANY_SELECTIONS);
     }
@@ -2190,7 +2254,10 @@ if( log_this) log("<em class='cc0' style='font-size:300%;'>"+(i+1)+"/"+node_arra
     log_tools_filter_slot( touchedWord_slot );
 
     /*}}}*/
+} finally { js_timer.stopTimer ("check_Traversal_3"); }
+
 if( log_this) t_log.log_TR_RESULT_set();
+} finally { js_timer.stopTimer ("check_Traversal: \u25CF "+options.traversal); }
 };
 /*}}}*/
 /*  check_childNodes {{{*/
@@ -2277,6 +2344,7 @@ if(log_this && (empty_count > 0)) log("...empty_count=["+empty_count+"]");
 /*_ get_traversal_node_array {{{*/
 let get_traversal_node_array = function(pattern, clicked_selection, mDomTraversal)
 {
+try {       js_timer.startTimer("get_traversal_node_array");
 /*{{{*/
 let   caller = "get_traversal_node_array";
 let log_this = DOM_SELECT_LOG || LOG_MAP.S1_RANGE;
@@ -2285,8 +2353,7 @@ let tag_this = DOM_SELECT_TAG || log_this;
 if( tag_this) log("%c"+caller+"(pattern=["+pattern+"], clicked_selection=["+t_util.get_n_txt(clicked_selection)+"])", lbH);
 if( log_this) log_tags();
 /*}}}*/
-
-    /* clear any to-be-reselected selection */
+    /* clear any to-be-reselected selection {{{*/
     let slot;
     if( slot = t_slot.get_slot_matching_pattern( pattern )) {
         if(!clicked_selection) {
@@ -2323,13 +2390,16 @@ if( tag_this) {
 */
         }
     }
+    /*}}}*/
 if( tag_this) log(caller+": return node_array.length=["+node_array.length+"]");
     return node_array;
+} finally { js_timer.stopTimer ("get_traversal_node_array"); }
 };
 /*}}}*/
 /*_ get_mNodeRegexP {{{*/
 let get_mNodeRegexP = function(pattern)
 {
+try {       js_timer.startTimer("get_mNodeRegexP");
 /*{{{*/
 let   caller = "get_mNodeRegexP";
 let log_this = LOG_MAP.S1_RANGE;
@@ -2339,7 +2409,7 @@ let log_this = LOG_MAP.S1_RANGE;
     let    rx = null;
 
     let [ sel_text , words_option ] = t_tools.t_pattern_to_sel_text_words_option( pattern );
-
+    /* words_option {{{*/
     try {
         switch( words_option   ) {
         case    t_data.WORDS_EXACT    : rx = new RegExp( "\\b("+sel_text+")\\b" , flags); break;
@@ -2354,12 +2424,14 @@ if( log_this) log(caller+"(sel_text=["+sel_text+"] words_option=["+words_option+
         t_tools.t_words_regex_no_match(sel_text, t_util.get_ex_tooltip(ex));
         return null;
     }
+    /*}}}*/
 
     rx.pattern      = pattern;
     rx.words_option = words_option;
 
 if(log_this) log(caller+"("+sel_text+" "+words_option+"): ...return ["+rx+"]");
     return rx;
+} finally { js_timer.stopTimer ("get_mNodeRegexP"); }
 };
 /*}}}*/
 /*_ t_check_hasFeature {{{ */
@@ -2400,6 +2472,7 @@ let check_log_num_thumb = function(count, node)
 /*_ mNodeFilter_function {{{*/
 let mNodeFilter_function = function(node)
 {
+try {       js_timer.startTimer("mNodeFilter_function");
 let caller = "mNodeFilter_function";
 let log_this = LOG_MAP.S1_RANGE;
     let check_result = mNodeFilter_check_node( node );
@@ -2407,11 +2480,13 @@ let log_this = LOG_MAP.S1_RANGE;
 if(log_this && (check_result != NodeFilter.FILTER_SKIP)) log(caller+": "+ mNodeFilter_toString(check_result) + t_util.node_toString(node));
 
     return check_result;
+} finally { js_timer.stopTimer ("mNodeFilter_function"); }
 };
 /*}}}*/
 /*_ mNodeFilter_check_node {{{*/
 let mNodeFilter_check_node = function(node)
 {
+try {       js_timer.startTimer("mNodeFilter_check_node");
     /* REJECT == child nodes are also rejected */
     /* SKIP   == children are still considered */
 
@@ -2483,6 +2558,7 @@ logXXX("%c mNodeFilter_check_node( "+t_util.get_id_or_tag(node)+" ) %c CSS_DIMME
     else                                              return NodeFilter.FILTER_ACCEPT;
 
     /*}}}*/
+} finally { js_timer.stopTimer ("mNodeFilter_check_node"); }
 };
 /*}}}*/
 /*_ mNodeFilter_toString {{{*/
@@ -2501,47 +2577,70 @@ let mNodeFilter_toString = function( check_result )
 
 /** COLLECT */
 /*{{{*/
-/*… collect_node_matches_to_slot {{{*/
-let collect_node_matches_to_slot = function(slot, node, pattern, words_option)
+/*… collect_NODE_MATCHES_to_slot {{{*/
+let collect_NODE_MATCHES_to_slot = function(slot, node, pattern, words_option, options)
 {
+try {       js_timer.startTimer(      "collect_NODE_MATCHES_to_slot");
 /*{{{*/
-let   caller = "collect_node_matches_to_slot";
+let   caller = "collect_NODE_MATCHES_to_slot";
 let log_this = LOG_MAP.S1_RANGE;
 
 if( log_this) log(caller+"(slot=["+slot+"], node=["+t_util.get_n_txt(node)+"]");
 /*}}}*/
-
 if( log_this) log("<div class='div_match'>");
     let matches;
     for(let i = 0; node && (matches = mNodeRegexP.exec(node.textContent)); ++i)
     {
 if( log_this) log("<div class='div_match' style='border:3px dotted yellow !important;'>");
 
+        /* match startOffset endOffset {{{*/
         let num = ccs[slot].nodes.length+1;
 if( log_this) log_match(node, slot, num, i, mNodeRegexP, matches);
 
         let       match = matches[0]; /* the full string */
         let startOffset = matches.index;
         let   endOffset = startOffset + match.length;
+        /*}}}*/
+        /*  range select match {{{*/
+        let range;
+        if(!options.NO_SELECTION_ADDRANGE) {
+            range = document.createRange();
 
-        /* select match */
-        let       range = document.createRange();
-        range.setStart(node, startOffset);
-        range.setEnd  (node,   endOffset);
-
+            range.setStart(node, startOffset);
+            range.setEnd  (node,   endOffset);
+        }
+        else {
+            range
+                = { startContainer : node
+                  , startOffset
+                  , endOffset
+                  , sel_text       : match
+                };
+        }
+        /*}}}*/
         /* add a match selection range */
         if(ccs[slot].nodes.length < TOO_MANY_SELECTIONS)
         {
             t_util.clearSelection();
+
+if(!options.NO_SELECTION_ADDRANGE) {
+try {       js_timer.startTimer("....window.getSelection().addRange");
+            /* Add a match selection range {{{*/
             try {
                 window.getSelection().addRange( range );
             } catch(ex) { log(caller+": pattern=["+pattern+"]"+ex, "error"); }
 
-            /* Copy first selection to clipboard */
+            /*}}}*/
+            /* Copy first selection to clipboard {{{*/
             if(i == 0) document.execCommand("copy");
 
-            /* collect each match to slot num */
-            let ccs_node_nextSibling = collect_selection_to_slot(slot, pattern, words_option);
+            /*}}}*/
+} finally { js_timer.stopTimer ("....window.getSelection().addRange"); }
+}
+
+try {       js_timer.startTimer(".................SELECTION TO SLOT");
+            /* collect each match to slot num {{{*/
+            let ccs_node_nextSibling = collect_SELECTION_to_slot(slot, pattern, words_option, range);
             if( ccs_node_nextSibling )
             {
                 /* and look ahead from there */
@@ -2549,14 +2648,16 @@ if( log_this) log_match(node, slot, num, i, mNodeRegexP, matches);
                 mNodeRegexP.lastIndex = 0;
             }
 if( log_this) log("...<blockquote class='cc6'>"+ t_util.get_n_txt(node).substring(mNodeRegexP.lastIndex) +"</blockquote>");
+            /*}}}*/
+} finally { js_timer.stopTimer (".................SELECTION TO SLOT"); }
+
         }
+/* TOO_MANY_SELECTIONS {{{*/
         else {
-/*{{{
-            window.getSelection().addRange( range ); FIXME what was the use of this ?
-}}}*/
 if( log_this) log("%c TOO_MANY_SELECTIONS=["+TOO_MANY_SELECTIONS+"]", lbH+lf8);
             node = null;    /* .. stop searching */
         }
+/*}}}*/
 if( log_this) log("</div>");
     }
 
@@ -2564,6 +2665,7 @@ if( log_this) log("</div>");
     t_util.clearSelection();
 
 if( log_this) log("</div>");
+} finally { js_timer.stopTimer (      "collect_NODE_MATCHES_to_slot"); }
 };
 /*}}}*/
 /*_ log_match {{{*/
@@ -2585,48 +2687,62 @@ let log_match = function(node, slot, num, i, regex, matches)
 };
 /*}}}*/
 
-/*_ collect_selection_to_slot {{{ */
-let collect_selection_to_slot = function(slot, pattern, words_option)
+/*_ collect_SELECTION_to_slot {{{ */
+let collect_SELECTION_to_slot = function(slot, pattern, words_option, range)
 {
+try {       js_timer.startTimer(      "collect_SELECTION_to_slot");
 /*{{{*/
-    let caller = "collect_selection_to_slot";
+    let caller = "collect_SELECTION_to_slot";
 let log_this = LOG_MAP.S3_SLOT;
 
 if( log_this) log(caller+"(slot=["+slot+"], pattern=["+pattern+"], words_option=["+words_option+"])");
 /*}}}*/
+    /*  sel_text .. f(NO_SELECTION_ADDRANGE) {{{*/
+    let sel_text;
+    if( range instanceof window.Range)
+    {
+try {       js_timer.startTimer("......................Get RANGE");
+        let selection = window.getSelection();
+        if( selection && (selection.rangeCount > 0))
+            sel_text  = range.toString();
+} finally { js_timer.stopTimer ("......................Get RANGE"); }
+    }
+    else {
+        sel_text      = range.sel_text;
 
-    let selection = window.getSelection();
-    if(!selection               ) return null;
-    if( selection.rangeCount < 1) return null;
-
-    let range     = selection.getRangeAt(0);
-
-    let sel_text  = range.toString();
+    }
+    /*}}}*/
 if(log_this) log(".sel_text=["+sel_text +"]");
+    if(!sel_text) return null;
 
-    if(!sel_text                ) return null;
+    if(!pattern)
+        pattern       = sel_text;
 
-    if(!pattern) pattern = sel_text;
-
-    /* inject highlight node */
+try {       js_timer.startTimer("........................Add CCS");
+    /* [ccs_node] inject highlight node {{{*/
     let ccs_node        = document.createElement("em");
     ccs_node.innerText  = sel_text;
 
-    collect_ccs_range_node_slot(range, ccs_node, slot, pattern, words_option);
+    collect_CCS_range_node_slot(range, ccs_node, slot, pattern, words_option);
 
+    /*}}}*/
 if(log_this) log("return ccs_node.nextSibling=["+ccs_node.nextSibling+"]");
     return ccs_node.nextSibling;
+} finally { js_timer.stopTimer ("........................Add CCS"); }
+
+} finally { js_timer.stopTimer (      "collect_SELECTION_to_slot"); }
 };
 /*}}}*/
-/*_ collect_ccs_range_node_slot {{{*/
+/*_ collect_CCS_range_node_slot {{{*/
 /*{{{
 let some_container_is_too_high;
 }}}*/
 
-let collect_ccs_range_node_slot = function(range, ccs_node, slot, pattern, words_option) /* eslint-disable-line complexity */
+let collect_CCS_range_node_slot = function(range, ccs_node, slot, pattern, words_option) /* eslint-disable-line complexity */
 {
+try {           js_timer.startTimer(          "collect_CCS_range_node_slot");
 /*{{{*/
-let caller = "collect_ccs_range_node_slot";
+let caller = "collect_CCS_range_node_slot";
 let log_this = LOG_MAP.S3_SLOT;
 
 if( log_this) log(caller+"(range, ccs_node, slot=["+slot+"])");
@@ -2639,8 +2755,11 @@ if(log_this) log(caller+"%c NOT COLLECTING "+t_util.get_n_txt( ccs_node )+" .. p
         return;
     }
     /*}}}*/
+    let container;
+
+    try {       js_timer.startTimer("........................Add CONTAINER");
     /* [container] {{{*/
-    let container                      = get_text_container( range.startContainer );
+    /**/container                      = get_text_container( range.startContainer );
     let container_H                    = container ? container.offsetHeight : 0;
     let container_is_too_high          = (container_H             >  window.innerHeight);
     let container_is_body              = (container               == document.body);
@@ -2666,6 +2785,7 @@ if(log_this && container_is_body_first_child ) log("%c container_is_body_first_c
 */
 if(log_this) log("%c container %c "+t_util.get_n_lbl(container)+"%c H="+container_H, lbL, lbC+lf7, lbR+lf8);
     /*}}}*/
+    } finally { js_timer.stopTimer ("........................Add CONTAINER"); }
     /* [containers_hi] {{{ */
     if(    container
        &&  prop.get("containers_hi")
@@ -2684,12 +2804,19 @@ if(log_this) log("%c container %c "+t_util.get_n_lbl(container)+"%c H="+containe
     }
 
     /*}}}*/
-    /* CCS INSERT .. (TEMPORARILY REPLACE SELECTION) {{{*/
+
+if( range  instanceof window.Range) {
+    try {       js_timer.startTimer("............................Del RANGE");
+    /* DELETE {{{*/
+
     range.deleteContents();
-    range.insertNode(ccs_node);
 
     /*}}}*/
-    /* CCS CREATE {{{*/
+    } finally { js_timer.stopTimer ("............................Del RANGE"); }
+}
+
+    try {       js_timer.startTimer("..............................Add CCS");
+    /* CCS {{{*/
     let                   next_idx = ccs[slot].nodes.length;
     let                        ccX =     slot % SELECT_SLOT_MAX;
     let                 slot_class = SEL_CLASS_PREFIX +     ccX;
@@ -2697,12 +2824,77 @@ if(log_this) log("%c container %c "+t_util.get_n_lbl(container)+"%c H="+containe
 
     ccs_node.id                    = slot_class +"_"+(next_idx+1);
     ccs_node.className             = slot_class +" "+ word_class;
+    ccs_node.className             = ccs_node.className.trim();
     ccs[slot].nodes     [next_idx] = ccs_node;
     ccs[slot].containers[next_idx] = container;
 
 if(log_this) log("%c ccs_node: "+ t_util.node_toString(ccs_node), "background-color:#880");
 
     /*}}}*/
+    } finally { js_timer.stopTimer ("..............................Add CCS"); }
+
+if(range  instanceof window.Range) {
+    try {       js_timer.startTimer("....................RANGE Insert Node");
+    /* RANGE INSERT Node {{{*/
+    range.insertNode(ccs_node);
+    /*}}}*/
+    } finally { js_timer.stopTimer ("....................RANGE Insert Node"); }
+}
+
+if(!(range  instanceof window.Range))
+    try {       js_timer.startTimer("......................CCS Insert Node");
+    /* INSERT {{{*/
+    insert_container_start_end_ccs_node(range.startContainer,range.startOffset,range.endOffset, ccs_node);
+    /*}}}*/
+    } finally { js_timer.stopTimer ("......................CCS Insert Node"); }
+
+} finally {     js_timer.stopTimer (          "collect_CCS_range_node_slot"); }
+};
+/*}}}*/
+/*_ insert_container_start_end_ccs_node {{{*/
+//t insert_container_start_end_ccs_node = function(range,ccs_node) /* eslint-disable-line no-unused-vars */
+let insert_container_start_end_ccs_node = function(range_startContainer,range_startOffset,range_endOffset,ccs_node)
+{
+try {       js_timer.startTimer("insert_container_start_end_ccs_node");
+
+    let range_Node = range_startContainer;
+    let parentNode = range_Node.parentNode;
+
+    /* TEXT BEFORE */
+    let text_before = range_Node.textContent.substring(0, range_startOffset).trim();
+    if( text_before ) {
+        let node_before = document.createTextNode( text_before );
+        parentNode.insertBefore(node_before , range_Node);
+    }
+
+    /* CCS node */
+    /**/parentNode.insertBefore( ccs_node   , range_Node);
+
+    /* TEXT AFTER */
+    let text_after  = range_Node.textContent.substring(   range_endOffset  ).trim();
+    if( text_after ) {
+        let node_after  = document.createTextNode( text_after  );
+        parentNode.insertBefore(node_after  , range_Node);
+    }
+
+    /* REMOVE OLD TEXT NODE */
+    /**/parentNode.removeChild(               range_Node);
+
+/*{{{
+log_js.log_object("insertBefore: "
+                 , { text_before         : "["+          text_before +"]"
+                   , ccs_node            : "["+ ccs_node.textContent +"]"
+                   , text_after          : "["+          text_after  +"]"
+                   , range_startOffset   : range_startOffset
+                   , range_endOffset     : range_endOffset
+                   , parentNode_children : parentNode.children.length
+                 }, lf5, false);
+
+log(       "parentNode:");
+console.dir(parentNode  );
+}}}*/
+
+} finally { js_timer.stopTimer ("insert_container_start_end_ccs_node"); }
 };
 /*}}}*/
 
@@ -2883,250 +3075,6 @@ log_key_val_group(ccs[s])
 log("toString:"+t_data.LF+ ccs[s].toString())
 */
     return  node;
-};
-/*}}}*/
-/*}}}*/
-
-/* PAT BAGS */
-/*{{{*/
-/*➔ t_onPatternUpdate {{{*/
-/*{{{*/
-const  PATTERN_UPDATE_DELAY =  550;
-const  PATTERN_UPDATE_QUICK =  250;
-
-let   onPatternUpdate_timer = null;
-/*}}}*/
-let t_onPatternUpdate_no_delay = function(msg, caller       ) { t_onPatternUpdate(msg, caller, 0                   ); };
-let t_onPatternUpdate_quick    = function(msg, caller       ) { t_onPatternUpdate(msg, caller, PATTERN_UPDATE_QUICK); };
-let t_onPatternUpdate          = function(msg, caller, delay=PATTERN_UPDATE_DELAY)
-{
-/*{{{
-logXXX("t_onPatternUpdate(delay=["+delay+"])");
-}}}*/
-if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_log_stage_msg(t_fly.STAGE_2_ACTION, msg);
-
-    if(  onPatternUpdate_timer) {
-        clearTimeout(  onPatternUpdate_timer);
-/*{{{
-        if( delay ) delay  = 2 * PATTERN_UPDATE_DELAY;
-}}}*/
-    }
-    if(delay) onPatternUpdate_timer =   setTimeout(onPatternUpdate_handler, delay);
-    else                                           onPatternUpdate_handler();
-};
-/*}}}*/
-/*…   onPatternUpdate_handler {{{*/
-let   onPatternUpdate_handler = function()
-{
-/*{{{*/
-let   caller = "onPatternUpdate_handler";
-let log_this = LOG_MAP.S0_PATTERN;
-
-if( log_this ) logBIG(caller, lf4);
-/*}}}*/
-      onPatternUpdate_timer = null;
-
-if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly_all_csv(t_data.SYMBOL_UPDATE, "want");
-
-    t_tools.t_pattern1_sync_csv_from_ccs();
-
-if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly_all_csv(t_data.SYMBOL_STAGE , "have");
-
-    t_tools.t_pattern2_set_sel_bag_innerHTML();
-
-    t_tools.t_pattern3_pat_off_alt_bak_innerHTML(caller);
-if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly_all_csv(t_data.SYMBOL_RESULT, "have");
-
-    t_tools.t_onPatternUpdate_done();
-
-};
-/*}}}*/
-
-/*➔ t_get_docker_bag_msg {{{*/
-let t_get_docker_bag_msg = function(bag_name, mov_count, ass_count, ins_count)
-{
-    let ccX
-        = (bag_name == "pat") ? "cc1"
-        : (bag_name == "off") ? "cc5"
-        : (bag_name == "bak") ? "cc2"
-        : (bag_name == "bin") ? "cc0"
-        : ""
-    ;
-
-    let            docker_bag_msg  = "";
-    if(ins_count ) docker_bag_msg += " <em class='done "+ccX+"'> INSERTED</em> <em class='bags "+ccX+"'>"+ bag_name +" + "+ ins_count +"</em>";
-    if(mov_count ) docker_bag_msg += " <em class='done "+ccX+"'>    MOVED</em> <em class='bags "+ccX+"'>"+ bag_name +" + "+ mov_count +"</em>";
-    if(ass_count ) docker_bag_msg += " <em class='done "+ccX+"'>CONFIRMED</em> <em class='bags "+ccX+"'>"+ bag_name +" = "+ ass_count +"</em>";
-
-    if(!docker_bag_msg) return "";
-    else                return "<br>"+ t_data.SYMBOL_DOCKER+" "+docker_bag_msg;
-};
-/*}}}*/
-
-/*➔ t_collect_el_class_from_into {{{*/
-let t_collect_el_class_from_into = function(el_class, from, into)
-{
-    let spans = from.getElementsByTagName("SPAN");
-    let count = 0;
-    for(let i=0; i < spans.length; ++i)
-    {
-        if(              from != spans[i].parentNode  ) continue; /* not a direct child */
-        if( t_is_accessory_node( spans[i]           ) ) continue;
-        if(!t_util.has_el_class(        spans[i], el_class ) ) continue;
-        into.push(spans[i]);
-        count += 1;
-    }
-/*{{{
-logXXX("t_collect_el_class_from_into("+el_class+", "+t_util.get_n_lbl(from)+") ...return "+count+"");
-}}}*/
-    return count;
-};
-/*}}}*/
-/*➔ t_get_pat_span_with_pattern {{{*/
-let t_get_pat_span_with_pattern = function(from_bag, pattern)
-{
-    let pat_span  = null;
-    let spans = from_bag.getElementsByTagName("SPAN");
-    for(let i=0; i < spans.length; ++i)
-    {
-        if(          from_bag != spans[i].parentNode ) continue; /* not a direct child */
-        if( t_is_accessory_node( spans[i]           )) continue;
-        if(!t_util.has_el_class(        spans[i],"pat_span")) continue;
-        if(!spans[i].textContent                     ) continue;
-        if(!spans[i].textContent.includes(pattern   )) continue;
-        pat_span = spans[i];
-        break;
-    }
-/*{{{
-log("t_get_pat_span_with_pattern("+t_util.get_n_lbl(from_bag)+", "+pattern+") ...return "+t_util.get_n_txt(pat_span)+"");
-}}}*/
-    return pat_span;
-};
-/*}}}*/
-/*➔ t_is_accessory_node {{{*/
-let t_is_accessory_node = function(node)
-{
-    return (node == t_tools.t_get_tool( "bak_bag" )    )
-        || (node == t_tools.t_get_tool( "off_bag" )    )
-        || (node == t_tools.t_get_tool( "bot_div" )    )
-        || (node == t_tools.t_get_tool( "mov_div" )    )
-
-        || (node == t_tools.t_get_tool( "hov1"    )   )
-        || (node == t_tools.t_get_tool( "hov2"    )   )
-        || (node == t_tools.t_get_tool( "hov3"    )   )
-        || (node == t_tools.t_get_tool( "hov4"    )   )
-
-        || t_util.has_el_class(node, "seeker_handle")
-        || t_util.has_el_class(node, "screener"     )
-
-        || t_util.has_el_class(node, "push_pin"     )
-        || t_util.has_el_class(node, "closepin"     )
-        || t_util.has_el_class(node, "scalepin"     )
-        || t_util.has_el_class(node, "clearpin"     )
-
-    ;
-};
-/*}}}*/
-/*➔ remove_pat_span_from_div {{{*/
-let remove_pat_span_from_div = function(div)
-{
-/*{{{*/
-    let caller = "remove_pat_span_from_div";
-let log_this = LOG_MAP.S2_SELECT;
-
-if( log_this) log(caller+"("+t_util.get_id_or_tag(div)+")");
-/*}}}*/
-
-    let  count = 0;
-    let length = div.childNodes.length;
-    let node_removed;
-    for(let i=0; i < length; i += (node_removed ? 0 : 1))
-    {
-        let node = div.childNodes[i];
-        node_removed = false;
-/*{{{
-        if( t_is_accessory_node(node) )
-        {
-if(log_this) log("...KEEPING  %c["+t_util.get_n_lbl(node) +"]", lbF+lb1);
-        }
-        else
-}}}*/
-        if(t_util.has_el_class(node, "pat_span") || t_util.has_el_class(node, "pat_div"))
-        {
-if(log_this) log("...REMOVING %c "+t_util.get_id_or_tag(node)+" %c"+node.textContent, lbL, lbR+lf2);
-            div.removeChild(node);
-            count += 1;
-            node_removed = true;
-        }
-        else {
-/*{{{
-if(log_this) log("...SKIPPING %c[undefined]"           , lbF+lb8);
-}}}*/
-        }
-    }
-if(log_this) log("..."+count+" ["+t_util.get_n_lbl(div)+"] transient nodes removed");
-};
-/*}}}*/
-
-/*➔ t_get_pat_span_line .. [pat_span data-pattern] {{{*/
-let t_get_pat_span_line = function(num, pat, css_class)
-{
-    let data_pattern = t_util.csv_escape(pat);
-
-    let [ sel_text , words_option ] = t_tools.t_pattern_to_sel_text_words_option(pat);
-    let pat_less_sfx = sel_text;
-
-    let text         = t_util.t_get_htmlEntities( t_util.ellipsis(pat_less_sfx, 16) );
-
-    let title        = t_util.t_get_htmlEntities(sel_text) + t_data.LF + words_option;
-
-/*{{{
-log("%c sel_text=["+ sel_text +"]", lbH+lf8)
-log("%c ....text=["+     text +"]", lbH+lf8)
-log("%c ...title=["+ title    +"]", lbH+lf8)
-}}}*/
-
-    let className    = words_option+" "+t_data.CSS_DATA_PATTERN+" "+css_class;
-/*{{{
-log("%c className=["+className+"]", lbH+lf8);
-}}}*/
-
-    return "<span class='pat_span'>"
-        +   "<em  class='num_em'>"+num+"</em>&nbsp;"
-        +   "<em  class='"+className+"' data-pattern='"+data_pattern+"' title='"+title+"'>"+text+"</em>" /* childNodes[2] */
-        +  "</span>"
-    ;
-};
-/*}}}*/
-/*_ t_adjust_pat_span_words_option {{{*/
-let t_adjust_pat_span_words_option = function(pat_span, pat)
-{
-    t_tools.t_set_el_pat_words_option(pat_span.childNodes[2], pat);
-};
-/*}}}*/
-/*➔ t_get_pat_span_index {{{*/
-let t_get_pat_span_index = function(pat_spans, pat)
-{
-    pat = t_tools.t_pattern_del_words_option_sfx(pat);
-
-    for(let pat_span_index=0; pat_span_index < pat_spans.length; ++pat_span_index)
-    {
-        if(pat_spans[pat_span_index] == null) continue;
-
-        let el      = pat_spans[pat_span_index].childNodes[2];
-        let el_pat  = t_util.csv_unescape(el.getAttribute("data-pattern"));
-        el_pat      = t_tools.t_pattern_del_words_option_sfx(el_pat);
-        if( el_pat == pat) {
-/*{{{
-logXXX("t_get_pat_span_index: ...return "+pat_span_index+"")
-logXXX("___el.title=["+ el.title +"]")
-logXXX("_____el_pat=["+   el_pat +"]")
-logXXX("________pat=["+      pat +"]")
-}}}*/
-            return pat_span_index;
-        }
-    }
-    return -1;
 };
 /*}}}*/
 /*}}}*/
@@ -3402,6 +3350,255 @@ let log_tools_filter_slot = function(slot)
 /*}}}*/
 /*}}}*/
 
+/* PAT BAGS */
+/*{{{*/
+/*➔ t_onPatternUpdate {{{*/
+/*{{{*/
+const  PATTERN_UPDATE_DELAY =  550;
+const  PATTERN_UPDATE_QUICK =  250;
+
+let   onPatternUpdate_timer = null;
+/*}}}*/
+let t_onPatternUpdate_no_delay = function(msg, caller       ) { t_onPatternUpdate(msg, caller, 0                   ); };
+let t_onPatternUpdate_quick    = function(msg, caller       ) { t_onPatternUpdate(msg, caller, PATTERN_UPDATE_QUICK); };
+let t_onPatternUpdate          = function(msg, caller, delay=PATTERN_UPDATE_DELAY)
+{
+/*{{{
+logXXX("t_onPatternUpdate(delay=["+delay+"])");
+}}}*/
+if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_log_stage_msg(t_fly.STAGE_2_ACTION, msg);
+
+    if(  onPatternUpdate_timer) {
+        clearTimeout(  onPatternUpdate_timer);
+/*{{{
+        if( delay ) delay  = 2 * PATTERN_UPDATE_DELAY;
+}}}*/
+    }
+    if(delay) onPatternUpdate_timer =   setTimeout(onPatternUpdate_handler, delay);
+    else                                           onPatternUpdate_handler();
+};
+/*}}}*/
+/*…   onPatternUpdate_handler {{{*/
+let   onPatternUpdate_handler = function()
+{
+/*{{{*/
+let   caller = "onPatternUpdate_handler";
+let log_this = LOG_MAP.S0_PATTERN;
+
+if( log_this ) logBIG(caller, lf4);
+/*}}}*/
+      onPatternUpdate_timer = null;
+
+if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly_all_csv(t_data.SYMBOL_UPDATE, "want");
+
+    t_tools.t_pattern1_sync_csv_from_ccs();
+
+if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly_all_csv(t_data.SYMBOL_STAGE , "have");
+
+    t_tools.t_pattern2_set_sel_bag_innerHTML();
+
+    t_tools.t_pattern3_pat_off_alt_bak_innerHTML(caller);
+if(LOG_MAP.EV8_FLOATLOG || prop.get(t_data.FLOATLOG)) t_fly.t_fly_all_csv(t_data.SYMBOL_RESULT, "have");
+
+    t_tools.t_onPatternUpdate_done();
+
+};
+/*}}}*/
+
+/*➔ t_get_docker_bag_msg {{{*/
+let t_get_docker_bag_msg = function(bag_name, mov_count, ass_count, ins_count)
+{
+    let ccX
+        = (bag_name == "pat") ? "cc1"
+        : (bag_name == "off") ? "cc5"
+        : (bag_name == "bak") ? "cc2"
+        : (bag_name == "bin") ? "cc0"
+        : ""
+    ;
+
+    let            docker_bag_msg  = "";
+    if(ins_count ) docker_bag_msg += " <em class='done "+ccX+"'> INSERTED</em> <em class='bags "+ccX+"'>"+ bag_name +" + "+ ins_count +"</em>";
+    if(mov_count ) docker_bag_msg += " <em class='done "+ccX+"'>    MOVED</em> <em class='bags "+ccX+"'>"+ bag_name +" + "+ mov_count +"</em>";
+    if(ass_count ) docker_bag_msg += " <em class='done "+ccX+"'>CONFIRMED</em> <em class='bags "+ccX+"'>"+ bag_name +" = "+ ass_count +"</em>";
+
+    if(!docker_bag_msg) return "";
+    else                return "<br>"+ t_data.SYMBOL_DOCKER+" "+docker_bag_msg;
+};
+/*}}}*/
+
+/*➔ t_collect_el_class_from_into {{{*/
+let t_collect_el_class_from_into = function(el_class, from, into)
+{
+    if(!from) {
+        console.trace();//FIXME
+        return 0;
+    }
+    let spans = from.getElementsByTagName("SPAN");
+    let count = 0;
+    for(let i=0; i < spans.length; ++i)
+    {
+        if(              from != spans[i].parentNode  ) continue; /* not a direct child */
+        if( t_is_accessory_node( spans[i]           ) ) continue;
+        if(!t_util.has_el_class(        spans[i], el_class ) ) continue;
+        into.push(spans[i]);
+        count += 1;
+    }
+/*{{{
+logXXX("t_collect_el_class_from_into("+el_class+", "+t_util.get_n_lbl(from)+") ...return "+count+"");
+}}}*/
+    return count;
+};
+/*}}}*/
+/*➔ t_get_pat_span_with_pattern {{{*/
+let t_get_pat_span_with_pattern = function(from_bag, pattern)
+{
+    let pat_span  = null;
+    let spans = from_bag.getElementsByTagName("SPAN");
+    for(let i=0; i < spans.length; ++i)
+    {
+        if(          from_bag != spans[i].parentNode ) continue; /* not a direct child */
+        if( t_is_accessory_node( spans[i]           )) continue;
+        if(!t_util.has_el_class(        spans[i],"pat_span")) continue;
+        if(!spans[i].textContent                     ) continue;
+        if(!spans[i].textContent.includes(pattern   )) continue;
+        pat_span = spans[i];
+        break;
+    }
+/*{{{
+log("t_get_pat_span_with_pattern("+t_util.get_n_lbl(from_bag)+", "+pattern+") ...return "+t_util.get_n_txt(pat_span)+"");
+}}}*/
+    return pat_span;
+};
+/*}}}*/
+/*➔ t_is_accessory_node {{{*/
+let t_is_accessory_node = function(node)
+{
+    return (node == t_tools.t_get_tool( "bak_bag" )    )
+        || (node == t_tools.t_get_tool( "off_bag" )    )
+        || (node == t_tools.t_get_tool( "bot_div" )    )
+        || (node == t_tools.t_get_tool( "mov_div" )    )
+
+        || (node == t_tools.t_get_tool( "hov1"    )   )
+        || (node == t_tools.t_get_tool( "hov2"    )   )
+        || (node == t_tools.t_get_tool( "hov3"    )   )
+        || (node == t_tools.t_get_tool( "hov4"    )   )
+
+        || t_util.has_el_class(node, "seeker_handle")
+        || t_util.has_el_class(node, "screener"     )
+
+        || t_util.has_el_class(node, "push_pin"     )
+        || t_util.has_el_class(node, "closepin"     )
+        || t_util.has_el_class(node, "scalepin"     )
+        || t_util.has_el_class(node, "clearpin"     )
+
+    ;
+};
+/*}}}*/
+/*➔ remove_pat_span_from_div {{{*/
+let remove_pat_span_from_div = function(div)
+{
+/*{{{*/
+    let caller = "remove_pat_span_from_div";
+let log_this = LOG_MAP.S2_SELECT;
+
+if( log_this) log(caller+"("+t_util.get_id_or_tag(div)+")");
+/*}}}*/
+
+    let  count = 0;
+    let length = div.childNodes.length;
+    let node_removed;
+    for(let i=0; i < length; i += (node_removed ? 0 : 1))
+    {
+        let node = div.childNodes[i];
+        node_removed = false;
+/*{{{
+        if( t_is_accessory_node(node) )
+        {
+if(log_this) log("...KEEPING  %c["+t_util.get_n_lbl(node) +"]", lbF+lb1);
+        }
+        else
+}}}*/
+        if(t_util.has_el_class(node, "pat_span") || t_util.has_el_class(node, "pat_div"))
+        {
+if(log_this) log("...REMOVING %c "+t_util.get_id_or_tag(node)+" %c"+node.textContent, lbL, lbR+lf2);
+            div.removeChild(node);
+            count += 1;
+            node_removed = true;
+        }
+        else {
+/*{{{
+if(log_this) log("...SKIPPING %c[undefined]"           , lbF+lb8);
+}}}*/
+        }
+    }
+if(log_this) log("..."+count+" ["+t_util.get_n_lbl(div)+"] transient nodes removed");
+};
+/*}}}*/
+
+/*➔ t_get_pat_span_line .. [pat_span data-pattern] {{{*/
+let t_get_pat_span_line = function(num, pat, css_class)
+{
+    let data_pattern = t_util.csv_escape(pat);
+
+    let [ sel_text , words_option ] = t_tools.t_pattern_to_sel_text_words_option(pat);
+    let pat_less_sfx = sel_text;
+
+    let text         = t_util.t_get_htmlEntities( t_util.ellipsis(pat_less_sfx, 16) );
+
+    let title        = t_util.t_get_htmlEntities(sel_text) + t_data.LF + words_option;
+
+/*{{{
+log("%c sel_text=["+ sel_text +"]", lbH+lf8)
+log("%c ....text=["+     text +"]", lbH+lf8)
+log("%c ...title=["+ title    +"]", lbH+lf8)
+}}}*/
+
+    let className    = words_option+" "+t_data.CSS_DATA_PATTERN+" "+css_class;
+/*{{{
+log("%c className=["+className+"]", lbH+lf8);
+}}}*/
+
+    return "<span class='pat_span'>"
+        +   "<em  class='num_em'>"+num+"</em>&nbsp;"
+        +   "<em  class='"+className+"' data-pattern='"+data_pattern+"' title='"+title+"'>"+text+"</em>" /* childNodes[2] */
+        +  "</span>"
+    ;
+};
+/*}}}*/
+/*_ t_adjust_pat_span_words_option {{{*/
+let t_adjust_pat_span_words_option = function(pat_span, pat)
+{
+    t_tools.t_set_el_pat_words_option(pat_span.childNodes[2], pat);
+};
+/*}}}*/
+/*➔ t_get_pat_span_index {{{*/
+let t_get_pat_span_index = function(pat_spans, pat)
+{
+    pat = t_tools.t_pattern_del_words_option_sfx(pat);
+
+    for(let pat_span_index=0; pat_span_index < pat_spans.length; ++pat_span_index)
+    {
+        if(pat_spans[pat_span_index] == null) continue;
+
+        let el      = pat_spans[pat_span_index].childNodes[2];
+        let el_pat  = t_util.csv_unescape(el.getAttribute("data-pattern"));
+        el_pat      = t_tools.t_pattern_del_words_option_sfx(el_pat);
+        if( el_pat == pat) {
+/*{{{
+logXXX("t_get_pat_span_index: ...return "+pat_span_index+"")
+logXXX("___el.title=["+ el.title +"]")
+logXXX("_____el_pat=["+   el_pat +"]")
+logXXX("________pat=["+      pat +"]")
+}}}*/
+            return pat_span_index;
+        }
+    }
+    return -1;
+};
+/*}}}*/
+/*}}}*/
+
+
 /* EXPORT */
 /*{{{*/
 return { name : "dom_select"
@@ -3426,6 +3623,7 @@ return { name : "dom_select"
     , get_last_highlighted_num          : () =>        last_selected_num
 
     , check_NodeIterator
+    , check_NodeTEXT
     , check_TreeWalker
     , check_childNodes
     , check_tagNodes
@@ -3490,7 +3688,6 @@ return { name : "dom_select"
 
 };
 /*}}}*/
-
 }());
 
 /*{{{
@@ -3516,3 +3713,8 @@ return { name : "dom_select"
 "│                                                                             │
 "└─────────────────────────────────────────────────────────────────────────────┘
 }}}*/
+
+// TODO refactoring ● see C:/LOCAL/DEV/DEVEL/EMC/Extensions/ExportCMT/script/js_select.js
+// TODO refactoring ● see $RPROFILES/script/dom_log.js
+// $RPROFILES/playground.html
+

@@ -21,6 +21,7 @@
   <link id="dom_host_css"   type="text/css" href="stylesheet/dom_host.css"       rel="stylesheet"/>
   <link id="checkbox_css"   type="text/css" href="stylesheet/checkbox.css"       rel="stylesheet"/>
   <link id="dom_grid_css"   type="text/css" href="stylesheet/dom_grid.css"       rel="stylesheet"/>
+  <link id="js_timer_css"   type="text/css" href="stylesheet/js_timer.css"       rel="stylesheet"/>
   <!--}}}-->
  </head>
  <style>
@@ -1334,13 +1335,13 @@ escapeXXX(`
 
   <!-- SCRIPT playground {{{ -->
   <script>
-  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (230820:21h:57)";
+  DOM_LOAD_ID       = "playground";     DOM_LOAD_TAG  = DOM_LOAD_ID+" (240527:16h:05)";
 
   document.getElementsByTagName("html")[0].id = DOM_LOAD_ID;
   /* set_title {{{*/
   function set_title(e)
   {
-   console.log("...set_title("+(e ? e.type : "onload")+")");
+   //console.log("...set_title("+(e ? e.type : "onload")+")");
    document.getElementsByTagName("title")[0].innerText = DOM_LOAD_ID.toLowerCase();
    document.getElementsByTagName("h1"   )[0].innerHTML = "<em class='cc6'>"+DOM_LOAD_TAG+"</em>";
   }
@@ -1833,7 +1834,7 @@ load_html("dom_tools_html", dom_tools_html_data);
        else                el.classList.add(choices[0]);
       };
       /*}}}*/
-      let button       = event.path[0];
+      let button       = event.path ? event.path[0] : event.target;
       /* WHEEL */
       let choice       = ROTATIONS.includes(button.id) ? button.id : ROTATIONS[0];
       let rotate_arrow = document.getElementById("rotate_arrow");
@@ -1881,15 +1882,17 @@ load_html("dom_tools_html", dom_tools_html_data);
 let cube;
 let cube_rotate = function(e)
 {
+//console.dir(e);//FIXME
  /* label (rotation htmlFor input) {{{*/
  if(!cube) cube = document.getElementById("cube");
 
- let label = e.path[0];
+ let label = e.path ? e.path[0] : e.target;
+//console.dir(label);//FIXME
  /*}}}*/
  /* cube move {{{*/
  if(!label.htmlFor )
  {
-  if( dom_util.is_el_child_of_id(e.path[0], "cube") )
+  if( dom_util.is_el_child_of_id(label, "cube") )
   {
 if(!dom_tools.behavior_TOUCH_ELSE_DESKTOP) dom_tools.t_preventDefault(e, "PREVENT PAGE DRAG SELECTION for cube_rotate");
 
@@ -2633,7 +2636,7 @@ let populate_div_playground = function()
    font-size:100%;
    "
    >
-   <em class="collapse_pin" title="collapse" onclick='flip_el_class(this.parentElement, "collapsed");'>&#x1F4CC;</em>
+   <em class="collapse_pin" title="collapse" onclick='dom_util.flip_el_class(this.parentElement, "collapsed");'>&#x1F4CC;</em>
 REGEX_CHARS &Backslash; ^ $ . + * ( ) [ ] <a target="charref" src="https://dev.w3.org/html5/html-author/charref">charref</a>
 
 <b>Character classes</b>
@@ -2677,7 +2680,7 @@ REGEX_CHARS &Backslash; ^ $ . + * ( ) [ ] <a target="charref" src="https://dev.w
    font-size   : 100%;
    z-index     : 1;
    ">
-   <em class="collapse_pin" title="collapse" onclick='flip_el_class(this.parentElement, "collapsed");'>&#x1F4CC;</em>
+   <em class="collapse_pin" title="collapse" onclick='dom_util.flip_el_class(this.parentElement, "collapsed");'>&#x1F4CC;</em>
 P_START                                              <br>
 <code>CODE 1 (short) not a code_container</code>     <br>
 <code>CODE 2 (short) not a code_container</code>     <br>
@@ -2758,7 +2761,7 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
        "
        onclick='
      /* console.log("playground.html:"); console.dir(event); */
-       let span = event.path[0].previousElementSibling;
+       let span = (event.path ? event.path[0] : event.target).previousElementSibling;
        if( span && (span.tagName == "SPAN")) span.innerText = (span.innerText) ? "" : span.title;
        '
        >
@@ -2776,6 +2779,53 @@ P_END &lt;= "&amp;" &gt;= <span class='big'> 1 23 456 7890 </span>
 <span id="patB" title="patB">patB</span> <em class="cc8" style="user-select:none; font-size:50%; cursor:pointer;">toggle_innerText</em><br>
 </div>
 <!--}}}-->
+  <!-- [pattern_1 .. pattern_B] {{{-->
+<!--{{{
+  <div class="round_el"
+       style="
+       clear:left;
+       float:left;
+       display:inline-block;
+       border: 1px inset #444;
+       font-size:80%;
+       font-weight:900;
+       font-family:cursive;
+       color:black !important;
+       color:#668  !important;
+       ">
+   <pre>
+     <em></em>10 100                        | <em>11</em> parentElement    | <em>13</em> characters        | <em>15</em> rx_delta   | <em>18</em> not           | <em>24</em> container   | <em>30</em> node           |  <em>44 </em> style          |
+     <em></em>10 ABCDEFGHIJKLMNOPQRSTUVWXYZ | <em>11</em> resolution       | <em>13</em> event             | <em>15</em> ry_delta   | <em>18</em> parent        | <em>24</em> lbH         | <em>31</em> dom_tools      |  <em>47 </em> and            |
+     <em></em>10 DOM_WOT_TAG                | <em>11</em> screen           | <em>13</em> have              | <em>15</em> transcript | <em>18</em> state         | <em>24</em> this        | <em>32</em> getElementById |  <em>49 </em> color          |
+     <em></em>10 XXX                        | <em>11</em> size             | <em>13</em> le                | <em>16</em> 10         | <em>18</em> white         | <em>25</em> br          | <em>32</em> js             |  <em>49 </em> is             |
+     <em></em>10 data                       | <em>11</em> toggle_innerText | <em>13</em> padding           | <em>16</em> child      | <em>18</em> with          | <em>25</em> dom_log     | <em>32</em> msg            |  <em>49 </em> text           |
+     <em></em>10 dom_wot                    | <em>11</em> var              | <em>13</em> r                 | <em>16</em> display    | <em>19</em> 000           | <em>25</em> none        | <em>33</em> 3              |  <em>50 </em> document       |
+     <em></em>10 et                         | <em>11</em> width            | <em>14</em> cc1               | <em>16</em> false      | <em>19</em> are           | <em>25</em> pre         | <em>33</em> background     |  <em>51 </em> important      |
+     <em></em>10 htmlFor                    | <em>12</em> DIV              | <em>14</em> des               | <em>16</em> label      | <em>19</em> details       | <em>25</em> s           | <em>33</em> innerHTML      |  <em>53 </em> 4              |
+     <em></em>10 inline                     | <em>12</em> DOM_WOT_LOG      | <em>14</em> disabled          | <em>16</em> o          | <em>19</em> hidden        | <em>25</em> y           | <em>33</em> textContent    |  <em>56 </em> toolbag_button |
+     <em></em>10 la                         | <em>12</em> at               | <em>14</em> dom_grid          | <em>16</em> paragraph  | <em>19</em> includes      | <em>26</em> module      | <em>34</em> de             |  <em>58 </em> c              |
+     <em></em>10 last                       | <em>12</em> can              | <em>14</em> i                 | <em>16</em> svg_32     | <em>19</em> line_num      | <em>26</em> nbsp        | <em>34</em> rgba           |  <em>63 </em> el             |
+     <em></em>10 lf5                        | <em>12</em> clause           | <em>14</em> iframe_playground | <em>16</em> svg_X      | <em>20</em> 123456789     | <em>26</em> val         | <em>35</em> return         |  <em>64 </em> to             |
+     <em></em>10 lf8                        | <em>12</em> div_links        | <em>14</em> lbb               | <em>16</em> this_line  | <em>20</em> as            | <em>26</em> x           | <em>36</em> const          |  <em>65 </em> 2              |
+     <em></em>10 logBIG                     | <em>12</em> en               | <em>14</em> next_line         | <em>17</em> 5em        | <em>20</em> menu          | <em>27</em> else        | <em>36</em> div_above      |  <em>66 </em> log            |
+     <em></em>10 policy                     | <em>12</em> font             | <em>14</em> no                | <em>17</em> border     | <em>20</em> pinned        | <em>27</em> missing_ids | <em>36</em> span           |  <em>81 </em> a              |
+     <em></em>10 replace                    | <em>12</em> it               | <em>14</em> space             | <em>17</em> by         | <em>20</em> xy            | <em>28</em> e           | <em>36</em> wall           |  <em>81 </em> function       |
+     <em></em>10 select                     | <em>12</em> item             | <em>14</em> src               | <em>17</em> console_dir| <em>21</em> check_result  | <em>28</em> key         | <em>37</em> 6              |  <em>85 </em> title          |
+     <em></em>10 use                        | <em>12</em> lf3              | <em>14</em> state_name        | <em>17</em> doc_tools  | <em>22</em> 7             | <em>28</em> script      | <em>38</em> 5              |  <em>87 </em> div            |
+     <em></em>10 value                      | <em>12</em> logging          | <em>14</em> t                 | <em>17</em> input      | <em>22</em> The           | <em>29</em> cc9         | <em>38</em> console        | 1<em>10 </em> of             |
+     <em></em>10 which                      | <em>12</em> minimized        | <em>14</em> that              | <em>17</em> log_this   | <em>22</em> lines         | <em>29</em> cube        | <em>38</em> h_line         | 1<em>15 </em> the            |
+     <em></em>11 E                          | <em>12</em> overflowing      | <em>14</em> transform         | <em>17</em> on         | <em>23</em> d             | <em>29</em> iframe      | <em>38</em> true           | 1<em>20 </em> 1              |
+     <em></em>11 NO                         | <em>12</em> type             | <em>14</em> used              | <em>17</em> only       | <em>23</em> for           | <em>29</em> in          | <em>39</em> dom_util       | 1<em>25 </em> id             |
+     <em></em>11 _4_                        | <em>12</em> you              | <em>15</em> TEXT              | <em>17</em> result     | <em>23</em> l             | <em>29</em> typeof      | <em>39</em> name           | 1<em>41 </em> class          |
+     <em></em>11 body                       | <em>13</em> A                | <em>15</em> caller            | <em>18</em> NodeFilter | <em>23</em> or            | <em>29</em> undefined   | <em>40</em> 255            | 1<em>46 </em> if             |
+     <em></em>11 cursor                     | <em>13</em> DOM_LOADER_LOG   | <em>15</em> cc2               | <em>18</em> cc3        | <em>24</em> 1em           | <em>30</em> 9           | <em>40</em> length         | 1<em>55 </em> 0              |
+     <em></em>11 end                        | <em>13</em> LF               | <em>15</em> disable           | <em>18</em> dom_store  | <em>24</em> 8             | <em>30</em> html        | <em>41</em> _              | 2<em>03 </em> em             |
+     <em></em>11 has_el_class               | <em>13</em> _3_              | <em>15</em> eslint            | <em>18</em> min        | <em>24</em> DEV_playground| <em>30</em> n           | <em>41</em> line           | 2<em>36 </em> let            |
+     <em></em>11 height                     | <em>13</em> be               | <em>15</em> margin
+   </pre>
+  </div>
+}}}-->
+  <!--}}}-->
   <!--}}}-->
 </details>
 
@@ -5008,6 +5058,7 @@ EMBEDED:
  - dom_tools_html
  - dom_grid_html
 
+:!start explorer %
 vim: sw=4
 }}}-->
 

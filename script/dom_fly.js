@@ -1,7 +1,7 @@
 /* dom_fly */
 /* jshint esversion: 9, laxbreak:true, laxcomma:true, boss:true */
 const DOM_FLY_JS_ID         = "dom_fly_js";
-const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (230820:21h:09)"; /* eslint-disable-line no-unused-vars */
+const DOM_FLY_JS_TAG        = DOM_FLY_JS_ID     +" (240801:14h:24)"; /* eslint-disable-line no-unused-vars */
 let dom_fly     = (function() {
 "use strict";
 /* JSHint {{{*/
@@ -783,7 +783,7 @@ let log_get_event_status_string = function(filter)
 
     let event_status
         =       "EVENT CAPTURED BY "              + o.captured_by                 + t_data.LF
-        +       "EVENT CONSUMED BY "              + o.consumed_by                 + t_data.LF
+        +       "EVENT HANDELED BY "              + o.handeled_by                 + t_data.LF
         +       "...................was_a_click: "+ o.was_a_click                 + t_data.LF
         +       "............selection_progress: "+ o.selection_progress          + t_data.LF
         +       ".....................onSeekXYL: "+ o.onSeekXYL                   + t_data.LF
@@ -849,7 +849,7 @@ let log_get_event_status_object = function()
     /*}}}*/
     /* NEW DIFF PREV .. (SAVE) {{{*/
     let                 captured_by_changed = (!event_status_object_prev || (event_status_object.captured_by                 != event_status_object_prev.captured_by                ));
-    let                 consumed_by_changed = (!event_status_object_prev || (event_status_object.consumed_by                 != event_status_object_prev.consumed_by                ));
+    let                 handeled_by_changed = (!event_status_object_prev || (event_status_object.handeled_by                 != event_status_object_prev.handeled_by                ));
     let                   has_moved_changed = (!event_status_object_prev || (event_status_object.has_moved                   != event_status_object_prev.has_moved                  ));
     let                 was_a_click_changed = (!event_status_object_prev || (event_status_object.was_a_click                 != event_status_object_prev.was_a_click                ));
     let          selection_progress_changed = (!event_status_object_prev || (event_status_object.selection_progress          != event_status_object_prev.selection_progress         ));
@@ -862,7 +862,7 @@ let log_get_event_status_object = function()
     if(!event_status_object_prev)                                                           event_status_object_prev = {};
     /*...............................................................................t_log.L_NEW...................CURRENT-VALUE...................t_log.L_ARL.......................PREV-VALUE.........................:.t_log.L_CHK...........................UNCHANGED-VALUE............*/
     let o = { captured_by                 : (                 captured_by_changed ? (t_log.L_NEW+ event_status_object.captured_by                 +t_log.L_ARL + event_status_object_prev.captured_by                 ) : t_log.L_CHK+ event_status_object_prev.captured_by                 )
-        ,     consumed_by                 : (                 consumed_by_changed ? (t_log.L_NEW+ event_status_object.consumed_by                 +t_log.L_ARL + event_status_object_prev.consumed_by                 ) : t_log.L_CHK+ event_status_object_prev.consumed_by                 )
+        ,     handeled_by                 : (                 handeled_by_changed ? (t_log.L_NEW+ event_status_object.handeled_by                 +t_log.L_ARL + event_status_object_prev.handeled_by                 ) : t_log.L_CHK+ event_status_object_prev.handeled_by                 )
         ,     has_moved                   : (                   has_moved_changed ? (t_log.L_NEW+ event_status_object.has_moved                   +t_log.L_ARL + event_status_object_prev.has_moved                   ) : t_log.L_CHK+ event_status_object_prev.has_moved                   )
         ,     was_a_click                 : (                 was_a_click_changed ? (t_log.L_NEW+ event_status_object.was_a_click                 +t_log.L_ARL + event_status_object_prev.was_a_click                 ) : t_log.L_CHK+ event_status_object_prev.was_a_click                 )
         ,     selection_progress          : (          selection_progress_changed ? (t_log.L_NEW+ event_status_object.selection_progress          +t_log.L_ARL + event_status_object_prev.selection_progress          ) : t_log.L_CHK+ event_status_object_prev.selection_progress          )
@@ -1479,14 +1479,14 @@ if( log_this) t_log.log(caller);
 /*…   event_LOG_TOOLTIP_handler {{{*/
 let   event_LOG_TOOLTIP_handler = function(_caller)
 {
-    let consumed_by_html
+    let handeled_by_html
         = "<pre class='fg0'>"
         +   "<em class='big cc9'>"+_caller+"</em>"
-        +   t_tools.t_get_consumed_by_table()
+        +   t_tools.t_get_handeled_by_table()
         + "</pre>"
     ;
 
-    t_fly_tooltip_update(consumed_by_html, t_data.CSS_EVENT_LOG);
+    t_fly_tooltip_update(handeled_by_html, t_data.CSS_EVENT_LOG);
 };
 /*}}}*/
 

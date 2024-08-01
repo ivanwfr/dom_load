@@ -24,8 +24,8 @@
 
 /* exported dom_util */
 
-const DOM_UTIL_JS_ID        = "dom_util";
-const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (231013:19h:41)";  /* eslint-disable-line no-unused-vars */
+const DOM_UTIL_JS_ID        = "dom_util_js";
+const DOM_UTIL_JS_TAG       = DOM_UTIL_JS_ID  +" (240710:19h:49)";  /* eslint-disable-line no-unused-vars */
 /*}}}*/
 let dom_util    = (function() {
 "use strict";
@@ -157,12 +157,13 @@ const LF    = String.fromCharCode(10);
 /*{{{*/
 const PREVENT_RELOAD_ID   = "prevent_reload";
 const PREVENT_RELOAD_DATA = "data:text/javascript;charset='utf-8',"
-    +"window.onbeforeunload = function() { return 'Reload Site?'; }" /* eslint-disable-line quotes */
+    +"window.onbeforeunload = function() { return '\u25CF Reload Site ?'; }" /* eslint-disable-line quotes */
 ;
 
 /*}}}*/
 let t_prevent_reload = function()
 {
+console.trace();//FIXME
     if(!document.getElementById( PREVENT_RELOAD_ID ) )
     {
 logBIG("load_js(PREVENT_RELOAD_ID, PREVENT_RELOAD_DATA)");
@@ -3127,6 +3128,7 @@ const regexp_NOWRD_S            = new RegExp("^ *[^0-9~A-z\\xC0-\\xFF]+"        
 const regexp_NOWRD              = new RegExp("[^0-9~A-Za-z\\xC0-\\xFF]+"                , "g"); /* quantité */
 
 /* HTML */
+const regexp_BLOCK              = new RegExp("<BR>|<DIV>|</LI>", "gi");
 const regexp_EM_C               = new RegExp(" *</em[^>]*>"                             , "g");
 const regexp_EM_O               = new RegExp("<em[^>]*> *"                              , "g");
 const regexp_ENTT               = new RegExp("&\\w+;"                                   , "g");
@@ -3264,16 +3266,17 @@ let strip_HTML = function(text)
 {
     if(   !text) return "";
     return text
-        .   replace(regexp_EM_O , "["         )
-        .   replace(regexp_EM_C , "] "        )
-        .   replace(regexp_EOL  , LF          )
-        .   replace(regexp_LF2  , LF          )
-        .   replace(regexp_HTML , " "         )
-        .   replace(regexp_SPACE, " "         )
-        .   replace(regexp_NBSP , " "         )
-        .   replace(regexp_ENTT , t_data.SYMBOL_EMPTY)
-        .   replace(regexp_HLEAD, "["         )
-        .   replace(regexp_HTAIL, "]"         )
+        .   replace(regexp_BLOCK, LF+t_data.SYMBOL_BLACK_CIRCLE )
+        .   replace(regexp_EM_O , "["                           )
+        .   replace(regexp_EM_C , "] "                          )
+        .   replace(regexp_EOL  , LF                            )
+        .   replace(regexp_LF2  , LF                            )
+        .   replace(regexp_HTML , " "                           )
+        .   replace(regexp_SPACE, " "                           )
+        .   replace(regexp_NBSP , " "                           )
+        .   replace(regexp_ENTT , t_data.SYMBOL_EMPTY           )
+        .   replace(regexp_HLEAD, "["                           )
+        .   replace(regexp_HTAIL, "]"                           )
 /*{{{
         .   replace("%c"         , ""         )
         .   replace(regexp_TRUE , LOG_TRUE    )
@@ -3400,6 +3403,38 @@ let escape_LF_BR = function(text)
         .   replace(regexp_LF, "<br>"+LF)
         .   trim()
     ;
+};
+/*}}}*/
+/*_ escape_regex_pattern {{{*/
+/*{{{*/
+const SLASHES            =  "\\\/\\\\";
+const PARENS             =    "\\(\\)";
+const BRACES             =    "\\{\\}";
+const BRACKETS           =    "\\[\\]";
+const DOTS_STAR_PLUS     = "\\.\\*\\+";
+const BAR_CARET          =    "\\|\\^";
+const regexp_regex_chars = new RegExp("["+ SLASHES
+                                      +    PARENS
+                                      +    BRACES
+                                      +    BRACKETS
+                                      +    DOTS_STAR_PLUS
+                                      +    BAR_CARET
+                                      +"]", "g");
+
+// For DevTools: js_util.escape_regex_pattern(" \/ () {} [] .*+ |^ ");
+
+/*}}}*/
+let escape_regex_pattern = function(text)
+{
+/*{{{
+console.dir( regexp_regex_chars );
+log(text);
+}}}*/
+    let result = text.replace(regexp_regex_chars, "\\$&");
+/*{{{
+log(result);
+}}}*/
+    return result;
 };
 /*}}}*/
 /*_ encode_LF {{{*/
@@ -4057,6 +4092,7 @@ let   caller = "get_el_caption_lang";
 
         else if(el_id == "pin_seekspot"         ) el_caption_lang = i18n_get(dom_i18n.PIN_SEEKSPOT      , el_id);
         else if(el_id == "words_recycle"        ) el_caption_lang = i18n_get(dom_i18n.WORDS_RECYCLE     , el_id);
+        else if(el_id == "words_regexr"         ) el_caption_lang = i18n_get(dom_i18n.WORDS_REGEXR      , el_id);
         else if(el_id == "show_seekzone"        ) el_caption_lang = i18n_get(dom_i18n.SHOW_SEEKZONE     , el_id);
         else if(el_id == "site_or_page"         ) el_caption_lang = i18n_get(dom_i18n.SITE_OR_PAGE      , el_id);
         else if(el_id == "theme_dark"           ) el_caption_lang = i18n_get(dom_i18n.THEME_DARK        , el_id);
@@ -4145,6 +4181,7 @@ const regexp_URL = new RegExp("^([^:]+):\\/\\/(?:([^@]+)@)?([^\\/:]*)?(?::([\\d]
 
 /*{{{
     dom_util.parseURL("http://myUserName:myPassword@myDomain:8081/images/logo.jpg");
+    dom_util.parseURL("https://www.google.com/search?q=Liu+Cixin+et+%C2%AB+Le+probl%C3%A8me+%C3%A0+trois+corps+%C2%BB%2C+un+succ%C3%A8s+international+m%C3%A9rit%C3%A9.&oq=Liu+Cixin+et+%C2%AB+Le+probl%C3%A8me+%C3%A0+trois+corps+%C2%BB%2C+un+succ%C3%A8s+international+m%C3%A9rit%C3%A9.&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRiPAjIHCAIQIRiPAtIBCjE5Mjg4ajBqMTWoAgCwAgA&sourceid=chrome&ie=UTF-8#ip=1");
 }}}*/
 
 let parseURL = function(url)
@@ -4714,6 +4751,7 @@ return { name : "dom_util"
     , escapeHTML
     , escape_CR_LF
     , escape_LF_BR
+    , escape_regex_pattern
     , underline_from_utf8
     , underline_to_space
     , vbar_to_BR

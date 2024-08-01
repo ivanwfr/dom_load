@@ -17,7 +17,7 @@
 */
 
 const DOM_I18N_JS_ID        = "dom_i18n_js";
-const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (231013:18h:16)";
+const DOM_I18N_JS_TAG       = DOM_I18N_JS_ID  +" (240302:20h:13)";
 /*}}}*/
 let dom_i18n    = (function() {
 "use strict";
@@ -265,6 +265,10 @@ const SORT_SELECTION                 = "Sort selection";
 
 const SCROLL_SMOOTH                  = "Smooth or Instant scrolling";
 const DOM_FREEZE                     = "DOM freeze (Remove All Event Listeners)";
+/*
+    https://apps.timwhitlock.info/emoji/tables/iso3166 //FIXME
+const USER_LANG                      = "\u1F1FA\u1F1F8 Interface language";
+*/
 const USER_LANG                      = "Interface language";
 const ANCHOR_FREEZE                  = "Disable links navigation";
 const CONTAINERS_HI                  = "Highlight paragraph containers";
@@ -289,20 +293,21 @@ const PIN_SEEKSPOT                   = "Keep last seekspot visible";
 const WORDS_RECYCLE                  = "Recycle";
 const WORDS_RECYCLE_CLICK_TO_HIDE    = "Click to hide";
 const WORDS_RECYCLE_CLICK_TO_DISCARD = "Click to discard all";
+const WORDS_REGEXR                   = "Click to visit Regex online tool";
 const STORED_PATTERNS                = "Stored patterns";
 const SHOW_SEEKZONE                  = "Show lst seek zone area";
 const SITE_OR_PAGE                   = "Hiding containers at SITE or PAGE level";
 const THEME_DARK                     = "Dark Theme";
 const TOOLS_TIER2                    =  "TIER-TWO TOOLS SELECTED"
-    /*.................................*/ +LF+"✔ headsup"
-    /*.................................*/ +LF+"✔ headsup_w"
-    /*.................................*/ +LF+"✔ pat_bag"
-    /*.................................*/ +LF+"☀ t_sync_tools_tier2"
+    /*.................................*/ +LF+"\u2714 headsup"
+    /*.................................*/ +LF+"\u2714 headsup_w"
+    /*.................................*/ +LF+"\u2714 pat_bag"
+    /*.................................*/ +LF+"\u2600 t_sync_tools_tier2"
     /*.................................*/ +LF
     /*.................................*/ +LF+"SEEKER MOVES FASTER"
-    /*.................................*/ +LF+"☀ onMove_5_GRAB_SELECTION"
-    /*.................................*/ +LF+"☀ onMove_6_GRAB_STICKY"
-    /*.................................*/ +LF+"☀ t_seeker_onMove2_ON_NEXT_STICKY"
+    /*.................................*/ +LF+"\u2600 onMove_5_GRAB_SELECTION"
+    /*.................................*/ +LF+"\u2600 onMove_6_GRAB_STICKY"
+    /*.................................*/ +LF+"\u2600 t_seeker_onMove2_ON_NEXT_STICKY"
     /*.................................*/ +LF
     /*.................................*/ +LF+"SENTENCE POPUP ACTIVE"
     /*.................................*/ +LF
@@ -434,6 +439,9 @@ const ARRAY_FR  = [
         , [ STICKY_ROTATE                    , "ORIENTER"                    ]
 
         , [ SCROLL_SMOOTH                    , "Défilement progressif ou instantané"                                    ]
+/*
+        , [ USER_LANG                        , "\u1F1EB\u1F1F7 Language de l'interface"                                 ]
+*/
         , [ USER_LANG                        , "Language de l'interface"                                                ]
         , [ DOM_FREEZE                       , "DOM freeze (Suppression des Event Listeners)"                           ]
         , [ ANCHOR_FREEZE                    , "Blocage des liens de navigation"                                        ]
@@ -457,6 +465,7 @@ const ARRAY_FR  = [
 
         , [ PIN_SEEKSPOT                     , "Garder le dernier seekspot visible"                                     ]
         , [ WORDS_RECYCLE                    , "Recycler"                                                               ]
+        , [ WORDS_REGEXR                     , "Click pour visiter l'outils Regex en ligne"                                                               ]
         , [ WORDS_RECYCLE_CLICK_TO_HIDE      , "Click pour les cacher"                                                  ]
         , [ WORDS_RECYCLE_CLICK_TO_DISCARD   , "Click pour les supprimer"                                               ]
         , [ STORED_PATTERNS                  , "Mots sélectionnés"                                                      ]
@@ -607,6 +616,7 @@ return { name : "dom_i18n"
 
     , PIN_SEEKSPOT
     , WORDS_RECYCLE
+    , WORDS_REGEXR
     , WORDS_RECYCLE_CLICK_TO_HIDE
     , WORDS_RECYCLE_CLICK_TO_DISCARD
     , STORED_PATTERNS

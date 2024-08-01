@@ -1869,16 +1869,16 @@ log("%c event.target=["+dom_util.get_id_or_tag(event.target)+"]", lbH+lf8);
 log(caller+": %c("+event.type+" ON "+dom_util.get_id_or_tag_and_className(event.target)+")", lf1);
 }}}*/
 /*}}}*/
-    if( dom_tools.t_event_has_been_consumed() ) { if(log_this) log(caller+": "+dom_tools.t_event_has_been_consumed()); return; }
+    if( dom_tools.t_event_has_been_handeled() ) { if(log_this) log(caller+": "+dom_tools.t_event_has_been_handeled()); return; }
     /* intro_onDown1_stacked .. intro_onDown2_zoomed {{{*/
-    let consumed_by = "";                                                               let lfx =  "";
-    if(!consumed_by) { consumed_by = intro_onDown1_stacked                       ( event ); lfx = lf1; }
-    if(!consumed_by) { consumed_by = intro_onDown2_zoomed                        ( event ); lfx = lf2; }
-    if( consumed_by)
+    let handeled_by = "";                                                               let lfx =  "";
+    if(!handeled_by) { handeled_by = intro_onDown1_stacked                       ( event ); lfx = lf1; }
+    if(!handeled_by) { handeled_by = intro_onDown2_zoomed                        ( event ); lfx = lf2; }
+    if( handeled_by)
     {
-if(tag_this) logBIG("DOWN: "+consumed_by, lfx);
-        dom_tools.t_preventDefault         (event, consumed_by);
-        dom_tools.t_event_add_e_consumed_by(event, consumed_by);
+if(tag_this) logBIG("DOWN: "+handeled_by, lfx);
+        dom_tools.t_preventDefault         (event, handeled_by);
+        dom_tools.t_event_add_e_handeled_by(event, handeled_by);
 
         return;
     }
@@ -2004,7 +2004,7 @@ let intro_onDown2_zoomed = function(event)
         intro_zoomed1_add(zoomed_el_to_zoom_in);
 
     /*}}}*/
-    let consumed_by
+    let handeled_by
         = zoomed_el_to_zoom_in  ? "zoomed_el_to_zoom_in"
         : zoomed_el_to_zoom_out ? "zoomed_el_to_zoom_out"
         :                         "";
@@ -2016,7 +2016,7 @@ let intro_onDown2_zoomed = function(event)
     /*}}}*/
 /*{{{
 log_key_val_group("intro_onDown2_zoomed("+dom_util.get_id_or_node_path_tail(event.target)+")"
-    , { consumed_by
+    , { handeled_by
       ,                 event_target : event.target
       ,                    zoomed_el : zoomed_el
       ,                 zoomed_clone : document.getElementById("zoomedclone")
@@ -2029,7 +2029,7 @@ log_key_val_group("intro_onDown2_zoomed("+dom_util.get_id_or_node_path_tail(even
     }
     , lf2, false);
 }}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /* KEY */
@@ -2101,13 +2101,13 @@ if( tag_this ) caller += "("+event.type+")";
             || (Math.abs(onMoveDXY.y) >= MOVED_ENOUGH)
           );
 
-    if(moved_enough && !dom_tools.t_event_has_been_consumed())
+    if(moved_enough && !dom_tools.t_event_has_been_handeled())
     {
-        let consumed_by = "CLICK PREVENTED FROM "+caller;
-if(tag_this) log("%c"+caller+"%c consumed_by=["+consumed_by+"]", lbL+lf1, lbR+lf9);
+        let handeled_by = "CLICK PREVENTED FROM "+caller;
+if(tag_this) log("%c"+caller+"%c handeled_by=["+handeled_by+"]", lbL+lf1, lbR+lf9);
 
-        dom_tools.t_preventDefault         (event, consumed_by);
-        dom_tools.t_event_add_e_consumed_by(event, consumed_by);
+        dom_tools.t_preventDefault         (event, handeled_by);
+        dom_tools.t_event_add_e_handeled_by(event, handeled_by);
     }
     /*}}}*/
     /* MOVABLE TARGET {{{*/
@@ -2169,7 +2169,7 @@ if(log_this) log("moved_Y && magnified ["+dom_util.get_id_or_tag(cell_div)+"]");
         {
 if(tag_this) log("[HORIZONTAL MOVE "+next_URDL+"] .. [AWAY FROM "+dom_util.get_id_or_tag(cell_div)+"]");
 
-            cell_div.consumed_by = dom_util.get_id_or_tag(cell_div)+" "+next_URDL+" MAGNIFIED";
+            cell_div.handeled_by = dom_util.get_id_or_tag(cell_div)+" "+next_URDL+" MAGNIFIED";
 
             intro_cell_div_next_URDL(cell_div, next_URDL);
 
@@ -2181,13 +2181,13 @@ if(log_this) {
         : (next_URDL== NEXT_D) ? lf4
         : (next_URDL== NEXT_L) ? lf5
         :                        lf8;
-    log("%c"+caller+"%c"+cell_div.consumed_by, lfx, lbR+lf4);
+    log("%c"+caller+"%c"+cell_div.handeled_by, lfx, lbR+lf4);
 }
 /*}}}*/
 
             dom_tools.t_preventDefault         (event, "PREVENTING PAGE SCROLL FROM "+caller);
-            dom_tools.t_event_add_e_consumed_by(event, cell_div.consumed_by);
-            dom_tools.del_long_press_listener(         cell_div.consumed_by);
+            dom_tools.t_event_add_e_handeled_by(event, cell_div.handeled_by);
+            dom_tools.del_long_press_listener(         cell_div.handeled_by);
 
             magnify_next_grid_cell(event, cell_div, next_URDL);
         }
@@ -2329,16 +2329,16 @@ let log_this = DOM_LOADER_LOG;
 
     if( dom_tools.get_onDown_ALT() ) return;
 /*}}}*/
-    /* consumed_by {{{*/
-    let consumed_by = dom_tools.t_event_has_been_consumed();
-if(log_this) log(caller+": ["+consumed_by+"]");
+    /* handeled_by {{{*/
+    let handeled_by = dom_tools.t_event_has_been_handeled();
+if(log_this) log(caller+": ["+handeled_by+"]");
 
     /*}}}*/
     /* TOOLTIP {{{*/
-    if(!consumed_by && !dom_tools.t_get_has_moved())
+    if(!handeled_by && !dom_tools.t_get_has_moved())
     {
-        if(consumed_by = dom_tools.t_get_mouselong_press_consumed_by())
-            dom_tools.t_preventDefault(event, consumed_by);
+        if(handeled_by = dom_tools.t_get_mouselong_press_handeled_by())
+            dom_tools.t_preventDefault(event, handeled_by);
 
 //      if( event.target.title ) intro_onUp_tooltip( event );
     }
@@ -2442,32 +2442,32 @@ if( log_this) log("%c SCROLLED", lbH+lf7);
 
     /* ALREADY COONSUMED */
 /*{{{
-    if( dom_tools.t_event_has_been_consumed() ) { if(log_this) log(caller+": "+dom_tools.t_event_has_been_consumed() ); return; }
+    if( dom_tools.t_event_has_been_handeled() ) { if(log_this) log(caller+": "+dom_tools.t_event_has_been_handeled() ); return; }
 }}}*/
 
-    let consumed_by = ""; /*.........................................................*/ let lfx = lb0;
-    if(!consumed_by) { consumed_by = intro_onClick0_already_consumed             ( event ); lfx = lf0; }
-    if(!consumed_by) { consumed_by = intro_onClick1_gadgets                      ( event ); lfx = lf1; }
-    if(!consumed_by) { consumed_by = intro_onClick2_dom_tools                    ( event ); lfx = lf2; }
-    if(!consumed_by) { consumed_by = intro_onClick3_fullscreen_drag_URDL         ( event ); lfx = lf3; }
-    if(!consumed_by) { consumed_by = intro_onClick4_fullscreen_next_URDL         ( event ); lfx = lf4; }
-    if(!consumed_by) { consumed_by = intro_onClick5_magnify_next_URDL            ( event ); lfx = lf5; }
-    if(!consumed_by) { consumed_by = intro_onClick6_FULLSCREEN_ANY__SWITCHING_OFF( event ); lfx = lf6; }
-    if(!consumed_by) { consumed_by = intro_onClick7_scroll_UD                    ( event ); lfx = lf7; }
-    if(!consumed_by) { consumed_by = intro_onClick8_intro_grid_container         ( event ); lfx = lf8; }
-    if(!consumed_by) { consumed_by = intro_onClick9_CLEAR_SELECTION              ( event ); lfx = lf9; }
+    let handeled_by = ""; /*.........................................................*/ let lfx = lb0;
+    if(!handeled_by) { handeled_by = intro_onClick0_already_handeled             ( event ); lfx = lf0; }
+    if(!handeled_by) { handeled_by = intro_onClick1_gadgets                      ( event ); lfx = lf1; }
+    if(!handeled_by) { handeled_by = intro_onClick2_dom_tools                    ( event ); lfx = lf2; }
+    if(!handeled_by) { handeled_by = intro_onClick3_fullscreen_drag_URDL         ( event ); lfx = lf3; }
+    if(!handeled_by) { handeled_by = intro_onClick4_fullscreen_next_URDL         ( event ); lfx = lf4; }
+    if(!handeled_by) { handeled_by = intro_onClick5_magnify_next_URDL            ( event ); lfx = lf5; }
+    if(!handeled_by) { handeled_by = intro_onClick6_FULLSCREEN_ANY__SWITCHING_OFF( event ); lfx = lf6; }
+    if(!handeled_by) { handeled_by = intro_onClick7_scroll_UD                    ( event ); lfx = lf7; }
+    if(!handeled_by) { handeled_by = intro_onClick8_intro_grid_container         ( event ); lfx = lf8; }
+    if(!handeled_by) { handeled_by = intro_onClick9_CLEAR_SELECTION              ( event ); lfx = lf9; }
 
-    if( consumed_by && !dom_tools.t_event_has_been_consumed())
-        dom_tools.t_event_add_e_consumed_by(event, event.type+" "+consumed_by);
+    if( handeled_by && !dom_tools.t_event_has_been_handeled())
+        dom_tools.t_event_add_e_handeled_by(event, event.type+" "+handeled_by);
 
 /*{{{*/
-if(tag_this) logBIG("CLICK: "+consumed_by, lfx);
+if(tag_this) logBIG("CLICK: "+handeled_by, lfx);
 if(log_this) {
     log_key_val_group( caller+"("+event.type+")"
         , { event_target               : event.target
           , event_target_path          : dom_util.get_node_path_tail(event.target)
           , event_target_parentElement : event.target.parentElement
-          , consumed_by
+          , handeled_by
           , fullscreen_cell_div
           , callers                    : dom_log.get_callers()
         }, lf9, false);
@@ -2477,13 +2477,13 @@ if(log_this) {
     intro_link_URDL_layout();
 };
 /*}}}*/
-/*_ intro_onClick0_already_consumed {{{*/
-let intro_onClick0_already_consumed = function(event)
+/*_ intro_onClick0_already_handeled {{{*/
+let intro_onClick0_already_handeled = function(event)
 {
-    let consumed_by = dom_tools.t_event_has_been_consumed();
+    let handeled_by = dom_tools.t_event_has_been_handeled();
 
-    consumed_by
-        =    consumed_by
+    handeled_by
+        =    handeled_by
         || ((moving_EL                                           ) && "MOVING "+ dom_util.get_id_or_tag(moving_EL))
         || ((dom_util.is_el_child_of_id(event.target, "doc_tools") && "TOOL "+   dom_util.get_n_lbl(event.target)))
         || ((dom_tools.get_onDown_CTRL()                         ) && "onDown_CTRL"     )
@@ -2491,8 +2491,8 @@ let intro_onClick0_already_consumed = function(event)
         || ((dom_tools.t_get_onDown_EL() != event.target         ) && "ITEM DRAGGED"    )
         ;
 
-    if(consumed_by)
-        return "intro_onClick0_already_consumed: "+consumed_by;
+    if(handeled_by)
+        return "intro_onClick0_already_handeled: "+handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick1_gadgets {{{*/
@@ -2645,10 +2645,10 @@ let tag_this = DOM_LOADER_TAG || log_this;
 if( log_this) log(caller+"%c("+event.type+" ON "+dom_util.get_id_or_tag_and_className(event.target)+")", lf4);
 /*}}}*/
     /* [reset] {{{*/
-    let consumed_by;
-    if(!consumed_by && (event.target.id == "reset"))
+    let handeled_by;
+    if(!handeled_by && (event.target.id == "reset"))
     {
-        consumed_by = event.target.id;
+        handeled_by = event.target.id;
 
         if(fullscreen_cell_div) intro_stacked_reset(event);
 
@@ -2657,57 +2657,57 @@ if( log_this) log(caller+"%c("+event.type+" ON "+dom_util.get_id_or_tag_and_clas
     }
     /*}}}*/
     /* [take_snapshot] {{{*/
-    if(!consumed_by && (event.target.id == "take_snapshot"))
+    if(!handeled_by && (event.target.id == "take_snapshot"))
     {
-        consumed_by = event.target.id+" snapshot_id=["+snapshot_id+"]";
+        handeled_by = event.target.id+" snapshot_id=["+snapshot_id+"]";
 
         dom_tools.t_take_SNAPSHOT(DOM_LOAD_ID, snapshot_id, event.target);
     }
     /*}}}*/
     /* [load_snapshot] {{{*/
-    if(!consumed_by && (event.target.id == "load_snapshot"))
+    if(!handeled_by && (event.target.id == "load_snapshot"))
     {
-        consumed_by = event.target.id+" snapshot_id=["+snapshot_id+"]";
+        handeled_by = event.target.id+" snapshot_id=["+snapshot_id+"]";
 
         dom_tools.t_load_SNAPSHOT(DOM_LOAD_ID, snapshot_id);
     }
     /*}}}*/
     /* [containers_hi] {{{*/
-    if(!consumed_by && (event.target.id == "containers_hi"))
+    if(!handeled_by && (event.target.id == "containers_hi"))
     {
-        consumed_by = event.target.id;
+        handeled_by = event.target.id;
 
         dom_tools.prop_id_toggle(event.target.id);
     }
     /*}}}*/
     /* [data_storage_...] {{{*/
-    if(!consumed_by && (event.target.id.startsWith("data_storage_")))
+    if(!handeled_by && (event.target.id.startsWith("data_storage_")))
     {
         let data_storage = event.target.getAttribute("data-storage");
 
-        consumed_by = event.target.id+" "+dom_util.ellipsis(data_storage,32);
+        handeled_by = event.target.id+" "+dom_util.ellipsis(data_storage,32);
 
         dom_share.t_share4_IMPORT_TEXT( data_storage );
     }
     /*}}}*/
     /* [words_bag_rot] .. (in-out tool clones) {{{*/
-    if(!consumed_by && (event.target.id.startsWith("words_bag_rot")))
+    if(!handeled_by && (event.target.id.startsWith("words_bag_rot")))
     {
-        consumed_by = event.target.id;
+        handeled_by = event.target.id;
 
         dom_tools.t_handle_1_pat_bag(event.target);
     }
     /*}}}*/
 //    /* [doc_tool_node] .. (supposed to have done its job onDown at this point) {{{*/
-//    if(!consumed_by) {
+//    if(!handeled_by) {
 //        let doc_tool_node = dom_util.get_id_or_tag(event.target);
 //
 //        if( doc_tool_node )
-//            consumed_by = doc_tool_node;
+//            handeled_by = doc_tool_node;
 //    }
 //    /*}}}*/
-if( log_this && consumed_by) log("%c...consumed_by=["+consumed_by+"]", lbH+lf8);
-    return consumed_by;
+if( log_this && handeled_by) log("%c...handeled_by=["+handeled_by+"]", lbH+lf8);
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick3_fullscreen_drag_URDL {{{*/
@@ -2725,7 +2725,7 @@ let tag_this = DOM_LOADER_TAG || log_this;
 if( log_this) log(caller+"%c("+event.type+" ON "+dom_util.get_id_or_tag_and_className(event.target)+")", lf4);
 /*}}}*/
     /* NOT A QUICK DRAG {{{*/
-    let consumed_by;
+    let handeled_by;
     if(!dom_tools.t_is_a_quick_drag() )
     {
         /* [clicked_on_a_tool_panel] {{{*/
@@ -2766,11 +2766,11 @@ if(tag_this) logBIG("ZOOM-OUT", lf8);
         /*}}}*/
         /* CLICKED OUTSIDE .. ZOOMING-OUT .. return {{{*/
         else {
-            consumed_by = "CLICKED OUTSIDE .. ZOOMING-OUT "+dom_util.get_id_or_node_path_tail(zoomed_el);
-if(log_this) logBIG(consumed_by, lf3);
+            handeled_by = "CLICKED OUTSIDE .. ZOOMING-OUT "+dom_util.get_id_or_node_path_tail(zoomed_el);
+if(log_this) logBIG(handeled_by, lf3);
 
             intro_zoomed6_del(zoomed_el);
-            return consumed_by;
+            return handeled_by;
         }
         /*}}}*/
     }
@@ -2790,8 +2790,8 @@ if(log_this) logBIG(consumed_by, lf3);
     /* [zoomed_el .. to zoom-out ] {{{*/
     if( zoomed_el && drag_RL)
     {
-        consumed_by = "UNZOOM "+dom_util.get_id_or_node_path_tail(zoomed_el);
-if(tag_this) logBIG(consumed_by, lf6);
+        handeled_by = "UNZOOM "+dom_util.get_id_or_node_path_tail(zoomed_el);
+if(tag_this) logBIG(handeled_by, lf6);
 
         intro_zoomed6_del(zoomed_el);
     }
@@ -2829,8 +2829,8 @@ if(tag_this) logBIG(consumed_by, lf6);
         = zoomed_el_sibling_to_zoom_in || target_container_to_zoom_in;
     if( zoomed_el_to_zoom_in )
     {
-        consumed_by = "ZOOM NEXT "+dom_util.get_id_or_node_path_tail(zoomed_el_to_zoom_in);
-if(tag_this) logBIG(consumed_by, lf4);
+        handeled_by = "ZOOM NEXT "+dom_util.get_id_or_node_path_tail(zoomed_el_to_zoom_in);
+if(tag_this) logBIG(handeled_by, lf4);
 
         intro_zoomed1_add( zoomed_el_to_zoom_in );
     }
@@ -2838,34 +2838,34 @@ if(tag_this) logBIG(consumed_by, lf4);
     /* [fullscreen_cell_div] drag_RL {{{*/
     let next_URDL;
     let moved_Y;
-    if(!consumed_by && drag_RL && fullscreen_cell_div)
+    if(!handeled_by && drag_RL && fullscreen_cell_div)
     {
         moved_Y   = Math.abs(onMoveDXY.y    ) > Math.abs(onMoveDXY.x);
         next_URDL = !moved_Y ? ((onMoveDXY.x < 0) ? NEXT_R : NEXT_L)
             :                  ((onMoveDXY.y > 0) ? NEXT_U : NEXT_D) ;
 
-        consumed_by  = intro_onClick3_fullscreen_next_URDL_event_target(event.target, next_URDL, fullscreen_cell_div);
+        handeled_by  = intro_onClick3_fullscreen_next_URDL_event_target(event.target, next_URDL, fullscreen_cell_div);
 
-if(tag_this) logBIG(consumed_by, lf7);
+if(tag_this) logBIG(handeled_by, lf7);
     }
     /*}}}*/
     /* NOTHING TO ZOOM {{{*/
-    if(!consumed_by)
+    if(!handeled_by)
     {
 if(tag_this) logBIG("NO ZOOM "+drag_RL, lf8);
 
     }
     /*}}}*/
-    /* return consumed_by zoomed and/or unzoomed {{{*/
-    if( consumed_by )
-        intro_clearSelection( consumed_by );
+    /* return handeled_by zoomed and/or unzoomed {{{*/
+    if( handeled_by )
+        intro_clearSelection( handeled_by );
 
     /*}}}*/
 /*{{{*/
 if(log_this)
     log_key_val_group(caller +" "+(next_URDL || drag_RL)
-                      ,{ consumed                     : dom_tools.t_event_has_been_consumed()
-                       , consumed_by
+                      ,{ handeled                     : dom_tools.t_event_has_been_handeled()
+                       , handeled_by
                        , EVENT                        : "----------------------------------------"
                        , event_type                   : event.type
                        , event_target                 : event.target
@@ -2886,7 +2886,7 @@ if(log_this)
                        , callers                      : dom_log.get_callers()
                       } , lf3, true);
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick4_fullscreen_next_URDL {{{*/
@@ -2903,13 +2903,13 @@ let log_this = DOM_LOADER_LOG;
 if( log_this) log(caller+"%c("+event.type+" ON "+dom_util.get_id_or_tag_and_className(event.target)+")", lf3);
 /*}}}*/
     /* [buttons POD] IGNORED {{{*/
-    let consumed_by;
+    let handeled_by;
     if(/*fullscreen_cell_div &&*/ intro_el_is_link_URDL(event.target))
     {
-        consumed_by = "CLICK URDL IGNORED: ON "+event.target.id;
-if( log_this) log("%c consumed_by=["+consumed_by+"]", lbH+lf8);
+        handeled_by = "CLICK URDL IGNORED: ON "+event.target.id;
+if( log_this) log("%c handeled_by=["+handeled_by+"]", lbH+lf8);
 
-        return consumed_by+dom_util.get_id_or_tag(event.target);
+        return handeled_by+dom_util.get_id_or_tag(event.target);
     }
     /*}}}*/
     /* FULLSCREEN CELL DIV HANDLED BY TOOLS {{{*/
@@ -2937,8 +2937,8 @@ if( log_this) log("%c consumed_by=["+consumed_by+"]", lbH+lf8);
 
     if(cell_div_is_handled_by_tools)
     {
-        consumed_by = "FULLSCREEN CELL DIV HANDLED BY TOOLS ON "+dom_util.get_id_or_tag( cell_div );
-if( log_this) log("%c consumed_by=["+consumed_by+"]", lbH+lf8);
+        handeled_by = "FULLSCREEN CELL DIV HANDLED BY TOOLS ON "+dom_util.get_id_or_tag( cell_div );
+if( log_this) log("%c handeled_by=["+handeled_by+"]", lbH+lf8);
 
     }
     /*}}}*/
@@ -2953,12 +2953,12 @@ if( log_this) log("%c consumed_by=["+consumed_by+"]", lbH+lf8);
             ;
 
     /*}}}*/
-    if(!consumed_by )
-        consumed_by = intro_onClick3_fullscreen_next_URDL_event_target(event.target, next_URDL, cell_div);
+    if(!handeled_by )
+        handeled_by = intro_onClick3_fullscreen_next_URDL_event_target(event.target, next_URDL, cell_div);
 /*{{{*/
 if(log_this)
     log_key_val_group(caller+": "+next_URDL
-        ,{ consumed_by
+        ,{ handeled_by
         ,  event_target       : event.target
         , event_target_path   : dom_util.get_node_path_tail(event.target)
         ,  next_URDL
@@ -2973,7 +2973,7 @@ if(log_this)
          , next_URDL
         }, lbH+lf3, true);
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick3_fullscreen_next_URDL_event_target {{{*/
@@ -2987,8 +2987,8 @@ if( log_this) log(caller+"%c("+dom_util.get_id_or_tag_and_className(event_target
 /*}}}*/
     if(!cell_div) cell_div = fullscreen_cell_div;
     /* FULLSCREEN NEXT OR PREV {{{*/
-    let consumed_by;
-    if(!consumed_by && fullscreen_cell_div && next_URDL)
+    let handeled_by;
+    if(!handeled_by && fullscreen_cell_div && next_URDL)
     {
         /* move fullscreen_cell_div back into its rightful container */
         intro_cell_div_fullscreen();
@@ -3002,22 +3002,22 @@ if(log_this) log("...next_cell_div=["+dom_util.get_id_or_tag(next_cell_div)+"]")
 
         if(next_cell_div)
         {
-            consumed_by = next_URDL+" FULLSCREEN NEXT OR PREV "+dom_util.get_id_or_tag(next_cell_div);
+            handeled_by = next_URDL+" FULLSCREEN NEXT OR PREV "+dom_util.get_id_or_tag(next_cell_div);
 
             dom_util.set_el_class_removing(next_cell_div, next_URDL, NEXT_URDL);
             intro_cell_div_fullscreen(next_cell_div);
         }
         else {
-            consumed_by = next_URDL+" FULLSCREEN NEXT OR PREV .. NO CELL"
+            handeled_by = next_URDL+" FULLSCREEN NEXT OR PREV .. NO CELL"
 
             intro_cell_div_scroll_into_view(cell_div);
         }
     }
     /*}}}*/
     /* FULLSCREEN OFF {{{*/
-    if(!consumed_by && fullscreen_cell_div && intro_el_is_link_X(event_target))
+    if(!handeled_by && fullscreen_cell_div && intro_el_is_link_X(event_target))
     {
-        consumed_by = FULLSCREEN_LINK_SWITCHING_OFF +" MAGNIFY_ON";
+        handeled_by = FULLSCREEN_LINK_SWITCHING_OFF +" MAGNIFY_ON";
 
         cell_div = fullscreen_cell_div;
         intro_cell_div_fullscreen();
@@ -3031,7 +3031,7 @@ if(log_this) log("...next_cell_div=["+dom_util.get_id_or_tag(next_cell_div)+"]")
     let can_fullscreen_ON     = !fullscreen_cell_div && cell_div_is_magnified;
 
 if( log_this) log_key_val(caller
-    , { consumed_by
+    , { handeled_by
       , cell_div
       , cell_div_is_magnified
       , fullscreen_cell_div
@@ -3039,17 +3039,17 @@ if( log_this) log_key_val(caller
       , caller : dom_log.get_callers()
     });
 
-    if(!consumed_by && can_fullscreen_ON)
+    if(!handeled_by && can_fullscreen_ON)
     {
-        consumed_by = FULLSCREEN_PIN__SWITCHING_ON;
+        handeled_by = FULLSCREEN_PIN__SWITCHING_ON;
         intro_cell_div_fullscreen(cell_div);
     }
     /*}}}*/
     /* FULLSCREEN PIN OFF {{{*/
     let can_fullscreen_OFF    = (fullscreen_cell_div || (event.target == document.body));
-    if(!consumed_by && can_fullscreen_OFF)
+    if(!handeled_by && can_fullscreen_OFF)
     {
-        consumed_by = FULLSCREEN_PIN__SWITCHING_OFF +" MAGNIFY_ON";
+        handeled_by = FULLSCREEN_PIN__SWITCHING_OFF +" MAGNIFY_ON";
 
         intro_cell_div_fullscreen();
 
@@ -3057,8 +3057,8 @@ if( log_this) log_key_val(caller
         intro_cell_div_scroll_into_view(cell_div);
     }
     /*}}}*/
-if( log_this) log(caller+":%c...return consumed_by=["+consumed_by+"]", lbH+lf3);
-    return consumed_by;
+if( log_this) log(caller+":%c...return handeled_by=["+handeled_by+"]", lbH+lf3);
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick5_magnify_next_URDL {{{*/
@@ -3071,7 +3071,7 @@ let log_this = DOM_LOADER_LOG;
 /*}}}*/
     if(fullscreen_cell_div) return;
 
-    let consumed_by;
+    let handeled_by;
     let next_cell_div;
 
     let          next_URDL  = intro_get_event_NEXT_URDL(event);
@@ -3080,11 +3080,11 @@ let log_this = DOM_LOADER_LOG;
     {
 
         if(next_cell_div    = magnify_next_grid_cell(event, cell_div_magnified, next_URDL))
-            consumed_by     = "ON "+dom_util.get_id_or_tag(event.target)+" .. MAGNIFY "+next_URDL+" ["+dom_util.get_id_or_tag(next_cell_div)+"]";
+            handeled_by     = "ON "+dom_util.get_id_or_tag(event.target)+" .. MAGNIFY "+next_URDL+" ["+dom_util.get_id_or_tag(next_cell_div)+"]";
     }
     else {
-        if(     (next_URDL == NEXT_R)) { magnify_last_cell (); consumed_by = "MAGNIFY "+next_URDL+" magnify_last_cell" ; }
-        else if((next_URDL == NEXT_L)) { magnify_first_cell(); consumed_by = "MAGNIFY "+next_URDL+" magnify_first_cell"; }
+        if(     (next_URDL == NEXT_R)) { magnify_last_cell (); handeled_by = "MAGNIFY "+next_URDL+" magnify_last_cell" ; }
+        else if((next_URDL == NEXT_L)) { magnify_first_cell(); handeled_by = "MAGNIFY "+next_URDL+" magnify_first_cell"; }
     }
 
 /*{{{*/
@@ -3105,7 +3105,7 @@ if(log_this) {
         } , lfx, true);
 }
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick7_scroll_UD {{{*/
@@ -3125,7 +3125,7 @@ let log_this = DOM_LOADER_LOG;
     else return;
 
     dom_tools.t_window_scrollTo(window.scrollX, scrollY, "smooth");
-    let consumed_by = "ON "+dom_util.get_id_or_tag(event.target)+" .. SCROLLED TO ["+scrollY+"]";
+    let handeled_by = "ON "+dom_util.get_id_or_tag(event.target)+" .. SCROLLED TO ["+scrollY+"]";
 
 /*{{{*/
 if(log_this) {
@@ -3136,16 +3136,16 @@ if(log_this) {
         : (next_URDL== NEXT_L) ? lf5
         :                        lf8;
 
-    log_key_val_group(caller+"("+event.type+") .. "+consumed_by
+    log_key_val_group(caller+"("+event.type+") .. "+handeled_by
                       , {   event_type         : event.type
                           , event_target       : event.target
                           , next_URDL          : (next_URDL ? next_URDL : "NO URDL")
                           , scrollY
-                          , consumed_by
+                          , handeled_by
                       } , lfx, true);
 }
 /*}}}*/
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick6_FULLSCREEN_ANY__SWITCHING_OFF {{{*/
@@ -3157,11 +3157,11 @@ let intro_onClick6_FULLSCREEN_ANY__SWITCHING_OFF = function(event)
     let     is_a_magnify_pin          =  dom_util.has_el_class               (event.target, "magnify_pin"      );
     let     is_in_fullscreen_cell_div =  dom_util.is_el_or_child_of_parent_el(event.target, fullscreen_cell_div);
 
-    let consumed_by;
+    let handeled_by;
     if(     is_a_magnify_pin
         || !is_in_fullscreen_cell_div
       ) {
-        consumed_by = FULLSCREEN_ANY__SWITCHING_OFF +" MAGNIFY_ON";
+        handeled_by = FULLSCREEN_ANY__SWITCHING_OFF +" MAGNIFY_ON";
 
         let cell_div = fullscreen_cell_div;
         intro_cell_div_fullscreen();
@@ -3169,7 +3169,7 @@ let intro_onClick6_FULLSCREEN_ANY__SWITCHING_OFF = function(event)
         magnify_grid_cell_on_off       (cell_div, true );
         intro_cell_div_scroll_into_view(cell_div);
     }
-    return consumed_by;
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick8_intro_grid_container {{{*/
@@ -3181,8 +3181,8 @@ if(event.target.id != "intro_grid_container") return;
 
     magnify_grid_cells_off();
 
-    let consumed_by = "MAGNIFY_OFF"
-    return consumed_by;
+    let handeled_by = "MAGNIFY_OFF"
+    return handeled_by;
 };
 /*}}}*/
 /*_ intro_onClick9_CLEAR_SELECTION {{{*/
@@ -3191,8 +3191,8 @@ let intro_onClick9_CLEAR_SELECTION = function(event)
     if( fullscreen_cell_div                   ) return;
     if(!intro_clearSelection("CLICK OFF-CELL")) return;
 
-    let consumed_by = "CLEAR_SELECTION";
-    return consumed_by;
+    let handeled_by = "CLEAR_SELECTION";
+    return handeled_by;
 };
 /*}}}*/
 /* RESIZE */
@@ -3811,7 +3811,7 @@ if(log_this) log_caller();
     if( event_target_is_a_div_caption )
     {
 if( log_this) log("return magnify_row(event_target)");
-        dom_tools.t_event_add_e_consumed_by(event, event.type+" "+"MAGNIFY_CAPTION");
+        dom_tools.t_event_add_e_handeled_by(event, event.type+" "+"MAGNIFY_CAPTION");
 
         magnify_row(event_target);
 
@@ -3827,29 +3827,29 @@ if( log_this) log("return magnify_row(event_target)");
     if(cell_div && !cell_was_magnified && div_caption)
     {
 if( log_this) log("SCROLL INTO VIEW");
-        dom_tools.t_event_add_e_consumed_by(event, event.type+" SCROLL_INTO_VIEW");
+        dom_tools.t_event_add_e_handeled_by(event, event.type+" SCROLL_INTO_VIEW");
 
         intro_cell_div_scroll_into_view(cell_div);
     }
     /*}}}*/
-    /* CONSUME: prevent page selection (from magnification drag effect) {{{*/
-    let consumed_by;
+    /* HANDLE: prevent page selection (from magnification drag effect) {{{*/
+    let handeled_by;
     if( cell_div )
     {
         if(!cell_was_magnified) {
-            cell_div.consumed_by = "MAGNIFY CELL "+dom_util.get_id_or_tag(cell_div);
-if(log_this) log(cell_div.consumed_by);
+            cell_div.handeled_by = "MAGNIFY CELL "+dom_util.get_id_or_tag(cell_div);
+if(log_this) log(cell_div.handeled_by);
 
-            dom_tools.t_preventDefault         (event, cell_div.consumed_by);
-            dom_tools.t_event_add_e_consumed_by(event, cell_div.consumed_by);
-            dom_tools.del_long_press_listener  (       cell_div.consumed_by);
+            dom_tools.t_preventDefault         (event, cell_div.handeled_by);
+            dom_tools.t_event_add_e_handeled_by(event, cell_div.handeled_by);
+            dom_tools.del_long_press_listener  (       cell_div.handeled_by);
         }
 /*{{{
         else {
             rejected_by = "cell_was_magnified";
 if(log_this) log("rejected_by "+rejected_by);
 
-            delete cell_div.consumed_by;
+            delete cell_div.handeled_by;
         }
 }}}*/
     }
@@ -3875,7 +3875,7 @@ if( log_this) log("UNMAGNIFY ALL CELLS");
         let state = !cell_was_magnified;
         magnify_grid_cell_on_off(cell_div, state);
 
-        dom_tools.t_event_add_e_consumed_by(event, event.type+" "+(state ? "MAGNIFY" : "UNMAGNIFY"));
+        dom_tools.t_event_add_e_handeled_by(event, event.type+" "+(state ? "MAGNIFY" : "UNMAGNIFY"));
 
         /* MAGNIFY SELECTED ROW */
         if(   !caption_was_magnified
@@ -3883,7 +3883,7 @@ if( log_this) log("UNMAGNIFY ALL CELLS");
           ) {
             magnify_row(div_caption, true); /* by_a_caption_cell */
 
-            dom_tools.t_event_add_e_consumed_by(event, event.type+" MAGNIFY_ROW");
+            dom_tools.t_event_add_e_handeled_by(event, event.type+" MAGNIFY_ROW");
           }
 
     }
@@ -3900,7 +3900,7 @@ if(log_this) {
           , div_caption
           , caption_was_magnified
           , cell_was_magnified
-          , consumed_by           : (cell_div ? cell_div.consumed_by : "")
+          , handeled_by           : (cell_div ? cell_div.handeled_by : "")
           , zooming
           , caller                : dom_log.get_callers()
           }, lbH+lf7
@@ -3913,7 +3913,7 @@ if( log_this) log("dimm_grid_cells_but_magnified()");
 
         dimm_grid_cells_but_magnified();
 
-        dom_tools.t_event_add_e_consumed_by(event, event.type+" DIMM_BUT_MAGNIFIED");
+        dom_tools.t_event_add_e_handeled_by(event, event.type+" DIMM_BUT_MAGNIFIED");
     }
     /*}}}*/
 };
